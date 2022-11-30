@@ -45,6 +45,7 @@
         		while ($row = mysqli_fetch_assoc($result)) {
         		    echo "<input type='radio' id='housing_request" . $row['Id'] . "' name='housing_request' value='" . $row['Id'] . "'>";
         		    echo "<label for='housing_request" .  $row['Id'] . "'>" . $row['Name'] . "</label><br>";
+        		}
         	}
         		
 	?> 
