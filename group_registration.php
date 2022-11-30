@@ -1,3 +1,8 @@
+<?php 
+
+	include_once 'includes/dbh.inc.php';
+
+?> 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
 <html>
 <head>
@@ -29,11 +34,21 @@
   		<input type="text" id="approximate_number_of_participants" name="approximate_number_of_participants"><br>
 
         <label for="housing_request">Hur vill ni bo som grupp?:</label><br>
-		<input type="radio" id="html" name="housing_request" value="house_in_village">
-  		<label for="html">Hus i byn</label><br>
-  		<input type="radio" id="css" name="housing_request" value="camp_in_village">
-  		<label for="css">In-lajv läger i byn</label><br>
- 
+        
+        <?php 
+
+        	$sql = "SELECT * FROM HousingRequests;";
+        	$result = mysqli_query($conn, $sql);
+        	$resultCheck = mysqli_num_rows($result);
+        	
+        	if ($resultCheck > 0) {
+        		while ($row = mysqli_fetch_assoc($result)) {
+        		    echo "<input type='radio' id='housing_request" . $row['Id'] . "' name='housing_request' value='" . $row['Id'] . "'>";
+        		    echo "<label for='housing_request" .  $row['Id'] . "'>" . $row['Name'] . "</label><br>";
+        	}
+        		
+	?> 
+        
         <label for="need_fireplace">Behöver ni eldplats?:</label><br>
 		<input type="radio" id="html" name="need_fireplace" value="yes">
   		<label for="html">Ja</label><br>
