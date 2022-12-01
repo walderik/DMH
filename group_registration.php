@@ -11,10 +11,27 @@
 <link rel="stylesheet" href="includes/registration_system.css">
 </head>
   <body>
+  		<div id="site-header">
+		<a href="https://dmh.berghemsvanner.se/" rel="home">
+			<img src="images//IMG_1665485583436.png" width="1080" height="237" alt="Död mans hand" />
+		</a>
+	</div>
+	
+			<nav id="primary-navigation" class="site-navigation primary-navigation">
+				<button class="menu-toggle">Primär meny</button>
+				<a class="screen-reader-text skip-link" href="#content">Hoppa till innehåll</a>
+				<div class="menu-huvud-container"><ul id="primary-menu" class="nav-menu"><li id="menu-item-917" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-199 current_page_item menu-item-917"><a href="https://dmh.berghemsvanner.se/" aria-current="page">#199 (ingen rubrik)</a></li>
+<li id="menu-item-906" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-906"><a href="https://dmh.berghemsvanner.se/praktiskt-vinterlajv/">Jullajv: Praktiskt</a></li>
+<li id="menu-item-914" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-914"><a href="https://dmh.berghemsvanner.se/anmalan-till-lajvet/">JULLAJV: ANMÄLAN</a></li>
+<li id="menu-item-907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-907"><a href="https://dmh.berghemsvanner.se/dod-mans-hand-2022/">HÖSTLAJV 2023</a></li>
+</ul></div>			</nav>
+	<div id="main" class="site-main">
+
+<div id="main-content" class="main-content">
     <form>
       
-      <h1> Gruppanmälan
-        </h1>
+      <h2> Gruppanmälan !
+        </h2>
       <p>
         En grupp är en gruppering av roller som gör något tillsammans på lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett rallarlag.
       </p>   
@@ -68,5 +85,7 @@
 	</p>
       
     </form>
+    </div>
+    </div>
   </body>
 </html>
