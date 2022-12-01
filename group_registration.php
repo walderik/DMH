@@ -8,6 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Gruppanmälan DMH 2023</title>
+<link rel="stylesheet" href="includes/registration_system.css">
 </head>
   <body>
     <form>
