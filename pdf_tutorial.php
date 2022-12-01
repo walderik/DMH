@@ -30,7 +30,9 @@ class TELEGRAM extends FPDF {
     function SetText($text) {
         $this->SetFont('Times','B',16);    # OK är 'Times', 'Arial'
         $this->Cell(40,10,'Hello World!'); # http://www.fpdf.org/en/doc/cell.htm
-        $this->Cell(60,10,'ÅÄÖ åäö. &aring;',0,1,'C'); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $str = 'ÅÄÖ åäö. &aring;'          # https://stackoverflow.com/questions/3514076/special-characters-in-fpdf-with-php
+        $str = utf8_decode($str); 
+        $this->Cell(60,10,$str,0,1,'C'); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
     }
     
 }
