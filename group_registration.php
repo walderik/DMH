@@ -11,10 +11,12 @@ include_once 'includes/db.inc.php';
 </head>
 <body>
 <?php 
-function showDropDownData($db_conn) {
-    echo "In function";
-    $sql = "SELECT * FROM HousingRequests;";
-    $result = mysqli_query($db_conn, $sql);
+function showDropDownData($table_name, $select_name) {
+    global $conn;
+    
+    echo  "<select name='" . $select_name . "' id='" . $select_name . "'>";
+    $sql = "SELECT * FROM " . $table_name;
+    $result = mysqli_query($conn, $sql);
     $resultCheck = mysqli_num_rows($result);
     
     if ($resultCheck > 0) {
@@ -22,7 +24,7 @@ function showDropDownData($db_conn) {
             echo "<option value='" . $row['Id'] . "'>" . utf8_decode($row['Name']) . "</option>";
         }
     }
-    
+    echo "</select>";
 }
 
 
@@ -72,19 +74,19 @@ function showDropDownData($db_conn) {
 			</div>
 						<div class="question">
 			<label for="housing_request">Hur vill ni bo som grupp?</label><br>
-        	<select name="housing_request" id="housing_requests">        
+       
             <?php
     
-            showDropDownData($conn);
+            showDropDownData("HousingRequests", "housing_request");
             
             ?> 
-        	</select>
+
         </div>
         			<div class="question">
 				<label for="need_fireplace">Behöver ni eldplats?</label><br> <input
-					type="radio" id="html" name="need_fireplace" value="yes"> <label
-					for="html">Ja</label><br> <input type="radio" id="css"
-					name="need_fireplace" value="no"> <label for="css">Nej</label>
+					type="radio" id="need_fireplace_yes" name="need_fireplace" value="yes"> <label
+					for="need_fireplace_yes">Ja</label><br> <input type="radio" id="need_fireplace_no"
+					name="need_fireplace" value="no"> <label for="need_fireplace_no">Nej</label>
 			</div>
 			<div class="question">
 				<label for="friends">Vänner</label><br>
@@ -98,7 +100,7 @@ function showDropDownData($db_conn) {
 			</div>
 
 
-<div class="question">
+			<div class="question">
 			Hur rik anser du att ni är? (1= äger inget, 5 = badar i pengar) 
 			
 			</div>
@@ -107,12 +109,17 @@ function showDropDownData($db_conn) {
 			kommer grupen från? Dvs var är ni bosatta? 
 			</div>
 			<div class="question">
-			Vill ni ha en
-			arrangörsskriven gruppintrig inför lajvet? 
-			Om ni svarar "Nej" är det
+ 
+			
+			
+							<label for="want_intrigue">Vill ni ha en
+			arrangörsskriven gruppintrig inför lajvet? </label><div class="explanation">Om ni svarar "Nej" är det
 			inte en garanti för att ni inte får några intriger ändå. Speciellt om
 			ni redan är en existerande grupp i kampanjen så är det troligare att
-			ni är inblandade i något. 
+			ni är inblandade i något.</div><input
+					type="radio" id="want_intrigue_yes" name="want_intrigue" value="yes"> <label
+					for="want_intrigue_yes">Ja</label><br> <input type="radio" id="want_intrigue_no"
+					name="want_intrigue" value="no"> <label for="want_intrigue_no">Nej</label>
 			</div>
 			
 			<div class="question">
