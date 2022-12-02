@@ -105,8 +105,7 @@ function showDropDownData($table_name, $select_name) {
 			
 			</div>
 			<div class="question">
-			Var
-			kommer grupen från? Dvs var är ni bosatta? 
+			Var kommer gruppen från? Dvs var är ni bosatta? 
 			</div>
 			<div class="question">
  
