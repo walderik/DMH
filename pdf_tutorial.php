@@ -8,34 +8,27 @@ class TELEGRAM extends FPDF {
     
     function Header()
     {
-//         global $title;
-        
-//         // Arial bold 15
-//         $this->SetFont('Arial','B',15);
-//         // Calculate width of title and position
-//         $w = $this->GetStringWidth($title)+6;
-//         $this->SetX((210-$w)/2);
-//         // Colors of frame, background and text
-//         $this->SetDrawColor(0,80,180);
-//         $this->SetFillColor(230,230,0);
-//         $this->SetTextColor(220,50,50);
-//         // Thickness of frame (1 mm)
-//         $this->SetLineWidth(1);
-//         // Title
-//         $this->Cell($w,9,$title,1,1,'C',true);
-//         // Line break
-//         $this->Ln(10);
-        $this->Image('telegram.png');
+        $this->Image('telegram.png',null,null,200);
     }
     
-    function SetText($text) {
-        $this->SetFont('Times','B',16);    # OK är 'Times', 'Arial'
-        $this->Cell(40,10,'Hello World!'); # http://www.fpdf.org/en/doc/cell.htm
-        $str = "ÅÄÖ åäö. &aring;";         # https://stackoverflow.com/questions/3514076/special-characters-in-fpdf-with-php
-        $str = utf8_decode($str); 
-        $this->Cell(60,10,$str,0,1,'C'); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+    function SetText($sender, $receiver, $message) {
+		$this->SetFont('Helvetica','',14);    # OK är 'Times', 'Arial'
+		# För mer fonter använder du http://www.fpdf.org/makefont/
+		$left = 21;
+		$this->SetXY($left, 68);
+		# http://www.fpdf.org/en/doc/cell.htm
+		# https://stackoverflow.com/questions/3514076/special-characters-in-fpdf-with-php
+        $this->Cell(80,10,utf8_decode($sender),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad	
+		$this->SetXY($left, 88);
+		$this->Cell(80,10,utf8_decode($receiver),0,1);
+		$this->SetXY($left, 112);
+		$this->MultiCell(0,8,utf8_decode($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
     }
     
+	function nytt_telegram($sender, $receiver, $message) {
+		$this->AddPage();
+		$this->SetText($sender, $receiver, $message);
+	}
 }
 
 
@@ -43,7 +36,8 @@ class TELEGRAM extends FPDF {
 $pdf = new TELEGRAM();
 $pdf->SetTitle('Telegram');
 $pdf->SetAuthor('Dod mans hand');
-$pdf->AddPage();
-$pdf->SetText('Åtal');    # OK är 'Times', 'Arial'
+$pdf->SetCreator('Mats Rappe');
+$pdf->nytt_telegram('Doctor WHO', 'Lilian Margarin', "Dina hästar har sålt jättebra.");
+$pdf->nytt_telegram('Doctor DOOM', 'Sheriff Flintan McDonald', "County Sheriffen Maria (med konstigt efternamn) har låtit efterlysa dig för något hon tror du gjort eller bara för att vara elak.\nSpring, spring som bara den."); 
 $pdf->Output();
 ?>
