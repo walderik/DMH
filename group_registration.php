@@ -10,6 +10,23 @@ include_once 'includes/db.inc.php';
 <link rel="stylesheet" href="includes/registration_system.css">
 </head>
 <body>
+<?php 
+function showDropDownData($db_conn) {
+    echo "In function";
+    $sql = "SELECT * FROM HousingRequests;";
+    $result = mysqli_query($db_conn, $sql);
+    $resultCheck = mysqli_num_rows($result);
+    
+    if ($resultCheck > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<option value='" . $row['Id'] . "'>" . utf8_decode($row['Name']) . "</option>";
+        }
+    }
+    
+}
+
+
+?>
 	<div id="site-header">
 		<a href="https://dmh.berghemsvanner.se/" rel="home"> <img
 			src="images//IMG_1665485583436.png" width="1080" height="237"
@@ -55,21 +72,13 @@ include_once 'includes/db.inc.php';
 			</div>
 						<div class="question">
 			<label for="housing_request">Hur vill ni bo som grupp?</label><br>
-        
-        <?php
-
-        $sql = "SELECT * FROM HousingRequests;";
-        $result = mysqli_query($conn, $sql);
-        $resultCheck = mysqli_num_rows($result);
-
-        if ($resultCheck > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<input type='radio' id='housing_request" . $row['Id'] . "' name='housing_request' value='" . $row['Id'] . "'>";
-                echo "<label for='housing_request" . $row['Id'] . "'>" . utf8_decode($row['Name']) . "</label><br>";
-            }
-        }
-
-        ?> 
+        	<select name="housing_request" id="housing_requests">        
+            <?php
+    
+            showDropDownData($conn);
+            
+            ?> 
+        	</select>
         </div>
         			<div class="question">
 				<label for="need_fireplace">Behöver ni eldplats?</label><br> <input
