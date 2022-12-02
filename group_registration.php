@@ -66,6 +66,16 @@ function showDropDownData($table_name, $select_name) {
 				<label for="group_name">Gruppens namn</label><br> <input
 					type="text" id="group_name" name="group_name" required>
 			</div>
+			
+			<div class="question">
+			<label for="group_description">Beskrivning av gruppen</label><br>
+			<textarea id="group_description" name="group_description" rows="4" cols="50">
+			</textarea>
+			
+			 
+			</div>
+			
+			
 			<div class="question">
 				<label for="approximate_number_of_participants">Ungefär hur många
 					gruppmedlemmar kommer ni att bli?</label><br> <input type="text"
@@ -101,17 +111,36 @@ function showDropDownData($table_name, $select_name) {
 
 
 			<div class="question">
-			Hur rik anser du att ni är? (1= äger inget, 5 = badar i pengar) 
+			<label for="wealth">Hur rik anser du att ni är?</label>
+			<div class="explanation">(1= äger inget, 5 = badar i pengar)</div>
+			
+			
+            <?php
+    
+            //showDropDownData("Wealth", "wealth");
+            
+            ?> 
+			
 			
 			</div>
 			<div class="question">
-			Var kommer gruppen från? Dvs var är ni bosatta? 
+			<label for="origin">Var kommer gruppen från?</label>
+			<div class="explanation">Dvs var är ni bosatta?</div>
+			
+			
+            <?php
+    
+            //showDropDownData("Origin", "origin");
+            
+            ?> 
+			
+	
 			</div>
 			<div class="question">
  
 			
 			
-							<label for="want_intrigue">Vill ni ha en
+			<label for="want_intrigue">Vill ni ha en
 			arrangörsskriven gruppintrig inför lajvet? </label><div class="explanation">Om ni svarar "Nej" är det
 			inte en garanti för att ni inte får några intriger ändå. Speciellt om
 			ni redan är en existerande grupp i kampanjen så är det troligare att
@@ -122,29 +151,48 @@ function showDropDownData($table_name, $select_name) {
 			</div>
 			
 			<div class="question">
-			
-			Vilka typer av gruppintriger är ni
-			intresserade av? Har ni några grupprykten som ni vill ha hjälp med
-			att sprida? (Om ja, specificera nedan) 
+			Vilka typer av gruppintriger är ni intresserade av?
 			</div>
-						<div class="question">
-			Något annat arrangörerna bör
-			veta om er grupp? 
-</div>
+			<div class="question">
+			<label for="intrigue_ideas">Intrigidéer</label>
+			<div class="explanation">
+			Har ni några grupprykten som ni vill ha hjälp med att sprida? 
+			</div>
+			<textarea id="intrigue_ideas" name="intrigue_ideas" rows="4" cols="50"></textarea>
+			
+			
+			</div>
+						
+			<div class="question">
+			<label for="other_information">Något annat arrangörerna bör veta om er grupp?</label><br>
+			<textarea id="other_information" name="other_information" rows="4" cols="50">
+			</textarea>
+			
+			 
+			</div>
+			
+			
 			<div class="question">
 			Genom att kryssa i denna ruta så lovar jag med
 			heder och samvete att jag har läst igenom alla hemsidans regler och
 			förmedlat dessa till mina gruppmedlemmar. Vi har även alla godkänt
 			dem och är införstådda med vad som förväntas av oss som grupp av
 			deltagare på lajvet. Om jag inte har läst reglerna så kryssar jag
-			inte i denna ruta. 
+			inte i denna ruta.<br>
+			
+			<input type="checkbox" id="rules" name="rules" value="Ja" required>
+  			<label for="rules">Jag lovar</label> 
 			</div>
 						<div class="question">
 			Härmed samtycker jag till att föreningen Berghems
 			Vänner får spara och lagra mina uppgifter - såsom namn/
 			e-postadress/telefonnummer/hälsouppgifter/annat. Detta för att kunna
-			arrangera lajvet.
+			arrangera lajvet.<br>
+			<input type="checkbox" id="PUL" name="PUL" value="Ja" required>
+  			<label for="PUL">Jag samtycker</label> 
 </div>
+
+			  <input type="submit" value="Skicka">
 		</form>
 	</div>
 
