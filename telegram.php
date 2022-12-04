@@ -12,7 +12,7 @@ class TELEGRAM extends FPDF {
     }
     
     function SetText($sender, $receiver, $message) {
-		$this->SetFont('Helvetica','',14);    # OK är 'Times', 'Arial'
+		$this->SetFont('SpecialElite','',14);    # OK är Times, Arial, Helvetica
 		# För mer fonter använder du http://www.fpdf.org/makefont/
 		$left = 21;
 		$this->SetXY($left, 68);
@@ -37,6 +37,7 @@ $pdf = new TELEGRAM();
 $pdf->SetTitle('Telegram');
 $pdf->SetAuthor('Dod mans hand');
 $pdf->SetCreator('Mats Rappe');
+$pdf->AddFont('SpecialElite','');
 $pdf->nytt_telegram('Doctor WHO', 'Lilian Margarin', "Dina hästar har sålt jättebra.");
 $pdf->nytt_telegram('Doctor DOOM', 'Sheriff Flintan McDonald', "County Sheriffen Maria (med konstigt efternamn) har låtit efterlysa dig för något hon tror du gjort eller bara för att vara elak.\nSpring, spring som bara den."); 
 $pdf->Output();
