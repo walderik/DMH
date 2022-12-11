@@ -57,31 +57,49 @@ include 'telegram.php';
     <h1>Telegram</h1>
     <?php
 
-    $sql = "SELECT * FROM telegrams ORDER BY Deliverytime;";
-    $result = mysqli_query($conn, $sql);
-    $resultCheck = mysqli_num_rows($result);
+//     $sql = "SELECT * FROM telegrams ORDER BY Deliverytime;";
+//     $result = mysqli_query($conn, $sql);
+//     $resultCheck = mysqli_num_rows($result);
     
-    if ($resultCheck > 0) {
-        echo  "<table id='telegrams'>";
-        echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Anteckningar</th><th></th></tr>";
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo  "<tr>";
-            echo "<td>" . $row['Id'] . "</td>";
-            echo "<td>" . $row['Deliverytime'] . "</td>";
-            echo "<td>" . $row['Sender'] . "</td>";
-            echo "<td>" . $row['SenderCity'] . "</td>";
-            echo "<td>" . $row['Reciever'] . "</td>";
-            echo "<td>" . $row['RecieverCity'] . "</td>";
-            echo "<td>" . str_replace("\n", "<br>", $row['Message']) . "</td>";
-            echo "<td>" . str_replace("\n", "<br>", $row['OrganizerNotes']) . "</td>";
-            echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera' onclick='confirm(Test);'></td>";
-            //echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera' onclick='delete_telegram(" . $row['Id'] .  ");'></td>";
-            echo  "</tr>";
+//     if ($resultCheck > 0) {
+//         echo  "<table id='telegrams'>";
+//         echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Anteckningar</th><th></th></tr>";
+//         while ($row = mysqli_fetch_assoc($result)) {
+//             echo  "<tr>";
+//             echo "<td>" . $row['Id'] . "</td>";
+//             echo "<td>" . $row['Deliverytime'] . "</td>";
+//             echo "<td>" . $row['Sender'] . "</td>";
+//             echo "<td>" . $row['SenderCity'] . "</td>";
+//             echo "<td>" . $row['Reciever'] . "</td>";
+//             echo "<td>" . $row['RecieverCity'] . "</td>";
+//             echo "<td>" . str_replace("\n", "<br>", $row['Message']) . "</td>";
+//             echo "<td>" . str_replace("\n", "<br>", $row['OrganizerNotes']) . "</td>";
+//             echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera' onclick='confirm(Test);'></td>";
+//             //echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera' onclick='delete_telegram(" . $row['Id'] .  ");'></td>";
+//             echo  "</tr>";
+//         }
+//         echo "</table>";
+//     }
+        $telegram_array = Telegram.all;
+        $resultCheck = count($resultCheck);
+        if ($resultCheck > 0) {
+            echo  "<table id='telegrams'>";
+            echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Anteckningar</th><th></th></tr>";
+            foreach($telegram_array as $telegram) {
+                echo  "<tr>";
+                echo "<td>" . $telegram->id . "</td>";
+                echo "<td>" . $telegram->deliverytime . "</td>";
+                echo "<td>" . $telegram->sender . "</td>";
+                echo "<td>" . $telegram->senderCity . "</td>";
+                echo "<td>" . $telegram->reciever . "</td>";
+                echo "<td>" . $telegram->recieverCity . "</td>";
+                echo "<td>" . str_replace("\n", "<br>", $telegram->message) . "</td>";
+                echo "<td>" . str_replace("\n", "<br>", $telegram->organizerNotes) . "</td>";
+                echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera' onclick='confirm(Test);'></td>";
+                echo  "</tr>";
+            }
+            echo "</table>";
         }
-        echo "</table>";
-    }
-
-    
 	?>
 	
 	<form method="post">
@@ -89,42 +107,42 @@ include 'telegram.php';
 	<input type="hidden" id="telegram_id" name="telegram_id" value="">
 	<table>
 		<tr>
-			<td><label for="delivery_time">Leveranstid</label></td>
-			<td><input type="datetime-local" id="delivery_time"
+			<td><label for="Deliverytime">Leveranstid</label></td>
+			<td><input type="datetime-local" id="Deliverytime"
        name="delivery_time" value="1868-09-13T17:00"
        min="1868-09-13T17:00" max="1868-09-15T13:00" required></td>
 		</tr>
 		<tr>
-			<td><label for="sender">Avsändare</label></td>
-			<td><input type="text" id="sender" name="sender" required></td>
+			<td><label for="Sender">Avsändare</label></td>
+			<td><input type="text" id="Sender" name="Sender" required></td>
 		</tr>
 		<tr>
 
-			<td><label for="sender_city">Avsändarens stad</label></td>
-			<td><input type="text" id="sender_city" name="sender_city" required></td>
+			<td><label for="SenderCity">Avsändarens stad</label></td>
+			<td><input type="text" id="SenderCity" name="SenderCity" required></td>
 		</tr>
 		<tr>
 
-			<td><label for="reciever">Mottagare</label></td>
-			<td><input type="text" id="reciever" name="reciever" required></td>
+			<td><label for="Reciever">Mottagare</label></td>
+			<td><input type="text" id="Reciever" name="Reciever" required></td>
 		</tr>
 		<tr>
 
-			<td><label for="reciever_city">Mottagarens stad</label></td>
-			<td><input type="text" id="reciever_city" name="reciever_city" value="Slow River" required></td>
+			<td><label for="RecieverCity">Mottagarens stad</label></td>
+			<td><input type="text" id="RecieverCity" name="RecieverCity" value="Slow River" required></td>
 		</tr>
 		<tr>
 
-			<td><label for="message">Meddelande</label></td>
+			<td><label for="Message">Meddelande</label></td>
 			<td>
-			<textarea id="message" name="message" rows="4" cols="50"></textarea>
+			<textarea id="Message" name="Message" rows="4" cols="50"></textarea>
 			</td>
 		</tr>
 		<tr>
 
-			<td><label for="notes">Anteckningar om telegrammet</label></td>
+			<td><label for="OrganizerNotes">Anteckningar om telegrammet</label></td>
 			<td>
-			<textarea id="notes" name="notes" rows="4" cols="50"></textarea>
+			<textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" cols="50"></textarea>
 			</td>
 
 		</tr>

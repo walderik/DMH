@@ -11,46 +11,38 @@ class Telegram {
     public  $reciever;
     public  $recieverCity;
     public  $message;
-    public  $notes;
+    public  $organizerNotes;
     
     public static function newFromArray($post)
     {
-        return new Telegram($post['delivery_time'], $post['sender'], $post['sender_city'], $post['reciever'], $post['reciever_city'], $post['message'], $post['notes'] , $post['Id']);
+        return new Telegram($post['Deliverytime'], $post['Sender'], $post['SenderCity'], $post['Reciever'], $post['RecieverCity'], $post['Message'], $post['OrganizerNotes'] , $post['Id']);
     }
     
-    public static function all()
-    {
-        global $conn;
+     public static function all() {
+         global $conn;
         
         $sql = "SELECT * FROM telegrams ORDER BY Deliverytime;";
         $result = mysqli_query($conn, $sql);
         $resultCheck = mysqli_num_rows($result);
-        
+        $telegram_array = array();
         if ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                echo "<td>" . $row['Id'] . "</td>";
-                echo "<td>" . $row['Deliverytime'] . "</td>";
-                echo "<td>" . $row['Sender'] . "</td>";
-                echo "<td>" . $row['SenderCity'] . "</td>";
-                echo "<td>" . $row['Reciever'] . "</td>";
-                echo "<td>" . $row['RecieverCity'] . "</td>";
-                echo "<td>" . str_replace("\n", "<br>", $row['Message']) . "</td>";
-                echo "<td>" . str_replace("\n", "<br>", $row['OrganizerNotes']) . "</td>";
+                $telegram_array[] = Telegram.newFromArray($row);
             }
         }
-    }
+         return $telegram_array;
+     }
     
     
-    public function __construct(string $deliverytime, string $sender, string $senderCity, string $reciever, string $recieverCity, string $message, ?string $notes)
-    {
-        $this->deliverytime = $deliverytime;
-        $this->sender       = $sender;
-        $this->senderCity   = empty($senderCity) ? 'Junk City' : $senderCity;
-        $this->reciever     = $reciever;
-        $this->recieverCity = empty($notes) ? 'Slow River' :  $recieverCity;
-        $this->message      = $message;
-        $this->notes        = is_null($notes) ? '' : $notes;
-
+    public function __construct(string $deliverytime, string $sender, string $senderCity, string $reciever, string $recieverCity, string $message, ?string $organizerNotes, ?int $id=NULL) {
+        $this->deliverytime   = $deliverytime;
+        $this->sender         = $sender;
+        $this->senderCity     = empty($senderCity) ? 'Junk City' : $senderCity;
+        $this->reciever       = $reciever;
+        $this->recieverCity   = empty($recieverCity) ? 'Slow River' :  $recieverCity;
+        $this->message        = $message;
+        $this->organizerNotes = is_null($organizerNotes) ? '' : $organizerNotes;
+        $this->id             = $id;
     }
     
     # Update an existing telegram in db
@@ -74,7 +66,7 @@ class Telegram {
         $reciever = $this->reciever;
         $recievercity = $this->recieverCity;
         $message = $this->message;
-        $notes = $this->notes;
+        $notes = $this->organizerNotes;
         $stmt->execute();
     }
     
