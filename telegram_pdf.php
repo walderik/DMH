@@ -28,8 +28,8 @@ class TELEGRAM_PDF extends FPDF {
     
     function nytt_telegram($telegram)
     {
-        $sender = $telegram->sender.', '.$telegram->sendercity;
-        $eceiver = $telegram->receiver.', '.$telegram->receivercity;
+        $sender = $telegram->sender.', '.$telegram->senderCity;
+        $receiver = $telegram->receiver.', '.$telegram->receiverCity;
 		$this->AddPage();
 		$this->SetText($sender, $receiver, $telegram->message);
 	}
@@ -39,6 +39,9 @@ class TELEGRAM_PDFS
 {
     public function __construct($arrayOfTelegrams)
     {
+		if (count($arrayOfTelegrams)==0) {
+			$arrayOfTelegrams = Telegram::all();
+		}
         $pdf = new TELEGRAM_PDF();
         $pdf->SetTitle('Telegram');
         $pdf->SetAuthor('Dod mans hand');
@@ -50,5 +53,7 @@ class TELEGRAM_PDFS
         $pdf->Output();
     }
 }
+
+new TELEGRAM_PDFS([]);
 
 ?>

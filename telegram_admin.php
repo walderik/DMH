@@ -1,6 +1,6 @@
 <?php
 include_once 'includes/db.inc.php';
-include 'telegram.php';
+require 'telegram.php';
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
@@ -34,7 +34,7 @@ include 'telegram.php';
         $operation = $_POST['operation'];
         if ($operation == 'insert') {
             echo "Insert";
-            $telegram = Telegram.newFromArray($_POST)
+            $telegram = Telegram::newFromArray($_POST);
             $telegram->create;
         }
         else if ($operation == 'delete'){
@@ -80,8 +80,8 @@ include 'telegram.php';
 //         }
 //         echo "</table>";
 //     }
-        $telegram_array = Telegram.all;
-        $resultCheck = count($resultCheck);
+        $telegram_array = Telegram::all();
+        $resultCheck = count($telegram_array);
         if ($resultCheck > 0) {
             echo  "<table id='telegrams'>";
             echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Anteckningar</th><th></th></tr>";

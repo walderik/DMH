@@ -13,8 +13,7 @@ class Telegram {
     public  $message;
     public  $organizerNotes;
     
-    public static function newFromArray($post)
-    {
+    public static function newFromArray($post){
         return new Telegram($post['Deliverytime'], $post['Sender'], $post['SenderCity'], $post['Reciever'], $post['RecieverCity'], $post['Message'], $post['OrganizerNotes'] , $post['Id']);
     }
     
@@ -27,15 +26,15 @@ class Telegram {
         $telegram_array = array();
         if ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $telegram_array[] = Telegram.newFromArray($row);
+                $telegram_array[] = Telegram::newFromArray($row);
             }
         }
          return $telegram_array;
      }
     
     
-    public function __construct(string $deliverytime, string $sender, string $senderCity, string $reciever, string $recieverCity, string $message, ?string $organizerNotes, ?int $id=NULL) {
-        $this->deliverytime   = $deliverytime;
+    public function __construct(?string $deliverytime, string $sender, string $senderCity, string $reciever, string $recieverCity, string $message, ?string $organizerNotes, ?int $id=NULL) {
+        $this->deliverytime   = is_null($deliverytime) ? NULL : $deliverytime;
         $this->sender         = $sender;
         $this->senderCity     = empty($senderCity) ? 'Junk City' : $senderCity;
         $this->reciever       = $reciever;
