@@ -4,7 +4,7 @@
 require('includes/fpdf185/fpdf.php');
 # $this->MultiCell(0,5,$txt);
 
-class TELEGRAM extends FPDF {
+class TELEGRAM_PDF extends FPDF {
     
     function Header()
     {
@@ -33,7 +33,7 @@ class TELEGRAM extends FPDF {
 
 
 
-$pdf = new TELEGRAM();
+$pdf = new TELEGRAM_PDF();
 $pdf->SetTitle('Telegram');
 $pdf->SetAuthor('Dod mans hand');
 $pdf->SetCreator('Mats Rappe');
