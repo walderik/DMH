@@ -1,5 +1,6 @@
 <?php
 include_once 'includes/db.inc.php';
+include 'telegram.php';
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
@@ -15,19 +16,21 @@ include_once 'includes/db.inc.php';
 <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    $stmt = $conn->prepare("INSERT INTO telegrams (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $deliverytime, $sender, $sendercity, $reciever, $recievercity, $message, $notes);
+        $telegram = Telegram.newFromArray($_POST)
+//     $stmt = $conn->prepare("INSERT INTO telegrams (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes) VALUES (?, ?, ?, ?, ?, ?, ?)");
+//     $stmt->bind_param("sssssss", $deliverytime, $sender, $sendercity, $reciever, $recievercity, $message, $notes);
     
-    // set parameters and execute
-    $deliverytime = $_POST['delivery_time'];
-    $sender = $_POST['sender'];
-    $sendercity = $_POST['sender_city'];
-    $reciever = $_POST['reciever'];
-    $recievercity = $_POST['reciever_city'];
-    $message = $_POST['message'];
-    $notes = $_POST['notes'];
-    $stmt->execute();
-    
+//     // set parameters and execute
+//     $deliverytime = $_POST['delivery_time'];
+//     $sender = $_POST['sender'];
+//     $sendercity = $_POST['sender_city'];
+//     $reciever = $_POST['reciever'];
+//     $recievercity = $_POST['reciever_city'];
+//     $message = $_POST['message'];
+//     $notes = $_POST['notes'];
+//     $stmt->execute();
+        
+        $telegram->create;
     }
     
 

@@ -3,6 +3,7 @@
 
 require('includes/fpdf185/fpdf.php');
 # $this->MultiCell(0,5,$txt);
+include 'telegram.php';
 
 class TELEGRAM_PDF extends FPDF {
     
@@ -25,20 +26,29 @@ class TELEGRAM_PDF extends FPDF {
 		$this->MultiCell(0,8,utf8_decode($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
     }
     
-	function nytt_telegram($sender, $receiver, $message) {
+    function nytt_telegram($telegram)
+    {
+        $sender = $telegram->sender.', '.$telegram->sendercity;
+        $eceiver = $telegram->receiver.', '.$telegram->receivercity;
 		$this->AddPage();
-		$this->SetText($sender, $receiver, $message);
+		$this->SetText($sender, $receiver, $telegram->message);
 	}
 }
 
+class TELEGRAM_PDFS
+{
+    public function __construct($arrayOfTelegrams)
+    {
+        $pdf = new TELEGRAM_PDF();
+        $pdf->SetTitle('Telegram');
+        $pdf->SetAuthor('Dod mans hand');
+        $pdf->SetCreator('Mats Rappe');
+        $pdf->AddFont('SpecialElite','');
+        foreach ($arrayOfTelegrams as $telegram)  {
+            $pdf->nytt_telegram($telegram);
+        }
+        $pdf->Output();
+    }
+}
 
-
-$pdf = new TELEGRAM_PDF();
-$pdf->SetTitle('Telegram');
-$pdf->SetAuthor('Dod mans hand');
-$pdf->SetCreator('Mats Rappe');
-$pdf->AddFont('SpecialElite','');
-$pdf->nytt_telegram('Doctor WHO', 'Lilian Margarin', "Dina hästar har sålt jättebra.");
-$pdf->nytt_telegram('Doctor DOOM', 'Sheriff Flintan McDonald', "County Sheriffen Maria (med konstigt efternamn) har låtit efterlysa dig för något hon tror du gjort eller bara för att vara elak.\nSpring, spring som bara den."); 
-$pdf->Output();
 ?>
