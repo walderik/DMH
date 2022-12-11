@@ -83,6 +83,10 @@ class Telegram {
         # Gör en SQL där man söker baserat på ID och returnerar ett Telegram-object mha newFromArray
     }
     
+    public function delete($id)
+    {
+        
+    }
 }
 
 ?>

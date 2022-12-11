@@ -13,24 +13,40 @@ include 'telegram.php';
 </head>
     <body>
     
+<script>
+        var operation = document.getElementById("operation");
+        var telegram_id = document.getElementById("telegram_id");
+  		var submit_button = document.getElementById("submit_button");
+  
+        function delete_telegram(id) {
+        	var result = confirm("Är du säker på att du vill radera telegrammet?);
+        	if (result) {
+            	operation.value = 'delete';
+            	telegram_id.value = id;
+            	submit_button.submit();
+        	}
+        }
+</script>
+    
 <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-        $telegram = Telegram.newFromArray($_POST)
-//     $stmt = $conn->prepare("INSERT INTO telegrams (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes) VALUES (?, ?, ?, ?, ?, ?, ?)");
-//     $stmt->bind_param("sssssss", $deliverytime, $sender, $sendercity, $reciever, $recievercity, $message, $notes);
-    
-//     // set parameters and execute
-//     $deliverytime = $_POST['delivery_time'];
-//     $sender = $_POST['sender'];
-//     $sendercity = $_POST['sender_city'];
-//     $reciever = $_POST['reciever'];
-//     $recievercity = $_POST['reciever_city'];
-//     $message = $_POST['message'];
-//     $notes = $_POST['notes'];
-//     $stmt->execute();
         
-        $telegram->create;
+        $operation = $_POST['operation'];
+        if ($operation == 'insert') {
+            echo "Insert";
+            $telegram = Telegram.newFromArray($_POST)
+            $telegram->create;
+        }
+        else if ($operation == 'delete'){
+            echo "Delete";
+        }
+        else if ($operation == 'update') {
+            echo "Update";
+        }
+        else {
+            echo $operation;
+        }
+    
     }
     
 
@@ -58,7 +74,8 @@ include 'telegram.php';
             echo "<td>" . $row['RecieverCity'] . "</td>";
             echo "<td>" . str_replace("\n", "<br>", $row['Message']) . "</td>";
             echo "<td>" . str_replace("\n", "<br>", $row['OrganizerNotes']) . "</td>";
-            echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera'>" . "</td>";
+            echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera' onclick='confirm(Test);'></td>";
+            //echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera' onclick='delete_telegram(" . $row['Id'] .  ");'></td>";
             echo  "</tr>";
         }
         echo "</table>";
@@ -68,6 +85,8 @@ include 'telegram.php';
 	?>
 	
 	<form method="post">
+	<input type="hidden" id="operation" name="operation" value="insert">
+	<input type="hidden" id="telegram_id" name="telegram_id" value="">
 	<table>
 		<tr>
 			<td><label for="delivery_time">Leveranstid</label></td>
@@ -112,7 +131,7 @@ include 'telegram.php';
 
 	</table>
 
-				  <input type="submit" value="Lägg till">
+				  <input id="submit_button" type="submit" value="Lägg till">
 		</form>
 	
     </body>
