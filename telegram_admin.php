@@ -10,24 +10,29 @@ require 'telegram.php';
 <title>Administration av telegram</title>
 <link rel="stylesheet" href="includes/admin_system.css">
 
+      <script type = "text/javascript">  
+            function del(id) {
+            	var operation = document.getElementById("operation");
+        		var telegram_id = document.getElementById("Id");
+  				var submit_button = document.getElementById("submit_button");
+  
+               	var result = confirm("Är du säker på att du vill radera telegrammet? " + id);
+               	if (result == true) {
+            		operation.value = "delete";
+            		alert("Set " + operation.value);
+
+            		telegram_id.value = id;
+            		alert("Set " + telegram_id.value);
+            		submit_button.click();
+        		}
+            }  
+
+</script>
+ 
 </head>
     <body>
     
-<script>
-        var operation = document.getElementById("operation");
-        var telegram_id = document.getElementById("telegram_id");
-  		var submit_button = document.getElementById("submit_button");
-  
-        function delete_telegram(id) {
-        	var result = confirm("Är du säker på att du vill radera telegrammet?);
-        	if (result) {
-            	operation.value = 'delete';
-            	telegram_id.value = id;
-            	submit_button.submit();
-        	}
-        }
-</script>
-    
+   
 <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
@@ -95,7 +100,7 @@ require 'telegram.php';
                 echo "<td>" . $telegram->recieverCity . "</td>";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->message) . "</td>";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->organizerNotes) . "</td>";
-                echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera' onclick='confirm(Test);'></td>";
+                echo "<td>" . "<img src='images/remove-icon-hi.png' width='20' alt='Radera' onclick='del(" . $telegram->id . ");' /></td>";
                 echo  "</tr>";
             }
             echo "</table>";
@@ -104,7 +109,7 @@ require 'telegram.php';
 	
 	<form method="post">
 	<input type="hidden" id="operation" name="operation" value="insert">
-	<input type="hidden" id="Id" name="telegram_id" value="-1">
+	<input type="hidden" id="Id" name="telegram_id" value="">
 	<table>
 		<tr>
 			<td><label for="Deliverytime">Leveranstid</label></td>
