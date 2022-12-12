@@ -104,12 +104,12 @@ require 'telegram.php';
 	
 	<form method="post">
 	<input type="hidden" id="operation" name="operation" value="insert">
-	<input type="hidden" id="telegram_id" name="telegram_id" value="">
+	<input type="hidden" id="Id" name="telegram_id" value="-1">
 	<table>
 		<tr>
 			<td><label for="Deliverytime">Leveranstid</label></td>
 			<td><input type="datetime-local" id="Deliverytime"
-       name="delivery_time" value="1868-09-13T17:00"
+       name="Deliverytime" value="1868-09-13T17:00"
        min="1868-09-13T17:00" max="1868-09-15T13:00" required></td>
 		</tr>
 		<tr>
