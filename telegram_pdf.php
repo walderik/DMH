@@ -29,31 +29,31 @@ class TELEGRAM_PDF extends FPDF {
     function nytt_telegram($telegram)
     {
         $sender = $telegram->sender.', '.$telegram->senderCity;
-        $receiver = $telegram->receiver.', '.$telegram->receiverCity;
-		$this->AddPage();
+        $receiver = $telegram->reciever.', '.$telegram->recieverCity;
+        $this->AddPage();
 		$this->SetText($sender, $receiver, $telegram->message);
 	}
 }
 
-class TELEGRAM_PDFS
-{
-    public function __construct($arrayOfTelegrams)
-    {
-		if (count($arrayOfTelegrams)==0) {
+//class TELEGRAM_PDFS
+//{
+//    public function __construct()
+//    {
+//        if (is_null($arrayOfTelegrams) or count($arrayOfTelegrams)==0) {
 			$arrayOfTelegrams = Telegram::all();
-		}
+//		}
         $pdf = new TELEGRAM_PDF();
         $pdf->SetTitle('Telegram');
         $pdf->SetAuthor('Dod mans hand');
         $pdf->SetCreator('Mats Rappe');
         $pdf->AddFont('SpecialElite','');
         foreach ($arrayOfTelegrams as $telegram)  {
-            $pdf->nytt_telegram($telegram);
+            $pdf->nytt_telegram($telegram);            
         }
         $pdf->Output();
-    }
-}
+//    }
+//}
 
-new TELEGRAM_PDFS([]);
+// new TELEGRAM_PDFS();
 
 ?>

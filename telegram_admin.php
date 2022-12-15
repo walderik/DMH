@@ -113,6 +113,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "</table>";
     }
     ?>
+    <form action="telegram_pdf.php" method="post">
+		<input id="submit_button" type="submit" value="Skapa pdf">
+	</form>    
 	
 	<form method="post">
 		<input type="hidden" id="operation" name="operation" value="insert"> <input
