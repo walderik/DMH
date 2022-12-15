@@ -20,7 +20,7 @@ require 'telegram.php';
 		
 		var submit_button = document.getElementById("submit_button");
 
-       	var result = confirm("Är du säker på att du vill radera telegrammet? " + id);
+       	var result = confirm("Är du säker på att du vill radera telegrammet?");
        	if (result == true) {
     		operation.value = "delete";
     		telegram_id.value = id;
@@ -32,8 +32,8 @@ require 'telegram.php';
     }  
     
     
-    function fun(id); //, sendertxt, sendercitytxt, recievertxt, recievercitytxt, messagetxt) {
-    	alert("Edit");
+ //   function edit(id); //, sendertxt, sendercitytxt, recievertxt, recievercitytxt, messagetxt) {
+   // 	alert("Edit");
     	
     	/*
     	var operation = document.getElementById("operation");
@@ -57,7 +57,7 @@ require 'telegram.php';
 		//notes.value = notestxt.replace("<br>", "\n");
 		submit_button.value = "Uppdatera";
 		*/
-    }  
+  //  }  
     
 
 </script>
@@ -71,11 +71,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
     if ($operation == 'insert') {
-        echo "Insert";
         $telegram = Telegram::newFromArray($_POST);
         $telegram->create();
     } else if ($operation == 'delete') {
-        echo "Delete " . $_POST['Id'];
+        Telegram::delete($_POST['Id']);
     } else if ($operation == 'update') {
         echo "Update" . $_POST['Id'];
     } else {
@@ -107,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //"," . str_replace("\n", "<br>", $telegram->organizerNotes) . 
             //echo "<td>" . "<img src='images/icons8-pencil-20.png' width='20' alt='Redigera' onclick='edit(" . $telegram->id . "," . $telegram->deliverytime . "," . $telegram->sender . "," . $telegram->senderCity . "," . $telegram->reciever . "," . $telegram->recieverCity . "," . str_replace("\n", "<br>", $telegram->message) . ");' /></td>\n";
             //echo "<td>" . "<img src='images/icons8-pencil-20.png' width='20' alt='Redigera' onclick='edit(" . $telegram->id . "," . $telegram->deliverytime . "," . $telegram->sender . "," . $telegram->senderCity . "," . $telegram->reciever . "," . $telegram->recieverCity . "," . str_replace("\n", "<br>", $telegram->message) . ");' /></td>\n";
-            echo "<td>" . "<img src='images/icons8-pencil-20.png' width='20' alt='Redigera' onclick='fun(" . $telegram->id . ");' /></td>\n";
+            echo "<td>" . "<img src='images/icons8-pencil-20.png' width='20' alt='Redigera' onclick='del(" . $telegram->id . ");' /></td>\n";
             echo "<td>" . "<img src='images/icons8-trash-20.png' width='20' alt='Radera' onclick='del(" . $telegram->id . ");' /></td>\n";
             echo "</tr>\n";
         }

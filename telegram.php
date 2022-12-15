@@ -31,6 +31,18 @@ class Telegram {
         }
          return $telegram_array;
      }
+     
+     public static function delete($id)
+     {
+         global $conn;
+         
+         $stmt = $conn->prepare("DELETE FROM telegrams WHERE Id = ?");
+         $stmt->bind_param("i", $id);
+         
+         // set parameters and execute
+         $stmt->execute();
+     }
+     
     
     
     public function __construct(?string $deliverytime, string $sender, string $senderCity, string $reciever, string $recieverCity, string $message, ?string $organizerNotes, ?int $id=NULL) {
@@ -74,10 +86,6 @@ class Telegram {
         # Gör en SQL där man söker baserat på ID och returnerar ett Telegram-object mha newFromArray
     }
     
-    public function delete($id)
-    {
-        
-    }
 }
 
 ?>
