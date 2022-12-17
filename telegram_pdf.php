@@ -12,14 +12,19 @@ class TELEGRAM_PDF extends FPDF {
         $this->Image('telegram.png',null,null,200);
     }
     
-    function SetText($sender, $receiver, $message) {
+    function SetText(string $sender, string $receiver, string $message, ?string $when) {
 		$this->SetFont('SpecialElite','',14);    # OK är Times, Arial, Helvetica
 		# För mer fonter använder du http://www.fpdf.org/makefont/
 		$left = 21;
+		if (!is_null($when)) {
+		    $this->SetXY(150,60);
+		    $this->Cell(80,10,$when,0,1);
+		}
 		$this->SetXY($left, 68);
 		# http://www.fpdf.org/en/doc/cell.htm
 		# https://stackoverflow.com/questions/3514076/special-characters-in-fpdf-with-php
         $this->Cell(80,10,utf8_decode($sender),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad	
+        
 		$this->SetXY($left, 88);
 		$this->Cell(80,10,utf8_decode($receiver),0,1);
 		$this->SetXY($left, 112);
@@ -31,7 +36,12 @@ class TELEGRAM_PDF extends FPDF {
         $sender = $telegram->sender.', '.$telegram->senderCity;
         $reciever = $telegram->reciever.', '.$telegram->recieverCity;
         $this->AddPage();
-        $this->SetText($sender, $reciever, $telegram->message);
+        $deliverytime = $telegram->deliverytime;
+        if (is_string($deliverytime)) {
+            $time = strtotime($deliverytime);
+            $deliverytime = date('M d Y, g:i a',$time);
+        }
+        $this->SetText($sender, $reciever, $telegram->message, $deliverytime);
 	}
 }
 
