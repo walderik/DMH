@@ -33,8 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
-    $operation = $_GET['operation'];
-    if ($operation == 'delete') {
+//     $operation = $_GET['operation'];
+    if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
         Telegram::delete($_GET['id']);
     }
 }
