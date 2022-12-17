@@ -21,11 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $telegram = Telegram::newFromArray($_POST);
         $telegram->create();
-    } else if ($operation == 'delete') {
+    } elseif ($operation == 'delete') {
         Telegram::delete($_POST['Id']);
-    } else if ($operation == 'update') {
+    } elseif ($operation == 'update') {
         $telegram = Telegram::newFromArray($_POST);
-        $telegram->save();
+        $telegram->update();
     } else {
         echo $operation;
     }
