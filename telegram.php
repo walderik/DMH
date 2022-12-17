@@ -2,6 +2,12 @@
 
 include_once 'includes/db.inc.php';
 
+//         bind_param
+//     i	corresponding variable has type int
+//     d	corresponding variable has type float
+//     s	corresponding variable has type string
+//     b	corresponding variable is a blob and will be sent in packets
+
 class Telegram {
     
     public  $id;
@@ -70,9 +76,23 @@ class Telegram {
     }
     
     # Update an existing telegram in db
-    public function save()
+    public function update()
     {
+        global $conn;
         
+        $stmt = $conn->prepare("UPDATE telegrams SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE id = ?");
+        $stmt->bind_param("sssssssi", $deliverytime, $sender, $sendercity, $reciever, $recievercity, $message, $notes, $id);
+        
+        // set parameters and execute
+        $id = $this->id;
+        $deliverytime = $this->deliverytime;
+        $sender = $this->sender;
+        $sendercity = $this->senderCity;
+        $reciever = $this->reciever;
+        $recievercity = $this->recieverCity;
+        $message = $this->message;
+        $notes = $this->organizerNotes;
+        $stmt->execute();
     }
     
     # Create a new telegram in db
@@ -94,6 +114,10 @@ class Telegram {
         $stmt->execute();
     }
     
+    public function destroy()
+    {
+        self::delete($this->id);
+    }
       
 }
 
