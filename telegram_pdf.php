@@ -29,9 +29,9 @@ class TELEGRAM_PDF extends FPDF {
     function nytt_telegram($telegram)
     {
         $sender = $telegram->sender.', '.$telegram->senderCity;
-        $receiver = $telegram->reciever.', '.$telegram->recieverCity;
+        $reciever = $telegram->reciever.', '.$telegram->recieverCity;
         $this->AddPage();
-		$this->SetText($sender, $receiver, $telegram->message);
+        $this->SetText($sender, $reciever, $telegram->message);
 	}
 }
 

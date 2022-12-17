@@ -43,7 +43,20 @@ class Telegram {
          $stmt->execute();
      }
      
-    
+     public static function loadById($id)
+     {
+         # Gör en SQL där man söker baserat på ID och returnerar ett Telegram-object mha newFromArray
+         global $conn;
+                  
+         $stmt = $conn->prepare("SELECT * FROM telegrams WHERE Id = ?");
+         $stmt->bind_param("i", $id);
+         $stmt->execute();
+         $result = $stmt->get_result(); // get the mysqli result
+         $row = $result->fetch_assoc(); // fetch data
+         $telegram = Telegram::newFromArray($row);
+         return $telegram;         
+     }
+     
     
     public function __construct(?string $deliverytime, string $sender, string $senderCity, string $reciever, string $recieverCity, string $message, ?string $organizerNotes, ?int $id=NULL) {
         $this->deliverytime   = is_null($deliverytime) ? NULL : $deliverytime;
@@ -81,11 +94,7 @@ class Telegram {
         $stmt->execute();
     }
     
-    public function loadById($id)
-    {
-        # Gör en SQL där man söker baserat på ID och returnerar ett Telegram-object mha newFromArray
-    }
-    
+      
 }
 
 ?>
