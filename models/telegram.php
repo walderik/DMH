@@ -12,11 +12,11 @@ include 'models/base_model.php';
 class Telegram extends BaseModel{
     
     public  $id;
-    public  $deliverytime;
+    public  $deliverytime = "1868-09-13T17:00";
     public  $sender;
-    public  $senderCity;
+    public  $senderCity = 'Junk City';
     public  $reciever;
-    public  $recieverCity;
+    public  $recieverCity = 'Slow River';
     public  $message;
     public  $organizerNotes;
     
@@ -24,44 +24,26 @@ class Telegram extends BaseModel{
     public static $orderListBy = 'Deliverytime';
     
     public static function newFromArray($post){
-        return new Telegram($post['Deliverytime'], $post['Sender'], $post['SenderCity'], $post['Reciever'], $post['RecieverCity'], $post['Message'], $post['OrganizerNotes'] , $post['Id']);
+        $telegram = Telegram::newWithDefault();
+        if (isset($post['Deliverytime'])) $telegram->deliverytime = $post['Deliverytime'];
+        if (isset($post['Sender'])) $telegram->sender = $post['Sender'];
+        if (isset($post['SenderCity'])) $telegram->senderCity = $post['SenderCity'];
+        if (isset($post['Reciever'])) $telegram->reciever = $post['Reciever'];
+        if (isset($post['RecieverCity'])) $telegram->recieverCity = $post['RecieverCity'];
+        if (isset($post['Message'])) $telegram->message = $post['Message'];
+        if (isset($post['OrganizerNotes'])) $telegram->organizerNotes = $post['OrganizerNotes'];
+        if (isset($post['Id'])) $telegram->id = $post['Id'];
+        
+        return $telegram;
+//         return new Telegram($post['Deliverytime'], $post['Sender'], $post['SenderCity'], $post['Reciever'], $post['RecieverCity'], $post['Message'], $post['OrganizerNotes'] , $post['Id']);
     }
      
-     public static function delete($id)
-     {
-         global $conn;
-         
-         $stmt = $conn->prepare("DELETE FROM ".static::$tableName." WHERE Id = ?");
-         $stmt->bind_param("i", $id);
-         
-         // set parameters and execute
-         $stmt->execute();
-     }
-     
-     public static function loadById($id)
-     {
-         # Gör en SQL där man söker baserat på ID och returnerar ett Telegram-object mha newFromArray
-         global $conn;
-                  
-         $stmt = $conn->prepare("SELECT * FROM ".static::$tableName." WHERE Id = ?");
-         $stmt->bind_param("i", $id);
-         $stmt->execute();
-         $result = $stmt->get_result(); // get the mysqli result
-         $row = $result->fetch_assoc(); // fetch data
-         $telegram = Telegram::newFromArray($row);
-         return $telegram;         
-     }
      
     
-    public function __construct(?string $deliverytime, string $sender, string $senderCity, string $reciever, string $recieverCity, string $message, ?string $organizerNotes, ?int $id=NULL) {
-        $this->deliverytime   = is_null($deliverytime) ? NULL : $deliverytime;
-        $this->sender         = $sender;
-        $this->senderCity     = empty($senderCity) ? 'Junk City' : $senderCity;
-        $this->reciever       = $reciever;
-        $this->recieverCity   = empty($recieverCity) ? 'Slow River' :  $recieverCity;
-        $this->message        = $message;
-        $this->organizerNotes = is_null($organizerNotes) ? '' : $organizerNotes;
-        $this->id             = $id;
+    
+    # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
+    public static function newWithDefault() {
+        return new self();
     }
     
     # Update an existing telegram in db
@@ -103,10 +85,6 @@ class Telegram extends BaseModel{
         $stmt->execute();
     }
     
-    public function destroy()
-    {
-        self::delete($this->id);
-    }
       
 }
 

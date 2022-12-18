@@ -13,12 +13,12 @@ require 'models/telegram.php';
     <body>
     
     <?php
-    $telegram = null;
+    $telegram = Telegram::newWithDefault();;
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $operation = $_GET['operation'];
         if ($operation == 'new') {
-        } else if ($operation == 'update') {
+        } elseif ($operation == 'update') {
             $telegram = Telegram::loadById($_GET['id']);            
         } else {
         }
@@ -34,15 +34,6 @@ require 'models/telegram.php';
                     break;
                 case "id":
                     $output = "-1";
-                    break;
-                case "deliverytime":
-                    $output = "1868-09-13T17:00";
-                    break;
-                case "senderCity":
-                    $output = "Junk City";
-                    break;
-                case "recieverCity":
-                    $output = "Slow River";
                     break;
                 case "action":
                     $output = "Lägg till";
