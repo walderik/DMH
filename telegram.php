@@ -19,20 +19,22 @@ class Telegram {
     public  $message;
     public  $organizerNotes;
     
+    public static $tableName = 'telegrams';
+    
     public static function newFromArray($post){
         return new Telegram($post['Deliverytime'], $post['Sender'], $post['SenderCity'], $post['Reciever'], $post['RecieverCity'], $post['Message'], $post['OrganizerNotes'] , $post['Id']);
     }
     
-     public static function all() {
+    public static function all() {
          global $conn;
         
-        $sql = "SELECT * FROM telegrams ORDER BY Deliverytime;";
+        $sql = "SELECT * FROM ".static::$tableName." ORDER BY Deliverytime;";
         $result = mysqli_query($conn, $sql);
         $resultCheck = mysqli_num_rows($result);
         $telegram_array = array();
         if ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $telegram_array[] = Telegram::newFromArray($row);
+                $telegram_array[] = self::newFromArray($row);
             }
         }
          return $telegram_array;
@@ -42,7 +44,7 @@ class Telegram {
      {
          global $conn;
          
-         $stmt = $conn->prepare("DELETE FROM telegrams WHERE Id = ?");
+         $stmt = $conn->prepare("DELETE FROM ".static::$tableName." WHERE Id = ?");
          $stmt->bind_param("i", $id);
          
          // set parameters and execute
@@ -54,7 +56,7 @@ class Telegram {
          # Gör en SQL där man söker baserat på ID och returnerar ett Telegram-object mha newFromArray
          global $conn;
                   
-         $stmt = $conn->prepare("SELECT * FROM telegrams WHERE Id = ?");
+         $stmt = $conn->prepare("SELECT * FROM ".static::$tableName." WHERE Id = ?");
          $stmt->bind_param("i", $id);
          $stmt->execute();
          $result = $stmt->get_result(); // get the mysqli result
@@ -80,7 +82,7 @@ class Telegram {
     {
         global $conn;
         
-        $stmt = $conn->prepare("UPDATE telegrams SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE id = ?");
         $stmt->bind_param("sssssssi", $deliverytime, $sender, $sendercity, $reciever, $recievercity, $message, $notes, $id);
         
         // set parameters and execute
@@ -100,7 +102,7 @@ class Telegram {
     {
         global $conn;
         
-        $stmt = $conn->prepare("INSERT INTO telegrams (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssss", $deliverytime, $sender, $sendercity, $reciever, $recievercity, $message, $notes);
         
         // set parameters and execute
