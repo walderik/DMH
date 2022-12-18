@@ -3,7 +3,7 @@
 
 require('includes/fpdf185/fpdf.php');
 # $this->MultiCell(0,5,$txt);
-include 'telegram.php';
+include 'models/telegram.php';
 
 class TELEGRAM_PDF extends FPDF {
     

@@ -1,6 +1,7 @@
 <?php
 
 include_once 'includes/db.inc.php';
+include 'models/base_model.php';
 
 //         bind_param
 //     i	corresponding variable has type int
@@ -8,7 +9,7 @@ include_once 'includes/db.inc.php';
 //     s	corresponding variable has type string
 //     b	corresponding variable is a blob and will be sent in packets
 
-class Telegram {
+class Telegram extends BaseModel{
     
     public  $id;
     public  $deliverytime;
@@ -20,25 +21,11 @@ class Telegram {
     public  $organizerNotes;
     
     public static $tableName = 'telegrams';
+    public static $orderListBy = 'Deliverytime';
     
     public static function newFromArray($post){
         return new Telegram($post['Deliverytime'], $post['Sender'], $post['SenderCity'], $post['Reciever'], $post['RecieverCity'], $post['Message'], $post['OrganizerNotes'] , $post['Id']);
     }
-    
-    public static function all() {
-         global $conn;
-        
-        $sql = "SELECT * FROM ".static::$tableName." ORDER BY Deliverytime;";
-        $result = mysqli_query($conn, $sql);
-        $resultCheck = mysqli_num_rows($result);
-        $telegram_array = array();
-        if ($resultCheck > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $telegram_array[] = self::newFromArray($row);
-            }
-        }
-         return $telegram_array;
-     }
      
      public static function delete($id)
      {
