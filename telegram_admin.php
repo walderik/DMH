@@ -1,7 +1,7 @@
 <?php
 include_once 'includes/db.inc.php';
 require 'models/telegram.php';
-
+require 'models/wealth.php';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
 <html>
@@ -12,8 +12,11 @@ require 'models/telegram.php';
 
 </head>
 <body>
-    
-   
+   asdasd 
+<?php
+    Wealth::selectionDropdown();
+?>
+   asddad
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
