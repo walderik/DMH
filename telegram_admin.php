@@ -2,6 +2,7 @@
 include_once 'includes/db.inc.php';
 require 'models/telegram.php';
 require 'models/wealth.php';
+require 'models/origin.php';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
 <html>
@@ -14,7 +15,9 @@ require 'models/wealth.php';
 <body>
    asdasd 
 <?php
-    Wealth::selectionDropdown();
+    Origin::selectionDropdown(false);
+    Wealth::selectionDropdown(false);
+    Wealth::selectionDropdown(true);
 ?>
    asddad
 <?php

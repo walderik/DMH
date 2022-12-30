@@ -1,6 +1,6 @@
 <?php
 
-include_once 'models/selection_data.php';d
+include_once 'models/selection_data.php';
 
 class Wealth extends SelectionData{
     

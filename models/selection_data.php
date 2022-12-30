@@ -36,6 +36,22 @@ class SelectionData extends BaseModel{
         return new self();
     }
     
+    public static function allActive() {
+        global $conn;
+        
+        $sql = "SELECT * FROM ".static::$tableName." WHERE active = 1 ORDER BY SortOrder;";
+        $result = mysqli_query($conn, $sql);
+        $resultCheck = mysqli_num_rows($result);
+        $telegram_array = array();
+        if ($resultCheck > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                //                 print_r($row);
+                $telegram_array[] = static::newFromArray($row);
+            }
+        }
+        return $telegram_array;
+    }
+    
     # Update an existing telegram in db
     public function update()
     {
@@ -69,11 +85,30 @@ class SelectionData extends BaseModel{
         $stmt->execute();
     }
     
-    
-    public static function selectionDropdown(){
-        $this_array = Telegram::all();
-        echo "<select name=\"".static::$tableName."\" id=\"".static::$tableName."\">";
-        echo "</select>";
+    # En dropdown där man kan välja den här
+    public static function selectionDropdown(?bool $multiple=false, ?bool $required=true, ?bool $only_active=true){
+        $selectionDatas = ($only_active) ? static::allActive() : static::all();
+        
+        $testrad = static::newWithDefault();
+        $testrad->Id = 1;
+        $testrad->Name = 'Testrad';
+        $selectionDatas[] = $testrad;
+        $testrad = static::newWithDefault();
+        $testrad->Id = 19;
+        $testrad->Name = 'Radtest';
+        $selectionDatas[] = $testrad;
+        
+//         $name   = ($multiple) ? (static::$tableName . "[]") : static::class ;
+        $name   = ($multiple) ? (strtolower(static::class) . "[]") : strtolower(static::class) ;
+        $option = ($multiple) ? ' multiple' : '';
+        $option = ($required) ? $option . ' required' : $option;
+        $size   = count($selectionDatas);
+        
+        echo "<select name=\"" . $name . "\" id=\"" . static::$tableName . "\" size=".$size." " . $option . ">\n";
+        foreach ($selectionDatas as $selectionData) {
+            echo "  <option value=\"" . $selectionData->Id . "\">" . $selectionData->Name . "</option>\n";
+        }
+        echo "</select>\n";
     }
       
 }
