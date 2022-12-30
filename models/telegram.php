@@ -11,28 +11,28 @@ include 'models/base_model.php';
 
 class Telegram extends BaseModel{
     
-    public  $id;
-    public  $deliverytime = "1868-09-13T17:00";
-    public  $sender;
-    public  $senderCity = 'Junk City';
-    public  $reciever;
-    public  $recieverCity = 'Slow River';
-    public  $message;
-    public  $organizerNotes;
+    public  $Id;
+    public  $Deliverytime = "1868-09-13T17:00";
+    public  $Sender;
+    public  $SenderCity = 'Junk City';
+    public  $Reciever;
+    public  $RecieverCity = 'Slow River';
+    public  $Message;
+    public  $OrganizerNotes;
     
     public static $tableName = 'telegrams';
     public static $orderListBy = 'Deliverytime';
     
     public static function newFromArray($post){
         $telegram = Telegram::newWithDefault();
-        if (isset($post['Deliverytime'])) $telegram->deliverytime = $post['Deliverytime'];
-        if (isset($post['Sender'])) $telegram->sender = $post['Sender'];
-        if (isset($post['SenderCity'])) $telegram->senderCity = $post['SenderCity'];
-        if (isset($post['Reciever'])) $telegram->reciever = $post['Reciever'];
-        if (isset($post['RecieverCity'])) $telegram->recieverCity = $post['RecieverCity'];
-        if (isset($post['Message'])) $telegram->message = $post['Message'];
-        if (isset($post['OrganizerNotes'])) $telegram->organizerNotes = $post['OrganizerNotes'];
-        if (isset($post['Id'])) $telegram->id = $post['Id'];
+        if (isset($post['Deliverytime'])) $telegram->Deliverytime = $post['Deliverytime'];
+        if (isset($post['Sender'])) $telegram->Sender = $post['Sender'];
+        if (isset($post['SenderCity'])) $telegram->SenderCity = $post['SenderCity'];
+        if (isset($post['Reciever'])) $telegram->Reciever = $post['Reciever'];
+        if (isset($post['RecieverCity'])) $telegram->RecieverCity = $post['RecieverCity'];
+        if (isset($post['Message'])) $telegram->Message = $post['Message'];
+        if (isset($post['OrganizerNotes'])) $telegram->OrganizerNotes = $post['OrganizerNotes'];
+        if (isset($post['Id'])) $telegram->Id = $post['Id'];
         
         return $telegram;
     }
@@ -50,18 +50,18 @@ class Telegram extends BaseModel{
     {
         global $conn;
         
-        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE id = ?");
-        $stmt->bind_param("sssssssi", $deliverytime, $sender, $sendercity, $reciever, $recievercity, $message, $notes, $id);
+        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
+        $stmt->bind_param("sssssssi",$Deliverytime, $Sender, $SenderCity, $Reciever, $RecieverCity, $Message, $OrganizerNotes, $Id);
         
         // set parameters and execute
-        $id = $this->id;
-        $deliverytime = $this->deliverytime;
-        $sender = $this->sender;
-        $sendercity = $this->senderCity;
-        $reciever = $this->reciever;
-        $recievercity = $this->recieverCity;
-        $message = $this->message;
-        $notes = $this->organizerNotes;
+        $Id = $this->Id;
+        $Deliverytime = $this->Deliverytime;
+        $Sender = $this->Sender;
+        $SenderCity = $this->SenderCity;
+        $Reciever = $this->Reciever;
+        $RecieverCity = $this->RecieverCity;
+        $Message = $this->Message;
+        $OrganizerNotes = $this->OrganizerNotes;
         $stmt->execute();
     }
     
@@ -71,16 +71,16 @@ class Telegram extends BaseModel{
         global $conn;
         
         $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssss", $deliverytime, $sender, $sendercity, $reciever, $recievercity, $message, $notes);
+        $stmt->bind_param("sssssss", $Deliverytime, $Sender, $SenderCity, $Reciever, $RecieverCity, $Message, $OrganizerNotes);
         
         // set parameters and execute
-        $deliverytime = $this->deliverytime;
-        $sender = $this->sender;
-        $sendercity = $this->senderCity;
-        $reciever = $this->reciever;
-        $recievercity = $this->recieverCity;
-        $message = $this->message;
-        $notes = $this->organizerNotes;
+        $Deliverytime = $this->Deliverytime;
+        $Sender = $this->Sender;
+        $SenderCity = $this->SenderCity;
+        $Reciever = $this->Reciever;
+        $RecieverCity = $this->RecieverCity;
+        $Message = $this->Message;
+        $OrganizerNotes = $this->OrganizerNotes;
         $stmt->execute();
     }
     
