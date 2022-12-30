@@ -1,7 +1,7 @@
 <?php
 
 include_once 'includes/db.inc.php';
-include 'models/base_model.php';
+include_once 'models/base_model.php';
 
 //         bind_param
 //     i	corresponding variable has type int
@@ -69,6 +69,12 @@ class SelectionData extends BaseModel{
         $stmt->execute();
     }
     
+    
+    public static function selectionDropdown(){
+        $this_array = Telegram::all();
+        echo "<select name=\"".static::$tableName."\" id=\"".static::$tableName."\">";
+        echo "</select>";
+    }
       
 }
 
