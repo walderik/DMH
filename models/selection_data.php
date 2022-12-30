@@ -11,22 +11,22 @@ include 'models/base_model.php';
 
 class SelectionData extends BaseModel{
     
-    public  $id;
-    public  $name;
-    public  $description;
-    public  $active = true;
-    public  $sortOrder;
+    public  $Id;
+    public  $Name;
+    public  $Description;
+    public  $Active = true;
+    public  $SortOrder;
     
     public static $tableName = 'wealth';
     public static $orderListBy = 'SortOrder';
     
     public static function newFromArray($post){
         $selectionData = static::newWithDefault();
-        if (isset($post['SortOrder'])) $selectionData->sortOrder = $post['SortOrder'];
-        if (isset($post['Active'])) $selectionData->active = $post['Active'];
-        if (isset($post['Description'])) $selectionData->description = $post['Description'];
-        if (isset($post['Name'])) $selectionData->name = $post['Name'];
-        if (isset($post['Id'])) $selectionData->id = $post['Id'];
+        if (isset($post['SortOrder'])) $selectionData->SortOrder = $post['SortOrder'];
+        if (isset($post['Active'])) $selectionData->Active = $post['Active'];
+        if (isset($post['Description'])) $selectionData->Description = $post['Description'];
+        if (isset($post['Name'])) $selectionData->Name = $post['Name'];
+        if (isset($post['Id'])) $selectionData->Id = $post['Id'];
         
         return $selectionData;
     }
@@ -42,14 +42,14 @@ class SelectionData extends BaseModel{
         global $conn;
         
         $stmt = $conn->prepare("UPDATE ".static::$tableName." SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
-        $stmt->bind_param("iissi", $sortOrder, $active, $description, $name, $id);
+        $stmt->bind_param("iissi", $this->SortOrder, $this->Active, $this->Description, $this->Name, $this->Id);
         
         // set parameters and execute
-        $id = $this->id;
-        $name = $this->name;
-        $description = $this->description;
-        $active = $this->active;
-        $sortOrder = $this->sortOrder;
+//         $id = $this->Id;
+//         $name = $this->Name;
+//         $description = $this->Description;
+//         $active = $this->Active;
+//         $sortOrder = $this->SortOrder;
         $stmt->execute();
     }
     
@@ -59,13 +59,13 @@ class SelectionData extends BaseModel{
         global $conn;
         
         $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (SortOrder, Active, Description, Name) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("iiss",  $sortOrder, $active, $description, $name);
+        $stmt->bind_param("iiss",  $this->SortOrder, $this->Active, $this->Description, $this->Name);
         
         // set parameters and execute
-        $name = $this->name;
-        $description = $this->description;
-        $active = $this->active;
-        $sortOrder = $this->sortOrder;
+//         $name = $this->name;
+//         $description = $this->description;
+//         $active = $this->active;
+//         $sortOrder = $this->sortOrder;
         $stmt->execute();
     }
     
