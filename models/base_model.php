@@ -15,6 +15,7 @@ class BaseModel {
         $telegram_array = array();
         if ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
+//                 print_r($row);
                 $telegram_array[] = static::newFromArray($row);
             }
         }

@@ -45,25 +45,17 @@ class TELEGRAM_PDF extends FPDF {
 	}
 }
 
-//class TELEGRAM_PDFS
-//{
-//    public function __construct()
-//    {
-//        if (is_null($arrayOfTelegrams) or count($arrayOfTelegrams)==0) {
-			$arrayOfTelegrams = Telegram::all();
-//		}
-        $pdf = new TELEGRAM_PDF();
-        $pdf->SetTitle('Telegram');
-        $pdf->SetAuthor('Dod mans hand');
-        $pdf->SetCreator('Mats Rappe');
-        $pdf->AddFont('SpecialElite','');
-        foreach ($arrayOfTelegrams as $telegram)  {
-            $pdf->nytt_telegram($telegram);            
-        }
-        $pdf->Output();
-//    }
-//}
 
-// new TELEGRAM_PDFS();
+$arrayOfTelegrams = Telegram::all();
+$pdf = new TELEGRAM_PDF();
+$pdf->SetTitle('Telegram');
+$pdf->SetAuthor('Dod mans hand');
+$pdf->SetCreator('Mats Rappe');
+$pdf->AddFont('SpecialElite','');
+foreach ($arrayOfTelegrams as $telegram)  {
+    $pdf->nytt_telegram($telegram);            
+}
+$pdf->Output();
+
 
 ?>
