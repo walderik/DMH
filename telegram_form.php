@@ -27,33 +27,23 @@ require 'models/telegram.php';
     function default_value($field) {
         GLOBAL $telegram;
         $output = "";
-        if (is_null($telegram)) {
-            switch ($field) {
-                case "operation":
-                    $output = "insert";
-                    break;
-                case "id":
-                    $output = "-1";
-                    break;
-                case "action":
+
+        switch ($field) {
+            case "operation":
+                $output = "update";
+                break;
+            case "id":
+                $output = $telegram->id;
+                break;
+            case "action":
+                if (is_null($telegram->id)) {
                     $output = "Lägg till";
                     break;
-            }
+                }
+                $output = "Uppdatera";
+                break;
         }
-        else {
 
-            switch ($field) {
-                case "operation":
-                    $output = "update";
-                    break;
-                case "id":
-                    $output = $telegram->id;
-                    break;
-                case "action":
-                    $output = "Uppdatera";
-                    break;
-            }
-        }
         echo $output;
     }
     
