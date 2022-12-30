@@ -1,20 +1,6 @@
-<?php
-include_once 'includes/db.inc.php';
-require 'models/LARP.php';
-
-?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Administration av lajv</title>
-<link rel="stylesheet" href="includes/admin_system.css">
-
-</head>
-<body>
-    
-   
-<?php
+ <?php
+ include_once 'header.php';
+ 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
@@ -77,10 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     ?>
     
-	
-<p>
-Icons by <a href="https://icons8.com">Icons8</a>
-</p>
-</body>
-
-</html>
+	<?php
+        include_once 'footer.php'; 
+    ?>
