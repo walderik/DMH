@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo "<td>" . $larp->Name . "</td>\n";
             echo "<td>" . $larp->Abbreviation . "</td>\n";
             echo "<td>" . $larp->TagLine . "</td>\n";
-            echo "<td>" . $larp->Startdate . "</td>\n";
+            echo "<td>" . $larp->StartDate . "</td>\n";
             echo "<td>" . $larp->EndDate . "</td>\n";
             echo "<td>" . $larp->MaxParticipants . "</td>\n";
             echo "<td>" . $larp->LatestRegistrationDate . "</td>\n";

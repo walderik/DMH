@@ -57,7 +57,7 @@ class LARP extends BaseModel{
     {
         global $conn;
         
-        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=? WHERE Id = ?");
         $stmt->bind_param("sssssisssi", $Name, $Abbreviation, $TagLine, $StartDate, $EndDate, $MaxParticipants, $LatestRegistrationDate, $StartTimeLARPTime, $EndTimeLARPTime, $Id);
         
         // set parameters and execute

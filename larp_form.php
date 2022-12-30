@@ -70,9 +70,9 @@ require 'models/LARP.php';
 				<td><input type="text" id="TagLine" name="TagLine" value="<?php echo $larp->TagLine; ?>"></td>
 			</tr>
 			<tr>
-				<td><label for="Startdate">Startdatum</label></td>
-				<td><input type="datetime-local" id="Startdate"
-					name="Startdate" value="<?php echo $larp->Startdate; ?>" required></td>
+				<td><label for="StartDate">Startdatum</label></td>
+				<td><input type="datetime-local" id="StartDate"
+					name="StartDate" value="<?php echo $larp->StartDate; ?>" required></td>
 			</tr>
 			<tr>
 				<td><label for="EndDate">Slutdatum</label></td>
