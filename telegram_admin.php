@@ -18,6 +18,7 @@ require 'models/telegram.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
+//     echo $operation;
     if ($operation == 'insert') {
         $telegram = Telegram::newFromArray($_POST);
         $telegram->create();

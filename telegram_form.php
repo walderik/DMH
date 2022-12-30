@@ -30,6 +30,10 @@ require 'models/telegram.php';
 
         switch ($field) {
             case "operation":
+                if (is_null($telegram->id)) {
+                    $output = "insert";
+                    break;
+                }
                 $output = "update";
                 break;
             case "id":
