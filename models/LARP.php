@@ -17,7 +17,7 @@ class LARP extends BaseModel{
     public  $Name;
     public  $Abbreviation;
     public  $TagLine; 
-    public  $Startdate; 
+    public  $StartDate; 
     public  $EndDate;
     public  $MaxParticipants; 
     public  $LatestRegistrationDate;
@@ -26,14 +26,14 @@ class LARP extends BaseModel{
 
     
     public static $tableName = 'LARPs';
-    public static $orderListBy = 'Startdate';
+    public static $orderListBy = 'StartDate';
     
     public static function newFromArray($post){
         $larp = LARP::newWithDefault();
         if (isset($post['Name'])) $larp->Name = $post['Name'];
         if (isset($post['Abbreviation'])) $larp->Abbreviation = $post['Abbreviation'];
         if (isset($post['TagLine'])) $larp->TagLine = $post['TagLine'];
-        if (isset($post['Startdate'])) $larp->Startdate = $post['Startdate'];
+        if (isset($post['StartDate'])) $larp->StartDate = $post['StartDate'];
         if (isset($post['EndDate'])) $larp->EndDate = $post['EndDate'];
         if (isset($post['MaxParticipants'])) $larp->MaxParticipants = $post['MaxParticipants'];
         if (isset($post['LatestRegistrationDate'])) $larp->LatestRegistrationDate = $post['LatestRegistrationDate'];
@@ -57,15 +57,15 @@ class LARP extends BaseModel{
     {
         global $conn;
         
-        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Name=?, Abbreviation=?, TagLine=?, Startdate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=? WHERE id = ?");
-        $stmt->bind_param("sssssisssi", $Name, $Abbreviation, $TagLine, $Startdate, $EndDate, $MaxParticipants, $LatestRegistrationDate, $StartTimeLARPTime, $EndTimeLARPTime, $id);
+        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=? WHERE id = ?");
+        $stmt->bind_param("sssssisssi", $Name, $Abbreviation, $TagLine, $StartDate, $EndDate, $MaxParticipants, $LatestRegistrationDate, $StartTimeLARPTime, $EndTimeLARPTime, $Id);
         
         // set parameters and execute
         $Id = $this->Id;
         $Name = $this->Name;
         $Abbreviation = $this->Abbreviation;
         $TagLine = $this->TagLine;
-        $Startdate = $this->Startdate;
+        $StartDate = $this->StartDate;
         $EndDate = $this->EndDate;
         $MaxParticipants = $this->MaxParticipants;
         $LatestRegistrationDate = $this->LatestRegistrationDate;
@@ -79,14 +79,14 @@ class LARP extends BaseModel{
     {
         global $conn;
         
-        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Name, Abbreviation, TagLine, Startdate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssisss", $Name, $Abbreviation, $TagLine, $Startdate, $EndDate, $MaxParticipants, $LatestRegistrationDate, $StartTimeLARPTime, $EndTimeLARPTime);
+        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Name, Abbreviation, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssisss", $Name, $Abbreviation, $TagLine, $StartDate, $EndDate, $MaxParticipants, $LatestRegistrationDate, $StartTimeLARPTime, $EndTimeLARPTime);
         
         // set parameters and execute
         $Name = $this->Name;
         $Abbreviation = $this->Abbreviation;
         $TagLine = $this->TagLine;
-        $Startdate = $this->Startdate;
+        $StartDate = $this->StartDate;
         $EndDate = $this->EndDate;
         $MaxParticipants = $this->MaxParticipants;
         $LatestRegistrationDate = $this->LatestRegistrationDate;
