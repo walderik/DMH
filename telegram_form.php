@@ -27,41 +27,16 @@ require 'models/telegram.php';
     function default_value($field) {
         GLOBAL $telegram;
         $output = "";
-        switch ($field) {
-            case "operation":
-                $output = "update";
-                break;
-            case "id":
-                $output = $telegram->id;
-                break;
-            case "deliverytime":
-                $output = $telegram->deliverytime;
-                break;
-            case "sender":
-                $output = $telegram->sender;
-                break;
-            case "senderCity":
-                $output = $telegram->senderCity;
-                break;
-            case "reciever":
-                $output = $telegram->reciever;
-                break;
-            case "recieverCity":
-                $output = $telegram->recieverCity;
-                break;
-            case "message":
-                $output = $telegram->message;
-                break;
-            case "notes":
-                $output = $telegram->organizerNotes;
-                break;
-            case "action":
-                if (is_null($telegram->id)) {
+        if (is_null($telegram)) {
+            switch ($field) {
+                case "operation":
+                    $output = "insert";
+                    break;
+                case "id":
+                    $output = "-1";
+                    break;
+                case "action":
                     $output = "Lägg till";
-<<<<<<< Updated upstream
-                }
-                else {
-=======
                     break;
             }
         }
@@ -75,12 +50,10 @@ require 'models/telegram.php';
                     $output = $telegram->id;
                     break;
                 case "action":
->>>>>>> Stashed changes
                     $output = "Uppdatera";
-                }
-                break;
+                    break;
+            }
         }
-        
         echo $output;
     }
     
@@ -129,7 +102,7 @@ require 'models/telegram.php';
 						cols="50"><?php echo $telegram->organizerNotes; ?></textarea></td>
 
 			</tr>
-
+ 
 		</table>
 
 		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
