@@ -18,13 +18,14 @@ require 'models/LARP.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-//     echo $operation;
+     //echo $operation;
     if ($operation == 'insert') {
         $larp = LARP::newFromArray($_POST);
         $larp->create();
     } elseif ($operation == 'delete') {
         LARP::delete($_POST['Id']);
     } elseif ($operation == 'update') {
+
         $larp = LARP::newFromArray($_POST);
         $larp->update();
     } else {
