@@ -85,7 +85,7 @@ require 'models/LARP.php';
 			</tr>
 			<tr>
 				<td><label for="LatestRegistrationDate">Sista anmälningsdag</label></td>
-				<td><input type="datetime-local" id="LatestRegistrationDate"
+				<td><input type="date-local" id="LatestRegistrationDate"
 					name="LatestRegistrationDate" value="<?php echo $larp->LatestRegistrationDate; ?>" required></td>
 			</tr>
 			<tr>
