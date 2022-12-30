@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $telegram_array = Telegram::all();
     $resultCheck = count($telegram_array);
     if ($resultCheck > 0) {
-        echo "<table id='telegrams'>";
+        echo "<table id='telegrams' class='data'>";
         echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Anteckningar</th><th></th><th></th></tr>\n";
         foreach ($telegram_array as $telegram) {
             echo "<tr>\n";
@@ -70,6 +70,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo "</tr>\n";
         }
         echo "</table>";
+    }
+    else {
+        echo "<p>Inga registrarade ännu</p>";
     }
     ?>
     

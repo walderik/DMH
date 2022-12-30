@@ -1,24 +1,45 @@
 @charset "ISO-8859-1";
 
-#telegrams {
+.data {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
 
-#telegrams td, #telegrams th {
+.data td, .data th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-#telegrams tr:nth-child(even){background-color: #f2f2f2;}
+.data tr:nth-child(even){background-color: #f2f2f2;}
 
-#telegrams tr:hover {background-color: #ddd;}
+.data tr:hover {background-color: #ddd;}
 
-#telegrams th {
+.data th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
   background-color: #04AA6D;
   color: white;
+}
+
+
+p {
+	width: 80%;
+	font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+}
+
+h1 {
+	font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	color: #000000;
+}
+
+h2 {
+	border-top: 1px solid #808080;
+	font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	color: #000000;
 }
