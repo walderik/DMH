@@ -21,7 +21,7 @@ CREATE TABLE TitleDeeds_Characters (TitleDeedsId int(11) NOT NULL, CharactersId 
 CREATE TABLE Resources (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255), UnitSingular varchar(255), UnitPlural varchar(255), PriceSlowRiver int(11), PriceJunkCity int(11), PRIMARY KEY (Id));
 CREATE TABLE Resources_TitleDeeds (ResourcesId int(11) NOT NULL, TitleDeedsId int(11) NOT NULL, Quantity int(11), PRIMARY KEY (ResourcesId, TitleDeedsId));
 CREATE TABLE Housing (LARPid int(11) NOT NULL, PersonId int(11) NOT NULL, HouseId int(11) NOT NULL);
-CREATE TABLE OfficialTypes (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Descrption text NOT NULL, Active 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
+CREATE TABLE OfficialTypes (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Descrption text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
 CREATE TABLE OfficialTypes_Persons (OfficialTypesId int(11) NOT NULL, PersonsId int(11) NOT NULL, PRIMARY KEY (OfficialTypesId, PersonsId));
 CREATE TABLE LARPDesires (Id int(11) NOT NULL AUTO_INCREMENT, NPCDesire varchar(255), PersonsId int(11) NOT NULL, LARPsid int(11) NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE Registrations (Id int(11) NOT NULL AUTO_INCREMENT, LARPsid int(11) NOT NULL, PersonsId int(11) NOT NULL, Payed date, Amount int(11), NotComing tinyint(1), ToBeRefunded tinyint(1), IsOfficial tinyint(1) NOT NULL, HousingRequestsId int(11) NOT NULL, PRIMARY KEY (Id));
