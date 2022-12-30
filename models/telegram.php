@@ -35,7 +35,6 @@ class Telegram extends BaseModel{
         if (isset($post['Id'])) $telegram->id = $post['Id'];
         
         return $telegram;
-//         return new Telegram($post['Deliverytime'], $post['Sender'], $post['SenderCity'], $post['Reciever'], $post['RecieverCity'], $post['Message'], $post['OrganizerNotes'] , $post['Id']);
     }
      
      
