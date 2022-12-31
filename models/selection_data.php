@@ -119,6 +119,7 @@ class SelectionData extends BaseModel{
         echo "</div>\n";
     }
     
+    # Hjälptexter till dropdown som förklarar de olika valen.
     public static function helpBox(?bool $only_active=true){
         $selectionDatas = ($only_active) ? static::allActive() : static::all();
         echo "<div class='tooltip'>\n";
