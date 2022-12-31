@@ -18,14 +18,14 @@ class BaseModel {
         $sql = "SELECT * FROM ".static::$tableName." ORDER BY ".static::$orderListBy.";";
         $result = mysqli_query($conn, $sql);
         $resultCheck = mysqli_num_rows($result);
-        $telegram_array = array();
+        $resultArray = array();
         if ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
 //                 print_r($row);
-                $telegram_array[] = static::newFromArray($row);
+                $resultArray[] = static::newFromArray($row);
             }
         }
-        return $telegram_array;
+        return $resultArray;
     }
     
     public static function loadById($id)
@@ -38,8 +38,8 @@ class BaseModel {
         $stmt->execute();
         $result = $stmt->get_result(); // get the mysqli result
         $row = $result->fetch_assoc(); // fetch data
-        $telegram = static::newFromArray($row);
-        return $telegram;
+//         $telegram = static::newFromArray($row);
+        return static::newFromArray($row);
     }
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
