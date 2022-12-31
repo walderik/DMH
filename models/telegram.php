@@ -1,8 +1,5 @@
 <?php
 
-include_once 'includes/db.inc.php';
-include_once 'models/base_model.php';
-
 //         bind_param
 //     i	corresponding variable has type int
 //     d	corresponding variable has type float

@@ -68,8 +68,8 @@ require '../header.php';
 			<label for="housing_request">Hur vill ni bo som grupp?</label><br>
        
             <?php
-    
-            showDropDownData("HousingRequests", "housing_request");
+
+            HousingRequest::selectionDropdown(false);
             
             ?> 
 
