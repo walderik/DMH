@@ -39,14 +39,33 @@ class SelectionData extends BaseModel{
         $sql = "SELECT * FROM ".static::$tableName." WHERE active = 1 ORDER BY SortOrder;";
         $result = mysqli_query($conn, $sql);
         $resultCheck = mysqli_num_rows($result);
-        $telegram_array = array();
+        $resultArray = array();
         if ($resultCheck > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 //                 print_r($row);
-                $telegram_array[] = static::newFromArray($row);
+                $resultArray[] = static::newFromArray($row);
             }
+        } else { # Om det inte finns något i tabellen ännu
+            $testrad = static::newWithDefault();
+            $testrad->Id = 1;
+            $testrad->Name = 'Inget data finns ännu i:';
+            $testrad->Description = 'Notering för admins';
+            $resultArray[] = $testrad;
+            
+            $testrad = static::newWithDefault();
+            $testrad->Id = 19;
+            $testrad->Name = static::$tableName;
+            $testrad->Description = 'Tabellen som är tom';
+            
+            $resultArray[] = $testrad;
+            $testrad = static::newWithDefault();
+            $testrad->Id = 29;
+            $testrad->Name = static::class;
+            $testrad->Description = 'Klassen som saknar object';
+            
+            $resultArray[] = $testrad;
         }
-        return $telegram_array;
+        return $resultArray;
     }
     
     # Update an existing telegram in db
@@ -85,29 +104,30 @@ class SelectionData extends BaseModel{
     # En dropdown där man kan välja den här
     public static function selectionDropdown(?bool $multiple=false, ?bool $required=true, ?bool $only_active=true){
         $selectionDatas = ($only_active) ? static::allActive() : static::all();
-        
-        if (empty($selectionDatas)) {
-            $testrad = static::newWithDefault();
-            $testrad->Id = 1;
-            $testrad->Name = 'Inget data finns ännu i:';
-            $selectionDatas[] = $testrad;
-            $testrad = static::newWithDefault();
-            $testrad->Id = 19;
-            $testrad->Name = static::$tableName;
-            $selectionDatas[] = $testrad;
-        }
-        
 //         $name   = ($multiple) ? (static::$tableName . "[]") : static::class ;
         $name   = ($multiple) ? (strtolower(static::class) . "[]") : strtolower(static::class) ;
         $option = ($multiple) ? ' multiple' : '';
         $option = ($required) ? $option . ' required' : $option;
         $size   = count($selectionDatas);
         
-        echo "<select name=\"" . $name . "\" id=\"" . static::$tableName . "\" size=".$size." " . $option . ">\n";
+        echo "<div class='selectionDropdown'>\n";
+        echo "<select name='" . $name . "' id='" . static::$tableName . "' size=".$size." " . $option . ">\n";
         foreach ($selectionDatas as $selectionData) {
-            echo "  <option value=\"" . $selectionData->Id . "\">" . $selectionData->Name . "</option>\n";
+            echo "  <option value='" . $selectionData->Id . "' title='" . $selectionData->Description . "'>" . $selectionData->Name . "</option>\n";
         }
         echo "</select>\n";
+        echo "</div>\n";
+    }
+    
+    public static function helpBox(?bool $only_active=true){
+        $selectionDatas = ($only_active) ? static::allActive() : static::all();
+        echo "<div class='tooltip'>\n";
+        echo "<table class='helpBox'>\n";
+        foreach ($selectionDatas as $selectionData) {
+            echo "  <tr><td>" . $selectionData->Name . "</td><td>" . $selectionData->Description . "</td></tr>\n";
+        }
+        echo "</table>\n";
+        echo "</div>\n";
     }
       
 }
