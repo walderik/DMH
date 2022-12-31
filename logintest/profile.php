@@ -1,6 +1,6 @@
 <?php
 include_once '../includes/db.inc.php';
-
+session_start();
 
 // We don't have the password or email info stored in sessions so instead we can get the results from the database.
 $stmt = $conn->prepare('SELECT password, email FROM users WHERE id = ?');
