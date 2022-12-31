@@ -1,6 +1,9 @@
 <?php
 include_once 'includes/db.inc.php';
-require 'models/LARP.php';
+include_once 'models/base_model.php';
+include_once 'models/selection_data.php';
+
+include_once 'models/LARP.php';
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">

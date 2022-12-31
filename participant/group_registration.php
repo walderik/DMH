@@ -1,5 +1,6 @@
 <?php
-include_once '../includes/db.inc.php';
+
+require '../header.php';
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
@@ -10,25 +11,6 @@ include_once '../includes/db.inc.php';
 <link rel="stylesheet" href="includes/registration_system.css">
 </head>
 <body>
-<?php 
-function showDropDownData($table_name, $select_name) {
-    global $conn;
-    
-    echo  "<select name='" . $select_name . "' id='" . $select_name . "'>";
-    $sql = "SELECT * FROM " . $table_name;
-    $result = mysqli_query($conn, $sql);
-    $resultCheck = mysqli_num_rows($result);
-    
-    if ($resultCheck > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<option value='" . $row['Id'] . "'>" . utf8_decode($row['Name']) . "</option>";
-        }
-    }
-    echo "</select>";
-}
-
-
-?>
 	<div id="site-header">
 		<a href="https://dmh.berghemsvanner.se/" rel="home"> <img
 			src="images//IMG_1665485583436.png" width="1080" height="237"
