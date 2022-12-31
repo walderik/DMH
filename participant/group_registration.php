@@ -69,9 +69,14 @@ require '../header.php';
        
             <?php
 
-            HousingRequest::selectionDropdown(false);
+            HousingRequest::selectionDropdown(false,true);
             
-            ?> 
+            ?>
+            <?php
+
+            HousingRequest::helpBox();
+            
+            ?>
 
         </div>
         			<div class="question">
