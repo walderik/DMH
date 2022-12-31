@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/db.inc.php';
+include_once 'includes/db.inc.php';
 session_start();
 
 // We don't have the password or email info stored in sessions so instead we can get the results from the database.

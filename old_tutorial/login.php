@@ -1,5 +1,5 @@
  <?php
- include_once 'header.php';
+ include_once '../header.php';
  ?>
  
      <h1>Logga in</h1>
@@ -15,5 +15,5 @@
  
 
 <?php
-    include_once 'footer.php'; 
+    include_once '../footer.php'; 
 ?>

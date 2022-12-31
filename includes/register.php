@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/db.inc.php';
+include_once 'db.inc.php';
 
 // Now we check if the data was submitted, isset() function will check if the data exists.
 if (!isset($_POST['name'], $_POST['password'], $_POST['email'])) {

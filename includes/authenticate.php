@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/db.inc.php';
+include_once 'db.inc.php';
 
 session_start();
 
@@ -33,7 +33,7 @@ if ($stmt = $conn->prepare('SELECT id, name, password, ActivationCode FROM users
                 $_SESSION['loggedin'] = true;
                 $_SESSION['name'] = $name;
                 $_SESSION['id'] = $id;
-                header('Location: home.php');
+                header('Location: ../home.php');
             } else {
                 echo 'Kontot är inte aktiverat!';
             }                       
