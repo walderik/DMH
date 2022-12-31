@@ -1,15 +1,15 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-require('includes/fpdf185/fpdf.php');
+require('../includes/fpdf185/fpdf.php');
 # $this->MultiCell(0,5,$txt);
-include 'models/telegram.php';
+include '../models/telegram.php';
 
 class TELEGRAM_PDF extends FPDF {
     
     function Header()
     {
-        $this->Image('telegram.png',null,null,200);
+        $this->Image('../images/telegram.png',null,null,200);
     }
     
     function SetText(string $sender, string $receiver, string $message, ?string $when) {

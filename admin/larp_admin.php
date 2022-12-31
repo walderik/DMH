@@ -1,5 +1,5 @@
  <?php
- include_once 'header.php';
+ include_once '../header.php';
  
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -64,5 +64,5 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     ?>
     
 	<?php
-        include_once 'footer.php'; 
+        include_once '../footer.php'; 
     ?>

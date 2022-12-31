@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/db.inc.php';
+include_once '../includes/db.inc.php';
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
