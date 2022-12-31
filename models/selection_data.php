@@ -86,14 +86,16 @@ class SelectionData extends BaseModel{
     public static function selectionDropdown(?bool $multiple=false, ?bool $required=true, ?bool $only_active=true){
         $selectionDatas = ($only_active) ? static::allActive() : static::all();
         
-        $testrad = static::newWithDefault();
-        $testrad->Id = 1;
-        $testrad->Name = 'Testrad';
-        $selectionDatas[] = $testrad;
-        $testrad = static::newWithDefault();
-        $testrad->Id = 19;
-        $testrad->Name = 'Radtest';
-        $selectionDatas[] = $testrad;
+        if (empty($selectionDatas)) {
+            $testrad = static::newWithDefault();
+            $testrad->Id = 1;
+            $testrad->Name = 'Inget data finns ännu i:';
+            $selectionDatas[] = $testrad;
+            $testrad = static::newWithDefault();
+            $testrad->Id = 19;
+            $testrad->Name = static::$tableName;
+            $selectionDatas[] = $testrad;
+        }
         
 //         $name   = ($multiple) ? (static::$tableName . "[]") : static::class ;
         $name   = ($multiple) ? (strtolower(static::class) . "[]") : strtolower(static::class) ;

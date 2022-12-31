@@ -96,10 +96,9 @@ require '../header.php';
 			<label for="wealth">Hur rik anser du att ni är?</label>
 			<div class="explanation">(1= äger inget, 5 = badar i pengar)</div>
 			
-			
             <?php
-    
-            //showDropDownData("Wealth", "wealth");
+
+            Wealth::selectionDropdown(false);
             
             ?> 
 			
@@ -112,7 +111,7 @@ require '../header.php';
 			
             <?php
     
-            //showDropDownData("Origin", "origin");
+            Origin::selectionDropdown(false);
             
             ?> 
 			
@@ -123,10 +122,12 @@ require '../header.php';
 			
 			
 			<label for="want_intrigue">Vill ni ha en
-			arrangörsskriven gruppintrig inför lajvet? </label><div class="explanation">Om ni svarar "Nej" är det
+			arrangörsskriven gruppintrig inför lajvet? </label>
+			<div class="explanation">Om ni svarar "Nej" är det
 			inte en garanti för att ni inte får några intriger ändå. Speciellt om
 			ni redan är en existerande grupp i kampanjen så är det troligare att
-			ni är inblandade i något.</div><input
+			ni är inblandade i något.</div>
+			<input
 					type="radio" id="want_intrigue_yes" name="want_intrigue" value="yes"> <label
 					for="want_intrigue_yes">Ja</label><br> <input type="radio" id="want_intrigue_no"
 					name="want_intrigue" value="no"> <label for="want_intrigue_no">Nej</label>
