@@ -30,7 +30,7 @@ CREATE TABLE TitleDeedResults (TitleDeedsId int(11) NOT NULL, LARPsid int(11) NO
 CREATE TABLE LARPs_Groups (GroupsId int(11) NOT NULL, LARPsid int(11) NOT NULL, Intrigue text, HousingRequestsId int(11) NOT NULL, PRIMARY KEY (GroupsId, LARPsid));
 CREATE TABLE NormalAllergyTypes (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
 CREATE TABLE NormalAllergyTypes_Persons (NormalAllergyTypesId int(11) NOT NULL, PersonsId int(11) NOT NULL, PRIMARY KEY (NormalAllergyTypesId, PersonsId));
-CREATE TABLE Users (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Email varchar(255) NOT NULL, Password varchar(255) NOT NULL, IsAdmin tinyint(1) DEFAULT 0 NOT NULL, PRIMARY KEY (Id));
+CREATE TABLE Users (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Email varchar(255) NOT NULL, Password varchar(255) NOT NULL, IsAdmin tinyint(1) DEFAULT 0 NOT NULL, ActivationCode varchar(255), PRIMARY KEY (Id));
 ALTER TABLE Characters ADD CONSTRAINT IsPlayedBy FOREIGN KEY (PersonsId) REFERENCES Persons (Id);
 ALTER TABLE Characters ADD CONSTRAINT `Ingår i` FOREIGN KEY (GroupsId) REFERENCES Groups (Id);
 ALTER TABLE Groups_Interests ADD CONSTRAINT FKGroups_Int336092 FOREIGN KEY (GroupsId) REFERENCES Groups (Id);
