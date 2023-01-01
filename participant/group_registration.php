@@ -18,8 +18,7 @@ require 'header.php';
 
 			<h1>Gruppanmälan</h1>
 			<p>En grupp är en gruppering av roller som gör något tillsammans på
-				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett
-				rallarlag.</p>
+				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett rallarlag.</p>
 			<h2>Gruppledare</h2>
 			<p>(TODO Ersätt det här med att välja en av sina registrerade personer, eller bara visa den man har om man bara har en person registrerad.)<br />
 			

@@ -11,38 +11,39 @@ class Group extends BaseModel{
     public $Id;
     public $Name;
     public $ApproximateNumberOfMembers;
-    public $NeedFireplace;
+    public $NeedFireplace = false;
     public $Friends;
     public $Enemies;
     public $WantIntrigue = true;
-    public $
-    public $
-    public $
-    public $
-    public $
-    public $
-    public $
-    public $
+    public $Description;
+    public $IntrigueIdeas;
+    public $OtherInformation;
+    public $WealthsId;
+    public $OriginsId;
+    public $PersonsId; # Gruppledaen
     
     public static $tableName = 'groups';
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
         $group = group::newWithDefault();
-        if (isset($post['Deliverytime'])) $group->Deliverytime = $post['Deliverytime'];
-        if (isset($post['Sender'])) $group->Sender = $post['Sender'];
-        if (isset($post['SenderCity'])) $group->SenderCity = $post['SenderCity'];
-        if (isset($post['Reciever'])) $group->Reciever = $post['Reciever'];
-        if (isset($post['RecieverCity'])) $group->RecieverCity = $post['RecieverCity'];
-        if (isset($post['Message'])) $group->Message = $post['Message'];
-        if (isset($post['OrganizerNotes'])) $group->OrganizerNotes = $post['OrganizerNotes'];
         if (isset($post['Id'])) $group->Id = $post['Id'];
+        if (isset($post['Name'])) $group->Name = $post['Name'];
+        if (isset($post['ApproximateNumberOfMembers'])) $group->ApproximateNumberOfMembers = $post['ApproximateNumberOfMembers'];
+        if (isset($post['NeedFireplace'])) $group->NeedFireplace = $post['NeedFireplace'];
+        if (isset($post['Friends'])) $group->Friends = $post['Friends'];
+        if (isset($post['Enemies'])) $group->Enemies = $post['Enemies'];
+        if (isset($post['WantIntrigue'])) $group->WantIntrigue = $post['WantIntrigue'];
+        if (isset($post['Description'])) $group->Description = $post['Description'];
+        if (isset($post['IntrigueIdeas'])) $group->IntrigueIdeas = $post['IntrigueIdeas'];
+        if (isset($post['OtherInformation'])) $group->OtherInformation = $post['OtherInformation'];
+        if (isset($post['WealthsId'])) $group->WealthsId = $post['WealthsId'];
+        if (isset($post['OriginsId'])) $group->OriginsId = $post['OriginsId'];
+        if (isset($post['PersonsId'])) $group->PersonsId = $post['PersonsId'];
         
         return $group;
     }
      
-     
-    
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
@@ -54,18 +55,12 @@ class Group extends BaseModel{
     {
         global $conn;
         
-        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
-        $stmt->bind_param("sssssssi",$Deliverytime, $Sender, $SenderCity, $Reciever, $RecieverCity, $Message, $OrganizerNotes, $Id);
-        
-        // set parameters and execute
-        $Id = $this->Id;
-        $Deliverytime = $this->Deliverytime;
-        $Sender = $this->Sender;
-        $SenderCity = $this->SenderCity;
-        $Reciever = $this->Reciever;
-        $RecieverCity = $this->RecieverCity;
-        $Message = $this->Message;
-        $OrganizerNotes = $this->OrganizerNotes;
+        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?, 
+                                                                  WantIntrigue=?, Description=?, IntrigueIdeas=?, OtherInformation=?,
+                                                                  WealthsId=?, OriginsId=?, PersonsId=? WHERE Id = ?");
+        $stmt->bind_param("siississsiiii", $this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
+            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->OriginsId, $this->PersonsId, $this->Id);
+
         $stmt->execute();
     }
     
@@ -74,21 +69,31 @@ class Group extends BaseModel{
     {
         global $conn;
         
-        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssss", $Deliverytime, $Sender, $SenderCity, $Reciever, $RecieverCity, $Message, $OrganizerNotes);
-        
-        // set parameters and execute
-        $Deliverytime = $this->Deliverytime;
-        $Sender = $this->Sender;
-        $SenderCity = $this->SenderCity;
-        $Reciever = $this->Reciever;
-        $RecieverCity = $this->RecieverCity;
-        $Message = $this->Message;
-        $OrganizerNotes = $this->OrganizerNotes;
+        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Name, ApproximateNumberOfMembers, NeedFireplace, Friends, Enemies, 
+                                                                    WantIntrigue, Description, IntrigueIdeas, OtherInformation, 
+                                                                    WealthsId, OriginsId, PersonsId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param("siississsiii", $this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
+            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->OriginsId, $this->PersonsId);
+
         $stmt->execute();
     }
     
-      
+    public function getWealth()
+    {
+        if (is_null($this->WealthsId)) return null;
+        return Wealth::loadById($this->WealthsId);
+    }
+    
+    public function getOrigin()
+    {
+        if (is_null($this->OriginsId)) return null;
+        return Origin::loadById($this->OriginsId);
+    }
+    
+//     public function getPerson()
+//     {
+//         return Person::loadById($this->PersonsId);
+//     }
 }
 
 ?>
