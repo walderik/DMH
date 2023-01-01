@@ -47,3 +47,5 @@ if ($stmt = $conn->prepare('SELECT id, password, ActivationCode, IsAdmin FROM us
  
     $stmt->close();
 }
+
+}
