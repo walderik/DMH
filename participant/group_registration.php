@@ -21,7 +21,8 @@ require 'header.php';
 				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett
 				rallarlag.</p>
 			<h2>Gruppledare</h2>
-			<p>
+			<p>(TODO Ersätt det här med att välja en av sina registrerade personer, eller bara visa den man har om man bara har en person registrerad.)<br />
+			
 				Gruppledaren är den som arrangörerna kommer att kontakta när det
 				uppstår frågor kring gruppen.
 				<div class="question">
