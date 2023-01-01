@@ -3,13 +3,13 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Registrera</title>
-		<link href="style.css" rel="stylesheet" type="text/css">
+		<link href="includes/style.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 	<body>
 		<div class="register">
 			<h1>Registrera</h1>
-			<form action="register.php" method="post" autocomplete="off">
+			<form action="includes/register.php" method="post" autocomplete="off">
 				<label for="email">
 					<i class="fas fa-envelope"></i>
 				</label>
@@ -18,10 +18,6 @@
 					<i class="fas fa-lock"></i>
 				</label>
 				<input type="password" name="password" placeholder="Lösenord" id="password" required>
-				<label for="name">
-					<i class="fas fa-user"></i>
-				</label>
-				<input type="text" name="name" placeholder="Namn" id="name" required>
 				<input type="submit" value="Registrera">
 			</form>
 		</div>

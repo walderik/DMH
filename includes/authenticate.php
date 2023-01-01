@@ -10,7 +10,7 @@ if ( !isset($_POST['email'], $_POST['password']) ) {
 }
 
 // Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-if ($stmt = $conn->prepare('SELECT id, name, password, ActivationCode FROM users WHERE email = ?')) {
+if ($stmt = $conn->prepare('SELECT id, password, ActivationCode, IsAdmin FROM users WHERE email = ?')) {
     // Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
     $stmt->bind_param('s', $_POST['email']);
     $stmt->execute();
@@ -18,7 +18,7 @@ if ($stmt = $conn->prepare('SELECT id, name, password, ActivationCode FROM users
     $stmt->store_result();
     
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $name, $password, $activation_code);
+        $stmt->bind_result($id, $password, $activation_code, $isAdmin);
         $stmt->fetch();
         // Account exists, now we verify the password.
         // Note: remember to use password_hash in your registration file to store the hashed passwords.
@@ -31,9 +31,9 @@ if ($stmt = $conn->prepare('SELECT id, name, password, ActivationCode FROM users
                 // Create sessions, so we know the user is logged in, they basically act like cookies but remember the data on the server.
                 session_regenerate_id();
                 $_SESSION['loggedin'] = true;
-                $_SESSION['name'] = $name;
                 $_SESSION['id'] = $id;
-                header('Location: ../home.php');
+                if ($isAdmin == 1) { $_SESSION['admin'] = true; }
+                header('Location: ../participant/index.php');
             } else {
                 echo 'Kontot är inte aktiverat!';
             }                       

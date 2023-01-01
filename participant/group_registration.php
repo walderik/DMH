@@ -1,22 +1,15 @@
 <?php
 
-require '../header.php';
+require 'header.php';
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Gruppanmälan DMH 2023</title>
-<link rel="stylesheet" href="../includes/registration_system.css">
-</head>
-<body>
-	<div id="site-header">
-		<a href="https://dmh.berghemsvanner.se/" rel="home"> <img
-			src="images//IMG_1665485583436.png" width="1080" height="237"
-			alt="Död mans hand" />
-		</a>
-	</div>
+		<nav class="navtop">
+			<div>
+				<h1>Website Title</h1>
+				<a href="index.php"><i class="fas fa-user-circle"></i>Tillbaka</a>
+				<a href="includes/logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+			</div>
+		</nav>
 
 	<div id="simpleCenter">
 		<form>

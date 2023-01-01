@@ -1,5 +1,5 @@
  <?php
- include_once '../header.php';
+ include_once '../participant/header.php';
  ?>
  
      <h1>Logga in</h1>
