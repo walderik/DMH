@@ -11,9 +11,7 @@
      	<button type="submit" name="submit">Logga in</button>
      </form>
  
- 
- 
 
-<?php
-    include_once '../footer.php'; 
-?>
+</body>
+
+</html>

@@ -34,7 +34,7 @@ if (!isset($_SESSION['larp']) && strpos($url, "choose_larp.php") == false && str
 		<meta charset="utf-8">
 		<title>Home Page</title>
 		<link href="../includes/style.css" rel="stylesheet" type="text/css">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+		<script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
 	</head>
 	<body class="loggedin">
 
