@@ -11,7 +11,7 @@ require 'header.php';
     			 $larp_array = LARP::all();
     			 $resultCheck = count($larp_array);
     			 if ($resultCheck > 0) {
-    			     echo "<select name='larps' id='larps'>";
+    			     echo "<select name='larp' id='larp'>";
     
     			     foreach ($larp_array as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
