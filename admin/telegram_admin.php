@@ -13,13 +13,7 @@ require '../models/origin.php';
 
 </head>
 <body>
-   asdasd 
-<?php
-    Origin::selectionDropdown(false);
-    Wealth::selectionDropdown(false);
-    Wealth::selectionDropdown(true);
-?>
-   asddad
+
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
