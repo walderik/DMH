@@ -43,9 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 ?>
     
     <h1>Telegram</h1>
-        <a href="telegram_form.php?operation=new"><img src='images/icons8-add-new-50.png' alt='Lägg till'/></a>  
+        <a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i></a>  
     
-        <a href="telegram_pdf.php"><img src='images/icons8-pdf-50.png' alt='Generera pdf'/></a>  
+        <a href="telegram_pdf.php"><i class="fa-solid fa-file-pdf"></i></a>  
     
     <?php
 
@@ -65,8 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
             echo "<td>" . str_replace("\n", "<br>", $telegram->OrganizerNotes) . "</td>\n";
             
-            echo "<td>" . "<a href='telegram_form.php?operation=update&id=" . $telegram->Id . "'><img src='images/icons8-pencil-20.png' width='20' alt='Redigera' /></a></td>\n";
-            echo "<td>" . "<a href='telegram_admin.php?operation=delete&id=" . $telegram->Id . "'><img src='images/icons8-trash-20.png' width='20' alt='Radera' /></a></td>\n";
+            echo "<td>" . "<a href='telegram_form.php?operation=update&id=" . $telegram->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+            echo "<td>" . "<a href='telegram_admin.php?operation=delete&id=" . $telegram->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
             echo "</tr>\n";
         }
         echo "</table>";
@@ -77,9 +77,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     ?>
     
 	
-<p>
-Icons by <a href="https://icons8.com">Icons8</a>
-</p>
 </body>
 
 </html>

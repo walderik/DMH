@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 ?>
     
     <h1>Lajv</h1>
-        <a href="larp_form.php?operation=new"><img src='images/icons8-add-new-50.png' alt='Lägg till'/></a>  
+        <a href="larp_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i></a>  
     
     <?php
     
@@ -52,8 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo "<td>" . $larp->StartTimeLARPTime . "</td>\n";
             echo "<td>" . $larp->EndTimeLARPTime . "</td>\n";
             
-            echo "<td>" . "<a href='larp_form.php?operation=update&id=" . $larp->Id . "'><img src='images/icons8-pencil-20.png' width='20' alt='Redigera' /></a></td>\n";
-            echo "<td>" . "<a href='larp_admin.php?operation=delete&id=" . $larp->Id . "'><img src='images/icons8-trash-20.png' width='20' alt='Radera' /></a></td>\n";
+            echo "<td>" . "<a href='larp_form.php?operation=update&id=" . $larp->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+            echo "<td>" . "<a href='larp_admin.php?operation=delete&id=" . $larp->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
             echo "</tr>\n";
         }
         echo "</table>";
@@ -63,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     ?>
     
-	<?php
-        include_once '../footer.php'; 
-    ?>
+
+</body>
+
+</html>
