@@ -1,6 +1,6 @@
 CREATE TABLE Persons (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Birthdate date NOT NULL, PhoneNumber varchar(255), EmergencyContact text, Email varchar(255) NOT NULL, FoodAllergiesOther text, TypeOfLarperComment text, OtherInformation text, ExperiencesId int(11) NOT NULL, TypesOfFoodId int(11) NOT NULL, LarperTypesId int(11) NOT NULL, UsersId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE Characters (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, IsNPC tinyint(1) NOT NULL, Profession varchar(255) NOT NULL, Descrption mediumtext, PreviousLarps mediumtext, ReasonForBeingInSlowRiver text, Religion varchar(255), DarkSecret text, IntrigueSuggestions text, OtherInformation text, PersonsId int(11) NOT NULL, GroupsId int(11) NOT NULL, WealthsId int(11) NOT NULL, OriginsId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE Groups (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, `Approximate NumberOfMemebers` int(10) NOT NULL, NeedFireplace tinyint(1) NOT NULL, Friends text, Enemies text, WantIntrigue tinyint(1) NOT NULL, Descrption text NOT NULL, IntrigueIdeas text, OtherInformation text, WealthsId int(11) NOT NULL, OriginsId int(11) NOT NULL, UsersId int(11) NOT NULL, PRIMARY KEY (Id));
+CREATE TABLE Characters (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, IsNPC tinyint(1) NOT NULL, Profession varchar(255) NOT NULL, Descrption mediumtext, PreviousLarps mediumtext, ReasonForBeingInSlowRiver text, Religion varchar(255), DarkSecret text, IntrigueSuggestions text, OtherInformation text, PersonsId int(11) NOT NULL, GroupsId int(11) NOT NULL, WealthsId int(11) NOT NULL, OriginsId int(11) NOT NULL, Photo longblob, PRIMARY KEY (Id));
+CREATE TABLE Groups (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, `Approximate NumberOfMemebers` int(10) NOT NULL, NeedFireplace tinyint(1) NOT NULL, Friends text, Enemies text, WantIntrigue tinyint(1) NOT NULL, Descrption text NOT NULL, IntrigueIdeas text, OtherInformation text, WealthsId int(11) NOT NULL, OriginsId int(11) NOT NULL, PersonsId int(11) NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE LARPs (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Abbreviation varchar(10) NOT NULL, TagLine varchar(255), StartDate datetime NOT NULL, EndDate datetime NOT NULL, MaxParticipants int(11) NOT NULL, LatestRegistrationDate date, StartTimeLARPTime datetime NULL, EndTimeLARPTime datetime NULL, PRIMARY KEY (Id));
 CREATE TABLE Houses (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, NumberOfBeds int(10) NOT NULL, Information text NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE Interests (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
@@ -22,7 +22,7 @@ CREATE TABLE Resources (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255), U
 CREATE TABLE Resources_TitleDeeds (ResourcesId int(11) NOT NULL, TitleDeedsId int(11) NOT NULL, Quantity int(11), PRIMARY KEY (ResourcesId, TitleDeedsId));
 CREATE TABLE Housing (LARPid int(11) NOT NULL, PersonId int(11) NOT NULL, HouseId int(11) NOT NULL);
 CREATE TABLE OfficialTypes (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
-CREATE TABLE OfficialTypes_Persons (OfficialTypesId int(11) NOT NULL, PersonsId int(11) NOT NULL, PRIMARY KEY (OfficialTypesId, PersonsId));
+CREATE TABLE OfficialTypes_Persons (OfficialTypesId int(11) NOT NULL, RegistrationsId int(11) NOT NULL, PRIMARY KEY (OfficialTypesId, RegistrationsId));
 CREATE TABLE LARPDesires (Id int(11) NOT NULL AUTO_INCREMENT, NPCDesire varchar(255), PersonsId int(11) NOT NULL, LARPsid int(11) NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE Registrations (Id int(11) NOT NULL AUTO_INCREMENT, LARPsid int(11) NOT NULL, PersonsId int(11) NOT NULL, Payed date, Amount int(11), NotComing tinyint(1), ToBeRefunded tinyint(1), IsOfficial tinyint(1) NOT NULL, HousingRequestsId int(11) NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE IntrigueTypes_LARPDesires (IntrigueTypesId int(11) NOT NULL, LARPDesiresId int(11) NOT NULL, PRIMARY KEY (IntrigueTypesId, LARPDesiresId));
@@ -56,7 +56,6 @@ ALTER TABLE Housing ADD CONSTRAINT FKHousing782386 FOREIGN KEY (LARPid) REFERENC
 ALTER TABLE Housing ADD CONSTRAINT FKHousing771421 FOREIGN KEY (PersonId) REFERENCES Persons (Id);
 ALTER TABLE Housing ADD CONSTRAINT FKHousing181718 FOREIGN KEY (HouseId) REFERENCES Houses (Id);
 ALTER TABLE OfficialTypes_Persons ADD CONSTRAINT FKOfficialTy951218 FOREIGN KEY (OfficialTypesId) REFERENCES OfficialTypes (Id);
-ALTER TABLE OfficialTypes_Persons ADD CONSTRAINT FKOfficialTy362365 FOREIGN KEY (PersonsId) REFERENCES Persons (Id);
 ALTER TABLE LARPDesires ADD CONSTRAINT FKLARPDesire179515 FOREIGN KEY (PersonsId) REFERENCES Persons (Id);
 ALTER TABLE LARPDesires ADD CONSTRAINT FKLARPDesire532498 FOREIGN KEY (LARPsid) REFERENCES LARPs (Id);
 ALTER TABLE Registrations ADD CONSTRAINT FKRegistrati803567 FOREIGN KEY (LARPsid) REFERENCES LARPs (Id);
@@ -74,4 +73,5 @@ ALTER TABLE LARPs_Groups ADD CONSTRAINT FKLARPs_Grou449905 FOREIGN KEY (HousingR
 ALTER TABLE Registrations ADD CONSTRAINT FKRegistrati956877 FOREIGN KEY (HousingRequestsId) REFERENCES HousingRequests (Id);
 ALTER TABLE Telegrams ADD CONSTRAINT FKTelegrams694589 FOREIGN KEY (LARPsid) REFERENCES LARPs (Id);
 ALTER TABLE Persons ADD CONSTRAINT FKPersons189833 FOREIGN KEY (UsersId) REFERENCES Users (Id);
-ALTER TABLE Groups ADD CONSTRAINT FKGroups26992 FOREIGN KEY (UsersId) REFERENCES Users (Id);
+ALTER TABLE Groups ADD CONSTRAINT FKGroups796287 FOREIGN KEY (PersonsId) REFERENCES Persons (Id);
+ALTER TABLE OfficialTypes_Persons ADD CONSTRAINT FKOfficialTy565166 FOREIGN KEY (RegistrationsId) REFERENCES Registrations (Id);
