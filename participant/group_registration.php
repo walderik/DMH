@@ -2,6 +2,8 @@
 
 require 'header.php';
 
+// TODO Lägg till diverse kontroller som behövs för att kolla om man bland annat har en person registrerad.
+
 ?>
 		<nav class="navtop">
 			<div>
@@ -12,14 +14,15 @@ require 'header.php';
 		</nav>
 
 	<div id="simpleCenter">
-		<form>
+		<form action="includes/group_registration_save.php" method="post">
 
 			<h1>Gruppanmälan</h1>
 			<p>En grupp är en gruppering av roller som gör något tillsammans på
 				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett
 				rallarlag.</p>
 			<h2>Gruppledare</h2>
-			<p>
+			<p>(TODO Ersätt det här med att välja en av sina registrerade personer, eller bara visa den man har om man bara har en person registrerad.)<br />
+			
 				Gruppledaren är den som arrangörerna kommer att kontakta när det
 				uppstår frågor kring gruppen.
 				<div class="question">
@@ -81,12 +84,12 @@ require 'header.php';
 			<div class="question">
 				<label for="friends">Vänner</label><br>
 				<textarea id="friends" name="friends" rows="4" cols="50">
-		</textarea>
+				</textarea>
 			</div>
 			<div class="question">
 				<label for="enemies">Fiender</label><br>
 				<textarea id="enemies" name="enemies" rows="4" cols="50">
-		</textarea>
+				</textarea>
 			</div>
 
 
@@ -96,7 +99,7 @@ require 'header.php';
 			
             <?php
 
-            Wealth::selectionDropdown(false);
+            Wealth::selectionDropdown();
             
             ?> 
 			
@@ -108,12 +111,9 @@ require 'header.php';
 			
 			
             <?php
-    
-            Origin::selectionDropdown(false);
-            
+            Origin::selectionDropdown();
             ?> 
-			
-	
+
 			</div>
 			<div class="question">
  
@@ -133,6 +133,9 @@ require 'header.php';
 			
 			<div class="question">
 			Vilka typer av gruppintriger är ni intresserade av?
+			<?php
+			IntrigueType::selectionDropdown(true);
+            ?>
 			</div>
 			<div class="question">
 			<label for="intrigue_ideas">Intrigidéer</label>
@@ -164,14 +167,14 @@ require 'header.php';
 			<input type="checkbox" id="rules" name="rules" value="Ja" required>
   			<label for="rules">Jag lovar</label> 
 			</div>
-						<div class="question">
+			<div class="question">
 			Härmed samtycker jag till att föreningen Berghems
 			Vänner får spara och lagra mina uppgifter - såsom namn/
 			e-postadress/telefonnummer/hälsouppgifter/annat. Detta för att kunna
 			arrangera lajvet.<br>
 			<input type="checkbox" id="PUL" name="PUL" value="Ja" required>
   			<label for="PUL">Jag samtycker</label> 
-</div>
+			</div>
 
 			  <input type="submit" value="Skicka">
 		</form>
