@@ -8,11 +8,18 @@
 body {
   	background-color: #435165;
 }
+
+.login-register {
+	display: flex;
+    justify-content: center;
+}
+
 .login {
+	display: inline-block;
   	width: 400px;
   	background-color: #ffffff;
   	box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
-  	margin: 100px auto;
+  	margin: 30px 30px 0 0;
 }
 .login h1 {
   	text-align: center;
@@ -33,7 +40,7 @@ body {
   	align-items: center;
   	width: 50px;
   	height: 50px;
-  	background-color: #3274d6;
+  	background-color: #2f3947;
   	color: #ffffff;
 }
 .login form input[type="password"], .login form input[type="text"] {
@@ -47,7 +54,7 @@ body {
   	width: 100%;
   	padding: 15px;
  	margin-top: 20px;
-  	background-color: #3274d6;
+  	background-color: #2f3947;
   	border: 0;
   	cursor: pointer;
   	font-weight: bold;
@@ -55,6 +62,58 @@ body {
   	transition: background-color 0.2s;
 }
 .login form input[type="submit"]:hover {
+	background-color: #2f3947;
+  	transition: background-color 0.2s;
+}
+
+.register {
+	display: inline-block;
+  	width: 400px;
+  	background-color: #ffffff;
+  	box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
+  	margin-top: 30px;
+}
+.register h1 {
+  	text-align: center;
+  	color: #5b6574;
+  	font-size: 24px;
+  	padding: 20px 0 20px 0;
+  	border-bottom: 1px solid #dee0e4;
+}
+.register form {
+  	display: flex;
+  	flex-wrap: wrap;
+  	justify-content: center;
+  	padding-top: 20px;
+}
+.register form label {
+  	display: flex;
+  	justify-content: center;
+  	align-items: center;
+  	width: 50px;
+ 	height: 50px;
+  	background-color: #2f3947;
+  	color: #ffffff;
+}
+.register form input[type="password"], .register form input[type="text"], .register form input[type="email"] {
+  	width: 310px;
+  	height: 50px;
+  	border: 1px solid #dee0e4;
+  	margin-bottom: 20px;
+  	padding: 0 15px;
+}
+.register form input[type="submit"] {
+  	width: 100%;
+  	padding: 15px;
+  	margin-top: 20px;
+  	background-color: #2f3947;
+ 	border: 0;
+  	cursor: pointer;
+  	font-weight: bold;
+  	color: #ffffff;
+  	transition: background-color 0.2s;
+}
+.register form input[type="submit"]:hover {
 	background-color: #2868c7;
   	transition: background-color 0.2s;
 }
@@ -95,6 +154,7 @@ body {
 .navtop div a:hover {
 	color: #eaebed;
 }
+
 body.loggedin {
 	background-color: #f3f4f7;
 }
@@ -128,56 +188,6 @@ body.loggedin {
 	margin: 0 0 10px 0;
 }
 
-.register {
-  	width: 400px;
-  	background-color: #ffffff;
-  	box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
-  	margin: 100px auto;
-}
-.register h1 {
-  	text-align: center;
-  	color: #5b6574;
-  	font-size: 24px;
-  	padding: 20px 0 20px 0;
-  	border-bottom: 1px solid #dee0e4;
-}
-.register form {
-  	display: flex;
-  	flex-wrap: wrap;
-  	justify-content: center;
-  	padding-top: 20px;
-}
-.register form label {
-  	display: flex;
-  	justify-content: center;
-  	align-items: center;
-  	width: 50px;
- 	height: 50px;
-  	background-color: #3274d6;
-  	color: #ffffff;
-}
-.register form input[type="password"], .register form input[type="text"], .register form input[type="email"] {
-  	width: 310px;
-  	height: 50px;
-  	border: 1px solid #dee0e4;
-  	margin-bottom: 20px;
-  	padding: 0 15px;
-}
-.register form input[type="submit"] {
-  	width: 100%;
-  	padding: 15px;
-  	margin-top: 20px;
-  	background-color: #3274d6;
- 	border: 0;
-  	cursor: pointer;
-  	font-weight: bold;
-  	color: #ffffff;
-  	transition: background-color 0.2s;
-}
-.register form input[type="submit"]:hover {
-	background-color: #2868c7;
-  	transition: background-color 0.2s;
-}
 
 #navigation {
 	position: absolute;
