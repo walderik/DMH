@@ -38,7 +38,7 @@ class BaseModel {
         $stmt->execute();
         $result = $stmt->get_result(); // get the mysqli result
         $row = $result->fetch_assoc(); // fetch data
-//         $telegram = static::newFromArray($row);
+//          $telegram = static::newFromArray($row);
         return static::newFromArray($row);
     }
     

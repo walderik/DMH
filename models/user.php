@@ -19,15 +19,15 @@ class User extends BaseModel{
     public static $orderListBy = 'Email';
     
     public static function newFromArray($post){
-        $group = group::newWithDefault();
-        if (isset($post['Id'])) $group->Id = $post['Id'];
-        if (isset($post['Email'])) $group->Email = $post['Email'];
-        if (isset($post['Password'])) $group->Password = $post['Password'];
-        if (isset($post['IsAdmin'])) $group->IsAdmin = $post['IsAdmin'];
-        if (isset($post['ActivationCode'])) $group->ActivationCode = $post['ActivationCode'];
-        if (isset($post['EmailChangeCode'])) $group->EmailChangeCode = $post['EmailChangeCode'];
+        $user = static::newWithDefault();
+        if (isset($post['Id'])) $user->Id = $post['Id'];
+        if (isset($post['Email'])) $user->Email = $post['Email'];
+        if (isset($post['Password'])) $user->Password = $post['Password'];
+        if (isset($post['IsAdmin'])) $user->IsAdmin = $post['IsAdmin'];
+        if (isset($post['ActivationCode'])) $user->ActivationCode = $post['ActivationCode'];
+        if (isset($post['EmailChangeCode'])) $user->EmailChangeCode = $post['EmailChangeCode'];
         
-        return $group;
+        return $user;
     }
      
     
