@@ -132,5 +132,3 @@ class SelectionData extends BaseModel{
     }
       
 }
-
-?>

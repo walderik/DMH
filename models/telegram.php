@@ -83,5 +83,3 @@ class Telegram extends BaseModel{
     
       
 }
-
-?>

@@ -90,10 +90,8 @@ class Group extends BaseModel{
         return Origin::loadById($this->OriginsId);
     }
     
-//     public function getPerson()
-//     {
+     public function getPerson()
+     {
 //         return Person::loadById($this->PersonsId);
-//     }
+    }
 }
-
-?>

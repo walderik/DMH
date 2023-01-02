@@ -5,5 +5,3 @@ class LarperType extends SelectionData{
     public static $tableName = 'larpertypes';
       
 }
-
-?>
