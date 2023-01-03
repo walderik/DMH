@@ -46,6 +46,9 @@ class Login extends Dbh {
         $_SESSION['loggedin'] = true;
         $_SESSION['id'] = $user[0]["Id"];
         $isAdmin = $user[0]["IsAdmin"];
+        
+       
+        
         if ($isAdmin == 1) { 
             $_SESSION['admin'] = true; 
         }

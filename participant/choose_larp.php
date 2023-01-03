@@ -25,5 +25,13 @@ require 'header.php';
     			 <input type="submit" value="Välj">
 			 </form>
 			 </div>
+			 <?php 
+			 if (isset($_SESSION['admin'])) {
+			 ?>
+			     <a href="../admin/larp_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till lajv</a>  
+			 <?php 
+			 }
+			 ?>
+
 	</body>
 </html>

@@ -1,8 +1,5 @@
 <?php
-include_once '../includes/db.inc.php';
-require '../models/telegram.php';
-require '../models/wealth.php';
-require '../models/origin.php';
+require 'header.php';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
 <html>
