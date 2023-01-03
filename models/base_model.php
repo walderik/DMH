@@ -26,7 +26,7 @@ class BaseModel extends Dbh{
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $resultArray = array();
         foreach ($rows as $row) {
-            $resultArray[] = $this->newFromArray($row);
+            $resultArray[] = static::newFromArray($row);
         }   
         $stmt = null;
         return $resultArray;

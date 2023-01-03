@@ -16,6 +16,7 @@ class Telegram extends BaseModel{
     public  $RecieverCity = 'Slow River';
     public  $Message;
     public  $OrganizerNotes;
+    public  $LarpsId;
     
     public static $tableName = 'telegrams';
     public static $orderListBy = 'Deliverytime';
@@ -39,46 +40,40 @@ class Telegram extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        global $current_larp;
+        $telegram = new self();
+        $telegram->LarpsId = $current_larp->Id;
+        return $telegram;
     }
     
     # Update an existing telegram in db
     public function update()
     {
-        global $conn;
+        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
         
-        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
-        $stmt->bind_param("sssssssi",$Deliverytime, $Sender, $SenderCity, $Reciever, $RecieverCity, $Message, $OrganizerNotes, $Id);
-        
-        // set parameters and execute
-        $Id = $this->Id;
-        $Deliverytime = $this->Deliverytime;
-        $Sender = $this->Sender;
-        $SenderCity = $this->SenderCity;
-        $Reciever = $this->Reciever;
-        $RecieverCity = $this->RecieverCity;
-        $Message = $this->Message;
-        $OrganizerNotes = $this->OrganizerNotes;
-        $stmt->execute();
+        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, 
+            $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+
+        $stmt = null;
     }
     
     # Create a new telegram in db
     public function create()
     {
-        global $conn;
+        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPsid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         
-        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssss", $Deliverytime, $Sender, $SenderCity, $Reciever, $RecieverCity, $Message, $OrganizerNotes);
-        
-        // set parameters and execute
-        $Deliverytime = $this->Deliverytime;
-        $Sender = $this->Sender;
-        $SenderCity = $this->SenderCity;
-        $Reciever = $this->Reciever;
-        $RecieverCity = $this->RecieverCity;
-        $Message = $this->Message;
-        $OrganizerNotes = $this->OrganizerNotes;
-        $stmt->execute();
+        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity,
+            $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->LarpsId))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+            }
+            
+            $stmt = null;
     }
     
       

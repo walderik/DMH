@@ -3,7 +3,7 @@
 
 require('../includes/fpdf185/fpdf.php');
 # $this->MultiCell(0,5,$txt);
-include '../models/telegram.php';
+require '../includes/init.php';
 
 class TELEGRAM_PDF extends FPDF {
     
@@ -33,15 +33,15 @@ class TELEGRAM_PDF extends FPDF {
     
     function nytt_telegram($telegram)
     {
-        $sender = $telegram->sender.', '.$telegram->senderCity;
-        $reciever = $telegram->reciever.', '.$telegram->recieverCity;
+        $sender = $telegram->Sender.', '.$telegram->SenderCity;
+        $reciever = $telegram->Reciever.', '.$telegram->RecieverCity;
         $this->AddPage();
-        $deliverytime = $telegram->deliverytime;
+        $deliverytime = $telegram->Deliverytime;
         if (is_string($deliverytime)) {
             $time = strtotime($deliverytime);
             $deliverytime = date('M d Y, g:i a',$time);
         }
-        $this->SetText($sender, $reciever, $telegram->message, $deliverytime);
+        $this->SetText($sender, $reciever, $telegram->Message, $deliverytime);
 	}
 }
 
