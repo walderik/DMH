@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     <?php
 
-    $telegram_array = Telegram::all();
+    $telegram_array = Telegram::allBySelectedLARP();
     if (!empty($telegram_array)) {
         echo "<table id='telegrams' class='data'>";
         echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Anteckningar</th><th></th><th></th></tr>\n";

@@ -9,14 +9,14 @@
 class Telegram extends BaseModel{
     
     public  $Id;
-    public  $Deliverytime = "1868-09-13T17:00";
+    public  $Deliverytime;
     public  $Sender;
     public  $SenderCity = 'Junk City';
     public  $Reciever;
     public  $RecieverCity = 'Slow River';
     public  $Message;
     public  $OrganizerNotes;
-    public  $LarpsId;
+    public  $LARPsid;
     
     public static $tableName = 'telegrams';
     public static $orderListBy = 'Deliverytime';
@@ -31,6 +31,7 @@ class Telegram extends BaseModel{
         if (isset($post['Message'])) $telegram->Message = $post['Message'];
         if (isset($post['OrganizerNotes'])) $telegram->OrganizerNotes = $post['OrganizerNotes'];
         if (isset($post['Id'])) $telegram->Id = $post['Id'];
+        if (isset($post['LARPsid'])) $telegram->LARPsid = $post['LARPsid'];
         
         return $telegram;
     }
@@ -42,9 +43,40 @@ class Telegram extends BaseModel{
     public static function newWithDefault() {
         global $current_larp;
         $telegram = new self();
-        $telegram->LarpsId = $current_larp->Id;
+        $telegram->Deliverytime = $current_larp->StartTimeLARPTime;
+        $telegram->LARPsid = $current_larp->Id;
         return $telegram;
     }
+    
+    
+    public static function allBySelectedLARP() {
+        global $current_larp;
+        
+        $sql = "SELECT * FROM ".static::$tableName." WHERE LARPsid = ? ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($current_larp->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
+    
+    
     
     # Update an existing telegram in db
     public function update()
@@ -67,7 +99,7 @@ class Telegram extends BaseModel{
         $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPsid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity,
-            $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->LarpsId))) {
+            $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->LARPsid))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
