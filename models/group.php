@@ -26,7 +26,7 @@ class Group extends BaseModel{
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
-        $group = group::newWithDefault();
+        $group = static::newWithDefault();
         if (isset($post['Id'])) $group->Id = $post['Id'];
         if (isset($post['Name'])) $group->Name = $post['Name'];
         if (isset($post['ApproximateNumberOfMembers'])) $group->ApproximateNumberOfMembers = $post['ApproximateNumberOfMembers'];
@@ -90,10 +90,8 @@ class Group extends BaseModel{
         return Origin::loadById($this->OriginsId);
     }
     
-//     public function getPerson()
-//     {
+     public function getPerson()
+     {
 //         return Person::loadById($this->PersonsId);
-//     }
+    }
 }
-
-?>
