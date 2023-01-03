@@ -1,11 +1,5 @@
 <?php
 
-//         bind_param
-//     i	corresponding variable has type int
-//     d	corresponding variable has type float
-//     s	corresponding variable has type string
-//     b	corresponding variable is a blob and will be sent in packets
-
 class LARP extends BaseModel{
     
     
@@ -52,44 +46,33 @@ class LARP extends BaseModel{
     # Update an existing larp in db
     public function update()
     {
-        global $conn;
+        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=? WHERE Id = ?");
         
-        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=? WHERE Id = ?");
-        $stmt->bind_param("sssssisssi", $Name, $Abbreviation, $TagLine, $StartDate, $EndDate, $MaxParticipants, $LatestRegistrationDate, $StartTimeLARPTime, $EndTimeLARPTime, $Id);
-        
-        // set parameters and execute
-        $Id = $this->Id;
-        $Name = $this->Name;
-        $Abbreviation = $this->Abbreviation;
-        $TagLine = $this->TagLine;
-        $StartDate = $this->StartDate;
-        $EndDate = $this->EndDate;
-        $MaxParticipants = $this->MaxParticipants;
-        $LatestRegistrationDate = $this->LatestRegistrationDate;
-        $StartTimeLARPTime = $this->StartTimeLARPTime;
-        $EndTimeLARPTime = $this->EndTimeLARPTime;
-        $stmt->execute();        
+        if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->TagLine,
+            $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->Id))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+            }
+            
+            $stmt = null;
     }
     
     # Create a new larp in db
     public function create()
     {
-        global $conn;
+        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, Abbreviation, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Name, Abbreviation, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssisss", $Name, $Abbreviation, $TagLine, $StartDate, $EndDate, $MaxParticipants, $LatestRegistrationDate, $StartTimeLARPTime, $EndTimeLARPTime);
-        
-        // set parameters and execute
-        $Name = $this->Name;
-        $Abbreviation = $this->Abbreviation;
-        $TagLine = $this->TagLine;
-        $StartDate = $this->StartDate;
-        $EndDate = $this->EndDate;
-        $MaxParticipants = $this->MaxParticipants;
-        $LatestRegistrationDate = $this->LatestRegistrationDate;
-        $StartTimeLARPTime = $this->StartTimeLARPTime;
-        $EndTimeLARPTime = $this->EndTimeLARPTime;
-        $stmt->execute();
+        if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->TagLine,
+            $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+        }
+            
+        $stmt = null;
     }
     
       
