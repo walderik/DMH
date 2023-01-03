@@ -22,8 +22,8 @@ class Login extends Dbh {
         }
         
         //Check password
-        $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if (!password_verify($password, $user[0]["Password"])) {
+        $userRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (!password_verify($password, $userRows[0]["Password"])) {
             $stmt = null;
             header("location: ../index.php?error=userNotFound!!");
             exit();
