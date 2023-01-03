@@ -5,8 +5,7 @@ require 'header.php';
 
     
     <?php
-  //  global $current_larp;
-    print_r($current_larp);
+
     $telegram = Telegram::newWithDefault();;
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -53,8 +52,8 @@ require 'header.php';
 			<tr>
 				<td><label for="Deliverytime">Leveranstid</label></td>
 				<td><input type="datetime-local" id="Deliverytime"
-					name="Deliverytime" value="<?php echo $telegram->Deliverytime; ?>" min="<?php $current_larp->StartTimeLARPTime?>"
-					max="<?php $current_larp->EndTimeLARPTime?>" required></td>
+					name="Deliverytime" value="<?php echo $telegram->Deliverytime; ?>" min="<?php echo $current_larp->StartTimeLARPTime;?>"
+					max="<?php echo $current_larp->EndTimeLARPTime;?>" required></td>
 			</tr>
 			<tr>
 				<td><label for="Sender">Avsändare</label></td>
