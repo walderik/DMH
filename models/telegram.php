@@ -21,7 +21,7 @@ class Telegram extends BaseModel{
     public static $orderListBy = 'Deliverytime';
     
     public static function newFromArray($post){
-        $telegram = Telegram::newWithDefault();
+        $telegram = static::newWithDefault();
         if (isset($post['Deliverytime'])) $telegram->Deliverytime = $post['Deliverytime'];
         if (isset($post['Sender'])) $telegram->Sender = $post['Sender'];
         if (isset($post['SenderCity'])) $telegram->SenderCity = $post['SenderCity'];

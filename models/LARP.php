@@ -26,7 +26,7 @@ class LARP extends BaseModel{
     public static $orderListBy = 'StartDate';
     
     public static function newFromArray($post){
-        $larp = LARP::newWithDefault();
+        $larp = static::newWithDefault();
         if (isset($post['Name'])) $larp->Name = $post['Name'];
         if (isset($post['Abbreviation'])) $larp->Abbreviation = $post['Abbreviation'];
         if (isset($post['TagLine'])) $larp->TagLine = $post['TagLine'];
