@@ -27,7 +27,9 @@ if (!isset($_SESSION['larp']) && strpos($url, "choose_larp.php") == false && str
     exit;
 }
 
-$current_larp = LARP::loadById($_SESSION['larp']);
+if (isset($_SESSION['larp'])) {
+    $current_larp = LARP::loadById($_SESSION['larp']);
+}
 
 // print_r($current_user);
 

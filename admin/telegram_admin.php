@@ -1,8 +1,5 @@
 <?php
-include_once '../includes/db.inc.php';
-require '../models/telegram.php';
-require '../models/wealth.php';
-require '../models/origin.php';
+require 'header.php';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
 <html>
@@ -18,7 +15,7 @@ require '../models/origin.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-//     echo $operation;
+     //echo $operation;
     if ($operation == 'insert') {
         $telegram = Telegram::newFromArray($_POST);
         $telegram->create();
@@ -49,9 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     <?php
 
-    $telegram_array = Telegram::all();
-    $resultCheck = count($telegram_array);
-    if ($resultCheck > 0) {
+    $telegram_array = Telegram::allBySelectedLARP();
+    if (!empty($telegram_array)) {
         echo "<table id='telegrams' class='data'>";
         echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Anteckningar</th><th></th><th></th></tr>\n";
         foreach ($telegram_array as $telegram) {

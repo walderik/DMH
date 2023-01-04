@@ -1,18 +1,11 @@
 <?php
-include_once '../includes/db.inc.php';
-require '../models/telegram.php';
+require 'header.php';
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
 
-    <body>
     
     <?php
+
     $telegram = Telegram::newWithDefault();;
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -59,8 +52,8 @@ require '../models/telegram.php';
 			<tr>
 				<td><label for="Deliverytime">Leveranstid</label></td>
 				<td><input type="datetime-local" id="Deliverytime"
-					name="Deliverytime" value="<?php echo $telegram->Deliverytime; ?>" min="1868-09-13T17:00"
-					max="1868-09-15T13:00" required></td>
+					name="Deliverytime" value="<?php echo $telegram->Deliverytime; ?>" min="<?php echo $current_larp->StartTimeLARPTime;?>"
+					max="<?php echo $current_larp->EndTimeLARPTime;?>" required></td>
 			</tr>
 			<tr>
 				<td><label for="Sender">Avsändare</label></td>

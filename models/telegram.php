@@ -9,13 +9,14 @@
 class Telegram extends BaseModel{
     
     public  $Id;
-    public  $Deliverytime = "1868-09-13T17:00";
+    public  $Deliverytime;
     public  $Sender;
     public  $SenderCity = 'Junk City';
     public  $Reciever;
     public  $RecieverCity = 'Slow River';
     public  $Message;
     public  $OrganizerNotes;
+    public  $LARPsid;
     
     public static $tableName = 'telegrams';
     public static $orderListBy = 'Deliverytime';
@@ -30,6 +31,7 @@ class Telegram extends BaseModel{
         if (isset($post['Message'])) $telegram->Message = $post['Message'];
         if (isset($post['OrganizerNotes'])) $telegram->OrganizerNotes = $post['OrganizerNotes'];
         if (isset($post['Id'])) $telegram->Id = $post['Id'];
+        if (isset($post['LARPsid'])) $telegram->LARPsid = $post['LARPsid'];
         
         return $telegram;
     }
@@ -39,46 +41,71 @@ class Telegram extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        global $current_larp;
+        $telegram = new self();
+        $telegram->Deliverytime = $current_larp->StartTimeLARPTime;
+        $telegram->LARPsid = $current_larp->Id;
+        return $telegram;
     }
+    
+    
+    public static function allBySelectedLARP() {
+        global $current_larp;
+        
+        $sql = "SELECT * FROM ".static::$tableName." WHERE LARPsid = ? ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($current_larp->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
+    
+    
     
     # Update an existing telegram in db
     public function update()
     {
-        global $conn;
+        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
         
-        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
-        $stmt->bind_param("sssssssi",$Deliverytime, $Sender, $SenderCity, $Reciever, $RecieverCity, $Message, $OrganizerNotes, $Id);
-        
-        // set parameters and execute
-        $Id = $this->Id;
-        $Deliverytime = $this->Deliverytime;
-        $Sender = $this->Sender;
-        $SenderCity = $this->SenderCity;
-        $Reciever = $this->Reciever;
-        $RecieverCity = $this->RecieverCity;
-        $Message = $this->Message;
-        $OrganizerNotes = $this->OrganizerNotes;
-        $stmt->execute();
+        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, 
+            $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+
+        $stmt = null;
     }
     
     # Create a new telegram in db
     public function create()
     {
-        global $conn;
+        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPsid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         
-        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssss", $Deliverytime, $Sender, $SenderCity, $Reciever, $RecieverCity, $Message, $OrganizerNotes);
-        
-        // set parameters and execute
-        $Deliverytime = $this->Deliverytime;
-        $Sender = $this->Sender;
-        $SenderCity = $this->SenderCity;
-        $Reciever = $this->Reciever;
-        $RecieverCity = $this->RecieverCity;
-        $Message = $this->Message;
-        $OrganizerNotes = $this->OrganizerNotes;
-        $stmt->execute();
+        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity,
+            $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->LARPsid))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+            }
+            
+            $stmt = null;
     }
     
       
