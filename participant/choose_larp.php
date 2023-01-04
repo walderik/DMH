@@ -28,7 +28,7 @@ require 'header.php';
 			 <?php 
 			 if (isset($_SESSION['admin'])) {
 			 ?>
-			     <a href="../admin/larp_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till lajv</a>  
+			     <a href="../admin/larp_form.php?operation=new" style="color: red"><i class="fa-solid fa-file-circle-plus"></i>Lägg till lajv</a>  
 			 <?php 
 			 }
 			 ?>

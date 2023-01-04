@@ -7,8 +7,8 @@ require 'header.php';
 ?>
 		<nav class="navtop">
 			<div>
-				<h1>Website Title</h1>
-				<a href="index.php"><i class="fas fa-user-circle"></i>Tillbaka</a>
+				<h1><?php echo $current_larp->Name;?></h1>
+				<a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a>
 				<a href="includes/logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
 			</div>
 		</nav>

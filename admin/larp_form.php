@@ -2,20 +2,22 @@
 include_once 'header.php';
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Lägg till / Redigera lajv</title>
-</head>
-
-    <body>
+		<nav class="navtop">
+			<div>
+				<h1><?php echo $current_larp->Name;?></h1>
+				<a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a>
+				<a href="/includes/logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+			</div>
+		</nav>
     
     <?php
     $larp = LARP::newWithDefault();;
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        $operation = $_GET['operation'];
+        $operation = "new";
+        if (isset($_GET['operation'])) {
+            $operation = $_GET['operation'];
+        }
         if ($operation == 'new') {
         } elseif ($operation == 'update') {
             $larp = LARP::loadById($_GET['id']);            

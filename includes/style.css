@@ -118,12 +118,6 @@ body {
   	transition: background-color 0.2s;
 }
 
-.navtop {
-	background-color: #2f3947;
-	height: 60px;
-	width: 100%;
-	border: 0;
-}
 .navtop div {
 	display: flex;
 	margin: 0 auto;
@@ -148,12 +142,14 @@ body {
 	color: #c1c4c8;
 	font-weight: bold;
 }
+
 .navtop div a i {
 	padding: 2px 8px 0 0;
 }
 .navtop div a:hover {
 	color: #eaebed;
 }
+
 
 body.loggedin {
 	background-color: #f3f4f7;
@@ -187,7 +183,6 @@ body.loggedin {
 	padding: 5px;
 	margin: 0 0 10px 0;
 }
-
 
 #navigation {
 	position: absolute;

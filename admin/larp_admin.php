@@ -28,6 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 ?>
+		<nav class="navtop">
+			<div>
+				<h1><?php echo $current_larp->Name;?></h1>
+				<a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a>
+				<a href="/includes/logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
+			</div>
+		</nav>
     
     <h1>Lajv</h1>
         <a href="larp_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i></a>  
