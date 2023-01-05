@@ -35,17 +35,17 @@ class Login extends Dbh {
         
         //TODO check for activated account
         
-        $actiavtionCode = $user[0]["ActivationCode"];
+        $actiavtionCode = $userRows[0]["ActivationCode"];
         if ($actiavtionCode !== 'activated') {
             //Kontot är inte aktiverat
             $stmt = null;
-            header("location: ../index.php?error=accountNotActivated");
+            header("location: ../index.php?error=accountNotActivated".print_r($userRows[0]));
             exit();
         }
         
         $_SESSION['loggedin'] = true;
-        $_SESSION['id'] = $user[0]["Id"];
-        $isAdmin = $user[0]["IsAdmin"];
+        $_SESSION['id'] = $userRows[0]["Id"];
+        $isAdmin = $userRows[0]["IsAdmin"];
         
        
         
