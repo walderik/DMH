@@ -1,11 +1,5 @@
 <?php
 
-//         bind_param
-//     i	corresponding variable has type int
-//     d	corresponding variable has type float
-//     s	corresponding variable has type string
-//     b	corresponding variable is a blob and will be sent in packets
-
 class SelectionData extends BaseModel{
     
     public  $Id;
@@ -20,7 +14,17 @@ class SelectionData extends BaseModel{
     public static function newFromArray($post){
         $selectionData = static::newWithDefault();
         if (isset($post['SortOrder'])) $selectionData->SortOrder = $post['SortOrder'];
-        if (isset($post['Active'])) $selectionData->Active = $post['Active'];
+        if (isset($post['Active'])) {
+            if ($post['Active'] == "on" or $post['Active'] == 1) {
+                $selectionData->Active = 1;
+            }
+            else {
+                $selectionData->Active = 0;
+            }
+        }
+        else {
+            $selectionData->Active = 0;
+        }
         if (isset($post['Description'])) $selectionData->Description = $post['Description'];
         if (isset($post['Name'])) $selectionData->Name = $post['Name'];
         if (isset($post['Id'])) $selectionData->Id = $post['Id'];
@@ -34,18 +38,18 @@ class SelectionData extends BaseModel{
     }
     
     public static function allActive() {
-        global $conn;
+        # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
+        $stmt = static::connectStatic()->prepare("SELECT * FROM ".static::$tableName." WHERE active = 1 ORDER BY SortOrder;");
         
-        $sql = "SELECT * FROM ".static::$tableName." WHERE active = 1 ORDER BY SortOrder;";
-        $result = mysqli_query($conn, $sql);
-        $resultCheck = mysqli_num_rows($result);
-        $resultArray = array();
-        if ($resultCheck > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                //                 print_r($row);
-                $resultArray[] = static::newFromArray($row);
-            }
-        } else { # Om det inte finns något i tabellen ännu
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+
             $testrad = static::newWithDefault();
             $testrad->Id = 1;
             $testrad->Name = 'Inget data finns ännu i:';
@@ -64,42 +68,48 @@ class SelectionData extends BaseModel{
             $testrad->Description = 'Klassen som saknar object';
             
             $resultArray[] = $testrad;
+
         }
+        else {
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $resultArray[] = static::newFromArray($row);
+            }
+        }
+        $stmt = null;
         return $resultArray;
     }
     
-    # Update an existing telegram in db
+    # Update an existing object in db
     public function update()
     {
-        global $conn;
+        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
         
-        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
-        $stmt->bind_param("iissi", $this->SortOrder, $this->Active, $this->Description, $this->Name, $this->Id);
-        
-        // set parameters and execute
-//         $id = $this->Id;
-//         $name = $this->Name;
-//         $description = $this->Description;
-//         $active = $this->Active;
-//         $sortOrder = $this->SortOrder;
-        $stmt->execute();
+        if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name, $this->Id))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+         }
+            
+         $stmt = null;
     }
     
     # Create a new telegram in db
     public function create()
     {
-        global $conn;
         
-        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (SortOrder, Active, Description, Name) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("iiss",  $this->SortOrder, $this->Active, $this->Description, $this->Name);
+        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (SortOrder, Active, Description, Name) VALUES (?, ?, ?, ?)");
         
-        // set parameters and execute
-//         $name = $this->name;
-//         $description = $this->description;
-//         $active = $this->active;
-//         $sortOrder = $this->sortOrder;
-        $stmt->execute();
+        if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+        }
+            
+        $stmt = null;
     }
+    
     
     # En dropdown där man kan välja den här
     public static function selectionDropdown(?bool $multiple=false, ?bool $required=true, ?bool $only_active=true){
