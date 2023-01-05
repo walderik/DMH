@@ -11,7 +11,11 @@ require 'header.php';
 			</div>
 		</nav>
 		<div class="content">
-			<h2>Anmälan till <?php echo $current_larp->Name;?></h2>
+			<h2>Administration av <?php echo $current_larp->Name;?></h2>
+			<p>
+			    <a href="telegram_admin.php" style="color: #99bbff">Telegram</a> <br> 
+			    <a href="larp_admin.php" style="color: #99bbff">Lajv</a> <br> 			
+			</p>
 		</div>
 	</body>
 </html>

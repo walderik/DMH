@@ -57,6 +57,8 @@ require 'header.php';
 		</div>
 	</nav>
 
+    <div class="content"> 
+    <h1><?php echo default_value('action');?> telegram</h1>
 	<form action="telegram_admin.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
@@ -106,6 +108,7 @@ require 'header.php';
 
 		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
 	</form>
+	</div>
     </body>
 
 </html>
