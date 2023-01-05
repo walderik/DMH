@@ -34,7 +34,7 @@ class SelectionData extends BaseModel{
      
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        return new static();
     }
     
     public static function allActive() {

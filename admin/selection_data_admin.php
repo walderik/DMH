@@ -16,14 +16,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $objectType = getObjectType($type);
 
     $operation = $_POST['operation'];
-    echo $type;
-    echo $objectType;
+//     echo $type."<br />";
+//     echo $objectType."<br />";
+    $user_func = $objectType . '::newFromArray';
+//     echo $user_func."<br />";
     if ($operation == 'insert') {
-        $data = call_user_func($objectType . '::newFromArray', $_POST);
-        print_r($data);
+        $data = call_user_func($user_func, $_POST);
+//         print_r($data)."<br />";
         $data->create();
     } elseif ($operation == 'update') {
-        $data = call_user_func($objectType . '::newFromArray', $_POST);
+        $data = call_user_func($user_func, $_POST);
         $data->update();
     } else {
         echo $operation;
