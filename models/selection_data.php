@@ -8,7 +8,7 @@ class SelectionData extends BaseModel{
     public  $Active = true;
     public  $SortOrder;
     
-    public static $tableName = 'wealths';
+    //public static $tableName = 'wealths';
     public static $orderListBy = 'SortOrder';
     
     public static function newFromArray($post){
