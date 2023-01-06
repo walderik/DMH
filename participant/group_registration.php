@@ -108,12 +108,12 @@ require 'header.php';
 			
 			</div>
 			<div class="question">
-			<label for="origin">Var kommer gruppen från?</label>
-			<div class="explanation">Dvs var är ni bosatta?</div>
+			<label for="origin">Var bor gruppen?</label>
+			
 			
 			
             <?php
-            Origin::selectionDropdown();
+            PlaceOfResidence::selectionDropdown();
             ?> 
 
 			</div>

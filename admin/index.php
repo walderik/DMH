@@ -14,11 +14,11 @@ require 'header.php';
 
 
 		<div class="content">
-			<h2>Administration av <?php echo $current_larp->Name;?></h2>
+			<h1>Administration av <?php echo $current_larp->Name;?></h1>
 			<p>
 			    <a href="telegram_admin.php">Telegram</a> <br> 
 			</p>
-			<h2>Administration för alla lajv</h2>
+			<h1>Administration för alla lajv</h1>
 			<p>			    
 			    <a href="larp_admin.php">Lajv</a> <br> 
 			    <a href="selection_data_admin.php?type=wealth">Rikedom</a><br>
