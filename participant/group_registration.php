@@ -64,15 +64,10 @@ require 'header.php';
 			</div>
 						<div class="question">
 			<label for="housing_request">Hur vill ni bo som grupp?</label><br>
-       
+       		<div class="explanation"><?php HousingRequest::helpBox(true); ?></div>
             <?php
 
             HousingRequest::selectionDropdown(false,true);
-            
-            ?>
-            <?php
-
-            HousingRequest::helpBox();
             
             ?>
 
@@ -97,7 +92,8 @@ require 'header.php';
 
 			<div class="question">
 			<label for="wealth">Hur rik anser du att ni är?</label>
-			<div class="explanation">(1= äger inget, 5 = badar i pengar)</div>
+			<div class="explanation"><?php Wealth::helpBox(true); ?></div>
+
 			
             <?php
 
@@ -108,8 +104,8 @@ require 'header.php';
 			
 			</div>
 			<div class="question">
-			<label for="origin">Var bor gruppen?</label>
-			
+			<label for="placeofresidence">Var bor gruppen?</label>
+			<div class="explanation"><?php PlaceOfResidence::helpBox(true); ?></div>
 			
 			
             <?php
@@ -135,6 +131,9 @@ require 'header.php';
 			
 			<div class="question">
 			Vilka typer av gruppintriger är ni intresserade av?
+			<div class="explanation"><?php IntrigueType::helpBox(true); ?></div>
+			
+			
 			<?php
 			IntrigueType::selectionDropdown(true);
             ?>
