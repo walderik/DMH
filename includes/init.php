@@ -7,15 +7,17 @@ global $current_user, $current_larp;
 
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
+
+
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-    header('Location: /index.html');
+    header('Location: ../index.php');
     exit;
 }
 
 $current_user = User::loadById($_SESSION['id']);
 if (!isset($current_user) or is_null($current_user)) {
-    header('Location: /index.html');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -23,7 +25,7 @@ if (!isset($current_user) or is_null($current_user)) {
 $url = $_SERVER['REQUEST_URI'];
 
 if (!isset($_SESSION['larp']) && strpos($url, "choose_larp.php") == false && strpos($url, "larp_admin.php") == false && strpos($url, "larp_form.php") == false) {
-    header('Location: /participant/choose_larp.php');
+    header('Location: ../participant/choose_larp.php');
     exit;
 }
 

@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
     $login->loginUser();
     
     //Go into system
-    header("location: /participant/index.php");
+    header("location: participant/index.php");
 }
 else {
     //Going back to front page

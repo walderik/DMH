@@ -1,4 +1,4 @@
-Lajvdatumen ska ligga i LARPs tabellen och läsas av telegram_admin.php.
+Alla länkar ska vara relativa
 
 
 

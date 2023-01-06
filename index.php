@@ -1,10 +1,7 @@
 <?php 
 
 session_start();
-if (isset($_SESSION['loggedin'])) {
-    header('Location: participant/index.php');
-    exit;
-}
+session_unset();
 
 ?>
 
