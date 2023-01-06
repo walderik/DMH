@@ -20,12 +20,11 @@ require 'header.php';
 			    <a href="larp_admin.php">Lajv</a> <br> 
 			    <a href="selection_data_admin.php?type=wealth">Rikedom</a><br>
 			    <a href="selection_data_admin.php?type=typesoffood">Matalternativ</a><br>
-			    <a href="selection_data_admin.php?type=origins">Ursprung?</a><br>
+			    <a href="selection_data_admin.php?type=placeofresidence">Var karaktärer/grupper bor</a><br>
 			    <a href="selection_data_admin.php?type=normalallergytypes">Vanliga allergier</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=larpertypes">Typ av lajvare</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer</a>	<br>		    			
-			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger</a>	<br>		    			
-			    <a href="selection_data_admin.php?type=interests">Intressen</a>			  <br>  			
+			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger</a>	<br>		    			 			
 			    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=experiences">Erfarenhet</a>	<br>		    			
 			</p>

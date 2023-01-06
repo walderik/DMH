@@ -5,12 +5,11 @@ function getObjectName($name) {
     switch ($name) {
         case "wealth" : return "Rikedom";
         case "typesoffood" : return "Matalternativ";
-        case "origins" : return "Ursprung?"; 
+        case "placeofresidence" : return "Vad karaktärer/grupper bor"; 
         case "officialtypes" : return "Typ av funktionärer"; 
         case "normalallergytypes" : return "Vanliga allergier";
         case "larpertypes" : return "Typ av lajvare";
         case "intriguetypes" : return "Typ av intriger";
-        case "interests" : return "Intressen";
         case "housingrequests" : return "Boendeönskemål";
         case "experiences" : return "Erfarenhet";
     }
@@ -21,12 +20,11 @@ function getObjectType($name) {
     switch ($name) {
         case "wealth" : return "Wealth";
         case "typesoffood" : return "TypeOffFood";
-        case "origins" : return "Origin";        
+        case "placeofresidence" : return "PlaceOfResidence";        
         case "officialtypes" : return "OfficialType";
         case "normalallergytypes" : return "NormalAllergyType";
         case "larpertypes" : return "LarperType";
         case "intriguetypes" : return "IntrigueType";
-        case "interests" : return "Interest";
         case "housingrequests" : return "HousingRequest";
         case "experiences" : return "Experience";
     }
