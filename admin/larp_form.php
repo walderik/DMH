@@ -2,13 +2,13 @@
 include_once 'header.php';
 
 ?>
-		<nav class="navtop">
-			<div>
-				<h1><?php echo $current_larp->Name;?></h1>
-				<a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a>
-				<a href="/includes/logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
-			</div>
-		</nav>
+        <nav id="navigation">
+          <a href="#" class="logo"><?php echo $current_larp->Name;?></a>
+          <ul class="links">
+            <li><a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a></li>
+        	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
+          </ul>
+        </nav>
     
     <?php
     $larp = LARP::newWithDefault();

@@ -48,13 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 
 ?>
-	<nav class="navtop">
-		<div>
-			<h1><?php echo $current_larp->Name;?></h1>
-			<a href="index.php"><i class="fa-solid fa-house"></i>Hem</a>
-			<a href="/includes/logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
-		</div>
-	</nav>
+        <nav id="navigation">
+          <a href="#" class="logo"><?php echo $current_larp->Name;?></a>
+          <ul class="links">
+            <li><a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a></li>
+        	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
+          </ul>
+        </nav>
     <div class="content">   
         <h1><?php echo getObjectName($type);?></h1>
             <a href="selection_data_form.php?type=<?php echo $type;?>&operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>          

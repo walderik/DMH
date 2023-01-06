@@ -5,18 +5,21 @@ require 'header.php';
 // TODO Lägg till diverse kontroller som behövs för att kolla om man bland annat har en person registrerad.
 
 ?>
-		<nav class="navtop">
-			<div>
-				<h1><?php echo $current_larp->Name;?></h1>
-				<a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a>
-				<a href="includes/logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
-			</div>
-		</nav>
 
-	<div id="simpleCenter">
+        <nav id="navigation">
+          <a href="#" class="logo"><?php echo $current_larp->Name;?></a>
+          <ul class="links">
+            <li><a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a></li>
+	       	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
+          </ul>
+        </nav>
+
+
+	<div class="content">
+		<h1>Gruppanmälan</h1>
 		<form action="includes/group_registration_save.php" method="post">
 
-			<h1>Gruppanmälan</h1>
+
 			<p>En grupp är en gruppering av roller som gör något tillsammans på
 				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett rallarlag.</p>
 			<h2>Gruppledare</h2>

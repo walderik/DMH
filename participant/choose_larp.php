@@ -4,26 +4,12 @@ require 'header.php';
 
 ?>
 
-<nav id="navigation">
-  <a href="#" class="logo">Studio<span>+<span></a>
-  <ul class="links">
-    <li><a href="#">About</a></li>
-    <li class="dropdown"><a href="#" class="trigger-drop">Work<i class="arrow"></i></a>
-      <ul class="drop">
-        <li><a href="#">Art</a></li>
-        <li><a href="#">Photography</a></li>
-        <li><a href="#">Audio</a></li>
-        <li><a href="#">Films</a></li>
-      </ul>
-    </li>
-    <li class="dropdown"><a href="#" class="trigger-drop">Contact<i class="arrow"></i></a>
-      <ul class="drop">
-        <li><a href="#">Email</a></li>
-        <li><a href="#">Phone</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
+        <nav id="navigation">
+          <ul class="links">
+        	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
+          </ul>
+        </nav>
+
 
 		<div class="content">
 			<h2>Aktivt lajv</h2>
