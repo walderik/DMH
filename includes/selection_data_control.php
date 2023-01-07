@@ -19,7 +19,7 @@ function getObjectType($name) {
     //Eftersom typen kommer in som indata vill jag ha en kontroll på att bara de jag tillåter kan visas
     switch ($name) {
         case "wealth" : return "Wealth";
-        case "typesoffood" : return "TypeOffFood";
+        case "typesoffood" : return "TypeOfFood";
         case "placeofresidence" : return "PlaceOfResidence";        
         case "officialtypes" : return "OfficialType";
         case "normalallergytypes" : return "NormalAllergyType";

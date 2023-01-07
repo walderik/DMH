@@ -13,10 +13,10 @@ CREATE TABLE TypesOfFood (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) 
 CREATE TABLE Wealths (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
 CREATE TABLE Telegrams (Id int(11) NOT NULL AUTO_INCREMENT, Deliverytime datetime NOT NULL, Sender varchar(255) NOT NULL, SenderCity varchar(255) NOT NULL, Reciever varchar(255) NOT NULL, RecieverCity varchar(255) NOT NULL, Message text NOT NULL, OrganizerNotes text, LARPsid int(11) NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE PlaceOfResidence (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
-CREATE TABLE TitleDeeds (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Location varchar(255) NOT NULL, Tradeable tinyint(1), PRIMARY KEY (Id));
+CREATE TABLE TitleDeeds (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Location varchar(255) NOT NULL, Tradeable tinyint(1), IsTradingPost tinyint(1), PRIMARY KEY (Id));
 CREATE TABLE TitleDeeds_Characters (TitleDeedsId int(11) NOT NULL, CharactersId int(11) NOT NULL, PRIMARY KEY (TitleDeedsId, CharactersId));
-CREATE TABLE Resources (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255), UnitSingular varchar(255), UnitPlural varchar(255), PriceSlowRiver int(11), PriceJunkCity int(11), PRIMARY KEY (Id));
-CREATE TABLE Resources_TitleDeeds (ResourcesId int(11) NOT NULL, TitleDeedsId int(11) NOT NULL, Quantity int(11), PRIMARY KEY (ResourcesId, TitleDeedsId));
+CREATE TABLE Resources (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255), UnitSingular varchar(255), UnitPlural varchar(255), PriceSlowRiver int(11), PriceJunkCity int(11), IsRare tinyint(1), PRIMARY KEY (Id));
+CREATE TABLE Resources_TitleDeeds (ResourcesId int(11) NOT NULL, TitleDeedsId int(11) NOT NULL, Quantity int(11), QuantityForUpgrade int(11), PRIMARY KEY (ResourcesId, TitleDeedsId));
 CREATE TABLE Housing (LARPid int(11) NOT NULL, PersonId int(11) NOT NULL, HouseId int(11) NOT NULL);
 CREATE TABLE OfficialTypes (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
 CREATE TABLE OfficialTypes_Persons (OfficialTypesId int(11) NOT NULL, RegistrationsId int(11) NOT NULL, PRIMARY KEY (OfficialTypesId, RegistrationsId));

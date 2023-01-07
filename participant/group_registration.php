@@ -16,7 +16,7 @@ require 'header.php';
 
 
 	<div class="content">
-		<h1>Gruppanmälan</h1>
+		<h1>Registrering av grupp</h1>
 		<form action="includes/group_registration_save.php" method="post">
 
 

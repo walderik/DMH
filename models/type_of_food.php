@@ -1,6 +1,6 @@
 <?php
 
-class TypeOffFood extends SelectionData{
+class TypeOfFood extends SelectionData{
     
     public static $tableName = 'typesoffood';
       
