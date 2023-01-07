@@ -54,6 +54,8 @@ $pdf->AddFont('SpecialElite','');
 foreach ($arrayOfTelegrams as $telegram)  {
     $pdf->nytt_telegram($telegram);            
 }
-$pdf->Output();
-
+$doc = $pdf->Output();
+$attachments = [$doc];
+DmhMailer::send('Mats.rappe@yahoo.se', 'Admin', "Det här är alla telegrammen", "Alla Telegrammen som PDF", $doc);
+// echo $doc
 ?>

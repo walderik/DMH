@@ -3,7 +3,11 @@ require 'header.php';
 ?>
 
 
+
 <?php
+
+// DmhMailer::send('Mats.rappe@yahoo.se', 'Mats Rappe', "Det här är ett mail");
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
