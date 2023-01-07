@@ -34,4 +34,3 @@ if (isset($_SESSION['larp'])) {
 }
 
 // print_r($current_user);
-
