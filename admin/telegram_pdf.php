@@ -2,7 +2,6 @@
 # Läs mer på http://www.fpdf.org/
 
 require('../includes/fpdf185/fpdf.php');
-# $this->MultiCell(0,5,$txt);
 require '../includes/init.php';
 
 class TELEGRAM_PDF extends FPDF {
@@ -56,6 +55,5 @@ foreach ($arrayOfTelegrams as $telegram)  {
     $pdf->nytt_telegram($telegram);            
 }
 $pdf->Output();
-
 
 ?>
