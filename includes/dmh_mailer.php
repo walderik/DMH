@@ -15,7 +15,7 @@ class DmhMailer {
     public static $myName = "Död Mans Hand";
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
-    public static function send($to_email, $to_name, $text, $subject="Meddelande från Död Mans Hand", $attachments=[]) {
+    public static function send(string $to_email, string $to_name, string $text, string $subject="Meddelande från Död Mans Hand", ?array $attachments=[]) {
     
         global $current_larp;
         
@@ -38,13 +38,19 @@ class DmhMailer {
         // $mail->addAttachment('images/phpmailer_mini.png');
         //send the message, check for errors
         
-//         if (!is_null($attachments) && !empty($attachments)) {
-//             foreach ($attachments as $attachment) {
+        if (!is_null($attachments) && !empty($attachments)) {
+            foreach ($attachments as $name => $attachment) {
                 //                 $mail->addAttachment($attachment);
-                $mail->AddStringAttachment($attachment, 'doc.pdf', 'base64', 'application/pdf');
-//             }
-//         }
-        
+                if (is_null($name) || is_numeric($name)) {
+                    $name = $current_larp->Name;
+                }
+                if (!str_ends_with($name,'.pdf')) {
+                    $name = $name.'.pdf';
+                }
+                $mail->AddStringAttachment($attachment, $name, 'base64', 'application/pdf');
+            }
+        }
+
         
         $mail->isHTML(true);
         
