@@ -1,5 +1,5 @@
 <?php
-include_once 'db.inc.php';
+
 
 // First we check if the email and code exists...
 if (isset($_GET['email'], $_GET['code'])) {

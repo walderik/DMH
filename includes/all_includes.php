@@ -1,7 +1,6 @@
 <?php
 include_once 'dmh_mailer.php';
 include_once '../classes/dbh.php';
-include_once 'db.inc.php';
 include_once '../models/base_model.php';
 include_once '../models/selection_data.php';
 include_once '../models/experience.php';

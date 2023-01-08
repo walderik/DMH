@@ -39,23 +39,29 @@ class User extends BaseModel{
     # Update an existing group in db
     public function update()
     {
-        global $conn;
+        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
         
-        $stmt = $conn->prepare("UPDATE ".static::$tableName." SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
-        $stmt->bind_param("ssissi", $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Id);
-
-        $stmt->execute();
+        if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
     }
     
     # Create a new group in db
     public function create()
     {
-        global $conn;
+        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Email, Password, IsAdmin, ActivationCode, EmailChangeCode) VALUES (?,?,?,?,?)");
         
-        $stmt = $conn->prepare("INSERT INTO ".static::$tableName." (Email, Password, IsAdmin, ActivationCode, EmailChangeCode) VALUES (?,?,?,?,?)");
-        $stmt->bind_param("siississsiii", $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode);
-
-        $stmt->execute();
+        if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
     }
     
     public function getPersons()
