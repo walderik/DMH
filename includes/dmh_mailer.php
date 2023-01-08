@@ -12,7 +12,7 @@ use PHPMailer\PHPMailer\Exception;
 class DmhMailer {
     
     public static $from = 'dmh@berghemsvanner.se';
-    public static $myName = "Död Mans Hand";
+    public static $myName = utf8_decode("Död Mans Hand");
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
     public static function send(string $to_email, string $to_name, string $text, string $subject="Meddelande från Död Mans Hand", ?array $attachments=[]) {
@@ -26,7 +26,7 @@ class DmhMailer {
         //Set an alternative reply-to address
         $mail->addReplyTo(static::$from, static::$myName);
         //Set who the message is to be sent to
-        $mail->addAddress('mats.rappe@yahoo.se', $to_name);
+        $mail->addAddress('mats.rappe@yahoo.se', utf8_decode($to_name));
         //Set the subject line
         $mail->Subject = utf8_decode($subject);
         //Read an HTML message body from an external file, convert referenced images to embedded,
@@ -59,11 +59,9 @@ class DmhMailer {
         <head>
             <meta charset='utf-8'>
             <title>$current_larp->Name</title>
-    		<link href='../includes/style.css' rel='stylesheet' type='text/css'>
-    		<link href='../includes/participant_style.css' rel='stylesheet' type='text/css'>
     	</head>
     	<body class='loggedin'>
-            Hej $to_name!<br />
+            Howdy $to_name!<br />
             <p>$text</p>
         
             <br />
