@@ -91,10 +91,10 @@ class Group extends BaseModel{
         return Wealth::loadById($this->WealthsId);
     }
     
-    public function getOrigin()
+    public function getPlaceOfResidence()
     {
         if (is_null($this->OriginsId)) return null;
-        return Origin::loadById($this->OriginsId);
+        return PlaceOfResidence::loadById($this->OriginsId);
     }
     
      public function getPerson()
