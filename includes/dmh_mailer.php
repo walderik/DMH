@@ -12,7 +12,7 @@ use PHPMailer\PHPMailer\Exception;
 class DmhMailer {
     
     public static $from = 'dmh@berghemsvanner.se';
-    public static $myName = utf8_decode("Död Mans Hand");
+    public static $myName = "Död Mans Hand";
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
     public static function send(string $to_email, string $to_name, string $text, string $subject="Meddelande från Död Mans Hand", ?array $attachments=[]) {
@@ -22,9 +22,9 @@ class DmhMailer {
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
         //Set who the message is to be sent from
-        $mail->setFrom(static::$from, static::$myName);
+        $mail->setFrom(static::$from, utf8_decode(static::$myName));
         //Set an alternative reply-to address
-        $mail->addReplyTo(static::$from, static::$myName);
+        $mail->addReplyTo(static::$from, utf8_decode(static::$myName));
         //Set who the message is to be sent to
         $mail->addAddress('mats.rappe@yahoo.se', utf8_decode($to_name));
         //Set the subject line
