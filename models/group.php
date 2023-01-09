@@ -13,7 +13,7 @@ class Group extends BaseModel{
     public $IntrigueIdeas;
     public $OtherInformation;
     public $WealthsId;
-    public $OriginsId;
+    public $PlaceOfResidenceId;
     public $PersonsId; # Gruppledaen
     
     public static $tableName = 'groups';
@@ -32,7 +32,7 @@ class Group extends BaseModel{
         if (isset($post['IntrigueIdeas'])) $group->IntrigueIdeas = $post['IntrigueIdeas'];
         if (isset($post['OtherInformation'])) $group->OtherInformation = $post['OtherInformation'];
         if (isset($post['WealthsId'])) $group->WealthsId = $post['WealthsId'];
-        if (isset($post['OriginsId'])) $group->OriginsId = $post['OriginsId'];
+        if (isset($post['PlaceOfResidenceId'])) $group->PlaceOfResidenceId = $post['PlaceOfResidenceId'];
         if (isset($post['PersonsId'])) $group->PersonsId = $post['PersonsId'];
         
         return $group;
@@ -50,10 +50,10 @@ class Group extends BaseModel{
         
         $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
                                                                   WantIntrigue=?, Description=?, IntrigueIdeas=?, OtherInformation=?,
-                                                                  WealthsId=?, OriginsId=?, PersonsId=? WHERE Id = ?");
+                                                                  WealthsId=?, PlaceOfResidenceId=?, PersonsId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
-            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->OriginsId, $this->PersonsId, $this->Id))) {
+            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->PlaceOfResidenceId, $this->PersonsId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -67,10 +67,10 @@ class Group extends BaseModel{
     {
         $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, ApproximateNumberOfMembers, NeedFireplace, Friends, Enemies,
                                                                     WantIntrigue, Description, IntrigueIdeas, OtherInformation,
-                                                                    WealthsId, OriginsId, PersonsId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+                                                                    WealthsId, PlaceOfResidenceId, PersonsId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
-            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->OriginsId, $this->PersonsId))) {
+            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->PlaceOfResidenceId, $this->PersonsId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -87,8 +87,8 @@ class Group extends BaseModel{
     
     public function getPlaceOfResidence()
     {
-        if (is_null($this->OriginsId)) return null;
-        return PlaceOfResidence::loadById($this->OriginsId);
+        if (is_null($this->PlaceOfResidenceId)) return null;
+        return PlaceOfResidence::loadById($this->PlaceOfResidenceId);
     }
     
      public function getPerson()
