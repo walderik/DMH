@@ -10,6 +10,7 @@ include_once '../models/intrigue_type.php';
 include_once '../models/larper_type.php';
 include_once '../models/normal_allergy_type.php';
 include_once '../models/official_type.php';
+include_once '../models/person.php';
 include_once '../models/place_of_residence.php';
 include_once '../models/selection_data.php';
 include_once '../models/telegram.php';

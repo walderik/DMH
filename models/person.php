@@ -1,6 +1,6 @@
 <?php
 
-class Group extends BaseModel{
+class Person extends BaseModel{
     
     public $Id;
     public $Name;
@@ -51,44 +51,53 @@ class Group extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        Global $current_user;
+        $person = new self();
+        $person->UsersId = $current_user->Id;
+        return $person;
     }
     
-    //TODO
-    # Update an existing group in db
+
+    # Update an existing person in db
     public function update()
     {
         
-        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
-                                                                  WantIntrigue=?, Description=?, IntrigueIdeas=?, OtherInformation=?,
-                                                                  WealthsId=?, OriginsId=?, PersonsId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
+                                                                  FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperiencesId=?,
+                                                                  TypesOfFoodId=?, LarperTypesId=?, UsersId=?, NotAcceptableIntrigues=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
-            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->OriginsId, $this->PersonsId, $this->Id))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
-            }
-            
+        if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
+            $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperiencesId,
+            $this->TypesOfFoodId, $this->LarperTypesId, $this->UsersId, $this->NotAcceptableIntrigues, $this->Id))) {
             $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        //TODO uppdatera normal allergy types
+        $stmt = null;
+        
+        
     }
     
-    //TODO
-    # Create a new group in db
+    # Create a new person in db
     public function create()
     {
-        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, ApproximateNumberOfMembers, NeedFireplace, Friends, Enemies,
-                                                                    WantIntrigue, Description, IntrigueIdeas, OtherInformation,
-                                                                    WealthsId, OriginsId, PersonsId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
-            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->OriginsId, $this->PersonsId))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
-            }
-            
+        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
+                                                                    FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperiencesId,
+                                                                    TypesOfFoodId, LarperTypesId, UsersId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, ?)");
+        
+        if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
+            $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperiencesId, 
+            $this->TypesOfFoodId, $this->LarperTypesId, $this->UsersId, $this->NotAcceptableIntrigues))) {
             $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+            
+        
+        //TODO spara normal allergy types
+        $stmt = null;
     }
     
     public function getExperience()
@@ -120,8 +129,9 @@ class Group extends BaseModel{
         return $AllergyTypes;
     }
     
+    
     public function getUser()
     {
-        //         return User::loadById($this->UsersId);
+        return User::loadById($this->UsersId);
     }
 }
