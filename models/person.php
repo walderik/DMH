@@ -73,8 +73,10 @@ class Person extends BaseModel{
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
-        //TODO uppdatera normal allergy types
         $stmt = null;
+        
+        deleteAllNormalAllergyTypes();
+        saveAllNormalAllergyTypes();
         
         
     }
@@ -96,7 +98,33 @@ class Person extends BaseModel{
         }
             
         
-        //TODO spara normal allergy types
+        saveAllNormalAllergyTypes();
+        $stmt = null;
+    }
+    
+    private function saveAllNormalAllergyTypes() {
+        foreach($this->NormalAllergyTypesIds as $Id) {
+            
+            $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyTypes_Persons (NormalAllergyTypesId, PersonsId) VALUES (?,?)");
+            
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+            }
+        }
+            $stmt = null;           
+    }
+
+    
+    private function deleteAllNormalAllergyTypes() {
+            $stmt = $this->connect()->prepare("DELETE FROM NormalAllergyTypes_Persons WHERE PersonsId = ?'");
+            
+            if (!$stmt->execute(array($this->Id))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+            }
         $stmt = null;
     }
     
