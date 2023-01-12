@@ -64,9 +64,9 @@ function check_membership(string $socialsecuritynumber="197503149317")
     $obj = json_decode($resp);
 //     print_r($obj);
 //     echo "<br />2<br />";
-    if (!isset($obj->response) || is_null($obj->response)) return 0;
+    if (!isset($obj->response) || is_null($obj->response)) return false;
     $response = $obj->response;
-    if (!isset($response->member_found) || is_null($response->member_found)) return 0;
+    if (!isset($response->member_found) || is_null($response->member_found)) return false;
     $member_found = $response->member_found;
 //     echo "<br />3<br />";
     return $member_found;
