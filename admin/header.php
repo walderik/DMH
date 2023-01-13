@@ -15,7 +15,7 @@ require '../includes/init.php';
 
 //Ifthe user isnt admin it may not see these pages
 if (!isset($_SESSION['admin'])) {
-    header('Location: /participant/index.php');
+    header('Location: ../participant/index.php');
     exit;
 }
 
