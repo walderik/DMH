@@ -57,7 +57,7 @@ require 'header.php';
 
 	<div class="content">
 		<h1>Registrering av deltagare</h1>
-		<form action="includes/person_registration_save.php" method="post">
+		<form action="includes/person_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $person->Id; ?>">
     		<input type="hidden" id="UsersId" name="UsersId" value="<?php echo $person->UsersId; ?>">
