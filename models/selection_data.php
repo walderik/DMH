@@ -111,23 +111,57 @@ class SelectionData extends BaseModel{
     }
     
     
+/*     <input type="radio" id="html" name="fav_language" value="HTML">
+    <label for="html">HTML</label><br>
+    <input type="radio" id="css" name="fav_language" value="CSS">
+    <label for="css">CSS</label><br>
+    <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+    <label for="javascript">JavaScript</label>
+    
+    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+    <label for="vehicle1"> I have a bike</label><br>
+    <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+    <label for="vehicle2"> I have a car</label><br>
+    <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+    <label for="vehicle3"> I have a boat</label><br>
+ */    
+    
+    
     # En dropdown där man kan välja den här
     public static function selectionDropdown(?bool $multiple=false, ?bool $required=true, ?bool $only_active=true){
         $selectionDatas = ($only_active) ? static::allActive() : static::all();
 //         $name   = ($multiple) ? (static::$tableName . "[]") : static::class ;
-        $name   = ($multiple) ? (strtolower(static::class) . "[]") : strtolower(static::class) ;
-        $option = ($multiple) ? ' multiple' : '';
-        $option = ($required) ? $option . ' required' : $option;
-        $size   = count($selectionDatas);
+//        $name   = ($multiple) ? (strtolower(static::class) . "[]") : strtolower(static::class) ;
+        $name   = strtolower(static::class);
         
+        //$option = ($multiple) ? ' multiple' : '';
+        $option = ($required) ? ' required' : '';
+        //$size   = count($selectionDatas);
+        $type = ($multiple) ? "checkbox" : "radio";
+        
+//         echo "<div class='selectionDropdown'>\n";
+//         echo "<select name='" . $name . "' id='" . static::$tableName . "' size=".$size." " . $option . ">\n";
+//         foreach ($selectionDatas as $selectionData) {
+//             echo "  <option value='" . $selectionData->Id . "' title='" . $selectionData->Description . "'>" . $selectionData->Name . "</option>\n";
+//         }
+//         echo "</select>\n";
+//         echo "</div>\n";
+
         echo "<div class='selectionDropdown'>\n";
-        echo "<select name='" . $name . "' id='" . static::$tableName . "' size=".$size." " . $option . ">\n";
+        //echo "<select name='" . $name . "' id='" . static::$tableName . "' size=".$size." " . $option . ">\n";
         foreach ($selectionDatas as $selectionData) {
-            echo "  <option value='" . $selectionData->Id . "' title='" . $selectionData->Description . "'>" . $selectionData->Name . "</option>\n";
+            echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Description . "'>\n";
+            echo "<label for='" . $selectionData->Id . "'>" .  $selectionData->Description . "</label><br>";
         }
-        echo "</select>\n";
         echo "</div>\n";
+        
+    
     }
+
+    
+
+
+    
     
     # Hjälptexter till dropdown som förklarar de olika valen.
     public static function helpBox(?bool $only_active=true){
