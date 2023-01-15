@@ -2,8 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link href="includes/style.css" rel="stylesheet" type="text/css">
-		<link href="includes/navigation.css" rel="stylesheet" type="text/css">
+		<link href="css/style.css" rel="stylesheet" type="text/css">
+		<link href="css/navigation.css" rel="stylesheet" type="text/css">
 <title>Insert title here</title>
 </head>
 <body class="loggedin"y>
