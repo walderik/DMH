@@ -150,8 +150,8 @@ class SelectionData extends BaseModel{
         echo "<div class='selectionDropdown'>\n";
         //echo "<select name='" . $name . "' id='" . static::$tableName . "' size=".$size." " . $option . ">\n";
         foreach ($selectionDatas as $selectionData) {
-            echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Description . "'>\n";
-            echo "<label for='" . $selectionData->Id . "'>" .  $selectionData->Description . "</label><br>";
+            echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Name . "'>\n";
+            echo "<label for='" . $selectionData->Id . "'>" .  $selectionData->Name . "</label><br>";
         }
         echo "</div>\n";
         
