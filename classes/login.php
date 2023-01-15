@@ -4,7 +4,7 @@
 class Login extends Dbh {
     
     protected function getUser($email, $password) {
-        $stmt = $this->connect()->prepare("SELECT Id, ActivationCode, IsAdmin , Password from users WHERE Email = ?;");
+        $stmt = $this->connect()->prepare("SELECT Id, ActivationCode, IsAdmin , Password from user WHERE Email = ?;");
                 
 
         

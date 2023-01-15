@@ -60,7 +60,7 @@ require 'header.php';
 		<form action="logic/person_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $person->Id; ?>">
-    		<input type="hidden" id="UsersId" name="UsersId" value="<?php echo $person->UsersId; ?>">
+    		<input type="hidden" id="UserId" name="UserId" value="<?php echo $person->UserId; ?>">
 
 
 			<p>
