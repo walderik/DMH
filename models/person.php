@@ -16,7 +16,7 @@ class Person extends BaseModel{
     public $LarperTypesId;
     public $UsersId; # Användare som registrerat personen
     public $NotAcceptableIntrigues;
-    public $NormalAllergyTypesIds;
+//     public $NormalAllergyTypesIds;
     
    
     
@@ -25,7 +25,7 @@ class Person extends BaseModel{
     
     public static function newFromArray($post){
         $person = static::newWithDefault();
-        if (isset($post['Id'])) $person->Id = $post['Id'];
+        if (isset($post['Id']))   $person->Id = $post['Id'];
         if (isset($post['Name'])) $person->Name = $post['Name'];
         if (isset($post['SocialSecurityNumber'])) $person->SocialSecurityNumber = $post['SocialSecurityNumber'];
         if (isset($post['PhoneNumber'])) $person->PhoneNumber = $post['PhoneNumber'];
@@ -42,8 +42,8 @@ class Person extends BaseModel{
         if (isset($post['NotAcceptableIntrigues'])) $person->NotAcceptableIntrigues = $post['NotAcceptableIntrigues'];
         
         
-        //Normal allergy types sparas i egen tabell eftersom de kan vara flera
-        if (isset($post['NormalAllergyTypesIds'])) $person->NormalAllergyTypesIds = $post['NormalAllergyType'];
+//         //Normal allergy types sparas i egen tabell eftersom de kan vara flera
+//         if (isset($post['NormalAllergyTypesIds'])) $person->NormalAllergyTypesIds = $post['NormalAllergyType'];
         
         return $person;
     }
@@ -147,7 +147,7 @@ class Person extends BaseModel{
         return LarperType::loadById($this->LarperTypesId);
     }
     
-    public function getNormalAllergyType()
+    public function getNormalAllergyTypes()
     {
         if (is_null($this->NormalAllergyTypesIds) or empty($this->NormalAllergyTypesIds)) return null;
         $AllergyTypes = array();

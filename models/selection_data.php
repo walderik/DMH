@@ -132,7 +132,8 @@ class SelectionData extends BaseModel{
         $selectionDatas = ($only_active) ? static::allActive() : static::all();
 //         $name   = ($multiple) ? (static::$tableName . "[]") : static::class ;
 //        $name   = ($multiple) ? (strtolower(static::class) . "[]") : strtolower(static::class) ;
-        $name   = strtolower(static::class);
+//         $name   = strtolower(static::class);
+        $name = static::class;
         
         //$option = ($multiple) ? ' multiple' : '';
         $option = ($required) ? ' required' : '';
@@ -150,8 +151,8 @@ class SelectionData extends BaseModel{
         echo "<div class='selectionDropdown'>\n";
         //echo "<select name='" . $name . "' id='" . static::$tableName . "' size=".$size." " . $option . ">\n";
         foreach ($selectionDatas as $selectionData) {
-            echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Name . "'>\n";
-            echo "<label for='" . $selectionData->Id . "'>" .  $selectionData->Name . "</label><br>";
+            echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "Id' value='" . $selectionData->Id . "'>\n";
+            echo "<label for='" . $selectionData->Id . "'>" .  $selectionData->Name . "</label><br>\n";
         }
         echo "</div>\n";
         

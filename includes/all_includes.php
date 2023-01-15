@@ -1,13 +1,13 @@
 <?php
 
 $root = $_SERVER['DOCUMENT_ROOT'];
-echo $root;
+// echo $root;
 include_once $root . '/includes/dmh_mailer.php'; 
 
 // include_once 'dmh_mailer.php';
-echo "<br />";
-echo getcwd();
-echo "<br />";
+// echo "<br />";
+// echo getcwd();
+// echo "<br />";
 include_once $root . '/classes/dbh.php';
 include_once $root . '/models/base_model.php';
 include_once $root . '/models/selection_data.php';
