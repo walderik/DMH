@@ -9,6 +9,15 @@ body {
   	background-color: #435165;
 }
 
+.required:after {
+    content:" *";
+    color: red;
+  }
+
+.required {
+  background: red;
+}
+
 .login-register {
 	display: flex;
     justify-content: center;

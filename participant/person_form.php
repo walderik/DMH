@@ -7,7 +7,7 @@ require 'header.php';
 ?>
 
     <nav id="navigation">
-      <a href="#" class="logo"><?php echo $current_larp->Name;?></a>
+      <a href="#" class="logo"><?php echo $current_larp->Name; ?></a>
       <ul class="links">
         <li><a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a></li>
        	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
@@ -57,7 +57,7 @@ require 'header.php';
 
 	<div class="content">
 		<h1>Registrering av deltagare</h1>
-		<form action="includes/person_form_save.php" method="post">
+		<form action="logic/person_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $person->Id; ?>">
     		<input type="hidden" id="UsersId" name="UsersId" value="<?php echo $person->UsersId; ?>">
@@ -69,15 +69,15 @@ require 'header.php';
 			<h2>Personuppgifter</h2>
 			<p>
 				<div class="question">
-					<label for="Name">För och efternamn</label>
+					<label for="Name">För och efternamn</label>&nbsp;<font style="color:red">*</font>
 					<br> <input type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="250" required>
 				</div>
 				<div class="question">
-					<label for="Email">E-post</label><br>
+					<label for="Email">E-post</label>&nbsp;<font style="color:red">*</font><br>
 					<input type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="250" required>
 				</div>
 				<div class="question">
-					<label for="SocialSecurityNumber">Personnummer</label><br> 
+					<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
 					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.</div>
 					<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
 					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}"  size="15" maxlength="13" required>
@@ -136,7 +136,7 @@ Det bör vara någon som inte är med på lajvet.</div>
 				<label for="NormalAllergyType">Har du av de vanligaste mat-allergierna?</label>
 				<br> 
 				<div class="explanation"><?php NormalAllergyType::helpBox(true); ?></div>
-				<?php NormalAllergyType::selectionDropdown(false,true); ?>
+				<?php NormalAllergyType::selectionDropdown(true,true); ?>
 			</div>
 			
 			<div class="question">
@@ -158,7 +158,7 @@ Det bör vara någon som inte är med på lajvet.</div>
 			Härmed samtycker jag till att föreningen Berghems
 			Vänner får spara och lagra mina uppgifter - såsom namn/
 			e-postadress/telefonnummer/hälsouppgifter/annat. Detta för att kunna
-			arrangera lajvet.<br>
+			arrangera lajvet.&nbsp;<font style="color:red">*</font><br>
 			<input type="checkbox" id="PUL" name="PUL" value="Ja" required>
   			<label for="PUL">Jag samtycker</label> 
 			</div>
