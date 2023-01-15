@@ -11,10 +11,10 @@ class Person extends BaseModel{
     public $FoodAllergiesOther;
     public $TypeOfLarperComment;
     public $OtherInformation;
-    public $ExperiencesId;
-    public $TypesOfFoodId;
-    public $LarperTypesId;
-    public $UsersId; # Användare som registrerat personen
+    public $ExperienceId;
+    public $TypeOfFoodId;
+    public $LarperTypeId;
+    public $UserId; # Användare som registrerat personen
     public $NotAcceptableIntrigues;
 //     public $NormalAllergyTypesIds;
     
@@ -35,10 +35,10 @@ class Person extends BaseModel{
         if (isset($post['TypeOfLarperComment'])) $person->TypeOfLarperComment = $post['TypeOfLarperComment'];
         if (isset($post['IntrigueIdeas'])) $person->IntrigueIdeas = $post['IntrigueIdeas'];
         if (isset($post['OtherInformation'])) $person->OtherInformation = $post['OtherInformation'];
-        if (isset($post['ExperiencesId'])) $person->ExperiencesId = $post['ExperiencesId'];
-        if (isset($post['TypesOfFoodId'])) $person->TypesOfFoodId = $post['TypesOfFoodId'];
-        if (isset($post['LarperTypesId'])) $person->LarperTypesId = $post['LarperTypesId'];
-        if (isset($post['UsersId'])) $person->UsersId = $post['UsersId'];
+        if (isset($post['ExperienceId'])) $person->ExperienceId = $post['ExperienceId'];
+        if (isset($post['TypeOfFoodId'])) $person->TypeOfFoodId = $post['TypeOfFoodId'];
+        if (isset($post['LarperTypeId'])) $person->LarperTypeId = $post['LarperTypeId'];
+        if (isset($post['UserId'])) $person->UserId = $post['UserId'];
         if (isset($post['NotAcceptableIntrigues'])) $person->NotAcceptableIntrigues = $post['NotAcceptableIntrigues'];
         
         
@@ -53,7 +53,7 @@ class Person extends BaseModel{
     public static function newWithDefault() {
         Global $current_user;
         $person = new self();
-        $person->UsersId = $current_user->Id;
+        $person->UserId = $current_user->Id;
         return $person;
     }
     
@@ -63,12 +63,12 @@ class Person extends BaseModel{
     {
         
         $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
-                                                                  FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperiencesId=?,
-                                                                  TypesOfFoodId=?, LarperTypesId=?, UsersId=?, NotAcceptableIntrigues=? WHERE Id = ?");
+                                                                  FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperienceId=?,
+                                                                  TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
-            $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperiencesId,
-            $this->TypesOfFoodId, $this->LarperTypesId, $this->UsersId, $this->NotAcceptableIntrigues, $this->Id))) {
+            $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId,
+            $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -86,12 +86,12 @@ class Person extends BaseModel{
     {
         
         $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
-                                                                    FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperiencesId,
-                                                                    TypesOfFoodId, LarperTypesId, UsersId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, ?)");
+                                                                    FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
+                                                                    TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
-            $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperiencesId, 
-            $this->TypesOfFoodId, $this->LarperTypesId, $this->UsersId, $this->NotAcceptableIntrigues))) {
+            $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId, 
+            $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -130,21 +130,21 @@ class Person extends BaseModel{
     
     public function getExperience()
     {
-        if (is_null($this->ExperiencesId)) return null;
-        return Experience::loadById($this->ExperiencesId);
+        if (is_null($this->ExperienceId)) return null;
+        return Experience::loadById($this->ExperienceId);
     }
     
     
     public function getTypeOfFood()
     {
-        if (is_null($this->TypesOfFoodId)) return null;
-        return TypeOfFood::loadById($this->TypesOfFoodId);
+        if (is_null($this->TypeOfFoodId)) return null;
+        return TypeOfFood::loadById($this->TypeOfFoodId);
     }
     
     public function getLarperType()
     {
-        if (is_null($this->LarperTypesId)) return null;
-        return LarperType::loadById($this->LarperTypesId);
+        if (is_null($this->LarperTypeId)) return null;
+        return LarperType::loadById($this->LarperTypeId);
     }
     
     public function getNormalAllergyTypes()
@@ -160,6 +160,6 @@ class Person extends BaseModel{
     
     public function getUser()
     {
-        return User::loadById($this->UsersId);
+        return User::loadById($this->UserId);
     }
 }

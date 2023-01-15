@@ -16,7 +16,7 @@ class Telegram extends BaseModel{
     public  $RecieverCity = 'Slow River';
     public  $Message;
     public  $OrganizerNotes;
-    public  $LARPsid;
+    public  $LARPid;
     
     public static $tableName = 'telegrams';
     public static $orderListBy = 'Deliverytime';
@@ -31,7 +31,7 @@ class Telegram extends BaseModel{
         if (isset($post['Message'])) $telegram->Message = $post['Message'];
         if (isset($post['OrganizerNotes'])) $telegram->OrganizerNotes = $post['OrganizerNotes'];
         if (isset($post['Id'])) $telegram->Id = $post['Id'];
-        if (isset($post['LARPsid'])) $telegram->LARPsid = $post['LARPsid'];
+        if (isset($post['LARPid'])) $telegram->LARPid = $post['LARPid'];
         
         return $telegram;
     }
@@ -44,7 +44,7 @@ class Telegram extends BaseModel{
         global $current_larp;
         $telegram = new self();
         $telegram->Deliverytime = $current_larp->StartTimeLARPTime;
-        $telegram->LARPsid = $current_larp->Id;
+        $telegram->LARPid = $current_larp->Id;
         return $telegram;
     }
     
@@ -52,7 +52,7 @@ class Telegram extends BaseModel{
     public static function allBySelectedLARP() {
         global $current_larp;
         
-        $sql = "SELECT * FROM ".static::$tableName." WHERE LARPsid = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM ".static::$tableName." WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($current_larp->Id))) {
@@ -96,10 +96,10 @@ class Telegram extends BaseModel{
     # Create a new telegram in db
     public function create()
     {
-        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPsid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity,
-            $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->LARPsid))) {
+            $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->LARPid))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();

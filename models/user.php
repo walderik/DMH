@@ -15,7 +15,7 @@ class User extends BaseModel{
     public $ActivationCode;
     public $EmailChangeCode;
     
-    public static $tableName = 'users';
+    public static $tableName = 'user';
     public static $orderListBy = 'Email';
     
     public static function newFromArray($post){

@@ -12,11 +12,11 @@ class Group extends BaseModel{
     public $Description;
     public $IntrigueIdeas;
     public $OtherInformation;
-    public $WealthsId;
+    public $WealthId;
     public $PlaceOfResidenceId;
-    public $PersonsId; # Gruppledaen
+    public $PersonId; # Gruppledaen
     
-    public static $tableName = 'groups';
+    public static $tableName = 'group';
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
@@ -31,9 +31,9 @@ class Group extends BaseModel{
         if (isset($post['Description'])) $group->Description = $post['Description'];
         if (isset($post['IntrigueIdeas'])) $group->IntrigueIdeas = $post['IntrigueIdeas'];
         if (isset($post['OtherInformation'])) $group->OtherInformation = $post['OtherInformation'];
-        if (isset($post['WealthsId'])) $group->WealthsId = $post['WealthsId'];
+        if (isset($post['WealthId'])) $group->WealthId = $post['WealthId'];
         if (isset($post['PlaceOfResidenceId'])) $group->PlaceOfResidenceId = $post['PlaceOfResidenceId'];
-        if (isset($post['PersonsId'])) $group->PersonsId = $post['PersonsId'];
+        if (isset($post['PersonId'])) $group->PersonId = $post['PersonId'];
         
         return $group;
     }
@@ -50,10 +50,10 @@ class Group extends BaseModel{
         
         $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
                                                                   WantIntrigue=?, Description=?, IntrigueIdeas=?, OtherInformation=?,
-                                                                  WealthsId=?, PlaceOfResidenceId=?, PersonsId=? WHERE Id = ?");
+                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
-            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->PlaceOfResidenceId, $this->PersonsId, $this->Id))) {
+            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -67,10 +67,10 @@ class Group extends BaseModel{
     {
         $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, ApproximateNumberOfMembers, NeedFireplace, Friends, Enemies,
                                                                     WantIntrigue, Description, IntrigueIdeas, OtherInformation,
-                                                                    WealthsId, PlaceOfResidenceId, PersonsId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+                                                                    WealthId, PlaceOfResidenceId, PersonId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
-            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthsId, $this->PlaceOfResidenceId, $this->PersonsId))) {
+            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -81,8 +81,8 @@ class Group extends BaseModel{
     
     public function getWealth()
     {
-        if (is_null($this->WealthsId)) return null;
-        return Wealth::loadById($this->WealthsId);
+        if (is_null($this->WealthId)) return null;
+        return Wealth::loadById($this->WealthId);
     }
     
     public function getPlaceOfResidence()
@@ -93,6 +93,6 @@ class Group extends BaseModel{
     
      public function getPerson()
      {
-//         return Person::loadById($this->PersonsId);
+//         return Person::loadById($this->PersonId);
     }
 }

@@ -2,6 +2,6 @@
 
 class NormalAllergyType extends SelectionData{
     
-    public static $tableName = 'normalallergytypes';
+    public static $tableName = 'normalallergytype';
       
 }

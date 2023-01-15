@@ -2,6 +2,6 @@
 
 class Experience extends SelectionData{
     
-    public static $tableName = 'experiences';
+    public static $tableName = 'experience';
       
 }
