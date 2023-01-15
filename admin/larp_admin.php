@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $larp_array = LARP::all();
         $resultCheck = count($larp_array);
         if ($resultCheck > 0) {
-            echo "<table id='larps' class='data'>";
+            echo "<table id='larp' class='data'>";
             echo "<tr><th>Id</td><th>Namn</th><th>Förkortning</th><th>Tag line</th><th>Startdatum</th><th>Slutdatum stad</th><th>Max deltagare</th><th>Sista anmälningsdag</th><th>Start lajvtid</th><th>Slut lajvtid</th><th></th><th></th></tr>\n";
             foreach ($larp_array as $larp) {
                 echo "<tr>\n";

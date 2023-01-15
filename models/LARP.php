@@ -16,7 +16,7 @@ class LARP extends BaseModel{
     public  $EndTimeLARPTime;
 
     
-    public static $tableName = 'LARPs';
+    public static $tableName = 'larp';
     public static $orderListBy = 'StartDate';
     
     public static function newFromArray($post){
