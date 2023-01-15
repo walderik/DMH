@@ -1,6 +1,6 @@
 <?php
 
-include_once 'all_includes.php';
+include_once '../../includes/all_includes.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
