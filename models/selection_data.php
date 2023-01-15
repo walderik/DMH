@@ -38,8 +38,9 @@ class SelectionData extends BaseModel{
     }
     
     public static function allActive() {
-        # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $stmt = static::connectStatic()->prepare("SELECT * FROM ".static::$tableName." WHERE active = 1 ORDER BY SortOrder;");
+        # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray 
+        # strtolower(static::class)
+        $stmt = static::connectStatic()->prepare("SELECT * FROM ".stastrtolower(static::class)." WHERE active = 1 ORDER BY SortOrder;");
         
         if (!$stmt->execute()) {
             $stmt = null;
@@ -58,7 +59,7 @@ class SelectionData extends BaseModel{
             
             $testrad = static::newWithDefault();
             $testrad->Id = 19;
-            $testrad->Name = static::$tableName;
+            $testrad->Name = strtolower(static::class);
             $testrad->Description = 'Tabellen som är tom';
             
             $resultArray[] = $testrad;
@@ -84,7 +85,7 @@ class SelectionData extends BaseModel{
     # Update an existing object in db
     public function update()
     {
-        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
+        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
         
         if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name, $this->Id))) {
                 $stmt = null;
@@ -99,7 +100,7 @@ class SelectionData extends BaseModel{
     public function create()
     {
         
-        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (SortOrder, Active, Description, Name) VALUES (?, ?, ?, ?)");
+        $stmt = $this->connect()->prepare("INSERT INTO ".strtolower(static::class)." (SortOrder, Active, Description, Name) VALUES (?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name))) {
                 $stmt = null;
@@ -139,17 +140,8 @@ class SelectionData extends BaseModel{
         $option = ($required) ? ' required' : '';
         //$size   = count($selectionDatas);
         $type = ($multiple) ? "checkbox" : "radio";
-        
-//         echo "<div class='selectionDropdown'>\n";
-//         echo "<select name='" . $name . "' id='" . static::$tableName . "' size=".$size." " . $option . ">\n";
-//         foreach ($selectionDatas as $selectionData) {
-//             echo "  <option value='" . $selectionData->Id . "' title='" . $selectionData->Description . "'>" . $selectionData->Name . "</option>\n";
-//         }
-//         echo "</select>\n";
-//         echo "</div>\n";
 
         echo "<div class='selectionDropdown'>\n";
-        //echo "<select name='" . $name . "' id='" . static::$tableName . "' size=".$size." " . $option . ">\n";
         foreach ($selectionDatas as $selectionData) {
             echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "'>\n";
             echo "<label for='" . $selectionData->Id . "'>" .  $selectionData->Name . "</label><br>\n";

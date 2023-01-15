@@ -16,7 +16,7 @@ class LARP extends BaseModel{
     public  $EndTimeLARPTime;
 
     
-    public static $tableName = 'larp';
+//     public static $tableName = 'larp';
     public static $orderListBy = 'StartDate';
     
     public static function newFromArray($post){
@@ -46,7 +46,7 @@ class LARP extends BaseModel{
     # Update an existing larp in db
     public function update()
     {
-        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
@@ -62,7 +62,7 @@ class LARP extends BaseModel{
     # Create a new larp in db
     public function create()
     {
-        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, Abbreviation, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $this->connect()->prepare("INSERT INTO ".strtolower(static::class)." (Name, Abbreviation, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,

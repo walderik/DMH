@@ -2,6 +2,6 @@
 
 class HousingRequest extends SelectionData{
     
-    public static $tableName = 'housingrequest';
+//     public static $tableName = 'housingrequest';
       
 }

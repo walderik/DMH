@@ -20,7 +20,7 @@ class Person extends BaseModel{
     
    
     
-    public static $tableName = 'persons';
+//     public static $tableName = 'persons';
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
@@ -62,7 +62,7 @@ class Person extends BaseModel{
     public function update()
     {
         
-        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
+        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperienceId=?,
                                                                   TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=? WHERE Id = ?");
         
@@ -85,7 +85,7 @@ class Person extends BaseModel{
     public function create()
     {
         
-        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
+        $stmt = $this->connect()->prepare("INSERT INTO ".strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
                                                                     TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, ?)");
         

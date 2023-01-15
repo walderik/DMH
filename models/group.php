@@ -16,7 +16,7 @@ class Group extends BaseModel{
     public $PlaceOfResidenceId;
     public $PersonId; # Gruppledaen
     
-    public static $tableName = 'group';
+//     public static $tableName = 'group';
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
@@ -48,7 +48,7 @@ class Group extends BaseModel{
     public function update()
     {
         
-        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
+        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
                                                                   WantIntrigue=?, Description=?, IntrigueIdeas=?, OtherInformation=?,
                                                                   WealthId=?, PlaceOfResidenceId=?, PersonId=? WHERE Id = ?");
         
@@ -65,7 +65,7 @@ class Group extends BaseModel{
     # Create a new group in db
     public function create()
     {
-        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, ApproximateNumberOfMembers, NeedFireplace, Friends, Enemies,
+        $stmt = $this->connect()->prepare("INSERT INTO ".strtolower(static::class)." (Name, ApproximateNumberOfMembers, NeedFireplace, Friends, Enemies,
                                                                     WantIntrigue, Description, IntrigueIdeas, OtherInformation,
                                                                     WealthId, PlaceOfResidenceId, PersonId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
         

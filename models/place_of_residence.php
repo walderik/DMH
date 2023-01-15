@@ -2,6 +2,6 @@
 
 class PlaceOfResidence extends SelectionData{
     
-    public static $tableName = 'placeofresidence';
+//     public static $tableName = 'placeofresidence';
       
 }

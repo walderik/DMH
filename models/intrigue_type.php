@@ -2,6 +2,6 @@
 
 class IntrigueType extends SelectionData{
     
-    public static $tableName = 'intriguetype';
+//     public static $tableName = 'intriguetype';
       
 }

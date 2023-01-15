@@ -2,6 +2,6 @@
 
 class TypeOfFood extends SelectionData{
     
-    public static $tableName = 'typeoffood';
+//     public static $tableName = 'typeoffood';
       
 }
