@@ -10,15 +10,15 @@ require 'header.php';
               <li class="dropdown"><a href="#" class="trigger-drop">Registrera<i class="arrow"></i></a>
               <ul class="drop">
                 <li><a href="person_form.php">Deltagare</a></li>
-                <li><a href="character_form.php">Karaktär</a></li>
+                <li><a href="role_form.php">Karaktär</a></li>
                 <li><a href="group_form.php">Grupp</a></li>
               </ul>
             </li>
           <ul class="links">
               <li class="dropdown"><a href="#" class="trigger-drop">Anmäl<i class="arrow"></i></a>
               <ul class="drop">
-                <li><a href="person_signup.php"><i class="fa-solid fa-user"></i>Anmäl deltagare och karaktär</a></li>
-                <li><a href="group_signup.php"><i class="fa-solid fa-user-group"></i>Anmäl grupp</a></li>
+                <li><a href="person_signup.php"></i>Deltagare</a></li>
+                <li><a href="group_signup.php"></i>Grupp</a></li>
               </ul>
             </li>
         	<?php 
