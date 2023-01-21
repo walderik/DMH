@@ -57,7 +57,13 @@ class Person extends BaseModel{
         return $person;
     }
     
+    public static function getPersonsForUser($userId) {
+        //TODO skapa en dropdown med alla personer för den usern
 
+    }
+    
+    
+    
     # Update an existing person in db
     public function update()
     {
