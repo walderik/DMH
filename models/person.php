@@ -63,7 +63,7 @@ class Person extends BaseModel{
         
         if (!$stmt->execute(array($userId))) {
             $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
+            header("location: ../participant/index.php?error=stmtfailed");
             exit();
         }
         
@@ -111,7 +111,7 @@ class Person extends BaseModel{
                 $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues))) {
             $this->connect()->rollBack();
             $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
+            header("location: ../participant/index.php?error=stmtfailed");
             exit();
         }
         
@@ -128,7 +128,7 @@ class Person extends BaseModel{
             $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?)");
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
+                header("location: ../participant/index.php?error=stmtfailed");
                 exit();
             }
         }
@@ -141,7 +141,7 @@ class Person extends BaseModel{
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
+            header("location: ../participant/index.php?error=stmtfailed");
             exit();
         }
         $stmt = null;

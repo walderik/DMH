@@ -111,15 +111,15 @@ class SelectionData extends BaseModel{
     
     
     # En dropdown där man kan välja den här
-    public static function selectionDropdown(?bool $multiple=false, ?bool $required=true, ?bool $only_active=true){
-        $selectionDatas = ($only_active) ? static::allActive() : static::all();
+    public static function selectionDropdown(?bool $multiple=false, ?bool $required=true){
+        $selectionDatas = static::allActive();
         $name = ($multiple) ? (static::class . "Id[]") : static::class."Id";
         
         //$option = ($multiple) ? ' multiple' : '';
         $option = ($required) ? ' required' : '';
         //$size   = count($selectionDatas);
         $type = ($multiple) ? "checkbox" : "radio";
-
+//TODO se till att required fungerar
         echo "<div class='selectionDropdown'>\n";
         foreach ($selectionDatas as $selectionData) {
             echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "'>\n";
