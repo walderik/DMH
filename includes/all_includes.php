@@ -1,6 +1,6 @@
 <?php
 
-$root = $_SERVER['DOCUMENT_ROOT'];
+global $root;
 // echo $root;
 include_once $root . '/includes/dmh_mailer.php'; 
 

@@ -1,6 +1,4 @@
 <?php
-// include_once '../includes/all_includes.php';
-
 
 // // We need to use sessions, so you should always start sessions using the below code.
 // session_start();
@@ -10,7 +8,10 @@
 //     exit;
 // }
 
-require '../includes/init.php';
+global $root;
+$root = $_SERVER['DOCUMENT_ROOT'];
+
+require $root . '/includes/init.php';
 
 
 //Ifthe user isnt admin it may not see these pages

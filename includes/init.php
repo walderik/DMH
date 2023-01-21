@@ -1,9 +1,8 @@
 <?php
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
+global $current_user, $current_larp, $root;
 
-include_once '../includes/all_includes.php';
-
-global $current_user, $current_larp;
+include_once $root . '/includes/all_includes.php';
 
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
