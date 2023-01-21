@@ -38,7 +38,7 @@ class User extends BaseModel{
     
     # Update an existing group in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE user SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Id))) {
             $stmt = null;
@@ -52,7 +52,7 @@ class User extends BaseModel{
     # Create a new group in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Email, Password, IsAdmin, ActivationCode, EmailChangeCode) VALUES (?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO user (Email, Password, IsAdmin, ActivationCode, EmailChangeCode) VALUES (?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode))) {
             $stmt = null;
@@ -64,6 +64,7 @@ class User extends BaseModel{
     }
     
     public function getPersons() {
-        // Get all Person baserat på User_id
+        return Person::getPersonsForUser($this->Id);
     }
+
 }

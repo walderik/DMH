@@ -58,13 +58,28 @@ class Person extends BaseModel{
     }
     
     public static function getPersonsForUser($userId) {
-        //TODO skapa en dropdown med alla personer för den usern
-
-    }
-    
-    public static function hasPerson($userId) {
-        //TODO returnera true/fale om usern har minst en person eller inte
+        $sql = "SELECT * FROM ".strtolower(static::class)." WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
         
+        if (!$stmt->execute(array($userId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
     }
     
     # Update an existing person in db
@@ -76,9 +91,9 @@ class Person extends BaseModel{
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId,
             $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, $this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
         }
         $stmt = null;  
         
