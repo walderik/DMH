@@ -1,8 +1,10 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-require('../includes/fpdf185/fpdf.php');
-require '../includes/init.php';
+global $root, $current_user;
+$root = $_SERVER['DOCUMENT_ROOT'];
+require $root . '/includes/fpdf185/fpdf.php';
+require $root . '/includes/init.php';
 
 class TELEGRAM_PDF extends FPDF {
     
