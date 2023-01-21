@@ -6,7 +6,7 @@ class BaseModel extends Dbh{
 //     public static $tableName = 'Set this!';
     public static $orderListBy = 'Set this!';
     
-    
+    # Hämta alla av den här sorten
     public static function all() {
         $sql = "SELECT * FROM ".strtolower(static::class)." ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
