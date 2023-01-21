@@ -56,7 +56,7 @@ require 'header.php';
 
 	<div class="content">
 		<h1>Registrering av karaktär</h1>
-		<form action="includes/person_form_save.php" method="post">
+		<form action="includes/role_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
 
@@ -64,6 +64,11 @@ require 'header.php';
 			<p>Vi vill veta vilken karaktär du vill spela. Om du vill spela en av lajvets sökta roller ber vi dig att kontakta arrangörerna innan du fyller i din anmälan.    
 Tänk på att din karaktär också måste godkännas av arrangörerna.    
 			</p>
+			<div class="question">
+				<label for="PersonId">Deltagare</label><br>
+				<div class="explanation">Vilken deltagare vill du registrera en karaktär för?</div>
+				<?php echo Person::getPersonsForUser($current_user->Id); ?>
+			</div>
 
 			<div class="question">
 				<label for="Name">Karaktärens namn</label>
@@ -105,7 +110,7 @@ Tänk på att din karaktär också måste godkännas av arrangörerna.
             </div>
 				
 			<div class="question">
-				<label for="ReasonForBeingInSlowRiver">ReasonForBeingInSlowRiver</label><br> 
+				<label for="ReasonForBeingInSlowRiver">Varför befinner sig karaktären i Slow River?</label><br> 
 				<div class="explanation">Självklart har din karaktär en anledning att vara i just den här hålan. Om din karaktär bor här så finns det en anledning att bo kvar.    
 Är du besökande så lär det finnas en bra anledning att inte bara åka vidare efter en natts vila, utan stanna till ett par nätter.    
 Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</div>
@@ -119,7 +124,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 					Om du var med förra året med din karaktär, vad hände med din karaktär som är bra att komma ihåg? Gjorde den några särskilt bra affärer? Var den med i en duell? Blev den svindlad eller svindlade den någon? Hur gick det med kärleken?<br><br>
 					Har din karaktär gjort något minnesvärt tidigare år?
 				</div>
-				<textarea id="PreviousLarps" name="PreviousLarps" rows="4" cols="100"><?php echo $role->PreviousLarps; ?></textarea>
+				<textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100"><?php echo $role->PreviousLarps; ?></textarea>
 			</div>
 			<div class="question">
 				<label for="Religion">Religion</label><br>
@@ -127,31 +132,35 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 				<input type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="250" required>
 			</div>
 			<div class="question">
-				<label for="DarkSecret">DarkSecret</label><br> 
-				<div class="explanation">Beskriv karaktären.</div>
-				<textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100"><?php echo $role->DarkSecret; ?></textarea>
-			</div>
-			<div class="question">
-				<label for="DarkSecretIntrigueIdeas">DarkSecretIntrigueIdeas</label><br>
-				<input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required>
-			</div>
-			<div class="question">
-				<label for="IntrigueSuggestions">IntrigueSuggestions</label><br> 
-				<div class="explanation">Beskriv karaktären.</div>
-				<textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100"><?php echo $role->IntrigueSuggestions; ?></textarea>
-			</div>
-			<div class="question">
-				<label for="NotAcceptableIntrigues">NotAcceptableIntrigues</label><br>
-				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="250" required>
-			</div>
-
-
-
-			<div class="question">
 				<label for="WealthsId">Hur rik är karaktären?</label><br>
        			<div class="explanation">Om du anser att du har rikedom 3 eller högre förväntas du i regel ha någon form av affärer på gång. Det kan vara att sälja saker din gård producerat, leta guld eller nästan vad som helst som gör att man inte är fattig längre.   Det kommer att vara ett begränsat antal stenrika på lajvet och vi godkänner i regel inte nya. Undantag kan naturligtvis förekomma om det gynnar lajvet.   Däremot är Död Mans Hand ett kampanjlajv så det går att spela sig till att bli stenrik. Det går också att bli fattig om man är stenrik.<?php Wealth::helpBox(true); ?></div>
                 <?php Wealth::selectionDropdown(false,true); ?>
             </div>
+
+			<div class="question">
+				<label for="DarkSecret">Mörk hemlighet</label><br> 
+				<div class="explanation">Alla har någonting de inte vill berätta så gärna för andra. Vad har din karaktär för mörk hemlighet?    
+Du måste ange en mörk hemlighet.    
+Det kan kännas svårt att göra karaktären sårbar på det här sättet, men försök. Det ger mer spännande spel.</div>
+				<textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" required><?php echo $role->DarkSecret; ?> </textarea>
+			</div>
+			<div class="question">
+				<label for="DarkSecretIntrigueIdeas">Mörk hemlighet - intrig ideer</label><br>
+				<div class="explanation">Hur kan vi spela på din mörka hemlighet?</div>
+				<input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required>
+			</div>
+			<div class="question">
+				<label for="IntrigueSuggestions">Intrigideer</label><br> 
+				<div class="explanation">Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar". </div>
+				<textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100"><?php echo $role->IntrigueSuggestions; ?></textarea>
+			</div>
+			<div class="question">
+				<label for="NotAcceptableIntrigues">Saker karaktären inte vill spela på</label><br>
+				<div class="explantion">Är det något den här karaktären aldrig skulle göra? Vill du helst undvika farligt spel är det också bra att ange.</div>
+				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="250" required>
+			</div>
+
+
 
 
 			<div class="question">
@@ -163,18 +172,8 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			</div>
 
 
-			
-
-			<div class="question">
-			Härmed samtycker jag till att föreningen Berghems
-			Vänner får spara och lagra mina uppgifter - såsom namn/
-			e-postadress/telefonnummer/hälsouppgifter/annat. Detta för att kunna
-			arrangera lajvet.<br>
-			<input type="checkbox" id="Rules" name="Rules" value="Ja" required>
-  			<label for="Rules">Jag samtycker</label> 
-			</div>
-
-			  <input type="submit" value="Registrera">
+		
+			<input type="submit" value="Registrera">
 		</form>
 	</div>
 
