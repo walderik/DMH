@@ -67,12 +67,8 @@ class Person extends BaseModel{
         
     }
     
-    
-    
     # Update an existing person in db
-    public function update()
-    {
-        
+    public function update() {
         $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperienceId=?,
                                                                   TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=? WHERE Id = ?");
@@ -89,8 +85,7 @@ class Person extends BaseModel{
     }
     
     # Create a new person in db
-    public function create()
-    {
+    public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
@@ -105,24 +100,14 @@ class Person extends BaseModel{
             exit();
         }
         
-        $last_id = $connection->lastInsertId();
-        $this->Id = $last_id;
-        
+        $this->Id = $connection->lastInsertId();
         $stmt = null;
     }
     
     # Spara den här relationen
     public function saveAllNormalAllergyTypes(Array $normalAllergyTypeId) {
-        print_r($this);
-        echo "<br />";
-        print_r($normalAllergyTypeId);
-        echo "<br />";
         foreach($normalAllergyTypeId as $Id) {
-            print_r($Id);
-            echo "<br />";
             $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?)");
-            print_r($stmt);
-            echo "<br />";
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");

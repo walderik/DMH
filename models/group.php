@@ -46,8 +46,7 @@ class Group extends BaseModel{
     
     
     # Update an existing group in db
-    public function update()
-    {
+    public function update() {
         
         $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
                                                                   WantIntrigue=?, Description=?, IntrigueIdeas=?, OtherInformation=?,
@@ -64,9 +63,9 @@ class Group extends BaseModel{
     }
     
     # Create a new group in db
-    public function create()
-    {
-        $stmt = $this->connect()->prepare("INSERT INTO ".strtolower(static::class)." (Name, ApproximateNumberOfMembers, NeedFireplace, Friends, Enemies,
+    public function create() {
+        $connection = $this->connect();
+        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, ApproximateNumberOfMembers, NeedFireplace, Friends, Enemies,
                                                                     WantIntrigue, Description, IntrigueIdeas, OtherInformation,
                                                                     WealthId, PlaceOfResidenceId, PersonId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
         
@@ -76,26 +75,24 @@ class Group extends BaseModel{
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
-        
+
+        $this->Id = $connection->lastInsertId();
         $stmt = null;
     }
     
-    public function getWealth()
-    {
+    public function getWealth() {
         if (is_null($this->WealthId)) return null;
         return Wealth::loadById($this->WealthId);
     }
     
-    public function getPlaceOfResidence()
-    {
+    public function getPlaceOfResidence() {
         if (is_null($this->PlaceOfResidenceId)) return null;
         return PlaceOfResidence::loadById($this->PlaceOfResidenceId);
     }
     
-     public function getPerson()
-     {
+     public function getPerson() {
          return Person::loadById($this->PersonId);
-    }
+     }
     
     
 }

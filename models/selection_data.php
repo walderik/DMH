@@ -11,7 +11,7 @@ class SelectionData extends BaseModel{
     //public static $tableName = 'wealths';
     public static $orderListBy = 'SortOrder';
     
-    public static function newFromArray($post){
+    public static function newFromArray($post) {
         $selectionData = static::newWithDefault();
         if (isset($post['SortOrder'])) $selectionData->SortOrder = $post['SortOrder'];
         if (isset($post['Active'])) {
@@ -51,65 +51,61 @@ class SelectionData extends BaseModel{
         }
         
         
-        if ($stmt->rowCount() == 0) {
-
-            $testrad = static::newWithDefault();
-            $testrad->Id = 1;
-            $testrad->Name = 'Inget data finns ännu i:';
-            $testrad->Description = 'Notering för admins';
-            $resultArray[] = $testrad;
+//         if ($stmt->rowCount() == 0) {
+//             $testrad = static::newWithDefault();
+//             $testrad->Id = 1;
+//             $testrad->Name = 'Inget data finns ännu i:';
+//             $testrad->Description = 'Notering för admins';
+//             $resultArray[] = $testrad;
             
-            $testrad = static::newWithDefault();
-            $testrad->Id = 2;
-            $testrad->Name = strtolower(static::class);
-            $testrad->Description = 'Tabellen som är tom';
+//             $testrad = static::newWithDefault();
+//             $testrad->Id = 2;
+//             $testrad->Name = strtolower(static::class);
+//             $testrad->Description = 'Tabellen som är tom';
             
-            $resultArray[] = $testrad;
-            $testrad = static::newWithDefault();
-            $testrad->Id = 3;
-            $testrad->Name = static::class;
-            $testrad->Description = 'Klassen som saknar object';
+//             $resultArray[] = $testrad;
+//             $testrad = static::newWithDefault();
+//             $testrad->Id = 3;
+//             $testrad->Name = static::class;
+//             $testrad->Description = 'Klassen som saknar object';
             
-            $resultArray[] = $testrad;
-
-        }
-        else {
+//             $resultArray[] = $testrad;
+//         }
+//         else {
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $resultArray = array();
             foreach ($rows as $row) {
                 $resultArray[] = static::newFromArray($row);
             }
-        }
+//         }
         $stmt = null;
         return $resultArray;
     }
     
     # Update an existing object in db
-    public function update()
-    {
+    public function update() {
         $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
         
         if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name, $this->Id))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
          }
             
          $stmt = null;
     }
     
     # Create a new telegram in db
-    public function create()
-    {
-        
-        $stmt = $this->connect()->prepare("INSERT INTO ".strtolower(static::class)." (SortOrder, Active, Description, Name) VALUES (?, ?, ?, ?)");
+    public function create() {
+        $connection = $this->connect();
+        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (SortOrder, Active, Description, Name) VALUES (?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
         }
-            
+        $this->Id = $connection->lastInsertId();
         $stmt = null;
     }   
     
