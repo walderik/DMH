@@ -44,6 +44,7 @@ class Group extends BaseModel{
         return new self();
     }
     
+    
     # Update an existing group in db
     public function update()
     {
@@ -93,6 +94,8 @@ class Group extends BaseModel{
     
      public function getPerson()
      {
-//         return Person::loadById($this->PersonId);
+         return Person::loadById($this->PersonId);
     }
+    
+    
 }

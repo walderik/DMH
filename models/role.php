@@ -20,11 +20,18 @@ class Role extends BaseModel{
     public $WealthId;
     public $PlaceOfResidenceId;
     public $Photo;
+    public $Birthplace;
     public $CharactersWithRelations;
     
- 
+
     
     public static $orderListBy = 'Name';
+    
+    
+    # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
+    public static function newWithDefault() {
+        return new self();
+    }
     
 
 }
