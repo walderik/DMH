@@ -120,8 +120,11 @@ class Person extends BaseModel{
     }
     
     # Spara den här relationen
-    public function saveAllNormalAllergyTypes(Array $normalAllergyTypeId) {
-        foreach($normalAllergyTypeId as $Id) {
+    public function saveAllNormalAllergyTypes($post) {
+        if (!isset($post['NormalAllergyTypeId'])) {
+            return; 
+        }
+        foreach($post['NormalAllergyTypeId'] as $Id) {
             $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?)");
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;

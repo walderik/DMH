@@ -10,28 +10,22 @@ print_r($_POST);
 echo "<br />";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
+
     $operation = $_POST['operation'];
     if ($operation == 'insert') {
         $person = Person::newFromArray($_POST);
-        echo '$person :<br>';
-        print_r($person);
-        echo "<br />";
         $person->create();
-        if (isset($_POST['NormalAllergyTypeId'])) {
-            echo "Sätter NormalAllergyTypeId <br />";
-            $person->saveAllNormalAllergyTypes($_POST['NormalAllergyTypeId']);
-        }
+        $person->saveAllNormalAllergyTypes($_POST);
     } elseif ($operation == 'delete') {
         Person::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         
         $person = Person::newFromArray($_POST);
         $person->update();
-//         deleteAllNormalAllergyTypes();
-//         saveAllNormalAllergyTypes();
+        $person->deleteAllNormalAllergyTypes();
+        $person->saveAllNormalAllergyTypes($_POST);
     } else {
         echo $operation;
     }
-//     header('Location: '.$root.'/participant/index.php');
+    header('Location: '.$root.'/participant/index.php');
 }
