@@ -25,7 +25,7 @@ class Login extends Dbh {
         $userRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if (!password_verify($password, $userRows[0]["Password"])) {
             $stmt = null;
-            header("location: ../index.php?error=userNotFound!!");
+            header("location: ../index.php?error=userNotFound");
             exit();
         }
             
@@ -39,7 +39,7 @@ class Login extends Dbh {
         if ($actiavtionCode !== 'activated') {
             //Kontot är inte aktiverat
             $stmt = null;
-            header("location: ../index.php?error=accountNotActivated".print_r($userRows[0]));
+            header("location: ../index.php?error=accountNotActivated"));
             exit();
         }
         

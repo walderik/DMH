@@ -2,6 +2,10 @@
 
 require 'header.php';
 
+if (!Person::hasPerson($current_user->Id)) {
+    header('Location: index.php&error=no_person');
+    exit;
+}
 
 ?>
 

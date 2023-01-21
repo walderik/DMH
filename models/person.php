@@ -62,6 +62,11 @@ class Person extends BaseModel{
 
     }
     
+    public static function hasPerson($userId) {
+        //TODO returnera true/fale om usern har minst en person eller inte
+        
+    }
+    
     
     
     # Update an existing person in db
