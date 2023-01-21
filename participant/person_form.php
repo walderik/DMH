@@ -99,7 +99,7 @@ Det bör vara någon som inte är med på lajvet.</div>
 			<h2>Lajvrelaterat</h2>
 			
 			<div class="question">
-				<label for="LarperTypesId">Vilken typ av lajvare är du?</label><br>
+				<label for="LarperTypesId">Vilken typ av lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
        			<div class="explanation">Tänk igenom ditt val noga. Det är det här som i första hand kommer 
        			att avgöra hur mycket energi arrangörerna kommer lägga ner på dina intriger.     
        			Är du ny på lajv? Vi rekommenderar då att du inte väljer alternativ Myslajvare. 
@@ -113,7 +113,7 @@ Det bör vara någon som inte är med på lajvet.</div>
 					<br> <input type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="250">
 				</div>
 			<div class="question">
-				<label for="ExperiencesId">Hur erfaren lajvare är du?</label><br>
+				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
        			<div class="explanation"><?php Experience::helpBox(true); ?></div>
                 <?php Experience::selectionDropdown(false,true); ?>
             </div>
@@ -126,7 +126,7 @@ Det bör vara någon som inte är med på lajvet.</div>
 
 			<h2>Hälsa</h2>
 			<div class="question">
-				<label for="TypesOfFoodId">Viken typ av mat vill du äta?</label>
+				<label for="TypesOfFoodId">Viken typ av mat vill du äta?</label>&nbsp;<font style="color:red">*</font>
 				<br> 
 				<div class="explanation"><?php TypeOfFood::helpBox(true); ?></div>
 				<?php TypeOfFood::selectionDropdown(false,true); ?>
