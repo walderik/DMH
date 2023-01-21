@@ -79,58 +79,63 @@ class Person extends BaseModel{
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
-        $stmt = null;
-        
-        deleteAllNormalAllergyTypes();
-        saveAllNormalAllergyTypes();
-        
+        $stmt = null;  
         
     }
     
     # Create a new person in db
     public function create()
     {
-        
-        $stmt = $this->connect()->prepare("INSERT INTO ".strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
+        $connection = $this->connect();
+        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
                                                                     TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
-            $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId, 
-            $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues))) {
+                $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId, 
+                $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues))) {
+            $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
-            
         
-        saveAllNormalAllergyTypes();
+        $last_id = $connection->lastInsertId();
+        $this->Id = $last_id;
+        
         $stmt = null;
     }
     
-    private function saveAllNormalAllergyTypes() {
-        foreach($this->NormalAllergyTypesIds as $Id) {
-            
-            $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyTypes_Persons (NormalAllergyTypesId, PersonsId) VALUES (?,?)");
-            
+    # Spara den här relationen
+    public function saveAllNormalAllergyTypes(Array $normalAllergyTypeId) {
+        print_r($this);
+        echo "<br />";
+        print_r($normalAllergyTypeId);
+        echo "<br />";
+        foreach($normalAllergyTypeId as $Id) {
+            print_r($Id);
+            echo "<br />";
+            $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?)");
+            print_r($stmt);
+            echo "<br />";
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
             }
         }
-            $stmt = null;           
+        $stmt = null;           
     }
 
     
-    private function deleteAllNormalAllergyTypes() {
-            $stmt = $this->connect()->prepare("DELETE FROM NormalAllergyTypes_Persons WHERE PersonsId = ?'");
-            
-            if (!$stmt->execute(array($this->Id))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
-            }
+    public function deleteAllNormalAllergyTypes() {
+        $stmt = $this->connect()->prepare("DELETE FROM NormalAllergyType_Person WHERE PersonId = ?'");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
         $stmt = null;
     }
     
@@ -155,12 +160,27 @@ class Person extends BaseModel{
     
     public function getNormalAllergyTypes()
     {
-        if (is_null($this->NormalAllergyTypesIds) or empty($this->NormalAllergyTypesIds)) return null;
-        $AllergyTypes = array();
-        foreach($this->NormalAllergyTypesIds as $Id) {
-            $AllergyTypes[] = NormalAllergyType::loadById($Id);
+        $stmt = $this->connect()->prepare("SELECT * FROM NormalAllergyType_Person where PersonId = ? ORDER BY id;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
         }
-        return $AllergyTypes;
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = NormalAllergyType::loadById($row['NormalAllergyTypeId']);
+        }
+        $stmt = null;
+        return $resultArray;
     }
     
     
