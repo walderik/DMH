@@ -58,13 +58,13 @@ class SelectionData extends BaseModel{
             $resultArray[] = $testrad;
             
             $testrad = static::newWithDefault();
-            $testrad->Id = 19;
+            $testrad->Id = 2;
             $testrad->Name = strtolower(static::class);
             $testrad->Description = 'Tabellen som är tom';
             
             $resultArray[] = $testrad;
             $testrad = static::newWithDefault();
-            $testrad->Id = 29;
+            $testrad->Id = 3;
             $testrad->Name = static::class;
             $testrad->Description = 'Klassen som saknar object';
             
