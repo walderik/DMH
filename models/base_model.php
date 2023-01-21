@@ -32,6 +32,20 @@ class BaseModel extends Dbh{
         return $resultArray;
     }
     
+    # Hur många finns det av den här sorten
+    public static function numberOff() {
+        $sql = "SELECT * FROM ".strtolower(static::class)." ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+
+        return $stmt->rowCount();
+    }
+    
     public static function loadById($id)
     {
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray

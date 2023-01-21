@@ -34,7 +34,9 @@ class SelectionData extends BaseModel{
      
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new static();
+        $newOne = new static();
+        $newOne->SortOrder = (static::numberOff()+1)*100;
+        return $newOne;
     }
     
     public static function allActive() {
@@ -109,31 +111,12 @@ class SelectionData extends BaseModel{
         }
             
         $stmt = null;
-    }
-    
-    
-/*     <input type="radio" id="html" name="fav_language" value="HTML">
-    <label for="html">HTML</label><br>
-    <input type="radio" id="css" name="fav_language" value="CSS">
-    <label for="css">CSS</label><br>
-    <input type="radio" id="javascript" name="fav_language" value="JavaScript">
-    <label for="javascript">JavaScript</label>
-    
-    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-    <label for="vehicle1"> I have a bike</label><br>
-    <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-    <label for="vehicle2"> I have a car</label><br>
-    <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-    <label for="vehicle3"> I have a boat</label><br>
- */    
+    }   
     
     
     # En dropdown där man kan välja den här
     public static function selectionDropdown(?bool $multiple=false, ?bool $required=true, ?bool $only_active=true){
         $selectionDatas = ($only_active) ? static::allActive() : static::all();
-//         $name   = ($multiple) ? (static::$tableName . "[]") : static::class ;
-//        $name   = ($multiple) ? (strtolower(static::class) . "[]") : strtolower(static::class) ;
-//         $name   = strtolower(static::class);
         $name = ($multiple) ? (static::class . "Id[]") : static::class."Id";
         
         //$option = ($multiple) ? ' multiple' : '';
@@ -150,9 +133,6 @@ class SelectionData extends BaseModel{
         
     
     }
-
-    
-
 
     
     
