@@ -29,7 +29,7 @@ require 'header.php';
 			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger</a>	<br>		    			 			
 			    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål</a>	<br>		    			
-			    <a href="selection_data_admin.php?type=experiences">Erfarenhet</a>	<br>		    			
+			    <a href="selection_data_admin.php?type=experiences">Erfarenhet som lajvare</a>	<br>		    			
 			</p>
 		</div>
 	</body>
