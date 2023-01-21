@@ -27,5 +27,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo $operation;
     }
-    header('Location: '.$root.'/participant/index.php');
+    header('Location: ../index.php');
 }
