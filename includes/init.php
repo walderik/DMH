@@ -19,6 +19,7 @@ if (!isset($current_user) or is_null($current_user)) {
     header('Location: ../index.php');
     exit;
 }
+$current_user->Password = null;
 
 // If the user has not chosen a larp, and is not on the choose larp page or the larp admin pages
 $url = $_SERVER['REQUEST_URI'];
