@@ -40,7 +40,7 @@ class SelectionData extends BaseModel{
     public static function allActive() {
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray 
         # strtolower(static::class)
-        $stmt = static::connectStatic()->prepare("SELECT * FROM ".stastrtolower(static::class)." WHERE active = 1 ORDER BY SortOrder;");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM ".strtolower(static::class)." WHERE active = 1 ORDER BY SortOrder;");
         
         if (!$stmt->execute()) {
             $stmt = null;
