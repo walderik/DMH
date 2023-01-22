@@ -105,7 +105,8 @@ class SelectionData extends BaseModel{
                 if (!is_null($selected) && $selected == $selectionData->Id) 
                     $row_option = $row_option.' checked="checked"';
             } else {
-                
+                if (!is_null($selected) && !empty($selected) && in_array($selectionData->Id, $selected))
+                    $row_option = $row_option.' checked="checked"';
             }
             
             echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "' " . $row_option . ">\n";
