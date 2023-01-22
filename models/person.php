@@ -137,7 +137,8 @@ class Person extends BaseModel{
 
     
     public function deleteAllNormalAllergyTypes() {
-        $stmt = $this->connect()->prepare("DELETE FROM NormalAllergyType_Person WHERE PersonId = ?'");
+        $stmt = $this->connect()->prepare("DELETE FROM NormalAllergyType_Person WHERE PersonId = ?;");
+        
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
