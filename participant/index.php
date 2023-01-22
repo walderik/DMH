@@ -1,6 +1,6 @@
 <?php
 require 'header.php';
-
+include_once '../includes/error_handling.php';
 
 ?>
 
@@ -34,6 +34,8 @@ require 'header.php';
 		<div class="content">
 			<h1>Anmälan till <?php echo $current_larp->Name;?></h1>
 		</div>
+	  <div class="error"><?php echo $error_message; ?></div>
+	  <div class="message"><?php echo $message_message; ?></div>
 		<div class="registred_stuffs">
     		<h1>Deltagarna du hanterar</h1>
     		<?php 

@@ -1,6 +1,6 @@
 <?php
 require 'header.php';
-
+include_once '../includes/error_handling.php';
 
 ?>
 
@@ -15,6 +15,8 @@ require 'header.php';
 
 		<div class="content">
 			<h1>Administration av <?php echo $current_larp->Name;?></h1>
+        	  <div class="error"><?php echo $error_message; ?></div>
+        	  <div class="message"><?php echo $message_message; ?></div>
 			<p>
 			    <a href="telegram_admin.php">Telegram</a> <br> 
 			</p>

@@ -39,7 +39,7 @@ class Login extends Dbh {
         if ($actiavtionCode !== 'activated') {
             //Kontot är inte aktiverat
             $stmt = null;
-            header("location: ../index.php?error=accountNotActivated"));
+            header("location: ../index.php?error=accountNotActivated");
             exit();
         }
         
