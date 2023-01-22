@@ -134,7 +134,7 @@ require 'header.php';
 			</div>
 
 			<div class="question">
-				<label for="NormalAllergyType">Har du någon elelr några av de vanligaste mat-allergierna?</label>
+				<label for="NormalAllergyType">Har du någon eller några av de vanligaste mat-allergierna?</label>
 				<br> 
 				<div class="explanation"><?php NormalAllergyType::helpBox(true); ?></div>
 				<?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?>
