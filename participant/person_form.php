@@ -78,7 +78,8 @@ require 'header.php';
 				</div>
 				<div class="question">
 					<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
-					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN. Om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.</div>
+					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN.<br />
+					Om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.</div>
 					<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
 					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}"  size="15" maxlength="13" required>
 				</div>
@@ -136,7 +137,7 @@ require 'header.php';
 				<label for="NormalAllergyType">Har du av de vanligaste mat-allergierna?</label>
 				<br> 
 				<div class="explanation"><?php NormalAllergyType::helpBox(true); ?></div>
-				<?php NormalAllergyType::selectionDropdown(true,true); ?>
+				<?php NormalAllergyType::selectionDropdown(true,false); ?>
 			</div>
 			
 			<div class="question">
