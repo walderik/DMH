@@ -49,35 +49,11 @@ class SelectionData extends BaseModel{
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
-        
-        
-//         if ($stmt->rowCount() == 0) {
-//             $testrad = static::newWithDefault();
-//             $testrad->Id = 1;
-//             $testrad->Name = 'Inget data finns ännu i:';
-//             $testrad->Description = 'Notering för admins';
-//             $resultArray[] = $testrad;
-            
-//             $testrad = static::newWithDefault();
-//             $testrad->Id = 2;
-//             $testrad->Name = strtolower(static::class);
-//             $testrad->Description = 'Tabellen som är tom';
-            
-//             $resultArray[] = $testrad;
-//             $testrad = static::newWithDefault();
-//             $testrad->Id = 3;
-//             $testrad->Name = static::class;
-//             $testrad->Description = 'Klassen som saknar object';
-            
-//             $resultArray[] = $testrad;
-//         }
-//         else {
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-//         }
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
         $stmt = null;
         return $resultArray;
     }
@@ -90,8 +66,7 @@ class SelectionData extends BaseModel{
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
-         }
-            
+         }      
          $stmt = null;
     }
     
@@ -111,7 +86,7 @@ class SelectionData extends BaseModel{
     
     
     # En dropdown där man kan välja den här
-    public static function selectionDropdown(?bool $multiple=false, ?bool $required=true){
+    public static function selectionDropdown(?bool $multiple=false, ?bool $required=true) {
         $selectionDatas = static::allActive();
         $name = ($multiple) ? (static::class . "Id[]") : static::class."Id";
         
@@ -122,7 +97,7 @@ class SelectionData extends BaseModel{
 //TODO se till att required fungerar
         echo "<div class='selectionDropdown'>\n";
         foreach ($selectionDatas as $selectionData) {
-            echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "'>\n";
+            echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "' " . $option . ">\n";
             echo "<label for='" . $selectionData->Id . "'>" .  $selectionData->Name . "</label><br>\n";
         }
         echo "</div>\n";
@@ -133,7 +108,7 @@ class SelectionData extends BaseModel{
     
     
     # Hjälptexter till dropdown som förklarar de olika valen.
-    public static function helpBox(?bool $only_active=true){
+    public static function helpBox(?bool $only_active=true) {
         $selectionDatas = ($only_active) ? static::allActive() : static::all();
         echo "<div class='tooltip'>\n";
         echo "<table class='helpBox'>\n";
