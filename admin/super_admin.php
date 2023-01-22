@@ -18,6 +18,9 @@ include_once '../includes/error_handling.php';
 			<h1>Administration för alla lajv</h1>
 			<p>			    
 			    <a href="larp_admin.php">Lajv</a> <br> 
+			    </p>
+			    <h2>Basdata</h2>
+			    <p>
 			    <a href="selection_data_admin.php?type=wealth">Rikedom</a><br>
 			    <a href="selection_data_admin.php?type=typesoffood">Matalternativ</a><br>
 			    <a href="selection_data_admin.php?type=placeofresidence">Var karaktärer/grupper bor</a><br>
