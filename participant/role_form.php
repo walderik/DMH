@@ -2,7 +2,9 @@
 
 require 'header.php';
 
-if (!Person::hasPerson($current_user->Id)) {
+$current_persons = $current_user->getPersons();
+
+if (empty($current_persons)) {
     header('Location: index.php&error=no_person');
     exit;
 }
@@ -10,7 +12,7 @@ if (!Person::hasPerson($current_user->Id)) {
 ?>
 
     <nav id="navigation">
-      <a href="#" class="logo"><?php echo $current_larp->Name;?></a>
+      <a href="#" class="logo"><?php echo $current_larp->Name; ?></a>
       <ul class="links">
         <li><a href="index.php"><i class="fa-solid fa-house"></i>Hem</a></li>
        	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
@@ -65,13 +67,14 @@ if (!Person::hasPerson($current_user->Id)) {
     		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
 
 
-			<p>Vi vill veta vilken karaktär du vill spela. Om du vill spela en av lajvets sökta roller ber vi dig att kontakta arrangörerna innan du fyller i din anmälan.    
-Tänk på att din karaktär också måste godkännas av arrangörerna.    
+			<p>Vi vill veta vilken karaktär du vill spela.<br />
+			Om du vill spela en av lajvets sökta roller ber vi dig att kontakta arrangörerna innan du fyller i din anmälan.<br />
+			Tänk på att din karaktär också måste godkännas av arrangörerna.    
 			</p>
 			<div class="question">
 				<label for="PersonId">Deltagare</label><br>
 				<div class="explanation">Vilken deltagare vill du registrera en karaktär för?</div>
-				<?php echo Person::getPersonsForUser($current_user->Id); ?>
+				<?php selectionDropdownByArray('PersonId', $current_persons, false, true) ?>
 			</div>
 
 			<div class="question">
