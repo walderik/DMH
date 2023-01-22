@@ -34,5 +34,28 @@ require 'header.php';
 		<div class="content">
 			<h1>Anmälan till <?php echo $current_larp->Name;?></h1>
 		</div>
+		<div class="registred_stuffs">
+    		<h1>Deltagarna du hanterar</h1>
+    		<?php 
+    		$persons = $current_user->getPersons();
+    		if (empty($persons)) {
+    		    echo "<a href='person_form.php'>Registrera en deltagare.</a>";
+    		} else {
+    		    echo "<table class='data'>";
+    		    echo "<tr><th>Namn</th><th>Epost</th><th>Personnummer</th><th>Mobilnummer</th><th></th></tr>\n";
+    		    foreach ($persons as $person)  {
+    		        echo "<tr>\n";
+    		        echo "<td>" . $person->Name . "</td>\n";
+    		        echo "<td>" . $person->Email . "</td>\n";
+    		        echo "<td>" . $person->SocialSecurityNumber . "</td>\n";
+    		        echo "<td>" . $person->PhoneNumber . "</td>\n";
+    		        
+    		        echo "<td>" . "<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+    		        echo "</tr>\n";
+    		    }
+    		    echo "</table>";
+    		}
+    		?>
+		</div>
 	</body>
 </html>

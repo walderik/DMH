@@ -78,7 +78,7 @@ require 'header.php';
 				</div>
 				<div class="question">
 					<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
-					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.</div>
+					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN. Om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.</div>
 					<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
 					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}"  size="15" maxlength="13" required>
 				</div>
@@ -89,8 +89,8 @@ require 'header.php';
 				<div class="question">
 					<label for="EmergencyContact">Närmaste anhörig</label>
 					<br> 
-					<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678.    
-Det bör vara någon som inte är med på lajvet.</div>
+					<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678. <br />
+					Det bör vara någon som inte är med på lajvet.</div>
     				<textarea id="EmergencyContact" name="EmergencyContact" value="<?php echo $person->EmergencyContact; ?>" rows="4" cols="100"></textarea>
 				</div>
 			</p>
