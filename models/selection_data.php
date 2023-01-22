@@ -86,18 +86,29 @@ class SelectionData extends BaseModel{
     
     
     # En dropdown där man kan välja den här
-    public static function selectionDropdown(?bool $multiple=false, ?bool $required=true) {
+    public static function selectionDropdown(?bool $multiple=false, ?bool $required=true, $selected=null) {
         $selectionDatas = static::allActive();
         $name = ($multiple) ? (static::class . "Id[]") : static::class."Id";
-        
-        //$option = ($multiple) ? ' multiple' : '';
+
+        # TODO Hantera required för checkboxes när det behövs - Det går med Javascripts
+        //     https://tutorialdeep.com/knowhow/make-checkbox-field-required-form-html/
+        //     https://stackoverflow.com/questions/11787665/making-sure-at-least-one-checkbox-is-checked
+        //     Men enklast är nog att göra en kontroll när man sparar formuläret och ger ett felmeddelande om värdet saknas.
         $option = ($required) ? ' required' : '';
-        //$size   = count($selectionDatas);
         $type = ($multiple) ? "checkbox" : "radio";
-//TODO se till att required fungerar
+        
         echo "<div class='selectionDropdown'>\n";
-        foreach ($selectionDatas as $selectionData) {
-            echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "' " . $option . ">\n";
+        foreach ($selectionDatas as $selectionData) { 
+            $row_option = $option;
+            # Kolla om något är selected
+            if(!$multiple) {
+                if (!is_null($selected) && $selected == $selectionData->Id) 
+                    $row_option = $row_option.' checked="checked"';
+            } else {
+                
+            }
+            
+            echo "<input type='" . $type . "' id='" . $selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "' " . $row_option . ">\n";
             echo "<label for='" . $selectionData->Id . "'>" .  $selectionData->Name . "</label><br>\n";
         }
         echo "</div>\n";

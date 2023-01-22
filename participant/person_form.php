@@ -107,7 +107,7 @@ require 'header.php';
        			Erfarenhetsmässigt brukar man som ny lajvare ha mer nytta av mycket intriger än en 
        			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.   
        			Myslajvare får heller ingen handel och blir troligen varken fattigare eller rikare under lajvet.<br><?php LarperType::helpBox(true); ?></div>
-                <?php LarperType::selectionDropdown(false,true); ?>
+                <?php LarperType::selectionDropdown(false, true, $person->LarperTypeId); ?>
             </div>
 				<div class="question">
 					<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
@@ -116,7 +116,7 @@ require 'header.php';
 			<div class="question">
 				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
        			<div class="explanation"><?php Experience::helpBox(true); ?></div>
-                <?php Experience::selectionDropdown(false,true); ?>
+                <?php Experience::selectionDropdown(false, true, $person->ExperienceId); ?>
             </div>
 			<div class="question">
 				<label for="NotAcceptableIntrigues">Vilken typ av intriger vill du absolut inte spela på?</label>
@@ -130,7 +130,7 @@ require 'header.php';
 				<label for="TypesOfFoodId">Viken typ av mat vill du äta?</label>&nbsp;<font style="color:red">*</font>
 				<br> 
 				<div class="explanation"><?php TypeOfFood::helpBox(true); ?></div>
-				<?php TypeOfFood::selectionDropdown(false,true); ?>
+				<?php TypeOfFood::selectionDropdown(false, true, $person->LarperTypeId); ?>
 			</div>
 
 			<div class="question">
