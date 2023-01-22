@@ -16,11 +16,7 @@ class Person extends BaseModel{
     public $LarperTypeId;
     public $UserId; # Användare som registrerat personen
     public $NotAcceptableIntrigues;
-//     public $NormalAllergyTypesIds;
-    
-   
-    
-//     public static $tableName = 'persons';
+
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
@@ -40,10 +36,6 @@ class Person extends BaseModel{
         if (isset($post['LarperTypeId'])) $person->LarperTypeId = $post['LarperTypeId'];
         if (isset($post['UserId'])) $person->UserId = $post['UserId'];
         if (isset($post['NotAcceptableIntrigues'])) $person->NotAcceptableIntrigues = $post['NotAcceptableIntrigues'];
-        
-        
-//         //Normal allergy types sparas i egen tabell eftersom de kan vara flera
-//         if (isset($post['NormalAllergyTypesIds'])) $person->NormalAllergyTypesIds = $post['NormalAllergyType'];
         
         return $person;
     }
@@ -86,7 +78,7 @@ class Person extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperienceId=?,
-                                                                  TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=? WHERE Id = ?");
+                                                                  TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId,
@@ -104,7 +96,7 @@ class Person extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
-                                                                    TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, ?)");
+                                                                    TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId, 
@@ -125,7 +117,7 @@ class Person extends BaseModel{
             return; 
         }
         foreach($post['NormalAllergyTypeId'] as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?)");
+            $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?);");
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -138,8 +130,6 @@ class Person extends BaseModel{
     
     public function deleteAllNormalAllergyTypes() {
         $stmt = $this->connect()->prepare("DELETE FROM NormalAllergyType_Person WHERE PersonId = ?;");
-        
-        
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -148,36 +138,37 @@ class Person extends BaseModel{
         $stmt = null;
     }
     
-    public function getExperience()
-    {
+    public function getExperience() {
         if (is_null($this->ExperienceId)) return null;
         return Experience::loadById($this->ExperienceId);
     }
     
     
-    public function getTypeOfFood()
-    {
+    public function getTypeOfFood() {
         if (is_null($this->TypeOfFoodId)) return null;
         return TypeOfFood::loadById($this->TypeOfFoodId);
     }
     
-    public function getLarperType()
-    {
+    public function getLarperType() {
         if (is_null($this->LarperTypeId)) return null;
         return LarperType::loadById($this->LarperTypeId);
     }
     
-    public function getNormalAllergyTypes()
-    {
-        $stmt = $this->connect()->prepare("SELECT * FROM NormalAllergyType_Person where PersonId = ? ORDER BY id;");
+    public function getUser() {
+        return User::loadById($this->UserId);
+    }
+    
+    public function getNormalAllergyTypes() {
+        if (is_null($this->Id)) return array();
+        
+        $stmt = $this->connect()->prepare("SELECT * FROM NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
-        
-        
+
         if ($stmt->rowCount() == 0) {
             $stmt = null;
             return array();
@@ -192,9 +183,31 @@ class Person extends BaseModel{
         return $resultArray;
     }
     
-    
-    public function getUser()
-    {
-        return User::loadById($this->UserId);
+    public function getSelectedNormalAllergyTypeIds() {
+        if (is_null($this->Id)) return array();
+        
+        $stmt = $this->connect()->prepare("SELECT NormalAllergyTypeId FROM NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['NormalAllergyTypeId'];
+        }
+        $stmt = null;
+
+        return $resultArray;
     }
+    
+
 }
