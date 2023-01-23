@@ -34,8 +34,12 @@ include_once '../includes/error_handling.php';
 		<div class="content">
 			<h1>Anmälan till <?php echo $current_larp->Name;?></h1>
 		</div>
-	  <div class="error"><?php echo $error_message; ?></div>
-	  <div class="message"><?php echo $message_message; ?></div>
+	  <?php if (isset($error_message) && strlen($error_message)>0) {
+	      echo '<div class="error">'.$error_message.'</div>';
+	  }?>
+	  <?php if (isset($message_message) && strlen($message_message)>0) {
+	      echo '<div class="message">'.$message_message.'</div>';
+	  }?>
 		<div class="registred_stuffs">
     		<h1>Deltagarna du hanterar</h1>
     		<?php 

@@ -17,8 +17,12 @@ include_once 'includes/error_handling.php';
 	</head>
 	<body>
 	  <h1>Död mans hand anmälningssystem</h1>
-	  <div class="error"><?php echo $error_message; ?></div>
-	  <div class="message"><?php echo $message_message; ?></div>
+	  <?php if (isset($error_message) && strlen($error_message)>0) {
+	      echo '<div class="error">'.$error_message.'</div>';
+	  }?>
+	  <?php if (isset($message_message) && strlen($message_message)>0) {
+	      echo '<div class="message">'.$message_message.'</div>';
+	  }?>
 	  <div class="login-register">
 		<div class="login">
 			<h1>Logga in</h1>
