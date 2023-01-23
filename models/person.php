@@ -208,6 +208,19 @@ class Person extends BaseModel{
 
         return $resultArray;
     }
+
+    public function getRoles() {
+        return Role::getRolesForPerson($this->Id);
+    }
+    
+    public function getAgeAtLarp($date) {
+        $birthday = DateTime::createFromFormat('Ymd', substr($this->SocialSecurityNumber, 0, 7));
+        $larpStartDate = DateTime::createFromFormat('Y-m-d', substr($date, 0, 9));
+        $interval = date_diff($birthday, $larpStartDate);  
+         return $interval->format('%Y') . " år";
+    }
+    
+   
     
 
 }
