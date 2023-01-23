@@ -40,8 +40,9 @@ include_once '../includes/error_handling.php';
 	  <?php if (isset($message_message) && strlen($message_message)>0) {
 	      echo '<div class="message">'.$message_message.'</div>';
 	  }?>
-		<div class="registred_stuffs">
+		<div class="content">
     		<h1>Deltagarna du hanterar</h1>
+    		<p>
     		<?php 
     		$persons = $current_user->getPersons();
     		if (empty($persons)) {
@@ -62,6 +63,7 @@ include_once '../includes/error_handling.php';
     		    echo "</table>";
     		}
     		?>
+    		</p>
 		</div>
 	</body>
 </html>
