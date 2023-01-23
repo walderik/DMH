@@ -49,16 +49,27 @@ include_once '../includes/error_handling.php';
     		    echo "<a href='person_form.php'>Registrera en deltagare.</a>";
     		} else {
     		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Epost</th><th>Personnummer</th><th>Mobilnummer</th><th></th></tr>\n";
+    		    echo "<tr><th>Namn</th><th>Epost</th><th>Ålder på lajvet</th><th>Mobilnummer</th><th></th></tr>\n";
     		    foreach ($persons as $person)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $person->Name . "</td>\n";
     		        echo "<td>" . $person->Email . "</td>\n";
-    		        echo "<td>" . $person->SocialSecurityNumber . "</td>\n";
+    		        echo "<td>" . $person->getAgeAtLarp($current_larp->StartDate) . "</td>\n";
     		        echo "<td>" . $person->PhoneNumber . "</td>\n";
     		        
     		        echo "<td>" . "<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
     		        echo "</tr>\n";
+    		        $roles = $person->getRoles();
+    		        foreach ($roles as $role)  {
+    		            echo "<tr>\n";
+    		            echo "<td></td>\n";
+    		            echo "<td>" . $role->Name . "</td>\n";
+    		            echo "<td>" . $role->Profession . "</td>\n";
+    		            
+    		            echo "<td>" . "<a href='role_form.php?operation=update&id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+    		            echo "</tr>\n";
+    		            
+    		        }
     		    }
     		    echo "</table>";
     		}
