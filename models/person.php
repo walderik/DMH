@@ -220,7 +220,29 @@ class Person extends BaseModel{
          return $interval->format('%Y') . " år";
     }
     
-   
+    public function isRegistered($larp) {
+        //TODO kolla om personen är anmäld till lajvet
+        //Returnera "Ja" eller "Nej"
+        return "Nej";
+    }
     
 
+    public function isApproved($larp) {
+        //TODO kolla om personens anmälan är godkänd
+        //Returnera "Ja" eller "Nej" eller "" om den inte är anmäld än
+    }
+    
+    public function isMember($date) {
+        $year = substr($date, 0, 4);
+        
+        
+        $val = check_membership($this->SocialSecurityNumber, $year);
+        if ($val) return "Ja";
+        else return "Nej";
+        
+    }
+    
+    
+    
+    
 }

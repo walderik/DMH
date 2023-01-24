@@ -2,6 +2,17 @@
 require 'header.php';
 include_once '../includes/error_handling.php';
 
+
+function showStatusIcon($text) {
+    if ($text == "Ja") {
+        return '<img src="../images/ok-icon.png" alt="OK" width="30" height="30">';
+    }
+    if ($text == "Nej") {
+        return '<img src="../images/alert-icon.png" alt="Varning" width="30" height="30">';
+    }
+}
+
+
 ?>
 
         <nav id="navigation">
@@ -49,7 +60,7 @@ include_once '../includes/error_handling.php';
     		    echo "<a href='person_form.php'>Registrera en deltagare.</a>";
     		} else {
     		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Epost</th><th>Ålder på lajvet</th><th>Mobilnummer</th><th></th></tr>\n";
+    		    echo "<tr><th>Namn</th><th>Epost</th><th>Ålder på lajvet</th><th>Mobilnummer</th><th></th><th>Anmäld</th><th>Godkänd</th><th>Medlem</th></tr>\n";
     		    foreach ($persons as $person)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $person->Name . "</td>\n";
@@ -58,6 +69,9 @@ include_once '../includes/error_handling.php';
     		        echo "<td>" . $person->PhoneNumber . "</td>\n";
     		        
     		        echo "<td>" . "<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+    		        echo "<td align='center'>" . showStatusIcon($person->isRegistered($current_larp)) . "</td>\n";
+    		        echo "<td align='center'>" . showStatusIcon($person->isApproved($current_larp)) . "</td>\n";
+    		        echo "<td align='center'>" . showStatusIcon($person->isMember($current_larp->StartDate)) . "</td>\n";
     		        echo "</tr>\n";
     		        $roles = $person->getRoles();
     		        foreach ($roles as $role)  {
