@@ -2,8 +2,6 @@
 
 require 'header.php';
 
-// TODO Lägg till diverse kontroller som behövs för att kolla om man bland annat har en person registrerad.
-
 ?>
 
     <nav id="navigation">
