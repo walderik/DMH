@@ -5,7 +5,7 @@ require 'header.php';
 $current_persons = $current_user->getPersons();
 
 if (empty($current_persons)) {
-    header('Location: index.php&error=no_person');
+    header('Location: index.php?error=no_person');
     exit;
 }
 
