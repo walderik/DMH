@@ -33,6 +33,7 @@ if (empty($current_persons)) {
 			<p>Gruppledaren är den som arrangörerna kommer att kontakta när det
 				uppstår frågor kring gruppen.
 			</p>
+			
 			<div class="question">
 				<label for="PersonId">Gruppledare</label><br>
 				<div class="explanation">Vem är gruppledare?</div>
@@ -45,14 +46,14 @@ if (empty($current_persons)) {
 			
 			
 			<div class="question">
-				<label for="group_name">Gruppens namn</label><br> <input
-					type="text" id="group_name" name="group_name" required>
+				<label for="group_name">Gruppens namn</label><br> 
+				<input type="text" id="group_name" name="group_name" required>
 			</div>
 			
 			<div class="question">
-			<label for="group_description">Beskrivning av gruppen</label><br>
-			<textarea id="group_description" name="group_description" rows="4" cols="50">
-			</textarea>
+    			<label for="group_description">Beskrivning av gruppen</label><br>
+    			<textarea id="group_description" name="group_description" rows="4" cols="50">
+    			</textarea>
 			
 			 
 			</div>
