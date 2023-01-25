@@ -67,4 +67,9 @@ class User extends BaseModel{
         return Person::getPersonsForUser($this->Id);
     }
 
+    public function getUnregisteredGroups($larp) {
+        //TODO returnera grupper som inte ännu är anmälda och som användaren har en deltagare som är gruppledare för
+    }
+    
+    
 }

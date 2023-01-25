@@ -28,8 +28,8 @@ function showStatusIcon($text) {
           <ul class="links">
               <li class="dropdown"><a href="#" class="trigger-drop">Anmäl<i class="arrow"></i></a>
               <ul class="drop">
-                <li><a href="person_signup.php"></i>Deltagare</a></li>
-                <li><a href="group_signup.php"></i>Grupp</a></li>
+                <li><a href="person_registration_form.php"></i>Deltagare</a></li>
+                <li><a href="group_registration_form.php"></i>Grupp</a></li>
               </ul>
             </li>
         	<?php 

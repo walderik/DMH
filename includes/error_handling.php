@@ -61,6 +61,9 @@ function getErrorText($code) {
         case "no_person":
             $output = "Du måste registrera en deltagare först";
             break;
+        case "no_person":
+            $output = "Du måste registrera en grupp först";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }
