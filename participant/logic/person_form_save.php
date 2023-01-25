@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $person->create();
         $person->saveAllNormalAllergyTypes($_POST);
     } elseif ($operation == 'delete') {
+        $person->deleteAllNormalAllergyTypes();
         Person::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         
