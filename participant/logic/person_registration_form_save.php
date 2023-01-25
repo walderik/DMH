@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $larp_group->deleteAllIntrigueTypes();
         Registration::delete($_POST['Id']);
         
-        //Ta bort valda roller
+        //TODO Ta bort valda roller
     } elseif ($operation == 'update') {
         
         $registration = Registration::newFromArray($_POST);
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $registration->deleteAllIntrigueTypes();
         $registration->saveAllIntrigueTypes($_POST);
         
-        //Uppdatera valda roller
+        //TODO Uppdatera valda roller
         
     } else {
         echo $operation;

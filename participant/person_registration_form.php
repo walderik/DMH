@@ -70,7 +70,7 @@ if (empty($current_persons)) {
 			  	ännu inte godkänd och därför kan du bara välja 'Nej'.
 			  
 			</div>
-			<input type="radio" name="approval" value="" checked="checked" />
+			<input type="radio" name="approval" value="" required />
   			<label for="approval">Nej</label> 
 			</div>
 
