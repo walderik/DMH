@@ -2,7 +2,12 @@
 
 require 'header.php';
 
-// TODO Lägg till diverse kontroller som behövs för att kolla om man bland annat har en person registrerad.
+$current_persons = $current_user->getPersons();
+
+if (empty($current_persons)) {
+    header('Location: index.php&error=no_person');
+    exit;
+}
 
 ?>
 
@@ -22,21 +27,18 @@ require 'header.php';
 
 			<p>En grupp är en gruppering av roller som gör något tillsammans på
 				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett rallarlag.</p>
+				
+				
 			<h2>Gruppledare</h2>
-			<p>(TODO Ersätt det här med att välja en av sina registrerade personer, eller bara visa den man har om man bara har en person registrerad.)<br />
-			
-				Gruppledaren är den som arrangörerna kommer att kontakta när det
+			<p>Gruppledaren är den som arrangörerna kommer att kontakta när det
 				uppstår frågor kring gruppen.
-				<div class="question">
-				<label for="group_leader_name">Gruppledarens
-					namn</label><br> <input type="text" id="group_leader_name"
-					name="group_leader_name" required>
-					</div>
-					<div class="question">
-					<label for="email">E-post</label><br>
-				<input type="email" id="email" name="email" required>
-				</div>
 			</p>
+			<div class="question">
+				<label for="PersonId">Gruppledare</label><br>
+				<div class="explanation">Vem är gruppledare?</div>
+				<?php selectionDropdownByArray('PersonId', $current_persons, false, true) ?>
+			</div>
+			
 			
 			
 			<h2>Information om gruppen</h2>
