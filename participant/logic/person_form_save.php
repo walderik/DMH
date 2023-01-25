@@ -4,10 +4,10 @@ global $root, $current_user;
 $root = $_SERVER['DOCUMENT_ROOT'];
 require $root . '/includes/init.php';
 
-echo '$_POST :<br>';
-print_r($_POST);
+//echo '$_POST :<br>';
+//print_r($_POST);
 
-echo "<br />";
+//echo "<br />";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
