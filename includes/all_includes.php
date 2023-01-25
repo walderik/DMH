@@ -22,6 +22,7 @@ include_once $root . '/models/normal_allergy_type.php';
 include_once $root . '/models/official_type.php';
 include_once $root . '/models/person.php';
 include_once $root . '/models/place_of_residence.php';
+include_once $root . '/models/registration.php';
 include_once $root . '/models/role.php';
 include_once $root . '/models/selection_data.php';
 include_once $root . '/models/telegram.php';
