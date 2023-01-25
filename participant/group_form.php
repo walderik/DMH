@@ -22,7 +22,7 @@ if (empty($current_persons)) {
 
 	<div class="content">
 		<h1>Registrering av grupp</h1>
-		<form action="includes/group_registration_save.php" method="post">
+		<form action="logic/group_form_save.php" method="post">
 
 
 			<p>En grupp är en gruppering av roller som gör något tillsammans på
