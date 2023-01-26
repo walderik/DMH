@@ -1,6 +1,6 @@
 <?php
 
-# En selector där man kan välja i en aray
+# En selector där man kan välja i en array
 function selectionDropdownByArray(String $name_in, Array $selectionDatas, ?bool $multiple=false, ?bool $required=true, $selected=null) {
 //     $name = ($multiple) ? (static::class . "Id[]") : static::class."Id";
     $name = ($multiple) ? ($name_in . "Id[]") : $name_in."Id";
