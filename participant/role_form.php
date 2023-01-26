@@ -9,6 +9,46 @@ if (empty($current_persons)) {
     exit;
 }
 
+$role = Role::newWithDefault();
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $operation = "new";
+    if (isset($_GET['operation'])) {
+        $operation = $_GET['operation'];
+    }
+    if ($operation == 'new') {
+    } elseif ($operation == 'update') {
+        $role = Role::loadById($_GET['id']);
+    } else {
+    }
+}
+
+function default_value($field) {
+    GLOBAL $role;
+    $output = "";
+    
+    switch ($field) {
+        case "operation":
+            if (is_null($role->Id)) {
+                $output = "insert";
+                break;
+            }
+            $output = "update";
+            break;
+        case "action":
+            if (is_null($role->Id)) {
+                $output = "Lägg till";
+                break;
+            }
+            $output = "Uppdatera";
+            break;
+    }
+    
+    echo $output;
+}
+
+
+
 ?>
 
     <nav id="navigation">
@@ -19,50 +59,10 @@ if (empty($current_persons)) {
       </ul>
     </nav>
 
-    <?php
-    $role = Role::newWithDefault();
-    
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        $operation = "new";
-        if (isset($_GET['operation'])) {
-            $operation = $_GET['operation'];
-        }
-        if ($operation == 'new') {
-        } elseif ($operation == 'update') {
-            $role = Role::loadById($_GET['id']);
-        } else {
-        }
-    }
-      
-    function default_value($field) {
-        GLOBAL $role;
-        $output = "";
-
-        switch ($field) {
-            case "operation":
-                if (is_null($role->Id)) {
-                    $output = "insert";
-                    break;
-                }
-                $output = "update";
-                break;            
-            case "action":
-                if (is_null($role->Id)) {
-                    $output = "Lägg till";
-                    break;
-                }
-                $output = "Uppdatera";
-                break;
-        }
-
-        echo $output;
-    }
-    
-?>
 
 	<div class="content">
 		<h1>Registrering av karaktär</h1>
-		<form action="includes/role_form_save.php" method="post">
+		<form action="logic/role_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
 
@@ -72,9 +72,9 @@ if (empty($current_persons)) {
 			Tänk på att din karaktär också måste godkännas av arrangörerna.    
 			</p>
 			<div class="question">
-				<label for="PersonId">Deltagare</label><br>
+				<label for="Person">Deltagare</label><br>
 				<div class="explanation">Vilken deltagare vill du registrera en karaktär för?</div>
-				<?php selectionDropdownByArray('PersonId', $current_persons, false, true) ?>
+				<?php selectionDropdownByArray('Person', $current_persons, false, true) ?>
 			</div>
 
 			<div class="question">
