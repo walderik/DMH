@@ -10,6 +10,7 @@ function getObjectName($name) {
         case "normalallergytypes" : return "Vanliga allergier";
         case "larpertypes" : return "Typ av lajvare";
         case "intriguetypes" : return "Typ av intriger";
+        case "roletypes" : return "Typ av karaktärer";
         case "housingrequests" : return "Boendeönskemål";
         case "experiences" : return "Erfarenhet";
     }
@@ -25,6 +26,7 @@ function getObjectType($name) {
         case "normalallergytypes" : return "NormalAllergyType";
         case "larpertypes" : return "LarperType";
         case "intriguetypes" : return "IntrigueType";
+        case "roletypes" : return "RoleType";
         case "housingrequests" : return "HousingRequest";
         case "experiences" : return "Experience";
     }

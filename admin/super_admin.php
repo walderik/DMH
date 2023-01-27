@@ -28,6 +28,7 @@ include_once '../includes/error_handling.php';
 			    <a href="selection_data_admin.php?type=larpertypes">Typ av lajvare</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger</a>	<br>		    			 			
+			    <a href="selection_data_admin.php?type=roletypes">Typ av karaktärer</a>	<br>		    			 			
 			    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=experiences">Erfarenhet som lajvare</a>	<br>		    			
 			</p>
