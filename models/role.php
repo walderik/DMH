@@ -4,7 +4,7 @@ class Role extends BaseModel{
     
     public $Id;
     public $Name;
-    public $IsNPC = 0;
+    public $IsNPC = false;
     public $Profession;
     public $Description;
     public $PreviousLarps;
@@ -26,8 +26,6 @@ class Role extends BaseModel{
 
     
     public static $orderListBy = 'Name';
-    
-
     
     
     public static function newFromArray($post){
@@ -64,9 +62,9 @@ class Role extends BaseModel{
     }
     
     
-    # Update an existing role in db
+    # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, IsNPC=?, Profession=?, Description=?,
+        $stmt = $this->connect()->prepare("UPDATE `role` SET Name=?, IsNPC=?, Profession=?, Description=?,
                                                                   PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
                                                                   DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                                                                   PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, Photo=?, Birthplace=?, 
@@ -82,13 +80,12 @@ class Role extends BaseModel{
                 exit();
             }
             $stmt = null;
-            
     }
     
-    # Create a new role in db
+    # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, IsNPC, Profession, Description, PreviousLarps,
+        $stmt = $connection->prepare("INSERT INTO `role` (Name, IsNPC, Profession, Description, PreviousLarps,
                                                                     ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                                     IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                                     GroupId, WealthId, PlaceOfResidenceId, Photo,
@@ -117,7 +114,8 @@ class Role extends BaseModel{
     
     
     public static function getRolesForPerson($personId) {
-        $sql = "SELECT * FROM ".strtolower(static::class)." WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
+        if (is_null($personId)) return Array();
+        $sql = "SELECT * FROM `role` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($personId))) {
