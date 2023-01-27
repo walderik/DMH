@@ -18,6 +18,7 @@ include_once '../includes/error_handling.php';
 			<h1>Administration för alla lajv</h1>
 			<p>			    
 			    <a href="larp_admin.php">Lajv</a> <br> 
+			    <a href="house_admin.php">Hus i byn</</a><br>
 			    </p>
 			    <h2>Basdata</h2>
 			    <p>
