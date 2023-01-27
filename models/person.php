@@ -16,6 +16,7 @@ class Person extends BaseModel{
     public $LarperTypeId;
     public $UserId; # Användare som registrerat personen
     public $NotAcceptableIntrigues;
+    public $HouseId;
 
     public static $orderListBy = 'Name';
     
@@ -36,6 +37,7 @@ class Person extends BaseModel{
         if (isset($post['LarperTypeId'])) $person->LarperTypeId = $post['LarperTypeId'];
         if (isset($post['UserId'])) $person->UserId = $post['UserId'];
         if (isset($post['NotAcceptableIntrigues'])) $person->NotAcceptableIntrigues = $post['NotAcceptableIntrigues'];
+        if (isset($post['HouseId'])) $person->HouseId = $post['HouseId'];
         
         return $person;
     }
@@ -78,11 +80,11 @@ class Person extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperienceId=?,
-                                                                  TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=? WHERE Id = ?;");
+                                                                  TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=? HouseId=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId,
-            $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, $this->Id))) {
+            $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, , $this->HouseId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -96,11 +98,11 @@ class Person extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
-                                                                    TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);");
+                                                                    TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues, HouseId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId, 
-                $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues))) {
+                $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
