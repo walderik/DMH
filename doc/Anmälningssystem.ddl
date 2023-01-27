@@ -3,7 +3,7 @@ CREATE TABLE Role (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NUL
 CREATE TABLE `Group` (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, ApproximateNumberOfMembers int(10) NOT NULL, NeedFireplace tinyint(1) NOT NULL, Friends text, Description text NOT NULL, Enemies text, IntrigueIdeas text, OtherInformation text, WealthId int(11) NOT NULL, PlaceOfResidenceId int(11) NOT NULL, PersonId int(11) NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE LARP (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Abbreviation varchar(10) NOT NULL, TagLine varchar(255), StartDate datetime NOT NULL, EndDate datetime NOT NULL, MaxParticipants int(11) NOT NULL, LatestRegistrationDate date, StartTimeLARPTime datetime NULL, EndTimeLARPTime datetime NULL, PRIMARY KEY (Id));
 CREATE TABLE House (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, NumberOfBeds int(10) NOT NULL, Information text NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE LARP_Role (LARPId int(11) NOT NULL, RoleId int(11) NOT NULL, Approved date, Intrigue text, WhatHappened text, WhatHappendToOthers text, StartingMoney int(11), EndingMoney int(11), Result text, PRIMARY KEY (LARPId, RoleId));
+CREATE TABLE LARP_Role (LARPId int(11) NOT NULL, RoleId int(11) NOT NULL, Approved date, Intrigue text, WhatHappened text, WhatHappendToOthers text, StartingMoney int(11), EndingMoney int(11), Result text, RoleTypeId int(11) NOT NULL, PRIMARY KEY (LARPId, RoleId));
 CREATE TABLE LarperType (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
 CREATE TABLE IntrigueType (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(111) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
 CREATE TABLE HouseCaretaker (AdditionalPlayers int(10) NOT NULL, LARPId int(11) NOT NULL, HouseId int(11) NOT NULL, PersonId int(11) NOT NULL);
@@ -28,6 +28,7 @@ CREATE TABLE NormalAllergyType_Person (NormalAllergyTypeId int(11) NOT NULL, Per
 CREATE TABLE `User` (Id int(11) NOT NULL AUTO_INCREMENT, Email varchar(255) NOT NULL, Password varchar(255) NOT NULL, IsAdmin tinyint(1) DEFAULT 0 NOT NULL, ActivationCode varchar(255), EmailChangeCode varchar(255), PRIMARY KEY (Id));
 CREATE TABLE IntrigueType_LARP_Group (LARP_GroupGroupId int(11) NOT NULL, LARP_GroupLARPId int(11) NOT NULL, IntrigueTypeId int(11) NOT NULL, PRIMARY KEY (LARP_GroupGroupId, LARP_GroupLARPId, IntrigueTypeId));
 CREATE TABLE IntrigueType_LARP_Role (IntrigueTypeId int(11) NOT NULL, LARP_RoleLARPid int(11) NOT NULL, LARP_RoleRoleId int(11) NOT NULL, PRIMARY KEY (IntrigueTypeId, LARP_RoleLARPid, LARP_RoleRoleId));
+CREATE TABLE RoleType (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), PRIMARY KEY (Id));
 CREATE TABLE Prop (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text, StorageLocation varchar(255), Image longblob, GroupId int(11), RoleId int(11), PRIMARY KEY (Id));
 ALTER TABLE Role ADD CONSTRAINT IsPlayedBy FOREIGN KEY (PersonId) REFERENCES Person (Id);
 ALTER TABLE Role ADD CONSTRAINT `Ingår i` FOREIGN KEY (GroupId) REFERENCES `Group` (Id);
