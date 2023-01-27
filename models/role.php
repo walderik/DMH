@@ -65,10 +65,10 @@ class Role extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE `role` SET Name=?, IsNPC=?, Profession=?, Description=?,
-                                                                  PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
-                                                                  DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
-                                                                  PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, Photo=?, Birthplace=?, 
-                                                                  CharactersWithRelations=? WHERE Id = ?;");
+                                                              PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
+                                                              DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
+                                                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, Photo=?, Birthplace=?, 
+                                                              CharactersWithRelations=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, $this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
@@ -86,10 +86,10 @@ class Role extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO `role` (Name, IsNPC, Profession, Description, PreviousLarps,
-                                                                    ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
-                                                                    IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
-                                                                    GroupId, WealthId, PlaceOfResidenceId, Photo,
-                                                                    Birthplace, CharactersWithRelations) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
+                                                            ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
+                                                            IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
+                                                            GroupId, WealthId, PlaceOfResidenceId, Photo,
+                                                            Birthplace, CharactersWithRelations) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, $this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
