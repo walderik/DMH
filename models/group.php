@@ -46,7 +46,7 @@ class Group extends BaseModel{
     # Update an existing group in db
     public function update() {
         
-        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
+        $stmt = $this->connect()->prepare("UPDATE `group` SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
                                                                   Description=?, IntrigueIdeas=?, OtherInformation=?,
                                                                   WealthId=?, PlaceOfResidenceId=?, PersonId=? WHERE Id = ?");
         
@@ -65,9 +65,9 @@ class Group extends BaseModel{
     # Create a new group in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, ApproximateNumberOfMembers, NeedFireplace, 
+        $stmt = $connection->prepare("INSERT INTO `group` (Name, ApproximateNumberOfMembers, NeedFireplace, 
                          Friends, Description, Enemies, IntrigueIdeas, OtherInformation, WealthId, PlaceOfResidenceId, PersonId) 
-                         VALUES (?,?,?,?,?,?,?,?,?,?,?);");
+                         VALUES (?,?,?,?,?, ?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, 
             $this->Friends, $this->Description, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
