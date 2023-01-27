@@ -60,7 +60,7 @@ function showStatusIcon($text) {
 			 	<li><a href="person_registration_form.php">Anmäl deltagaren</a> till lajvet.</li>
 			 	</ol>
 			 	Det går att hantera flera deltagare från ett konto, tex om ni är en familj.<br><br>
-			 	Till nästa år kommer alla registrerade deltagare, grupper och karaktärer att finnas kvar. Så då kan du bara kontrollera att allt ser rätt och sedan skicka in anmälan.
+			 	Till nästa lajv kommer alla registrerade deltagare, grupper och karaktärer att finnas kvar. Så då kan du bara kontrollera att allt ser rätt och sedan skicka in anmälan.
 			 </div>
 		</div>
 		<div class="content">
