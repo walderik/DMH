@@ -1,6 +1,8 @@
 <?php
+global $root;
+$root = $_SERVER['DOCUMENT_ROOT'];
 
-require '../includes/init.php';
+require $root . '/includes/init.php';
 
 ?>
 <!DOCTYPE html>

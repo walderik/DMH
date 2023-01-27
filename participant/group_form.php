@@ -2,7 +2,52 @@
 
 require 'header.php';
 
-// TODO Lägg till diverse kontroller som behövs för att kolla om man bland annat har en person registrerad.
+$current_persons = $current_user->getPersons();
+
+if (empty($current_persons)) {
+    header('Location: index.php?error=no_person');
+    exit;
+}
+
+$group = Group::newWithDefault();
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $operation = "new";
+    if (isset($_GET['operation'])) {
+        $operation = $_GET['operation'];
+    }
+    if ($operation == 'new') {
+    } elseif ($operation == 'update') {
+        $group = Group::loadById($_GET['id']);
+    } else {
+    }
+}
+
+function default_value($field) {
+    GLOBAL $group;
+    $output = "";
+    
+    switch ($field) {
+        case "operation":
+            if (is_null($group->Id)) {
+                $output = "insert";
+                break;
+            }
+            $output = "update";
+            break;
+        case "action":
+            if (is_null($group->Id)) {
+                $output = "Lägg till";
+                break;
+            }
+            $output = "Uppdatera";
+            break;
+    }
+    
+    echo $output;
+}
+
+
 
 ?>
 
@@ -17,53 +62,52 @@ require 'header.php';
 
 	<div class="content">
 		<h1>Registrering av grupp</h1>
-		<form action="includes/group_registration_save.php" method="post">
+		<form action="logic/group_form_save.php" method="post">
+    		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
+    		<input type="hidden" id="Id" name="Id" value="<?php echo $group->Id; ?>">
 
 
 			<p>En grupp är en gruppering av roller som gör något tillsammans på
 				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett rallarlag.</p>
+				
+				
 			<h2>Gruppledare</h2>
-			<p>(TODO Ersätt det här med att välja en av sina registrerade personer, eller bara visa den man har om man bara har en person registrerad.)<br />
-			
-				Gruppledaren är den som arrangörerna kommer att kontakta när det
+			<p>Gruppledaren är den som arrangörerna kommer att kontakta när det
 				uppstår frågor kring gruppen.
-				<div class="question">
-				<label for="group_leader_name">Gruppledarens
-					namn</label><br> <input type="text" id="group_leader_name"
-					name="group_leader_name" required>
-					</div>
-					<div class="question">
-					<label for="email">E-post</label><br>
-				<input type="email" id="email" name="email" required>
-				</div>
 			</p>
+			
+			<div class="question">
+				<label for="Person">Gruppledare</label><br>
+				<div class="explanation">Vem är gruppledare?</div>
+				<?php selectionDropdownByArray('Person', $current_persons, false, true) ?>
+			</div>
+			
 			
 			
 			<h2>Information om gruppen</h2>
 			
 			
 			<div class="question">
-				<label for="group_name">Gruppens namn</label><br> <input
-					type="text" id="group_name" name="group_name" required>
+				<label for="Name">Gruppens namn</label><br> 
+				<input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required>
 			</div>
 			
 			<div class="question">
-			<label for="group_description">Beskrivning av gruppen</label><br>
-			<textarea id="group_description" name="group_description" rows="4" cols="50">
-			</textarea>
+    			<label for="Description">Beskrivning av gruppen</label><br>
+    			<textarea id="Description" name="Description" rows="4" cols="50"><?php echo $group->Description; ?></textarea>
 			
 			 
 			</div>
 			
 			
 			<div class="question">
-				<label for="approximate_number_of_participants">Ungefär hur många
+				<label for="ApproximateNumberOfMembers">Ungefär hur många
 					gruppmedlemmar kommer ni att bli?</label><br> <input type="text"
-					id="approximate_number_of_participants"
-					name="approximate_number_of_participants" required>
+					id="ApproximateNumberOfMembers"
+					name="ApproximateNumberOfMembers"  value="<?php echo $group->ApproximateNumberOfMembers; ?>" required>
 			</div>
 						<div class="question">
-			<label for="housing_request">Hur vill ni bo som grupp?</label><br>
+			<label for="HousingRequest">Hur vill ni bo som grupp?</label><br>
        		<div class="explanation"><?php HousingRequest::helpBox(true); ?></div>
             <?php
 
@@ -72,26 +116,25 @@ require 'header.php';
             ?>
 
         </div>
-        			<div class="question">
-				<label for="need_fireplace">Behöver ni eldplats?</label><br> <input
-					type="radio" id="need_fireplace_yes" name="need_fireplace" value="yes"> <label
-					for="need_fireplace_yes">Ja</label><br> <input type="radio" id="need_fireplace_no"
-					name="need_fireplace" value="no"> <label for="need_fireplace_no">Nej</label>
+        <div class="question">
+			<label for="NeedFireplace">Behöver ni eldplats?</label><br> 
+			<input type="radio" id="NeedFireplace_yes" name="NeedFireplace" value="1" checked="<?php if ($group->NeedFireplace==1) { echo 'checked'; }?>"> 
+			<label for="NeedFireplace_yes">Ja</label><br> 
+			<input type="radio" id="NeedFireplace_no" name="NeedFireplace" value="0"  checked="<?php if ($group->NeedFireplace==0) { echo 'checked'; }?>"> 
+			<label for="NeedFireplace_no">Nej</label>
+		</div>
+			<div class="question">
+				<label for="Friends">Vänner</label><br>
+				<textarea id="Friends" name="Friends" rows="4" cols="50"><?php echo $group->Friends; ?></textarea>
 			</div>
 			<div class="question">
-				<label for="friends">Vänner</label><br>
-				<textarea id="friends" name="friends" rows="4" cols="50">
-				</textarea>
-			</div>
-			<div class="question">
-				<label for="enemies">Fiender</label><br>
-				<textarea id="enemies" name="enemies" rows="4" cols="50">
-				</textarea>
+				<label for="Enemies">Fiender</label><br>
+				<textarea id="Enemies" name="Enemies" rows="4" cols="50"><?php echo $group->Enemies; ?></textarea>
 			</div>
 
 
 			<div class="question">
-			<label for="wealth">Hur rik anser du att ni är?</label>
+			<label for="Wealth">Hur rik anser du att ni är?</label>
 			<div class="explanation"><?php Wealth::helpBox(true); ?></div>
 
 			
@@ -104,7 +147,7 @@ require 'header.php';
 			
 			</div>
 			<div class="question">
-			<label for="placeofresidence">Var bor gruppen?</label>
+			<label for="PlaceOfResidence">Var bor gruppen?</label>
 			<div class="explanation"><?php PlaceOfResidence::helpBox(true); ?></div>
 			
 			
@@ -113,45 +156,31 @@ require 'header.php';
             ?> 
 
 			</div>
+			
+					
 			<div class="question">
- 
+			<label for="IntrigueType">Intriger</label>
 			
-			
-			<label for="want_intrigue">Vill ni ha en
-			arrangörsskriven gruppintrig inför lajvet? </label>
-			<div class="explanation">Om ni svarar "Nej" är det
-			inte en garanti för att ni inte får några intriger ändå. Speciellt om
-			ni redan är en existerande grupp i kampanjen så är det troligare att
-			ni är inblandade i något.</div>
-			<input
-					type="radio" id="want_intrigue_yes" name="want_intrigue" value="yes"> <label
-					for="want_intrigue_yes">Ja</label><br> <input type="radio" id="want_intrigue_no"
-					name="want_intrigue" value="no"> <label for="want_intrigue_no">Nej</label>
-			</div>
-			
-			<div class="question">
-			Vilka typer av gruppintriger är ni intresserade av?
-			<div class="explanation"><?php IntrigueType::helpBox(true); ?></div>
+			<div class="explanation">Vilka typer av gruppintriger är ni intresserade av?<br><?php IntrigueType::helpBox(true); ?></div>
 			
 			
 			<?php
-			IntrigueType::selectionDropdown(true);
+			IntrigueType::selectionDropdown(true, false, $group->getSelectedIntrigueTypeIds());
             ?>
 			</div>
 			<div class="question">
-			<label for="intrigue_ideas">Intrigidéer</label>
+			<label for="IntrigueIdeas">Intrigidéer</label>
 			<div class="explanation">
 			Har ni några grupprykten som ni vill ha hjälp med att sprida? 
 			</div>
-			<textarea id="intrigue_ideas" name="intrigue_ideas" rows="4" cols="50"></textarea>
+			<textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50"><?php echo $group->IntrigueIdeas; ?></textarea>
 			
 			
 			</div>
 						
 			<div class="question">
-			<label for="other_information">Något annat arrangörerna bör veta om er grupp?</label><br>
-			<textarea id="other_information" name="other_information" rows="4" cols="50">
-			</textarea>
+			<label for="OtherInformation">Något annat arrangörerna bör veta om er grupp?</label><br>
+			<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50"><?php echo $group->OtherInformation; ?></textarea>
 			
 			 
 			</div>
@@ -167,14 +196,6 @@ require 'header.php';
 			
 			<input type="checkbox" id="rules" name="rules" value="Ja" required>
   			<label for="rules">Jag lovar</label> 
-			</div>
-			<div class="question">
-			Härmed samtycker jag till att föreningen Berghems
-			Vänner får spara och lagra mina uppgifter - såsom namn/
-			e-postadress/telefonnummer/hälsouppgifter/annat. Detta för att kunna
-			arrangera lajvet.<br>
-			<input type="checkbox" id="PUL" name="PUL" value="Ja" required>
-  			<label for="PUL">Jag samtycker</label> 
 			</div>
 
 			  <input type="submit" value="Skicka">

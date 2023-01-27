@@ -2,6 +2,6 @@
 
 class OfficialType extends SelectionData{
     
-    public static $tableName = 'officialtype';
+//     public static $tableName = 'officialtype';
       
 }

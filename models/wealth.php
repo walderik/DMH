@@ -2,6 +2,6 @@
 
 class Wealth extends SelectionData{
     
-    public static $tableName = 'wealth';
+//     public static $tableName = 'wealth';
       
 }

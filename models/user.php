@@ -15,7 +15,7 @@ class User extends BaseModel{
     public $ActivationCode;
     public $EmailChangeCode;
     
-    public static $tableName = 'user';
+//     public static $tableName = 'user';
     public static $orderListBy = 'Email';
     
     public static function newFromArray($post){
@@ -37,9 +37,8 @@ class User extends BaseModel{
     }
     
     # Update an existing group in db
-    public function update()
-    {
-        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
+    public function update() {
+        $stmt = $this->connect()->prepare("UPDATE user SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Id))) {
             $stmt = null;
@@ -51,21 +50,26 @@ class User extends BaseModel{
     }
     
     # Create a new group in db
-    public function create()
-    {
-        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Email, Password, IsAdmin, ActivationCode, EmailChangeCode) VALUES (?,?,?,?,?)");
+    public function create() {
+        $connection = $this->connect();
+        $stmt = $connection->prepare("INSERT INTO user (Email, Password, IsAdmin, ActivationCode, EmailChangeCode) VALUES (?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
-        
+        $this->Id = $connection->lastInsertId();
         $stmt = null;
     }
     
-    public function getPersons()
-    {
-        // Get all Person baserat på User_id
+    public function getPersons() {
+        return Person::getPersonsForUser($this->Id);
     }
+
+    public function getUnregisteredGroups($larp) {
+        //TODO returnera grupper som inte ännu är anmälda och som användaren har en deltagare som är gruppledare för
+    }
+    
+    
 }

@@ -16,11 +16,7 @@ class Person extends BaseModel{
     public $LarperTypeId;
     public $UserId; # Användare som registrerat personen
     public $NotAcceptableIntrigues;
-//     public $NormalAllergyTypesIds;
-    
-   
-    
-    public static $tableName = 'persons';
+
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
@@ -41,10 +37,6 @@ class Person extends BaseModel{
         if (isset($post['UserId'])) $person->UserId = $post['UserId'];
         if (isset($post['NotAcceptableIntrigues'])) $person->NotAcceptableIntrigues = $post['NotAcceptableIntrigues'];
         
-        
-//         //Normal allergy types sparas i egen tabell eftersom de kan vara flera
-//         if (isset($post['NormalAllergyTypesIds'])) $person->NormalAllergyTypesIds = $post['NormalAllergyType'];
-        
         return $person;
     }
     
@@ -57,109 +49,204 @@ class Person extends BaseModel{
         return $person;
     }
     
-
-    # Update an existing person in db
-    public function update()
-    {
+    public static function getPersonsForUser($userId) {
+        $sql = "SELECT * FROM ".strtolower(static::class)." WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
         
-        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
+        if (!$stmt->execute(array($userId))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
+    
+    # Update an existing person in db
+    public function update() {
+        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperienceId=?,
-                                                                  TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=? WHERE Id = ?");
+                                                                  TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId,
             $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, $this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
         }
-        $stmt = null;
-        
-        deleteAllNormalAllergyTypes();
-        saveAllNormalAllergyTypes();
-        
+        $stmt = null;  
         
     }
     
     # Create a new person in db
-    public function create()
-    {
-        
-        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
+    public function create() {
+        $connection = $this->connect();
+        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
-                                                                    TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, ?)");
+                                                                    TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
-            $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId, 
-            $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues))) {
+                $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId, 
+                $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues))) {
+            $this->connect()->rollBack();
             $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
+            header("location: ../participant/index.php?error=stmtfailed");
             exit();
         }
-            
         
-        saveAllNormalAllergyTypes();
+        $this->Id = $connection->lastInsertId();
         $stmt = null;
     }
     
-    private function saveAllNormalAllergyTypes() {
-        foreach($this->NormalAllergyTypesIds as $Id) {
-            
-            $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyTypes_Persons (NormalAllergyTypesId, PersonsId) VALUES (?,?)");
-            
+    # Spara den här relationen
+    public function saveAllNormalAllergyTypes($post) {
+        if (!isset($post['NormalAllergyTypeId'])) {
+            return; 
+        }
+        foreach($post['NormalAllergyTypeId'] as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?);");
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
+                header("location: ../participant/index.php?error=stmtfailed");
                 exit();
             }
         }
-            $stmt = null;           
+        $stmt = null;           
     }
 
     
-    private function deleteAllNormalAllergyTypes() {
-            $stmt = $this->connect()->prepare("DELETE FROM NormalAllergyTypes_Persons WHERE PersonsId = ?'");
-            
-            if (!$stmt->execute(array($this->Id))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
-            }
+    public function deleteAllNormalAllergyTypes() {
+        $stmt = $this->connect()->prepare("DELETE FROM NormalAllergyType_Person WHERE PersonId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
         $stmt = null;
     }
     
-    public function getExperience()
-    {
+    public function getExperience() {
         if (is_null($this->ExperienceId)) return null;
         return Experience::loadById($this->ExperienceId);
     }
     
     
-    public function getTypeOfFood()
-    {
+    public function getTypeOfFood() {
         if (is_null($this->TypeOfFoodId)) return null;
         return TypeOfFood::loadById($this->TypeOfFoodId);
     }
     
-    public function getLarperType()
-    {
+    public function getLarperType() {
         if (is_null($this->LarperTypeId)) return null;
         return LarperType::loadById($this->LarperTypeId);
     }
     
-    public function getNormalAllergyTypes()
-    {
-        if (is_null($this->NormalAllergyTypesIds) or empty($this->NormalAllergyTypesIds)) return null;
-        $AllergyTypes = array();
-        foreach($this->NormalAllergyTypesIds as $Id) {
-            $AllergyTypes[] = NormalAllergyType::loadById($Id);
-        }
-        return $AllergyTypes;
-    }
-    
-    
-    public function getUser()
-    {
+    public function getUser() {
         return User::loadById($this->UserId);
     }
+    
+    public function getNormalAllergyTypes() {
+        if (is_null($this->Id)) return array();
+        
+        $stmt = $this->connect()->prepare("SELECT * FROM NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = NormalAllergyType::loadById($row['NormalAllergyTypeId']);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
+    
+    public function getSelectedNormalAllergyTypeIds() {
+        if (is_null($this->Id)) return array();
+        
+        $stmt = $this->connect()->prepare("SELECT NormalAllergyTypeId FROM NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['NormalAllergyTypeId'];
+        }
+        $stmt = null;
+
+        return $resultArray;
+    }
+
+    public function getRoles() {
+        return Role::getRolesForPerson($this->Id);
+    }
+    
+    public function getGroups() {
+        return Group::getGroupsForPerson($this->Id);
+    }
+    
+    public function getAgeAtLarp($date) {
+        $birthday = DateTime::createFromFormat('Ymd', substr($this->SocialSecurityNumber, 0, 7));
+        $larpStartDate = DateTime::createFromFormat('Y-m-d', substr($date, 0, 9));
+        $interval = date_diff($birthday, $larpStartDate);  
+         return $interval->format('%Y') . " år";
+    }
+    
+    public function isRegistered($larp) {
+        //TODO kolla om personen är anmäld till lajvet
+        //Returnera "Ja" eller "Nej"
+        return "Nej";
+    }
+    
+
+    public function isApproved($larp) {
+        //TODO kolla om personens anmälan är godkänd
+        //Returnera "Ja" eller "Nej" eller "" om den inte är anmäld än
+    }
+    
+    public function isMember($date) {
+        $year = substr($date, 0, 4);
+        
+        
+        $val = check_membership($this->SocialSecurityNumber, $year);
+        if ($val) return "Ja";
+        else return "Nej";
+        
+    }
+    
+    
+    
+    
 }

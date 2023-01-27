@@ -12,7 +12,7 @@ require 'header.php';
 
 
 		<div class="content">
-			<h2>Aktivt lajv</h2>
+			<h1>Aktivt lajv</h1>
 			<label for="larp">Välj lajv:</label>
 			<form action="../includes/set_larp.php" method="POST">
     			<?php

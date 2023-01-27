@@ -26,7 +26,7 @@
     
 //     Returnerar sant/falskt för om ett medlemskap kan hittas med sökkriterierna.
 // 197503149317 196506167235
-function check_membership(string $socialsecuritynumber="197503149317")
+function check_membership(string $socialsecuritynumber, string $year)
 {
     $url = "https://ebas.sverok.se/apis/confirm_membership.json";
     
@@ -48,7 +48,7 @@ function check_membership(string $socialsecuritynumber="197503149317")
     								"action" : "confirm_membership",
     								"association_number" : "F080246-0",
     								"api_key" : "zuZqeVgYGU/SY+JRMVlikQcaV+KHAksf",
-    								"year_id" : 2023,
+    								"year_id" : "$year",
     								"socialsecuritynumber": "$socialsecuritynumber"
     							}                                                
     						}
@@ -59,45 +59,23 @@ function check_membership(string $socialsecuritynumber="197503149317")
     $resp = curl_exec($curl);
     curl_close($curl);
     
-//     echo $resp;
+     //echo $resp;
 //     echo "<br />1<br />";
     $obj = json_decode($resp);
-//     print_r($obj);
-//     echo "<br />2<br />";
+     //print_r($obj);
+    // echo "<br />2<br />";
     if (!isset($obj->response) || is_null($obj->response)) return false;
     $response = $obj->response;
-    if (!isset($response->member_found) || is_null($response->member_found)) return false;
+    //echo "<br />3<br />";
+    //echo "Resp: " . strlen($response->member_found);
+    if (!isset($response->member_found) || is_null($response->member_found) || strlen($response->member_found)==0 ) {
+        return false;
+        
+    }
     $member_found = $response->member_found;
-//     echo "<br />3<br />";
+    
     return $member_found;
 }
 
-
-if(check_membership("197503149317")) {
-    echo "OK";
-}else{
-    echo "Not member";
-}
-echo "<br />";
-
-if(check_membership("19750314-9317")) {
-    echo "OK";
-}else{
-    echo "Not member";
-}
-echo "<br />";
-
-if(check_membership("7503149317")) {
-    echo "OK";
-}else{
-    echo "Not member";
-}
-echo "<br />";
-
-if(check_membership("6506167235")) {
-    echo "OK";
-}else{
-    echo "Not member";
-}
 
 ?>

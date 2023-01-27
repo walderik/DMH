@@ -8,15 +8,14 @@ class Group extends BaseModel{
     public $NeedFireplace = false;
     public $Friends;
     public $Enemies;
-    public $WantIntrigue = true;
     public $Description;
     public $IntrigueIdeas;
     public $OtherInformation;
     public $WealthId;
     public $PlaceOfResidenceId;
-    public $PersonId; # Gruppledaen
+    public $PersonId; # Gruppledaren
     
-    public static $tableName = 'group';
+//     public static $tableName = 'group';
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
@@ -27,7 +26,6 @@ class Group extends BaseModel{
         if (isset($post['NeedFireplace'])) $group->NeedFireplace = $post['NeedFireplace'];
         if (isset($post['Friends'])) $group->Friends = $post['Friends'];
         if (isset($post['Enemies'])) $group->Enemies = $post['Enemies'];
-        if (isset($post['WantIntrigue'])) $group->WantIntrigue = $post['WantIntrigue'];
         if (isset($post['Description'])) $group->Description = $post['Description'];
         if (isset($post['IntrigueIdeas'])) $group->IntrigueIdeas = $post['IntrigueIdeas'];
         if (isset($post['OtherInformation'])) $group->OtherInformation = $post['OtherInformation'];
@@ -44,15 +42,15 @@ class Group extends BaseModel{
         return new self();
     }
     
+    
     # Update an existing group in db
-    public function update()
-    {
+    public function update() {
         
-        $stmt = $this->connect()->prepare("UPDATE ".static::$tableName." SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
-                                                                  WantIntrigue=?, Description=?, IntrigueIdeas=?, OtherInformation=?,
+        $stmt = $this->connect()->prepare("UPDATE `group` SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
+                                                                  Description=?, IntrigueIdeas=?, OtherInformation=?,
                                                                   WealthId=?, PlaceOfResidenceId=?, PersonId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
+        if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies,
             $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -62,37 +60,100 @@ class Group extends BaseModel{
         $stmt = null;
     }
     
+    
+    
     # Create a new group in db
-    public function create()
-    {
-        $stmt = $this->connect()->prepare("INSERT INTO ".static::$tableName." (Name, ApproximateNumberOfMembers, NeedFireplace, Friends, Enemies,
-                                                                    WantIntrigue, Description, IntrigueIdeas, OtherInformation,
-                                                                    WealthId, PlaceOfResidenceId, PersonId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+    public function create() {
+        $connection = $this->connect();
+        $stmt = $connection->prepare("INSERT INTO `group` (Name, ApproximateNumberOfMembers, NeedFireplace, 
+                         Friends, Description, Enemies, IntrigueIdeas, OtherInformation, WealthId, PlaceOfResidenceId, PersonId) 
+                         VALUES (?,?,?,?,?, ?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies, $this->WantIntrigue,
-            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId))) {
+        if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, 
+            $this->Friends, $this->Description, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
+            $this->PlaceOfResidenceId, $this->PersonId))) {
+            $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
-        
+
+        $this->Id = $connection->lastInsertId();
         $stmt = null;
     }
     
-    public function getWealth()
-    {
+    public function getWealth() {
         if (is_null($this->WealthId)) return null;
         return Wealth::loadById($this->WealthId);
     }
     
-    public function getPlaceOfResidence()
-    {
+    public function getPlaceOfResidence() {
         if (is_null($this->PlaceOfResidenceId)) return null;
         return PlaceOfResidence::loadById($this->PlaceOfResidenceId);
     }
     
-     public function getPerson()
-     {
-//         return Person::loadById($this->PersonId);
-    }
+     public function getPerson() {
+         return Person::loadById($this->PersonId);
+     }
+    
+     public function getSelectedIntrigueTypeIds() {
+         if (is_null($this->Id)) return array();
+         
+         $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM IntrigueType_Group where GroupId = ? ORDER BY IntrigueTypeId;");
+         
+         if (!$stmt->execute(array($this->Id))) {
+             $stmt = null;
+             header("location: ../index.php?error=stmtfailed");
+             exit();
+         }
+         
+         if ($stmt->rowCount() == 0) {
+             $stmt = null;
+             return array();
+         }
+         
+         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+         $resultArray = array();
+         foreach ($rows as $row) {
+             $resultArray[] = $row['IntrigueTypeId'];
+         }
+         $stmt = null;
+         
+         return $resultArray;
+     }
+
+     
+     public function isRegistered($larp) {
+         //TODO kolla om gruppen är anmäld till lajvet
+         //Returnera "Ja" eller "Nej"
+         return "Nej";
+     }
+     
+     public static function getGroupsForPerson($personId) {
+         $sql = "SELECT * FROM `group` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
+         $stmt = static::connectStatic()->prepare($sql);
+         
+         if (!$stmt->execute(array($personId))) {
+             $stmt = null;
+             header("location: ../participant/index.php?error=stmtfailed");
+             exit();
+         }
+         
+         
+         if ($stmt->rowCount() == 0) {
+             $stmt = null;
+             return array();
+         }
+         
+         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+         $resultArray = array();
+         foreach ($rows as $row) {
+             $resultArray[] = static::newFromArray($row);
+         }
+         $stmt = null;
+         return $resultArray;
+     }
+     
+     
+    
 }

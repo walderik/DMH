@@ -3,6 +3,7 @@
 session_start();
 session_unset();
 
+include_once 'includes/error_handling.php';
 ?>
 
 
@@ -11,10 +12,17 @@ session_unset();
 	<head>
 		<meta charset="utf-8">
 		<title>Login</title>
-		<link href="css/style.css" rel="stylesheet" type="text/css">
+		<link href="css/loginpage.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 	<body>
+	  <h1>Död mans hand anmälningssystem</h1>
+	  <?php if (isset($error_message) && strlen($error_message)>0) {
+	      echo '<div class="error">'.$error_message.'</div>';
+	  }?>
+	  <?php if (isset($message_message) && strlen($message_message)>0) {
+	      echo '<div class="message">'.$message_message.'</div>';
+	  }?>
 	  <div class="login-register">
 		<div class="login">
 			<h1>Logga in</h1>

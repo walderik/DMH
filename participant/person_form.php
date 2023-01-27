@@ -2,8 +2,6 @@
 
 require 'header.php';
 
-// TODO Lägg till diverse kontroller som behövs för att kolla om man bland annat har en person registrerad.
-
 ?>
 
     <nav id="navigation">
@@ -60,7 +58,7 @@ require 'header.php';
 		<form action="logic/person_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $person->Id; ?>">
-    		<input type="hidden" id="UsersId" name="UsersId" value="<?php echo $person->UsersId; ?>">
+    		<input type="hidden" id="UserId" name="UserId" value="<?php echo $person->UserId; ?>">
 
 
 			<p>
@@ -78,7 +76,8 @@ require 'header.php';
 				</div>
 				<div class="question">
 					<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
-					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.</div>
+					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN.<br />
+					Om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.</div>
 					<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
 					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}"  size="15" maxlength="13" required>
 				</div>
@@ -89,8 +88,8 @@ require 'header.php';
 				<div class="question">
 					<label for="EmergencyContact">Närmaste anhörig</label>
 					<br> 
-					<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678.    
-Det bör vara någon som inte är med på lajvet.</div>
+					<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678. <br />
+					Det bör vara någon som inte är med på lajvet.</div>
     				<textarea id="EmergencyContact" name="EmergencyContact" value="<?php echo $person->EmergencyContact; ?>" rows="4" cols="100"></textarea>
 				</div>
 			</p>
@@ -99,23 +98,23 @@ Det bör vara någon som inte är med på lajvet.</div>
 			<h2>Lajvrelaterat</h2>
 			
 			<div class="question">
-				<label for="LarperTypesId">Vilken typ av lajvare är du?</label><br>
+				<label for="LarperTypesId">Vilken typ av lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
        			<div class="explanation">Tänk igenom ditt val noga. Det är det här som i första hand kommer 
        			att avgöra hur mycket energi arrangörerna kommer lägga ner på dina intriger.     
        			Är du ny på lajv? Vi rekommenderar då att du inte väljer alternativ Myslajvare. 
        			Erfarenhetsmässigt brukar man som ny lajvare ha mer nytta av mycket intriger än en 
        			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.   
        			Myslajvare får heller ingen handel och blir troligen varken fattigare eller rikare under lajvet.<br><?php LarperType::helpBox(true); ?></div>
-                <?php LarperType::selectionDropdown(false,true); ?>
+                <?php LarperType::selectionDropdown(false, true, $person->LarperTypeId); ?>
             </div>
 				<div class="question">
 					<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
 					<br> <input type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="250">
 				</div>
 			<div class="question">
-				<label for="ExperiencesId">Hur erfaren lajvare är du?</label><br>
+				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
        			<div class="explanation"><?php Experience::helpBox(true); ?></div>
-                <?php Experience::selectionDropdown(false,true); ?>
+                <?php Experience::selectionDropdown(false, true, $person->ExperienceId); ?>
             </div>
 			<div class="question">
 				<label for="NotAcceptableIntrigues">Vilken typ av intriger vill du absolut inte spela på?</label>
@@ -126,17 +125,17 @@ Det bör vara någon som inte är med på lajvet.</div>
 
 			<h2>Hälsa</h2>
 			<div class="question">
-				<label for="TypesOfFoodId">Viken typ av mat vill du äta?</label>
+				<label for="TypesOfFoodId">Viken typ av mat vill du äta?</label>&nbsp;<font style="color:red">*</font>
 				<br> 
 				<div class="explanation"><?php TypeOfFood::helpBox(true); ?></div>
-				<?php TypeOfFood::selectionDropdown(false,true); ?>
+				<?php TypeOfFood::selectionDropdown(false, true, $person->LarperTypeId); ?>
 			</div>
 
 			<div class="question">
-				<label for="NormalAllergyType">Har du av de vanligaste mat-allergierna?</label>
+				<label for="NormalAllergyType">Har du någon eller några av de vanligaste mat-allergierna?</label>
 				<br> 
 				<div class="explanation"><?php NormalAllergyType::helpBox(true); ?></div>
-				<?php NormalAllergyType::selectionDropdown(true,true); ?>
+				<?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?>
 			</div>
 			
 			<div class="question">

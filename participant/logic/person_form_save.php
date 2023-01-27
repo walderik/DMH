@@ -1,27 +1,32 @@
 <?php
 
-include_once '../../includes/all_includes.php';
+global $root, $current_user;
+$root = $_SERVER['DOCUMENT_ROOT'];
+require $root . '/includes/init.php';
 
-print_r($_POST);
+//echo '$_POST :<br>';
+//print_r($_POST);
 
-echo "<br />";
+//echo "<br />";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
+
     $operation = $_POST['operation'];
     if ($operation == 'insert') {
         $person = Person::newFromArray($_POST);
-        print_r($person);
-        echo "<br />";
         $person->create();
+        $person->saveAllNormalAllergyTypes($_POST);
     } elseif ($operation == 'delete') {
+        $person->deleteAllNormalAllergyTypes();
         Person::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         
         $person = Person::newFromArray($_POST);
         $person->update();
+        $person->deleteAllNormalAllergyTypes();
+        $person->saveAllNormalAllergyTypes($_POST);
     } else {
         echo $operation;
     }
-    header('Location: ../participant/index.php');
+    header('Location: ../index.php');
 }

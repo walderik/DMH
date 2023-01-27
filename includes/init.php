@@ -1,9 +1,8 @@
 <?php
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
+global $current_user, $current_larp, $root;
 
-include_once '../includes/all_includes.php';
-
-global $current_user, $current_larp;
+include_once $root . '/includes/all_includes.php';
 
 // We need to use sessions, so you should always start sessions using the below code.
 session_start();
@@ -20,6 +19,7 @@ if (!isset($current_user) or is_null($current_user)) {
     header('Location: ../index.php');
     exit;
 }
+$current_user->Password = null;
 
 // If the user has not chosen a larp, and is not on the choose larp page or the larp admin pages
 $url = $_SERVER['REQUEST_URI'];

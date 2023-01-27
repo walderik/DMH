@@ -4,7 +4,7 @@
 class Signup extends Dbh {
 
     protected function createUser($email, $password) {
-        $stmt = $this->connect()->prepare("INSERT INTO users (Email, Password, ActivationCode) VALUES (?, ?, ?);");
+        $stmt = $this->connect()->prepare("INSERT INTO user (Email, Password, ActivationCode) VALUES (?, ?, ?);");
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $activationCode = uniqid();
@@ -24,7 +24,7 @@ class Signup extends Dbh {
     
     
     protected function checkUserExists($email) {
-        $stmt = $this->connect()->prepare("SELECT id FROM users WHERE email = ?;");
+        $stmt = $this->connect()->prepare("SELECT id FROM user WHERE email = ?;");
         
         
         if (!$stmt->execute(array($email))) {
