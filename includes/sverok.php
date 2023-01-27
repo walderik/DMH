@@ -69,7 +69,6 @@ function check_membership(string $socialsecuritynumber, string $year)
     //echo "<br />3<br />";
     //echo "Resp: " . strlen($response->member_found);
     if (!isset($response->member_found) || is_null($response->member_found) || strlen($response->member_found)==0 ) {
-        echo "Empty";
         return false;
         
     }

@@ -121,6 +121,38 @@ class Group extends BaseModel{
          
          return $resultArray;
      }
+
+     
+     public function isRegistered($larp) {
+         //TODO kolla om gruppen är anmäld till lajvet
+         //Returnera "Ja" eller "Nej"
+         return "Nej";
+     }
+     
+     public static function getGroupsForPerson($personId) {
+         $sql = "SELECT * FROM `group` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
+         $stmt = static::connectStatic()->prepare($sql);
+         
+         if (!$stmt->execute(array($personId))) {
+             $stmt = null;
+             header("location: ../participant/index.php?error=stmtfailed");
+             exit();
+         }
+         
+         
+         if ($stmt->rowCount() == 0) {
+             $stmt = null;
+             return array();
+         }
+         
+         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+         $resultArray = array();
+         foreach ($rows as $row) {
+             $resultArray[] = static::newFromArray($row);
+         }
+         $stmt = null;
+         return $resultArray;
+     }
      
      
     

@@ -28,8 +28,8 @@ function showStatusIcon($text) {
           <ul class="links">
               <li class="dropdown"><a href="#" class="trigger-drop">Anmäl<i class="arrow"></i></a>
               <ul class="drop">
-                <li><a href="person_registration_form.php"></i>Deltagare</a></li>
-                <li><a href="group_registration_form.php"></i>Grupp</a></li>
+                <li><a href="person_registration_form.php">Deltagare</a></li>
+                <li><a href="group_registration_form.php">Grupp</a></li>
               </ul>
             </li>
         	<?php 
@@ -44,16 +44,27 @@ function showStatusIcon($text) {
         </nav>
 		<div class="content">
 			<h1>Anmälan till <?php echo $current_larp->Name;?></h1>
+        	  <?php if (isset($error_message) && strlen($error_message)>0) {
+        	      echo '<div class="error">'.$error_message.'</div>';
+        	  }?>
+        	  <?php if (isset($message_message) && strlen($message_message)>0) {
+        	      echo '<div class="message">'.$message_message.'</div>';
+        	  }?>
+			
+			<div>
+			Så här använder du anmälningssystemet:
+				<ol>
+			 	<li>Börja med att <a href="person_form.php">registrera en deltagare.</a></li>
+			 	<li>Om du är gruppledare, <a href="group_form.php">registrera en grupp</a> och <a href="group_registration_form.php">anmäl den till lajvet</a>.</li>
+			 	<li><a href="role_form.php">Skapa karaktärer</a>, gärna flera.</li>
+			 	<li><a href="person_registration_form.php">Anmäl deltagaren</a> till lajvet.</li>
+			 	</ol>
+			 	Det går att hantera flera deltagare från ett konto, tex om ni är en familj.
+			 </div>
 		</div>
-	  <?php if (isset($error_message) && strlen($error_message)>0) {
-	      echo '<div class="error">'.$error_message.'</div>';
-	  }?>
-	  <?php if (isset($message_message) && strlen($message_message)>0) {
-	      echo '<div class="message">'.$message_message.'</div>';
-	  }?>
 		<div class="content">
-    		<h1>Deltagarna du hanterar</h1>
-    		<p>
+    		<h1>Registreringar /anmälningar</h1>
+    		<div>
     		<?php 
     		$persons = $current_user->getPersons();
     		if (empty($persons)) {
@@ -73,12 +84,31 @@ function showStatusIcon($text) {
     		        echo "<td align='center'>" . showStatusIcon($person->isApproved($current_larp)) . "</td>\n";
     		        echo "<td align='center'>" . showStatusIcon($person->isMember($current_larp->StartDate)) . "</td>\n";
     		        echo "</tr>\n";
+    		        $groups = $person->getGroups();
+    		        foreach ($groups as $group)  {
+    		            echo "<tr>\n";
+    		            echo "<td></td>\n";
+    		            echo "<td>" . $group->Name . "</td>\n";
+    		            echo "<td></td>\n";
+    		            echo "<td></td>\n";
+    		            
+    		            echo "<td>" . "<a href='group_form.php?operation=update&id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+    		            echo "<td align='center'>" . showStatusIcon($group->isRegistered($current_larp)) . "</td>\n";
+    		            echo "</tr>\n";
+    		            
+    		        }
     		        $roles = $person->getRoles();
     		        foreach ($roles as $role)  {
+    		            $role_group = $role->getGroup();
+    		            $role_group_name = "";
+    		            if (isset($role_group)) {
+    		                $role_group_name = $role_group->Name;
+    		            }
     		            echo "<tr>\n";
     		            echo "<td></td>\n";
     		            echo "<td>" . $role->Name . "</td>\n";
     		            echo "<td>" . $role->Profession . "</td>\n";
+    		            echo "<td>" . $role_group_name . "</td>\n";
     		            
     		            echo "<td>" . "<a href='role_form.php?operation=update&id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
     		            echo "</tr>\n";
@@ -88,7 +118,7 @@ function showStatusIcon($text) {
     		    echo "</table>";
     		}
     		?>
-    		</p>
+    		</div>
 		</div>
 	</body>
 </html>

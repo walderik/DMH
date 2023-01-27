@@ -110,6 +110,9 @@ class Role extends BaseModel{
     }
     
     
+    public function getGroup() {
+        return Group::loadById($this->GroupId);
+    }
     
     
     
