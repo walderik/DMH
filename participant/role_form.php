@@ -91,6 +91,19 @@ function default_value($field) {
 				<label for="Birthplace">Var är karaktären född?</label><br>
 				<input type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="250" required>
 			</div>
+			
+			<div class="question">
+			<label for="PlaceOfResidence">Var bor karaktären?</label>
+			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om karaktären tillfälligt är i Slow River så vill vi veta var karaktären har sitt hem.<br>
+			   <?php PlaceOfResidence::helpBox(true); ?></div>
+			
+			
+            <?php
+            PlaceOfResidence::selectionDropdown();
+            ?> 
+
+			</div>
+			
 			<div class="question">
 				<label for="CharactersWithRelations">Relationer med andra</label><br> 
 				<div class="explanation">Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för din karaktär och mycket kort hur vi kan ge spel på dessa karaktärer.</div>
