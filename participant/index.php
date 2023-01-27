@@ -4,11 +4,11 @@ include_once '../includes/error_handling.php';
 
 
 function showStatusIcon($text) {
-    if ($text == "Ja") {
-        return '<img src="../images/ok-icon.png" alt="OK" width="30" height="30">';
+    if ($text == "Ja" or $text == 1) {
+        return '<img src="../images/ok-icon.png" alt="OK" width="20" height="20">';
     }
-    if ($text == "Nej") {
-        return '<img src="../images/alert-icon.png" alt="Varning" width="30" height="30">';
+    if ($text == "Nej" or $text == 0) {
+        return '<img src="../images/alert-icon.png" alt="Varning" width="20" height="20">';
     }
 }
 
@@ -64,59 +64,51 @@ function showStatusIcon($text) {
 			 </div>
 		</div>
 		<div class="content">
-    		<h1>Registreringar /anmälningar</h1>
+    		<h2>Registreringar /anmälningar</h2>
     		<div>
     		<?php 
     		$persons = $current_user->getPersons();
     		if (empty($persons)) {
     		    echo "<a href='person_form.php'>Registrera en deltagare.</a>";
     		} else {
-    		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Epost</th><th>Ålder på lajvet</th><th>Mobilnummer</th><th></th><th>Anmäld</th><th>Godkänd</th><th>Medlem</th></tr>\n";
     		    foreach ($persons as $person)  {
-    		        echo "<tr>\n";
-    		        echo "<td>" . $person->Name . "</td>\n";
-    		        echo "<td>" . $person->Email . "</td>\n";
-    		        echo "<td>" . $person->getAgeAtLarp($current_larp->StartDate) . "</td>\n";
-    		        echo "<td>" . $person->PhoneNumber . "</td>\n";
-    		        
-    		        echo "<td>" . "<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-    		        echo "<td align='center'>" . showStatusIcon($person->isRegistered($current_larp)) . "</td>\n";
-    		        echo "<td align='center'>" . showStatusIcon($person->isApproved($current_larp)) . "</td>\n";
-    		        echo "<td align='center'>" . showStatusIcon($person->isMember($current_larp->StartDate)) . "</td>\n";
-    		        echo "</tr>\n";
+    		        echo "<div class='person'>\n";
+    		        echo "<h3>$person->Name&nbsp;<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></h3>\n";
+    		        echo "Epost: " . $person->Email. "<br>\n";
+    		        echo "Mobilnummer: " . $person->PhoneNumber. "<br>\n";
+                    /* echo "Ålder på lajvet: " . $person->getAgeAtLarp($current_larp->StartDate). " "; */
+                    echo "Anmäld : " . showStatusIcon($person->isRegistered($current_larp)). "<br>\n";
+                    if ($person->isRegistered($current_larp)) {
+                        echo "Godkänd : " . showStatusIcon($person->isApproved($current_larp)). "<br>\n";
+                    }
+                    echo "Medlem: " . showStatusIcon($person->isMember($current_larp->StartDate)). "<br>\n";
     		        $groups = $person->getGroups();
+    		        if (isset($groups) && count($groups) > 0) {
+    		            echo "<br><b>Gruppledare för:</b><br>\n";
+    		        }
     		        foreach ($groups as $group)  {
-    		            echo "<tr>\n";
-    		            echo "<td></td>\n";
-    		            echo "<td>" . $group->Name . "</td>\n";
-    		            echo "<td></td>\n";
-    		            echo "<td></td>\n";
-    		            
-    		            echo "<td>" . "<a href='group_form.php?operation=update&id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-    		            echo "<td align='center'>" . showStatusIcon($group->isRegistered($current_larp)) . "</td>\n";
-    		            echo "</tr>\n";
-    		            
+    		            echo $group->Name . " " . "<a href='group_form.php?operation=update&id=" . 
+    		                 $group->Id . "'><i class='fa-solid fa-pen'></i></a>" . " Anmäld: " . 
+    		                 showStatusIcon($group->isRegistered($current_larp)) . "<br>\n";
+     		            
     		        }
     		        $roles = $person->getRoles();
+    		        if (isset($roles) && count($roles) > 0) {
+    		            echo "<br><b>Karaktärer:</b><br>\n";
+    		        }
     		        foreach ($roles as $role)  {
     		            $role_group = $role->getGroup();
     		            $role_group_name = "";
     		            if (isset($role_group)) {
     		                $role_group_name = $role_group->Name;
     		            }
-    		            echo "<tr>\n";
-    		            echo "<td></td>\n";
-    		            echo "<td>" . $role->Name . "</td>\n";
-    		            echo "<td>" . $role->Profession . "</td>\n";
-    		            echo "<td>" . $role_group_name . "</td>\n";
-    		            
-    		            echo "<td>" . "<a href='role_form.php?operation=update&id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-    		            echo "</tr>\n";
+    		            echo $role->Name . " - " . $role->Profession . " " . $role_group_name . 
+    		                 " <a href='role_form.php?operation=update&id=" . $role->Id . 
+    		                  "'><i class='fa-solid fa-pen'></i><br>\n";
     		            
     		        }
+    		        echo "</div>\n";
     		    }
-    		    echo "</table>";
     		}
     		?>
     		</div>

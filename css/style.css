@@ -23,15 +23,30 @@ body.loggedin {
 }
 .content {
 	width: 1000px;
-	margin: 50px auto;
+	margin: 5px auto;
 }
 .content h1 {
-	margin: 0;
+	margin-top: 70px;
 	padding: 25px 0;
 	font-size: 22px;
 	border-bottom: 1px solid #e0e0e3;
 	color: #4a536e;
 }
+
+.person {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e0e0e3;
+}
+
+
+.content h3 {
+	margin: 0;
+	padding-top:  10px;
+	padding-bottom: 0px;
+	font-size: 16px;
+	color: #4a536e;
+}
+ 
 .content > p, .content > div {
 	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
 	margin: 25px 0;
@@ -120,6 +135,9 @@ li {
   background-color: #808080;
   color: white;
 }
+
+
+
 
 .error {
 	background-color: #f2f2f2;
