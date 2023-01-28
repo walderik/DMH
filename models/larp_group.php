@@ -27,6 +27,25 @@ class LARP_Group extends BaseModel{
         return new self();
     }
     
+    public static function isRegistered($groupId, $larpId) {
+        $sql = "SELECT * FROM `larp_group` WHERE GroupId = ? AND LARPId = ? ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($groupId, $larpId))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+        
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE `larp_group` SET GroupId=?, LARPId=?, WantIntrigue=?, Intrigue=?, HousingRequestId=? WHERE Id = ?;");
@@ -55,33 +74,31 @@ class LARP_Group extends BaseModel{
             $stmt = null;
     }
     
-    # returnera en array med alla grupper som är anmälda till lajvet
-    public static function getRegistered($larpId) {
-        if (is_null($larpId)) return Array();
-        $sql = "SELECT * FROM `larp_group` WHERE LARPId = ? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larpId))) {
+
+    public function saveAllIntrigueTypes($post) {
+        if (!isset($post['IntrigueTypeId'])) {
+            return;
+        }
+        foreach($post['IntrigueTypeId'] as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO IntrigueType_LARP_Group (IntrigueTypeId, LARP_GroupGroupId, LARP_GroupLARPId) VALUES (?,?, ?);");
+            if (!$stmt->execute(array($Id, $this->GroupId, $this->LARPId))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllIntrigueTypes() {
+        $stmt = $this->connect()->prepare("DELETE FROM IntrigueType_LARP_Group WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ?;");
+        if (!$stmt->execute(array($this->GroupId, $this->LARPId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
         }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
         $stmt = null;
-        return $resultArray;
     }
 
-
-
+        
 }

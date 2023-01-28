@@ -126,7 +126,7 @@ function default_value($field) {
 				<label for="GroupsId">Vilken grupp är karaktären med i?</label><br>
        			<div class="explanation">Finns inte din grupp med på anmälan ska du kontakta din gruppledare och se till att den är anmäld innan du själv anmäler dig.    
 Är gruppen anmäld, men ändå inte syns här så måste du kontakta arrangörerna som får se till att den är valbar i listan.<br>Anmäl dig bara till en grupp om du har fått ok på det från gruppledaren. Om du vill skapa en egen grupp gör du det i det <a href="group_form-php">här formuläret</a>.</div>
-                <?php selectionDropdownByArray('Person', LARP_Group::getRegistered($current_larp), false, false, $role->GroupId); ?>
+                <?php selectionDropdownByArray('Group', Group::getRegistered($current_larp), false, false, $role->GroupId); ?>
             </div>
 				
 			<div class="question">

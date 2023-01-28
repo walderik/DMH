@@ -3,11 +3,11 @@ require 'header.php';
 include_once '../includes/error_handling.php';
 
 
-function showStatusIcon($text) {
-    if ($text == "Ja" or $text == 1) {
+function showStatusIcon($value) {
+    if ($value == true) {
         return '<img src="../images/ok-icon.png" alt="OK" width="20" height="20">';
     }
-    if ($text == "Nej" or $text == 0) {
+    if ($value == false) {
         return '<img src="../images/alert-icon.png" alt="Varning" width="20" height="20">';
     }
 }

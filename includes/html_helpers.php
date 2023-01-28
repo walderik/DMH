@@ -21,7 +21,7 @@ function selectionDropdownByArray(String $name_in, Array $selectionDatas, ?bool 
     
     if (count($selectionDatas)==1){
         echo $selectionDatas[0]->Name . "<br>\n";
-        echo "<input type='hidden' id='" .$name_in.$selectionDatas[0]->Id . "' name='" . $name . "' value=" .  $selectionDatas[0]->Name . ">";
+        echo "<input type='hidden' id='" .$name_in.$selectionDatas[0]->Id . "' name='" . $name . "' value=" .  $selectionDatas[0]->Id . ">";
         echo "</div>\n";
         return;
     }

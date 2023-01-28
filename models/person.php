@@ -229,14 +229,14 @@ class Person extends BaseModel{
     public function isRegistered($larp) {
         //TODO kolla om personen är anmäld till lajvet
         
-        return 0;
+        return false;
     }
     
 
     public function isApproved($larp) {
         //TODO kolla om personens anmälan är godkänd
         
-        return 0;
+        return false;
     }
     
     public function isMember($date) {
@@ -244,8 +244,8 @@ class Person extends BaseModel{
         
         
         $val = check_membership($this->SocialSecurityNumber, $year);
-        return $val;
-        
+        if ($val == 1) return true;
+        return false;
     }
     
     

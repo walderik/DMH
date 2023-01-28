@@ -2,7 +2,7 @@
 
 require 'header.php';
 
-$current_groups = $current_user->getUnregisteredGroups($current_larp);
+$current_groups = $current_user->getUnregisteredGroupsForUser($current_larp);
 
 if (empty($current_groups)) {
     header('Location: index.php?error=no_group');
@@ -23,8 +23,8 @@ if (empty($current_groups)) {
 	<div class="content">
 		<h1>Anmälan av grupp till <?php echo $current_larp->Name;?></h1>
 		<form action="logic/group_registration_form_save.php" method="post">
-    		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
-    		<input type="hidden" id="LarpId" name="Id" value="<?php echo $current_larp->Id ?>">
+    		<input type="hidden" id="operation" name="operation" value="insert"> 
+    		<input type="hidden" id="LARPId" name="LARPId" value="<?php echo $current_larp->Id ?>">
 
 
 			<p>När en grupp är anmäld till lajvet går det för karaktärer att anmäla sig som medlemmar i gruppen. <br>
@@ -35,24 +35,15 @@ if (empty($current_groups)) {
 				
 			<div class="question">
 				<label for="GroupId">Grupp</label><br>
-				<?php selectionDropdownByArray('GroupId', $current_groups, false, true) ?>
+				<?php selectionDropdownByArray('Group', $current_groups, false, true) ?>
 			</div>
-			<div class="question">
-				<label for="WantIntrigue">Vill gruppen ha en arrangörsskriven intrig?</label><br>
-				<div class="explanation">Även om du svara 'nej' här förbehåller vi oss rätten att ge er en intrig i alla fall, eller låta er förekomma i andras intriger. </div>
-				<input type="radio" id="WantIntrigue_yes" name="WantIntrigue" value="1" checked="checked">
-                <label for="WantIntrigue_yes">Ja</label><br>
-                <input type="radio" id="WantIntrigue_no" name="WantIntrigue" value="0">
-                <label for="WantIntrigue_no">Nej</label><br>
-			</div>
-
 			<div class="question">
     			<label for="IntrigueType">Intrigtyper</label>
-    			<div class="explanation">Vilken typ av intriger vill du helst ha?  <br>
+    			<div class="explanation">Vilken typ av intriger vill gruppen helst ha?  <br>
     			    <?php IntrigueType::helpBox(true); ?></div>
                 <?php
     
-                IntrigueType::selectionDropdown(tru);
+                IntrigueType::selectionDropdown(true, false);
                 
                 ?>
             </div>
@@ -68,9 +59,9 @@ if (empty($current_groups)) {
                 ?>
             </div>
 			
-			<div class="question">
+
 			  <input type="submit" value="Anmäl">
-			</div>
+
 		</form>
 	</div>
 

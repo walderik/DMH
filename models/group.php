@@ -42,6 +42,31 @@ class Group extends BaseModel{
         return new self();
     }
     
+    public static function getRegistered($larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM `group` WHERE Id IN (SELECT GroupId from LARP_Group where LARPId = ?);";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
     
     # Update an existing group in db
     public function update() {
@@ -124,9 +149,8 @@ class Group extends BaseModel{
 
      
      public function isRegistered($larp) {
-         //TODO kolla om gruppen är anmäld till lajvet
-         //Returnera "Ja" eller "Nej"
-         return "Nej";
+         return LARP_Group::isRegistered($this->Id, $larp->Id);
+
      }
      
      public static function getGroupsForPerson($personId) {
