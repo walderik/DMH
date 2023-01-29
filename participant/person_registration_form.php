@@ -2,12 +2,50 @@
 
 require 'header.php';
 
-$current_persons = $current_user->getPersons();
+$current_person;
 
-if (empty($current_persons)) {
-    header('Location: index.php?error=no_person');
+echo "Start";
+echo $_SERVER["REQUEST_METHOD"];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    echo "post";
+    if (isset($_POST['PersonId'])) {
+        $PersonId = $_POST['PersonId'];
+    }
+    else {
+        echo "Exit 1";
+        //header('Location: index.php');
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    echo "get";
+    if (isset($_GET['PersonId'])) {
+        echo "1";
+        $PersonId = $_GET['PersonId'];
+        echo $PersonId;
+    }
+    else {
+        echo "Exit 2";
+        //header('Location: index.php');
+    }
+}
+
+if (isset($PersonId)) {
+    $current_person = Person::loadById($PersonId);
+}
+else {
+    echo "Exit 3";
+    //header('Location: index.php?error=no_person');
+}
+
+$roles = $current_person->getRoles();
+
+if (empty($roles)) {
+    header('Location: index.php?error=no_role');
     exit;
 }
+
 
 ?>
 
@@ -21,10 +59,11 @@ if (empty($current_persons)) {
 
 
 	<div class="content">
-		<h1>Anmälan av deltagare till <?php echo $current_larp->Name;?></h1>
+		<h1>Anmälan av <?php echo $current_person->Name;?> till <?php echo $current_larp->Name;?></h1>
 		<form action="logic/person_registration_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="insert"> 
     		<input type="hidden" id="LarpId" name="Id" value="<?php echo $current_larp->Id ?>">
+    		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $current_person->Id ?>">
 
 
 			<p>När anmälan är gjort går det varken att redigera deltagaren eller någon av karaktärerna.
@@ -32,16 +71,41 @@ if (empty($current_persons)) {
 				
 				
 			<div class="question">
-				<label for="PersonId">Deltagare</label><br>
-				<div class="explanation">Vilken deltagare vill du registrera en karaktär för?</div>
-				<?php selectionDropdownByArray('PersonId', $current_persons, false, true) ?>
-			</div>
-			<div class="question">
 				<label for="RoleId">Karaktärer</label><br>
-				<div class="explanation">Vilka karaktärer vill du spela på lajvet?</div>
-//TODO Något sätt att välja karaktärer
+				<div class="explanation">Vilka karaktärer vill du spela på lajvet?<br>
+				     För varje karaktär behöver du också ange vilken typ av karaktär det är.<br>
+				     <?php RoleType::helpBox(true); ?><br>
+				     <br>Och vilka intriger den karaktären vill ha<br>
+				     <?php IntrigueType::helpBox(true); ?></div>
+			
+        			<?php 
+        			foreach($roles as $role) {
+        			    echo '<div class="role">';
+        			    echo '<h3><input type="checkbox" id="role"'.$role->Id.'" name="role"'.$role->Id.'" value="Bike">';
+        			    echo '<label for="role"'.$role->Id.'">'.  $role->Name . '</label></h3>';
+        			    
+        			    
+        			    echo '<table border=0><tr><td valign="top">';
+        			    RoleType::selectionDropdown(false,true);
+        			    echo '</td><td>&nbsp;</td><td valign="top">';
+        			    IntrigueType::selectionDropdown(true,false);
+        			    echo '</td></tr></table>';
+        			    echo '</div>';
+        			}
+        			
+        			
+        			
+        			
+        			
+        			?>
+			
+			
+			
+			
 			</div>
 			
+			
+//Typ av roll			
 //Intrigtyper per roll
 			
 			<div class="question">

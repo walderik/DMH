@@ -80,6 +80,18 @@ class User extends BaseModel{
         }
         return $unregistered_groups;
     }
+ 
+    
+    public function getUnregisteredPersonsForUser($larp) {
+        $persons = Person::getPersonsForUser($this->Id);
+        $unregistered_persons = Array();
+        foreach ($persons as $person) {
+            if (!$person->isRegistered($larp)) {
+                array_push($unregistered_persons,$person);
+            }
+        }
+        return $unregistered_persons;
+    }
     
     
 }

@@ -64,6 +64,9 @@ function getErrorText($code) {
         case "no_group":
             $output = "Du måste registrera en grupp först";
             break;
+        case "no_role":
+            $output = "Du måste registrera en karaktär först";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }

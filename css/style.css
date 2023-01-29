@@ -40,6 +40,13 @@ body.loggedin {
 	margin-bottom: 10px;
 }
 
+.role {
+	padding-bottom: 10px;
+	padding-left: 10px;
+	border: 1px solid #9f9fa8;
+	margin-bottom: 10px;
+}
+
 
 .content h3 {
 	margin: 0;

@@ -28,7 +28,7 @@ function showStatusIcon($value) {
           <ul class="links">
               <li class="dropdown"><a href="#" class="trigger-drop">Anmäl<i class="arrow"></i></a>
               <ul class="drop">
-                <li><a href="person_registration_form.php">Deltagare</a></li>
+                <li><a href="select_person.php">Deltagare</a></li>
                 <li><a href="group_registration_form.php">Grupp</a></li>
               </ul>
             </li>
@@ -104,7 +104,7 @@ function showStatusIcon($value) {
     		            }
     		            echo $role->Name . " - " . $role->Profession . " " . $role_group_name . 
     		                 " <a href='role_form.php?operation=update&id=" . $role->Id . 
-    		                  "'><i class='fa-solid fa-pen'></i><br>\n";
+    		                  "'><i class='fa-solid fa-pen'></i></a><br>\n";
     		            
     		        }
     		        echo "</div>\n";

@@ -1,0 +1,45 @@
+<?php
+
+require 'header.php';
+
+$current_persons = $current_user->getUnregisteredPersonsForUser($current_larp);
+
+if (empty($current_persons)) {
+    header('Location: index.php?error=no_person');
+    exit;
+}
+
+if (count($current_persons) == 1) {
+    header('Location: person_registration_form.php?PersonId='. $current_persons[0]->Id);
+    exit;
+    
+}
+
+?>
+
+        <nav id="navigation">
+          <a href="#" class="logo"><?php echo $current_larp->Name;?></a>
+          <ul class="links">
+            <li><a href="index.php"><i class="fa-solid fa-house"></i></i>Hem</a></li>
+	       	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
+          </ul>
+        </nav>
+
+
+	<div class="content">
+		<h1>Anmälan av deltagare till <?php echo $current_larp->Name;?></h1>
+		<form action="person_registration_form.php" method="get">
+
+
+			<div class="question">
+				<label for="PersonId">Deltagare</label><br>
+				<div class="explanation">Vilken deltagare vill du registrera en karaktär för?</div>
+				<?php selectionDropdownByArray('Person', $current_persons, false, true) ?>
+			</div>
+			  <input type="submit" value="Välj">
+
+		</form>
+	</div>
+
+</body>
+</html>
