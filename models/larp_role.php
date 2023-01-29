@@ -12,7 +12,7 @@ class LARP_Role extends BaseModel{
     public $StartingMoney;
     public $EndingMoney;
     public $Result;
-    public $RoleTypeId;
+    public $IsMainRole = false;
 
     public static $orderListBy = 'RoleId';
     
@@ -28,7 +28,7 @@ class LARP_Role extends BaseModel{
         if (isset($post['StartingMoney'])) $larp_group->StartingMoney = $post['StartingMoney']; 
         if (isset($post['EndingMoney'])) $larp_group->EndingMoney = $post['EndingMoney']; 
         if (isset($post['Result'])) $larp_group->Result = $post['Result'];
-        if (isset($post['RoleTypeId'])) $larp_group->RoleTypeId = $post['RoleTypeId']; 
+        if (isset($post['IsMainRole'])) $larp_group->IsMainRole = $post['IsMainRole']; 
         return $larp_group;
     }
     
@@ -41,11 +41,11 @@ class LARP_Role extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE `larp_role` SET LARPId=?, RoleId=?, Approved=?, Intrigue=?, WhatHappened=?,
                                                                   WhatHappendToOthers=?, StartingMoney=?, EndingMoney=?, Result=?, 
-                                                                  RoleTypeId=? WHERE Id = ?;");
+                                                                  IsMainRole=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Approved, $this->Intrigue, $this->WhatHappened, 
                                     $this->WhatHappendToOthers, $this->StartingMoney, $this->EndingMoney, $this->Result, 
-                                    $this->RoleTypeId, $this->Id))) {
+                                    $this->IsMainRole, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -58,11 +58,11 @@ class LARP_Role extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO `larp_role` (LARPId, RoleId, Approved, Intrigue, WhatHappened,
                                                                 WhatHappendToOthers, StartingMoney, EndingMoney, Result, 
-                                                                RoleTypeId) VALUES (?,?,?,?,?, ?,?,?,?,?);");
+                                                                IsMainRole) VALUES (?,?,?,?,?, ?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Approved, $this->Intrigue, $this->WhatHappened,
                                     $this->WhatHappendToOthers, $this->StartingMoney, $this->EndingMoney, $this->Result,
-                                    $this->RoleTypeId))) {
+                                    $this->IsMainRole))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
