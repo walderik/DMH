@@ -21,7 +21,7 @@ class Registration extends BaseModel{
     public $NPCDesire;
     public $HousingRequestId;
     
-    public static $orderListBy = 'Name';
+    public static $orderListBy = 'RegisteredAt';
     
     
     public static function newFromArray($post){
