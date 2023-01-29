@@ -33,7 +33,7 @@ if (count($current_persons) == 1) {
 
 			<div class="question">
 				<label for="PersonId">Deltagare</label><br>
-				<div class="explanation">Vilken deltagare vill du registrera en karaktär för?</div>
+				<div class="explanation">Vilken deltagare vill du aanmäla?</div>
 				<?php selectionDropdownByArray('Person', $current_persons, false, true) ?>
 			</div>
 			  <input type="submit" value="Välj">
