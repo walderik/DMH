@@ -73,8 +73,7 @@ if (empty($roles)) {
 			<div class="question">
 				<label for="RoleId">Karaktärer</label><br>
 				<div class="explanation">Vilka karaktärer vill du spela på lajvet?<br>
-				     För varje karaktär behöver du också ange vilken typ av karaktär det är.<br>
-				     <?php RoleType::helpBox(true); ?><br>
+				     En av dina karaktärer är din huvudkaraktär. Resten är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
 				     <br>Och vilka intriger den karaktären vill ha<br>
 				     <?php IntrigueType::helpBox(true); ?></div>
 			
@@ -83,25 +82,16 @@ if (empty($roles)) {
         			    echo '<div class="role">';
         			    echo '<h3><input type="checkbox" id="role"'.$role->Id.'" name="role"'.$role->Id.'" value="Bike">';
         			    echo '<label for="role"'.$role->Id.'">'.  $role->Name . '</label></h3>';
-        			    
-        			    
+
         			    echo '<table border=0><tr><td valign="top">';
-        			    RoleType::selectionDropdown(false,true);
+
         			    echo '</td><td>&nbsp;</td><td valign="top">';
         			    IntrigueType::selectionDropdown(true,false);
         			    echo '</td></tr></table>';
         			    echo '</div>';
-        			}
-        			
-        			
-        			
-        			
+        			}		
         			
         			?>
-			
-			
-			
-			
 			</div>
 			
 			
@@ -114,9 +104,6 @@ if (empty($roles)) {
                 
                 ?>
             </div>
-
-
-
 
 
 			<div class="question">
