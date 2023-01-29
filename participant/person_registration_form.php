@@ -39,6 +39,11 @@ else {
     //header('Location: index.php?error=no_person');
 }
 
+if (!$current_user->IsAdmin && $current_person->UserId != $current_user->Id) {
+    echo "Exit 4";
+}
+
+
 $roles = $current_person->getRoles();
 
 if (empty($roles)) {
@@ -73,20 +78,23 @@ if (empty($roles)) {
 			<div class="question">
 				<label for="RoleId">Karaktärer</label><br>
 				<div class="explanation">Vilka karaktärer vill du spela på lajvet?<br>
-				     En av dina karaktärer är din huvudkaraktär. Resten är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
+				     En av dina karaktärer är din huvudkaraktär. Vi måste veta vilken.<br>
+				     Andra är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
 				     <br>Och vilka intriger den karaktären vill ha<br>
 				     <?php IntrigueType::helpBox(true); ?></div>
 			
         			<?php 
         			foreach($roles as $role) {
         			    echo '<div class="role">';
-        			    echo '<h3><input type="checkbox" id="role"'.$role->Id.'" name="role"'.$role->Id.'" value="Bike">';
-        			    echo '<label for="role"'.$role->Id.'">'.  $role->Name . '</label></h3>';
+        			    echo '<h3><input type="checkbox" id="roleId"'.$role->Id.'" name="roleId[]" value="'.$role->Id.'">';
+        			    echo '<label for="roleId"'.$role->Id.'">'.  $role->Name . '</label></h3>';
 
         			    echo '<table border=0><tr><td valign="top">';
 
         			    echo '</td><td>&nbsp;</td><td valign="top">';
-        			    IntrigueType::selectionDropdown(true,false);
+//         			    IntrigueType::selectionDropdown(true,false);
+        			    $name = 'role_'.$role->Id.'IntrigueTypeId';
+        			    selectionDropdownByArray($name , IntrigueType::allActive(), true, false, $selected);
         			    echo '</td></tr></table>';
         			    echo '</div>';
         			}		
