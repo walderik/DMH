@@ -2,12 +2,57 @@
 
 class House extends BaseModel{
     
-//TODO gör hela klassen
-
     public $Id;
     public $Name;
     public $NumberOfBeds;
     public $Information;
+   
+    
+    public static $orderListBy = 'Name';
+    
+    public static function newFromArray($post){
+        $house = static::newWithDefault();
+        if (isset($post['Id'])) $house->Id = $post['Id'];
+        if (isset($post['Name'])) $house->Name = $post['Name'];
+        if (isset($post['NumberOfBeds'])) $house->NumberOfBeds = $post['NumberOfBeds'];
+        if (isset($post['Information'])) $house->Information = $post['Information'];
+        
+        return $house;
+    }
+    
+    
+    # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
+    public static function newWithDefault() {
+        return new self();
+    }
+    
+    # Update an existing house in db
+    public function update() {
+        $stmt = $this->connect()->prepare("UPDATE house SET Name=?, NumberOfBeds=?, Information=? WHERE Id = ?");
+        
+        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->Information, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
+    }
+    
+    # Create a new house in db
+    public function create() {
+        $connection = $this->connect();
+        $stmt = $connection->prepare("INSERT INTO house (Name, NumberOfBeds, Information) VALUES (?,?,?)");
+        
+        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->Information))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $this->Id = $connection->lastInsertId();
+        $stmt = null;
+    }
+    
     
     
 }
