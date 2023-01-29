@@ -161,13 +161,6 @@ function default_value($field) {
 			<div class="question">
 			<label for="IntrigueType">Intriger</label>
 			
-			<div class="explanation">Vilka typer av gruppintriger är ni intresserade av?<br><?php IntrigueType::helpBox(true); ?></div>
-			
-			
-			<?php
-			IntrigueType::selectionDropdown(true, false, $group->getSelectedIntrigueTypeIds());
-            ?>
-			</div>
 			<div class="question">
 			<label for="IntrigueIdeas">Intrigidéer</label>
 			<div class="explanation">
