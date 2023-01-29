@@ -105,9 +105,6 @@ if (empty($roles)) {
 			</div>
 			
 			
-//Typ av roll			
-//Intrigtyper per roll
-			
 			<div class="question">
     			<label for="HousingRequest">Boende</label>
     			<div class="explanation">Hur vill du helst bo? Vi kan inte garantera plats i hus. <br><?php HousingRequest::helpBox(true); ?></div>
