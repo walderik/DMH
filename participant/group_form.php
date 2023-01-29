@@ -159,9 +159,6 @@ function default_value($field) {
 			
 					
 			<div class="question">
-			<label for="IntrigueType">Intriger</label>
-			
-			<div class="question">
 			<label for="IntrigueIdeas">Intrigidéer</label>
 			<div class="explanation">
 			Har ni några grupprykten som ni vill ha hjälp med att sprida? 
