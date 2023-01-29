@@ -130,4 +130,31 @@ class LARP_Role extends BaseModel{
         return IntrigueType::getIntrigeTypesForLarpAndRole($this->LARPId, $this->RoleId);
     }
     
+    
+    public function getSelectedIntrigueTypeIds() {
+        if (is_null($this->Id)) return array();
+        
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  `intriguetype_larp_role` WHERE LARP_RoleLARPid = ? AND LARP_RoleRoleId = ? ORDER BY IntrigueTypeId;");
+        
+        if (!$stmt->execute(array($this->LARPId, $this->RoleId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['IntrigueTypeId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
 }

@@ -100,5 +100,33 @@ class LARP_Group extends BaseModel{
         $stmt = null;
     }
 
+    public function getSelectedIntrigueTypeIds() {
+        if (is_null($this->Id)) return array();
         
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  `intriguetype_larp_group`` WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ? ORDER BY IntrigueTypeId;");
+        
+        if (!$stmt->execute(array($this->GroupId, $this->LARPId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['IntrigueTypeId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function getIntrigueTypes(){
+        return IntrigueType::getIntrigeTypesForLarpAndGroup($this->LARPId, $this->GroupId);
+    }
 }
