@@ -101,8 +101,10 @@ function default_value($field) {
 			
 			
 			<div class="question">
-				<label for="ApproximateNumberOfMembers">Ungefär hur många
-					gruppmedlemmar kommer ni att bli?</label><br> <input type="text"
+				<label for="ApproximateNumberOfMembers">Antal medlemmar</label><br> 
+					<div class="explanation">Ungefär hur många
+					gruppmedlemmar kommer ni att bli?</div>
+					<input type="text"
 					id="ApproximateNumberOfMembers"
 					name="ApproximateNumberOfMembers"  value="<?php echo $group->ApproximateNumberOfMembers; ?>" required>
 			</div>
