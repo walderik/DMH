@@ -45,6 +45,29 @@ class LARP_Group extends BaseModel{
         return true;
     }
     
+    public static function loadByIds($groupId, $larpId)
+    {
+        # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `larp_group` WHERE GroupId = ? AND LARPId = ?");
+        
+        if (!$stmt->execute(array($groupId, $larpId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return null;
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $rows[0];
+        $stmt = null;
+        
+        return static::newFromArray($row);
+    }
+    
         
     # Update an existing object in db
     public function update() {

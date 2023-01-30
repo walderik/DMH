@@ -22,6 +22,8 @@ if (!$current_group->isRegistered($current_larp)) {
     header('Location: index.php'); //Gruppen är inte anmäld
 }
 
+$larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
+
 function ja_nej($val) {
     if ($val == 0) return "Nej";
     if ($val == 1) return "Ja";
@@ -52,11 +54,18 @@ function ja_nej($val) {
 
 			<tr><td valign="top">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
 			<tr><td valign="top">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
+			<tr><td valign="top">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
+			<tr><td valign="top">Boende</td><td><?php echo HousingRequest::loadById($larp_group->HousingRequestId)->Name;?></td></tr>
 		
 		
 		
 		<?php 
+		
+		
+		
 		//TODO Saker från larp_group
+		//public $Intrigue;
+		
 		
 		//TODO Anmälda medlemmar
 		?>
