@@ -14,6 +14,7 @@ class LARP extends BaseModel{
     public  $LatestRegistrationDate;
     public  $StartTimeLARPTime;
     public  $EndTimeLARPTime;
+    public  $DisplayIntrigues = 0;
 
     
 //     public static $tableName = 'larp';
@@ -30,6 +31,7 @@ class LARP extends BaseModel{
         if (isset($post['LatestRegistrationDate'])) $larp->LatestRegistrationDate = $post['LatestRegistrationDate'];
         if (isset($post['StartTimeLARPTime'])) $larp->StartTimeLARPTime = $post['StartTimeLARPTime'];
         if (isset($post['EndTimeLARPTime'])) $larp->EndTimeLARPTime = $post['EndTimeLARPTime'];
+        if (isset($post['DisplayIntrigues'])) $larp->DisplayIntrigues = $post['DisplayIntrigues'];
         if (isset($post['Id'])) $larp->Id = $post['Id'];
         
         return $larp;
@@ -45,11 +47,11 @@ class LARP extends BaseModel{
     
     # Update an existing larp in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, DisplayIntrigues=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->Id))) {
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -61,11 +63,11 @@ class LARP extends BaseModel{
     # Create a new larp in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, Abbreviation, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, Abbreviation, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime))) {
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
