@@ -111,6 +111,9 @@ class Role extends BaseModel{
         return Group::loadById($this->GroupId);
     }
     
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
+    }
     
     
     public static function getRolesForPerson($personId) {
@@ -137,6 +140,11 @@ class Role extends BaseModel{
         }
         $stmt = null;
         return $resultArray;
+    }
+   
+    public static function getRegisteredRolesInGroup($group, $larp) {
+        //TODO returnerna en array med de roller som är anmälda i grupen på lajvet
+        return Array();
     }
     
 

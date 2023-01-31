@@ -24,6 +24,8 @@ if (!$current_group->isRegistered($current_larp)) {
 
 $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 
+$group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
+
 function ja_nej($val) {
     if ($val == 0) return "Nej";
     if ($val == 1) return "Ja";
@@ -47,14 +49,13 @@ function ja_nej($val) {
 			<tr><td valign="top">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
 			<tr><td valign="top">Vänner</td><td><?php echo $current_group->Friends;?></td></tr>
 			<tr><td valign="top">Fiender</td><td><?php echo $current_group->Enemies;?></td></tr>
-			<tr><td valign="top">Antal medlemmar</td><td><?php echo $current_group->ApproximateNumberOfMembers;?></td></tr>
-			<tr><td valign="top">Eldplats</td><td><?php echo ja_nej($current_group->NeedFireplace);?></td></tr>
 			<tr><td valign="top">Rikedom</td><td><?php echo Wealth::loadById($current_group->WealthId)->Name;?></td></tr>
 			<tr><td valign="top">Var bor gruppen?</td><td><?php echo PlaceOfResidence::loadById($current_group->PlaceOfResidenceId)->Name;?></td></tr>
-
 			<tr><td valign="top">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
 			<tr><td valign="top">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
 			<tr><td valign="top">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
+			<tr><td valign="top">Antal medlemmar</td><td><?php echo $current_group->ApproximateNumberOfMembers;?></td></tr>
+			<tr><td valign="top">Eldplats</td><td><?php echo ja_nej($current_group->NeedFireplace);?></td></tr>
 			<tr><td valign="top">Boende</td><td><?php echo HousingRequest::loadById($larp_group->HousingRequestId)->Name;?></td></tr>
 		
 		
@@ -62,13 +63,26 @@ function ja_nej($val) {
 		<?php 
 		
 		
-		
-		//TODO Saker från larp_group
-		//public $Intrigue;
-		
+		//TODO valda intrigtyper
 		
 		//TODO Anmälda medlemmar
 		?>
+		<h2>Medlemmar</h2>
+		<?php 
+		foreach($group_members as $group_member) {
+		    echo $group_member->Name . " - " . $group_member->Profession . " spelas av " . $group_member.getPerson()->Name . "<br>"; 
+		}
+		
+		?>
+		
+		<h2>Intrig</h2>
+			<?php if ($current_larp->DisplayIntrigues == 1) {
+			    echo $larp_group->Intrigue;    
+			}
+			else {
+			    echo "Intrigerna är inte klara än.";
+			}
+			?>
 		
 		</table>
 	</div>
