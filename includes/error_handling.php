@@ -19,7 +19,7 @@ function getMessageText($code) {
     
     switch ($code) {
         case "user_created":
-            $output = "Kontot har skapats. Du kan logga in nu.";
+            $output = "Kontot har skapats. Aktivera det för att kunna logga in. Följ anvisningarna i mailet vi skickade till dig.";
             break;
         default:
             $output = "Okänt meddelande: ". $code;

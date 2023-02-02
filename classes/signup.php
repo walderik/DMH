@@ -1,5 +1,7 @@
 <?php
-
+global $root;
+$root = $_SERVER['DOCUMENT_ROOT'];
+include_once $root . '/includes/dmh_mailer.php';
 
 class Signup extends Dbh {
 
@@ -10,7 +12,7 @@ class Signup extends Dbh {
         $activationCode = uniqid();
         
         //TODO fixa epostning
-        $activationCode = 'activated';
+//         $activationCode = 'activated';
         
         
         if (!$stmt->execute(array($email, $hashedPassword, $activationCode))) {
@@ -19,6 +21,13 @@ class Signup extends Dbh {
             exit();
         }
         $stmt = null;
+        $url = $this->activation_url($email, $activationCode);
+        
+        $text  = "Du har nu registrerat ett login för lajvet.<br>\n";
+        $text .= "Nu måste du aktivera den för att kunna logga in.<br><br>\n";
+        $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken.</a><br>\n";
+        
+        DmhMailer::send($email, 'Stranger', $text, "Aktiveringsbrev");
         
     }
     
@@ -41,6 +50,15 @@ class Signup extends Dbh {
             $resultCheck = false;
         }
         return $resultCheck;
+    }
+    
+    protected function activation_url($email, $activationCode){
+        return sprintf(
+            "%s://%s%s",
+            isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+            $_SERVER['SERVER_NAME'],
+            "/includes/activate.php?email=$email&code=$activationCode"
+            );
     }
     
     

@@ -26,7 +26,8 @@ class DmhMailer {
         //Set an alternative reply-to address
         $mail->addReplyTo(static::$from, utf8_decode(static::$myName));
         //Set who the message is to be sent to
-        $mail->addAddress('mats.rappe@yahoo.se', utf8_decode($to_name));
+        $mail->addAddress($to_email, utf8_decode($to_name));
+//         $mail->addAddress('mats.rappe@yahoo.se', utf8_decode($to_name));
         //Set the subject line
         $mail->Subject = utf8_decode($subject);
         //Read an HTML message body from an external file, convert referenced images to embedded,
@@ -78,4 +79,5 @@ class DmhMailer {
         return true;
             
     } // End contruct
+    
 }
