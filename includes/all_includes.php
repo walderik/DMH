@@ -21,6 +21,7 @@ include_once $root . '/models/larp_role.php';
 include_once $root . '/models/larper_type.php';
 include_once $root . '/models/normal_allergy_type.php';
 include_once $root . '/models/official_type.php';
+include_once $root . '/models/payment_information.php';
 include_once $root . '/models/person.php';
 include_once $root . '/models/place_of_residence.php';
 include_once $root . '/models/registration.php';

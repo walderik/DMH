@@ -227,17 +227,30 @@ class Person extends BaseModel{
     }
     
     public function isRegistered($larp) {
-        //TODO kolla om personen är anmäld till lajvet
-        
+        $registration = Registration::loadByIds($this->Id, $larp->Id);
+        if (isset($registration)) {
+            return true;
+        }        
         return false;
     }
     
 
     public function isApproved($larp) {
-        //TODO kolla om personens anmälan är godkänd
-        
+        //TODO kolla om anmälan är godkänd
         return false;
     }
+    
+    public function hasPayed($larp) {
+        $registration = Registration::loadByIds($this->Id, $larp->Id);
+        if (!isset($registration)) {
+            return false;
+        }
+        if ($registration->Payed == 1) {
+            return true;
+        }
+        return false;
+    }
+    
     
     public function isMember($date) {
         $year = substr($date, 0, 4);

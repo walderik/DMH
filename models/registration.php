@@ -10,11 +10,11 @@ class Registration extends BaseModel{
     public $RegisteredAt;
     public $PaymentReference;
     public $AmountToPay;
-    public $AmountPayed;
-    public $Payed;
+    public $AmountPayed = 0;
+    public $Payed = 0;
     public $IsMember;
     public $MembershipCheckedAt;
-    public $NotComing;
+    public $NotComing = 1;
     public $ToBeRefunded;
     public $RefundDate; 
     public $IsOfficial = 0;
@@ -88,6 +88,30 @@ class Registration extends BaseModel{
         }
         $this->Id = $connection->lastInsertId();
         $stmt = null;
+    }
+    
+ 
+    public static function loadByIds($personId, $larpId)
+    {
+        # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `registration` WHERE PersonId = ? AND LARPId = ?");
+        
+        if (!$stmt->execute(array($personId, $larpId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return null;
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $rows[0];
+        $stmt = null;
+        
+        return static::newFromArray($row);
     }
     
     

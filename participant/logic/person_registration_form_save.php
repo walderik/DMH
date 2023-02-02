@@ -15,6 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mainRole = $_POST['IsMainRole'];
     if ($operation == 'insert') {
         $registration = Registration::newFromArray($_POST);
+        $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), 
+            Person::loadById($registration->PersonId)->getAgeAtLarp($current_larp->StartDate));
+        $registration->PaymentReference = $registration->LARPId . $registration->PersonId;
+        //TODO spara med tid också
+        $registration->RegisteredAt = date("Y-m-d");
         $registration->create();
         
         $roleIdArr = $_POST['roleId'];

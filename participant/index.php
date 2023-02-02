@@ -80,6 +80,13 @@ function showStatusIcon($value) {
                     echo "Anmäld : " . showStatusIcon($person->isRegistered($current_larp)). "<br>\n";
                     if ($person->isRegistered($current_larp)) {
                         echo "Godkänd : " . showStatusIcon($person->isApproved($current_larp)). "<br>\n";
+                        echo "Betalat : " . showStatusIcon($person->hasPayed($current_larp));
+                        if (!$person->hasPayed($current_larp)) {
+                            $registration = Registration::loadByIds($person->Id, $current_larp->Id);
+                            echo "Betala " . $registration->AmountToPay . " SEK till xxxxxxxxxx ange referens: " . $registration->PaymentReference;
+                        }
+                        echo "<br>\n";
+                        
                     }
                     echo "Medlem: " . showStatusIcon($person->isMember($current_larp->StartDate)). "<br>\n";
     		        $groups = $person->getGroups();
