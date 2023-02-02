@@ -12,27 +12,33 @@ echo "<br />";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
+    $mainRole = $_POST['IsMainRole'];
     if ($operation == 'insert') {
         $registration = Registration::newFromArray($_POST);
         $registration->create();
-        $registration->saveAllIntrigueTypes($_POST);
-        //TODO spara alla valdra roller i LARP_Role
-    } elseif ($operation == 'delete') {
-        $larp_group->deleteAllIntrigueTypes();
-        Registration::delete($_POST['Id']);
         
-        //TODO Ta bort valda roller
-    } elseif ($operation == 'update') {
+        $roleIdArr = $_POST['roleId'];
         
-        $registration = Registration::newFromArray($_POST);
-        $registration->update();
-        $registration->deleteAllIntrigueTypes();
-        $registration->saveAllIntrigueTypes($_POST);
-        
-        //TODO Uppdatera valda roller
+        foreach ($roleIdArr as $roleId) {
+            $larp_role = LARP_Role::newWithDefault();
+            $larp_role->RoleId = $roleId;
+            $larp_role->LARPId = $current_larp->Id;
+            if ($mainRole == $roleId) {
+                echo "Main role: " . $larp_role->Id;
+                $larp_role->IsMainRole = 1;
+            }
+            $larp_role->create();            
+        }
+        $intrigueTypeRoleArr = $_POST['IntrigueTypeId'];
+
+        foreach ($intrigueTypeRoleArr as  $key => $intrigueTypeRole) {
+            $larp_role = LARP_Role::loadByIds($key, $current_larp->Id);
+            $larp_role->saveAllIntrigueTypes($intrigueTypeRole);
+        }
         
     } else {
         echo $operation;
     }
-    header('Location: ../index.php');
+    
+    //header('Location: ../index.php');
 }

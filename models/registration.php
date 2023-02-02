@@ -17,7 +17,7 @@ class Registration extends BaseModel{
     public $NotComing;
     public $ToBeRefunded;
     public $RefundDate; 
-    public $IsOfficial;
+    public $IsOfficial = 0;
     public $NPCDesire;
     public $HousingRequestId;
     
@@ -80,7 +80,7 @@ class Registration extends BaseModel{
             NPCDesire, HousingRequestId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
-            $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded,
+            $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded,
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");

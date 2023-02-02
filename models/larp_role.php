@@ -37,6 +37,31 @@ class LARP_Role extends BaseModel{
         return new self();
     }
     
+    public static function loadByIds($roleId, $larpId)
+    {
+        # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `larp_role` WHERE RoleId = ? AND LARPId = ?");
+        
+        if (!$stmt->execute(array($roleId, $larpId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return null;
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $rows[0];
+        $stmt = null;
+        
+        return static::newFromArray($row);
+    }
+    
+    
+    
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE `larp_role` SET LARPId=?, RoleId=?, Approved=?, Intrigue=?, WhatHappened=?,
@@ -156,5 +181,31 @@ class LARP_Role extends BaseModel{
         
         return $resultArray;
     }
+    
+    public function saveAllIntrigueTypes($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO IntrigueType_LARP_Role (IntrigueTypeId, LARP_RoleRoleId, LARP_RoleLARPId) VALUES (?,?, ?);");
+            if (!$stmt->execute(array($Id, $this->RoleId, $this->LARPId))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllIntrigueTypes() {
+        $stmt = $this->connect()->prepare("DELETE FROM IntrigueType_LARP_Role WHERE LARP_RoleRoleId = ? AND LARP_RoleLARPId = ?;");
+        if (!$stmt->execute(array($this->RoleId, $this->LARPId))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
     
 }

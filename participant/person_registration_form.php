@@ -67,7 +67,7 @@ if (empty($roles)) {
 		<h1>Anmälan av <?php echo $current_person->Name;?> till <?php echo $current_larp->Name;?></h1>
 		<form action="logic/person_registration_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="insert"> 
-    		<input type="hidden" id="LarpId" name="Id" value="<?php echo $current_larp->Id ?>">
+    		<input type="hidden" id="LARPId" name="LARPId" value="<?php echo $current_larp->Id ?>">
     		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $current_person->Id ?>">
 
 
@@ -86,15 +86,22 @@ if (empty($roles)) {
         			<?php 
         			foreach($roles as $role) {
         			    echo '<div class="role">';
-        			    echo '<h3><input type="checkbox" id="roleId"'.$role->Id.'" name="roleId[]" value="'.$role->Id.'">';
-        			    echo '<label for="roleId"'.$role->Id.'">'.  $role->Name . '</label></h3>';
+        			    echo '<h3><input type="checkbox" id="roleId'.$role->Id.'" name="roleId[]" value="'.$role->Id.'';
+        			    echo "\n";
+        			    echo '<label for="roleId'.$role->Id.'">'.  $role->Name . '</label></h3>';
+        			    echo "\n";
+        			    echo '<input type="radio" id="mainRole'.$role->Id.'" name="IsMainRole" value="'.$role->Id.'" required>';
+        			    echo "\n";
+        			    echo '<label for="mainRole'.$role->Id.'">Huvudkaraktär</label><br><br>';
+        			    echo "\n";
+        			    
 
         			    echo '<table border=0><tr><td valign="top">';
 
         			    echo '</td><td>&nbsp;</td><td valign="top">';
 //         			    IntrigueType::selectionDropdown(true,false);
-        			    $name = 'role_'.$role->Id.'IntrigueTypeId';
-        			    selectionDropdownByArray($name , IntrigueType::allActive(), true, false, $selected);
+        			    $name = 'IntrigueTypeId[' . $role->Id . ']';
+        			    selectionDropdownByArray($name , IntrigueType::allActive(), true, false);
         			    echo '</td></tr></table>';
         			    echo '</div>';
         			}		

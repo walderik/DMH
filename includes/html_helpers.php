@@ -3,7 +3,12 @@
 # En selector där man kan välja i en array
 function selectionDropdownByArray(String $name_in, Array $selectionDatas, ?bool $multiple=false, ?bool $required=true, $selected=null) {
 //     $name = ($multiple) ? (static::class . "Id[]") : static::class."Id";
-    $name = ($multiple) ? ($name_in . "Id[]") : $name_in."Id";
+    if (str_ends_with($name_in,"]")) {
+        $name = ($multiple) ? ($name_in . "[]") : $name_in;
+    }
+    else {
+        $name = ($multiple) ? ($name_in . "Id[]") : $name_in."Id";
+    }
     
     # TODO Hantera required för checkboxes när det behövs - Det går med Javascripts
     //     https://tutorialdeep.com/knowhow/make-checkbox-field-required-form-html/
