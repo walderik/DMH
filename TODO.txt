@@ -1,7 +1,7 @@
 
 
 Stänga anmälan om det är tillräckligt många anmälda
-
+Enbart tillåtet att registrera en person per personnummer
 
 Glömt lösenord
 Be om ny aktiveringslänk

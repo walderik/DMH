@@ -23,6 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+if ($group->isRegistered($current_larp)) {
+    header('Location: view_group.php?GroupId='.$group->Id);
+    exit;
+}
+
 function default_value($field) {
     GLOBAL $group;
     $output = "";

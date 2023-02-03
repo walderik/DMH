@@ -45,19 +45,19 @@ function ja_nej($val) {
 	<div class="content">
 		<h1><?php echo $current_group->Name;?></h1>
 		<table>
-			<tr><td valign="top">Gruppledare</td><td><?php echo Person::loadById($current_group->PersonId)->Name;?></td></tr>
-			<tr><td valign="top">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
-			<tr><td valign="top">Vänner</td><td><?php echo $current_group->Friends;?></td></tr>
-			<tr><td valign="top">Fiender</td><td><?php echo $current_group->Enemies;?></td></tr>
-			<tr><td valign="top">Rikedom</td><td><?php echo Wealth::loadById($current_group->WealthId)->Name;?></td></tr>
-			<tr><td valign="top">Var bor gruppen?</td><td><?php echo PlaceOfResidence::loadById($current_group->PlaceOfResidenceId)->Name;?></td></tr>
-			<tr><td valign="top">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
-			<tr><td valign="top">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
-			<tr><td valign="top">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
-			<tr><td valign="top">Antal medlemmar</td><td><?php echo $current_group->ApproximateNumberOfMembers;?></td></tr>
-			<tr><td valign="top">Eldplats</td><td><?php echo ja_nej($current_group->NeedFireplace);?></td></tr>
-			<tr><td valign="top">Boende</td><td><?php echo HousingRequest::loadById($larp_group->HousingRequestId)->Name;?></td></tr>
-		
+			<tr><td valign="top" class="header">Gruppledare</td><td><?php echo Person::loadById($current_group->PersonId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
+			<tr><td valign="top" class="header">Vänner</td><td><?php echo $current_group->Friends;?></td></tr>
+			<tr><td valign="top" class="header">Fiender</td><td><?php echo $current_group->Enemies;?></td></tr>
+			<tr><td valign="top" class="header">Rikedom</td><td><?php echo Wealth::loadById($current_group->WealthId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Var bor gruppen?</td><td><?php echo PlaceOfResidence::loadById($current_group->PlaceOfResidenceId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
+			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
+			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
+			<tr><td valign="top" class="header">Antal medlemmar</td><td><?php echo $current_group->ApproximateNumberOfMembers;?></td></tr>
+			<tr><td valign="top" class="header">Eldplats</td><td><?php echo ja_nej($current_group->NeedFireplace);?></td></tr>
+			<tr><td valign="top" class="header">Boende</td><td><?php echo HousingRequest::loadById($larp_group->HousingRequestId)->Name;?></td></tr>
+		</table>		
 		
 		
 		<?php 
@@ -69,8 +69,12 @@ function ja_nej($val) {
 		?>
 		<h2>Medlemmar</h2>
 		<?php 
+
 		foreach($group_members as $group_member) {
-		    echo $group_member->Name . " - " . $group_member->Profession . " spelas av " . $group_member.getPerson()->Name . "<br>"; 
+
+		    echo $group_member->Name . " - " . 
+                 $group_member->Profession . " spelas av " . 
+                 $group_member->getPerson()->Name . "<br>"; 
 		}
 		
 		?>
@@ -84,7 +88,7 @@ function ja_nej($val) {
 			}
 			?>
 		
-		</table>
+
 	</div>
 
 

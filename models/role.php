@@ -143,8 +143,29 @@ class Role extends BaseModel{
     }
    
     public static function getRegisteredRolesInGroup($group, $larp) {
-        //TODO returnerna en array med de roller som är anmälda i grupen på lajvet
-        return Array();
+        if (is_null($group) or is_null($larp)) return Array();
+        $sql = "SELECT * FROM `role`, larp_role WHERE `role`.GroupId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($group->Id, $larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
     }
     
 
