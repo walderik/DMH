@@ -49,7 +49,7 @@ class LoginController {
         }
         
         
-        if ($user->ActivationCode !== 'activated') {
+        if (!$user->isActivated()) { #          ActivationCode !== 'activated') {
             //Kontot är inte aktiverat
             header("location: ../index.php?error=accountNotActivated");
             exit();

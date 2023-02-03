@@ -114,5 +114,7 @@ class User extends BaseModel{
         return $unregistered_persons;
     }
     
-    
+    public function isActivated() {
+        return $this->ActivationCode == 'activated'
+    }
 }
