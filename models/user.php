@@ -115,6 +115,6 @@ class User extends BaseModel{
     }
     
     public function isActivated() {
-        return $this->ActivationCode == 'activated'
+        return $this->ActivationCode == 'activated';
     }
 }
