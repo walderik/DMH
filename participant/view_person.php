@@ -40,27 +40,51 @@ function ja_nej($val) {
           </ul>
         </nav>
 
+
 	<div class="content">
 		<h1><?php echo $current_person->Name;?></h1>
 		<table>
-			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
-			<tr><td valign="top" class="header">NPC</td><td><?php echo ja_nej($current_role->IsNPC);?></td></tr>
-			<tr><td valign="top" class="header">Yrke</td><td><?php echo $current_role->Profession;?></td></tr>
-			<tr><td valign="top" class="header">Tidigare lajv</td><td><?php echo $current_role->PreviousLarps;?></td></tr>
-			<tr><td valign="top" class="header">ReasonForBeingInSlowRiver</td><td><?php echo $current_role->ReasonForBeingInSlowRiver;?></td></tr>
-			<tr><td valign="top" class="header">Religion</td><td><?php echo $current_role->Religion;?></td></tr>
-			<tr><td valign="top" class="header">Mörk hemlighet</td><td><?php echo $current_role->DarkSecret;?></td></tr>
-			<tr><td valign="top" class="header">Mörk hemlighet intrigideer</td><td><?php echo $current_role->DarkSecretIntrigueIdeas;?></td></tr>
-			<tr><td valign="top" class="header">Intrigideer</td><td><?php echo $current_role->IntrigueSuggestions;?></td></tr>
-			<tr><td valign="top" class="header">NotAcceptableIntrigues</td><td><?php echo $current_role->NotAcceptableIntrigues;?></td></tr>
-			<tr><td valign="top" class="header">CharactersWithRelations</td><td><?php echo $current_role->CharactersWithRelations;?></td></tr>
-			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_role->OtherInformation;?></td></tr>
-			<tr><td valign="top" class="header">Rikedom</td><td><?php echo Wealth::loadById($current_role->WealthId)->Name;?></td></tr>
-			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo PlaceOfResidence::loadById($current_role->PlaceOfResidenceId)->Name;?></td></tr>
-			<tr><td valign="top" class="header">Birthplace</td><td><?php echo $current_role->Birthplace;?></td></tr>
+			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $current_person->SocialSecurityNumber;?></td></tr>
+			<tr><td valign="top" class="header">Email</td><td><?php echo $current_person->Email;?></td></tr>
+			<tr><td valign="top" class="header">Mobilnummer</td><td><?php echo $current_person->PhoneNumber;?></td></tr>
+			<tr><td valign="top" class="header">Närmaste anhörig</td><td><?php echo $current_person->EmergencyContact;?></td></tr>
+
+			<tr><td valign="top" class="header">Typ av lajvare</td><td><?php echo LarperType::loadById($current_person->LarperTypeId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td><td><?php echo $current_person->TypeOfLarperComment;?></td></tr>
+
+
+			<tr><td valign="top" class="header">Erfarenhet</td><td><?php echo Experience::loadById($current_person->ExperienceId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Intriger du inte vill spela på</td><td><?php echo $current_person->NotAcceptableIntrigues;?></td></tr>
+
+			<tr><td valign="top" class="header">Typ av mat</td><td><?php echo TypeOfFood::loadById($current_person->TypeOfFoodId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Vanliga allergier</td><td><?php echo commaStringFromArrayObject($current_person->getNormalAllergyTypes());?></td></tr>
+
+			<tr><td valign="top" class="header">Andra allergier</td><td><?php echo $current_person->FoodAllergiesOther;?></td></tr>
+
+
+			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_person->OtherInformation;?></td></tr>
 
 		</table>		
+		<?php 
 		
+		//TODO husförvaltare, medlem
+		/*
+		public $Approved; //Date
+		public $RegisteredAt;
+		public $PaymentReference;
+		public $AmountToPay;
+		public $AmountPayed = 0;
+		public $Payed; //Datum
+		public $IsMember;
+		public $MembershipCheckedAt;
+		public $NotComing = 1;
+		public $ToBeRefunded;
+		public $RefundDate;
+		public $IsOfficial = 0;
+		public $NPCDesire;
+		public $HousingRequestId;
+		*/
+		?>
 
 	</div>
 

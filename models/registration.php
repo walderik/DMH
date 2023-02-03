@@ -12,8 +12,8 @@ class Registration extends BaseModel{
     public $PaymentReference;
     public $AmountToPay;
     public $AmountPayed = 0;
-    public $Payed = 0;
-    public $IsMember;
+    public $Payed; //Datum
+    public $IsMember; 
     public $MembershipCheckedAt;
     public $NotComing = 1;
     public $ToBeRefunded;
@@ -126,6 +126,7 @@ class Registration extends BaseModel{
     
     static function getAllPersons($larp) {
         //TODO returnera alla personer som är anmälda till lajvet
+        return Array();
     }
     
 }

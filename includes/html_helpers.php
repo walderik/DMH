@@ -49,3 +49,16 @@ function selectionDropdownByArray(String $name_in, Array $selectionDatas, ?bool 
 }
 
 
+function commaStringFromArrayObject($objectArray) {
+    $output="";
+    
+    foreach($objectArray as $object) {
+        $output += $object->Name . ", ";
+    }
+    if (strlen($output) > 2) {
+        $output = substr($output, 0, -2);
+    }
+    return $output;
+}
+
+
