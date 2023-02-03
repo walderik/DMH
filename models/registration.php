@@ -7,6 +7,7 @@ class Registration extends BaseModel{
     public $Id;
     public $LARPId;
     public $PersonId;
+    public $Approved; //Date
     public $RegisteredAt;
     public $PaymentReference;
     public $AmountToPay;
@@ -29,6 +30,7 @@ class Registration extends BaseModel{
         if (isset($post['Id']))   $registration->Id = $post['Id'];
         if (isset($post['LARPId'])) $registration->LARPId = $post['LARPId'];
         if (isset($post['PersonId'])) $registration->PersonId = $post['PersonId'];
+        if (isset($post['Approved'])) $larp_role->Approved = $post['Approved'];
         if (isset($post['RegisteredAt'])) $registration->RegisteredAt = $post['RegisteredAt'];
         if (isset($post['PaymentReference'])) $registration->PaymentReference = $post['PaymentReference'];
         if (isset($post['AmountToPay'])) $registration->AmountToPay = $post['AmountToPay'];
@@ -53,11 +55,11 @@ class Registration extends BaseModel{
 
     # Update an existing registration in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE registration SET LARPId=?, PersonId=?, RegisteredAt=?, PaymentReference=?, AmountToPay=?,
+        $stmt = $this->connect()->prepare("UPDATE registration SET LARPId=?, PersonId=?, Approved=?, RegisteredAt=?, PaymentReference=?, AmountToPay=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, 
+        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded, 
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId,$this->Id))) {
             $stmt = null;
@@ -74,12 +76,12 @@ class Registration extends BaseModel{
     # Create a new registration in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO registration (LARPId, PersonId, RegisteredAt, 
+        $stmt = $connection->prepare("INSERT INTO registration (LARPId, PersonId, Approved, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, ToBeRefunded, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
+        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded,
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId))) {
             $stmt = null;

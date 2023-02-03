@@ -5,7 +5,6 @@ class LARP_Role extends BaseModel{
     public $Id;
     public $LARPId;
     public $RoleId;
-    public $Approved = false;
     public $Intrigue;
     public $WhatHappened;
     public $WhatHappendToOthers;
@@ -17,19 +16,18 @@ class LARP_Role extends BaseModel{
     public static $orderListBy = 'RoleId';
     
     public static function newFromArray($post){
-        $larp_group = static::newWithDefault();
-        if (isset($post['Id']))   $larp_group->Id = $post['Id'];
-        if (isset($post['LARPId'])) $larp_group->LARPId = $post['LARPId'];
-        if (isset($post['RoleId'])) $larp_group->RoleId = $post['RoleId'];
-        if (isset($post['Approved'])) $larp_group->Approved = $post['Approved'];
-        if (isset($post['Intrigue'])) $larp_group->Intrigue = $post['Intrigue']; 
-        if (isset($post['WhatHappened'])) $larp_group->WhatHappened = $post['WhatHappened']; 
-        if (isset($post['WhatHappendToOthers'])) $larp_group->WhatHappendToOthers = $post['WhatHappendToOthers']; 
-        if (isset($post['StartingMoney'])) $larp_group->StartingMoney = $post['StartingMoney']; 
-        if (isset($post['EndingMoney'])) $larp_group->EndingMoney = $post['EndingMoney']; 
-        if (isset($post['Result'])) $larp_group->Result = $post['Result'];
-        if (isset($post['IsMainRole'])) $larp_group->IsMainRole = $post['IsMainRole']; 
-        return $larp_group;
+        $larp_role = static::newWithDefault();
+        if (isset($post['Id']))   $larp_role->Id = $post['Id'];
+        if (isset($post['LARPId'])) $larp_role->LARPId = $post['LARPId'];
+        if (isset($post['RoleId'])) $larp_role->RoleId = $post['RoleId'];
+        if (isset($post['Intrigue'])) $larp_role->Intrigue = $post['Intrigue']; 
+        if (isset($post['WhatHappened'])) $larp_role->WhatHappened = $post['WhatHappened']; 
+        if (isset($post['WhatHappendToOthers'])) $larp_role->WhatHappendToOthers = $post['WhatHappendToOthers']; 
+        if (isset($post['StartingMoney'])) $larp_role->StartingMoney = $post['StartingMoney']; 
+        if (isset($post['EndingMoney'])) $larp_role->EndingMoney = $post['EndingMoney']; 
+        if (isset($post['Result'])) $larp_role->Result = $post['Result'];
+        if (isset($post['IsMainRole'])) $larp_role->IsMainRole = $post['IsMainRole']; 
+        return $larp_role;
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -83,11 +81,11 @@ class LARP_Role extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE `larp_role` SET LARPId=?, RoleId=?, Approved=?, Intrigue=?, WhatHappened=?,
+        $stmt = $this->connect()->prepare("UPDATE `larp_role` SET LARPId=?, RoleId=?, Intrigue=?, WhatHappened=?,
                                                                   WhatHappendToOthers=?, StartingMoney=?, EndingMoney=?, Result=?, 
                                                                   IsMainRole=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Approved, $this->Intrigue, $this->WhatHappened, 
+        if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Intrigue, $this->WhatHappened, 
                                     $this->WhatHappendToOthers, $this->StartingMoney, $this->EndingMoney, $this->Result, 
                                     $this->IsMainRole, $this->Id))) {
                 $stmt = null;
@@ -100,11 +98,11 @@ class LARP_Role extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `larp_role` (LARPId, RoleId, Approved, Intrigue, WhatHappened,
+        $stmt = $connection->prepare("INSERT INTO `larp_role` (LARPId, RoleId, Intrigue, WhatHappened,
                                                                 WhatHappendToOthers, StartingMoney, EndingMoney, Result, 
-                                                                IsMainRole) VALUES (?,?,?,?,?, ?,?,?,?,?);");
+                                                                IsMainRole) VALUES (?,?,?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Approved, $this->Intrigue, $this->WhatHappened,
+        if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Intrigue, $this->WhatHappened,
                                     $this->WhatHappendToOthers, $this->StartingMoney, $this->EndingMoney, $this->Result,
                                     $this->IsMainRole))) {
                 $this->connect()->rollBack();
