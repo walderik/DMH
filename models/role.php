@@ -114,6 +114,11 @@ class Role extends BaseModel{
     public function getPerson() {
         return Person::loadById($this->PersonId);
     }
+
+    public function isRegistered($larp) {
+        return LARP_Role::isRegistered($this->Id, $larp->Id);
+        
+    }
     
     
     public static function getRolesForPerson($personId) {

@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 if ($group->isRegistered($current_larp)) {
-    header('Location: view_group.php?GroupId='.$group->Id);
+    header('Location: view_group.php?id='.$group->Id);
     exit;
 }
 

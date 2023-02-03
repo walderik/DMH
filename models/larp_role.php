@@ -37,6 +37,25 @@ class LARP_Role extends BaseModel{
         return new self();
     }
     
+    public static function isRegistered($roleId, $larpId) {
+        $sql = "SELECT * FROM `larp_role` WHERE RoleId = ? AND LARPId = ? ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($roleId, $larpId))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
     public static function loadByIds($roleId, $larpId)
     {
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray

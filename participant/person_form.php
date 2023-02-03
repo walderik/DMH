@@ -26,7 +26,12 @@ require 'header.php';
         } else {
         }
     }
-      
+    
+    if ($person->isRegistered($current_larp)) {
+        header('Location: view_person.php?id='.$person->Id);
+        exit;
+    }
+    
     function default_value($field) {
         GLOBAL $person;
         $output = "";

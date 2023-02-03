@@ -3,8 +3,8 @@
 require 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['GroupId'])) {
-        $GroupId = $_GET['GroupId'];
+    if (isset($_GET['id'])) {
+        $GroupId = $_GET['id'];
         echo $GroupId;
     }
     else {
@@ -60,15 +60,10 @@ function ja_nej($val) {
 		</table>		
 		
 		
-		<?php 
-		
-		
-		//TODO valda intrigtyper
-		
-		//TODO Anmälda medlemmar
-		?>
 		<h2>Medlemmar</h2>
 		<?php 
+		//TODO visa valda intrigtyper
+		
 
 		foreach($group_members as $group_member) {
 

@@ -73,30 +73,45 @@ function showStatusIcon($value) {
     		} else {
     		    foreach ($persons as $person)  {
     		        echo "<div class='person'>\n";
-    		        echo "<h3>$person->Name&nbsp;<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></h3>\n";
+    		        
+    		        if ($person->isRegistered($current_larp)) {
+    		            echo "<h3>$person->Name&nbsp;<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a></h3>\n";    		            
+    		        }
+    		        else {
+    		            echo "<h3>$person->Name&nbsp;<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></h3>\n";
+    		        }
     		        echo "Epost: " . $person->Email. "<br>\n";
     		        echo "Mobilnummer: " . $person->PhoneNumber. "<br>\n";
-                    /* echo "Ålder på lajvet: " . $person->getAgeAtLarp($current_larp->StartDate). " "; */
-                    echo "Anmäld : " . showStatusIcon($person->isRegistered($current_larp)). "<br>\n";
+    		        echo "<table>";
+                    echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp)). "</td></tr>\n";
                     if ($person->isRegistered($current_larp)) {
-                        echo "Godkänd : " . showStatusIcon($person->isApproved($current_larp)). "<br>\n";
-                        echo "Betalat : " . showStatusIcon($person->hasPayed($current_larp));
+                        echo "<tr><td>Godkänd</td><td>" . showStatusIcon($person->isApproved($current_larp)). "</td></tr>\n";
+                        echo "<tr><td>Betalat</td><td>" . showStatusIcon($person->hasPayed($current_larp));
                         if (!$person->hasPayed($current_larp)) {
                             $registration = Registration::loadByIds($person->Id, $current_larp->Id);
-                            echo "Betala " . $registration->AmountToPay . " SEK till xxxxxxxxxx ange referens: " . $registration->PaymentReference;
+                            echo "</td><td>Betala " . $registration->AmountToPay . " SEK till xxxxxxxxxx ange referens: " . $registration->PaymentReference;
                         }
-                        echo "<br>\n";
+                        echo "</td></tr>\n";
+ 
                         
                     }
-                    echo "Medlem: " . showStatusIcon($person->isMember($current_larp->StartDate)). "<br>\n";
+                    echo "<tr><td>Medlem</td><td>" . showStatusIcon($person->isMember($current_larp->StartDate)). "</td></tr>\n";
+                    echo "</table>";
     		        $groups = $person->getGroups();
     		        if (isset($groups) && count($groups) > 0) {
     		            echo "<br><b>Gruppledare för:</b><br>\n";
     		        }
     		        foreach ($groups as $group)  {
-    		            echo $group->Name . " " . "<a href='group_form.php?operation=update&id=" . 
-    		                 $group->Id . "'><i class='fa-solid fa-pen'></i></a>" . " Anmäld: " . 
-    		                 showStatusIcon($group->isRegistered($current_larp)) . "<br>\n";
+    		            if ($group->isRegistered($current_larp)) {
+    		                echo $group->Name . " " . "<a href='view_group.php?id=" .
+        		                $group->Id . "'><i class='fa-solid fa-eye'></i></a>";
+        		                
+    		            }
+    		            else {
+    		                echo $group->Name . " " . "<a href='group_form.php?operation=update&id=" . 
+    		                 $group->Id . "'><i class='fa-solid fa-pen'></i></a>"; 
+    		            }
+    		            echo " Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp)) . "<br>\n";
      		            
     		        }
     		        $roles = $person->getRoles();
@@ -109,9 +124,15 @@ function showStatusIcon($value) {
     		            if (isset($role_group)) {
     		                $role_group_name = $role_group->Name;
     		            }
-    		            echo $role->Name . " - " . $role->Profession . " " . $role_group_name . 
-    		                 " <a href='role_form.php?operation=update&id=" . $role->Id . 
-    		                  "'><i class='fa-solid fa-pen'></i></a><br>\n";
+    		            echo $role->Name . " - " . $role->Profession . " " . $role_group_name;
+    		            if ($role->isRegistered($current_larp)) {
+    		                echo " <a href='view_role.php?id=" . $role->Id .
+    		                "'><i class='fa-solid fa-eye'></i></a><br>\n";
+    		            }
+    		            else {
+        		            echo " <a href='role_form.php?operation=update&id=" . $role->Id . 
+        		                  "'><i class='fa-solid fa-pen'></i></a><br>\n";
+    		            }
     		            
     		        }
     		        echo "</div>\n";

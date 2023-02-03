@@ -23,6 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+if ($role->isRegistered($current_larp)) {
+    header('Location: view_role.php?id='.$role->Id);
+    exit;
+}
+
+
 function default_value($field) {
     GLOBAL $role;
     $output = "";
