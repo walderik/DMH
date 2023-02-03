@@ -20,8 +20,8 @@ class Signup extends Dbh {
         $stmt = null;
         $url = $this->activation_url($email, $activationCode);
         
-        $text  = "Du har nu registrerat ett login för lajvet.<br>\n";
-        $text .= "Nu måste du aktivera den för att kunna logga in.<br><br>\n";
+        $text  = "Du har registrerat ett login för lajvet.<br>\n";
+        $text .= "Nu måste du aktivera ditt login.<br><br>\n";
         $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken.</a><br>\n";
         
         DmhMailer::send($email, 'Stranger', $text, "Aktiveringsbrev");
