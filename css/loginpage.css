@@ -4,7 +4,6 @@
 }
 
 .login {
-	display: inline-block;
   	width: 400px;
   	background-color: #ffffff;
   	box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
@@ -107,6 +106,9 @@
   	transition: background-color 0.2s;
 }
 
+.filler {
+  	height: 140px;
+}
 
 * {
   	box-sizing: border-box;

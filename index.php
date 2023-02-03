@@ -35,8 +35,11 @@ include_once 'includes/error_handling.php';
 					<i class="fas fa-lock"></i>
 				</label>
 				<input type="password" name="password" placeholder="Lösenord" id="password" required>
+			<div class="filler"></div>
 				<input type="submit" value="Logga in" name="submit">
 			</form>
+			
+			
 		</div>
 		<div class="register">
 			<h1>Registrera nytt konto</h1>
