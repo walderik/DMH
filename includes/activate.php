@@ -14,3 +14,5 @@ if (isset($_GET['email'], $_GET['code'])) {
     $user->update();
     header('Location: ../index.php?message=activated');
 }
+
+header('Location: ../index.php?error=activation_not_possible');
