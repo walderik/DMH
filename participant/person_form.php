@@ -101,9 +101,9 @@ require 'header.php';
 			
 			<h2>Hurförvaltare</h2>
 			<div class="question">
-				<label for="Person">Är du husförlavaltare?</label><br>
+				<label for="Person">Är du husförvaltare?</label><br>
 				<div class="explanation">I så fall välj ditt hus</div>
-				<?php selectionDropdownByArray('Person', House::getAll(), false, false, $person->HouseId); ?>
+				<?php selectionDropdownByArray('Person', House::all(), false, false, $person->HouseId); ?>
 			</div>
 
 			

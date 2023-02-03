@@ -14,6 +14,7 @@ include_once $root . '/models/base_model.php';
 include_once $root . '/models/selection_data.php';
 include_once $root . '/models/experience.php';
 include_once $root . '/models/group.php';
+include_once $root . '/models/house.php';
 include_once $root . '/models/housing_request.php';
 include_once $root . '/models/intrigue_type.php';
 include_once $root . '/models/larp_group.php';

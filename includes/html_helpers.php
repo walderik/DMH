@@ -10,6 +10,10 @@ function selectionDropdownByArray(String $name_in, Array $selectionDatas, ?bool 
         $name = ($multiple) ? ($name_in . "Id[]") : $name_in."Id";
     }
     
+    
+    //TODO lägg till tomt val om det inte är multiple eller required
+    
+    
     # TODO Hantera required för checkboxes när det behövs - Det går med Javascripts   (behövs inte idag)
     //     https://tutorialdeep.com/knowhow/make-checkbox-field-required-form-html/
     //     https://stackoverflow.com/questions/11787665/making-sure-at-least-one-checkbox-is-checked
