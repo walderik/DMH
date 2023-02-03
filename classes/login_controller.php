@@ -1,7 +1,9 @@
 <?php
+global $root;
+$root = $_SERVER['DOCUMENT_ROOT'];
+include_once $root . '/includes/all_includes.php';
 
-
-class LoginController extends Login{
+class LoginController {
     private $email;
     private $password;
 
@@ -18,7 +20,7 @@ class LoginController extends Login{
         }
 
         
-        $this->getUser($this->email, $this->password);
+        $this->doLogin($this->email, $this->password);
     }
     
     private function emptyInput() {
@@ -33,6 +35,40 @@ class LoginController extends Login{
     }
     
 
-
+    protected function doLogin($email, $password) {
+        $user = User::loadByEmail($email);
+        if (!isset($user)) {
+            header("location: ../index.php?error=userNotFound");
+            exit();
+        }
+        
+        //Check password
+        if (!password_verify($password, $user->Password)) {
+            header("location: ../index.php?error=userNotFound");
+            exit();
+        }
+        
+        
+        if ($user->ActivationCode !== 'activated') {
+            //Kontot är inte aktiverat
+            header("location: ../index.php?error=accountNotActivated");
+            exit();
+        }
+        
+        //Log in
+        session_start();
+        session_unset();
+        
+        
+        $_SESSION['loggedin'] = true;
+        $_SESSION['id'] = $user->Id;
+        $isAdmin = $user->IsAdmin;
+        
+        if ($isAdmin == 1) {
+            $_SESSION['admin'] = true;
+        }
+    }
+    
+    
     
 }

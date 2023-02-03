@@ -21,6 +21,9 @@ function getMessageText($code) {
         case "user_created":
             $output = "Kontot har skapats. Aktivera det för att kunna logga in. Följ anvisningarna i mailet vi skickade till dig.";
             break;
+        case "activated":
+            $output = "Kontot är aktiverat. Du kan nu logga in.";
+            break;
         default:
             $output = "Okänt meddelande: ". $code;
     }
@@ -66,6 +69,9 @@ function getErrorText($code) {
             break;
         case "no_role":
             $output = "Du måste registrera en karaktär först";
+            break;
+        case "activation_not_possible":
+            $output = "Kontot är redan aktiverat eller finns inte.";
             break;
         default:
             $output = "Okänt fel: ". $code;

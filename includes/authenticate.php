@@ -10,7 +10,6 @@ if (isset($_POST['submit'])) {
     
     //Instantiate SignupController class
     include "../classes/dbh.php";
-    include "../classes/login.php";
     include "../classes/login_controller.php";
     $login = new LoginController($email, $password);
     

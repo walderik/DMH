@@ -10,10 +10,7 @@ class Signup extends Dbh {
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $activationCode = uniqid();
-        
-        //TODO fixa epostning
-//         $activationCode = 'activated';
-        
+                
         
         if (!$stmt->execute(array($email, $hashedPassword, $activationCode))) {
             $stmt = null;

@@ -36,6 +36,27 @@ class User extends BaseModel{
         return new self();
     }
     
+    public static function loadByEmail($email) {
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `user` WHERE Email = ?;");
+        
+        if (!$stmt->execute(array($email))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return null;
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $rows[0];
+        $stmt = null;
+        
+        return static::newFromArray($row);
+    }
+        
     # Update an existing group in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE user SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
