@@ -236,8 +236,11 @@ class Person extends BaseModel{
     
 
     public function isApproved($larp) {
-        //TODO kolla om anmälan är godkänd
-        return false;
+        $registration = Registration::loadByIds($this->Id, $larp->Id);
+        if (!isset($registration)) {
+            return false;
+        }
+        return $registration->isApproved();
     }
     
     public function hasPayed($larp) {

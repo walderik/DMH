@@ -69,8 +69,7 @@ class Registration extends BaseModel{
         
         $stmt = null;
     }
-    
-    //Id	
+    	
     
     
     # Create a new registration in db
@@ -92,6 +91,12 @@ class Registration extends BaseModel{
         $stmt = null;
     }
     
+    public function isApproved() {
+        if (isset($this->Approved)) {
+            return false;
+        }
+        return true;
+    }
  
     public static function loadByIds($personId, $larpId)
     {
@@ -115,6 +120,7 @@ class Registration extends BaseModel{
         
         return static::newFromArray($row);
     }
+    
     
     
     

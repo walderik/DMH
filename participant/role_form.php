@@ -2,6 +2,8 @@
 
 require 'header.php';
 
+
+//TODO ta bort personer som redan är anmälda
 $current_persons = $current_user->getPersons();
 
 if (empty($current_persons)) {
