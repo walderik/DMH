@@ -5,7 +5,6 @@ require 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
         $GroupId = $_GET['id'];
-        echo $GroupId;
     }
     else {
         header('Location: index.php');
