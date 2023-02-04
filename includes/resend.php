@@ -105,7 +105,7 @@ function send_change_password($user) {
         "%s://%s%s",
         isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
         $_SERVER['SERVER_NAME'],
-        "/includes/change_password.php?email=$mail&code=$code"
+        "/change_password.php?email=$mail&code=$code"
         );
     
     $text  = "Du har begärt en länk för att kunna byta lösenord på ditt konto.<br>\n";
