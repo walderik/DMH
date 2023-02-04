@@ -40,7 +40,7 @@ include_once 'includes/error_handling.php';
 				<input type="submit" value="Logga in" name="submit">
 			</form>
 			</div>
-			<div class="link"><a href="send_to_me_please.php?action='activation'">Glömt lösenord</a></div>
+			<div class="link"><a href="send_to_me_please.php?action=password">Glömt lösenord</a></div>
 			
 			
 		</div>
@@ -63,7 +63,7 @@ include_once 'includes/error_handling.php';
 				<input type="submit" value="Registrera"  name="submit">
 			</form>
 			</div>
-			<div class="link"><a href="send_to_me_please.php?action='activation'">Skicka om aktiveringsbrevet</a></div>
+			<div class="link"><a href="send_to_me_please.php?action=activation">Skicka om aktiveringsbrevet</a></div>
 		</div>
 	  </div>
 
