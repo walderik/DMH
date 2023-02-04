@@ -13,8 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $current_group = Group::loadById($GroupId); 
 
-if (Person::loadById($current_group->PersonId)->UserId != $current_user->Id) {
-    header('Location: index.php'); //Inte din grupp
+if (!$current_user->isMember($group)) {
+    header('Location: index.php'); //Inte medlem i gruppen
 }
 
 if (!$current_group->isRegistered($current_larp)) {
@@ -46,7 +46,9 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 			<tr><td valign="top" class="header">Rikedom</td><td><?php echo Wealth::loadById($current_group->WealthId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Var bor gruppen?</td><td><?php echo PlaceOfResidence::loadById($current_group->PlaceOfResidenceId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($larp_group->getIntrigueTypes());?></td></tr>
+			<?php if ($current_user->isGroupLeader($current_group)) { ?>
 			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
+			<?php } ?>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
 			<tr><td valign="top" class="header">Antal medlemmar</td><td><?php echo $current_group->ApproximateNumberOfMembers;?></td></tr>
@@ -55,7 +57,7 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 		</table>		
 		
 		
-		<h2>Medlemmar</h2>
+		<h2>Anmälda medlemmar</h2>
 		<?php 
 
 		foreach($group_members as $group_member) {

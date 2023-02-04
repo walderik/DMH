@@ -151,4 +151,16 @@ class User extends BaseModel{
         $this->update();
         return $code;
     }
+    
+    public function isGroupLeader($group) {
+        $person = Person::loadById($group->PersonId);
+        if ($person->UserId == $this->Id) return true;
+        return false;
+    }
+    
+    public function isMember($group) {
+        //TODO kolla om användaren har en person som har en roll som är med i gruppen (och anmäld)
+        return true;
+    }
+    
 }
