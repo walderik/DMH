@@ -21,6 +21,9 @@ function getMessageText($code) {
         case "user_created":
             $output = "Kontot har skapats. Aktivera det för att kunna logga in. Följ anvisningarna i mailet vi skickade till dig.";
             break;
+        case "user_updated":
+            $output = "Kontot har uppdaterats.";
+            break;
         case "activated":
             $output = "Kontot är aktiverat. Du kan nu logga in.";
             break;

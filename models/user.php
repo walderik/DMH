@@ -144,4 +144,10 @@ class User extends BaseModel{
         if ($this->ActivationCode == 'activated') return true;
         return false;
     }
+    
+    public function setEmailChangeCode() {
+        $code = bin2hex(random_bytes(20));
+        $this->EmailChangeCode = $code;
+        $this->update();
+    }
 }

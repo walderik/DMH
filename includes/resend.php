@@ -27,8 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } elseif ($_POST['action'] == 'password') {
             if ($user->isActivated()) {
-                $user->EmailChangeCode = bin2hex(random_bytes(20));
-                $user->update();
+                $user->setEmailChangeCode();
                 send_change_password($user);
                 header("location: ../index.php?message=email_sent");
             } else { # Icke aktiverade konton får inte byta lösenord 

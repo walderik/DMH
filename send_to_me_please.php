@@ -4,6 +4,12 @@ session_start();
 session_unset();
 
 include_once 'includes/error_handling.php';
+
+if (!isset($_GET['action'])) {
+    header("location: ../index.php?error=noSubmit");
+    exit();
+}
+
 $todo = $_GET['action'];
 if ($todo=='activation') {
     $title = 'aktiveringsbrevet';
