@@ -62,7 +62,7 @@ function commaStringFromArrayObject($objectArray) {
     $output="";
     
     foreach($objectArray as $object) {
-        $output += $object->Name . ", ";
+        $output = $output . $object->Name . ", ";
     }
     if (strlen($output) > 2) {
         $output = substr($output, 0, -2);
