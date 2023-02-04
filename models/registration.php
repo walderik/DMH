@@ -15,7 +15,7 @@ class Registration extends BaseModel{
     public $Payed; //Datum
     public $IsMember; 
     public $MembershipCheckedAt;
-    public $NotComing = 1;
+    public $NotComing = 0;
     public $ToBeRefunded;
     public $RefundDate; 
     public $IsOfficial = 0;
