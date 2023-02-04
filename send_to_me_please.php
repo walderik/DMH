@@ -4,6 +4,7 @@ session_start();
 session_unset();
 
 include_once 'includes/error_handling.php';
+$todo = $_GET['action'];
 ?>
 
 
@@ -26,7 +27,7 @@ include_once 'includes/error_handling.php';
 	  <div class="login-register">
 		<div class="login">
 			<h1>Skicka om aktiveringsbrevet</h1>
-			<form action="includes/resend.php" method="POST">
+			<form action="includes/resend.php" method="POST" action=<?php echo $todo; ?>>
 				<label for="email">
 					<i class="fas fa-user"></i>
 				</label>
