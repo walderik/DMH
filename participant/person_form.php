@@ -91,11 +91,11 @@ require 'header.php';
 					<br> <input type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo $person->PhoneNumber; ?>"  size="100" maxlength="250">
 				</div>
 				<div class="question">
-					<label for="EmergencyContact">Närmaste anhörig</label>
+					<label for="EmergencyContact">Närmaste anhörig</label>&nbsp;<font style="color:red">*</font>
 					<br> 
 					<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678. <br />
 					Det bör vara någon som inte är med på lajvet.</div>
-    				<textarea id="EmergencyContact" name="EmergencyContact" value="<?php echo $person->EmergencyContact; ?>" rows="4" cols="100"></textarea>
+    				<textarea id="EmergencyContact" name="EmergencyContact" value="<?php echo $person->EmergencyContact; ?>" rows="4" cols="100" required></textarea>
 				</div>
 			</p>
 			
