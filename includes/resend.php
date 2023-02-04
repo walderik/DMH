@@ -13,17 +13,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //Grabbing the data
         $email = $_POST['email'];
         $user = User::loadByEmail($email);
+        
         if (is_null($user)) {
             header("location: ../index.php?error=noSubmit");
+            exit();
         }
         if ($user->isActivated()) {
             header("location: ../index.php?error=noSubmit");
+            exit();
         }
         send_activation($user);
         
         header("location: ../index.php?message=user_created");
+        exit();
     } else {
         header("location: ../index.php?error=noSubmit");
+        exit();
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "GET") {
     //If the user isnt admin it may not see these pages
@@ -31,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sicka aktiveringsmail tiull användaren medd ett visst Id.
     if (!isset($_SESSION['admin'])) {
         header('Location: ../participant/index.php');
+        exit();
     }
 
     if (isset($_GET['operation']) && $_GET['operation'] == 'activation') {
@@ -38,18 +44,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if (is_null($user)) {
             header("location: ../index.php?error=noSubmit");
+            exit();
         }
         if ($user->isActivated()) {
             header("location: ../index.php?error=noSubmit");
+            exit();
         }
         send_activation($user);
         
-        header("location: ../index.php?message=user_created");  
+        header("location: ../index.php?message=user_created");
+        exit();
     } else {
         header("location: ../index.php?error=noSubmit");
+        exit();
     }
 } else {
     header("location: ../index.php?error=noSubmit");
+    exit();
 }
 
 // Skicka aktiveringsmailet
