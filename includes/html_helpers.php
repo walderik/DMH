@@ -75,3 +75,13 @@ function ja_nej($val) {
     if ($val == 0 or $val==false) return "Nej";
 }
 
+
+function showStatusIcon($value) {
+    if ($value == true or $value == 1) {
+        return '<img src="../images/ok-icon.png" alt="OK" width="20" height="20">';
+    }
+    if ($value == false or $value == 0) {
+        return '<img src="../images/alert-icon.png" alt="Varning" width="20" height="20">';
+    }
+}
+

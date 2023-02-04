@@ -78,6 +78,33 @@ class Person extends BaseModel{
         return $resultArray;
     }
     
+    public static function getAllRegistered($larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from `person` WHERE Id in (SELECT PersonId FROM `Registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+        
+    }
+    
     # Update an existing person in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,

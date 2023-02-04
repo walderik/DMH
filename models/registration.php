@@ -93,9 +93,9 @@ class Registration extends BaseModel{
     
     public function isApproved() {
         if (isset($this->Approved)) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
  
     public static function loadByIds($personId, $larpId)
@@ -120,13 +120,5 @@ class Registration extends BaseModel{
         
         return static::newFromArray($row);
     }
-    
-    
-    
-    
-    static function getAllPersons($larp) {
-        //TODO returnera alla personer som är anmälda till lajvet
-        return Array();
-    }
-    
+        
 }

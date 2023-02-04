@@ -15,12 +15,12 @@
     <div class="content">   
         <h1>Anmälda deltagare</h1>
      		<?php 
-    		$persons = Registration::getAllPersons($current_larp);
+    		$persons = Person::getAllRegistered($current_larp);
     		if (empty($persons)) {
     		    echo "Inga anmälda deltagare";
     		} else {
     		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Epost</th><th>Ålder på lajvet</th><th>Mobilnummer</th><th></th><th></th><th>Anmäld</th><th>Godkänd</th><th>Medlem</th></tr>\n";
+    		    echo "<tr><th>Namn</th><th>Epost</th><th>Ålder på lajvet</th><th>Mobilnummer</th><th></th><th>Anmäld</th><th>Godkänd</th><th>Medlem</th></tr>\n";
     		    foreach ($persons as $person)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $person->Name . "</td>\n";
