@@ -39,6 +39,8 @@ class Person extends BaseModel{
         if (isset($post['NotAcceptableIntrigues'])) $person->NotAcceptableIntrigues = $post['NotAcceptableIntrigues'];
         if (isset($post['HouseId'])) $person->HouseId = $post['HouseId'];
         
+        if (isset($person->HouseId) && $person->GroupId=='null') $person->HouseId = null;
+        
         return $person;
     }
     

@@ -99,7 +99,7 @@ require 'header.php';
 				</div>
 			</p>
 			
-			<h2>Hurförvaltare</h2>
+			<h2>Husförvaltare</h2>
 			<div class="question">
 				<label for="Person">Är du husförvaltare?</label><br>
 				<div class="explanation">I så fall välj ditt hus</div>
