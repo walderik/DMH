@@ -51,6 +51,8 @@ class Role extends BaseModel{
         if (isset($post['Birthplace'])) $role->Birthplace = $post['Birthplace'];
         if (isset($post['CharactersWithRelations'])) $role->CharactersWithRelations = $post['CharactersWithRelations'];
         
+        if (isset($role->GroupId) && $role->GroupId=='null') $role->GroupId = null;
+        
         return $role;
     }
     
@@ -83,7 +85,7 @@ class Role extends BaseModel{
     }
     
     # Create a new object in db
-    public function create() {
+    public function create() {       
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO `role` (Name, IsNPC, Profession, Description, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
