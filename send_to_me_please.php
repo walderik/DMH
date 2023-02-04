@@ -5,6 +5,11 @@ session_unset();
 
 include_once 'includes/error_handling.php';
 $todo = $_GET['action'];
+if ($todo=='activation') {
+    $title = 'aktiveringsbrevet';
+} else {
+    $title = 'lösenordslänk';
+}
 ?>
 
 
@@ -12,7 +17,7 @@ $todo = $_GET['action'];
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Login</title>
+		<title>Skicka om</title>
 		<link href="css/loginpage.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
@@ -26,8 +31,9 @@ $todo = $_GET['action'];
 	  }?>
 	  <div class="login-register">
 		<div class="login">
-			<h1>Skicka om aktiveringsbrevet</h1>
-			<form action="includes/resend.php" method="POST" action=<?php echo $todo; ?>>
+			<h1>Skicka om <?php echo $title; ?></h1>
+			<form action="includes/resend.php" method="POST">
+				<input type="hidden" id="action" name="action" value="<?php echo $todo; ?>"> 
 				<label for="email">
 					<i class="fas fa-user"></i>
 				</label>
