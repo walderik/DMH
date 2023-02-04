@@ -66,7 +66,7 @@ class DmhMailer {
                 <title>Brev från Berghems vänner</title>
         	</head>
         	<body class='loggedin'>
-                Hej $to_name!<br />
+                Howdy $to_name!<br />
                 <p>$text</p>
                 
                 <br />
