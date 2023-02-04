@@ -25,11 +25,6 @@ $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 
 $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
-function ja_nej($val) {
-    if ($val == 0) return "Nej";
-    if ($val == 1) return "Ja";
-}
-
 ?>
 
         <nav id="navigation">
@@ -50,19 +45,18 @@ function ja_nej($val) {
 			<tr><td valign="top" class="header">Fiender</td><td><?php echo $current_group->Enemies;?></td></tr>
 			<tr><td valign="top" class="header">Rikedom</td><td><?php echo Wealth::loadById($current_group->WealthId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Var bor gruppen?</td><td><?php echo PlaceOfResidence::loadById($current_group->PlaceOfResidenceId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($larp_group->getIntrigueTypes());?></td></tr>
 			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
 			<tr><td valign="top" class="header">Antal medlemmar</td><td><?php echo $current_group->ApproximateNumberOfMembers;?></td></tr>
 			<tr><td valign="top" class="header">Eldplats</td><td><?php echo ja_nej($current_group->NeedFireplace);?></td></tr>
-			<tr><td valign="top" class="header">Boende</td><td><?php echo HousingRequest::loadById($larp_group->HousingRequestId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($larp_group->HousingRequestId)->Name;?></td></tr>
 		</table>		
 		
 		
 		<h2>Medlemmar</h2>
 		<?php 
-		//TODO visa valda intrigtyper
-		
 
 		foreach($group_members as $group_member) {
 

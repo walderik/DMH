@@ -28,12 +28,6 @@ if (isset($current_role->GroupId)) {
     $group=Group::loadById($current_role->GroupId);
 }
 
-
-function ja_nej($val) {
-    if ($val == 0) return "Nej";
-    if ($val == 1) return "Ja";
-}
-
 ?>
 
         <nav id="navigation">
@@ -54,24 +48,21 @@ function ja_nej($val) {
 			<tr><td valign="top" class="header">NPC</td><td><?php echo ja_nej($current_role->IsNPC);?></td></tr>
 			<tr><td valign="top" class="header">Yrke</td><td><?php echo $current_role->Profession;?></td></tr>
 			<tr><td valign="top" class="header">Tidigare lajv</td><td><?php echo $current_role->PreviousLarps;?></td></tr>
-			<tr><td valign="top" class="header">ReasonForBeingInSlowRiver</td><td><?php echo $current_role->ReasonForBeingInSlowRiver;?></td></tr>
+			<tr><td valign="top" class="header">Varför befinner sig karaktären i Slow River?</td><td><?php echo $current_role->ReasonForBeingInSlowRiver;?></td></tr>
 			<tr><td valign="top" class="header">Religion</td><td><?php echo $current_role->Religion;?></td></tr>
 			<tr><td valign="top" class="header">Mörk hemlighet</td><td><?php echo $current_role->DarkSecret;?></td></tr>
-			<tr><td valign="top" class="header">Mörk hemlighet intrigideer</td><td><?php echo $current_role->DarkSecretIntrigueIdeas;?></td></tr>
-			<tr><td valign="top" class="header">Intrigideer</td><td><?php echo $current_role->IntrigueSuggestions;?></td></tr>
-			<tr><td valign="top" class="header">NotAcceptableIntrigues</td><td><?php echo $current_role->NotAcceptableIntrigues;?></td></tr>
-			<tr><td valign="top" class="header">CharactersWithRelations</td><td><?php echo $current_role->CharactersWithRelations;?></td></tr>
+			<tr><td valign="top" class="header">Mörk hemlighet - intrig idéer</td><td><?php echo $current_role->DarkSecretIntrigueIdeas;?></td></tr>
+			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($larp_role->getIntrigueTypes());?></td></tr>
+			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $current_role->IntrigueSuggestions;?></td></tr>
+			<tr><td valign="top" class="header">Saker karaktären inte vill spela på</td><td><?php echo $current_role->NotAcceptableIntrigues;?></td></tr>
+			<tr><td valign="top" class="header">Relationer med andra</td><td><?php echo $current_role->CharactersWithRelations;?></td></tr>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_role->OtherInformation;?></td></tr>
 			<tr><td valign="top" class="header">Rikedom</td><td><?php echo Wealth::loadById($current_role->WealthId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo PlaceOfResidence::loadById($current_role->PlaceOfResidenceId)->Name;?></td></tr>
-			<tr><td valign="top" class="header">Birthplace</td><td><?php echo $current_role->Birthplace;?></td></tr>
+			<tr><td valign="top" class="header">Var är karaktären född?</td><td><?php echo $current_role->Birthplace;?></td></tr>
 
 		</table>		
- 		
-		
-		<?php 
-		//TODO visa valda intrigtyper
-		?>
+
 		
 		<h2>Intrig</h2>
 			<?php if ($current_larp->DisplayIntrigues == 1) {

@@ -25,10 +25,6 @@ $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 
 
 
-function ja_nej($val) {
-    if ($val == 0) return "Nej";
-    if ($val == 1) return "Ja";
-}
 
 ?>
 
@@ -61,30 +57,30 @@ function ja_nej($val) {
 
 			<tr><td valign="top" class="header">Andra allergier</td><td><?php echo $current_person->FoodAllergiesOther;?></td></tr>
 
+			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $registration->NPCDesire;?></td></tr>
+			<tr><td valign="top" class="header">Husförvaltare</td><td><?php if (isset($current_person->HouseId)) { echo $current_person->getHouse()->Name; }?></td></tr>
+			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
+
 
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_person->OtherInformation;?></td></tr>
+			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($current_person->isMember($current_larp->StartDate))?></td></tr>
+			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
+			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->Approved)) { echo $registration->Approved; } else { echo "Nej"; }?></td></tr>
+			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
 
+			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
+			<tr><td valign="top" class="header">Belopp att betala</td><td><?php echo $registration->AmountToPay;?></td></tr>
+			<tr><td valign="top" class="header">Belopp betalat</td><td><?php echo $registration->AmountPayed;?></td></tr>
+			<tr><td valign="top" class="header">Betalat datum</td><td><?php echo $registration->Payed;?></td></tr>
+			<?php 
+			if ($registration->NotComing) {
+			?>
+			<tr><td valign="top" class="header">Avbokad</td><td><?php echo ja_nej($registration->NotComing);?></td></tr>
+			<tr><td valign="top" class="header">Återbetalning</td><td><?php echo $registration->ToBeRefunded;?></td></tr>
+			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><?php echo $registration->RefundDate;?></td></tr>
+			<?php  }?>
 		</table>		
-		<?php 
-		
-		//TODO husförvaltare, medlem
-		/*
-		public $Approved; //Date
-		public $RegisteredAt;
-		public $PaymentReference;
-		public $AmountToPay;
-		public $AmountPayed = 0;
-		public $Payed; //Datum
-		public $IsMember;
-		public $MembershipCheckedAt;
-		public $NotComing = 1;
-		public $ToBeRefunded;
-		public $RefundDate;
-		public $IsOfficial = 0;
-		public $NPCDesire;
-		public $HousingRequestId;
-		*/
-		?>
+
 
 	</div>
 

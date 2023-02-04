@@ -70,4 +70,8 @@ function commaStringFromArrayObject($objectArray) {
     return $output;
 }
 
+function ja_nej($val) {
+    if ($val == 1 or $val==true) return "Ja";
+    if ($val == 0 or $val==false) return "Nej";
+}
 
