@@ -107,7 +107,18 @@
 }
 
 .filler {
-  	height: 140px;
+  	height: 158px;
+}
+
+
+.link {
+  	margin-top: 20px;
+	text-align: center;
+}
+
+.link a {
+	color: #cdcdcd;
+	text-align: center;
 }
 
 * {

@@ -24,6 +24,7 @@ include_once 'includes/error_handling.php';
 	      echo '<div class="message">'.$message_message.'</div>';
 	  }?>
 	  <div class="login-register">
+	  <div>
 		<div class="login">
 			<h1>Logga in</h1>
 			<form action="includes/authenticate.php" method="POST">
@@ -38,9 +39,12 @@ include_once 'includes/error_handling.php';
 			<div class="filler"></div>
 				<input type="submit" value="Logga in" name="submit">
 			</form>
+			</div>
+			<div class="link"><a href="send_to_me_please.php?action='activation'">Glömt lösenord</a></div>
 			
 			
 		</div>
+		<div>
 		<div class="register">
 			<h1>Registrera nytt konto</h1>
 			<form action="includes/register.php" method="POST" autocomplete="off">
@@ -58,8 +62,10 @@ include_once 'includes/error_handling.php';
 				<input type="password" name="passwordrepeat" placeholder="Repetera lösenord" id="password" required>
 				<input type="submit" value="Registrera"  name="submit">
 			</form>
+			</div>
+			<div class="link"><a href="send_to_me_please.php?action='activation'">Skicka om aktiveringsbrevet</a></div>
 		</div>
 	  </div>
-	  <h2><a href="send_to_me_please.php?action='activation'">Skicka om aktiveringsbrevet</a></h2>
+
 	</body>
 </html>
