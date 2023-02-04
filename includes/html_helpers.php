@@ -31,8 +31,6 @@ function selectionDropdownByArray(String $name_in, Array $selectionDatas, ?bool 
         echo "</div>\n";
         return;
     }
-    print_r($selected);
-    echo "<br>";
     
     // lägg till tomt val om det inte är multiple eller required
     if (!$multiple && !$required){
@@ -59,7 +57,7 @@ function selectionDropdownByArray(String $name_in, Array $selectionDatas, ?bool 
     echo "</div>\n";
 }
 
-
+# Tar en array av object och gör en komma-separerad lista av deras namn
 function commaStringFromArrayObject($objectArray) {
     $output="";
     
