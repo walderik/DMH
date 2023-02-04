@@ -60,5 +60,6 @@ include_once 'includes/error_handling.php';
 			</form>
 		</div>
 	  </div>
+	  <h2><a href="send_to_me_please.php?action='activation'">Skicka om aktiveringsbrevet</a></h2>
 	</body>
 </html>
