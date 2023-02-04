@@ -37,6 +37,8 @@ class User extends BaseModel{
     }
     
     public static function loadByEmail($email) {
+        if (is_null($email)) return null;
+        
         $stmt = static::connectStatic()->prepare("SELECT * FROM `user` WHERE Email = ?;");
         
         if (!$stmt->execute(array($email))) {
@@ -56,7 +58,31 @@ class User extends BaseModel{
         
         return static::newFromArray($row);
     }
+    
+    # För att hitta användaren som vill byta lösenord
+    public static function loadByEmailChangeCode($code) {
+        if (is_null($code)) return null;
         
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `user` WHERE EmailChangeCode = ?;");
+        
+        if (!$stmt->execute(array($code))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return null;
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $rows[0];
+        $stmt = null;
+        
+        return static::newFromArray($row);
+    }
+    
     # Update an existing group in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE user SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
