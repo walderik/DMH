@@ -173,7 +173,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 				<textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" required><?php echo $role->DarkSecret; ?> </textarea>
 			</div>
 			<div class="question">
-				<label for="DarkSecretIntrigueIdeas">Mörk hemlighet - intrig ideer</label>&nbsp;<font style="color:red">*</font><br>
+				<label for="DarkSecretIntrigueIdeas">Mörk hemlighet - intrig idéer</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Hur kan vi spela på din mörka hemlighet?</div>
 				<input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required>
 			</div>

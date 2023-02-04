@@ -62,7 +62,7 @@ function commaStringFromArrayObject($objectArray) {
     $output="";
     
     foreach($objectArray as $object) {
-        $output += $object->Name . ", ";
+        $output = $output . $object->Name . ", ";
     }
     if (strlen($output) > 2) {
         $output = substr($output, 0, -2);
@@ -70,4 +70,8 @@ function commaStringFromArrayObject($objectArray) {
     return $output;
 }
 
+function ja_nej($val) {
+    if ($val == 1 or $val==true) return "Ja";
+    if ($val == 0 or $val==false) return "Nej";
+}
 

@@ -90,7 +90,7 @@ include_once '../includes/selection_data_control.php';
 			</tr>
 			<tr>
 
-				<td><label for="Active">Aktiv</label></td>
+				<td><label for="Active">Valbar</label></td>
 				<td><input type="checkbox" id="Active" name="Active" <?php if ($object->Active == 1) {echo "checked";} ?> ></td>
 			</tr>
 			<tr>

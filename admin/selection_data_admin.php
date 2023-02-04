@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $data_array = call_user_func($objectType . '::all');
         if (count($data_array) > 0) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</th><th>Namn</th><th>Beskrivning</th><th>Aktiv</th><th>Sortering</th><th></th></tr>\n";
+            echo "<tr><th>Id</th><th>Namn</th><th>Beskrivning</th><th>Valbar</th><th>Sortering</th><th></th></tr>\n";
             foreach ($data_array as $data) {
                 echo "<tr>\n";
                 echo "<td>" . $data->Id . "</td>\n";
