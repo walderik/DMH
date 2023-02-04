@@ -149,5 +149,6 @@ class User extends BaseModel{
         $code = bin2hex(random_bytes(20));
         $this->EmailChangeCode = $code;
         $this->update();
+        return $code;
     }
 }

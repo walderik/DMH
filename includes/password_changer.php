@@ -1,7 +1,7 @@
 <?php
 
-if (!isset($_POST['code']) || !isset($_POST['submit']) || !isset($_POST['password'])  || !isset($_POST['passwordrepeat'] ) )  {
-    header("location: ../index.php?error=noSubmit1");
+if (!isset($_POST['the_code']) || !isset($_POST['submit']) || !isset($_POST['password'])  || !isset($_POST['passwordrepeat'] ) )  {
+    header("location: ../index.php?error=noSubmit");
     exit();
 }
 
@@ -12,7 +12,7 @@ include_once $root . '/includes/all_includes.php';
 //Grabbing the data
 $password = $_POST['password'];
 $passwordrepeat = $_POST['passwordrepeat'];
-$code = $_POST['code'];
+$code = $_POST['the_code'];
 
 if ($password != $passwordrepeat) {
     header("location: ../index.php?error=passwordNotMatch");
@@ -25,6 +25,7 @@ if (strlen($password) < 5 || strlen($password) > 20) {
 
 if (strlen($code) < 15) {
     header("location: ../index.php?error=noSubmit2");
+//     print_r($_POST);
     exit();
 }
 $user = User::loadByEmailChangeCode($code);
