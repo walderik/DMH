@@ -41,9 +41,12 @@ class DmhMailer {
         
         if (!is_null($attachments) && !empty($attachments)) {
             foreach ($attachments as $name => $attachment) {
-                //                 $mail->addAttachment($attachment);
                 if (is_null($name) || is_numeric($name)) {
-                    $name = $current_larp->Name;
+                    if (is_null($current_larp)) {
+                        $name = "Berghemsvänner";
+                    } else {
+                        $name = $current_larp->Name;
+                    }
                 }
                 if (!str_ends_with($name,'.pdf')) {
                     $name = $name.'.pdf';
@@ -55,19 +58,35 @@ class DmhMailer {
         
         $mail->isHTML(true);
         
-        $mailContent = "<!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset='utf-8'>
-            <title>$current_larp->Name</title>
-    	</head>
-    	<body class='loggedin'>
-            Howdy $to_name!<br />
-            <p>$text</p>
-        
-            <br />
-            <p>Med vänliga hälsningar<br /><br /><b>Arrangörerna av $current_larp->Name</b></p>
-        </body>";
+        if (is_null($current_larp)) {
+            $mailContent = "<!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset='utf-8'>
+                <title>Brev från Berghems vänner</title>
+        	</head>
+        	<body class='loggedin'>
+                Hej $to_name!<br />
+                <p>$text</p>
+                
+                <br />
+                <p>Med vänliga hälsningar<br /><br /><b>Berghems vänner</b></p>
+            </body>";
+        } else {        
+            $mailContent = "<!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset='utf-8'>
+                <title>$current_larp->Name</title>
+        	</head>
+        	<body class='loggedin'>
+                Howdy $to_name!<br />
+                <p>$text</p>
+            
+                <br />
+                <p>Med vänliga hälsningar<br /><br /><b>Arrangörerna av $current_larp->Name</b></p>
+            </body>";
+        }
         
         $mail->Body = utf8_decode($mailContent);
         
