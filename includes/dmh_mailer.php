@@ -70,7 +70,7 @@ class DmhMailer {
                 <p>$text</p>
                 
                 <br />
-                <p>Med vänliga hälsningar<br /><br /><b>Berghems vänner</b></p>
+                <p>Med vänliga hälsningar<br /><br /><b>Arrangörerna</b></p>
             </body>";
         } else {        
             $mailContent = "<!DOCTYPE html>
