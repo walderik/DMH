@@ -95,7 +95,7 @@ require 'header.php';
 					<br> 
 					<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678. <br />
 					Det bör vara någon som inte är med på lajvet.</div>
-    				<textarea id="EmergencyContact" name="EmergencyContact" value="<?php echo $person->EmergencyContact; ?>" rows="4" cols="100" required></textarea>
+    				<textarea id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" required><?php echo $person->EmergencyContact; ?></textarea>
 				</div>
 			</p>
 			
