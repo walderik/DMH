@@ -84,7 +84,7 @@ function default_value($field) {
 			<div class="question">
 				<label for="Person">Gruppledare</label><br>
 				<div class="explanation">Vem är gruppledare?</div>
-				<?php selectionDropdownByArray('Person', $current_persons, false, true) ?>
+				<?php selectionDropdownByArray('Person', $current_persons, false, true, $group->PersonId) ?>
 			</div>
 			
 			
