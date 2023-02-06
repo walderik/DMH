@@ -41,6 +41,7 @@ if (isset($current_role->GroupId)) {
 	<div class="content">
 		<h1><?php echo $current_role->Name;?></h1>
 		<table>
+			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $current_role->getPerson()->Name; ?></td></tr>
 		<?php if (isset($group)) {?>
 			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name;?></a></td></tr>
 		<?php }?>
