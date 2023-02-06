@@ -18,8 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), 
             Person::loadById($registration->PersonId)->getAgeAtLarp($current_larp->StartDate));
         $registration->PaymentReference = $registration->LARPId . $registration->PersonId;
-        //TODO spara med tid också
-        $registration->RegisteredAt = date("Y-m-d");
+
+        $now = new Datetime();
+        $registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
         $registration->create();
         
         $roleIdArr = $_POST['roleId'];
