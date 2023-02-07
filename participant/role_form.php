@@ -124,7 +124,10 @@ function default_value($field) {
 			
 			<div class="question">
 				<label for="Description">Beskrivning</label>&nbsp;<font style="color:red">*</font><br> 
-				<div class="explanation">Beskriv allt om din karaktär som arrangörerna behöver veta.</div>
+				<div class="explanation">Beskriv allt om din karaktär som arrangörerna behöver veta.<br>
+				                         Allt som din karaktär har råkat ut för är sådan som kan påverka händelser i karaktärens framtid. 
+				                         Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
+				                         att du därmed får en intressantare lajvupplevelse.</div>
 				<textarea id="Description" name="Description" rows="4" cols="100" required><?php echo $role->Description; ?></textarea>
 			</div>
 			
