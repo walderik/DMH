@@ -45,7 +45,7 @@ include_once '../includes/error_handling.php';
 			Så här använder du anmälningssystemet:
 				<ol>
 			 	<li>Börja med att <a href="person_form.php">registrera en deltagare.</a></li>
-			 	<li>Om du är gruppledare, <a href="group_form.php">registrera en grupp</a> och <a href="group_registration_form.php">anmäl den till lajvet</a>.</li>
+			 	<li>Om du är gruppansvarig, <a href="group_form.php">registrera en grupp</a> och <a href="group_registration_form.php">anmäl den till lajvet</a>.</li>
 			 	<li><a href="role_form.php">Skapa karaktärer</a>, gärna flera.</li>
 			 	<li><a href="person_registration_form.php">Anmäl deltagaren</a> till lajvet.</li>
 			 	</ol>
@@ -89,7 +89,7 @@ include_once '../includes/error_handling.php';
                     echo "</table>";
     		        $groups = $person->getGroups();
     		        if (isset($groups) && count($groups) > 0) {
-    		            echo "<br><b>Gruppledare för:</b><br>\n";
+    		            echo "<br><b>Gruppansvarig för:</b><br>\n";
     		        }
     		        foreach ($groups as $group)  {
     		            if ($group->isRegistered($current_larp)) {

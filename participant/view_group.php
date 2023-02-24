@@ -39,7 +39,7 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 	<div class="content">
 		<h1><?php echo $current_group->Name;?></h1>
 		<table>
-			<tr><td valign="top" class="header">Gruppledare</td><td><?php echo Person::loadById($current_group->PersonId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Gruppansvarig</td><td><?php echo Person::loadById($current_group->PersonId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
 			<tr><td valign="top" class="header">Vänner</td><td><?php echo $current_group->Friends;?></td></tr>
 			<tr><td valign="top" class="header">Fiender</td><td><?php echo $current_group->Enemies;?></td></tr>

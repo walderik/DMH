@@ -28,7 +28,7 @@ if (empty($current_groups)) {
 
 
 			<p>När en grupp är anmäld till lajvet går det för karaktärer att anmäla sig som medlemmar i gruppen. <br>
-			   Du som gruppledare, har möjlighet att ta bort någon ur gruppen om någon anmäler sig till den men inte hör till den.<br><br>
+			   Du som gruppansvarig, har möjlighet att ta bort någon ur gruppen om någon anmäler sig till den men inte hör till den.<br><br>
 			   Efter anmälan går det inte längre att redigera gruppen.
 			   </p>
 				

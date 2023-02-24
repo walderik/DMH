@@ -76,14 +76,14 @@ function default_value($field) {
 				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett rallarlag.</p>
 				
 				
-			<h2>Gruppledare</h2>
-			<p>Gruppledaren är den som arrangörerna kommer att kontakta när det
+			<h2>Gruppansvarig</h2>
+			<p>Gruppansvarig är den som arrangörerna kommer att kontakta när det
 				uppstår frågor kring gruppen.
 			</p>
 			
 			<div class="question">
-				<label for="Person">Gruppledare</label><br>
-				<div class="explanation">Vem är gruppledare?</div>
+				<label for="Person">Gruppansvarig</label><br>
+				<div class="explanation">Vem är gruppansvarig?</div>
 				<?php selectionDropdownByArray('Person', $current_persons, false, true, $group->PersonId) ?>
 			</div>
 			
