@@ -29,6 +29,7 @@ include_once '../includes/error_handling.php';
         	 <?php 
         	 }
         	 ?>
+        	<li><a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a></li>
         	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
           </ul>
         </nav>

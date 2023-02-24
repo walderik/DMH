@@ -12,3 +12,6 @@ Gruppansvarig ska kunna ta bort karaktärer ur gruppen
 Om man inte är medlem ska de finnas en länk till Sverok
 
 Kampanjtabell id, namn, beskrivning, icon, hemsida(url)
+
+
+Mail när man har anmält sig.
