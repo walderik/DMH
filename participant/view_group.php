@@ -64,11 +64,16 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
 		    echo $group_member->Name . " - " . 
                  $group_member->Profession . " spelas av " . 
-                 $group_member->getPerson()->Name . "<br>"; 
+                 $group_member->getPerson()->Name;
+                 if ($current_user->isGroupLeader($current_group)) {
+         ?>
+		            <a href="remove_group_member.php?groupID=<?php echo $current_group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
+		<?php 
+		    
+		         }
+            echo "<br>"; 
 		}
-		
 		?>
-		
 		<h2>Intrig</h2>
 			<?php if ($current_larp->DisplayIntrigues == 1) {
 			    echo $larp_group->Intrigue;    
