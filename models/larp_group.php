@@ -8,6 +8,7 @@ class LARP_Group extends BaseModel{
     public $WantIntrigue = true;
     public $Intrigue;
     public $HousingRequestId;
+    public $RemainingIntrigues;
 
     public static $orderListBy = 'GroupId';
     
@@ -19,7 +20,7 @@ class LARP_Group extends BaseModel{
         if (isset($post['WantIntrigue'])) $larp_group->WantIntrigue = $post['WantIntrigue'];
         if (isset($post['Intrigue'])) $larp_group->Intrigue = $post['Intrigue'];
         if (isset($post['HousingRequestId'])) $larp_group->HousingRequestId = $post['HousingRequestId'];      
-        return $larp_group;
+        if (isset($post['RemainingIntrigues'])) $larp_group->RemainingIntrigues = $post['RemainingIntrigues'];          return $larp_group;
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -71,9 +72,9 @@ class LARP_Group extends BaseModel{
         
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE `larp_group` SET GroupId=?, LARPId=?, WantIntrigue=?, Intrigue=?, HousingRequestId=? WHERE Id = ?;");
+        $stmt = $this->connect()->prepare("UPDATE `larp_group` SET GroupId=?, LARPId=?, WantIntrigue=?, Intrigue=?, HousingRequestId=?, RemainingIntrigues=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->Id))) {
+        if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -84,9 +85,9 @@ class LARP_Group extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `larp_group` (GroupId, LARPId, WantIntrigue, Intrigue, HousingRequestId) VALUES (?,?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO `larp_group` (GroupId, LARPId, WantIntrigue, Intrigue, HousingRequestId, RemainingIntrigues) VALUES (?,?,?,?,?, ?);");
         
-        if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, $this->HousingRequestId))) {
+        if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");

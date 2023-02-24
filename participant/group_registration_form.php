@@ -48,6 +48,12 @@ if (empty($current_groups)) {
                 ?>
             </div>
 
+			<div class="question">
+    			<label for="RemainingIntrigues">Kvarvarande intriger</label>
+    			<div class="explanation">Har gruppen någon pågående/oavslutad intrig sedan tidigare? </div>
+				<textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="100"></textarea>
+            </div>
+
 			
 			<div class="question">
     			<label for="HousingRequest">Boende</label>
