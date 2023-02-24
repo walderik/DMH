@@ -42,7 +42,7 @@ function default_value($field) {
             break;
         case "action":
             if (is_null($group->Id)) {
-                $output = "Lägg till";
+                $output = "Registrera";
                 break;
             }
             $output = "Uppdatera";
@@ -195,7 +195,7 @@ function default_value($field) {
   			<label for="rules">Jag lovar</label> 
 			</div>
 
-			  <input type="submit" value="Skicka">
+			  <input type="submit" value="<?php default_value('action'); ?>">
 		</form>
 	</div>
 

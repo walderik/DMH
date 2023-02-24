@@ -46,7 +46,7 @@ require 'header.php';
                 break;            
             case "action":
                 if (is_null($person->Id)) {
-                    $output = "Lägg till";
+                    $output = "Registrera";
                     break;
                 }
                 $output = "Uppdatera";
@@ -174,7 +174,7 @@ require 'header.php';
   			<label for="PUL">Jag samtycker</label> 
 			</div>
 
-			  <input type="submit" value="Registrera">
+			  <input type="submit" value="<?php default_value('action'); ?>">
 		</form>
 	</div>
 

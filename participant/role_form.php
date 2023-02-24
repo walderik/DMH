@@ -45,7 +45,7 @@ function default_value($field) {
             break;
         case "action":
             if (is_null($role->Id)) {
-                $output = "Lägg till";
+                $output = "Registrera";
                 break;
             }
             $output = "Uppdatera";
@@ -204,7 +204,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 
 
 		
-			<input type="submit" value="Registrera">
+			<input type="submit" value="<?php default_value('action'); ?>">
 		</form>
 	</div>
 
