@@ -8,3 +8,7 @@ När man anmäler sig måste vi kolla om gruppen rolen är med i är anmäld.
   Inget problem första året, men kommande år kan det bli problem.
   
 Gruppansvarig ska kunna ta bort karaktärer ur gruppen
+
+Om man inte är medlem ska de finnas en länk till Sverok
+
+Kampanjtabell id, namn, beskrivning, icon, hemsida(url)
