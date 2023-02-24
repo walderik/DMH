@@ -1,7 +1,7 @@
 * {
   	box-sizing: border-box;
   	font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
-  	font-size: 16px;
+  	font-size: 14px;
   	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
 }
@@ -120,10 +120,17 @@ li {
 }
 
 .explanation {
-	padding: 10px 20px 20px 20px; /*top right bottom left*/
+	padding: 10px 20px 10px 20px; /*top right bottom left*/
 	font-size: 14px;
+}
 
+.tooltip {
+	padding-top: 10px;
+	font-size: 14px;
+}
 
+table.helpBox td {
+	padding-right: 10px;	
 }
 
 
