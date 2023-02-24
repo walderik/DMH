@@ -6,3 +6,5 @@ Enbart tillåtet att registrera en person per personnummer
 
 När man anmäler sig måste vi kolla om gruppen rolen är med i är anmäld. 
   Inget problem första året, men kommande år kan det bli problem.
+  
+Gruppansvarig ska kunna ta bort karaktärer ur gruppen
