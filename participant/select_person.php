@@ -25,12 +25,20 @@ if (count($current_persons) == 1) {
           </ul>
         </nav>
 
-
 	<div class="content">
 		<h1>Anmälan av deltagare till <?php echo $current_larp->Name;?></h1>
+		<?php
+		    $i = 0;
+		    foreach ($current_persons as $person) {
+    	       if (empty($person->getRoles())) {
+    	           echo "<br><b>$person->Name</b> saknar en karaktär och kan inte anmälas ännu.<br><br>";
+    	           unset($current_persons[$i]);
+    	           $i++;
+                }
+            }
+            reset($current_persons);
+    	?>
 		<form action="person_registration_form.php" method="get">
-
-
 			<div class="question">
 				<label for="PersonId">Deltagare</label><br>
 				<div class="explanation">Vilken deltagare vill du anmäla?</div>
