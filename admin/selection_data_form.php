@@ -80,13 +80,13 @@ include_once '../includes/selection_data_control.php';
 			<tr>
 			<tr>
 				<td><label for="Name">Namn</label></td>
-				<td><input type="text" id="Name" name="Name" value="<?php echo $object->Name; ?>" required></td>
+				<td><input type="text" id="Name" name="Name" value="<?php echo $object->Name; ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="Description">Beskrivning</label></td>
-				<td><input type="text" id="Description" name="Description"
-					 value="<?php echo $object->Description; ?>" required></td>
+				<td><textarea id="Description" name=Description rows="4"
+						cols="50" required><?php echo $object->Description; ?></textarea></td>
 			</tr>
 			<tr>
 

@@ -67,28 +67,28 @@ require 'header.php';
 				<td><label for="Deliverytime">Leveranstid</label></td>
 				<td><input type="datetime-local" id="Deliverytime"
 					name="Deliverytime" value="<?php echo $telegram->Deliverytime; ?>" min="<?php echo $current_larp->StartTimeLARPTime;?>"
-					max="<?php echo $current_larp->EndTimeLARPTime;?>" required></td>
+					max="<?php echo $current_larp->EndTimeLARPTime;?>" size="50" required></td>
 			</tr>
 			<tr>
 				<td><label for="Sender">Avsändare</label></td>
-				<td><input type="text" id="Sender" name="Sender" value="<?php echo $telegram->Sender; ?>" required></td>
+				<td><input type="text" id="Sender" name="Sender" value="<?php echo $telegram->Sender; ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="SenderCity">Avsändarens stad</label></td>
 				<td><input type="text" id="SenderCity" name="SenderCity"
-					 value="<?php echo $telegram->SenderCity; ?>" required></td>
+					 value="<?php echo $telegram->SenderCity; ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="Reciever">Mottagare</label></td>
-				<td><input type="text" id="Reciever" name="Reciever" value="<?php echo $telegram->Reciever; ?>" required></td>
+				<td><input type="text" id="Reciever" name="Reciever" value="<?php echo $telegram->Reciever; ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="RecieverCity">Mottagarens stad</label></td>
 				<td><input type="text" id="RecieverCity" name="RecieverCity"
-					 value="<?php echo $telegram->RecieverCity; ?>" required></td>
+					 value="<?php echo $telegram->RecieverCity; ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 

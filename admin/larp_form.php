@@ -62,44 +62,44 @@ include_once 'header.php';
     		<table>
     			<tr>
     				<td><label for="Name">Namn</label></td>
-    				<td><input type="text" id="Name" name="Name" value="<?php echo $larp->Name; ?>" required></td>
+    				<td><input type="text" id="Name" name="Name" value="<?php echo $larp->Name; ?>" size="100" maxlength="250" required></td>
     			</tr>
     			<tr>
-    				<td><label for="Abbreviation">Förkortning</label></td>
-    				<td><input type="text" id="Abbreviation" name="Abbreviation" value="<?php echo $larp->Abbreviation; ?>" required></td>
+    				<td><label for="Campaign">Kampanj</label></td>
+    				<td><?php selectionDropdownByArray("Campaign" , Campaign::all(), true, false); ?></td>
     			</tr>
     			<tr>
     				<td><label for="TagLine">Tag line</label></td>
-    				<td><input type="text" id="TagLine" name="TagLine" value="<?php echo $larp->TagLine; ?>"></td>
+    				<td><input type="text" id="TagLine" name="TagLine" value="<?php echo $larp->TagLine; ?>" size="100" maxlength="250" ></td>
     			</tr>
     			<tr>
     				<td><label for="StartDate">Startdatum</label></td>
     				<td><input type="datetime-local" id="StartDate"
-    					name="StartDate" value="<?php echo $larp->StartDate; ?>" required></td>
+    					name="StartDate" value="<?php echo $larp->StartDate; ?>" size="50" required></td>
     			</tr>
     			<tr>
     				<td><label for="EndDate">Slutdatum</label></td>
     				<td><input type="datetime-local" id="EndDate"
-    					name="EndDate" value="<?php echo $larp->EndDate; ?>" required></td>
+    					name="EndDate" value="<?php echo $larp->EndDate; ?>" size="50" required></td>
     			</tr>
     			<tr>
     				<td><label for="MaxParticipants">Max antal deltagare</label></td>
-    				<td><input type="number" id="MaxParticipants" name="MaxParticipants" value="<?php echo $larp->MaxParticipants; ?>"></td>
+    				<td><input type="number" id="MaxParticipants" name="MaxParticipants" value="<?php echo $larp->MaxParticipants; ?>" size="100" maxlength="250" ></td>
     			</tr>
     			<tr>
     				<td><label for="LatestRegistrationDate">Sista anmälningsdag</label></td>
     				<td><input type="date-local" id="LatestRegistrationDate"
-    					name="LatestRegistrationDate" value="<?php echo $larp->LatestRegistrationDate; ?>" required></td>
+    					name="LatestRegistrationDate" value="<?php echo $larp->LatestRegistrationDate; ?>" size="50" required></td>
     			</tr>
     			<tr>
     				<td><label for="StartTimeLARPTime">Start lajvtid</label></td>
     				<td><input type="datetime-local" id="StartTimeLARPTime"
-    					name="StartTimeLARPTime" value="<?php echo $larp->StartTimeLARPTime; ?>" ></td>
+    					name="StartTimeLARPTime" value="<?php echo $larp->StartTimeLARPTime; ?>"  size="50"></td>
     			</tr>
     			<tr>
     				<td><label for="EndTimeLARPTime">Slut lajvtid</label></td>
     				<td><input type="datetime-local" id="EndTimeLARPTime"
-    					name="EndTimeLARPTime" value="<?php echo $larp->EndTimeLARPTime; ?>"></td>
+    					name="EndTimeLARPTime" value="<?php echo $larp->EndTimeLARPTime; ?>" size="50"></td>
     			</tr>
     		</table>
     

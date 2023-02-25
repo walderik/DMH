@@ -7,6 +7,7 @@ class SelectionData extends BaseModel{
     public  $Description;
     public  $Active = true;
     public  $SortOrder;
+    public  $CampaignId;
     
     //public static $tableName = 'wealths';
     public static $orderListBy = 'SortOrder';
@@ -28,6 +29,7 @@ class SelectionData extends BaseModel{
         if (isset($post['Description'])) $selectionData->Description = $post['Description'];
         if (isset($post['Name'])) $selectionData->Name = $post['Name'];
         if (isset($post['Id'])) $selectionData->Id = $post['Id'];
+        if (isset($post['CampaignId'])) $selectionData->Id = $post['CampaignId'];
         
         return $selectionData;
     }
@@ -36,6 +38,8 @@ class SelectionData extends BaseModel{
     public static function newWithDefault() {
         $newOne = new static();
         $newOne->SortOrder = (static::numberOff()+1)*100;
+        $newOne->Active = 1;
+        $newOne->CampaignId = $current_larp->CampaignId;
         return $newOne;
     }
     
@@ -73,9 +77,9 @@ class SelectionData extends BaseModel{
     # Create a new telegram in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".strtolower(static::class)."` (SortOrder, Active, Description, Name) VALUES (?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO `".strtolower(static::class)."` (SortOrder, Active, Description, Name, CampaignId) VALUES (?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name))) {
+        if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name, $this->CampaignId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

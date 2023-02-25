@@ -32,6 +32,7 @@ class BaseModel extends Dbh{
         return $resultArray;
     }
     
+    
     # Hur många finns det av den här sorten
     public static function numberOff() {
         $sql = "SELECT * FROM `".strtolower(static::class)."` ORDER BY ".static::$orderListBy.";";

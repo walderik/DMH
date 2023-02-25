@@ -4,13 +4,8 @@ Stänga anmälan om det är tillräckligt många anmälda
 Enbart tillåtet att registrera en person per personnummer
 
 
-När man anmäler sig måste vi kolla om gruppen rolen är med i är anmäld. 
+När man anmäler sig måste vi kolla om gruppen rollen är med i är anmäld. 
   Inget problem första året, men kommande år kan det bli problem.
-
-
-Om man inte är medlem ska de finnas en länk till Sverok
-
-Kampanjtabell id, namn, beskrivning, icon, hemsida(url)
 
 
 Mail när man har anmält sig.

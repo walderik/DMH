@@ -14,6 +14,7 @@ class Group extends BaseModel{
     public $WealthId;
     public $PlaceOfResidenceId;
     public $PersonId; # Gruppansvarig
+    public $CampaignId;
     
 //     public static $tableName = 'group';
     public static $orderListBy = 'Name';
@@ -32,6 +33,7 @@ class Group extends BaseModel{
         if (isset($post['WealthId'])) $group->WealthId = $post['WealthId'];
         if (isset($post['PlaceOfResidenceId'])) $group->PlaceOfResidenceId = $post['PlaceOfResidenceId'];
         if (isset($post['PersonId'])) $group->PersonId = $post['PersonId'];
+        if (isset($post['CampaignId'])) $group->CampaignId = $post['CampaignId'];
         
         return $group;
     }
@@ -39,7 +41,9 @@ class Group extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        $newOne = new self();
+        $newOne->CampaignId = $current_larp->CampaignId;
+        return $newOne;
     }
     
     public static function getRegistered($larp) {
@@ -73,10 +77,11 @@ class Group extends BaseModel{
         
         $stmt = $this->connect()->prepare("UPDATE `group` SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
                                                                   Description=?, IntrigueIdeas=?, OtherInformation=?,
-                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=? WHERE Id = ?");
+                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies,
-            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, $this->Id))) {
+            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, 
+            $this->CampaignId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -91,12 +96,12 @@ class Group extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO `group` (Name, ApproximateNumberOfMembers, NeedFireplace, 
-                         Friends, Description, Enemies, IntrigueIdeas, OtherInformation, WealthId, PlaceOfResidenceId, PersonId) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?,?);");
+                         Friends, Description, Enemies, IntrigueIdeas, OtherInformation, WealthId, PlaceOfResidenceId, PersonId, CampaignId) 
+                         VALUES (?,?,?,?,?, ?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, 
             $this->Friends, $this->Description, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
-            $this->PlaceOfResidenceId, $this->PersonId))) {
+            $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");

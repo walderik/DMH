@@ -30,7 +30,7 @@ CREATE TABLE IntrigueType_LARP_Group (LARP_GroupGroupId int(11) NOT NULL, LARP_G
 CREATE TABLE IntrigueType_LARP_Role (IntrigueTypeId int(11) NOT NULL, LARP_RoleLARPid int(11) NOT NULL, LARP_RoleRoleId int(11) NOT NULL, PRIMARY KEY (IntrigueTypeId, LARP_RoleLARPid, LARP_RoleRoleId));
 CREATE TABLE Prop (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text, StorageLocation varchar(255), Image longblob, GroupId int(11), RoleId int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
 CREATE TABLE PaymentInformation (Id int(11) NOT NULL AUTO_INCREMENT, LARPId int(11) NOT NULL, FromDate date NOT NULL, ToDate date NOT NULL, FromAge int(11) NOT NULL, ToAge int(11) NOT NULL, Cost int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE Campaign (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Abbreviation varchar(255) NOT NULL, Description varchar(255), Icon varchar(255) NOT NULL, Homepage varchar(255) NOT NULL, Bankaccount varchar(255) NOT NULL, MinimumAge int(11), MinimumAgeWithoutGuardian int(11), PRIMARY KEY (Id));
+CREATE TABLE Campaign (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Abbreviation varchar(255) NOT NULL, Description varchar(255), Icon varchar(255) NOT NULL, Homepage varchar(255) NOT NULL, Email varchar(255) NOT NULL, Bankaccount varchar(255) NOT NULL, MinimumAge int(11), MinimumAgeWithoutGuardian int(11), PRIMARY KEY (Id));
 ALTER TABLE Role ADD CONSTRAINT IsPlayedBy FOREIGN KEY (PersonId) REFERENCES Person (Id);
 ALTER TABLE LARP_Role ADD CONSTRAINT FKLARP_Role146219 FOREIGN KEY (LARPId) REFERENCES LARP (Id);
 ALTER TABLE LARP_Role ADD CONSTRAINT FKLARP_Role421832 FOREIGN KEY (RoleId) REFERENCES Role (Id);

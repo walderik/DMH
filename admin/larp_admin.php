@@ -47,12 +47,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $resultCheck = count($larp_array);
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Förkortning</th><th>Tag line</th><th>Startdatum</th><th>Slutdatum stad</th><th>Max deltagare</th><th>Sista anmälningsdag</th><th>Start lajvtid</th><th>Slut lajvtid</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Kampanj</th><th>Tag line</th><th>Startdatum</th><th>Slutdatum stad</th><th>Max deltagare</th><th>Sista anmälningsdag</th><th>Start lajvtid</th><th>Slut lajvtid</th><th></th><th></th></tr>\n";
             foreach ($larp_array as $larp) {
                 echo "<tr>\n";
                 echo "<td>" . $larp->Id . "</td>\n";
                 echo "<td>" . $larp->Name . "</td>\n";
-                echo "<td>" . $larp->Abbreviation . "</td>\n";
+                echo "<td>" . $larp->getCampaign()->Name . "</td>\n";
                 echo "<td>" . $larp->TagLine . "</td>\n";
                 echo "<td>" . $larp->StartDate . "</td>\n";
                 echo "<td>" . $larp->EndDate . "</td>\n";

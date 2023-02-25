@@ -6,7 +6,6 @@ class LARP extends BaseModel{
 
     public  $Id; 
     public  $Name;
-    public  $Abbreviation;
     public  $TagLine; 
     public  $StartDate; 
     public  $EndDate;
@@ -15,6 +14,7 @@ class LARP extends BaseModel{
     public  $StartTimeLARPTime;
     public  $EndTimeLARPTime;
     public  $DisplayIntrigues = 0;
+    public  $CampaignId;
 
     
 //     public static $tableName = 'larp';
@@ -23,7 +23,6 @@ class LARP extends BaseModel{
     public static function newFromArray($post){
         $larp = static::newWithDefault();
         if (isset($post['Name'])) $larp->Name = $post['Name'];
-        if (isset($post['Abbreviation'])) $larp->Abbreviation = $post['Abbreviation'];
         if (isset($post['TagLine'])) $larp->TagLine = $post['TagLine'];
         if (isset($post['StartDate'])) $larp->StartDate = $post['StartDate'];
         if (isset($post['EndDate'])) $larp->EndDate = $post['EndDate'];
@@ -33,6 +32,7 @@ class LARP extends BaseModel{
         if (isset($post['EndTimeLARPTime'])) $larp->EndTimeLARPTime = $post['EndTimeLARPTime'];
         if (isset($post['DisplayIntrigues'])) $larp->DisplayIntrigues = $post['DisplayIntrigues'];
         if (isset($post['Id'])) $larp->Id = $post['Id'];
+        if (isset($post['CampaignId'])) $larp->CampaignId = $post['CampaignId'];
         
         return $larp;
     }
@@ -47,11 +47,11 @@ class LARP extends BaseModel{
     
     # Update an existing larp in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, Abbreviation=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, DisplayIntrigues=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, DisplayIntrigues=?, CampaignId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->TagLine,
+        if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->Id))) {
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -63,11 +63,11 @@ class LARP extends BaseModel{
     # Create a new larp in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, Abbreviation, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->TagLine,
+        if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues))) {
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -77,5 +77,7 @@ class LARP extends BaseModel{
         $stmt = null;
     }
     
-      
+    public function getCampaign() {
+        return Campaign::loadById($this->CampaignId);
+    }
 }

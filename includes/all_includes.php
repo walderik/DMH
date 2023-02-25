@@ -11,6 +11,7 @@ include_once $root . '/includes/sverok.php';
 // echo "<br />";
 include_once $root . '/classes/dbh.php';
 include_once $root . '/models/base_model.php';
+include_once $root . '/models/campaign.php';
 include_once $root . '/models/selection_data.php';
 include_once $root . '/models/experience.php';
 include_once $root . '/models/group.php';
