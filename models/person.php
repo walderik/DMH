@@ -244,6 +244,11 @@ class Person extends BaseModel{
         return Role::getRolesForPerson($this->Id);
     }
     
+    public function getRolesAtLarp($larp) {
+        return Role::getRegistredRolesForPerson($this, $larp);
+    }
+    
+    
     public function getGroups() {
         return Group::getGroupsForPerson($this->Id);
     }
