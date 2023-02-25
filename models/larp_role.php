@@ -53,7 +53,8 @@ class LARP_Role extends BaseModel{
         return true;
     }
     
-    
+    # Hämta relationen baserat på en roll på ett visst lajv
+    //     public static function getByLarpAndRole($larpId, $roleId){
     public static function loadByIds($roleId, $larpId)
     {
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
@@ -140,31 +141,6 @@ class LARP_Role extends BaseModel{
         }
         $stmt = null;
         return $resultArray;
-    }
-    
-    # Hämta relationen baserat på en roll på ett visst lajv
-    public static function getByLarpAndRole($larpId, $roleId){
-        if (is_null($larpId) || is_null($roleId)) return null;
-
-        $sql = "SELECT * FROM `larp_role` WHERE LARPId = ? and RoleId = ? LIMIT 1;";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larpId, $roleId))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return null;
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $row = $rows[0];
-        $stmt = null;
-        
-        return static::newFromArray($row);
     }
 
     # Hämta intrigtyperna
