@@ -48,7 +48,7 @@ include_once '../includes/error_handling.php';
 			 	<li>Börja med att <a href="person_form.php">registrera en deltagare.</a></li>
 			 	<li>Om du är gruppansvarig, <a href="group_form.php">registrera en grupp</a> och <a href="group_registration_form.php">anmäl den till lajvet</a>.</li>
 			 	<li><a href="role_form.php">Skapa karaktärer</a>, gärna flera.</li>
-			 	<li><a href="person_registration_form.php">Anmäl deltagaren</a> till lajvet.</li>
+			 	<li><a href="select_person.php">Anmäl deltagaren</a> till lajvet.</li>
 			 	</ol>
 			 	Det går att hantera flera deltagare från ett konto, tex om ni är en familj.<br><br>
 			 	Till nästa lajv kommer alla registrerade deltagare, grupper och karaktärer att finnas kvar. Så då kan du bara kontrollera att allt ser rätt och sedan skicka in anmälan.

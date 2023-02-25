@@ -2,7 +2,7 @@
 
 require 'header.php';
 
-$current_person;
+// $current_person;
 
 echo "Start";
 echo $_SERVER["REQUEST_METHOD"];
@@ -36,7 +36,7 @@ if (isset($PersonId)) {
 }
 else {
     echo "Exit 3";
-    //header('Location: index.php?error=no_person');
+    header('Location: index.php?error=no_person');
 }
 
 if (!$current_user->IsAdmin && $current_person->UserId != $current_user->Id) {
