@@ -117,10 +117,15 @@ class Role extends BaseModel{
         return Person::loadById($this->PersonId);
     }
 
-    public function isRegistered($larp) {
+    public function isRegistered(LARP $larp) {
         return LARP_Role::isRegistered($this->Id, $larp->Id);
         
     }    
+    
+    public function isMain(LARP $larp) {
+        $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
+        return $larp_role->IsMainRole;
+    }
     
     
     public static function getRolesForPerson($personId) {
@@ -150,7 +155,7 @@ class Role extends BaseModel{
     }
     
     # Hämta de roller en person har anmält till ett lajv
-    public static function getRegistredRolesForPerson($person, $larp) {
+    public static function getRegistredRolesForPerson(Person $person, LARP $larp) {
         if (is_null($person) || is_null($larp)) return Array();
         $sql = "SELECT * FROM `role`, larp_role WHERE `role`.PersonId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
