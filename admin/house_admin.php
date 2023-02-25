@@ -53,7 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 echo "<td>" . $house->Id . "</td>\n";
                 echo "<td>" . $house->Name . "</td>\n";
                 echo "<td>" . $house->NumberOfBeds . "</td>\n";
-                echo "<td>" . $house->Information . "</td>\n";
+                echo "<td>" . $house->PositionInVillage . "</td>\n";
+                echo "<td>" . $house->Description . "</td>\n";
                 
                 echo "<td>" . "<a href='house_form.php?operation=update&id=" . $house->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='house_admin.php?operation=delete&id=" . $house->Id . "'><i class='fa-solid fa-trash'></i></td>\n";

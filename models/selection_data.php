@@ -36,6 +36,8 @@ class SelectionData extends BaseModel{
      
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
+        global $current_larp;
+        
         $newOne = new static();
         $newOne->SortOrder = (static::numberOff()+1)*100;
         $newOne->Active = 1;

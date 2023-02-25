@@ -62,8 +62,11 @@ class LARP extends BaseModel{
     
     # Create a new larp in db
     public function create() {
+        print_r($this);
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, TagLine, StartDate, EndDate, MaxParticipants, LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, TagLine, StartDate, EndDate, MaxParticipants, 
+            LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,

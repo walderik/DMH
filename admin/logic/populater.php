@@ -4,16 +4,27 @@ $root = $_SERVER['DOCUMENT_ROOT'];
 
 require $root . '/includes/init.php';
 
-
 //Ifthe user isnt admin it may not see these pages
 if (!isset($_SESSION['admin'])) {
-    header('Location: ../participant/index.php');
+    //header('Location: ../participant/index.php');
     exit;
 }
 
 
+
+
+populateAll();
+
+
 function populateAll() {
+    global $current_larp;
     populateCampaign();
+    
+    $campaign = Campaign::loadByAbbreviation("DMH");
+    $current_larp = LARP::newWithDefault();
+    $current_larp->CampaignId = $campaign->Id;
+      
+    
     populateHouses();
     populateExperience();
     populateHousingRequest();
@@ -38,9 +49,11 @@ function populateCampaign() {
     $campaign->Description = "";
     $campaign->Icon = "";
     $campaign->Homepage = "https://dmh.berghemsvanner.se/";
+    $campaign->Email = "dmh@berghemsvanner.se";
     $campaign->Bankaccount = "xxxx-xxx";
     $campaign->MinimumAge = 0;
     $campaign->MinimumAgeWithoutGuardian = 18;
+    $campaign->create();
     
 }
 
