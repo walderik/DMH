@@ -25,5 +25,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo $operation;
     }
-    header('Location: ../index.php');
+    header('Location: ../group_registration_form.php');
 }
