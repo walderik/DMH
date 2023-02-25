@@ -7,12 +7,13 @@ require $root . '/includes/init.php';
 echo '$_POST :<br>';
 print_r($_POST);
 
-echo "<br />";
+echo "<br /><br /><br />";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
     $mainRole = $_POST['IsMainRole'];
+    echo "Mainrole = x" . $mainRole."x <br /><br /><br />";
     if ($operation == 'insert') {
         // Skapa en ny registrering
         $registration = Registration::newFromArray($_POST);
@@ -49,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo $operation;
     }
     
-    header('Location: ../index.php');
+     header('Location: ../index.php');
 }
 
 
@@ -63,13 +64,14 @@ function send_registration_mail(Registration $registration) {
 //     $campaign = 
     
     $text  = "Du har nu anmält att du ska vara med i lajvet $larp->Name<br>\n";
-    $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till xxxxxxxxxx ange referens: $registration->PaymentReference.<br>\n";
+    $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till xxxxxxxxxx ange referens: <b>$registration->PaymentReference</b>.<br>\n";
     $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
     $text .= "<br>\n";
     $text .= "Vi kommer att gå igenom karaktärerna du har anmält och godkänna dom för spel.<br>\n";
+    $text .= "<br>\n";
     $text .= "De karaktärer du har anmält är:<br>\n";
     foreach ($roles as $role) {
-        $text .= $role->Name;
+        $text .= '* '.$role->Name;
         if ($role->isMain($larp)) {
             $test .= " Huvudkaraktär";
         } elseif ($role->IsNPC) {
