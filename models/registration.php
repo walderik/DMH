@@ -120,5 +120,13 @@ class Registration extends BaseModel{
         
         return static::newFromArray($row);
     }
-        
+    
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
+    }
+    
+    public function getLARP() {
+        return LARP::loadById($this->LARPId);
+    }
+    
 }
