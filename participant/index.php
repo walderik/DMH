@@ -108,6 +108,8 @@ include_once '../includes/error_handling.php';
     		        $roles = $person->getRoles();
     		        if (isset($roles) && count($roles) > 0) {
     		            echo "<br><b>Karaktärer:</b><br>\n";
+    		        } else {
+    		            echo "<br><b>Har ännu ingen karaktär</b>&nbsp;&nbsp;<a href='role_form.php'>".showStatusIcon(false)."</a><br>\n";
     		        }
     		        foreach ($roles as $role)  {
     		            $role_group = $role->getGroup();

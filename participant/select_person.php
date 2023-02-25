@@ -31,7 +31,7 @@ if (count($current_persons) == 1) {
 		    $i = 0;
 		    foreach ($current_persons as $person) {
     	       if (empty($person->getRoles())) {
-    	           echo "<br><b>$person->Name</b> saknar en karaktär och kan inte anmälas ännu.<br><br>";
+    	           echo "<br><b>$person->Name</b> saknar en karaktär och kan inte anmälas ännu.<br><br>\n";
     	           unset($current_persons[$i]);
     	           $i++;
                 }
