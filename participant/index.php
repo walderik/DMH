@@ -86,7 +86,14 @@ include_once '../includes/error_handling.php';
  
                         
                     }
-                    echo "<tr><td>Medlem</td><td>" . showStatusIcon($person->isMember($current_larp->StartDate)). "</td></tr>\n";
+                    if ($person->isMember($current_larp->StartDate)) {
+                        echo "<tr><td>Medlem</td><td>" . showStatusIcon(true). "</td></tr>\n";
+                    } else {
+                        echo "<tr><td>Medlem</td><td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>" . showStatusIcon(false). "</a>";
+                        echo "</td><td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>Betala medlemsavgiften</a>";
+                        echo "</td></tr>\n";
+                    }
+                    
                     echo "</table>";
     		        $groups = $person->getGroups();
     		        if (isset($groups) && count($groups) > 0) {
