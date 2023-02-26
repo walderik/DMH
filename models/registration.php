@@ -53,6 +53,35 @@ class Registration extends BaseModel{
         return new self();
     }
 
+    public static function allBySelectedLARP(?LARP $selectedLarp = NULL) {
+        global $current_larp;
+        
+        if (!isset($selectedLarp) || is_null($selectedLarp)) $selectedLarp = $current_larp;
+        
+        $sql = "SELECT * FROM `registration` WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($current_larp->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
+    
     # Update an existing registration in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE registration SET LARPId=?, PersonId=?, Approved=?, RegisteredAt=?, PaymentReference=?, AmountToPay=?,

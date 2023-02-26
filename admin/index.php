@@ -47,8 +47,7 @@ include_once '../includes/error_handling.php';
 	      echo '<div class="message">'.$message_message.'</div>';
 	  }?>
 			<p>
-				Just nu är det XX anmälda deltagare.
-			     <br> 
+				Just nu är det <?php echo count(Registration::allBySelectedLARP()); ?> anmälda deltagare.<br> 
 			</p>
 		</div>
 	</body>
