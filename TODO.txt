@@ -8,4 +8,14 @@ När man anmäler sig måste vi kolla om gruppen rollen är med i är anmäld.
   Inget problem första året, men kommande år kan det bli problem.
 
 
-Mail när man har anmält sig.
+Mail när man har anmält sig. (Klart - Pär granskar det)
+
+Nu anger man både i registreringen av grupp och vid anmälan hur man vill bo.
+Det ska bara vara vid anmälan. Formulären fixade, men Databasen kvarstår.
+
+Populeringen av intrigtyper fick med Social Tillställningar två gånger
+
+
+Tips jag hittade:
+Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role
+Det går att skriva variabler direkt i en sträng om man använder dubbelfnuttar (") - "Hej $name!";
