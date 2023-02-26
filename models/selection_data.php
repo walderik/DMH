@@ -16,7 +16,7 @@ class SelectionData extends BaseModel{
         $selectionData = static::newWithDefault();
         if (isset($post['SortOrder'])) $selectionData->SortOrder = $post['SortOrder'];
         if (isset($post['Active'])) {
-            if ($post['Active'] == "on" or $post['Active'] == 1) {
+            if ($post['Active'] == "on" || $post['Active'] == 1) {
                 $selectionData->Active = 1;
             }
             else {
@@ -28,9 +28,10 @@ class SelectionData extends BaseModel{
         }
         if (isset($post['Description'])) $selectionData->Description = $post['Description'];
         if (isset($post['Name'])) $selectionData->Name = $post['Name'];
-        if (isset($post['Id'])) $selectionData->Id = $post['Id'];
-        if (isset($post['CampaignId'])) $selectionData->Id = $post['CampaignId'];
-        
+        if (isset($post['Id'])) {
+            $selectionData->Id = $post['Id'];
+        }
+        if (isset($post['CampaignId'])) $selectionData->CampaignId = $post['CampaignId'];
         return $selectionData;
     }
      
@@ -56,6 +57,7 @@ class SelectionData extends BaseModel{
             exit();
         }
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         $resultArray = array();
         foreach ($rows as $row) {
             $resultArray[] = static::newFromArray($row);
