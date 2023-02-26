@@ -15,15 +15,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $group = Group::newFromArray($_POST);
         $group->create();
+        header('Location: ../group_registration_form.php?new_group='.$group->Id);
+        exit;
     } elseif ($operation == 'delete') {
         Group::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         
         $group = Group::newFromArray($_POST);
         $group->update();
-
     } else {
         echo $operation;
     }
-    header('Location: ../group_registration_form.php');
 }
+header('Location: ../index.php');

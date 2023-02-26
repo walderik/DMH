@@ -9,6 +9,14 @@ if (empty($current_groups)) {
     exit;
 }
 
+$new_group = null;
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if (isset($_GET['new_group'])) {
+        $new_group = Group::loadById($_GET['new_group']);
+    }
+}
+
 ?>
 
         <nav id="navigation">
@@ -21,7 +29,12 @@ if (empty($current_groups)) {
 
 
 	<div class="content">
-		<h1>Anmälan av grupp till <?php echo $current_larp->Name;?></h1>
+		<?php 
+		if (isset($new_group) && !is_null($new_group)) {
+            echo "<h1>Anmälan av gruppe '$new_group->Name' till $current_larp->Name</h1>";
+        } else {
+            echo "<h1>Anmälan av grupp till $current_larp->Name</h1>";
+		} ?>
 		<form action="logic/group_registration_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="insert"> 
     		<input type="hidden" id="LARPId" name="LARPId" value="<?php echo $current_larp->Id ?>">
@@ -35,7 +48,13 @@ if (empty($current_groups)) {
 				
 			<div class="question">
 				<label for="GroupId">Grupp</label><br>
-				<?php selectionDropdownByArray('Group', $current_groups, false, true) ?>
+				<?php 
+				if (isset($new_group) && !is_null($new_group)) {
+				    selectionDropdownByArray('Group', $current_groups, false, true, $new_group->Id);
+				} else {
+				    selectionDropdownByArray('Group', $current_groups, false, true);
+				} ?>
+				
 			</div>
 			<div class="question">
     			<label for="IntrigueType">Intrigtyper</label>
