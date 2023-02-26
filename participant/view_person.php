@@ -38,7 +38,7 @@ $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 
 
 	<div class="content">
-		<h1><?php echo $current_person->Name;?></h1>
+		<h1>Anmälan <?php echo $current_person->Name;?></h1>
 		<table>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $current_person->SocialSecurityNumber;?></td></tr>
 			<tr><td valign="top" class="header">Email</td><td><?php echo $current_person->Email;?></td></tr>
@@ -62,7 +62,7 @@ $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
 
 
-			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_person->OtherInformation;?></td></tr>
+			<tr><td valign="top" class="header">Annan information</td><td><?php echo nl2br($current_person->OtherInformation);?></td></tr>
 			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($current_person->isMember($current_larp->StartDate))?></td></tr>
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
 			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->Approved)) { echo $registration->Approved; } else { echo "Nej"; }?></td></tr>
