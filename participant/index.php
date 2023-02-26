@@ -114,7 +114,11 @@ include_once '../includes/error_handling.php';
     		                echo $group->Name . " " . "<a href='group_form.php?operation=update&id=" . 
     		                 $group->Id . "'><i class='fa-solid fa-pen'></i></a>"; 
     		            }
-    		            echo " Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp)) . "<br>\n";
+    		            if ($group->isRegistered($current_larp)) {
+    		                echo " Anmäld&nbsp;&nbsp;" . showStatusIcon(true) . "<br>\n";
+    		            } else {
+    		                echo " Anmäld&nbsp;&nbsp;<a href='group_registration_form.php?new_group=$group->Id'>" . showStatusIcon(false) . "</a><br>\n";
+    		            }
      		            
     		        }
     		       
