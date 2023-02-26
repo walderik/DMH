@@ -66,7 +66,13 @@ function default_value($field) {
 
 
 	<div class="content">
-		<h1>Registrering av grupp</h1>
+		<h1><?php 
+		if ($operation == 'update') {
+		    echo "Redigera $group->Name";
+		} else {
+		    echo "Registrering av en grupp";
+		}    
+		 ?></h1>
 		<form action="logic/group_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $group->Id; ?>">
