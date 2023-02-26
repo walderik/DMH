@@ -63,6 +63,9 @@ include_once '../includes/error_handling.php';
     		    echo "<a href='person_form.php'>Registrera en deltagare.</a>";
     		} else {
     		    foreach ($persons as $person)  {
+    		        $roles = $person->getRoles();
+    		        $groups = $person->getGroups();
+    		        
     		        echo "<div class='person'>\n";
     		        
     		        if ($person->isRegistered($current_larp)) {
@@ -74,7 +77,9 @@ include_once '../includes/error_handling.php';
     		        echo "Epost: " . $person->Email. "<br>\n";
     		        echo "Mobilnummer: " . $person->PhoneNumber. "<br>\n";
     		        echo "<table>";
-                    echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp)). "</td></tr>\n";
+    		        if (isset($roles) && count($roles) > 0) {
+                        echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp)). "</td></tr>\n";
+    		        }
                     if ($person->isRegistered($current_larp)) {
                         echo "<tr><td>Godkänd</td><td>" . showStatusIcon($person->isApproved($current_larp)). "</td></tr>\n";
                         echo "<tr><td>Betalat</td><td>" . showStatusIcon($person->hasPayed($current_larp));
@@ -95,7 +100,7 @@ include_once '../includes/error_handling.php';
                     }
                     
                     echo "</table>";
-    		        $groups = $person->getGroups();
+    		        
     		        if (isset($groups) && count($groups) > 0) {
     		            echo "<br><b>Gruppansvarig för:</b><br>\n";
     		        }
@@ -112,7 +117,7 @@ include_once '../includes/error_handling.php';
     		            echo " Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp)) . "<br>\n";
      		            
     		        }
-    		        $roles = $person->getRoles();
+    		       
     		        if (isset($roles) && count($roles) > 0) {
     		            echo "<br><b>Karaktärer:</b><br>\n";
     		        } else {
