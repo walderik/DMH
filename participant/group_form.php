@@ -113,23 +113,13 @@ function default_value($field) {
 					id="ApproximateNumberOfMembers"
 					name="ApproximateNumberOfMembers"  value="<?php echo $group->ApproximateNumberOfMembers; ?>" required>
 			</div>
-						<div class="question">
-			<label for="HousingRequest">Hur vill ni bo som grupp?</label><br>
-       		<div class="explanation"><?php HousingRequest::helpBox(true); ?></div>
-            <?php
-
-            HousingRequest::selectionDropdown(false,true);
-            
-            ?>
-
-        </div>
-        <div class="question">
-			<label for="NeedFireplace">Behöver ni eldplats?</label><br> 
-			<input type="radio" id="NeedFireplace_yes" name="NeedFireplace" value="1" checked="<?php if ($group->NeedFireplace==1) { echo 'checked'; }?>"> 
-			<label for="NeedFireplace_yes">Ja</label><br> 
-			<input type="radio" id="NeedFireplace_no" name="NeedFireplace" value="0"  checked="<?php if ($group->NeedFireplace==0) { echo 'checked'; }?>"> 
-			<label for="NeedFireplace_no">Nej</label>
-		</div>
+            <div class="question">
+    			<label for="NeedFireplace">Behöver ni eldplats?</label><br> 
+    			<input type="radio" id="NeedFireplace_yes" name="NeedFireplace" value="1" checked="<?php if ($group->NeedFireplace==1) { echo 'checked'; }?>"> 
+    			<label for="NeedFireplace_yes">Ja</label><br> 
+    			<input type="radio" id="NeedFireplace_no" name="NeedFireplace" value="0"  checked="<?php if ($group->NeedFireplace==0) { echo 'checked'; }?>"> 
+    			<label for="NeedFireplace_no">Nej</label>
+    		</div>
 			<div class="question">
 				<label for="Friends">Vänner</label><br>
 				<textarea id="Friends" name="Friends" rows="4" cols="50"><?php echo $group->Friends; ?></textarea>
@@ -147,7 +137,7 @@ function default_value($field) {
 			
             <?php
 
-            Wealth::selectionDropdown();
+            Wealth::selectionDropdown(false, false, $group->WealthId);
             
             ?> 
 			
@@ -159,7 +149,7 @@ function default_value($field) {
 			
 			
             <?php
-            PlaceOfResidence::selectionDropdown();
+            PlaceOfResidence::selectionDropdown(false, false, $group->PlaceOfResidenceId);
             ?> 
 
 			</div>
