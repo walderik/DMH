@@ -12,9 +12,9 @@ echo "<br /><br /><br />";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
-    $mainRole = $_POST['IsMainRole'];
-    echo "Mainrole = x" . $mainRole."x <br /><br /><br />";
+    
     if ($operation == 'insert') {
+        if (isset($_POST['IsMainRole'])) $mainRole = $_POST['IsMainRole'];
         // Skapa en ny registrering
         $registration = Registration::newFromArray($_POST);
         $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), 
@@ -23,18 +23,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $now = new Datetime();
         $registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
+        print_r($registration);
+        
         $registration->create();
         
         $roleIdArr = $_POST['roleId'];
+        echo "<br>roleIdArr = <br>";
+        print_r($roleIdArr);
+        echo "<br>Length = ".count($roleIdArr);
+        echo "<br /><br /><br />\n";
         
-        # TODO Hantera om man inte anmäler någon roll
-        
+        if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
+        echo "Mainrole = x" . $mainRole."x <br />\n";
+
+//         exit;
         foreach ($roleIdArr as $roleId) {
+            echo "roleId = x" . $roleId."x <br />\n";
             $larp_role = LARP_Role::newWithDefault();
             $larp_role->RoleId = $roleId;
             $larp_role->LARPId = $current_larp->Id;
             if ($mainRole == $roleId) {
-                echo "Main role: " . $larp_role->Id;
+                 echo "Main role: " . $larp_role->Id;
                 $larp_role->IsMainRole = 1;
             }
             $larp_role->create();            
@@ -50,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo $operation;
     }
     
-     header('Location: ../index.php');
+    header('Location: ../index.php');
 }
 
 
@@ -61,21 +70,22 @@ function send_registration_mail(Registration $registration) {
     $larp = $registration->getLARP();
     $roles = $person->getRolesAtLarp($larp);
     
-//     $campaign = 
+    $campaign = $larp->getCampaign();
     
     $text  = "Du har nu anmält att du ska vara med i lajvet $larp->Name<br>\n";
-    $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till xxxxxxxxxx ange referens: <b>$registration->PaymentReference</b>.<br>\n";
+    $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>.<br>\n";
     $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
     $text .= "<br>\n";
     $text .= "Vi kommer att gå igenom karaktärerna du har anmält och godkänna dom för spel.<br>\n";
     $text .= "<br>\n";
     $text .= "De karaktärer du har anmält är:<br>\n";
+    $text .= "<br>\n";
     foreach ($roles as $role) {
         $text .= '* '.$role->Name;
         if ($role->isMain($larp)) {
-            $test .= " Huvudkaraktär";
+            $text .= " - Din huvudkaraktär";
         } elseif ($role->IsNPC) {
-            $test .= " NPC";
+            $text .= " - En NPC";
         }
         $text .= "<br>\n";
     }
