@@ -128,6 +128,9 @@ class Group extends BaseModel{
          return Person::loadById($this->PersonId);
      }
 
+     public function getCampaign() {
+         return Campaign::loadById($this->CampaignId);
+     }
      
      public function isRegistered($larp) {
          return LARP_Group::isRegistered($this->Id, $larp->Id);
@@ -158,7 +161,5 @@ class Group extends BaseModel{
          $stmt = null;
          return $resultArray;
      }
-     
-     
     
 }

@@ -1,8 +1,6 @@
 <?php
 
 class LARP extends BaseModel{
-    
-    
 
     public  $Id; 
     public  $Name;

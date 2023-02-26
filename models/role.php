@@ -25,7 +25,6 @@ class Role extends BaseModel{
     public $CampaignId;
     
 
-    
     public static $orderListBy = 'Name';
     
     
@@ -121,6 +120,10 @@ class Role extends BaseModel{
     
     public function getPerson() {
         return Person::loadById($this->PersonId);
+    }
+    
+    public function getCampaign() {
+        return Campaign::loadById($this->CampaignId);
     }
 
     public function isRegistered(LARP $larp) {
