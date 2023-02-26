@@ -78,7 +78,7 @@ include_once '../includes/error_handling.php';
     		        echo "Mobilnummer: " . $person->PhoneNumber. "<br>\n";
     		        echo "<table>";
     		        if (isset($roles) && count($roles) > 0) {
-                        echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp)). "</td></tr>\n";
+                        echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id"). "</td></tr>\n";
     		        }
                     if ($person->isRegistered($current_larp)) {
                         echo "<tr><td>Godkänd</td><td>" . showStatusIcon($person->isApproved($current_larp)). "</td></tr>\n";
@@ -91,10 +91,8 @@ include_once '../includes/error_handling.php';
  
                         
                     }
-                    if ($person->isMember($current_larp->StartDate)) {
-                        echo "<tr><td>Medlem</td><td>" . showStatusIcon(true). "</td></tr>\n";
-                    } else {
-                        echo "<tr><td>Medlem</td><td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>" . showStatusIcon(false). "</a>";
+                    echo "<tr><td>Medlem</td><td>".showStatusIcon($person->isMember($current_larp->StartDate), "https://ebas.sverok.se/signups/index/5915")."</a>";
+                    if (!$person->isMember($current_larp->StartDate)) {
                         echo "</td><td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>Betala medlemsavgiften</a>";
                         echo "</td></tr>\n";
                     }
@@ -114,12 +112,7 @@ include_once '../includes/error_handling.php';
     		                echo $group->Name . " " . "<a href='group_form.php?operation=update&id=" . 
     		                 $group->Id . "'><i class='fa-solid fa-pen'></i></a>"; 
     		            }
-    		            if ($group->isRegistered($current_larp)) {
-    		                echo " Anmäld&nbsp;&nbsp;" . showStatusIcon(true) . "<br>\n";
-    		            } else {
-    		                echo " Anmäld&nbsp;&nbsp;<a href='group_registration_form.php?new_group=$group->Id'>" . showStatusIcon(false) . "</a><br>\n";
-    		            }
-     		            
+    		            echo " Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "<br>\n";
     		        }
     		       
     		        if (isset($roles) && count($roles) > 0) {
@@ -131,16 +124,14 @@ include_once '../includes/error_handling.php';
     		            $role_group = $role->getGroup();
     		            $role_group_name = "";
     		            if (isset($role_group)) {
-    		                $role_group_name = $role_group->Name;
+    		                $role_group_name = " - $role_group->Name";
     		            }
     		            echo $role->Name . " - " . $role->Profession . " " . $role_group_name;
     		            if ($role->isRegistered($current_larp)) {
-    		                echo " <a href='view_role.php?id=" . $role->Id .
-    		                "'><i class='fa-solid fa-eye'></i></a><br>\n";
+    		                echo " <a href='view_role.php?id=$role->Id'><i class='fa-solid fa-eye'></i></a><br>\n";
     		            }
     		            else {
-        		            echo " <a href='role_form.php?operation=update&id=" . $role->Id . 
-        		                  "'><i class='fa-solid fa-pen'></i></a><br>\n";
+        		            echo " <a href='role_form.php?operation=update&id=$role->Id'><i class='fa-solid fa-pen'></i></a><br>\n";
     		            }
     		            
     		        }
