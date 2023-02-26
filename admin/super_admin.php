@@ -19,12 +19,13 @@ include_once '../includes/error_handling.php';
 			<p>			    
 			    <a href="larp_admin.php">Lajv</a> <br> 
 			    <a href="house_admin.php">Hus i byn</</a><br>
+			    <a href="user_admin.php">Användare / Logins</</a><br>
 			    </p>
 			    <h2>Basdata</h2>
 			    <p>
 			    <a href="selection_data_admin.php?type=wealth">Rikedom</a><br>
 			    <a href="selection_data_admin.php?type=typesoffood">Matalternativ</a><br>
-			    <a href="selection_data_admin.php?type=placeofresidence">Var karaktärer/grupper bor</a><br>
+			    <a href="selection_data_admin.php?type=placeofresidence">Var karaktärer / grupper bor</a><br>
 			    <a href="selection_data_admin.php?type=normalallergytypes">Vanliga allergier</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=larpertypes">Typ av lajvare</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer</a>	<br>		    			
