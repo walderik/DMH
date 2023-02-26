@@ -71,35 +71,32 @@ if (empty($roles)) {
     		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $current_person->Id ?>">
 
 
-			<p>När anmälan är gjort går det varken att redigera deltagaren eller någon av karaktärerna.
-			   </p>
+			<p>
+			När anmälan är gjort går det varken att redigera deltagaren eller någon av karaktärerna.
+			</p>
 				
 				
 			<div class="question">
-				<label for="RoleId">Karaktärer</label><br>
+				<label for="RoleId">Karaktärer</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Vilka karaktärer vill du spela på lajvet?<br>
 				     En av dina karaktärer är din huvudkaraktär. Vi måste veta vilken.<br>
-				     Andra är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
+				     Andra karaktärer är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
 				     <br>Och vilka intriger den karaktären vill ha<br>
 				     <?php IntrigueType::helpBox(true); ?></div>
 			
         			<?php 
         			foreach($roles as $role) {
-        			    echo '<div class="role">';
-        			    echo '<h3><input type="checkbox" id="roleId'.$role->Id.'" name="roleId[]" value="'.$role->Id.'';
+        			    echo "<div class='role'>\n";
+        			    echo "<h3><input type='checkbox' id='roleId$role->Id' name='roleId[]' value='$role->Id' checked='checked'>";
         			    echo "\n";
-        			    echo '<label for="roleId'.$role->Id.'">'.  $role->Name . '</label></h3>';
-        			    echo "\n";
-        			    echo '<input type="radio" id="mainRole'.$role->Id.'" name="IsMainRole" value="'.$role->Id.'" required>';
-        			    echo "\n";
-        			    echo '<label for="mainRole'.$role->Id.'">Huvudkaraktär</label><br><br>';
-        			    echo "\n";
-        			    
+        			    echo "<label for='roleId$role->Id'>$role->Name</label></h3>\n";
+        			    echo "<input type='radio' id='mainRole$role->Id' name='IsMainRole' value='$role->Id' required>\n";
+        			    echo "<label for='mainRole$role->Id'>Huvudkaraktär</label><br><br>\n";   			    
 
         			    echo '<table border=0><tr><td valign="top">';
 
         			    echo '</td><td>&nbsp;</td><td valign="top">';
-//         			    IntrigueType::selectionDropdown(true,false);
+
         			    $name = 'IntrigueTypeId[' . $role->Id . ']';
         			    selectionDropdownByArray($name , IntrigueType::allActive(), true, false);
         			    echo '</td></tr></table>';
@@ -111,7 +108,7 @@ if (empty($roles)) {
 			
 			
 			<div class="question">
-    			<label for="HousingRequest">Boende</label>
+    			<label for="HousingRequest">Boende</label>&nbsp;<font style="color:red">*</font>
     			<div class="explanation">Hur vill du helst bo? Vi kan inte garantera plats i hus. <br><?php HousingRequest::helpBox(true); ?></div>
                 <?php
     
@@ -124,7 +121,8 @@ if (empty($roles)) {
 			<div class="question">
     			<label for="NPCDesire">NPC</label>
     			<div class="explanation">Kan du tänka dig att ställa upp som NPC?<br>
-NPC = Non Player Character, en roll som styrs helt/delvis av arrangörsgruppen och spelas en kortare stund under lajvet för att skapa scener/händelser. Vi kommer återkomma till de som är intresserade, men skriv gärna en rad om du redan nu har några idéer.
+					NPC = Non Player Character, en roll som styrs helt/delvis av arrangörsgruppen och spelas en kortare stund under lajvet för att skapa scener/händelser.<br>
+					Vi kommer återkomma till de som är intresserade, men skriv gärna en rad om du redan nu har några idéer.
 				</div>
                 <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="250">
             </div>
@@ -132,11 +130,14 @@ NPC = Non Player Character, en roll som styrs helt/delvis av arrangörsgruppen o
 
 			<div class="question">
     			<label for="OfficialType">Funktionär</label>
-    			<div class="explanation">Det är mycket som behövs för att ett lajv ska fungera på plats. <br>   
-Allt ifrån att någon måste laga mat till att någon måste se till att det finns toapapper på dassen.   <br> 
-Just nu söker vi någon som kan ta Trygghetsansvar, folk till saloonen och någon som kan hålla i spel på saloonen.  <br>  
-Säkert finns det också något som du gärna kan hjälpa till med och som vi inte har tänkt på. Beroende på arbetsbörda återbetalas delar eller hela anmälningsavgifter efter lajvet.<br>
-<?php OfficialType::helpBox(true); ?></div>
+    			<div class="explanation">
+        			Det är mycket som behövs för att ett lajv ska fungera på plats. <br>   
+                    Allt ifrån att någon måste laga mat till att någon måste se till att det finns toapapper på dassen.<br> 
+                    Just nu söker vi någon som kan ta Trygghetsansvar, folk till saloonen och någon som kan hålla i spel på saloonen.<br>  
+                    Säkert finns det också något som du gärna kan hjälpa till med och som vi inte har tänkt på.<br> 
+                    Beroende på arbetsbörda återbetalas delar eller hela anmälningsavgifter efter lajvet.<br>
+    				<?php OfficialType::helpBox(true); ?>
+				</div>
                 <?php
     
                 OfficialType::selectionDropdown(true,false);
