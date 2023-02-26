@@ -44,11 +44,11 @@ function selectionDropdownByArray(String $name_in, Array $selectionDatas, ?bool 
     foreach ($selectionDatas as $selectionData) {
         $row_option = $option;
         # Kolla om något är selected
-        if(!$multiple) {
-            if ((!is_null($selected) && $selected == $selectionData->Id) || (is_null($selected) && 'null' == $selectionData->Id))
-                $row_option = $row_option.' checked="checked"';
-        } else {
+        if($multiple) {
             if (!is_null($selected) && !empty($selected) && in_array($selectionData->Id, $selected))
+                $row_option = $row_option.' checked="checked"';
+        } else {    
+            if ((!is_null($selected) && $selected == $selectionData->Id) || (is_null($selected) && 'null' == $selectionData->Id))
                 $row_option = $row_option.' checked="checked"';
         }
         
