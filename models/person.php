@@ -48,6 +48,7 @@ class Person extends BaseModel{
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
         Global $current_user;
+        
         $person = new self();
         $person->UserId = $current_user->Id;
         return $person;

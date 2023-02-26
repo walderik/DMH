@@ -42,6 +42,7 @@ class Telegram extends BaseModel{
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
         global $current_larp;
+        
         $telegram = new self();
         $telegram->Deliverytime = $current_larp->StartTimeLARPTime;
         $telegram->LARPid = $current_larp->Id;

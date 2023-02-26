@@ -62,6 +62,8 @@ class Role extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
+        global $current_larp;
+        
         $newOne = new self();
         $newOne->CampaignId = $current_larp->CampaignId;
         return $newOne;
