@@ -36,7 +36,7 @@ if (count($current_persons) == 1) {
     	           $i++;
                 }
             }
-            reset($current_persons);
+//             reset($current_persons);
     	?>
 		<form action="person_registration_form.php" method="get">
 			<div class="question">
