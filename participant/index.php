@@ -85,7 +85,8 @@ include_once '../includes/error_handling.php';
                         echo "<tr><td>Betalat</td><td>" . showStatusIcon($person->hasPayed($current_larp));
                         if (!$person->hasPayed($current_larp)) {
                             $registration = Registration::loadByIds($person->Id, $current_larp->Id);
-                            echo "</td><td>Betala " . $registration->AmountToPay . " SEK till xxxxxxxxxx ange referens: " . $registration->PaymentReference;
+                            $campaign = $current_larp->getCampaign();
+                            echo "</td><td>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>";
                         }
                         echo "</td></tr>\n";
  
