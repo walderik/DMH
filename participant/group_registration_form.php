@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 			</div>
             <div class="question">
     			<label for="WantIntrigue">Vill gruppen ha intriger?</label>
-    			<div class="explanation">Oavsett vad ni svara på den här frågan kan det hända att ni får/inte får intriger. Men vi ska ha era önskemål i åtanke.</div>
+    			<div class="explanation">Oavsett vad ni svarar på den här frågan kan det hända att ni får/inte får intriger. Men vi ska ha era önskemål i åtanke.</div>
     			<input type="radio" id="WantIntrigue_yes" name="WantIntrigue" value="1"> 
     			<label for="WantIntrigue_yes">Ja</label><br> 
     			<input type="radio" id="WantIntrigue_no" name="WantIntrigue" value="0"> 

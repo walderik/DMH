@@ -6,7 +6,7 @@ require $root . '/includes/init.php';
 
 //Ifthe user isnt admin it may not see these pages
 if (!isset($_SESSION['admin'])) {
-    //header('Location: ../participant/index.php');
+    header('Location: ../../participant/index.php');
     exit;
 }
 
@@ -17,6 +17,7 @@ populateAll();
 
 
 function populateAll() {
+    echo "Börjar lägga in data<br>";
     global $current_larp;
     populateCampaign();
     
@@ -34,6 +35,7 @@ function populateAll() {
     populatePlaceOfResidence();
     populateTypeOfFood();
     populateWealth();
+    echo "Klar<br>";
 }
 
 
@@ -49,10 +51,12 @@ function populateCampaign() {
     $campaign->Icon = "";
     $campaign->Homepage = "https://dmh.berghemsvanner.se/";
     $campaign->Email = "dmh@berghemsvanner.se";
-    $campaign->Bankaccount = "xxxx-xxx";
+    $campaign->Bankaccount = "Swedbank, Clearingsnr 8417-8, Kontonr 934 505 367-3";
     $campaign->MinimumAge = 0;
     $campaign->MinimumAgeWithoutGuardian = 18;
     $campaign->create();
+    
+    echo "Skapade " . sizeof(Campaign::all()) . " kampanjer<br>";
     
 }
 
@@ -73,7 +77,8 @@ function createDMH2023() {
     $larp->EndTimeLARPTime = "1867-09-17 12:00";
     
     $larp->CampaignId = $campaign->Id;
-    return $larp;    
+    $larp->create();
+    echo "Skapade " . sizeof(LARP::all()) . " lajv<br>";    return $larp;    
 }
 
 function populateHouses() {
@@ -221,7 +226,7 @@ Spisen är i nuläget tyvärr demonterad i väntan på nya brandsäkerhetsbestä
     $house->Description = "Liten, enkel stuga med lös inredning. Plats för några sängplatser och ett bord.";
     $house->NumberOfBeds = "2-3";
     $house->create();
-    
+    echo "Skapade " . sizeof(House::all()) . " hus<br>";
 }
 
 function populateWealth() {
@@ -261,7 +266,7 @@ function populateWealth() {
     $wealth->Description = "Kan gössla med pengar";
     $wealth->CampaignId = $campaign->Id;
     $wealth->create();
-
+    echo "Skapade " . sizeof(Wealth::all()) . " rikedom<br>";
 }
 
 function populateTypeOfFood() {
@@ -289,7 +294,7 @@ function populateTypeOfFood() {
     $food->Description = "Mat som innehåller kött";
     $food->CampaignId = $campaign->Id;
     $food->create();
-    
+    echo "Skapade " . sizeof(TypeOfFood::all()) . " typer av mat<br>";
 }
 
 function populatePlaceOfResidence() {
@@ -341,7 +346,7 @@ function populatePlaceOfResidence() {
     $place->Description = "Ange i beskrivningen vilken stam karaktären tillhör";
     $place->CampaignId = $campaign->Id;
     $place->create();
-
+    echo "Skapade " . sizeof(PlaceOfResidence::all()) . " boplatser<br>";
 }
 
 function populateNormalAllergyTypes() {
@@ -380,6 +385,7 @@ function populateNormalAllergyTypes() {
     $allergy->Description = "Gullök, vitlök och purjo";
     $allergy->CampaignId = $campaign->Id;
     $allergy->create();
+    echo "Skapade " . sizeof(NormalAllergyType::all()) . " allergier<br>";
 }
 
 function populateLarperType() {
@@ -392,25 +398,25 @@ function populateLarperType() {
     
     $larpertype = LarperType::newWithDefault();
     $larpertype->Name = "Myslajvare";
-    $larpertype->Description = "Jag vill bara sitta vid elden och dricka te och småprata om minnen från förr. Jag vill inte ha några egna intriger eller att någon annan har intriger med mig. (rekommenderas inte för nybörjare eller barn.)";
+    $larpertype->Description = "Jag vill bara sitta vid elden och dricka te och småprata om minnen från förr. Jag får inga intriger och är inte inblandad i någon annans intriger. Myslajvare får heller ingen handel och blir troligen varken fattigare eller rikare under lajvet.(rekommenderas inte för nybörjare eller barn.)";
     $larpertype->CampaignId = $campaign->Id;
     $larpertype->create();
     
     $larpertype = LarperType::newWithDefault();
     $larpertype->Name = "Passiv lajvare";
-    $larpertype->Description = "Jag vill inte ha en viktig roll i lajvet. Jag åker mest för stämningen och för att interagera med min grupp eller övriga karaktärer. Jag vill nte ha några egna intriger mer an lite svaller om andra karaktärer som jag kan sprida.";
+    $larpertype->Description = "Jag vill inte ha en viktig roll i lajvet. Jag åker mest för stämningen och för att interagera med min grupp eller övriga karaktärer. Jag vill inte ha några egna intriger mer än lite svaller om andra karaktärer som jag kan sprida.";
     $larpertype->CampaignId = $campaign->Id;
     $larpertype->create();
     
     $larpertype = LarperType::newWithDefault();
     $larpertype->Name = "Karaktärslajvare";
-    $larpertype->Description = "Min karaktär är allt. Jag har gärna intriger, men de får på intet sätt gå emot det jag skrivit i min bakgrund.";
+    $larpertype->Description = "Min karaktär är allt. Jag har gärna intriger, men de får på intet sätt gå emot det jag skrivit om mig i min bakgrund.";
     $larpertype->CampaignId = $campaign->Id;
     $larpertype->create();
     
         $larpertype = LarperType::newWithDefault();
     $larpertype->Name = "Aktiv lajvare";
-    $larpertype->Description = "Jag älskar intriger, men jag älskar också min karaktär. Jag kan tnka mig att tumma lite på min karaktär om det innebär att jag får mer intriger.";
+    $larpertype->Description = "Jag älskar intriger, men jag älskar också min karaktär. Jag kan tänka mig att tumma lite på min karaktär om det innebär att jag får mer intriger.";
     $larpertype->CampaignId = $campaign->Id;
     $larpertype->create();
     
@@ -419,6 +425,7 @@ function populateLarperType() {
     $larpertype->Description = "Jag vill gärna maxa min upplevelser på lajvet. Jag ser därför gärna att arrangörerna skriver en roll åt mig som passar den typer av intriger som jag gillar.";
     $larpertype->CampaignId = $campaign->Id;
     $larpertype->create();
+    echo "Skapade " . sizeof(LarperType::all()) . " typ av lajvare<br>";
 }
 
 function populateOffictialType() {
@@ -457,6 +464,7 @@ function populateOffictialType() {
     $officialtype->Description = "Stannar kvar på området tills det är rent.";
     $officialtype->CampaignId = $campaign->Id;
     $officialtype->create();
+    echo "Skapade " . sizeof(OfficialType::all()) . " typ av funktionärer<br>";
 }
 
 function populateIntrigueType() {
@@ -550,6 +558,7 @@ function populateIntrigueType() {
     $intriguetype->Description = "Du vill skjuta med dina vapen och vill sättas i situationer där handgemäng, dueller och eldstrider är logiska lösningar. Självklart är du också beredd på att få byta karaktär under lajvet.";
     $intriguetype->CampaignId = $campaign->Id;
     $intriguetype->create();
+    echo "Skapade " . sizeof(IntrigueType::all()) . " typ av intriger<br>";
  }
 
 function populateHousingRequest() {
@@ -594,6 +603,7 @@ function populateHousingRequest() {
     $housing->Description = "Bor någon annastans.";
     $housing->CampaignId = $campaign->Id;
     $housing->create();
+    echo "Skapade " . sizeof(HousingRequest::all()) . " boendeönskemål<br>";
 }
 
 function populateExperience() {
@@ -627,5 +637,5 @@ function populateExperience() {
     $experience->Description = "Har varit på fler lajv än jag kommer ihåg.";
     $experience->CampaignId = $campaign->Id;
     $experience->create();
-
+    echo "Skapade " . sizeof(Experience::all()) . " erfarenhetsnivåer<br>";
 }

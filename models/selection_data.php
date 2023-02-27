@@ -107,7 +107,7 @@ class SelectionData extends BaseModel{
         echo "<div class='tooltip'>\n";
         echo "<table class='helpBox'>\n";
         foreach ($selectionDatas as $selectionData) {
-            echo "  <tr><td>" . $selectionData->Name . "</td><td>" . $selectionData->Description . "</td></tr>\n";
+            echo "  <tr><td style='vertical-align:top'>" . $selectionData->Name . "</td><td style='vertical-align:top'>" . $selectionData->Description . "</td></tr>\n";
         }
         echo "</table>\n";
         echo "</div>\n";
