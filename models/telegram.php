@@ -51,9 +51,9 @@ class Telegram extends BaseModel{
     
     
     public static function allBySelectedLARP() {
-        global $current_larp;
+        global $tbl_prefix, $current_larp;
         
-        $sql = "SELECT * FROM ".strtolower(static::class)." WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM ".$tbl_prefix.strtolower(static::class)." WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($current_larp->Id))) {
@@ -81,7 +81,8 @@ class Telegram extends BaseModel{
     
     # Update an existing telegram in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix.strtolower(static::class)." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->Id))) {
             $stmt = null;
@@ -94,8 +95,9 @@ class Telegram extends BaseModel{
     
     # Create a new telegram in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO ".strtolower(static::class)." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO ".$tbl_prefix.strtolower(static::class)." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->LARPid))) {
             $stmt = null;

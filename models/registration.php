@@ -30,7 +30,7 @@ class Registration extends BaseModel{
         if (isset($post['Id']))   $registration->Id = $post['Id'];
         if (isset($post['LARPId'])) $registration->LARPId = $post['LARPId'];
         if (isset($post['PersonId'])) $registration->PersonId = $post['PersonId'];
-        if (isset($post['Approved'])) $larp_role->Approved = $post['Approved'];
+        if (isset($post['Approved'])) $registration->Approved = $post['Approved'];
         if (isset($post['RegisteredAt'])) $registration->RegisteredAt = $post['RegisteredAt'];
         if (isset($post['PaymentReference'])) $registration->PaymentReference = $post['PaymentReference'];
         if (isset($post['AmountToPay'])) $registration->AmountToPay = $post['AmountToPay'];
@@ -54,11 +54,11 @@ class Registration extends BaseModel{
     }
 
     public static function allBySelectedLARP(?LARP $selectedLarp = NULL) {
-        global $current_larp;
+        global $tbl_prefix, $current_larp;
         
         if (!isset($selectedLarp) || is_null($selectedLarp)) $selectedLarp = $current_larp;
         
-        $sql = "SELECT * FROM `registration` WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM `".$tbl_prefix."registration` WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($current_larp->Id))) {
@@ -84,7 +84,8 @@ class Registration extends BaseModel{
     
     # Update an existing registration in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE registration SET LARPId=?, PersonId=?, Approved=?, RegisteredAt=?, PaymentReference=?, AmountToPay=?,
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."registration SET LARPId=?, PersonId=?, Approved=?, RegisteredAt=?, PaymentReference=?, AmountToPay=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=? WHERE Id = ?");
         
@@ -103,8 +104,9 @@ class Registration extends BaseModel{
     
     # Create a new registration in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO registration (LARPId, PersonId, Approved, RegisteredAt, 
+        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."registration (LARPId, PersonId, Approved, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, ToBeRefunded, RefundDate, IsOfficial, 
             NPCDesire, HousingRequestId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -129,8 +131,9 @@ class Registration extends BaseModel{
  
     public static function loadByIds($personId, $larpId)
     {
+        global $tbl_prefix;
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `registration` WHERE PersonId = ? AND LARPId = ?");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."registration` WHERE PersonId = ? AND LARPId = ?");
         
         if (!$stmt->execute(array($personId, $larpId))) {
             $stmt = null;

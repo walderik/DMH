@@ -37,9 +37,10 @@ class User extends BaseModel{
     }
     
     public static function loadByEmail($email) {
+        global $tbl_prefix;
         if (is_null($email)) return null;
         
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `user` WHERE Email = ?;");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."user` WHERE Email = ?;");
         
         if (!$stmt->execute(array($email))) {
             $stmt = null;
@@ -61,9 +62,10 @@ class User extends BaseModel{
     
     # För att hitta användaren som vill byta lösenord
     public static function loadByEmailChangeCode($code) {
+        global $tbl_prefix;
         if (is_null($code)) return null;
         
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `user` WHERE EmailChangeCode = ?;");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."user` WHERE EmailChangeCode = ?;");
         
         if (!$stmt->execute(array($code))) {
             $stmt = null;
@@ -85,7 +87,8 @@ class User extends BaseModel{
     
     # Update an existing group in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE user SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."user SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Id))) {
             $stmt = null;
@@ -98,8 +101,9 @@ class User extends BaseModel{
     
     # Create a new group in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO user (Email, Password, IsAdmin, ActivationCode, EmailChangeCode) VALUES (?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."user (Email, Password, IsAdmin, ActivationCode, EmailChangeCode) VALUES (?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode))) {
             $stmt = null;

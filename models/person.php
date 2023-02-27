@@ -55,7 +55,8 @@ class Person extends BaseModel{
     }
     
     public static function getPersonsForUser($userId) {
-        $sql = "SELECT * FROM ".strtolower(static::class)." WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
+        global $tbl_prefix;
+        $sql = "SELECT * FROM ".$tbl_prefix.strtolower(static::class)." WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($userId))) {
@@ -80,8 +81,9 @@ class Person extends BaseModel{
     }
     
     public static function getAllRegistered($larp) {
+        global $tbl_prefix;
         if (is_null($larp)) return array();
-        $sql = "SELECT * from `person` WHERE Id in (SELECT PersonId FROM `Registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `Registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
@@ -108,7 +110,8 @@ class Person extends BaseModel{
     
     # Update an existing person in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix.strtolower(static::class)." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperienceId=?,
                                                                   TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=?, HouseId=? WHERE Id = ?;");
         
@@ -125,8 +128,9 @@ class Person extends BaseModel{
     
     # Create a new person in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
+        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix.strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
                                                                     TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues, HouseId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
         
@@ -145,11 +149,12 @@ class Person extends BaseModel{
     
     # Spara den här relationen
     public function saveAllNormalAllergyTypes($post) {
+        global $tbl_prefix;
         if (!isset($post['NormalAllergyTypeId'])) {
             return; 
         }
         foreach($post['NormalAllergyTypeId'] as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?);");
+            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?);");
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -161,7 +166,8 @@ class Person extends BaseModel{
 
     
     public function deleteAllNormalAllergyTypes() {
-        $stmt = $this->connect()->prepare("DELETE FROM NormalAllergyType_Person WHERE PersonId = ?;");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."NormalAllergyType_Person WHERE PersonId = ?;");
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -191,9 +197,10 @@ class Person extends BaseModel{
     }
     
     public function getNormalAllergyTypes() {
+        global $tbl_prefix;
         if (is_null($this->Id)) return array();
         
-        $stmt = $this->connect()->prepare("SELECT * FROM NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
+        $stmt = $this->connect()->prepare("SELECT * FROM ".$tbl_prefix."NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
@@ -216,9 +223,10 @@ class Person extends BaseModel{
     }
     
     public function getSelectedNormalAllergyTypeIds() {
+        global $tbl_prefix;
         if (is_null($this->Id)) return array();
         
-        $stmt = $this->connect()->prepare("SELECT NormalAllergyTypeId FROM NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
+        $stmt = $this->connect()->prepare("SELECT NormalAllergyTypeId FROM ".$tbl_prefix."NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;

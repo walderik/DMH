@@ -71,7 +71,7 @@ class Role extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE `role` SET Name=?, IsNPC=?, Profession=?, Description=?,
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Name=?, IsNPC=?, Profession=?, Description=?,
                                                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
                                                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                                                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, Photo=?, Birthplace=?, 
@@ -92,7 +92,7 @@ class Role extends BaseModel{
     # Create a new object in db
     public function create() {       
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `role` (Name, IsNPC, Profession, Description, PreviousLarps,
+        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, IsNPC, Profession, Description, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId, Photo,
@@ -139,7 +139,7 @@ class Role extends BaseModel{
     
     public static function getRolesForPerson($personId) {
         if (is_null($personId)) return Array();
-        $sql = "SELECT * FROM `role` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($personId))) {
@@ -166,7 +166,7 @@ class Role extends BaseModel{
     # Hämta de roller en person har anmält till ett lajv
     public static function getRegistredRolesForPerson(Person $person, LARP $larp) {
         if (is_null($person) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `role`, larp_role WHERE `role`.PersonId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `role`.PersonId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($person->Id, $larp->Id))) {
@@ -192,7 +192,7 @@ class Role extends BaseModel{
     # Hämta anmälda deltagare i en grupp
     public static function getRegisteredRolesInGroup($group, $larp) {
         if (is_null($group) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `role`, larp_role WHERE `role`.GroupId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `role`.GroupId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($group->Id, $larp->Id))) {

@@ -33,7 +33,8 @@ class LARP_Group extends BaseModel{
     }
     
     public static function isRegistered($groupId, $larpId) {
-        $sql = "SELECT * FROM `larp_group` WHERE GroupId = ? AND LARPId = ? ORDER BY ".static::$orderListBy.";";
+        global $tbl_prefix;
+        $sql = "SELECT * FROM `".$tbl_prefix."larp_group` WHERE GroupId = ? AND LARPId = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($groupId, $larpId))) {
@@ -52,8 +53,9 @@ class LARP_Group extends BaseModel{
     
     public static function loadByIds($groupId, $larpId)
     {
+        global $tbl_prefix;
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `larp_group` WHERE GroupId = ? AND LARPId = ?");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."larp_group` WHERE GroupId = ? AND LARPId = ?");
         
         if (!$stmt->execute(array($groupId, $larpId))) {
             $stmt = null;
@@ -76,7 +78,8 @@ class LARP_Group extends BaseModel{
         
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE `larp_group` SET GroupId=?, LARPId=?, WantIntrigue=?, Intrigue=?, HousingRequestId=?, RemainingIntrigues=? , ApproximateNumberOfMembers=?, NeedFireplace=? WHERE Id = ?;");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."larp_group` SET GroupId=?, LARPId=?, WantIntrigue=?, Intrigue=?, HousingRequestId=?, RemainingIntrigues=? , ApproximateNumberOfMembers=?, NeedFireplace=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Id))) {
                 $stmt = null;
@@ -88,8 +91,9 @@ class LARP_Group extends BaseModel{
     
     # Create a new object in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `larp_group` (GroupId, LARPId, WantIntrigue, Intrigue, HousingRequestId, RemainingIntrigues, ApproximateNumberOfMembers, NeedFireplace) VALUES (?,?,?,?,?, ?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."larp_group` (GroupId, LARPId, WantIntrigue, Intrigue, HousingRequestId, RemainingIntrigues, ApproximateNumberOfMembers, NeedFireplace) VALUES (?,?,?,?,?, ?,?,?);");
         
         if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace))) {
                 $this->connect()->rollBack();
@@ -104,11 +108,12 @@ class LARP_Group extends BaseModel{
     
 
     public function saveAllIntrigueTypes($post) {
+        global $tbl_prefix;
         if (!isset($post['IntrigueTypeId'])) {
             return;
         }
         foreach($post['IntrigueTypeId'] as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO IntrigueType_LARP_Group (IntrigueTypeId, LARP_GroupGroupId, LARP_GroupLARPId) VALUES (?,?, ?);");
+            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."IntrigueType_LARP_Group (IntrigueTypeId, LARP_GroupGroupId, LARP_GroupLARPId) VALUES (?,?, ?);");
             if (!$stmt->execute(array($Id, $this->GroupId, $this->LARPId))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -119,7 +124,8 @@ class LARP_Group extends BaseModel{
     }
     
     public function deleteAllIntrigueTypes() {
-        $stmt = $this->connect()->prepare("DELETE FROM IntrigueType_LARP_Group WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ?;");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."IntrigueType_LARP_Group WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ?;");
         if (!$stmt->execute(array($this->GroupId, $this->LARPId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -129,9 +135,10 @@ class LARP_Group extends BaseModel{
     }
 
     public function getSelectedIntrigueTypeIds() {
+        global $tbl_prefix;
         if (is_null($this->Id)) return array();
         
-        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  `intriguetype_larp_group`` WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ? ORDER BY IntrigueTypeId;");
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  `".$tbl_prefix."intriguetype_larp_group`` WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ? ORDER BY IntrigueTypeId;");
         
         if (!$stmt->execute(array($this->GroupId, $this->LARPId))) {
             $stmt = null;

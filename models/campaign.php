@@ -48,7 +48,8 @@ class Campaign extends BaseModel{
     
     # Update an existing campaign in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE ".strtolower(static::class)." SET Name=?, Abbreviation=?, Description=?, Icon=?, Homepage=?, Email=?, Bankaccount=?, MinimumAge=?, MinimumAgeWithoutGuardian=? WHERE Id = ?");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix.strtolower(static::class)." SET Name=?, Abbreviation=?, Description=?, Icon=?, Homepage=?, Email=?, Bankaccount=?, MinimumAge=?, MinimumAgeWithoutGuardian=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
             $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Id))) {
@@ -62,8 +63,9 @@ class Campaign extends BaseModel{
     
     # Create a new campaign in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".strtolower(static::class)." (Name, Abbreviation, Description, Icon, Homepage, Email, Bankaccount, MinimumAge, MinimumAgeWithoutGuardian) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix.strtolower(static::class)." (Name, Abbreviation, Description, Icon, Homepage, Email, Bankaccount, MinimumAge, MinimumAgeWithoutGuardian) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
             $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian))) {
@@ -79,8 +81,9 @@ class Campaign extends BaseModel{
     
     public static function loadByAbbreviation($abbreviation)
     {
+        global $tbl_prefix;
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".strtolower(static::class)."` WHERE Abbreviation = ?");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Abbreviation = ?");
         
         if (!$stmt->execute(array($abbreviation))) {
             $stmt = null;

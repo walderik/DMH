@@ -2,13 +2,15 @@
 
 
 class BaseModel extends Dbh{
+
     
 //     public static $tableName = 'Set this!';
     public static $orderListBy = 'Set this!';
     
     # Hämta alla av den här sorten
     public static function all() {
-        $sql = "SELECT * FROM `".strtolower(static::class)."` ORDER BY ".static::$orderListBy.";";
+        global $tbl_prefix;
+        $sql = "SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute()) {
@@ -35,7 +37,8 @@ class BaseModel extends Dbh{
     
     # Hur många finns det av den här sorten
     public static function numberOff() {
-        $sql = "SELECT * FROM `".strtolower(static::class)."` ORDER BY ".static::$orderListBy.";";
+        global $tbl_prefix;
+        $sql = "SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute()) {
@@ -49,8 +52,9 @@ class BaseModel extends Dbh{
     
     public static function loadById($id)
     {
+        global $tbl_prefix;
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".strtolower(static::class)."` WHERE Id = ?");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Id = ?");
         
         if (!$stmt->execute(array($id))) {
             $stmt = null;
@@ -81,8 +85,8 @@ class BaseModel extends Dbh{
     
     public static function delete($id)
     {
-               
-        $stmt = static::connectStatic()->prepare("DELETE FROM `".strtolower(static::class)."` WHERE Id = ?");
+        global $tbl_prefix;
+        $stmt = static::connectStatic()->prepare("DELETE FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Id = ?");
         
         if (!$stmt->execute(array($id))) {
             $stmt = null;

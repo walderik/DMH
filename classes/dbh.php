@@ -1,7 +1,10 @@
 <?php
 
+global $tbl_prefix;
+
 class Dbh {
     protected function connect() {
+        global $tbl_prefix;
         try {
             $dbServername = "192.168.0.20";
             $dbUsername = "root";
@@ -15,9 +18,11 @@ class Dbh {
             print "Error: ". $e->getMessage() . "<br>";
             die();
         }
+        $tbl_prefix = "";
     }
     
     protected static function connectStatic() {
+        global $tbl_prefix;
         try {
             $dbServername = "192.168.0.20";
             $dbUsername = "root";
@@ -31,6 +36,7 @@ class Dbh {
             print "Error: ". $e->getMessage() . "<br>";
             die();
         }
+        $tbl_prefix = "";
     }
     
 }

@@ -45,8 +45,9 @@ class Group extends BaseModel{
     }
     
     public static function getRegistered($larp) {
+        global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `group` WHERE Id IN (SELECT GroupId from LARP_Group where LARPId = ?);";
+        $sql = "SELECT * FROM `".$tbl_prefix."group` WHERE Id IN (SELECT GroupId from ".$tbl_prefix."LARP_Group where LARPId = ?);";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
@@ -72,8 +73,9 @@ class Group extends BaseModel{
     
     # Update an existing group in db
     public function update() {
+        global $tbl_prefix;
         
-        $stmt = $this->connect()->prepare("UPDATE `group` SET Name=?, , Friends=?, Enemies=?,
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."group` SET Name=?, , Friends=?, Enemies=?,
                                                                   Description=?, IntrigueIdeas=?, OtherInformation=?,
                                                                   WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=? WHERE Id = ?");
         
@@ -92,8 +94,9 @@ class Group extends BaseModel{
     
     # Create a new group in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `group` (Name,  
+        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."group` (Name,  
                          Friends, Description, Enemies, IntrigueIdeas, OtherInformation, WealthId, PlaceOfResidenceId, PersonId, CampaignId) 
                          VALUES (?,?,?,?,?, ?,?,?,?,?,?,?);");
         
@@ -134,7 +137,8 @@ class Group extends BaseModel{
      }
      
      public static function getGroupsForPerson($personId) {
-         $sql = "SELECT * FROM `group` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
+         global $tbl_prefix;
+         $sql = "SELECT * FROM `".$tbl_prefix."group` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
          $stmt = static::connectStatic()->prepare($sql);
          
          if (!$stmt->execute(array($personId))) {

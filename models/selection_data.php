@@ -47,9 +47,10 @@ class SelectionData extends BaseModel{
     }
     
     public static function allActive() {
+        global $tbl_prefix;
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray 
         # strtolower(static::class)
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".strtolower(static::class)."` WHERE active = 1 ORDER BY SortOrder;");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE active = 1 ORDER BY SortOrder;");
         
         if (!$stmt->execute()) {
             $stmt = null;
@@ -68,7 +69,8 @@ class SelectionData extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE `".strtolower(static::class)."` SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix.strtolower(static::class)."` SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
         
         if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name, $this->Id))) {
             $stmt = null;
@@ -80,8 +82,9 @@ class SelectionData extends BaseModel{
     
     # Create a new telegram in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".strtolower(static::class)."` (SortOrder, Active, Description, Name, CampaignId) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix.strtolower(static::class)."` (SortOrder, Active, Description, Name, CampaignId) VALUES (?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name, $this->CampaignId))) {
             $stmt = null;

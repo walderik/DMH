@@ -30,8 +30,8 @@ class PaymentInformation extends BaseModel{
     }
     
     public static function getPrice($date, $age) {
-        global $current_larp;
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `paymentinformation` WHERE 
+        global $tbl_prefix, $current_larp;
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."paymentinformation` WHERE 
                                DATE(FromDate) <= ? AND DATE(ToDate) >= ? AND 
                                FromAge <= ? AND ToAge >= ? AND LARPId = ?");
         
@@ -55,7 +55,8 @@ class PaymentInformation extends BaseModel{
     }
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE `paymentinformation` SET LARPId=?, FromDate=?, ToDate=?, FromAge=?, ToAge=?,
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."paymentinformation` SET LARPId=?, FromDate=?, ToDate=?, FromAge=?, ToAge=?,
                                                                   Cost=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->LARPId, $this->FromDate, $this->ToDate, $this->FromAge, $this->ToAge,
@@ -70,9 +71,10 @@ class PaymentInformation extends BaseModel{
     
     # Create a new object in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
         print_r($this);
-        $stmt = $connection->prepare("INSERT INTO `paymentinformation` (LARPId, FromDate, ToDate, FromAge, ToAge,
+        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."paymentinformation` (LARPId, FromDate, ToDate, FromAge, ToAge,
                                                                 Cost) VALUES (?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->LARPId, $this->FromDate, $this->ToDate, $this->FromAge, $this->ToAge,
@@ -88,9 +90,9 @@ class PaymentInformation extends BaseModel{
     }
     
     public static function allBySelectedLARP() {
-        global $current_larp;
+        global $tbl_prefix, $current_larp;
         
-        $sql = "SELECT * FROM `paymentinformation` WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM `".$tbl_prefix."paymentinformation` WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($current_larp->Id))) {

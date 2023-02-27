@@ -29,7 +29,8 @@ class House extends BaseModel{
     
     # Update an existing house in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE house SET Name=?, NumberOfBeds=?, PositionInVillage=?, Description=? WHERE Id = ?");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."house SET Name=?, NumberOfBeds=?, PositionInVillage=?, Description=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, $this->Id))) {
             $stmt = null;
@@ -42,8 +43,9 @@ class House extends BaseModel{
     
     # Create a new house in db
     public function create() {
+        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO house (Name, NumberOfBeds, PositionInVillage, Description) VALUES (?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."house (Name, NumberOfBeds, PositionInVillage, Description) VALUES (?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description))) {
             $stmt = null;
