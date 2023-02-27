@@ -6,7 +6,7 @@ class Dbh {
             $dbServername = "192.168.0.20";
             $dbUsername = "root";
             $dbPassword = "";
-            $dbName = "dmh_registrationsystem";
+            $dbName = "berghemsvanner_";
             
             $dbh = new PDO('mysql:host='.$dbServername.';dbname='.$dbName, $dbUsername, $dbPassword);
             return $dbh;
@@ -22,7 +22,7 @@ class Dbh {
             $dbServername = "192.168.0.20";
             $dbUsername = "root";
             $dbPassword = "";
-            $dbName = "dmh_registrationsystem";
+            $dbName = "berghemsvanner_";
             
             $dbh = new PDO('mysql:host='.$dbServername.';dbname='.$dbName, $dbUsername, $dbPassword);
             return $dbh;
