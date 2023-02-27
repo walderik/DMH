@@ -98,7 +98,7 @@ class Group extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."group` (Name,  
                          Friends, Description, Enemies, IntrigueIdeas, OtherInformation, WealthId, PlaceOfResidenceId, PersonId, CampaignId) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?,?,?);");
+                         VALUES (?,?,?,?,?, ?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 

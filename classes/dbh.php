@@ -1,6 +1,5 @@
 <?php
 
-global $tbl_prefix;
 
 class Dbh {
     protected function connect() {
@@ -18,7 +17,7 @@ class Dbh {
             print "Error: ". $e->getMessage() . "<br>";
             die();
         }
-        $tbl_prefix = "";
+        $tbl_prefix = "regsys_";
     }
     
     protected static function connectStatic() {
@@ -36,7 +35,7 @@ class Dbh {
             print "Error: ". $e->getMessage() . "<br>";
             die();
         }
-        $tbl_prefix = "";
+        $tbl_prefix = "regsys_";
     }
     
 }

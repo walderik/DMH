@@ -1,6 +1,8 @@
 <?php
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
-global $current_user, $current_larp, $root;
+global $current_user, $current_larp, $root, $tbl_prefix;
+
+$tbl_prefix = "regsys_";
 
 include_once $root . '/includes/all_includes.php';
 
@@ -32,5 +34,7 @@ if (!isset($_SESSION['larp']) && strpos($url, "choose_larp.php") == false && str
 if (isset($_SESSION['larp'])) {
     $current_larp = LARP::loadById($_SESSION['larp']);
 }
+
+
 
 // print_r($current_user);

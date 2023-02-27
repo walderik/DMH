@@ -22,13 +22,14 @@ RENAME TABLE `berghemsvanner_`.`placeofresidence` TO `berghemsvanner_`.`regsys_p
 RENAME TABLE `berghemsvanner_`.`prop` TO `berghemsvanner_`.`regsys_prop`;
 RENAME TABLE `berghemsvanner_`.`resource` TO `berghemsvanner_`.`regsys_resource`;
 RENAME TABLE `berghemsvanner_`.`resource_titledeed` TO `berghemsvanner_`.`regsys_resource_titledeed`;
+RENAME TABLE `berghemsvanner_`.`registration` TO `berghemsvanner_`.`regsys_registration`;
 RENAME TABLE `berghemsvanner_`.`role` TO `berghemsvanner_`.`regsys_role`;
 RENAME TABLE `berghemsvanner_`.`telegram` TO `berghemsvanner_`.`regsys_telegram`;
 RENAME TABLE `berghemsvanner_`.`titledeed` TO `berghemsvanner_`.`regsys_titledeed`;
 RENAME TABLE `berghemsvanner_`.`titledeedresult` TO `berghemsvanner_`.`regsys_titledeedresult`;
 RENAME TABLE `berghemsvanner_`.`titledeed_role` TO `berghemsvanner_`.`regsys_titledeed_role`;
 RENAME TABLE `berghemsvanner_`.`typeoffood` TO `berghemsvanner_`.`regsys_typeoffood`;
-RENAME TABLE `berghemsvanner_`.`user` TO `berghemsvanner_`.`regsys_	user`;
+RENAME TABLE `berghemsvanner_`.`user` TO `berghemsvanner_`.`regsys_user`;
 RENAME TABLE `berghemsvanner_`.`wealth` TO `berghemsvanner_`.`regsys_wealth`;
 
 

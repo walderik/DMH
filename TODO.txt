@@ -10,13 +10,7 @@ När man anmäler sig måste vi kolla om gruppen rollen är med i är anmäld.
 
 Mail när man har anmält sig. (Klart - Pär granskar det)
 
-Nu anger man både i registreringen av grupp och vid anmälan hur man vill bo.
-Det ska bara vara vid anmälan. Formulären fixade, men Databasen kvarstår.
-
-Populeringen av intrigtyper fick med Social Tillställningar två gånger
-
-Registration amount to pay sparas inte.
-
+Prefix på tabellerna i databasen
 
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role

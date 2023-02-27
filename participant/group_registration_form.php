@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 				
 				
 			<div class="question">
-				<label for="GroupId">Grupp</label><br>
+				<label for="GroupId">Grupp</label>&nbsp;<font style="color:red">*</font><br>
 				<?php 
 				if (isset($new_group) && !is_null($new_group)) {
 				    selectionDropdownByArray('Group', $current_groups, false, true, $new_group->Id);
@@ -57,9 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 				
 			</div>
             <div class="question">
-    			<label for="WantIntrigue">Vill gruppen ha intriger?</label>
+    			<label for="WantIntrigue">Vill gruppen ha intriger?</label>&nbsp;<font style="color:red">*</font>
     			<div class="explanation">Oavsett vad ni svarar på den här frågan kan det hända att ni får/inte får intriger. Men vi ska ha era önskemål i åtanke.</div>
-    			<input type="radio" id="WantIntrigue_yes" name="WantIntrigue" value="1"> 
+    			<input type="radio" id="WantIntrigue_yes" name="WantIntrigue" value="1" checked="checked"> 
     			<label for="WantIntrigue_yes">Ja</label><br> 
     			<input type="radio" id="WantIntrigue_no" name="WantIntrigue" value="0"> 
     			<label for="WantIntrigue_no">Nej</label>
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 			
 			<div class="question">
-				<label for="ApproximateNumberOfMembers">Antal medlemmar</label><br> 
+				<label for="ApproximateNumberOfMembers">Antal medlemmar</label>&nbsp;<font style="color:red">*</font> 
 					<div class="explanation">Ungefär hur många
 					gruppmedlemmar kommer ni att bli?</div>
 					<input type="text"
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 					name="ApproximateNumberOfMembers" required>
 			</div>
 			<div class="question">
-    			<label for="HousingRequest">Boende</label>
+    			<label for="HousingRequest">Boende</label>&nbsp;<font style="color:red">*</font>
     			<div class="explanation">Hur vill gruppen helst bo? Vi kan inte garantera plats i hus. <br><?php HousingRequest::helpBox(true); ?></div>
                 <?php
     
@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     			<label for="NeedFireplace">Behöver ni eldplats?</label><br> 
     			<input type="radio" id="NeedFireplace_yes" name="NeedFireplace" value="1"> 
     			<label for="NeedFireplace_yes">Ja</label><br> 
-    			<input type="radio" id="NeedFireplace_no" name="NeedFireplace" value="0"> 
+    			<input type="radio" id="NeedFireplace_no" name="NeedFireplace" value="0" checked="checked"> 
     			<label for="NeedFireplace_no">Nej</label>
     		</div>
 			

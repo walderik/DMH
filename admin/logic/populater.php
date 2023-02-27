@@ -290,8 +290,8 @@ function populateTypeOfFood() {
     $food->create();
     
     $food = TypeOfFood::newWithDefault();
-    $food->Name = "Kött";
-    $food->Description = "Mat som innehåller kött";
+    $food->Name = "Veganskt";
+    $food->Description = "Innehåller inget från djur";
     $food->CampaignId = $campaign->Id;
     $food->create();
     echo "Skapade " . sizeof(TypeOfFood::all()) . " typer av mat<br>";

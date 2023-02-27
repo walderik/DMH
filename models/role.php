@@ -71,6 +71,7 @@ class Role extends BaseModel{
     
     # Update an existing object in db
     public function update() {
+        global $tbl_prefix;
         $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Name=?, IsNPC=?, Profession=?, Description=?,
                                                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
                                                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
@@ -90,7 +91,8 @@ class Role extends BaseModel{
     }
     
     # Create a new object in db
-    public function create() {       
+    public function create() { 
+        global $tbl_prefix;
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, IsNPC, Profession, Description, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
@@ -138,6 +140,7 @@ class Role extends BaseModel{
     
     
     public static function getRolesForPerson($personId) {
+        global $tbl_prefix;
         if (is_null($personId)) return Array();
         $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
@@ -165,6 +168,7 @@ class Role extends BaseModel{
     
     # Hämta de roller en person har anmält till ett lajv
     public static function getRegistredRolesForPerson(Person $person, LARP $larp) {
+        global $tbl_prefix;
         if (is_null($person) || is_null($larp)) return Array();
         $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `role`.PersonId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
@@ -191,6 +195,7 @@ class Role extends BaseModel{
    
     # Hämta anmälda deltagare i en grupp
     public static function getRegisteredRolesInGroup($group, $larp) {
+        global $tbl_prefix;
         if (is_null($group) || is_null($larp)) return Array();
         $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `role`.GroupId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
