@@ -51,9 +51,9 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 			<?php } ?>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
-			<tr><td valign="top" class="header">Antal medlemmar</td><td><?php echo $current_group->ApproximateNumberOfMembers;?></td></tr>
-			<tr><td valign="top" class="header">Eldplats</td><td><?php echo ja_nej($current_group->NeedFireplace);?></td></tr>
+			<tr><td valign="top" class="header">Antal medlemmar</td><td><?php echo $larp_group->ApproximateNumberOfMembers;?></td></tr>
 			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($larp_group->HousingRequestId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Eldplats</td><td><?php echo ja_nej($larp_group->NeedFireplace);?></td></tr>
 		</table>		
 		
 		

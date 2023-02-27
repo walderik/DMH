@@ -4,8 +4,6 @@ class Group extends BaseModel{
     
     public $Id;
     public $Name;
-    public $ApproximateNumberOfMembers;
-    public $NeedFireplace = false;
     public $Friends;
     public $Enemies;
     public $Description;
@@ -23,8 +21,6 @@ class Group extends BaseModel{
         $group = static::newWithDefault();
         if (isset($post['Id'])) $group->Id = $post['Id'];
         if (isset($post['Name'])) $group->Name = $post['Name'];
-        if (isset($post['ApproximateNumberOfMembers'])) $group->ApproximateNumberOfMembers = $post['ApproximateNumberOfMembers'];
-        if (isset($post['NeedFireplace'])) $group->NeedFireplace = $post['NeedFireplace'];
         if (isset($post['Friends'])) $group->Friends = $post['Friends'];
         if (isset($post['Enemies'])) $group->Enemies = $post['Enemies'];
         if (isset($post['Description'])) $group->Description = $post['Description'];
@@ -77,11 +73,11 @@ class Group extends BaseModel{
     # Update an existing group in db
     public function update() {
         
-        $stmt = $this->connect()->prepare("UPDATE `group` SET Name=?, ApproximateNumberOfMembers=?, NeedFireplace=?, Friends=?, Enemies=?,
+        $stmt = $this->connect()->prepare("UPDATE `group` SET Name=?, , Friends=?, Enemies=?,
                                                                   Description=?, IntrigueIdeas=?, OtherInformation=?,
                                                                   WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Friends, $this->Enemies,
+        if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
             $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, 
             $this->CampaignId, $this->Id))) {
             $stmt = null;
@@ -97,11 +93,11 @@ class Group extends BaseModel{
     # Create a new group in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `group` (Name, ApproximateNumberOfMembers, NeedFireplace, 
+        $stmt = $connection->prepare("INSERT INTO `group` (Name,  
                          Friends, Description, Enemies, IntrigueIdeas, OtherInformation, WealthId, PlaceOfResidenceId, PersonId, CampaignId) 
                          VALUES (?,?,?,?,?, ?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->Name, $this->ApproximateNumberOfMembers, $this->NeedFireplace, 
+        if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
             $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId))) {
             $this->connect()->rollBack();
