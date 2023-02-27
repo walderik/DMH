@@ -20,9 +20,8 @@ function populateAll() {
     global $current_larp;
     populateCampaign();
     
-    $campaign = Campaign::loadByAbbreviation("DMH");
-    $current_larp = LARP::newWithDefault();
-    $current_larp->CampaignId = $campaign->Id;
+    $current_larp = createDMH2023();
+
       
     
     populateHouses();
@@ -55,6 +54,26 @@ function populateCampaign() {
     $campaign->MinimumAgeWithoutGuardian = 18;
     $campaign->create();
     
+}
+
+function createDMH2023() {
+    if (sizeof(LARP::all())>0) {
+        return;
+    }
+    $campaign = Campaign::loadByAbbreviation("DMH");
+    $larp = LARP::newWithDefault();
+    $larp->Name = "Död mans hand 2023";
+    $larp->MaxParticipants = 100;
+    $larp->TagLine = "";
+    $larp->StartDate = "2023-09-15 18:00";
+    $larp->EndDate = "2023-09-17 12:00";
+    $larp->LatestRegistrationDate = "2023-07-15";
+    
+    $larp->StartTimeLARPTime = "1867-09-15 18:00";
+    $larp->EndTimeLARPTime = "1867-09-17 12:00";
+    
+    $larp->CampaignId = $campaign->Id;
+    return $larp;    
 }
 
 function populateHouses() {
@@ -457,12 +476,6 @@ function populateIntrigueType() {
     $intriguetype = IntrigueType::newWithDefault();
     $intriguetype->Name = "Sociala tillställningar";
     $intriguetype->Description = "Lite som lägerhäng, men mer för en utvald grupp. Kanske alla finare damer borde samlas? Eller vill du gå med i ett hemligt sällskap för personer med inflytande? Varför organiseras inga poesi-salonger i byn?";
-    $intriguetype->CampaignId = $campaign->Id;
-    $intriguetype->create();
-    
-    $intriguetype = IntrigueType::newWithDefault();
-    $intriguetype->Name = "Sociala tillställningar";
-    $intriguetype->Description = "Du får mer information än andra om folk i Slow River. Det mesta kanske stämmer. Du förväntas också sprida skvallret vidare. Men se upp så du inte retar upp fel person.";
     $intriguetype->CampaignId = $campaign->Id;
     $intriguetype->create();
     
