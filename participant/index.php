@@ -6,7 +6,7 @@ include_once '../includes/error_handling.php';
 ?>
 
         <nav id="navigation">
-          <a href="#" class="logo"><?php echo $current_larp->Name;?></a>
+          <a href="#" class="logo"><img src="../images/<?php echo $current_larp->getCampaign()->Icon; ?>" width="30" height="30"/> <?php echo $current_larp->Name;?></a>
           <ul class="links">
               <li class="dropdown"><a href="#" class="trigger-drop">Registrera<i class="arrow"></i></a>
               <ul class="drop">

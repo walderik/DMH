@@ -11,12 +11,13 @@ include_once 'includes/error_handling.php';
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Login</title>
+		<title>Berghems vänners anmälningssystem</title>
 		<link href="css/loginpage.css" rel="stylesheet" type="text/css">
+		<link rel="icon" type="image/x-icon" href="../images/bv.ico">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 	<body>
-	  <h1>Död mans hand anmälningssystem</h1>
+	  <h1>Berghems vänners anmälningssystem</h1>
 	  <?php if (isset($error_message) && strlen($error_message)>0) {
 	      echo '<div class="error">'.$error_message.'</div>';
 	  }?>

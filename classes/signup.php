@@ -1,12 +1,14 @@
 <?php
 global $root;
 $root = $_SERVER['DOCUMENT_ROOT'];
+
 include_once $root . '/includes/dmh_mailer.php';
 
 class Signup extends Dbh {
 
     protected function createUser($email, $password) {
-        $stmt = $this->connect()->prepare("INSERT INTO user (Email, Password, ActivationCode) VALUES (?, ?, ?);");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."user (Email, Password, ActivationCode) VALUES (?, ?, ?);");
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $activationCode = uniqid();
@@ -30,7 +32,8 @@ class Signup extends Dbh {
     
     
     protected function checkUserExists($email) {
-        $stmt = $this->connect()->prepare("SELECT id FROM user WHERE email = ?;");
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("SELECT id FROM ".$tbl_prefix."user WHERE email = ?;");
         
         
         if (!$stmt->execute(array($email))) {

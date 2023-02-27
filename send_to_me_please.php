@@ -25,6 +25,7 @@ if ($todo=='activation') {
 		<meta charset="utf-8">
 		<title>Skicka om</title>
 		<link href="css/loginpage.css" rel="stylesheet" type="text/css">
+		<link rel="icon" type="image/x-icon" href="../images/bv.ico">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 	<body>

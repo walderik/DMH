@@ -10,7 +10,6 @@ När man anmäler sig måste vi kolla om gruppen rollen är med i är anmäld.
 
 Mail när man har anmält sig. (Klart - Pär granskar det)
 
-Prefix på tabellerna i databasen
 
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role

@@ -1,5 +1,6 @@
 <?php
-
+global $tbl_prefix;
+$tbl_prefix = "regsys_";
 
 class Dbh {
     protected function connect() {

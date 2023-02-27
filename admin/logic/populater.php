@@ -48,7 +48,7 @@ function populateCampaign() {
     $campaign->Name = "Död mans hand";
     $campaign->Abbreviation = "DMH";
     $campaign->Description = "";
-    $campaign->Icon = "";
+    $campaign->Icon = "dmh.ico";
     $campaign->Homepage = "https://dmh.berghemsvanner.se/";
     $campaign->Email = "dmh@berghemsvanner.se";
     $campaign->Bankaccount = "Swedbank, Clearingsnr 8417-8, Kontonr 934 505 367-3";

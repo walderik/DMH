@@ -1,8 +1,23 @@
 <?php
-require 'header.php';
+global $root;
+$root = $_SERVER['DOCUMENT_ROOT'];
 
+require $root . '/includes/init.php';
 
 ?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Berghems vänners anmälningssystem</title>
+		<link href="../css/style.css" rel="stylesheet" type="text/css">
+		<link href="../css/participant_style.css" rel="stylesheet" type="text/css">
+		<link rel="icon" type="image/x-icon" href="../images/bv.ico">
+		<script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
+	</head>
+	<body class="loggedin">
+
+
 
         <nav id="navigation">
           <ul class="links">
