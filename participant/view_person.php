@@ -38,7 +38,7 @@ $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 
 
 	<div class="content">
-		<h1>Anmälan <?php echo $current_person->Name;?></h1>
+		<h1><?php echo $current_person->Name;?></h1>
 		<table>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $current_person->SocialSecurityNumber;?></td></tr>
 			<tr><td valign="top" class="header">Email</td><td><?php echo $current_person->Email;?></td></tr>
