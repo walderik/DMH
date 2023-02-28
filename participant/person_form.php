@@ -146,7 +146,7 @@ require 'header.php';
 				<label for="TypesOfFoodId">Viken typ av mat vill du äta?</label>&nbsp;<font style="color:red">*</font>
 				<br> 
 				<div class="explanation"><?php TypeOfFood::helpBox(true); ?></div>
-				<?php TypeOfFood::selectionDropdown(false, true, $person->LarperTypeId); ?>
+				<?php TypeOfFood::selectionDropdown(false, true, $person->TypeOfFoodId); ?>
 			</div>
 
 			<div class="question">
