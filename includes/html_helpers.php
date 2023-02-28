@@ -25,7 +25,8 @@ function selectionDropdownByArray(String $name_in, Array $selectionDatas, ?bool 
         return;
     }
     
-    if (count($selectionDatas)==1){
+    //Om det bara finns en och man måste välja så väljs den.
+    if (count($selectionDatas)==1 && $required){
         $first_key = array_key_first($selectionDatas);
         echo $selectionDatas[$first_key]->Name . "<br>\n";
         echo "<input type='hidden' id='" .$name_in.$selectionDatas[$first_key]->Id . "' name='" . $name . "' value=" .  $selectionDatas[$first_key]->Id . ">";

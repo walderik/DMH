@@ -67,8 +67,8 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
                  $group_member->getPerson()->Name;
 
 
-            if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-                echo " Ansvarig vuxen är " . $group_member->getRegistration($current_larp)->Guardian;
+            if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+                echo ", ansvarig vuxen är " . $group_member->getRegistration($current_larp)->Guardian;
 		    }
             if ($current_user->isGroupLeader($current_group)) {
          ?>

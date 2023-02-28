@@ -39,7 +39,7 @@ class Person extends BaseModel{
         if (isset($post['NotAcceptableIntrigues'])) $person->NotAcceptableIntrigues = $post['NotAcceptableIntrigues'];
         if (isset($post['HouseId'])) $person->HouseId = $post['HouseId'];
         
-        if (isset($person->HouseId) && $person->GroupId=='null') $person->HouseId = null;
+        if (isset($person->HouseId) && $person->HouseId=='null') $person->HouseId = null;
         
         return $person;
     }
@@ -194,6 +194,10 @@ class Person extends BaseModel{
     
     public function getUser() {
         return User::loadById($this->UserId);
+    }
+    
+    public function getHouse() {
+        return House::loadById($this->HouseId);
     }
     
     public function getNormalAllergyTypes() {

@@ -134,7 +134,6 @@ class Role extends BaseModel{
     }    
     
     public function getRegistration(LARP $larp) {
-        if (!isRegistered($larp)) return null;
         return Registration::loadByIds($this->PersonId, $larp->Id);
     }
     
@@ -175,7 +174,7 @@ class Role extends BaseModel{
     public static function getRegistredRolesForPerson(Person $person, LARP $larp) {
         global $tbl_prefix;
         if (is_null($person) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `role`.PersonId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".$tbl_prefix."role`.PersonId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($person->Id, $larp->Id))) {
@@ -202,7 +201,7 @@ class Role extends BaseModel{
     public static function getRegisteredRolesInGroup($group, $larp) {
         global $tbl_prefix;
         if (is_null($group) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `role`.GroupId = ? AND `role`.Id=larp_role.RoleId AND larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".$tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($group->Id, $larp->Id))) {

@@ -9,7 +9,7 @@ class LARP_Group extends BaseModel{
     public $Intrigue;
     public $ApproximateNumberOfMembers;
     public $HousingRequestId;
-    public $NeedFireplace = false;
+    public $NeedFireplace = 0;
     public $RemainingIntrigues;
 
     public static $orderListBy = 'GroupId';
@@ -19,11 +19,11 @@ class LARP_Group extends BaseModel{
         if (isset($post['Id']))   $larp_group->Id = $post['Id'];
         if (isset($post['GroupId'])) $larp_group->GroupId = $post['GroupId'];
         if (isset($post['LARPId'])) $larp_group->LARPId = $post['LARPId'];
-        if (isset($post['NeedFireplace'])) $group->NeedFireplace = $post['NeedFireplace'];
+        if (isset($post['NeedFireplace'])) $larp_group->NeedFireplace = $post['NeedFireplace'];
         if (isset($post['WantIntrigue'])) $larp_group->WantIntrigue = $post['WantIntrigue'];
         if (isset($post['Intrigue'])) $larp_group->Intrigue = $post['Intrigue'];
         if (isset($post['HousingRequestId'])) $larp_group->HousingRequestId = $post['HousingRequestId'];      
-        if (isset($post['ApproximateNumberOfMembers'])) $group->ApproximateNumberOfMembers = $post['ApproximateNumberOfMembers'];
+        if (isset($post['ApproximateNumberOfMembers'])) $larp_group->ApproximateNumberOfMembers = $post['ApproximateNumberOfMembers'];
         if (isset($post['RemainingIntrigues'])) $larp_group->RemainingIntrigues = $post['RemainingIntrigues'];          return $larp_group;
     }
     

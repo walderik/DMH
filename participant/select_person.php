@@ -29,11 +29,13 @@ if (count($current_persons) == 1) {
 		<h1>Anmälan av deltagare till <?php echo $current_larp->Name;?></h1>
 		<?php
 		    $i = 0;
+		    $possible_persons = Array();
 		    foreach ($current_persons as $person) {
     	       if (empty($person->getRoles())) {
-    	           echo "<br><b>$person->Name</b> saknar en karaktär och kan inte anmälas ännu.<br><br>\n";
-    	           unset($current_persons[$i]);
-    	           $i++;
+    	           echo "<br><b>$person->Name</b> saknar en karaktär och kan inte anmälas ännu.<br><br>\n";   	           
+                }
+                else {
+                    array_push($possible_persons,$person);
                 }
             }
 //             reset($current_persons);
@@ -42,7 +44,7 @@ if (count($current_persons) == 1) {
 			<div class="question">
 				<label for="PersonId">Deltagare</label><br>
 				<div class="explanation">Vilken deltagare vill du anmäla?</div>
-				<?php selectionDropdownByArray('Person', $current_persons, false, true) ?>
+				<?php selectionDropdownByArray('Person', $possible_persons, false, true) ?>
 			</div>
 			  <input type="submit" value="Välj">
 
