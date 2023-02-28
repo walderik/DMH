@@ -437,7 +437,7 @@ function populateOffictialType() {
     $campaign = Campaign::loadByAbbreviation("DMH");
     $officialtype = OfficialType::newWithDefault();
     $officialtype->Name = "Kök";
-    $officialtype->Description = "Lagar mat stora delar av lajvet.";
+    $officialtype->Description = "Jobbar i köket stora delar av lajvet. Jobbet innebär bland annat skära grönsaker, diska, elda, servera mat till deltagare och laga mat.";
     $officialtype->CampaignId = $campaign->Id;
     $officialtype->create();
 
@@ -449,7 +449,7 @@ function populateOffictialType() {
     
     $officialtype = OfficialType::newWithDefault();
     $officialtype->Name = "Trygghetsvärd";
-    $officialtype->Description = "Tar hand om folk som behöver trygghet";
+    $officialtype->Description = "Tar hand om folk som behöver stöd en stund.";
     $officialtype->CampaignId = $campaign->Id;
     $officialtype->create();
     
