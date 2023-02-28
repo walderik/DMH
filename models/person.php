@@ -83,7 +83,7 @@ class Person extends BaseModel{
     public static function getAllRegistered($larp) {
         global $tbl_prefix;
         if (is_null($larp)) return array();
-        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `Registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".$tbl_prefix."Registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
