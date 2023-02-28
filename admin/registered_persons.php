@@ -25,7 +25,7 @@
     		        echo "<tr>\n";
     		        echo "<td>" . $person->Name . "</td>\n";
     		        echo "<td>" . $person->Email . "</td>\n";
-    		        echo "<td>" . $person->getAgeAtLarp($current_larp->StartDate) . "</td>\n";
+    		        echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>\n";
     		        echo "<td>" . $person->PhoneNumber . "</td>\n";
     		        
     		        echo "<td>" . "<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></td>\n";

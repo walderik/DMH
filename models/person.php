@@ -262,14 +262,15 @@ class Person extends BaseModel{
         return Group::getGroupsForPerson($this->Id);
     }
     
-    public function getAgeAtLarp($date) {
+    public function getAgeAtLarp(LARP $larp) {
+        $date = $larp->StartDate;
         $birthday = DateTime::createFromFormat('Ymd', substr($this->SocialSecurityNumber, 0, 7));
         $larpStartDate = DateTime::createFromFormat('Y-m-d', substr($date, 0, 9));
         $interval = date_diff($birthday, $larpStartDate);  
-         return $interval->format('%Y') . " år";
+        return $interval->format('%Y');
     }
     
-    public function isRegistered($larp) {
+    public function isRegistered(LARP $larp) {
         $registration = Registration::loadByIds($this->Id, $larp->Id);
         if (isset($registration)) {
             return true;
@@ -278,7 +279,7 @@ class Person extends BaseModel{
     }
     
 
-    public function isApproved($larp) {
+    public function isApproved(LARP $larp) {
         $registration = Registration::loadByIds($this->Id, $larp->Id);
         if (!isset($registration)) {
             return false;

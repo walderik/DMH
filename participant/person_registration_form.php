@@ -75,6 +75,20 @@ if (empty($roles)) {
 			När anmälan är gjort går det varken att redigera deltagaren eller någon av karaktärerna.
 			</p>
 				
+		    <?php 
+		    if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+		    ?>
+			<div class="question">
+    			<label for="Guardian">Ansvarig vuxen</label>&nbsp;<font style="color:red">*</font>
+    			<div class="explanation">Eftersom <?php echo $current_person->Name; ?> bara är <?php  echo $current_person->getAgeAtLarp($current_larp); ?> år behövs en ansvarig vuxen. 
+    			Den ansvarige måste vara tillfrågad och accepera ansvaret.
+				</div>
+                <input type="text" id="Guardian" name="Guardian" size="100" maxlength="250" required>
+            </div>
+		    
+		    <?php 
+		    }
+		    ?>
 				
 			<div class="question">
 				<label for="RoleId">Karaktärer</label>&nbsp;<font style="color:red">*</font><br>

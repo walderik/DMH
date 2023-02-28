@@ -17,8 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['IsMainRole'])) $mainRole = $_POST['IsMainRole'];
         // Skapa en ny registrering
         $registration = Registration::newFromArray($_POST);
-        $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), 
-            Person::loadById($registration->PersonId)->getAgeAtLarp($current_larp->StartDate));
+        $age = Person::loadById($registration->PersonId)->getAgeAtLarp($current_larp);
+        $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age);
+            
         $registration->PaymentReference = $registration->LARPId . $registration->PersonId;
 
         $now = new Datetime();

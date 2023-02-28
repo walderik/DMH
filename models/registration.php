@@ -21,6 +21,7 @@ class Registration extends BaseModel{
     public $IsOfficial = 0;
     public $NPCDesire;
     public $HousingRequestId;
+    public $Guardian;
     
     public static $orderListBy = 'RegisteredAt';
     
@@ -44,6 +45,7 @@ class Registration extends BaseModel{
         if (isset($post['IsOfficial'])) $registration->IsOfficial = $post['IsOfficial'];
         if (isset($post['NPCDesire'])) $registration->NPCDesire = $post['NPCDesire'];
         if (isset($post['HousingRequestId'])) $registration->HousingRequestId = $post['HousingRequestId'];
+        if (isset($post['Guardian'])) $registration->Guardian = $post['Guardian'];
         
         return $registration;
     }
@@ -87,11 +89,11 @@ class Registration extends BaseModel{
         global $tbl_prefix;
         $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."registration SET LARPId=?, PersonId=?, Approved=?, RegisteredAt=?, PaymentReference=?, AmountToPay=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
-                RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=? WHERE Id = ?");
+                RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, Guardian=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded, 
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId,$this->Id))) {
+            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId,$this->Guardian, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -109,11 +111,11 @@ class Registration extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."registration (LARPId, PersonId, Approved, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, ToBeRefunded, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, Guardian) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded,
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId))) {
+            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->Guardian))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
