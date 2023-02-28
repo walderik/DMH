@@ -53,6 +53,7 @@ class LARP_Role extends BaseModel{
         
         return true;
     }
+ 
     
     # Hämta relationen baserat på en roll på ett visst lajv
     //     public static function getByLarpAndRole($larpId, $roleId){

@@ -133,6 +133,11 @@ class Role extends BaseModel{
         
     }    
     
+    public function getRegistration(LARP $larp) {
+        if (!isRegistered($larp)) return null;
+        return Registration::loadByIds($this->PersonId, $larp->Id);
+    }
+    
     public function isMain(LARP $larp) {
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
         return $larp_role->IsMainRole;

@@ -2,9 +2,9 @@
 
 require 'header.php';
 
-// $current_person;
 
-echo "Start";
+
+
 echo $_SERVER["REQUEST_METHOD"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -13,21 +13,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $PersonId = $_POST['PersonId'];
     }
     else {
-        echo "Exit 1";
-        //header('Location: index.php');
+
+        header('Location: index.php');
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     echo "get";
     if (isset($_GET['PersonId'])) {
-        echo "1";
+
         $PersonId = $_GET['PersonId'];
         echo $PersonId;
     }
     else {
-        echo "Exit 2";
-        //header('Location: index.php');
+
+        header('Location: index.php');
     }
 }
 
@@ -35,12 +35,12 @@ if (isset($PersonId)) {
     $current_person = Person::loadById($PersonId);
 }
 else {
-    echo "Exit 3";
+
     header('Location: index.php?error=no_person');
 }
 
 if (!$current_user->IsAdmin && $current_person->UserId != $current_user->Id) {
-    echo "Exit 4";
+    header('Location: index.php');
 }
 
 
@@ -48,9 +48,12 @@ $roles = $current_person->getRoles();
 
 if (empty($roles)) {
     header('Location: index.php?error=no_role');
-    exit;
+
 }
 
+if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAge) {
+    header('Location: index.php?error=too_young_for_larp');
+}
 
 ?>
 

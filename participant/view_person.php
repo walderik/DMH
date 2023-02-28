@@ -44,6 +44,14 @@ $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 			<tr><td valign="top" class="header">Email</td><td><?php echo $current_person->Email;?></td></tr>
 			<tr><td valign="top" class="header">Mobilnummer</td><td><?php echo $current_person->PhoneNumber;?></td></tr>
 			<tr><td valign="top" class="header">Närmaste anhörig</td><td><?php echo $current_person->EmergencyContact;?></td></tr>
+		    <?php 
+		    if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+		    ?>
+			<tr><td valign="top" class="header">Ansvarig vuxen</td><td><?php echo $registration->Guardian;?></td></tr>
+		    
+		    <?php 
+		    }
+		    ?>
 
 			<tr><td valign="top" class="header">Typ av lajvare</td><td><?php echo LarperType::loadById($current_person->LarperTypeId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td><td><?php echo $current_person->TypeOfLarperComment;?></td></tr>

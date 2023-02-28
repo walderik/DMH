@@ -76,6 +76,9 @@ function getErrorText($code) {
         case "no_role":
             $output = "Du måste registrera en karaktär först";
             break;
+        case "too_young_for_larp":
+            $output = "Deltagaren är för ung för att få vara med på lajvet";
+            break;
         case "activation_not_possible":
             $output = "Kontot är redan aktiverat eller finns inte.";
             break;
