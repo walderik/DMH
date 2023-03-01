@@ -20,7 +20,7 @@
     		    echo "Inga anmälda deltagare";
     		} else {
     		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Epost</th><th>Ålder på lajvet</th><th>Mobilnummer</th><th></th><th>Godkänd</th><th>Betalat</th><th>Medlem</th></tr>\n";
+    		    echo "<tr><th>Namn</th><th>Epost</th><th>Ålder på lajvet</th><th>Mobilnummer</th><th></th><th>Godkänd</th><th>Medlem</th><th colspan='2'>Betalat</th></tr>\n";
     		    foreach ($persons as $person)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $person->Name . "</td>\n";
@@ -28,10 +28,10 @@
     		        echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>\n";
     		        echo "<td>" . $person->PhoneNumber . "</td>\n";
     		        
-    		        echo "<td>" . "<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+    		        echo "<td>" . "<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        echo "<td align='center'>" . showStatusIcon($person->isApproved($current_larp)) . "</td>\n";
-    		        echo "<td align='center'>" . showStatusIcon($person->hasPayed($current_larp)) . "</td>\n";
     		        echo "<td align='center'>" . showStatusIcon($person->isMember($current_larp->StartDate)) . "</td>\n";
+    		        echo "<td align='center'>" . showStatusIcon($person->hasPayed($current_larp)) . "</td><td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";
