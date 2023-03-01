@@ -114,6 +114,34 @@ class Person extends BaseModel{
         
     }
     
+    public static function getAllToApprove($larp) {
+        global $tbl_prefix;
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".$tbl_prefix."Registration` WHERE LarpId = ? AND Approved IS Null)  ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+        
+    }
+    
     # Update an existing person in db
     public function update() {
         global $tbl_prefix;
