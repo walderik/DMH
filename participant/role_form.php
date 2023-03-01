@@ -186,7 +186,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 				<textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100"><?php echo $role->IntrigueSuggestions; ?></textarea>
 			</div>
 			<div class="question">
-				<label for="NotAcceptableIntrigues">Saker karaktären inte vill spela på</label><br>
+				<label for="NotAcceptableIntrigues">Saker karaktären absolut inte vill spela på</label><br>
 				<div class="explantion">Är det något den här karaktären aldrig skulle göra? Vill du helst undvika farligt spel är det också bra att ange.</div>
 				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="250">
 			</div>
