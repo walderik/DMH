@@ -84,7 +84,7 @@ require 'header.php';
 					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN.<br />
 					Om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.</div>
 					<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
-					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}"  size="15" maxlength="13" required>
+					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}|\d{12}|\d{8}x{4}"  placeholder="ÅÅÅÅMMDD-NNNN" size="20" maxlength="13" required>
 				</div>
 				<div class="question">
 					<label for="PhoneNumber">Mobilnummer</label>

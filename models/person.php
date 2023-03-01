@@ -24,7 +24,13 @@ class Person extends BaseModel{
         $person = static::newWithDefault();
         if (isset($post['Id']))   $person->Id = $post['Id'];
         if (isset($post['Name'])) $person->Name = $post['Name'];
-        if (isset($post['SocialSecurityNumber'])) $person->SocialSecurityNumber = $post['SocialSecurityNumber'];
+        if (isset($post['SocialSecurityNumber'])) {
+            $ssn = $post['SocialSecurityNumber'];
+            if (strpos($ssn, "-") == false) {
+                $ssn = substr($ssn, 0, 8) . "-" . substr($ssn, 8);
+            }
+            $person->SocialSecurityNumber = $ssn;
+        }
         if (isset($post['PhoneNumber'])) $person->PhoneNumber = $post['PhoneNumber'];
         if (isset($post['EmergencyContact'])) $person->EmergencyContact = $post['EmergencyContact'];
         if (isset($post['Email'])) $person->Email = $post['Email'];
