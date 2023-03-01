@@ -124,7 +124,7 @@ function default_value($field) {
 
 
 			<div class="question">
-			<label for="Wealth">Hur rik anser du att gruppen är?</label>
+			<label for="Wealth">Hur rik anser du att gruppen är?</label>&nbsp;<font style="color:red">*</font>
 			<div class="explanation"><?php Wealth::helpBox(true); ?></div>
 
 			
@@ -137,12 +137,12 @@ function default_value($field) {
 			
 			</div>
 			<div class="question">
-			<label for="PlaceOfResidence">Var bor gruppen?</label>
+			<label for="PlaceOfResidence">Var bor gruppen?</label>&nbsp;<font style="color:red">*</font>
 			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om gruppen tillfälligt är i Slow River så vill vi veta var gruppen har sitt hem.<br><?php PlaceOfResidence::helpBox(true); ?></div>
 			
 			
             <?php
-            PlaceOfResidence::selectionDropdown(false, false, $group->PlaceOfResidenceId);
+            PlaceOfResidence::selectionDropdown(false, true, $group->PlaceOfResidenceId);
             ?> 
 
 			</div>
@@ -172,13 +172,14 @@ function default_value($field) {
 			förmedlat dessa till mina gruppmedlemmar. Vi har även alla godkänt
 			dem och är införstådda med vad som förväntas av oss som grupp av
 			deltagare på lajvet. Om jag inte har läst reglerna så kryssar jag
-			inte i denna ruta.<br>
+			inte i denna ruta.&nbsp;<font style="color:red">*</font><br>
 			
 			<input type="checkbox" id="rules" name="rules" value="Ja" required>
   			<label for="rules">Jag lovar</label> 
 			</div>
 
-			  <input type="submit" value="<?php default_value('action'); ?>">
+			  <input type="submit" name="action" value="<?php default_value('action'); ?>">
+			  <input type="submit" name="action" value="<?php default_value('action'); ?> och gå direkt till anmälan">
 		</form>
 	</div>
 

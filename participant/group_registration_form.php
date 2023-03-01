@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 	<div class="content">
 		<?php 
 		if (isset($new_group) && !is_null($new_group)) {
-            echo "<h1>Anmälan av gruppe '$new_group->Name' till $current_larp->Name</h1>";
+            echo "<h1>Anmälan av gruppen '$new_group->Name' till $current_larp->Name</h1>";
         } else {
             echo "<h1>Anmälan av grupp till $current_larp->Name</h1>";
 		} ?>

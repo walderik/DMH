@@ -12,10 +12,17 @@ echo "<br />";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
+
     if ($operation == 'insert') {
         $group = Group::newFromArray($_POST);
         $group->create();
-        header('Location: ../group_registration_form.php?new_group='.$group->Id);
+        if (strpos($_POST['action'], "anmälan") == false) {
+            header('Location: ../index.php');
+        }
+        else {
+            echo "Till anmälan";
+            header('Location: ../group_registration_form.php?new_group='.$group->Id);
+        }
         exit;
     } elseif ($operation == 'delete') {
         Group::delete($_POST['Id']);
@@ -23,8 +30,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $group = Group::newFromArray($_POST);
         $group->update();
+        if (strpos($_POST['action'], "anmälan") == false) {
+            header('Location: ../index.php');
+        }
+        else {
+            echo "Till anmälan";
+            header('Location: ../group_registration_form.php?new_group='.$group->Id);
+        }
+        exit;
     } else {
         echo $operation;
     }
 }
-header('Location: ../index.php');
+//header('Location: ../index.php');

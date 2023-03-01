@@ -75,7 +75,7 @@ class Group extends BaseModel{
     public function update() {
         global $tbl_prefix;
         
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."group` SET Name=?, , Friends=?, Enemies=?,
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."group` SET Name=?, Friends=?, Enemies=?,
                                                                   Description=?, IntrigueIdeas=?, OtherInformation=?,
                                                                   WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=? WHERE Id = ?");
         
