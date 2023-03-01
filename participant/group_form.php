@@ -88,7 +88,7 @@ function default_value($field) {
 			</p>
 			
 			<div class="question">
-				<label for="Person">Gruppansvarig</label><br>
+				<label for="Person">Gruppansvarig</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Vem är gruppansvarig?</div>
 				<?php selectionDropdownByArray('Person', $current_persons, false, true, $group->PersonId) ?>
 			</div>
@@ -99,36 +99,38 @@ function default_value($field) {
 			
 			
 			<div class="question">
-				<label for="Name">Gruppens namn</label><br> 
+				<label for="Name">Gruppens namn</label>&nbsp;<font style="color:red">*</font><br> 
 				<input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required>
 			</div>
 			
 			<div class="question">
-    			<label for="Description">Beskrivning av gruppen</label><br>
-    			<textarea id="Description" name="Description" rows="4" cols="50"><?php echo $group->Description; ?></textarea>
+    			<label for="Description">Beskrivning av gruppen</label>&nbsp;<font style="color:red">*</font><br>
+    			<textarea id="Description" name="Description" rows="4" cols="50" required><?php echo $group->Description; ?></textarea>
 			
 			 
 			</div>
 			
 			
 			<div class="question">
-				<label for="Friends">Vänner</label><br>
+				<label for="Friends">Vänner</label>
+				<div class="explanation">Beskriv vilka gruppen anser vara sina vänner. Det vara både grupper och  beskrivning av egenskaper hos dem som är vänner. Exempelvis: Cheriffen, bankrånare och telegrafarbetare</div>
 				<textarea id="Friends" name="Friends" rows="4" cols="50"><?php echo $group->Friends; ?></textarea>
 			</div>
 			<div class="question">
-				<label for="Enemies">Fiender</label><br>
+				<label for="Enemies">Fiender</label>
+				<div class="explanation">Beskriv vilka gruppen anser vara sina fiender. Det vara både grupper och  beskrivning av egenskaper hos dem som är fiender. Exempelvis: Guldletare, Big Bengt och alla som gillar öl.</div>
 				<textarea id="Enemies" name="Enemies" rows="4" cols="50"><?php echo $group->Enemies; ?></textarea>
 			</div>
 
 
 			<div class="question">
-			<label for="Wealth">Hur rik anser du att ni är?</label>
+			<label for="Wealth">Hur rik anser du att gruppen är?</label>
 			<div class="explanation"><?php Wealth::helpBox(true); ?></div>
 
 			
             <?php
 
-            Wealth::selectionDropdown(false, false, $group->WealthId);
+            Wealth::selectionDropdown(false, true, $group->WealthId);
             
             ?> 
 			
@@ -136,7 +138,7 @@ function default_value($field) {
 			</div>
 			<div class="question">
 			<label for="PlaceOfResidence">Var bor gruppen?</label>
-			<div class="explanation"><?php PlaceOfResidence::helpBox(true); ?></div>
+			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om gruppen tillfälligt är i Slow River så vill vi veta var gruppen har sitt hem.<br><?php PlaceOfResidence::helpBox(true); ?></div>
 			
 			
             <?php
