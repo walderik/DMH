@@ -39,9 +39,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $registration->update();
-        //header('Location: ../registered_persons.php');
+        header('Location: ../registered_persons.php');
+        exit;
         
     }
     
 }
-//header('Location: ../index.php');
+header('Location: ../index.php');

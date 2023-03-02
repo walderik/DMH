@@ -20,36 +20,41 @@ include_once 'header.php';
     		if (empty($persons)) {
     		    echo "Alla anmälda är godkända";
     		} else {
-    		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Ålder</th><th>Epost</th><th>Mobilnummer</th><th></th><th>Godkänn</th></tr>\n";
     		    foreach ($persons as $person)  {
-    		        echo "<tr>\n";
-    		        echo "<td>" . $person->Name . "</td>\n";
-    		        echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>\n";
-    		        echo "<td>" . $person->Email . "</td>\n";
-    		        echo "<td>" . $person->PhoneNumber . "</td>\n";
+    		        $registration = $person->getRegistration($current_larp);
+    		        echo "<div>";
+    		        echo "<form action='logic/approve_person.php' method='post'>";
+    		        echo "<input type='hidden' id='RegistrationId' name='RegistrationId' value='$registration->Id'>";
+
+    		        echo $person->Name.", ".$person->getAgeAtLarp($current_larp)." år ";
+    		        echo "<a href='view_person.php?id=$person->Id'><i class='fa-solid fa-eye'></i></a></td>\n";
+    		        echo "<input type='submit' value='Godkänn'>";
+    		        echo "<br>\n";
+    		        echo "Epost: $person->Email, Telefon: $person->PhoneNumber <br>\n";
     		        
-    		        echo "<td>" . "<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a></td>\n";
-    		        echo "</tr>\n";
+    		        echo "<br>\n";
+    		        echo "Roller<br>\n";
     		        $roles = $person->getRolesAtLarp($current_larp);
     		        foreach($roles as $role) {
-    		            echo "<tr>\n";
-    		            echo "<td>&nbsp;&nbsp;&nbsp;" . $role->Name . "</td>\n";
-    		            echo "<td>" . $role->Profession . "</td>\n";
-    		            echo "<td>" . $role->getGroup()->Name . "</td>\n";
-    		            echo "<td>";
-    		            if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole == 1) {
-    		              echo "Huvudkaraktär";
+    		            foreach ($roles as $role)  {
+    		                $role_group = $role->getGroup();
+    		                $role_group_name = "";
+    		                if (isset($role_group)) {
+    		                    $role_group_name = " - $role_group->Name";
+    		                }
+    		                echo $role->Name . " - " . $role->Profession . " " . $role_group_name;
+        		            if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole == 1) {
+        		              echo " Huvudkaraktär";
+        		            }
+        		            echo "<a href='view_role.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		            }
-    		            echo "</td>\n";
-    		            echo "<td>" . "<a href='view_role.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a></td>\n";
-    		            
-    		            echo "</tr>\n";
+    		            echo "<br>\n";
     		            
     		        }
-    		        echo "<tr></tr>";
+    		        echo "</form>";
+    		        echo "</div>";
     		    }
-    		    echo "</table>";
+
     		}
     		?>
 

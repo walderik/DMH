@@ -234,6 +234,10 @@ class Person extends BaseModel{
         return House::loadById($this->HouseId);
     }
     
+    public function getRegistration(LARP $larp) {
+        return Registration::loadByIds($this->Id, $larp->Id);
+    }
+    
     public function getNormalAllergyTypes() {
         global $tbl_prefix;
         if (is_null($this->Id)) return array();
