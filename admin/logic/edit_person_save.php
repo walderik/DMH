@@ -12,18 +12,14 @@ if (!isset($_SESSION['admin'])) {
 }
 
 
-
-echo '$_POST :<br>';
-print_r($_POST);
-
-echo "<br />";
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $personId = $_POST['PersonId'];
+
     $personArr = $_POST;
     $personArr += ["Id" => $personId];
     
-    $person = Person::newFromArray($personArr);
+    $person = Person::loadById($personId);
+    $person->setValuesByArray($personArr);
     $person->update();
     
     
@@ -31,24 +27,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registrationArr = $_POST;
     $registrationArr += ["Id" => $registrationId];
     
-    $registration = Registration::newFromArray($registrationArr);
+    $registration = Registration::loadById($registrationId);
+
+    $registration->setValuesByArray($registrationArr);
     $registration->update();
     
-    echo "<br><br>";
-    /*
-    echo "Person: ";
-    print_r($person);
-    echo "<br><br>";
-    print_r($personArr);
-    echo "<br><br>";
-    */
-    echo "<br><br>";
-    echo "Reg: ";
-    print_r($registration);
-    echo "<br><br>";
-    print_r($registrationArr);
-    //header('Location: ../edit_person.php?id='.$personId);
-    exit;
+    if (isset($_POST['Referer']) && $_POST['Referer']!="") {
+        header('Location: ' . $_POST['Referer']);
+        exit;
+    }
            
 }
-//header('Location: ../index.php');
+header('Location: ../index.php');

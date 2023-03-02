@@ -43,8 +43,8 @@ $registration = Registration::loadByIds($person->Id, $current_larp->Id);
 		<form action="logic/edit_person_save.php" method="post">
 		<table>
     		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $person->Id; ?>">
-    		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $person->Id; ?>">
-    		
+    		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $registration->Id; ?>">
+    		<input type="hidden" id="Referer" name="Referer" value="<?php echo $_SERVER['HTTP_REFERER'];?>">
     		
  			<tr><td valign="top" class="header">Namn</td>
  			<td><input type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="250" required></td></tr>
@@ -62,7 +62,8 @@ $registration = Registration::loadByIds($person->Id, $current_larp->Id);
 		    <?php 
 		    if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		    ?>
-			<tr><td valign="top" class="header">Ansvarig vuxen</td><td><?php echo $registration->Guardian;?></td></tr>
+			<tr><td valign="top" class="header">Ansvarig vuxen</td>
+			<td><input type="text" id="Guardian" value="<?php echo $registration->Guardian; ?>" name="Guardian"  size="100" maxlength="250"></td></tr>
 		    
 		    <?php 
 		    }

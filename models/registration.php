@@ -29,27 +29,31 @@ class Registration extends BaseModel{
     
     public static function newFromArray($post){
         $registration = static::newWithDefault();
-        if (isset($post['Id']))   $registration->Id = $post['Id'];
-        if (isset($post['LARPId'])) $registration->LARPId = $post['LARPId'];
-        if (isset($post['PersonId'])) $registration->PersonId = $post['PersonId'];
-        if (isset($post['Approved'])) $registration->Approved = $post['Approved'];
-        if (isset($post['RegisteredAt'])) $registration->RegisteredAt = $post['RegisteredAt'];
-        if (isset($post['PaymentReference'])) $registration->PaymentReference = $post['PaymentReference'];
-        if (isset($post['AmountToPay'])) $registration->AmountToPay = $post['AmountToPay'];
-        if (isset($post['AmountPayed'])) $registration->AmountPayed = $post['AmountPayed'];
-        if (isset($post['Payed'])) $registration->Payed = $post['Payed'];
-        if (isset($post['IsMember'])) $registration->IsMember = $post['IsMember'];
-        if (isset($post['MembershipCheckedAt'])) $registration->MembershipCheckedAt = $post['MembershipCheckedAt'];
-        if (isset($post['NotComing'])) $registration->NotComing = $post['NotComing'];
-        if (isset($post['ToBeRefunded'])) $registration->ToBeRefunded = $post['ToBeRefunded'];
-        if (isset($post['RefundDate'])) $registration->RefundDate = $post['RefundDate'];
-        if (isset($post['IsOfficial'])) $registration->IsOfficial = $post['IsOfficial'];
-        if (isset($post['NPCDesire'])) $registration->NPCDesire = $post['NPCDesire'];
-        if (isset($post['HousingRequestId'])) $registration->HousingRequestId = $post['HousingRequestId'];
-        if (isset($post['Guardian'])) $registration->Guardian = $post['Guardian'];
-        if (isset($post['NotComingReason'])) $registration->NotComingReason = $post['NotComingReason'];
-        
+        $registration->setValuesByArray($post);
         return $registration;
+    }
+    
+    public function setValuesByArray($arr) {
+        if (isset($arr['Id']))   $this->Id = $arr['Id'];
+        if (isset($arr['LARPId'])) $this->LARPId = $arr['LARPId'];
+        if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
+        if (isset($arr['Approved'])) $this->Approved = $arr['Approved'];
+        if (isset($arr['RegisteredAt'])) $this->RegisteredAt = $arr['RegisteredAt'];
+        if (isset($arr['PaymentReference'])) $this->PaymentReference = $arr['PaymentReference'];
+        if (isset($arr['AmountToPay'])) $this->AmountToPay = $arr['AmountToPay'];
+        if (isset($arr['AmountPayed'])) $this->AmountPayed = $arr['AmountPayed'];
+        if (isset($arr['Payed'])) $this->Payed = $arr['Payed'];
+        if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
+        if (isset($arr['MembershipCheckedAt'])) $this->MembershipCheckedAt = $arr['MembershipCheckedAt'];
+        if (isset($arr['NotComing'])) $this->NotComing = $arr['NotComing'];
+        if (isset($arr['ToBeRefunded'])) $this->ToBeRefunded = $arr['ToBeRefunded'];
+        if (isset($arr['RefundDate'])) $this->RefundDate = $arr['RefundDate'];
+        if (isset($arr['IsOfficial'])) $this->IsOfficial = $arr['IsOfficial'];
+        if (isset($arr['NPCDesire'])) $this->NPCDesire = $arr['NPCDesire'];
+        if (isset($arr['HousingRequestId'])) $this->HousingRequestId = $arr['HousingRequestId'];
+        if (isset($arr['Guardian'])) $this->Guardian = $arr['Guardian'];
+        if (isset($arr['NotComingReason'])) $this->NotComingReason = $arr['NotComingReason'];
+        
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen

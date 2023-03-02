@@ -20,34 +20,40 @@ class Person extends BaseModel{
 
     public static $orderListBy = 'Name';
     
+
     public static function newFromArray($post){
+
         $person = static::newWithDefault();
-        if (isset($post['Id']))   $person->Id = $post['Id'];
-        if (isset($post['Name'])) $person->Name = $post['Name'];
-        if (isset($post['SocialSecurityNumber'])) {
-            $ssn = $post['SocialSecurityNumber'];
+        $person->setValuesByArray($post);
+        return $person;
+    }
+    
+    public function setValuesByArray($arr) {
+        if (isset($arr['Id']))   $this->Id = $arr['Id'];
+        if (isset($arr['Name'])) $this->Name = $arr['Name'];
+        if (isset($arr['SocialSecurityNumber'])) {
+            $ssn = $arr['SocialSecurityNumber'];
             if (strpos($ssn, "-") == false) {
                 $ssn = substr($ssn, 0, 8) . "-" . substr($ssn, 8);
             }
-            $person->SocialSecurityNumber = $ssn;
+            $this->SocialSecurityNumber = $ssn;
         }
-        if (isset($post['PhoneNumber'])) $person->PhoneNumber = $post['PhoneNumber'];
-        if (isset($post['EmergencyContact'])) $person->EmergencyContact = $post['EmergencyContact'];
-        if (isset($post['Email'])) $person->Email = $post['Email'];
-        if (isset($post['FoodAllergiesOther'])) $person->FoodAllergiesOther = $post['FoodAllergiesOther'];
-        if (isset($post['TypeOfLarperComment'])) $person->TypeOfLarperComment = $post['TypeOfLarperComment'];
-        if (isset($post['IntrigueIdeas'])) $person->IntrigueIdeas = $post['IntrigueIdeas'];
-        if (isset($post['OtherInformation'])) $person->OtherInformation = $post['OtherInformation'];
-        if (isset($post['ExperienceId'])) $person->ExperienceId = $post['ExperienceId'];
-        if (isset($post['TypeOfFoodId'])) $person->TypeOfFoodId = $post['TypeOfFoodId'];
-        if (isset($post['LarperTypeId'])) $person->LarperTypeId = $post['LarperTypeId'];
-        if (isset($post['UserId'])) $person->UserId = $post['UserId'];
-        if (isset($post['NotAcceptableIntrigues'])) $person->NotAcceptableIntrigues = $post['NotAcceptableIntrigues'];
-        if (isset($post['HouseId'])) $person->HouseId = $post['HouseId'];
+        if (isset($arr['PhoneNumber'])) $this->PhoneNumber = $arr['PhoneNumber'];
+        if (isset($arr['EmergencyContact'])) $this->EmergencyContact = $arr['EmergencyContact'];
+        if (isset($arr['Email'])) $this->Email = $arr['Email'];
+        if (isset($arr['FoodAllergiesOther'])) $this->FoodAllergiesOther = $arr['FoodAllergiesOther'];
+        if (isset($arr['TypeOfLarperComment'])) $this->TypeOfLarperComment = $arr['TypeOfLarperComment'];
+        if (isset($arr['IntrigueIdeas'])) $this->IntrigueIdeas = $arr['IntrigueIdeas'];
+        if (isset($arr['OtherInformation'])) $this->OtherInformation = $arr['OtherInformation'];
+        if (isset($arr['ExperienceId'])) $this->ExperienceId = $arr['ExperienceId'];
+        if (isset($arr['TypeOfFoodId'])) $this->TypeOfFoodId = $arr['TypeOfFoodId'];
+        if (isset($arr['LarperTypeId'])) $this->LarperTypeId = $arr['LarperTypeId'];
+        if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
+        if (isset($arr['NotAcceptableIntrigues'])) $this->NotAcceptableIntrigues = $arr['NotAcceptableIntrigues'];
+        if (isset($arr['HouseId'])) $this->HouseId = $arr['HouseId'];
         
-        if (isset($person->HouseId) && $person->HouseId=='null') $person->HouseId = null;
+        if (isset($this->HouseId) && $this->HouseId=='null') $this->HouseId = null;
         
-        return $person;
     }
     
     
