@@ -13,9 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $current_group = Group::loadById($GroupId); 
 
-if (!$current_user->isMember($group)) {
-    header('Location: index.php'); //Inte medlem i gruppen
-}
 
 if (!$current_group->isRegistered($current_larp)) {
     header('Location: index.php'); //Gruppen är inte anmäld
@@ -70,12 +67,12 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
             if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
                 echo ", ansvarig vuxen är " . $group_member->getRegistration($current_larp)->Guardian;
 		    }
-            if ($current_user->isGroupLeader($current_group)) {
+
          ?>
 		         <a href="remove_group_member.php?groupID=<?php echo $current_group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
 		<?php 
 		    
-		    }
+
             echo "<br>"; 
 		}
 		?>
