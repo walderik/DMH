@@ -30,7 +30,7 @@ include_once 'header.php';
     		        echo $person->Name.", ".$person->getAgeAtLarp($current_larp)." år ";
     		        echo "<a href='view_person.php?id=$person->Id'><i class='fa-solid fa-eye'></i></a> \n";
     		        echo "<a href='edit_person.php?id=$person->Id'><i class='fa-solid fa-pen'></i></a> \n";    		        echo "<br>\n";
-    		        echo "<br>\n";
+    		        
     		        echo "Epost: $person->Email, Telefon: $person->PhoneNumber <br>\n";
     		        
     		        echo "<br>\n";
