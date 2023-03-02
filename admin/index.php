@@ -54,7 +54,7 @@ include_once '../includes/error_handling.php';
 			$approval_count = count (Person::getAllToApprove($current_larp));
 			if ($approval_count>0) {?>
 			<p>
-				<?php echo $approval_count; ?> deltagare väntar på <a href="persons_to_approve.php">godkänande</a>. 
+				<?php echo $approval_count; ?> deltagare väntar på <a href="persons_to_approve.php">godkännande</a>. 
 			</p>
 			
 			<?php }?>
