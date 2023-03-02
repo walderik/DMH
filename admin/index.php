@@ -11,7 +11,7 @@ include_once '../includes/error_handling.php';
               <ul class="drop">
                 <li><a href="registered_persons.php">Deltagare</a></li>
                 <li><a href="payment_information_admin.php">Avgift</a></li>
-                <li><a href="persons_to_approve.php">Godkänna karaktärer</a></li>
+                <li><a href="persons_to_approve.php">Godkänna</a></li>
               </ul>
             </li>
               <li class="dropdown"><a href="#" class="trigger-drop">Intriger<i class="arrow"></i></a>
@@ -50,6 +50,14 @@ include_once '../includes/error_handling.php';
 			<p>
 				Just nu är det <?php echo count(Registration::allBySelectedLARP()); ?> anmälda deltagare.<br> 
 			</p>
+			<?php 
+			$approval_count = count (Person::getAllToApprove($current_larp));
+			if ($approval_count>0) {?>
+			<p>
+				<?php echo $approval_count; ?> deltagare väntar på <a href="persons_to_approve.php">godkänande</a>. 
+			</p>
+			
+			<?php }?>
 		</div>
 	</body>
 </html>
