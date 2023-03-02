@@ -1,11 +1,7 @@
 <?php
 session_start();
 
-
-echo "Här";
-    
 if (!isset($_SESSION['loggedin'])) {
-
     header('Location../index.php');
     exit;
 }
@@ -17,6 +13,6 @@ if ( !isset($_POST['larp']) ) {
 }
 
 $_SESSION['larp'] = $_POST['larp'];
-echo "Klar";
+
 // Redirect to the login page:
 header('Location: ../participant/index.php');

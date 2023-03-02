@@ -28,13 +28,8 @@ class Registration extends BaseModel{
     
     
     public static function newFromArray($post){
-        if (isset($post['Id'])) {
-            $registration=static::loadById($post['Id']);
-        }
-        else {
-            $registration = static::newWithDefault();
-        }
-
+        $registration = static::newWithDefault();
+        if (isset($post['Id']))   $registration->Id = $post['Id'];
         if (isset($post['LARPId'])) $registration->LARPId = $post['LARPId'];
         if (isset($post['PersonId'])) $registration->PersonId = $post['PersonId'];
         if (isset($post['Approved'])) $registration->Approved = $post['Approved'];
