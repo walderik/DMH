@@ -13,7 +13,14 @@ Vad ska man kunna göra efter att lajvet har börjat/slutat
 Vilka lajv ska finnas med i listan över lajv som går att välja?
 
 
-Mail när man har anmält sig. (Klart - Pär granskar det)
+Mail när man har anmält sig. (Klart - Pär granskar det
+
+Skapa kontaktformulär för att enkelt kunna skicka mail
+
+Bättre behörighetssystem för admin (roller)
+
+I newfromArray så borde vi nog kolla om id finns med och i så fall 
+först ladda upp objektet med det id't och sedan skriva över det som skickats in.
 
 
 Tips jag hittade:

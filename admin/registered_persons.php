@@ -29,7 +29,7 @@
     		        echo "<td>" . $person->PhoneNumber . "</td>\n";
     		        
     		        echo "<td>" . "<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
-    		        echo "<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        echo "<td align='center'>" . showStatusIcon($person->isApproved($current_larp)) . "</td>\n";
     		        echo "<td align='center'>" . showStatusIcon($person->isMember($current_larp->StartDate)) . "</td>\n";
     		        echo "<td align='center'>" . showStatusIcon($person->hasPayed($current_larp)) . "</td><td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";

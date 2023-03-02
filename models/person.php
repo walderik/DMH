@@ -21,8 +21,14 @@ class Person extends BaseModel{
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
-        $person = static::newWithDefault();
-        if (isset($post['Id']))   $person->Id = $post['Id'];
+
+        if (isset($post['Id'])) {
+            $person=static::loadById($post['Id']);
+        }
+        else {
+            $person = static::newWithDefault();
+        }
+       
         if (isset($post['Name'])) $person->Name = $post['Name'];
         if (isset($post['SocialSecurityNumber'])) {
             $ssn = $post['SocialSecurityNumber'];

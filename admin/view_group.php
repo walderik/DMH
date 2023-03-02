@@ -13,10 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $current_group = Group::loadById($GroupId); 
 
-if (!$current_user->isMember($group)) {
-    header('Location: index.php'); //Inte medlem i gruppen
-}
-
 if (!$current_group->isRegistered($current_larp)) {
     header('Location: index.php'); //Gruppen är inte anmäld
 }
@@ -46,9 +42,7 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 			<tr><td valign="top" class="header">Rikedom</td><td><?php echo Wealth::loadById($current_group->WealthId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Var bor gruppen?</td><td><?php echo PlaceOfResidence::loadById($current_group->PlaceOfResidenceId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($larp_group->getIntrigueTypes());?></td></tr>
-			<?php if ($current_user->isGroupLeader($current_group)) { ?>
 			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
-			<?php } ?>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
 			<tr><td valign="top" class="header">Antal medlemmar</td><td><?php echo $larp_group->ApproximateNumberOfMembers;?></td></tr>
@@ -70,12 +64,10 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
             if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
                 echo ", ansvarig vuxen är " . $group_member->getRegistration($current_larp)->Guardian;
 		    }
-            if ($current_user->isGroupLeader($current_group)) {
          ?>
 		         <a href="remove_group_member.php?groupID=<?php echo $current_group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
 		<?php 
 		    
-		    }
             echo "<br>"; 
 		}
 		?>
