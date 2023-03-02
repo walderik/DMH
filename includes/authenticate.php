@@ -1,6 +1,6 @@
 <?php
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'];
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 echo "Root = " . $root . "<br>";
 // Now we check if the data was submitted, isset() function will check if the data exists.
 if (isset($_POST['submit'])) {

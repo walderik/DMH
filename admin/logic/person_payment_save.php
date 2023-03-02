@@ -1,7 +1,7 @@
 <?php
 
 global $root, $current_user;
-$root = $_SERVER['DOCUMENT_ROOT'];
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
 //If the user isnt admin it may not use this page

@@ -3,7 +3,7 @@
 session_start();
 
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'];
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 include_once $root . '/includes/all_includes.php';
 
 // Now we check if the data was submitted, isset() function will check if the data exists.

@@ -1,6 +1,6 @@
 <?php
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'];
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 include_once $root . '/includes/all_includes.php';
 
 // First we check if the email and code exists...

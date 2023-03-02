@@ -1,6 +1,6 @@
 <?php
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'];
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 echo "Root = " . $root . "<br>";
 include_once $root . '/includes/all_includes.php';
 
