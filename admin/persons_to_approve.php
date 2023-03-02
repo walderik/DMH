@@ -44,10 +44,10 @@ include_once 'header.php';
     		                    $role_group_name = " - $role_group->Name";
     		                }
     		                echo $role->Name . " - " . $role->Profession . " " . $role_group_name;
-        		            if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole == 1) {
-        		              echo " Huvudkaraktär";
+        		            if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
+        		              echo " Sidokaraktär";
         		            }
-        		            echo "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
+        		            echo "&nbsp;<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
         		            echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
     		            }
     		            echo "<br>\n";
