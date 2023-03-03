@@ -30,34 +30,37 @@ class Role extends BaseModel{
     
     public static function newFromArray($post){
         $role = static::newWithDefault();
-        if (isset($post['Id']))   $role->Id = $post['Id'];
-        if (isset($post['Name'])) $role->Name = $post['Name'];
-        if (isset($post['IsNPC'])) $role->IsNPC = $post['IsNPC'];
-        if (isset($post['Profession'])) $role->Profession = $post['Profession'];
-        if (isset($post['Description'])) $role->Description = $post['Description'];
-        if (isset($post['PreviousLarps'])) $role->PreviousLarps = $post['PreviousLarps'];
-        if (isset($post['ReasonForBeingInSlowRiver'])) $role->ReasonForBeingInSlowRiver = $post['ReasonForBeingInSlowRiver'];
-        if (isset($post['Religion'])) $role->Religion = $post['Religion'];
-        if (isset($post['DarkSecret'])) $role->DarkSecret = $post['DarkSecret'];
-        if (isset($post['DarkSecretIntrigueIdeas'])) $role->DarkSecretIntrigueIdeas = $post['DarkSecretIntrigueIdeas'];
-        if (isset($post['IntrigueSuggestions'])) $role->IntrigueSuggestions = $post['IntrigueSuggestions'];
-        if (isset($post['NotAcceptableIntrigues'])) $role->NotAcceptableIntrigues = $post['NotAcceptableIntrigues'];
-        if (isset($post['OtherInformation'])) $role->OtherInformation = $post['OtherInformation'];
-        if (isset($post['PersonId'])) $role->PersonId = $post['PersonId'];
-        if (isset($post['GroupId'])) $role->GroupId = $post['GroupId'];
-        if (isset($post['WealthId'])) $role->WealthId = $post['WealthId'];
-        if (isset($post['PlaceOfResidenceId'])) $role->PlaceOfResidenceId = $post['PlaceOfResidenceId'];
-        if (isset($post['Photo'])) $role->Photo = $post['Photo'];
-        if (isset($post['Birthplace'])) $role->Birthplace = $post['Birthplace'];
-        if (isset($post['CharactersWithRelations'])) $role->CharactersWithRelations = $post['CharactersWithRelations'];
-        if (isset($post['CampaignId'])) $role->CampaignId = $post['CampaignId'];
-        
-        if (isset($role->GroupId) && $role->GroupId=='null') $role->GroupId = null;
-        
+        $role->setValuesByArray($post);
         return $role;
     }
     
-    
+    public function setValuesByArray($arr) {
+
+        if (isset($arr['Id']))   $this->Id = $arr['Id'];
+        if (isset($arr['Name'])) $this->Name = $arr['Name'];
+        if (isset($arr['IsNPC'])) $this->IsNPC = $arr['IsNPC'];
+        if (isset($arr['Profession'])) $this->Profession = $arr['Profession'];
+        if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        if (isset($arr['PreviousLarps'])) $this->PreviousLarps = $arr['PreviousLarps'];
+        if (isset($arr['ReasonForBeingInSlowRiver'])) $this->ReasonForBeingInSlowRiver = $arr['ReasonForBeingInSlowRiver'];
+        if (isset($arr['Religion'])) $this->Religion = $arr['Religion'];
+        if (isset($arr['DarkSecret'])) $this->DarkSecret = $arr['DarkSecret'];
+        if (isset($arr['DarkSecretIntrigueIdeas'])) $this->DarkSecretIntrigueIdeas = $arr['DarkSecretIntrigueIdeas'];
+        if (isset($arr['IntrigueSuggestions'])) $this->IntrigueSuggestions = $arr['IntrigueSuggestions'];
+        if (isset($arr['NotAcceptableIntrigues'])) $this->NotAcceptableIntrigues = $arr['NotAcceptableIntrigues'];
+        if (isset($arr['OtherInformation'])) $this->OtherInformation = $arr['OtherInformation'];
+        if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
+        if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
+        if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
+        if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
+        if (isset($arr['Photo'])) $this->Photo = $arr['Photo'];
+        if (isset($arr['Birthplace'])) $this->Birthplace = $arr['Birthplace'];
+        if (isset($arr['CharactersWithRelations'])) $this->CharactersWithRelations = $arr['CharactersWithRelations'];
+        if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+        
+        if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
+        
+    }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {

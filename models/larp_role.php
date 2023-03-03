@@ -157,7 +157,6 @@ class LARP_Role extends BaseModel{
     
     public function getSelectedIntrigueTypeIds() {
         global $tbl_prefix;
-        if (is_null($this->Id)) return array();
         
         $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  `".$tbl_prefix."intriguetype_larp_role` WHERE LARP_RoleLARPid = ? AND LARP_RoleRoleId = ? ORDER BY IntrigueTypeId;");
         

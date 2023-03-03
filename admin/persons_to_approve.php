@@ -34,7 +34,7 @@ include_once 'header.php';
     		        echo "Epost: $person->Email, Telefon: $person->PhoneNumber <br>\n";
     		        
     		        echo "<br>\n";
-    		        echo "Roller<br>\n";
+    		        echo "Roller:<br>\n";
     		        $roles = $person->getRolesAtLarp($current_larp);
     		        foreach($roles as $role) {
     		            foreach ($roles as $role)  {
