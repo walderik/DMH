@@ -45,10 +45,6 @@ else {
 		<form action="logic/edit_person_save.php" method="post">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $group->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-
-		
-    		
-    		
 		<table>
 			<tr><td valign="top" class="header">Namn</td>
 			<td><input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required></td></tr>
@@ -71,12 +67,6 @@ else {
 			<tr><td valign="top" class="header">Var bor gruppen?</td>
 			<td><?php PlaceOfResidence::selectionDropdown(false, true, $group->PlaceOfResidenceId);?></td></tr>
 
-			<tr><td valign="top" class="header">Intrigtyper</td>
-			<td><?php echo commaStringFromArrayObject($larp_group->getIntrigueTypes());?></td></tr>
-
-			<tr><td valign="top" class="header">Annan information</td>
-			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50"><?php echo $group->OtherInformation; ?></textarea></td></tr>
-
 			<tr><td valign="top" class="header">Intrig</td>
 			<td>
 				<input type="radio" id="WantIntrigue_yes" name="WantIntrigue" value="1" <?php if ($larp_group->WantIntrigue == 1) echo 'checked="checked"'?>> 
@@ -85,14 +75,20 @@ else {
     			<label for="WantIntrigue_no">Nej</label>
 			</td></tr>
 
+			<tr><td valign="top" class="header">Intrigtyper</td>
+			<td><?php IntrigueType::selectionDropdown(true, false, $larp_group->getSelectedIntrigueTypeIds());?></td></tr>
+
 			<tr><td valign="top" class="header">Intrigidéer</td>
 			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50"><?php echo $group->IntrigueIdeas; ?></textarea></td></tr>
 
-			<tr><td valign="top" class="header">Intrigidéer</td>
+			<tr><td valign="top" class="header">Kvarvarande intriger</td>
 			<td><textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="50"><?php echo $larp_group->RemainingIntrigues; ?></textarea></td></tr>
 
+			<tr><td valign="top" class="header">Annan information</td>
+			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50"><?php echo $group->OtherInformation; ?></textarea></td></tr>
+
 			<tr><td valign="top" class="header">Antal medlemmar</td>
-			<td><input type="text" id="ApproximateNumberOfMembers" name="ApproximateNumberOfMembers" required></td></tr>
+			<td><input type="text" id="ApproximateNumberOfMembers" name="ApproximateNumberOfMembers" value="<?php echo $larp_group->ApproximateNumberOfMembers; ?>" required></td></tr>
 
 			<tr><td valign="top" class="header">Önskat boende</td>
 			<td><?php HousingRequest::selectionDropdown(false,true, $larp_group->HousingRequestId);?></td></tr>
