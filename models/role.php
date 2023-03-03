@@ -200,7 +200,7 @@ class Role extends BaseModel{
         return $resultArray;
     }
    
-    # Hämta anmälda deltagare i en grupp
+    # Hämta anmälda roller i en grupp
     public static function getRegisteredRolesInGroup($group, $larp) {
         global $tbl_prefix;
         if (is_null($group) || is_null($larp)) return Array();

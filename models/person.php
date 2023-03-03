@@ -148,6 +148,37 @@ class Person extends BaseModel{
         
     }
     
+    
+    # Hämta anmälda deltagare i en grupp
+    public static function getPersonsInGroupAtLarp($group, $larp) {
+        global $tbl_prefix;
+        if (is_null($group) || is_null($larp)) return Array();
+        
+        $sql="select * from `".$tbl_prefix."person` WHERE id IN (SELECT ".$tbl_prefix."role.PersonId FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".$tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($group->Id, $larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
+    
+    
+    
     # Update an existing person in db
     public function update() {
         global $tbl_prefix;

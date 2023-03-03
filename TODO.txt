@@ -16,6 +16,9 @@ Vilka lajv ska finnas med i listan över lajv som går att välja?
 Mail när man har anmält sig. (Klart - Pär granskar det)
 
 
+Behöver man kunna byta spelare på en roll?
+
+
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role
 Det går att skriva variabler direkt i en sträng om man använder dubbelfnuttar (") - "Hej $name!";

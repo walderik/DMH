@@ -22,6 +22,8 @@ $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
 
 $group_members = Role::getRegisteredRolesInGroup($group, $current_larp);
 
+$persons_in_group = Person::getPersonsInGroupAtLarp($group, $current_larp);
+
 if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = $_SERVER['HTTP_REFERER'];
 }
@@ -50,7 +52,7 @@ else {
 			<td><input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required></td></tr>
 
 			<tr><td valign="top" class="header">Gruppansvarig</td>
-			<td><a href ="view_person.php?id=<?php echo $group->PersonId;?>"><?php echo $group->getPerson()->Name;?></a></td></tr>
+			<td><?php selectionDropdownByArray('Person', $persons_in_group, false, true, $group->PersonId) ?></td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning</td>
 			<td><textarea id="Description" name="Description" rows="4" cols="50" required><?php echo $group->Description; ?></textarea></td></tr>
