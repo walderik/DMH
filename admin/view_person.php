@@ -34,7 +34,7 @@ $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 
 
 	<div class="content">
-		<h1><?php echo $current_person->Name;?></h1>
+		<h1><?php echo $current_person->Name;?>&nbsp;<a href='edit_person.php?id=<?php echo $current_person->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
 		<table>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $current_person->SocialSecurityNumber;?></td></tr>
 			<tr><td valign="top" class="header">Email</td><td><?php echo $current_person->Email;?></td></tr>

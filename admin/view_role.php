@@ -36,7 +36,7 @@ if (isset($current_role->GroupId)) {
         </nav>
 
 	<div class="content">
-		<h1><?php echo $current_role->Name;?></h1>
+		<h1><?php echo $current_role->Name;?>&nbsp;<a href='edit_role.php?id=<?php echo $current_role->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
 		<table>
 			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $current_role->PersonId;?>"><?php echo $current_role->getPerson()->Name; ?></a></td></tr>
 		<?php if (isset($group)) {?>
