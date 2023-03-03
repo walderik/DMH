@@ -2,6 +2,10 @@
 
 require 'header.php';
 
+if ($current_larp->RegistrationOpen == 0) {
+    header('Location: index.php?error=registration_not_open');
+    exit;
+}
 
 
 
@@ -39,7 +43,7 @@ else {
     header('Location: index.php?error=no_person');
 }
 
-if (!$current_user->IsAdmin && $current_person->UserId != $current_user->Id) {
+if ($current_person->UserId != $current_user->Id) {
     header('Location: index.php');
 }
 

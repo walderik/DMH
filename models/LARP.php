@@ -85,4 +85,93 @@ class LARP extends BaseModel{
     public function getCampaign() {
         return Campaign::loadById($this->CampaignId);
     }
+    public function pastLatestRegistrationDate() {
+        $today = date("Y-m-d H:i:s");
+        if ($today < $this->LatestRegistrationDate) return false;
+        return true;
+    }
+    
+    public static function allFutureOpenLARPs() {
+            global $tbl_prefix;
+
+            $sql = "SELECT * FROM `".$tbl_prefix."LARP` WHERE StartDate >= CURDATE() AND RegistrationOpen=1 ORDER BY ".static::$orderListBy.";";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute()) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $resultArray[] = static::newFromArray($row);
+            }
+            $stmt = null;
+            return $resultArray;
+        }
+        
+        public static function allFutureNotYetOpenLARPs() {
+            global $tbl_prefix;
+            
+            $sql = "SELECT * FROM `".$tbl_prefix."LARP` WHERE StartDate >= CURDATE() AND RegistrationOpen=0 AND LatestRegistrationDate >= CURDATE() ORDER BY ".static::$orderListBy.";";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute()) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $resultArray[] = static::newFromArray($row);
+            }
+            $stmt = null;
+            return $resultArray;
+        }
+        
+        public static function allPastLarpsWithRegistrations(User $user) {
+            global $tbl_prefix;
+            
+            $sql = "SELECT * FROM `".$tbl_prefix."LARP` WHERE StartDate <= CURDATE() AND Id IN (SELECT DISTINCT ".$tbl_prefix."registration.LARPId FROM ".$tbl_prefix."person, ".$tbl_prefix."registration WHERE ".$tbl_prefix."person.id = ".$tbl_prefix."registration.PersonId AND ".$tbl_prefix."person.UserId = ?) ORDER BY ".static::$orderListBy.";";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(array($user->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $resultArray[] = static::newFromArray($row);
+            }
+            $stmt = null;
+            return $resultArray;
+        }
+        
+        
+        
 }

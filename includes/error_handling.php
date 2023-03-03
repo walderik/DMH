@@ -82,6 +82,9 @@ function getErrorText($code) {
         case "activation_not_possible":
             $output = "Kontot är redan aktiverat eller finns inte.";
             break;
+        case "registration_not_open":
+            $output = "Anmälan är inte öppen nu.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }

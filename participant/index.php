@@ -15,6 +15,7 @@ include_once '../includes/error_handling.php';
                 <li><a href="group_form.php">Grupp</a></li>
               </ul>
             </li>
+          <?php if ($current_larp->RegistrationOpen == 1) {?>
           <ul class="links">
               <li class="dropdown"><a href="#" class="trigger-drop">Anmäl<i class="arrow"></i></a>
               <ul class="drop">
@@ -22,6 +23,7 @@ include_once '../includes/error_handling.php';
                 <li><a href="group_registration_form.php">Grupp</a></li>
               </ul>
             </li>
+            <?php }?>
         	<?php 
         	 if (isset($_SESSION['admin'])) {
         	 ?>
@@ -41,13 +43,24 @@ include_once '../includes/error_handling.php';
         	  <?php if (isset($message_message) && strlen($message_message)>0) {
         	      echo '<div class="message">'.$message_message.'</div>';
         	  }?>
+            
+            <?php if ($current_larp->RegistrationOpen == 0) {
+
+                echo "<div><b>Anmälan inte öppen</b>";
+                if (!$current_larp->pastLatestRegistrationDate()) {
+                    echo "<br><br>Du kan registrera deltagare, grupper och roller i väntan på att anmälan ska öppna. "; 
+                }
+                echo "</div>";
+            }
+            ?>
 			
+
 			<div>
 			Så här använder du anmälningssystemet:
 				<ol>
 			 	<li>Börja med att <a href="person_form.php">registrera en deltagare.</a></li>
 			 	<li>Om du är gruppansvarig, <a href="group_form.php">registrera en grupp</a> och <a href="group_registration_form.php">anmäl den till lajvet</a>.</li>
-			 	<li><a href="role_form.php">Skapa karaktärer</a>, gärna flera.</li>
+			 	<li><a href="role_form.php">Registrera karaktärer</a>, gärna flera.</li>
 			 	<li><a href="select_person.php">Anmäl deltagaren</a> till lajvet.</li>
 			 	</ol>
 			 	Det går att hantera flera deltagare från ett konto, tex om ni är en familj.<br><br>

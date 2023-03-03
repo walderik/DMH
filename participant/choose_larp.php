@@ -28,10 +28,10 @@ require $root . '/includes/init.php';
 
 		<div class="content">
 			<h1>Aktivt lajv</h1>
-			<label for="larp">Välj lajv:</label>
 			<form action="../includes/set_larp.php" method="POST">
+			<label for="larp">Välj lajv: (alla kommande öppna)</label>
     			<?php
-    			 $larp_array = LARP::all();
+    			 $larp_array = LARP::allFutureOpenLARPs();
     			 $resultCheck = count($larp_array);
     			 if ($resultCheck > 0) {
     			     echo "<select name='larp' id='larp'>";
@@ -40,12 +40,53 @@ require $root . '/includes/init.php';
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";
-    			 }
+    			     echo '<input type="submit" value="Välj">';    			 }
     			 else {
-    			     echo "<p>Inga registrarade ännu</p>";
+    			     echo "Inga tillgängliga";
     			 }
     			 ?>
-    			 <input type="submit" value="Välj">
+
+			 </form>
+			 <br>
+			<form action="../includes/set_larp.php" method="POST">
+ 			<label for="larp">Välj lajv: (alla kommande, inte öppna än)</label>
+    			<?php
+    			 $larp_array = LARP::allFutureNotYetOpenLARPs();
+    			 $resultCheck = count($larp_array);
+    			 if ($resultCheck > 0) {
+    			     echo "<select name='larp' id='larp'>";
+    
+    			     foreach ($larp_array as $larp) {
+    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
+    			     }
+    			     echo "</select>";
+    			     echo '<input type="submit" value="Välj">';
+    			 }
+    			 else {
+    			     echo "Inga tillgängliga";
+    			 }
+    			 ?>
+    			 
+			 </form>
+			 <br>
+			<form action="../includes/set_larp.php" method="POST">
+			<label for="larp">Välj lajv: (tidigare lajv med registreringar)</label>
+    			<?php
+    			 $larp_array = LARP::allPastLarpsWithRegistrations($current_user);
+    			 $resultCheck = count($larp_array);
+    			 if ($resultCheck > 0) {
+    			     echo "<select name='larp' id='larp'>";
+    
+    			     foreach ($larp_array as $larp) {
+    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
+    			     }
+    			     echo "</select>";
+    			     echo '<input type="submit" value="Välj">';
+    			 }
+    			 else {
+    			     echo "Inga tillgängliga";
+    			 }
+    			 ?>
 			 </form>
 			 </div>
 

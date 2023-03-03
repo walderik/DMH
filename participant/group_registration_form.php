@@ -9,6 +9,11 @@ if (empty($current_groups)) {
     exit;
 }
 
+if ($current_larp->RegistrationOpen == 0) {
+    header('Location: index.php?error=registration_not_open');
+    exit;   
+}
+
 $new_group = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
