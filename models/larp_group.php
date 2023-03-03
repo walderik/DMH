@@ -136,9 +136,8 @@ class LARP_Group extends BaseModel{
 
     public function getSelectedIntrigueTypeIds() {
         global $tbl_prefix;
-        if (is_null($this->Id)) return array();
-        
-        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  `".$tbl_prefix."intriguetype_larp_group`` WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ? ORDER BY IntrigueTypeId;");
+       
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  `".$tbl_prefix."intriguetype_larp_group` WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ? ORDER BY IntrigueTypeId;");
         
         if (!$stmt->execute(array($this->GroupId, $this->LARPId))) {
             $stmt = null;
