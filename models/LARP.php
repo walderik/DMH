@@ -13,6 +13,7 @@ class LARP extends BaseModel{
     public  $EndTimeLARPTime;
     public  $DisplayIntrigues = 0;
     public  $CampaignId;
+    public  $RegistrationOpen = 0;
 
     
 //     public static $tableName = 'larp';
@@ -31,6 +32,7 @@ class LARP extends BaseModel{
         if (isset($post['DisplayIntrigues'])) $larp->DisplayIntrigues = $post['DisplayIntrigues'];
         if (isset($post['Id'])) $larp->Id = $post['Id'];
         if (isset($post['CampaignId'])) $larp->CampaignId = $post['CampaignId'];
+        if (isset($post['RegistrationOpen'])) $larp->RegistrationOpen = $post['RegistrationOpen'];
         
         return $larp;
     }
@@ -46,11 +48,11 @@ class LARP extends BaseModel{
     # Update an existing larp in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix.strtolower(static::class)." SET Name=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, DisplayIntrigues=?, CampaignId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix.strtolower(static::class)." SET Name=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, DisplayIntrigues=?, CampaignId=?, RegistrationOpen=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, $this->Id))) {
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, $this->RegistrationOpen, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -65,12 +67,12 @@ class LARP extends BaseModel{
         //print_r($this);
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix.strtolower(static::class)." (Name, TagLine, StartDate, EndDate, MaxParticipants, 
-            LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId, RegistrationOpen) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId))) {
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, $this->RegistrationOpen))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
