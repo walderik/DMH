@@ -12,7 +12,7 @@ include_once 'header_subpage.php';
     $allAllergies = NormalAllergyType::all();
     
     foreach($allAllergies as $allergy) {
-        $persons = Person::getAllWithSingleAllergy($allergy);
+        $persons = Person::getAllWithSingleAllergy($allergy, $current_larp);
         echo "Enbart " . $allergy->Name . "<br>";
         foreach($persons as $person) {
             echo $person->Name . " "  . $person->FoodAllergiesOther . $person->getTypeOfFood()->Name . "<br>";
@@ -22,7 +22,7 @@ include_once 'header_subpage.php';
      
     
     //Multipla allergier
-    $persons = Person::getAllWithMultipleAllergies();
+    $persons = Person::getAllWithMultipleAllergies($current_larp);
     echo "Multipla vanliga allergier<br>";
     foreach($persons as $person) {
         echo $person->Name . " " . commaStringFromArrayObject($person->getNormalAllergyTypes()) . " " . $person->FoodAllergiesOther . $person->getTypeOfFood()->Name . "<br>";
@@ -30,7 +30,7 @@ include_once 'header_subpage.php';
     echo "<br>";
     
     
-    //TODO Hitta alla som inte har någon vald allergi, men som har en kommentar
+    //Hitta alla som inte har någon vald allergi, men som har en kommentar
     $persons = Person::getAllWithoutAllergiesButWithComment();
     echo "Special<br>";
     foreach($persons as $person) {

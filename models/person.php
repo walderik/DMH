@@ -387,15 +387,15 @@ class Person extends BaseModel{
         return false;
     }
     
-    public static function getAllWithSingleAllergy(NormalAllergyType $allergy) {
+    public static function getAllWithSingleAllergy(NormalAllergyType $allergy, LARP $larp) {
         global $tbl_prefix;
-        if (is_null($allergy)) return Array();
+        if (is_null($allergy) OR is_null($larp)) return Array();
 
-        //TODO lägg in kontroll på Registration för detta lajv
-        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".$tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".$tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount = 1 AND Counted.PersonId = ".$tbl_prefix."normalallergytype_person.PersonId and ".$tbl_prefix."normalallergytype_person.NormalAllergyTypeId=?) ORDER BY ".static::$orderListBy.";";
+        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".$tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, ".$tbl_prefix."Registration, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".$tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount = 1 AND Counted.PersonId = ".$tbl_prefix."normalallergytype_person.PersonId and ".$tbl_prefix."normalallergytype_person.NormalAllergyTypeId=? AND ".$tbl_prefix."Registration.PersonId=".$tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."Registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
+
         $stmt = static::connectStatic()->prepare($sql);
         
-        if (!$stmt->execute(array($allergy->Id))) {
+        if (!$stmt->execute(array($allergy->Id, $larp->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
@@ -416,14 +416,14 @@ class Person extends BaseModel{
         
     }
     
-    public static function getAllWithMultipleAllergies() {
+    public static function getAllWithMultipleAllergies(LARP $larp) {
         global $tbl_prefix;
 
-        //TODO lägg in kontroll på Registration för detta lajv
-        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".$tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".$tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount > 1 AND Counted.PersonId = ".$tbl_prefix."normalallergytype_person.PersonId) ORDER BY ".static::$orderListBy.";";
+        if (is_null($larp)) return Array();
+        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".$tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, ".$tbl_prefix."Registration, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".$tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount > 1 AND Counted.PersonId = ".$tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."Registration.PersonId=".$tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."Registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute()) {
+
+        if (!$stmt->execute(array($larp->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
@@ -451,7 +451,7 @@ class Person extends BaseModel{
         
         $sql="select * from `".$tbl_prefix."person` WHERE id NOT IN (SELECT PersonId FROM ".$tbl_prefix."normalallergytype_person) AND ".$tbl_prefix."person.FoodAllergiesOther !='' ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
-        
+
         if (!$stmt->execute()) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
