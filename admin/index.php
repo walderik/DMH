@@ -47,15 +47,40 @@ include_once '../includes/error_handling.php';
 	  <?php if (isset($message_message) && strlen($message_message)>0) {
 	      echo '<div class="message">'.$message_message.'</div>';
 	  }?>
-			<p>
-				Just nu är det <?php echo count(Registration::allBySelectedLARP()); ?> anmälda deltagare.<br> 
-			</p>
+	  <?php $payment_array = PaymentInformation::allBySelectedLARP();
+        if (empty($payment_array)) {
+      ?>
+            <div class="content">Inga <a href="payment_information_admin.php">avgifter</a> är satta. Gör det innan anmälan öppnar.</div>
+        <?php
+        }
+        ?>
+        
+        <div class="content">
+            Anmälan är 
+            <?php if ($current_larp->RegistrationOpen == 1) {
+                echo "öppen";
+                $openButton = "Stäng";
+            }
+            else {
+                echo "stängd";
+                $openButton = "Öppna";
+            }
+                  
+                
+                
+                ?>
+            <form action="logic/toggle_larp_registration_open.php"><input type="submit" value="<?php echo $openButton;?>"></form>
+
+        </div>
+		<div class="content">
+			Just nu är det <?php echo count(Registration::allBySelectedLARP()); ?> anmälda deltagare.<br> 
+		</div>
 			<?php 
 			$approval_count = count (Person::getAllToApprove($current_larp));
 			if ($approval_count>0) {?>
-			<p>
+			<div class="content">
 				<?php echo $approval_count; ?> deltagare väntar på <a href="persons_to_approve.php">godkännande</a>. 
-			</p>
+			
 			
 			<?php }?>
 		</div>
