@@ -1,7 +1,7 @@
 <?php
 
 global $root;
- echo $root;
+
 include_once $root . '/includes/dmh_mailer.php'; 
 include_once $root . '/includes/html_helpers.php'; 
 include_once $root . '/includes/sverok.php'; 
