@@ -60,8 +60,8 @@ if (isset($current_role->GroupId)) {
 			<tr><td valign="top" class="header">Relationer med andra</td><td><?php echo $current_role->CharactersWithRelations;?></td></tr>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_role->OtherInformation;?></td></tr>
 			<tr><td valign="top" class="header">Rikedom</td><td><?php echo Wealth::loadById($current_role->WealthId)->Name;?></td></tr>
-			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo PlaceOfResidence::loadById($current_role->PlaceOfResidenceId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Var är karaktären född?</td><td><?php echo $current_role->Birthplace;?></td></tr>
+			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo PlaceOfResidence::loadById($current_role->PlaceOfResidenceId)->Name;?></td></tr>
 
 		</table>		
 
