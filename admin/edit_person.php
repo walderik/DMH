@@ -24,6 +24,12 @@ if (!$person->isRegistered($current_larp)) {
 
 $registration = Registration::loadByIds($person->Id, $current_larp->Id);
 
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = $_SERVER['HTTP_REFERER'];
+}
+else {
+    $referer = "";
+}
 
 
 
@@ -41,10 +47,10 @@ $registration = Registration::loadByIds($person->Id, $current_larp->Id);
 	<div class="content">
 		<h1><?php echo $person->Name;?></h1>
 		<form action="logic/edit_person_save.php" method="post">
-		<table>
     		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $person->Id; ?>">
     		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $registration->Id; ?>">
-    		<input type="hidden" id="Referer" name="Referer" value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+    		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+		<table>
     		
  			<tr><td valign="top" class="header">Namn</td>
  			<td><input type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="250" required></td></tr>

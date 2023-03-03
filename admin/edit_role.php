@@ -25,6 +25,14 @@ if (isset($role->GroupId)) {
     $group=Group::loadById($role->GroupId);
 }
 
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = $_SERVER['HTTP_REFERER'];
+}
+else {
+    $referer = "";
+}
+
+
 ?>
 
         <nav id="navigation">
@@ -40,7 +48,7 @@ if (isset($role->GroupId)) {
 		<h1><?php echo $role->Name;?></h1>
 		<form action="logic/edit_role_save.php" method="post">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
-    		<input type="hidden" id="Referer" name="Referer" value="<?php echo $_SERVER['HTTP_REFERER'];?>">
+    		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		
 		<table>
  			<tr><td valign="top" class="header">Namn</td>
