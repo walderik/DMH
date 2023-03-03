@@ -391,6 +391,7 @@ class Person extends BaseModel{
         global $tbl_prefix;
         if (is_null($allergy)) return Array();
 
+        //TODO lägg in kontroll på Registration för detta lajv
         $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".$tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".$tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount = 1 AND Counted.PersonId = ".$tbl_prefix."normalallergytype_person.PersonId and ".$tbl_prefix."normalallergytype_person.NormalAllergyTypeId=?) ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
@@ -418,6 +419,7 @@ class Person extends BaseModel{
     public static function getAllWithMultipleAllergies() {
         global $tbl_prefix;
 
+        //TODO lägg in kontroll på Registration för detta lajv
         $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".$tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".$tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount > 1 AND Counted.PersonId = ".$tbl_prefix."normalallergytype_person.PersonId) ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
@@ -441,6 +443,36 @@ class Person extends BaseModel{
         return $resultArray;
         
     }
+    
+    public static function getAllWithoutAllergiesButWithComment() {
+        global $tbl_prefix;
+        
+        //TODO lägg in kontroll på Registration för detta lajv
+        
+        $sql="select * from `".$tbl_prefix."person` WHERE id NOT IN (SELECT PersonId FROM ".$tbl_prefix."normalallergytype_person) AND ".$tbl_prefix."person.FoodAllergiesOther !='' ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+        
+    }
+    
     
     
 }

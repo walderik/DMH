@@ -31,6 +31,13 @@ include_once 'header_subpage.php';
     
     
     //TODO Hitta alla som inte har någon vald allergi, men som har en kommentar
+    $persons = Person::getAllWithoutAllergiesButWithComment();
+    echo "Special<br>";
+    foreach($persons as $person) {
+        echo $person->Name . " " . $person->FoodAllergiesOther . $person->getTypeOfFood()->Name . "<br>";
+    }
+    echo "<br>";
+    
     
     ?>
 </div>
