@@ -21,6 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $person = Person::loadById($personId);
     $person->setValuesByArray($personArr);
     $person->update();
+        
+    $person->deleteAllNormalAllergyTypes();
+    $person->saveAllNormalAllergyTypes($_POST);
     
     
     $registrationId = $_POST['RegistrationId'];
