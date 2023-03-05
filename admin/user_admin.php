@@ -12,22 +12,30 @@
         $resultCheck = count($user_array);
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
-            echo "<tr><th>Id</td><th>Email</th><th>Admin</th><th>ActivationCode</th>\n";
+            echo "<tr><th>Id</td><th>Email</th><th>Admin</th><th>Aktivering</th>\n";
             foreach ($user_array as $user) {
                 echo "<tr>\n";
                 echo "<td>" . $user->Id . "</td>\n";
                 echo "<td>" . $user->Email . "</td>\n";
-                echo "<td>" . $user->IsAdmin . "</td>\n";
-                echo "<td>" . $user->ActivationCode . "</td>\n";
-                
-//                 echo "<td>" . "<a href='larp_form.php?operation=update&id=" . $larp->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-//                 echo "<td>" . "<a href='larp_admin.php?operation=delete&id=" . $larp->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                $ikon = showStatusIcon($user->IsAdmin);
+                if ($current_user->Email == $user->Email ) {
+                    echo "<td>" . $ikon . "</td>\n";
+                } else {
+                    echo "<td><a href='logic/toggle_is_admin.php?user_id=$user->Id'>" . $ikon . "</a>";
+                }
+                echo "<td>";
+                if ($user->ActivationCode == 'activated') {
+                    echo "Aktiverad</td>\n";
+                }
+                else {
+                    echo "<a href='logic/toggle_user_activated.php?user_id=$user->Id'>Aktivera</a></td>\n";
+                }
                 echo "</tr>\n";
             }
             echo "</table>";
         }
         else {
-            echo "<p>Inga registrarade ännu</p>";
+            echo "<p>Inga registrerade användare</p>";
         }
         ?>
         
