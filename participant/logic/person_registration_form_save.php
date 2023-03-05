@@ -28,6 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $registration->create();
         
+        $registration->saveAllOfficialTypes($_POST);
+        
         $roleIdArr = $_POST['roleId'];
         echo "<br>roleIdArr = <br>";
         print_r($roleIdArr);

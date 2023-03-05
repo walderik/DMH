@@ -168,5 +168,61 @@ class Registration extends BaseModel{
     public function getLARP() {
         return LARP::loadById($this->LARPId);
     }
+
+    public function getOfficialTypes() {
+        global $tbl_prefix;
+        if (is_null($this->Id)) return array();
+        
+        $stmt = $this->connect()->prepare("SELECT * FROM ".$tbl_prefix."OfficialType_Person where RegistrationId = ? ORDER BY OfficialTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = NormalAllergyType::loadById($row['NormalAllergyTypeId']);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
+    
+    # Spara den här relationen
+    public function saveAllOfficialTypes($post) {
+        global $tbl_prefix;
+        if (!isset($post['OfficialTypeId'])) {
+            return;
+        }
+        foreach($post['OfficialTypeId'] as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."Official_Person (OfficialTypeId, RegistrationId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    
+    public function deleteAllOfficialTypes() {
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."Official_Person WHERE RegistrationId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
     
 }

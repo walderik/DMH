@@ -381,7 +381,6 @@ class Person extends BaseModel{
     public function isMember($date) {
         $year = substr($date, 0, 4);
         
-        
         $val = check_membership($this->SocialSecurityNumber, $year);
         if ($val == 1) return true;
         return false;
@@ -444,18 +443,18 @@ class Person extends BaseModel{
         
     }
     
-    public static function getAllWithoutAllergiesButWithComment() {
+    public static function getAllWithoutAllergiesButWithComment(LARP $larp) {
         global $tbl_prefix;
         
 
         
         $sql="select * from ".$tbl_prefix."person WHERE id IN ".
-            "(SELECT PersonId from ".$tbl_prefix."Registration WHERE PersonId NOT IN ".
+            "(SELECT PersonId from ".$tbl_prefix."Registration WHERE LarpId =? AND PersonId NOT IN ".
             "(SELECT PersonId FROM ".$tbl_prefix."normalallergytype_person)) AND FoodAllergiesOther !='' ".
             "ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
 
-        if (!$stmt->execute()) {
+        if (!$stmt->execute(array($larp->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
@@ -478,4 +477,66 @@ class Person extends BaseModel{
     
     
     
+    public static function getAllOfficials(LARP $larp) {
+        global $tbl_prefix;
+        
+        
+        
+        $sql="select * from ".$tbl_prefix."person WHERE id IN ".
+            "(SELECT PersonId from ".$tbl_prefix."Registration WHERE IsOfficial=1 and LARPId=?) ".
+            "ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+        
+    }
+
+
+    public static function getAllWhoWantToBeOffical(LARP $larp) {
+        global $tbl_prefix;
+        
+        
+        
+        $sql="select * from ".$tbl_prefix."person WHERE id IN ".
+            "(SELECT PersonId from ".$tbl_prefix."Registration WHERE IsOfficial=0 and LARPId=? AND Id IN (SELECT RegistrationId FROM ".$tbl_prefix."OfficialType_Person)) ".
+            "ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+        
+    }
 }
