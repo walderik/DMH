@@ -86,7 +86,7 @@ function send_activation($user)  {
         "%s://%s%s",
         isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
         $_SERVER['SERVER_NAME'],
-        "/includes/activate.php?email=$mail&code=$code"
+        "/regsys/includes/activate.php?email=$mail&code=$code"
         );
     
     $text  = "Du har begärt en ny aktiveringslänk för att kunna aktivera kontot.<br>\n";
@@ -104,7 +104,7 @@ function send_change_password($user) {
         "%s://%s%s",
         isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
         $_SERVER['SERVER_NAME'],
-        "/change_password.php?email=$mail&code=$code"
+        "/regsys/change_password.php?email=$mail&code=$code"
         );
     
     $text  = "Du har begärt en länk för att kunna byta lösenord på ditt konto.<br>\n";
