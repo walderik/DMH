@@ -13,30 +13,35 @@ include_once 'header_subpage.php';
     
     foreach($allAllergies as $allergy) {
         $persons = Person::getAllWithSingleAllergy($allergy, $current_larp);
-        echo "Enbart " . $allergy->Name . "<br>";
-        foreach($persons as $person) {
-            echo $person->Name . " "  . $person->FoodAllergiesOther . $person->getTypeOfFood()->Name . "<br>";
+        if (isset($persons) && count($persons) > 0) {
+            echo "<h2>Enbart $allergy->Name</h2><table class='data'>";
+            echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Övrigt</th><th>Vald mat</th></tr>";
+            foreach($persons as $person) {
+                echo "<tr><td>$person->Name</td><td>$person->Email</td><td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>".$person->getTypeOfFood()->Name."</td></tr>";
+            }
+            echo "</table>";
         }
-        echo "<br>";
     }
      
     
     //Multipla allergier
     $persons = Person::getAllWithMultipleAllergies($current_larp);
-    echo "Multipla vanliga allergier<br>";
+    echo "<h2>Multipla vanliga allergier</h2><table class='data'>";
+    echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Allergier</th><th>Övrigt</th><th>Vald mat</th></tr>";
     foreach($persons as $person) {
-        echo $person->Name . " " . commaStringFromArrayObject($person->getNormalAllergyTypes()) . " " . $person->FoodAllergiesOther . $person->getTypeOfFood()->Name . "<br>";
+        echo "<tr><td>$person->Name</td><td>$person->Email</td><td>$person->PhoneNumber</td><td>" . commaStringFromArrayObject($person->getNormalAllergyTypes()) . "</td><td>$person->FoodAllergiesOther</td><td>" . $person->getTypeOfFood()->Name . "</td></tr>";
     }
-    echo "<br>";
+    echo "</table>";
     
     
     //Hitta alla som inte har någon vald allergi, men som har en kommentar
     $persons = Person::getAllWithoutAllergiesButWithComment();
-    echo "Special<br>";
+    echo "<h2>Special</h2><table class='data'>";
+    echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Övrigt</th><th>Vald mat</th></tr>";
     foreach($persons as $person) {
-        echo $person->Name . " " . $person->FoodAllergiesOther . $person->getTypeOfFood()->Name . "<br>";
+        echo "<tr><td>$person->Name</td><td>$person->Email</td><td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>" . $person->getTypeOfFood()->Name . "</td></tr>";
     }
-    echo "<br>";
+    echo "</table>";
     
     
     ?>

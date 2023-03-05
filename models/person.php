@@ -447,9 +447,12 @@ class Person extends BaseModel{
     public static function getAllWithoutAllergiesButWithComment() {
         global $tbl_prefix;
         
-        //TODO lägg in kontroll på Registration för detta lajv
+
         
-        $sql="select * from `".$tbl_prefix."person` WHERE id NOT IN (SELECT PersonId FROM ".$tbl_prefix."normalallergytype_person) AND ".$tbl_prefix."person.FoodAllergiesOther !='' ORDER BY ".static::$orderListBy.";";
+        $sql="select * from ".$tbl_prefix."person WHERE id IN ".
+            "(SELECT PersonId from ".$tbl_prefix."Registration WHERE PersonId NOT IN ".
+            "(SELECT PersonId FROM ".$tbl_prefix."normalallergytype_person)) AND FoodAllergiesOther !='' ".
+            "ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
 
         if (!$stmt->execute()) {
