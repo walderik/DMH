@@ -35,7 +35,7 @@ include_once 'header_subpage.php';
     
     
     //Hitta alla som inte har någon vald allergi, men som har en kommentar
-    $persons = Person::getAllWithoutAllergiesButWithComment();
+    $persons = Person::getAllWithoutAllergiesButWithComment($current_larp);
     echo "<h2>Special</h2><table class='data'>";
     echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Övrigt</th><th>Vald mat</th></tr>";
     foreach($persons as $person) {
