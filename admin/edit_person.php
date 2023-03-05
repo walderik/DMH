@@ -14,10 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $person = Person::loadById($PersonId);
 
-if (Person::loadById($person->Id)->UserId != $current_user->Id) {
-    header('Location: index.php'); //Inte din person
-}
-
 if (!$person->isRegistered($current_larp)) {
     header('Location: index.php'); //Rollen är inte anmäld
 }

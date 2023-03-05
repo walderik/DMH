@@ -396,8 +396,12 @@ class Person extends BaseModel{
         $year = substr($larp->StartDate, 0, 4);
         
         $val = check_membership($this->SocialSecurityNumber, $year);
-        if ($val == 1) $registration->IsMember=1;
-        else $registration->IsMember = 0;
+        if ($val == 1) {
+            $registration->IsMember=1;
+        }
+        else {
+            $registration->IsMember = 0;
+        }
         $now = new Datetime();
         $registration->MembershipCheckedAt = date_format($now,"Y-m-d H:i:s");
         $registration->update();
