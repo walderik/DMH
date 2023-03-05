@@ -35,6 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registration->setValuesByArray($registrationArr);
     $registration->update();
     
+    $registration->deleteAllOfficialTypes();
+    $registration->saveAllOfficialTypes($_POST);
+    
     if (isset($_POST['Referer']) && $_POST['Referer']!="") {
         header('Location: ' . $_POST['Referer']);
         exit;

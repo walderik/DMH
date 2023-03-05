@@ -100,6 +100,7 @@ else {
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
 			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->Approved)) { echo $registration->Approved; } else { echo "Nej"; }?></td></tr>
 			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
+			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php OfficialType::selectionDropdown(true,false,$registration->getSelectedOfficialTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
 			<tr><td valign="top" class="header">Belopp att betala</td><td><?php echo $registration->AmountToPay;?></td></tr>
