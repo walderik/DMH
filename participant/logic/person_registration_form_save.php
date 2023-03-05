@@ -93,5 +93,5 @@ function send_registration_mail(Registration $registration) {
         $text .= "<br>\n";
     }
 
-    DmhMailer::send($mail, $person->Name, $text, "Bekräftan av anmälan till ".$larp->Name);
+    DmhMailer::send($mail, $person->Name, $text, "Bekräftan av anmälan till $larp->Name");
 }
