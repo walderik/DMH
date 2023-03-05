@@ -104,13 +104,12 @@ include_once '../includes/error_handling.php';
                         echo "</td></tr>\n";
  
                         
+                        echo "<tr><td>Medlem</td><td>".showStatusIcon($person->isMember($current_larp), "https://ebas.sverok.se/signups/index/5915")."</a>";
+                        if (!$person->isMember($current_larp)) {
+                            echo "</td><td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>Betala medlemsavgiften</a>";
+                            echo "</td></tr>\n";
+                        }
                     }
-                    echo "<tr><td>Medlem</td><td>".showStatusIcon($person->isMember($current_larp->StartDate), "https://ebas.sverok.se/signups/index/5915")."</a>";
-                    if (!$person->isMember($current_larp->StartDate)) {
-                        echo "</td><td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>Betala medlemsavgiften</a>";
-                        echo "</td></tr>\n";
-                    }
-                    
                     echo "</table>";
     		        
     		        if (isset($groups) && count($groups) > 0) {
