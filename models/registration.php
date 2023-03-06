@@ -93,13 +93,15 @@ class Registration extends BaseModel{
     # Update an existing registration in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."registration SET LARPId=?, PersonId=?, Approved=?, RegisteredAt=?, PaymentReference=?, AmountToPay=?,
+        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."registration SET LARPId=?, PersonId=?, Approved=?, 
+                RegisteredAt=?, PaymentReference=?, AmountToPay=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, Guardian=?, NotComingReason=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, 
+        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, 
+            $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded, 
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId,$this->Guardian, $this->NotComingReason, $this->Id))) {
+            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->Guardian, $this->NotComingReason, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

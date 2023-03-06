@@ -12,10 +12,6 @@ if (!isset($_SESSION['admin'])) {
 
 
 
-echo '$_POST :<br>';
-print_r($_POST);
-
-echo "<br />";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registrationId = $_POST['RegistrationId'];
@@ -39,6 +35,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $registration->update();
+
+        if (isset($_POST['Referer']) && $_POST['Referer']!="") {
+            header('Location: ' . $_POST['Referer']);
+            exit;
+        }
+        
         header('Location: ../registered_persons.php');
         exit;
         

@@ -19,6 +19,12 @@ if (!$current_person->isRegistered($current_larp)) {
 
 $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = $_SERVER['HTTP_REFERER'];
+}
+else {
+    $referer = "";
+}
 
 
 
@@ -29,6 +35,7 @@ $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 		<h1>Hantera betalning för <?php echo $current_person->Name;?></h1>
 		<form action="logic/person_payment_save.php" method="post">
     		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $registration->Id; ?>">
+    		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
 			<tr><td valign="top" class="header">Namn</td><td><?php echo $current_person->Name;?></td></tr>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $current_person->SocialSecurityNumber;?></td></tr>
