@@ -12,16 +12,18 @@
         $resultCheck = count($user_array);
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
-            echo "<tr><th>Id</td><th>Email</th><th>Admin</th><th>Aktivering</th>\n";
+            echo "<tr><th>Email</th><th>Admin</th><th>Aktivering</th><th>Kan Logga in</th>\n";
             foreach ($user_array as $user) {
-                echo "<tr>\n";
-                echo "<td>" . $user->Id . "</td>\n";
-                echo "<td>" . $user->Email . "</td>\n";
-                $ikon = showStatusIcon($user->IsAdmin);
-                if ($current_user->Email == $user->Email ) {
-                    echo "<td>" . $ikon . "</td>\n";
+                if ($user->Blocked) {
+                    echo "<tr style = 'text-decoration:line-through;'>\n";
                 } else {
-                    echo "<td><a href='logic/toggle_is_admin.php?user_id=$user->Id'>" . $ikon . "</a>";
+                    echo "<tr>\n";
+                }
+                echo "<td>" . $user->Email . "</td>\n";
+                if ($current_user->Email == $user->Email ) {
+                    echo "<td>" . showStatusIcon($user->IsAdmin) . "</td>\n";
+                } else {
+                    echo "<td><a href='logic/toggle_is_admin.php?user_id=$user->Id'>" . showStatusIcon($user->IsAdmin) . "</a>";
                 }
                 echo "<td>";
                 if ($user->ActivationCode == 'activated') {
@@ -30,7 +32,13 @@
                 else {
                     echo "<a href='logic/toggle_user_activated.php?user_id=$user->Id'>Aktivera</a></td>\n";
                 }
-                echo "</tr>\n";
+                echo "<td>";
+                if ($current_user->Email == $user->Email ) {
+                    echo showStatusIcon(!$user->Blocked);
+                } else {
+                    echo "<a href='logic/toggle_user_blocked.php?user_id=$user->Id'>" . showStatusIcon(!$user->Blocked) . "</a>";
+                }
+                echo "</td>\n</tr>\n";
             }
             echo "</table>";
         }
