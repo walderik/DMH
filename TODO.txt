@@ -18,9 +18,6 @@ Mail när man har anmält sig. (Klart - Pär granskar det)
 
 Behöver man kunna byta spelare på en roll?
 
-Vi sparar inte önskemål om funktionär.
-Det behöver även visas i view_person och kunna ändras i edit_person
-
 
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role

@@ -27,11 +27,18 @@ include_once 'header_subpage.php';
         $registration = $person->getRegistration($current_larp);
         echo "<tr><td>$person->Name</td><td>$person->Email</td><td>$person->PhoneNumber</td><td>".commaStringFromArrayObject($registration->getOfficialTypes())."</td><td>";
         ?>
-        <form action="logic/official_save.php" method="post"><input type="hidden" id="Id" name="Id" value="<?php echo $registration->Id;?>"><input type="submit" value="Lägg till"></form>
+        <form action="logic/official_save.php?type=single" method="post"><input type="hidden" id="Id" name="Id" value="<?php echo $registration->Id;?>"><input type="submit" value="Lägg till"></form>
     <?php     
         echo "</td></tr>";
     }
         echo "</table>";
     
     ?>
+	
+	<a href="choose_persons.php?operation=officials">Välj bland alla deltagare</a>
+	
+	</div>
 
+
+</body>
+</html>
