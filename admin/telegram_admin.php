@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         <h1>Telegram</h1>
             <a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
         
-            <a href="telegram_pdf.php"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a>  
+            <a href="telegram_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a>  
         
         <?php
     

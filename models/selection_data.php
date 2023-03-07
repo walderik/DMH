@@ -117,8 +117,10 @@ class SelectionData extends BaseModel{
     }
     
     
-    public static function countByType($larp) {
-        global $tbl_prefix;
+    public static function countByType(?LARP $larp = NULL) {
+        global $tbl_prefix, $current_larp;
+        
+        if (!isset($larp) || is_null($larp)) $larp = $current_larp;
         
         $type = strtolower(static::class)."Id";
         $sql = "select count(".$tbl_prefix."registration.Id) AS Num, ".$tbl_prefix.strtolower(static::class). ".Name AS Name FROM ".
