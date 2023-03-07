@@ -136,6 +136,40 @@ class Group extends BaseModel{
 
      }
      
+     public function hasIntrigue(LARP $larp) {
+         $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
+         if (isset($larp_group->Intrigue) && $larp_group->Intrigue != "") return true;
+         return false;
+         
+     }
+     
+     public static function getAllRegistered(LARP $larp) {
+         global $tbl_prefix;
+         if (is_null($larp)) return Array();
+         $sql = "SELECT * FROM `".$tbl_prefix."group` WHERE Id IN (SELECT GroupId FROM regsys_larp_group WHERE larpId =?) ORDER BY ".static::$orderListBy.";";
+         $stmt = static::connectStatic()->prepare($sql);
+         
+         if (!$stmt->execute(array($larp->Id))) {
+             $stmt = null;
+             header("location: ../participant/index.php?error=stmtfailed");
+             exit();
+         }
+         
+         
+         if ($stmt->rowCount() == 0) {
+             $stmt = null;
+             return array();
+         }
+         
+         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+         $resultArray = array();
+         foreach ($rows as $row) {
+             $resultArray[] = static::newFromArray($row);
+         }
+         $stmt = null;
+         return $resultArray;
+     }
+     
      public static function getGroupsForPerson($personId) {
          global $tbl_prefix;
          $sql = "SELECT * FROM `".$tbl_prefix."group` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";

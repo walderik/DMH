@@ -18,6 +18,7 @@ include_once '../includes/error_handling.php';
             </li>
               <li class="dropdown"><a href="#" class="trigger-drop">Intriger<i class="arrow"></i></a>
               <ul class="drop">
+                <li><a href="groups.php">Grupper</a></li>
                 <li><a href="roles.php">Karaktärer</a></li>
                 <li><a href="role_list.php">Lista alla</a></li>
 
