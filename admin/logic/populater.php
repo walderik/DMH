@@ -362,6 +362,7 @@ function populateNormalAllergyTypes() {
     $allergy->CampaignId = $campaign->Id;
     $allergy->create();
     
+    /*
     $allergy = NormalAllergyType::newWithDefault();
     $allergy->Name = "Ägg";
     $allergy->Description = "Äggviteprotein";
@@ -373,18 +374,19 @@ function populateNormalAllergyTypes() {
     $allergy->Description = "Nötter, mandlar eller jordnötter";
     $allergy->CampaignId = $campaign->Id;
     $allergy->create();
-    
+    */
     $allergy = NormalAllergyType::newWithDefault();
     $allergy->Name = "Laktos";
     $allergy->Description = "Laktossocker (inte samma sak som mjölkprotein)";
     $allergy->CampaignId = $campaign->Id;
     $allergy->create();
-    
+    /*
     $allergy = NormalAllergyType::newWithDefault();
     $allergy->Name = "Lök";
     $allergy->Description = "Gullök, vitlök och purjo";
     $allergy->CampaignId = $campaign->Id;
     $allergy->create();
+    */
     echo "Skapade " . sizeof(NormalAllergyType::all()) . " allergier<br>";
 }
 
