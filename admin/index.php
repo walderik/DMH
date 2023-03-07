@@ -9,8 +9,8 @@ include_once '../includes/error_handling.php';
           <ul class="links">
               <li class="dropdown"><a href="#" class="trigger-drop">Admin<i class="arrow"></i></a>
               <ul class="drop">
-                <li><a href="registered_persons.php">Deltagare</a></li>
                 <li><a href="payment_information_admin.php">Avgift</a></li>
+                <li><a href="registered_persons.php">Deltagare</a></li>
                 <li><a href="persons_to_approve.php">Godkänna</a></li>
                 <li><a href="kitchen.php">Köket</a></li>
                 <li><a href="officials.php">Funktionärer</a></li>
@@ -50,7 +50,7 @@ include_once '../includes/error_handling.php';
 	  <?php $payment_array = PaymentInformation::allBySelectedLARP();
         if (empty($payment_array)) {
       ?>
-            <div class="content">Inga <a href="payment_information_admin.php">avgifter</a> är satta. Gör det innan anmälan öppnar.</div>
+            <div class="content">Inga <a href="payment_information_admin.php">deltagaravgifter</a> är satta. Gör det innan anmälan öppnar.</div>
         <?php
         }
         ?>
