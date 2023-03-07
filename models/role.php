@@ -134,7 +134,14 @@ class Role extends BaseModel{
     public function isRegistered(LARP $larp) {
         return LARP_Role::isRegistered($this->Id, $larp->Id);
         
-    }    
+    } 
+    
+    public function hasIntrigue(LARP $larp) {
+        $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
+        if (isset($larp_role->Intrigue) && $larp_role->Intrigue != "") return true;
+        return false;
+        
+    }
     
     public function getRegistration(LARP $larp) {
         return Registration::loadByIds($this->PersonId, $larp->Id);
@@ -227,5 +234,58 @@ class Role extends BaseModel{
         return $resultArray;
     }
     
-
+    public static function getAllMainRoles(LARP $larp) {
+        global $tbl_prefix;
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM regsys_larp_role WHERE larpId =? AND IsMainRole=1) ORDER BY GroupId;";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
+    
+    public static function getAllNotMainRoles(LARP $larp) {
+        global $tbl_prefix;
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM regsys_larp_role WHERE larpId =? AND IsMainRole=0) ORDER BY GroupId;";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
+    
 }

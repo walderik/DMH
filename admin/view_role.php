@@ -57,13 +57,8 @@ if (isset($current_role->GroupId)) {
 
 		
 		<h2>Intrig</h2>
-			<?php if ($current_larp->DisplayIntrigues == 1) {
-			    echo $larp_role->Intrigue;    
-			}
-			else {
-			    echo "Intrigerna är inte klara än.";
-			}
-			?>
+		<?php    echo $larp_role->Intrigue; ?>
+
 		
 
 	</div>
