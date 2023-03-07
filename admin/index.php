@@ -54,8 +54,9 @@ include_once '../includes/error_handling.php';
         <?php
         }
         ?>
+                <div class="content">
         
-        <div class="content">
+        
             Anmälan är 
             <?php if ($current_larp->RegistrationOpen == 1) {
                 echo "öppen";
@@ -66,14 +67,21 @@ include_once '../includes/error_handling.php';
                 $openButton = "Öppna";
             }
                   
-                
-                
                 ?>
             <form action="logic/toggle_larp_registration_open.php"><input type="submit" value="<?php echo $openButton;?>"></form>
 
         </div>
 		<div class="content">
 			Just nu är det <?php echo count(Registration::allBySelectedLARP()); ?> anmälda deltagare.<br> 
+        <?php 
+
+                    if ($current_larp->isFull()) {
+                echo "<br>Lajvet är fullt nu.";
+            }
+            
+            ?>
+                
+
 		</div>
 			<?php 
 			$approval_count = count (Person::getAllToApprove($current_larp));

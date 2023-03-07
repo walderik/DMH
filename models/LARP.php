@@ -91,6 +91,19 @@ class LARP extends BaseModel{
         return true;
     }
     
+    public function isFull() {
+        $registrations = Registration::allBySelectedLARP($this);
+        if (count($registrations) >= $this->MaxParticipants) return true;
+        else return false;
+    }
+    
+    public function mayRegister() {
+        if ($this->pastLatestRegistrationDate()) return false;
+        if ($this->isFull()) return false;
+        if ($this->RegistrationOpen == 0) return false;
+        return true;
+    }
+    
     public static function allFutureOpenLARPs() {
             global $tbl_prefix;
 

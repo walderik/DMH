@@ -4,10 +4,10 @@ global $root, $current_user;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
-echo '$_POST :<br>';
-print_r($_POST);
-
-echo "<br /><br /><br />";
+if (!$current_larp->mayRegister()) {
+    header('Location: index.php');
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     

@@ -15,7 +15,7 @@ include_once '../includes/error_handling.php';
                 <li><a href="group_form.php">Grupp</a></li>
               </ul>
             </li>
-          <?php if ($current_larp->RegistrationOpen == 1) {?>
+          <?php if ($current_larp->mayRegister()) {?>
           <ul class="links">
               <li class="dropdown"><a href="#" class="trigger-drop">Anmäl<i class="arrow"></i></a>
               <ul class="drop">
@@ -44,12 +44,22 @@ include_once '../includes/error_handling.php';
         	      echo '<div class="message">'.$message_message.'</div>';
         	  }?>
             
-            <?php if ($current_larp->RegistrationOpen == 0) {
+            <?php 
+            if ($current_larp->isFull()) {
 
-                echo "<div><b>Anmälan inte öppen</b>";
-                if (!$current_larp->pastLatestRegistrationDate()) {
-                    echo "<br><br>Du kan registrera deltagare, grupper och roller i väntan på att anmälan ska öppna. "; 
-                }
+                echo "<div><b style='color: red'>Lajvet är fullt</b>";
+                echo "</div>";
+            }
+            elseif ($current_larp->pastLatestRegistrationDate()) {
+
+                echo "<div><b style='color: red'>Sista anmälningsdag har passerat</b>";
+                echo "</div>";
+            }
+            elseif ($current_larp->RegistrationOpen == 0) {
+
+                echo "<div><b style='color: red'>Anmälan inte öppen</b>";
+                echo "<br><br>Du kan registrera deltagare, grupper och roller i väntan på att anmälan ska öppna. <br><br>"; 
+                echo "OBS! En roll kan bara bli medlem i en grupp om den är anmäld. Så det får du editera efter att anmälan har öppnat. Men övrig information kan du fylla i så länge.";
                 echo "</div>";
             }
             ?>

@@ -90,6 +90,31 @@ class Registration extends BaseModel{
         return $resultArray;
     }
     
+    
+    public static function countAllNonOfficials(?LARP $selectedLarp = NULL) {
+        global $tbl_prefix, $current_larp;
+        
+        if (!isset($selectedLarp) || is_null($selectedLarp)) $selectedLarp = $current_larp;
+        
+        $sql = "SELECT COUNT(*) FROM `".$tbl_prefix."registration` WHERE LARPid = ? AND IsOfficial=0;";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($current_larp->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $rows;
+    }
+    
     # Update an existing registration in db
     public function update() {
         global $tbl_prefix;

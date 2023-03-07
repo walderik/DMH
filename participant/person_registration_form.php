@@ -2,12 +2,10 @@
 
 require 'header.php';
 
-if ($current_larp->RegistrationOpen == 0) {
-    header('Location: index.php?error=registration_not_open');
+if (!$current_larp->mayRegister()) {
+    header('Location: index.php');
     exit;
 }
-
-
 
 echo $_SERVER["REQUEST_METHOD"];
 
