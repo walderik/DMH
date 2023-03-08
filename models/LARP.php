@@ -92,8 +92,8 @@ class LARP extends BaseModel{
     }
     
     public function isFull() {
-        $registrations = Registration::allBySelectedLARP($this);
-        if (count($registrations) >= $this->MaxParticipants) return true;
+        $number = Registration::countAllNonOfficials($this);
+        if ($number >= $this->MaxParticipants) return true;
         else return false;
     }
     

@@ -165,7 +165,33 @@ class User extends BaseModel{
     }
     
     public function isMember($group) {
-        //TODO kolla om användaren har en person som har en roll som är med i gruppen (och anmäld)
+        //Kollar om användaren har en person som har en roll som är med i gruppen (och anmäld)
+        global $tbl_prefix;
+            
+
+        if (!isset($group)) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM `".$tbl_prefix."role`, ".$tbl_prefix."person WHERE ".$tbl_prefix."role.GroupId=? AND ".$tbl_prefix."role.PersonId = ".$tbl_prefix."person.Id AND ".$tbl_prefix."person.UserId=?;";
+
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($group->Id, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+
+        }   
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+
+
+        if ($res[0]['Num'] == 0) return false;
         return true;
     }
     

@@ -96,7 +96,7 @@ class Registration extends BaseModel{
         
         if (!isset($selectedLarp) || is_null($selectedLarp)) $selectedLarp = $current_larp;
         
-        $sql = "SELECT COUNT(*) FROM `".$tbl_prefix."registration` WHERE LARPid = ? AND IsOfficial=0;";
+        $sql = "SELECT COUNT(*) AS Num FROM `".$tbl_prefix."registration` WHERE LARPid = ? AND IsOfficial=0;";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($current_larp->Id))) {
@@ -111,8 +111,8 @@ class Registration extends BaseModel{
         }
         
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        return $rows;
+        $stmt = null;
+        return $rows[0]['Num'];
     }
     
     # Update an existing registration in db

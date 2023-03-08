@@ -1,9 +1,13 @@
 
 
+Props: ändra ägare (grupp/roll)
+		ladda och visa bild
+Titledeeds tilldela ägare (roll)
+Titledeeds sätta upp hur mycket resurser de producerar / behöver	
 
 Enbart tillåtet att registrera en person per personnummer
 
-Telegram hämtar alla. Ska hämta för bara detta lajvet.
+
 
 
 När man anmäler sig måste vi kolla om gruppen rollen är med i är anmäld. 

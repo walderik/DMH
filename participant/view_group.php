@@ -8,17 +8,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     else {
         header('Location: index.php');
+        exit;
     }
 }
 
 $current_group = Group::loadById($GroupId); 
 
-if (!$current_user->isMember($group)) {
+if (!$current_user->isMember($current_group)) {
     header('Location: index.php'); //Inte medlem i gruppen
+    exit;
 }
 
 if (!$current_group->isRegistered($current_larp)) {
     header('Location: index.php'); //Gruppen är inte anmäld
+    exit;
 }
 
 $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
