@@ -26,7 +26,7 @@ include_once '../includes/selection_data_control.php';
         }
         if ($operation == 'new') {
             $object = call_user_func($objectType . '::newWithDefault');
-            print_r($object);
+
         } elseif ($operation == 'update') {
             $object = call_user_func($objectType . '::loadById', $_GET['id']);          
         } else {

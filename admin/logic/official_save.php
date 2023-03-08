@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     else if ($type == "multiple") {
-       print_r($_POST);
+
        $personIds = $_POST['PersonId'];
        foreach ($personIds as $personId) {
            $registration = Registration::loadByIds($personId, $current_larp->Id);

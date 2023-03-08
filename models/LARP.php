@@ -64,7 +64,7 @@ class LARP extends BaseModel{
     # Create a new larp in db
     public function create() {
         global $tbl_prefix;
-        //print_r($this);
+
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix.strtolower(static::class)." (Name, TagLine, StartDate, EndDate, MaxParticipants, 
             LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId, RegistrationOpen) 

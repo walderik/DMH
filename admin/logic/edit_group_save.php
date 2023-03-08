@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
         $larp_group = LARP_Group::loadByIds($groupId, $current_larp->Id);
         
-        print_r($larp_group);
+
         $larp_group->setValuesByArray($_POST);
         $larp_group->update();
         

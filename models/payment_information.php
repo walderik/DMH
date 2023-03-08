@@ -73,7 +73,7 @@ class PaymentInformation extends BaseModel{
     public function create() {
         global $tbl_prefix;
         $connection = $this->connect();
-        print_r($this);
+
         $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."paymentinformation` (LARPId, FromDate, ToDate, FromAge, ToAge,
                                                                 Cost) VALUES (?,?,?,?,?,?);");
         

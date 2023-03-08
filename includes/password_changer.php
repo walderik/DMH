@@ -25,7 +25,6 @@ if (strlen($password) < 5 || strlen($password) > 20) {
 
 if (strlen($code) < 15) {
     header("location: ../index.php?error=noSubmit2");
-//     print_r($_POST);
     exit();
 }
 $user = User::loadByEmailChangeCode($code);

@@ -24,17 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $now = new Datetime();
         $registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
-        print_r($registration);
+
         
         $registration->create();
         
         $registration->saveAllOfficialTypes($_POST);
         
         $roleIdArr = $_POST['roleId'];
-        echo "<br>roleIdArr = <br>";
-        print_r($roleIdArr);
-        echo "<br>Length = ".count($roleIdArr);
-        echo "<br /><br /><br />\n";
+
         
         if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
         echo "Mainrole = x" . $mainRole."x <br />\n";

@@ -59,15 +59,12 @@ function check_membership(string $socialsecuritynumber, string $year)
     $resp = curl_exec($curl);
     curl_close($curl);
     
-     //echo $resp;
-//     echo "<br />1<br />";
+
     $obj = json_decode($resp);
-     //print_r($obj);
-    // echo "<br />2<br />";
+
     if (!isset($obj->response) || is_null($obj->response)) return false;
     $response = $obj->response;
-    //echo "<br />3<br />";
-    //echo "Resp: " . strlen($response->member_found);
+
     if (!isset($response->member_found) || is_null($response->member_found) || strlen($response->member_found)==0 ) {
         return false;
         
