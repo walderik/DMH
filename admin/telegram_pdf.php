@@ -54,7 +54,7 @@ class TELEGRAM_PDF extends FPDF {
 }
 
 
-$arrayOfTelegrams = Telegram::all();
+$arrayOfTelegrams = Telegram::allBySelectedLARP();
 $pdf = new TELEGRAM_PDF();
 $pdf->SetTitle('Telegram');
 $pdf->SetAuthor('Dod mans hand');
