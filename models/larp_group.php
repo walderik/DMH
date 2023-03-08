@@ -2,7 +2,6 @@
 
 class LARP_Group extends BaseModel{
     
-    public $Id;
     public $GroupId;
     public $LARPId;
     public $WantIntrigue = true;
@@ -16,16 +15,23 @@ class LARP_Group extends BaseModel{
     
     public static function newFromArray($post){
         $larp_group = static::newWithDefault();
-        if (isset($post['Id']))   $larp_group->Id = $post['Id'];
-        if (isset($post['GroupId'])) $larp_group->GroupId = $post['GroupId'];
-        if (isset($post['LARPId'])) $larp_group->LARPId = $post['LARPId'];
-        if (isset($post['NeedFireplace'])) $larp_group->NeedFireplace = $post['NeedFireplace'];
-        if (isset($post['WantIntrigue'])) $larp_group->WantIntrigue = $post['WantIntrigue'];
-        if (isset($post['Intrigue'])) $larp_group->Intrigue = $post['Intrigue'];
-        if (isset($post['HousingRequestId'])) $larp_group->HousingRequestId = $post['HousingRequestId'];      
-        if (isset($post['ApproximateNumberOfMembers'])) $larp_group->ApproximateNumberOfMembers = $post['ApproximateNumberOfMembers'];
-        if (isset($post['RemainingIntrigues'])) $larp_group->RemainingIntrigues = $post['RemainingIntrigues'];          return $larp_group;
+        $larp_group->setValuesByArray($post);
+        return $larp_group;
     }
+    
+    
+    public function setValuesByArray($arr) {
+        if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
+        if (isset($arr['LARPId'])) $this->LARPId = $arr['LARPId'];
+        if (isset($arr['NeedFireplace'])) $this->NeedFireplace = $arr['NeedFireplace'];
+        if (isset($arr['WantIntrigue'])) $this->WantIntrigue = $arr['WantIntrigue'];
+        if (isset($arr['Intrigue'])) $this->Intrigue = $arr['Intrigue'];
+        if (isset($arr['HousingRequestId'])) $this->HousingRequestId = $arr['HousingRequestId'];
+        if (isset($arr['ApproximateNumberOfMembers'])) $this->ApproximateNumberOfMembers = $arr['ApproximateNumberOfMembers'];
+        if (isset($arr['RemainingIntrigues'])) $this->RemainingIntrigues = $arr['RemainingIntrigues'];          
+
+    }
+    
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
@@ -54,6 +60,9 @@ class LARP_Group extends BaseModel{
     public static function loadByIds($groupId, $larpId)
     {
         global $tbl_prefix;
+        
+        if (!isset($groupId) or !isset($larpId)) return null;
+        
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
         $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."larp_group` WHERE GroupId = ? AND LARPId = ?");
         
@@ -79,9 +88,9 @@ class LARP_Group extends BaseModel{
     # Update an existing object in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."larp_group` SET GroupId=?, LARPId=?, WantIntrigue=?, Intrigue=?, HousingRequestId=?, RemainingIntrigues=? , ApproximateNumberOfMembers=?, NeedFireplace=? WHERE Id = ?;");
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."larp_group` SET WantIntrigue=?, Intrigue=?, HousingRequestId=?, RemainingIntrigues=? , ApproximateNumberOfMembers=?, NeedFireplace=? WHERE GroupId=? AND LARPId=?;");
         
-        if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->Id))) {
+        if (!$stmt->execute(array($this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->GroupId, $this->LARPId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -102,7 +111,6 @@ class LARP_Group extends BaseModel{
                 exit();
             }
             
-            $this->Id = $connection->lastInsertId();
             $stmt = null;
     }
     

@@ -154,7 +154,7 @@ class Person extends BaseModel{
         global $tbl_prefix;
         if (is_null($group) || is_null($larp)) return Array();
         
-        $sql="select * from `".$tbl_prefix."person` WHERE id IN (SELECT ".$tbl_prefix."role.PersonId FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".$tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
+        $sql="select * from `".$tbl_prefix."person` WHERE id IN (SELECT DISTINCT ".$tbl_prefix."role.PersonId FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".$tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($group->Id, $larp->Id))) {

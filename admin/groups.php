@@ -7,7 +7,7 @@
 
     <div class="content">   
         <h1>Grupper</h1>
-            <a href="edit_group.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="create_group.php"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
 
      		<?php 
     		$groups = Group::getAllRegistered($current_larp);

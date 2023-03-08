@@ -70,13 +70,7 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 		}
 		?>
 		<h2>Intrig</h2>
-			<?php if ($current_larp->DisplayIntrigues == 1) {
-			    echo $larp_group->Intrigue;    
-			}
-			else {
-			    echo "Intrigerna är inte klara än.";
-			}
-			?>
+		<?php echo $larp_group->Intrigue; ?>
 		
 
 	</div>

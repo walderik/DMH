@@ -2,29 +2,11 @@
 
 include_once 'header_subpage.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id'])) {
-        $GroupId = $_GET['id'];
-        $group = Group::loadById($GroupId);
-        if (!$group->isRegistered($current_larp)) {
-            header('Location: index.php'); //Gruppen är inte anmäld
-            exit;
-        }
-        
-        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
-        $persons_in_group = Person::getPersonsInGroupAtLarp($group, $current_larp);
-        $group_leader = $group->getPerson();
-        if (!existsInArray($group_leader, $persons_in_group)) {
-            $persons_in_group[] = $group_leader;
-        }
-        
-    }
-    else {
-        header('Location: index.php');
-    }
-}
 
-$group_members = Role::getRegisteredRolesInGroup($group, $current_larp);
+$group = Group::newWithDefault();
+$larp_group = LARP_Group::newWithDefault();
+$persons_in_group = Person::getPersonsForUser($current_user->Id);
+    
 
 
 
@@ -36,20 +18,13 @@ else {
 }
 
 
-function existsInArray($entry, $array) {
-    foreach ($array as $compare) {
-        if ($compare->Id == $entry->Id) {
-           return true;
-        }
-    }
-    return false;
-}
+
 ?>
 
 
 	<div class="content">
 		<h1><?php echo $group->Name;?></h1>
-		<form action="logic/edit_group_save.php" method="post">
+		<form action="logic/create_group_save.php" method="post">
     		<input type="hidden" id="GroupId" name="GroupId" value="<?php echo $group->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
@@ -57,7 +32,8 @@ function existsInArray($entry, $array) {
 			<td><input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required></td></tr>
 
 			<tr><td valign="top" class="header">Gruppansvarig</td>
-			<td><?php selectionDropdownByArray('Person', $persons_in_group, false, true, $group->PersonId);?></td></tr>
+			<td><?php selectionDropdownByArray('Person', $persons_in_group, false, true, $group->PersonId); ?>
+			Byt till rätt gruppledare när du har lagt in medlemmar i gruppen.</td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning</td>
 			<td><textarea id="Description" name="Description" rows="4" cols="50" required><?php echo $group->Description; ?></textarea></td></tr>
@@ -112,34 +88,6 @@ function existsInArray($entry, $array) {
 
 			</form>
 		
-		
-		<h2>Anmälda medlemmar</h2>
-		<?php 
-
-		foreach($group_members as $group_member) {
-
-		    echo "<a href ='view_role.php?id=" . $group_member->Id ."'>" . 
-		    $group_member->Name . "</a> - " . 
-            $group_member->Profession . " spelas av " . 
-            "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>" .
-            $group_member->getPerson()->Name . "</a>";
-
-
-            if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-                echo ", ansvarig vuxen är " . $group_member->getRegistration($current_larp)->Guardian;
-		    }
-
-         ?>
-		         <a href="remove_group_member.php?groupID=<?php echo $group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
-		<?php 
-		    
-
-            echo "<br>"; 
-		}
-		?>
-		<h2>Intrig</h2>
-
-	    <?php  echo $larp_group->Intrigue; ?>
 		
 
 	</div>

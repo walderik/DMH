@@ -19,21 +19,25 @@ class Group extends BaseModel{
     
     public static function newFromArray($post){
         $group = static::newWithDefault();
-        if (isset($post['Id'])) $group->Id = $post['Id'];
-        if (isset($post['Name'])) $group->Name = $post['Name'];
-        if (isset($post['Friends'])) $group->Friends = $post['Friends'];
-        if (isset($post['Enemies'])) $group->Enemies = $post['Enemies'];
-        if (isset($post['Description'])) $group->Description = $post['Description'];
-        if (isset($post['IntrigueIdeas'])) $group->IntrigueIdeas = $post['IntrigueIdeas'];
-        if (isset($post['OtherInformation'])) $group->OtherInformation = $post['OtherInformation'];
-        if (isset($post['WealthId'])) $group->WealthId = $post['WealthId'];
-        if (isset($post['PlaceOfResidenceId'])) $group->PlaceOfResidenceId = $post['PlaceOfResidenceId'];
-        if (isset($post['PersonId'])) $group->PersonId = $post['PersonId'];
-        if (isset($post['CampaignId'])) $group->CampaignId = $post['CampaignId'];
-        
+        $group->setValuesByArray($post);
         return $group;
     }
      
+    public function setValuesByArray($arr) {
+        if (isset($arr['Id'])) $this->Id = $arr['Id'];
+        if (isset($arr['Name'])) $this->Name = $arr['Name'];
+        if (isset($arr['Friends'])) $this->Friends = $arr['Friends'];
+        if (isset($arr['Enemies'])) $this->Enemies = $arr['Enemies'];
+        if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        if (isset($arr['IntrigueIdeas'])) $this->IntrigueIdeas = $arr['IntrigueIdeas'];
+        if (isset($arr['OtherInformation'])) $this->OtherInformation = $arr['OtherInformation'];
+        if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
+        if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
+        if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
+        if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+        
+        
+    }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
