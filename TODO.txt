@@ -5,6 +5,8 @@ Props: ändra ägare (grupp/roll)
 Titledeeds tilldela ägare (roll)
 Titledeeds sätta upp hur mycket resurser de producerar / behöver	
 
+Ladda upp och visa bild på roll
+
 Enbart tillåtet att registrera en person per personnummer
 
 
