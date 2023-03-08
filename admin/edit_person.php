@@ -40,41 +40,41 @@ else {
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
     		
- 			<tr><td valign="top" class="header">Namn</td>
+ 			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
  			<td><input type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="250" required></td></tr>
     		
-			<tr><td valign="top" class="header">Personnummer</td>
+			<tr><td valign="top" class="header">Personnummer&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
 					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}|\d{12}|\d{8}x{4}"  placeholder="ÅÅÅÅMMDD-NNNN" size="20" maxlength="13" required>
 	</td></tr>
-			<tr><td valign="top" class="header">Email</td>
+			<tr><td valign="top" class="header">Email&nbsp;<font style="color:red">*</font></td>
 			<td><input type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="250" required></td></tr>
 			<tr><td valign="top" class="header">Mobilnummer</td>
 			<td><input type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo $person->PhoneNumber; ?>"  size="100" maxlength="250"></td></tr>
-			<tr><td valign="top" class="header">Närmaste anhörig</td>
+			<tr><td valign="top" class="header">Närmaste anhörig&nbsp;<font style="color:red">*</font></td>
 			<td><textarea id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" required><?php echo $person->EmergencyContact; ?></textarea></td></tr>
 		    <?php 
 		    if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		    ?>
-			<tr><td valign="top" class="header">Ansvarig vuxen</td>
-			<td><input type="text" id="Guardian" value="<?php echo $registration->Guardian; ?>" name="Guardian"  size="100" maxlength="250"></td></tr>
+			<tr><td valign="top" class="header">Ansvarig vuxen&nbsp;<font style="color:red">*</font></td>
+			<td><input type="text" id="Guardian" value="<?php echo $registration->Guardian; ?>" name="Guardian"  size="100" maxlength="250" required></td></tr>
 		    
 		    <?php 
 		    }
 		    ?>
 
-			<tr><td valign="top" class="header">Typ av lajvare</td>
+			<tr><td valign="top" class="header">Typ av lajvare&nbsp;<font style="color:red">*</font></td>
 			<td><?php LarperType::selectionDropdown(false, true, $person->LarperTypeId); ?></td></tr>
 			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td>
 			<td><input type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="250"></td></tr>
 
 
-			<tr><td valign="top" class="header">Erfarenhet</td>
+			<tr><td valign="top" class="header">Erfarenhet&nbsp;<font style="color:red">*</font></td>
 			<td><?php Experience::selectionDropdown(false, true, $person->ExperienceId); ?></td></tr>
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td>
 			<td><input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $person->NotAcceptableIntrigues; ?>" size="100" maxlength="250" ></td></tr>
 
-			<tr><td valign="top" class="header">Typ av mat</td>
+			<tr><td valign="top" class="header">Typ av mat&nbsp;<font style="color:red">*</font></td>
 			<td><?php TypeOfFood::selectionDropdown(false, true, $person->TypeOfFoodId); ?></td></tr>
 			<tr><td valign="top" class="header">Vanliga allergier</td>
 			<td><?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?></td></tr>
@@ -86,7 +86,7 @@ else {
 			<td><input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="250" value="<?php echo $registration->NPCDesire;?>"></td></tr>
 			<tr><td valign="top" class="header">Husförvaltare</td>
 			<td><?php selectionDropdownByArray('House', House::all(), false, false, $person->HouseId); ?></td></tr>
-			<tr><td valign="top" class="header">Önskat boende</td>
+			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown(false,true,$registration->HousingRequestId);?></td></tr>
 
 

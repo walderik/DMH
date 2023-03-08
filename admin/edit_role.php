@@ -43,7 +43,7 @@ else {
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		
 		<table>
- 			<tr><td valign="top" class="header">Namn</td>
+ 			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
  			<td><input type="text" id="Name" name="Name" value="<?php echo $role->Name; ?>" size="100" maxlength="250" required></td></tr>
 			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $role->getPerson()->Name; ?></td></tr>
 
@@ -54,25 +54,25 @@ else {
 
 			<tr><td valign="top" class="header">NPC</td><td><?php echo ja_nej($role->IsNPC);?></td></tr>
 
-			<tr><td valign="top" class="header">Yrke</td>
+			<tr><td valign="top" class="header">Yrke&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="250" required></td></tr>
 
-			<tr><td valign="top" class="header">Beskrivning</td>
+			<tr><td valign="top" class="header">Beskrivning&nbsp;<font style="color:red">*</font></td>
 			<td><textarea id="Description" name="Description" rows="4" cols="100" required><?php echo $role->Description; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Tidigare lajv</td>
 			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100"><?php echo $role->PreviousLarps; ?></textarea></td></tr>
 
-			<tr><td valign="top" class="header">Varför befinner sig<br>karaktären i Slow River?</td>
+			<tr><td valign="top" class="header">Varför befinner sig<br>karaktären i Slow River?&nbsp;<font style="color:red">*</font></td>
 			<td><textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Religion</td>
 			<td><input type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="250"></td></tr>
 
-			<tr><td valign="top" class="header">Mörk hemlighet</td>
+			<tr><td valign="top" class="header">Mörk hemlighet&nbsp;<font style="color:red">*</font></td>
 			<td><textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" required><?php echo $role->DarkSecret; ?> </textarea></td></tr>
 
-			<tr><td valign="top" class="header">Mörk hemlighet - intrig idéer</td>
+			<tr><td valign="top" class="header">Mörk hemlighet - intrig idéer&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Intrigtyper</td>
@@ -90,13 +90,13 @@ else {
 			<tr><td valign="top" class="header">Annan information</td>
 			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100"><?php echo $role->OtherInformation; ?></textarea></td></tr>
 
-			<tr><td valign="top" class="header">Rikedom</td>
+			<tr><td valign="top" class="header">Rikedom&nbsp;<font style="color:red">*</font></td>
 			<td><?php Wealth::selectionDropdown(false,true, $role->WealthId); ?></td></tr>
 
-			<tr><td valign="top" class="header">Var är karaktären född?</td>
+			<tr><td valign="top" class="header">Var är karaktären född?&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="250" required></td></tr>
 
-			<tr><td valign="top" class="header">Var bor karaktären?</td>
+			<tr><td valign="top" class="header">Var bor karaktären?&nbsp;<font style="color:red">*</font></td>
 			<td><?php
             PlaceOfResidence::selectionDropdown(false, true, $role->PlaceOfResidenceId);
             ?></td></tr>

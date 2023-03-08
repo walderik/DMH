@@ -53,13 +53,13 @@ function existsInArray($entry, $array) {
     		<input type="hidden" id="GroupId" name="GroupId" value="<?php echo $group->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
-			<tr><td valign="top" class="header">Namn</td>
+			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required></td></tr>
 
-			<tr><td valign="top" class="header">Gruppansvarig</td>
+			<tr><td valign="top" class="header">Gruppansvarig&nbsp;<font style="color:red">*</font></td>
 			<td><?php selectionDropdownByArray('Person', $persons_in_group, false, true, $group->PersonId);?></td></tr>
 
-			<tr><td valign="top" class="header">Beskrivning</td>
+			<tr><td valign="top" class="header">Beskrivning&nbsp;<font style="color:red">*</font></td>
 			<td><textarea id="Description" name="Description" rows="4" cols="50" required><?php echo $group->Description; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Vänner</td>
@@ -68,13 +68,13 @@ function existsInArray($entry, $array) {
 			<tr><td valign="top" class="header">Fiender</td>
 			<td><textarea id="Enemies" name="Enemies" rows="4" cols="50"><?php echo $group->Enemies; ?></textarea></td></tr>
 
-			<tr><td valign="top" class="header">Rikedom</td>
+			<tr><td valign="top" class="header">Rikedom&nbsp;<font style="color:red">*</font></td>
 			<td><?php Wealth::selectionDropdown(false, true, $group->WealthId);?></td></tr>
 
-			<tr><td valign="top" class="header">Var bor gruppen?</td>
+			<tr><td valign="top" class="header">Var bor gruppen?&nbsp;<font style="color:red">*</font></td>
 			<td><?php PlaceOfResidence::selectionDropdown(false, true, $group->PlaceOfResidenceId);?></td></tr>
 
-			<tr><td valign="top" class="header">Intrig</td>
+			<tr><td valign="top" class="header">Intrig&nbsp;<font style="color:red">*</font></td>
 			<td>
 				<input type="radio" id="WantIntrigue_yes" name="WantIntrigue" value="1" <?php if ($larp_group->WantIntrigue == 1) echo 'checked="checked"'?>> 
     			<label for="WantIntrigue_yes">Ja</label><br> 
@@ -94,13 +94,13 @@ function existsInArray($entry, $array) {
 			<tr><td valign="top" class="header">Annan information</td>
 			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50"><?php echo $group->OtherInformation; ?></textarea></td></tr>
 
-			<tr><td valign="top" class="header">Antal medlemmar</td>
+			<tr><td valign="top" class="header">Antal medlemmar&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="ApproximateNumberOfMembers" name="ApproximateNumberOfMembers" value="<?php echo $larp_group->ApproximateNumberOfMembers; ?>" required></td></tr>
 
-			<tr><td valign="top" class="header">Önskat boende</td>
+			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown(false,true, $larp_group->HousingRequestId);?></td></tr>
 
-			<tr><td valign="top" class="header">Eldplats</td>
+			<tr><td valign="top" class="header">Eldplats&nbsp;<font style="color:red">*</font></td>
 			<td>
 				<input type="radio" id="NeedFireplace_yes" name="NeedFireplace" value="1" <?php if ($larp_group->NeedFireplace == 1) echo 'checked="checked"'?>> 
     			<label for="NeedFireplace_yes">Ja</label><br> 
