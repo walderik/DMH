@@ -1,14 +1,15 @@
 <?php
 
-class Titledeed extends BaseModel{
+class Resource extends BaseModel{
     
     public $Id;
     public $Name;
-    public $Location;
-    public $Tradeable = 1;
-    public $IsTradingPost = 0;
+    public $UnitSingular;
+    public $UnitPlural;
+    public $PriceSlowRiver = 0;
+    public $PriceJunkCity = 0;
+    public $IsRare = 0;
     public $CampaignId;
-    
     
     public static $orderListBy = 'Name';
     
@@ -23,9 +24,11 @@ class Titledeed extends BaseModel{
         
         if (isset($arr['Id']))   $this->Id = $arr['Id'];
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
-        if (isset($arr['Location'])) $this->Location = $arr['Location'];
-        if (isset($arr['Tradeable'])) $this->Tradeable = $arr['Tradeable'];
-        if (isset($arr['IsTradingPost'])) $this->IsTradingPost = $arr['IsTradingPost'];
+        if (isset($arr['UnitSingular'])) $this->UnitSingular = $arr['UnitSingular'];
+        if (isset($arr['UnitPlural'])) $this->UnitPlural = $arr['UnitPlural'];
+        if (isset($arr['PriceSlowRiver'])) $this->PriceSlowRiver = $arr['PriceSlowRiver'];
+        if (isset($arr['PriceJunkCity'])) $this->PriceJunkCity = $arr['PriceJunkCity'];
+        if (isset($arr['IsRare'])) $this->IsRare = $arr['IsRare']; 
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         
     }
@@ -43,32 +46,36 @@ class Titledeed extends BaseModel{
     # Update an existing object in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."titledeed` SET Name=?, Location=?, Tradeable=?, IsTradingPost=?,
-                                                              CampaignId=? WHERE Id = ?;");
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."resource` SET Name=?, 
+            UnitSingular=?, UnitPlural=?, PriceSlowRiver=?, PriceJunkCity=?, IsRare=?,
+            CampaignId=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, $this->CampaignId, $this->Id))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
-            }
+        if (!$stmt->execute(array($this->Name, $this->UnitSingular, $this->UnitPlural, 
+            $this->PriceSlowRiver, $this->PriceJunkCity, $this->IsRare, $this->CampaignId, $this->Id))) {
             $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
     }
     
     # Create a new object in db
     public function create() {
         global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."titledeed` (Name, Location, Tradeable, IsTradingPost, CampaignId) VALUES (?,?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."resource` (Name, UnitSingular, 
+            UnitPlural, PriceSlowRiver, PriceJunkCity, IsRare, CampaignId) VALUES (?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, $this->CampaignId))) {
-                $this->connect()->rollBack();
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            $this->Id = $connection->lastInsertId();
+        if (!$stmt->execute(array($this->Name, $this->UnitSingular, $this->UnitPlural, 
+            $this->PriceSlowRiver, $this->PriceJunkCity, $this->IsRare, $this->CampaignId))) {
+            $this->connect()->rollBack();
             $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $this->Id = $connection->lastInsertId();
+        $stmt = null;
     }
     
     public static function allByCampaign() {

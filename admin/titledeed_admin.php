@@ -42,14 +42,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
        $titledeed_array = Titledeed::allByCampaign();
         if (!empty($titledeed_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Anteckningar</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Plats</th><th>Kan säljas</th><th>Handelsstation</th><th></th><th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
                 echo "<tr>\n";
                 echo "<td>" . $titledeed->Id . "</td>\n";
                 echo "<td>" . $titledeed->Name . "</td>\n";
                 echo "<td>" . $titledeed->Location . "</td>\n";
-                echo "<td>" . $titledeed->Tradeable . "</td>\n";
-                echo "<td>" . $titledeed->IsTradingPost . "</td>\n";
+                echo "<td>" . ja_nej($titledeed->Tradeable) . "</td>\n";
+                echo "<td>" . ja_nej($titledeed->IsTradingPost) . "</td>\n";
                 
                 echo "<td>" . "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='titledeed_admin.php?operation=delete&id=" . $titledeed->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
