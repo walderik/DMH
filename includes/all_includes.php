@@ -38,3 +38,5 @@ include_once $root . '/models/user.php';
 include_once $root . '/models/wealth.php';
 
 include_once $root . '/models/LARP.php';
+
+include_once $root . '/classes/imagehandler.php';

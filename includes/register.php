@@ -18,7 +18,8 @@ if (isset($_POST['submit'])) {
     $signup->signupUser();
     
     //Going back to front page
-    header("location: ../index.php?message=user_created");  
+    header("location: ../index.php?message=user_created"); 
+    exit;
 }
 else {
     //Going back to front page

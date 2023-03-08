@@ -156,7 +156,12 @@ include_once '../includes/error_handling.php';
     		            else {
         		            echo " <a href='role_form.php?operation=update&id=$role->Id'><i class='fa-solid fa-pen'></i></a><br>\n";
     		            }
-    		            
+    		            if ($role->hasImage()) {
+    		                echo "<a href='show_role_image?id=$role->'>Visa bild</a><a href='delete_role_image?id=$role->Id'>Ta bort bild</a>";
+    		            }
+    		            else {
+    		                echo "<a href='upload_role_image?id=$role->Id'>Ladda upp bild</a>";
+    		            }
     		        }
     		        echo "</div>\n";
     		    }

@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     else {
         header('Location: index.php');
+        exit;
     }
 }
 
@@ -16,6 +17,7 @@ $current_role = Role::loadById($RoleId);
 
 if (!$current_role->isRegistered($current_larp)) {
     header('Location: index.php'); //Rollen är inte anmäld
+    exit;
 }
 
 $larp_role = LARP_Role::loadByIds($current_role->Id, $current_larp->Id);

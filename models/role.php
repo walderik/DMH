@@ -23,6 +23,7 @@ class Role extends BaseModel{
     public $Birthplace;
     public $CharactersWithRelations;
     public $CampaignId;
+    public $ImageId;
     
 
     public static $orderListBy = 'Name';
@@ -53,12 +54,13 @@ class Role extends BaseModel{
         if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
         if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
         if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
-        if (isset($arr['Photo'])) $this->Photo = $arr['Photo'];
         if (isset($arr['Birthplace'])) $this->Birthplace = $arr['Birthplace'];
         if (isset($arr['CharactersWithRelations'])) $this->CharactersWithRelations = $arr['CharactersWithRelations'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+        if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         
         if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
+        if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         
     }
     
@@ -78,14 +80,14 @@ class Role extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Name=?, IsNPC=?, Profession=?, Description=?,
                                                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
                                                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
-                                                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, Photo=?, Birthplace=?, 
-                                                              CharactersWithRelations=?, CampaignId=? WHERE Id = ?;");
+                                                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, Birthplace=?, 
+                                                              CharactersWithRelations=?, CampaignId=?, ImageId=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, $this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
-            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->Photo,
-            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->Id))) {
+            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId,
+            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -100,14 +102,14 @@ class Role extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, IsNPC, Profession, Description, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
-                                                            GroupId, WealthId, PlaceOfResidenceId, Photo,
-                                                            Birthplace, CharactersWithRelations, CampaignId) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
+                                                            GroupId, WealthId, PlaceOfResidenceId,
+                                                            Birthplace, CharactersWithRelations, CampaignId, ImageId) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, $this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
-            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->Photo,
-            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId))) {
+            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId,
+            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -150,6 +152,11 @@ class Role extends BaseModel{
     public function isMain(LARP $larp) {
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
         return $larp_role->IsMainRole;
+    }
+    
+    public function hasImage() {
+        if (isset($this->ImageId)) return true;
+        return false;
     }
     
     
@@ -288,4 +295,36 @@ class Role extends BaseModel{
         return $resultArray;
     }
     
+    public function setPhoto() {
+        $sql="INSERT INTO images(file,type,size) VALUES('$filename','$filetype','$filesize')";
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Photo=? WHERE Id = ?;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+        
+        
+        
+    }
+    
+    public function deletePhoto() {
+        global $tbl_prefix;
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Photo=null WHERE Id = ?;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+            }
+            $stmt = null;
+            
+    }
+    
+    public function getPhoto() {
+        
+    }
 }

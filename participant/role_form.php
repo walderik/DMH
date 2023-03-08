@@ -30,6 +30,10 @@ if ($role->isRegistered($current_larp)) {
     exit;
 }
 
+if (Person::loadById($current_role->PersonId)->UserId != $current_user->Id) {
+    header('Location: index.php'); //Inte din roll
+    exit;
+}
 
 function default_value($field) {
     GLOBAL $role;

@@ -8,6 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     else {
         header('Location: index.php');
+        
+        exit;
     }
 }
 
@@ -15,6 +17,7 @@ $current_person = Person::loadById($PersonId);
 
 if (!$current_person->isRegistered($current_larp)) {
     header('Location: index.php'); //Rollen är inte anmäld
+    exit;
 }
 
 $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);

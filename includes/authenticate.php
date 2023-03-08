@@ -20,6 +20,7 @@ if (isset($_POST['submit'])) {
     
     //Go into system
     header("location: ../participant/index.php");
+    exit;
 }
 else {
     //Going back to front page
