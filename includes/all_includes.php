@@ -26,6 +26,7 @@ include_once $root . '/models/official_type.php';
 include_once $root . '/models/payment_information.php';
 include_once $root . '/models/person.php';
 include_once $root . '/models/place_of_residence.php';
+include_once $root . '/models/prop.php';
 include_once $root . '/models/registration.php';
 include_once $root . '/models/resource.php';
 include_once $root . '/models/role.php';

@@ -23,7 +23,7 @@ include_once '../includes/error_handling.php';
                 <li><a href="role_list.php">Lista alla</a></li>
 
                 <li><a href="telegram_admin.php">Telegram</a></li>
-                <li><a href="props_admin.php">Props</a></li>
+                <li><a href="prop_admin.php">Rekvisita</a></li>
                 <li><a href="npc.php">NPC'er</a></li>
               </ul>
             </li>
