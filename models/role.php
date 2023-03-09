@@ -295,36 +295,9 @@ class Role extends BaseModel{
         return $resultArray;
     }
     
-    public function setPhoto() {
-        $sql="INSERT INTO images(file,type,size) VALUES('$filename','$filetype','$filesize')";
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Photo=? WHERE Id = ?;");
-        
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        $stmt = null;
-        
-        
-        
+    public function groupIsRegistered(Larp $larp) {
+        if (!isset($this->GroupId)) return true;
+        return $this->GetGroup()->isRegistered($larp);
     }
     
-    public function deletePhoto() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Photo=null WHERE Id = ?;");
-        
-        if (!$stmt->execute(array($this->Id))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
-            }
-            $stmt = null;
-            
-    }
-    
-    public function getPhoto() {
-        
-    }
 }

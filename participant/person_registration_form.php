@@ -111,21 +111,29 @@ if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()-
 			
         			<?php 
         			foreach($roles as $role) {
-        			    echo "<div class='role'>\n";
-        			    echo "<h3><input type='checkbox' id='roleId$role->Id' name='roleId[]' value='$role->Id' checked='checked'>";
-        			    echo "\n";
-        			    echo "<label for='roleId$role->Id'>$role->Name</label></h3>\n";
-        			    echo "<input type='radio' id='mainRole$role->Id' name='IsMainRole' value='$role->Id' required>\n";
-        			    echo "<label for='mainRole$role->Id'>Huvudkaraktär</label><br><br>\n";   			    
-
-        			    echo '<table border=0><tr><td valign="top">';
-
-        			    echo '</td><td>&nbsp;</td><td valign="top">';
-
-        			    $name = 'IntrigueTypeId[' . $role->Id . ']';
-        			    selectionDropdownByArray($name , IntrigueType::allActive(), true, false);
-        			    echo '</td></tr></table>';
-        			    echo '</div>';
+        			    if ($role->groupIsRegistered($current_larp)) {
+            			    echo "<div class='role'>\n";
+            			    echo "<h3><input type='checkbox' id='roleId$role->Id' name='roleId[]' value='$role->Id' checked='checked'>";
+            			    echo "\n";
+            			    echo "<label for='roleId$role->Id'>$role->Name</label></h3>\n";
+            			    echo "<input type='radio' id='mainRole$role->Id' name='IsMainRole' value='$role->Id' required>\n";
+            			    echo "<label for='mainRole$role->Id'>Huvudkaraktär</label><br><br>\n";   			    
+    
+            			    echo '<table border=0><tr><td valign="top">';
+    
+            			    echo '</td><td>&nbsp;</td><td valign="top">';
+    
+            			    $name = 'IntrigueTypeId[' . $role->Id . ']';
+            			    selectionDropdownByArray($name , IntrigueType::allActive(), true, false);
+            			    echo '</td></tr></table>';
+            			    echo '</div>';
+        			    }
+        			    else {
+        			        echo "<div class='role'>\n";
+        			        echo "<h3>$role->Name</h3>";
+        			        echo "Rollen kan inte anmälas eftersom gruppen " . $role->getGroup()->Name . " inte är anmäld.";
+        			        echo "</div>";
+        			    }
         			}		
         			
         			?>
