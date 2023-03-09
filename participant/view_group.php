@@ -14,13 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $current_group = Group::loadById($GroupId); 
 
-if (!$current_user->isMember($current_group)) {
-    header('Location: index.php'); //Inte medlem i gruppen
+if (!$current_user->isMember($current_group) && !$current_user->isGroupLeader($current_group)) {
+    header('Location: index.php?error=no_member'); //Inte medlem i gruppen
     exit;
 }
 
 if (!$current_group->isRegistered($current_larp)) {
-    header('Location: index.php'); //Gruppen är inte anmäld
+    header('Location: index.php?error=not_registered'); //Gruppen är inte anmäld
     exit;
 }
 

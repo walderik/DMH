@@ -30,7 +30,7 @@ if ($role->isRegistered($current_larp)) {
     exit;
 }
 
-if (Person::loadById($current_role->PersonId)->UserId != $current_user->Id) {
+if ($operation == 'update' && Person::loadById($role->PersonId)->UserId != $current_user->Id) {
     header('Location: index.php'); //Inte din roll
     exit;
 }
@@ -81,7 +81,9 @@ function default_value($field) {
 
 			<p>Vi vill veta vilken karaktär du vill spela.<br />
 			Om du vill spela en av lajvets sökta roller ber vi dig att kontakta arrangörerna innan du fyller i din anmälan.<br />
-			Tänk på att din karaktär också måste godkännas av arrangörerna.    
+			Tänk på att din karaktär också måste godkännas av arrangörerna.   <br>
+			<br>
+			Efter anmälan kommer du att kunna ladda upp en bild på din roll. 
 			</p>
 			<div class="question">
 				<label for="Person">Deltagare</label>&nbsp;<font style="color:red">*</font><br>

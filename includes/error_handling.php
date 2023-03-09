@@ -91,6 +91,15 @@ function getErrorText($code) {
         case "registration_not_open":
             $output = "Anmälan är inte öppen nu.";
             break;
+        case "no_member":
+            $output = "Du är inte medlem i gruppen.";
+            break;
+        case "group_not_registered":
+            $output = "Gruppen är inte anmäld.";
+            break;
+        case "SSN_already_in_use":
+            $output = "En deltagare med det personnumret finns redan i systemet.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }
