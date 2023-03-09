@@ -14,10 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $group->create();
         if (strpos($_POST['action'], "anmälan") == false) {
             header('Location: ../index.php');
+            exit;
         }
         else {
             echo "Till anmälan";
             header('Location: ../group_registration_form.php?new_group='.$group->Id);
+            exit;
         }
         exit;
     } elseif ($operation == 'delete') {
@@ -28,14 +30,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $group->update();
         if (strpos($_POST['action'], "anmälan") == false) {
             header('Location: ../index.php');
+            exit;
         }
         else {
             echo "Till anmälan";
             header('Location: ../group_registration_form.php?new_group='.$group->Id);
+            exit;
         }
         exit;
     } else {
         echo $operation;
     }
 }
-//header('Location: ../index.php');
+header('Location: ../index.php');

@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else {
 
         header('Location: index.php');
+        exit;
     }
 }
 
@@ -30,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     else {
 
         header('Location: index.php');
+        exit;
     }
 }
 
@@ -39,10 +41,12 @@ if (isset($PersonId)) {
 else {
 
     header('Location: index.php?error=no_person');
+    exit;
 }
 
 if ($current_person->UserId != $current_user->Id) {
     header('Location: index.php');
+    exit;
 }
 
 
@@ -50,11 +54,13 @@ $roles = $current_person->getRoles();
 
 if (empty($roles)) {
     header('Location: index.php?error=no_role');
+    exit;
 
 }
 
 if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAge) {
     header('Location: index.php?error=too_young_for_larp');
+    exit;
 }
 
 ?>

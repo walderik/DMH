@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     else {
         header('Location: index.php');
+        exit;
     }
 }
 $ih = Image::newWithDefault();
