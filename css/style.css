@@ -70,16 +70,15 @@ body.loggedin {
 	font-weight: bold;
 }
 
-.content > p table td:first-child, .content > div table td:first-child {
+.checks > p table td:first-child, .content > div table td:first-child {
 	font-weight: bold;
 	color: #4a536e;
 	padding-right: 15px;
 }
-.content > div p {
+.checks > div p {
 	padding: 5px;
 	margin: 0 0 10px 0;
 }
-
 
 body {
 	background-color: black;
@@ -133,6 +132,26 @@ table.helpBox td {
 	padding-right: 10px;	
 }
 
+
+
+.roles > p table td:first-child, .roles > div table td:first-child {
+  font-weight: normal;
+	color: #00ff40;
+  border-collapse: collapse;
+}
+
+
+.roles {
+  font-weight: normal;
+	color: #ff0080;
+  border-collapse: collapse;
+
+}
+
+.roles td, .roles th {
+
+  padding: 8px;
+}
 
 .data {
   font-family: Arial, Helvetica, sans-serif;

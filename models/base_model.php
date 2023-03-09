@@ -56,7 +56,6 @@ class BaseModel extends Dbh{
 
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
         $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Id = ?");
-        
         if (!$stmt->execute(array($id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -65,6 +64,7 @@ class BaseModel extends Dbh{
         
         if ($stmt->rowCount() == 0) {
             $stmt = null;
+            echo "No res";
             return null;
         }
         

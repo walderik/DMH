@@ -28,6 +28,7 @@ $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 
 $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
+$ih = ImageHandler::newWithDefault();
 ?>
 
         <nav id="navigation">
@@ -74,9 +75,14 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
             if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
                 echo ", ansvarig vuxen är " . $group_member->getRegistration($current_larp)->Guardian;
 		    }
+		    if ($group_member->hasImage()) {
+		        
+		        $image = $ih->loadImage($group_member->ImageId);
+		        echo " <a href='show_role_image.php?id=$group_member->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image)."'/></a>";
+		    }
             if ($current_user->isGroupLeader($current_group)) {
          ?>
-		         <a href="remove_group_member.php?groupID=<?php echo $current_group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
+		         <a href="remove_group_member.php?groupID=<?php echo $current_group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can" title="Ta bort roll ur gruppen"></i></a>
 		<?php 
 		    
 		    }

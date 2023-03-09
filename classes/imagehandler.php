@@ -1,40 +1,38 @@
 <?php
 
-class Image extends BaseModel{
-    /*
-    public $Id;
-    public $file_name;
-    public $file_mime;
-    public $file_data;
+class ImageHandler extends BaseModel{
+    # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
+    public static function newWithDefault() {
+        return new self();
+    }
     
-    public static $orderListBy = 'file_name';
-    
-    public static function newFromArray($post){
-        $imagehandler = static::newWithDefault();
-        if (isset($post['Id'])) $imagehandler->Id = $post['Id'];
-        if (isset($post['file_name'])) $imagehandler->file_name = $post['file_name'];
-        if (isset($post['file_mime'])) $imagehandler->file_mime = $post['file_mime'];
-        if (isset($post['file_data'])) $imagehandler->file_data = $post['file_data'];
-
+    public function maySave() {
+        $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+        $filename = $_FILES["upload"]["name"];
+        $filetype = $_FILES["upload"]["type"];
+        $filesize = $_FILES["upload"]["size"];
         
-        return $imagehandler;
+        // Validate file extension
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        if(!array_key_exists($ext, $allowed)) return "Fel format på filen. Var vänlig välj en fil med ett av de godkända formaten.";
+        
+        // Validate type of the file
+        if(!in_array($filetype, $allowed)) "Fel format på filen. Var vänlig välj en fil med ett av de godkända formaten.";
+        
+        // Validate file size - 0,5MB maximum
+        $maxsize = 0.5 * 1024 * 1024;
+        if($filesize > $maxsize) return "Filen är för stor. Minska ner den i ett bildhanteringsprogram.";
+        
+        
     }
-    
-    
-    # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
-    public static function newWithDefault() {
-        return new self();
-    }
-    */
-    # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
-    public static function newWithDefault() {
-        return new self();
-    }
-    
         
     # Create a new image in db
     public function saveImage() {
         global $tbl_prefix;
+        
+        $error = $this->maySave();
+        if (isset($error)) return null;
+        
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."image (`file_name`, `file_mime`, `file_data`) VALUES (?,?,?)");
         
@@ -45,13 +43,13 @@ class Image extends BaseModel{
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
-        $this->Id = $connection->lastInsertId();
+        $id = $connection->lastInsertId();
         $stmt = null;
+        return $id;
     }
     
      
-    // (E) LOAD FILE FROM DATABASE
-    public function load ($Id) {
+    public function loadImage ($Id) {
         global $tbl_prefix;
         $connection = $this->connect();
         $stmt = $connection->prepare("SELECT file_name, `file_mime`, `file_data` FROM `regsys_image` WHERE `Id`=?");
@@ -62,19 +60,30 @@ class Image extends BaseModel{
                 exit();
         }
         $file = $stmt->fetch();
-        
-        // (E2) FILE NOT FOUND
+                
         if ($file===false) {
             echo "$Id not found";
             return false;
         }
         
-        // (E3) OUTPUT FILE
-        // header("Content-type: " . $file["file_mime"]);
-        //header("Content-Type: application/octet-stream");
-        //header("Content-Transfer-Encoding: Binary");
-        //header("Content-disposition: attachment; filename=\"". $file["file_name"] ."\"");
         return $file["file_data"];
+    }
+    
+    # Create a new image in db
+    public function deleteImage($id) {
+        global $tbl_prefix;
+        
+        $connection = $this->connect();
+        $stmt = $connection->prepare("DELETE FROM ".$tbl_prefix."image WHERE Id=?");
+        
+        if (!$stmt->execute(array($Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+
+        $stmt = null;
+        return;
     }
     
     

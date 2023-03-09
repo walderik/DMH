@@ -2,7 +2,7 @@
 require 'header.php';
 include_once '../includes/error_handling.php';
 
-
+$ih = ImageHandler::newWithDefault();
 ?>
 
         <nav id="navigation">
@@ -92,14 +92,14 @@ include_once '../includes/error_handling.php';
     		        echo "<div class='person'>\n";
     		        
     		        if ($person->isRegistered($current_larp)) {
-    		            echo "<h3>$person->Name&nbsp;<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a></h3>\n";    		            
+    		            echo "<h3>$person->Name&nbsp;<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye' title='Visa deltagare'></i></a></h3>\n";    		            
     		        }
     		        else {
-    		            echo "<h3>$person->Name&nbsp;<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></h3>\n";
+    		            echo "<h3>$person->Name&nbsp;<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen' title='Ändra deltagare'></i></a></h3>\n";
     		        }
     		        echo "Epost: " . $person->Email. "<br>\n";
     		        echo "Mobilnummer: " . $person->PhoneNumber. "<br>\n";
-    		        echo "<table>";
+    		        echo "<table  class='checks'>";
     		        if (isset($roles) && count($roles) > 0) {
                         echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id"). "</td></tr>\n";
     		        }
@@ -128,41 +128,52 @@ include_once '../includes/error_handling.php';
     		        foreach ($groups as $group)  {
     		            if ($group->isRegistered($current_larp)) {
     		                echo $group->Name . " " . "<a href='view_group.php?id=" .
-        		                $group->Id . "'><i class='fa-solid fa-eye'></i></a>";
+        		                $group->Id . "'><i class='fa-solid fa-eye' title='Visa grupp'></i></a>";
         		                
     		            }
     		            else {
     		                echo $group->Name . " " . "<a href='group_form.php?operation=update&id=" . 
-    		                 $group->Id . "'><i class='fa-solid fa-pen'></i></a>"; 
+    		                 $group->Id . "'><i class='fa-solid fa-pen' title='Ändra grupp'></i></a>"; 
     		            }
     		            echo " Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "<br>\n";
     		        }
     		       
     		        if (isset($roles) && count($roles) > 0) {
     		            echo "<br><b>Karaktärer:</b><br>\n";
-    		        } else {
+    		            echo "<table class='roles'>\n";   		            
+        		        foreach ($roles as $role)  {
+        		            $role_group = $role->getGroup();
+        		            $role_group_name = "";
+        		            if (isset($role_group)) {
+        		                $role_group_name = " - $role_group->Name";
+        		            }
+        		            echo "<tr><td style='font-weight: normal; padding-right: 0px;'>$role->Name - $role->Profession $role_group_name</td>";
+        		            if ($role->isRegistered($current_larp)) {
+        		                echo "<td style='padding-right: 20px;'><a href='view_role.php?id=$role->Id'><i class='fa-solid fa-eye' title='Visa roll'></i></a></td>\n";
+        		                if ($role->hasImage()) {
+        		                    
+        		                    $image = $ih->loadImage($role->ImageId);
+        		                    echo "<td><a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image)."'/></a> <a href='logic/delete_role_image.php?id=$role->Id'>Ta bort bild</a></td>";
+        		                }
+        		                else {
+        		                    echo "<td><a href='upload_role_image.php?id=$role->Id'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>";
+        		                }
+
+        		            }
+        		            else {
+            		            echo "<td><a href='role_form.php?operation=update&id=$role->Id'><i class='fa-solid fa-pen'></i></a></td>\n";
+        		            }
+        		            echo "</tr>\n";
+        		            
+        		            
+        		        }
+        		        echo "</table>";
+    		        }
+    		        else {
     		            echo "<br><b>Har ännu ingen karaktär</b>&nbsp;&nbsp;<a href='role_form.php'>".showStatusIcon(false)."</a><br>\n";
     		        }
-    		        foreach ($roles as $role)  {
-    		            $role_group = $role->getGroup();
-    		            $role_group_name = "";
-    		            if (isset($role_group)) {
-    		                $role_group_name = " - $role_group->Name";
-    		            }
-    		            echo $role->Name . " - " . $role->Profession . " " . $role_group_name;
-    		            if ($role->isRegistered($current_larp)) {
-    		                echo " <a href='view_role.php?id=$role->Id'><i class='fa-solid fa-eye'></i></a><br>\n";
-    		            }
-    		            else {
-        		            echo " <a href='role_form.php?operation=update&id=$role->Id'><i class='fa-solid fa-pen'></i></a><br>\n";
-    		            }
-    		            if ($role->hasImage()) {
-    		                echo "<a href='show_role_image?id=$role->'>Visa bild</a><a href='delete_role_image?id=$role->Id'>Ta bort bild</a>";
-    		            }
-    		            else {
-    		                echo "<a href='upload_role_image?id=$role->Id'>Ladda upp bild</a>";
-    		            }
-    		        }
+        		        
+
     		        echo "</div>\n";
     		    }
     		}

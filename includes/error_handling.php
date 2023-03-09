@@ -30,6 +30,12 @@ function getMessageText($code) {
         case "email_sent":
             $output = "Ett mail med instruktioner har skickats till dig. Om det inte kommer om några sekunder har det kanske hamnat i din spam-låda.";
             break;
+        case "image_uploaded":
+            $output = "Bilden har laddats upp.";
+            break;
+        case "image_deleted":
+            $output = "Bilden har raderats.";
+            break;
         default:
             $output = "Okänt meddelande: ". $code;
     }
