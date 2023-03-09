@@ -10,6 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $operation = $_POST['operation'];
     if ($operation == 'insert') {
         $person = Person::newFromArray($_POST);
+        if (Person::SSNAlreadyExists($person->SocialSecurityNumber)) {
+            header('Location: ../index.php?error=SSN_already_in_use');
+            exit;
+        }
         $person->create();
         $person->saveAllNormalAllergyTypes($_POST);
     } elseif ($operation == 'delete') {

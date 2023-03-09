@@ -66,6 +66,35 @@ class Person extends BaseModel{
         return $person;
     }
     
+    public static function SSNAlreadyExists($ssn) {
+        //Kollar om det redan finns en deltagare med det här personnumret
+        global $tbl_prefix;
+        
+        
+        if (!isset($ssn)) return false;
+        
+        $sql = "SELECT Id FROM `".$tbl_prefix."person` WHERE SocialSecurityNumber=?;";
+        
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($ssn))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+            
+        }
+       
+        $stmt = null;
+        return true;
+        
+    }
+    
+    
     public static function getPersonsForUser($userId) {
         global $tbl_prefix;
         $sql = "SELECT * FROM ".$tbl_prefix.strtolower(static::class)." WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
