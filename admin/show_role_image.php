@@ -38,7 +38,7 @@ $image = $ih->loadImage($role->ImageId);
       </ul>
     </nav>
 	<div class="content">
-		<h1><?php echo $role->Name?></h1>
+		<h1>Bild för <?php echo $role->Name?></h1>
 
 <?php 
 echo '<img src="data:image/jpeg;base64,'.base64_encode($image).'"/>';

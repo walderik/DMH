@@ -27,13 +27,23 @@ if (isset($current_role->GroupId)) {
     $group=Group::loadById($current_role->GroupId);
 }
 
+$ih = ImageHandler::newWithDefault();
 ?>
 
 
 	<div class="content">
 		<h1><?php echo $current_role->Name;?>&nbsp;<a href='edit_role.php?id=<?php echo $current_role->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
 		<table>
-			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $current_role->PersonId;?>"><?php echo $current_role->getPerson()->Name; ?></a></td></tr>
+			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $current_role->PersonId;?>"><?php echo $current_role->getPerson()->Name; ?></a></td>
+		<?php 
+		if ($current_role->hasImage()) {
+		    
+		    $image = $ih->loadImage($current_role->ImageId);
+		    echo "<td rowspan='20' valign='top'><img width='300' src='data:image/jpeg;base64,".base64_encode($image)."'/></td>";
+		}
+		?>
+			
+			</tr>
 		<?php if (isset($group)) {?>
 			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a></td></tr>
 		<?php }?>

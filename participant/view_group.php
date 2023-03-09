@@ -67,18 +67,25 @@ $ih = ImageHandler::newWithDefault();
 
 		foreach($group_members as $group_member) {
 
-		    echo $group_member->Name . " - " . 
+
+		    if ($group_member->hasImage()) {
+		        
+		        $image = $ih->loadImage($group_member->ImageId);
+		        echo " <a href='show_role_image.php?id=$group_member->Id'>";
+		        echo $group_member->Name;
+		        echo "<img width=30 src='data:image/jpeg;base64,".base64_encode($image)."'/></a>";
+		    }
+		    else {
+		        echo $group_member->Name;
+		    }
+		    
+		  	echo " - " . 
                  $group_member->Profession . " spelas av " . 
                  $group_member->getPerson()->Name;
 
 
             if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
                 echo ", ansvarig vuxen är " . $group_member->getRegistration($current_larp)->Guardian;
-		    }
-		    if ($group_member->hasImage()) {
-		        
-		        $image = $ih->loadImage($group_member->ImageId);
-		        echo " <a href='show_role_image.php?id=$group_member->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image)."'/></a>";
 		    }
             if ($current_user->isGroupLeader($current_group)) {
          ?>

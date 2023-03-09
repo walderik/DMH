@@ -24,6 +24,8 @@ $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 
 $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
+$ih = ImageHandler::newWithDefault();
+
 ?>
 
 
@@ -53,7 +55,14 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 		foreach($group_members as $group_member) {
 
 		    echo "<a href ='view_role.php?id=" . $group_member->Id ."'>" . 
-		    $group_member->Name . "</a> - " . 
+		    $group_member->Name . "</a>";
+		    if ($group_member->hasImage()) {
+		        
+		        $image = $ih->loadImage($group_member->ImageId);
+		        echo " <img width=30 src='data:image/jpeg;base64,".base64_encode($image)."'/>";
+		    }
+		    
+		    echo "- " . 
             $group_member->Profession . " spelas av " . 
             "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>" .
             $group_member->getPerson()->Name . "</a>";
@@ -63,7 +72,7 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
                 echo ", ansvarig vuxen är " . $group_member->getRegistration($current_larp)->Guardian;
 		    }
 
-         ?>
+		    ?>
 		         <a href="remove_group_member.php?groupID=<?php echo $current_group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
 		<?php 
 		    
