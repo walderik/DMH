@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\Exception;
 
 // https://mailtrap.io/blog/phpmailer/
 
-class DmhMailer {
+class BerghemMailer {
     
     public static $from = 'dmh@berghemsvanner.se';
     public static $myName = "Död Mans Hand";

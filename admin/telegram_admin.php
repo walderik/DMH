@@ -6,7 +6,7 @@ include_once 'header_subpage.php';
 
 <?php
 
-// DmhMailer::send('Mats.rappe@yahoo.se', 'Mats Rappe', "Det här är ett mail");
+// BerghemMailer::send('Mats.rappe@yahoo.se', 'Mats Rappe', "Det här är ett mail");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

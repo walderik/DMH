@@ -66,7 +66,7 @@ foreach ($arrayOfTelegrams as $telegram)  {
 $doc = $pdf->Output('S');
 
 $attachments = ['Telegrammen' => $doc];
-DmhMailer::send('Mats.rappe@yahoo.se', 'Admin', "Det här är alla telegrammen", "Alla Telegrammen som PDF", $attachments);
+BerghemMailer::send('Mats.rappe@yahoo.se', 'Admin', "Det här är alla telegrammen", "Alla Telegrammen som PDF", $attachments);
 
 $pdf->Output();
 ?>

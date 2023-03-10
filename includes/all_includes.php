@@ -2,13 +2,10 @@
 
 global $root;
 
-include_once $root . '/includes/dmh_mailer.php'; 
+include_once $root . '/includes/berghem_mailer.php'; 
 include_once $root . '/includes/html_helpers.php'; 
 include_once $root . '/includes/sverok.php'; 
-// include_once 'dmh_mailer.php';
-// echo "<br />";
-// echo getcwd();
-// echo "<br />";
+
 include_once $root . '/classes/dbh.php';
 include_once $root . '/models/base_model.php';
 include_once $root . '/models/campaign.php';
