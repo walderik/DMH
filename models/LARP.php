@@ -85,10 +85,17 @@ class LARP extends BaseModel{
     public function getCampaign() {
         return Campaign::loadById($this->CampaignId);
     }
-    public function pastLatestRegistrationDate() {
-        $today = date("Y-m-d H:i:s");
-        if ($today < $this->LatestRegistrationDate) return false;
+    public function isPastLatestRegistrationDate() {
+        $today = date("Y-m-d");
+        if ($today <= $this->LatestRegistrationDate) return false;
         return true;
+    }
+    
+    public function isEnded() {
+        $now = date("Y-m-d H:i:s");
+        if ($now < $this->EndDate) return false;
+        return true;
+        
     }
     
     public function isFull() {
@@ -98,7 +105,7 @@ class LARP extends BaseModel{
     }
     
     public function mayRegister() {
-        if ($this->pastLatestRegistrationDate()) return false;
+        if ($this->isPastLatestRegistrationDate()) return false;
         if ($this->isFull()) return false;
         if ($this->RegistrationOpen == 0) return false;
         return true;
