@@ -100,6 +100,9 @@ function getErrorText($code) {
         case "SSN_already_in_use":
             $output = "En deltagare med det personnumret finns redan i systemet.";
             break;
+        case "no_role_may_register":
+            $output = "Det har ingen roll som går att anmäla eftersom gruppen den är med i inte är anmäld än.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }

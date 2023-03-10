@@ -58,6 +58,16 @@ if (empty($roles)) {
 
 }
 
+//Kolla att minst en roll går att anmäla
+$mayRegister = false;
+foreach ($roles as $role) {
+    if ($role->groupIsRegistered($current_larp)) $mayRegister = true;
+}
+if ($mayRegister == false) {
+    header('Location: index.php?error=no_role_may_register');
+    exit;
+}
+
 if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAge) {
     header('Location: index.php?error=too_young_for_larp');
     exit;
