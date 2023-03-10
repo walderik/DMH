@@ -2,7 +2,7 @@
 global $root;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-include_once $root . '/includes/dmh_mailer.php';
+include_once $root . '/includes/berghem_mailer.php';
 
 class Signup extends Dbh {
 
@@ -26,7 +26,7 @@ class Signup extends Dbh {
         $text .= "Nu måste du aktivera ditt login.<br><br>\n";
         $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken.</a><br>\n";
         
-        DmhMailer::send($email, 'Stranger', $text, "Aktiveringsbrev");
+        BerghemMailer::send($email, 'Stranger', $text, "Aktiveringsbrev");
         
     }
     

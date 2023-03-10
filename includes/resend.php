@@ -92,7 +92,7 @@ function send_activation($user)  {
     $text  = "Du har begärt en ny aktiveringslänk för att kunna aktivera kontot.<br>\n";
     $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken och sedan kan du logga in.</a><br>\n";
     
-    DmhMailer::send($mail, 'Mate', $text, "Aktiveringsbrev");
+    BerghemMailer::send($mail, 'Mate', $text, "Aktiveringsbrev");
 }
 
 // Skicka mail med en länk för att byta lösenord
@@ -110,5 +110,5 @@ function send_change_password($user) {
     $text  = "Du har begärt en länk för att kunna byta lösenord på ditt konto.<br>\n";
     $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken och sedan kan du byta lösenord.</a><br>\n";
     
-    DmhMailer::send($mail, 'Mate', $text, "Byta Lösenord");
+    BerghemMailer::send($mail, 'Mate', $text, "Byta Lösenord");
 }

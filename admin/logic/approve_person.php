@@ -55,5 +55,5 @@ function send_approval_mail(Registration $registration) {
         $text .= "<br>\n";
     }
     
-    DmhMailer::send($mail, $person->Name, $text, "Bekräftan av anmälan till ".$larp->Name);
+    BerghemMailer::send($mail, $person->Name, $text, "Bekräftan av anmälan till ".$larp->Name);
 }
