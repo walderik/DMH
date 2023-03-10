@@ -75,7 +75,9 @@ function send_registration_mail(Registration $registration) {
     
     $text  = "Du har nu anmält att du ska vara med i lajvet $larp->Name<br>\n";
     $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>.<br>\n";
-    $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
+    if (!$person->isMember($larp)) {
+        $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
+    }
     $text .= "<br>\n";
     $text .= "Vi kommer att gå igenom karaktärerna du har anmält och godkänna dom för spel.<br>\n";
     $text .= "<br>\n";
@@ -88,6 +90,11 @@ function send_registration_mail(Registration $registration) {
         } elseif ($role->IsNPC) {
             $text .= " - En NPC";
         }
+        if (isset($role->GroupId)) {
+            $group = $role->getGroup();
+            $text .= ", medlem i $group->Name";
+        }
+        
         $text .= "<br>\n";
     }
 
