@@ -12,11 +12,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $role = Role::newFromArray($_POST);
         $role->create();
-    } elseif ($operation == 'delete') {
-        Role::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         
+
         $role = Role::newFromArray($_POST);
+        if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
+            header('Location: index.php'); //Inte din roll
+            exit;
+        }
         
         
         $role->update();

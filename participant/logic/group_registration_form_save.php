@@ -13,12 +13,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $larp_group = LARP_Group::newFromArray($_POST);
         $larp_group->create();
         $larp_group->saveAllIntrigueTypes($_POST);
-    } elseif ($operation == 'delete') {
-        $larp_group->deleteAllIntrigueTypes();
-        LARP_Group::delete($_POST['LarpId'], $_POST['GroupId']);
     } elseif ($operation == 'update') {
+        //TODO Kolla om man är gruppledare annars får man inte ändra på gruppen
+        
         
         $larp_group = LARP_Group::newFromArray($_POST);
+        
+        $group = Group::loadById($larp_group->GroupId);
+        //Kolla om man är gruppledare annars får man inte ändra på gruppen
+        if (!$current_user->isGroupLeader($group)) {
+            header('Location: ../index.php');
+            exit;
+        }
+        
         $larp_group->update();
         $larp_group->deleteAllIntrigueTypes();
         $larp_group->saveAllIntrigueTypes($_POST);

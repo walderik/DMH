@@ -11,7 +11,13 @@ Intrigverktyg
 
 Husfördelning
 
+Namn i user
 
+Kontroll av hål i avgiftstabellen
+
+Mer generell mail
+
+Kontakta spelaren-formulär
 
 Vad ska man kunna göra efter anmälningsdag?
 

@@ -16,12 +16,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $person->create();
         $person->saveAllNormalAllergyTypes($_POST);
-    } elseif ($operation == 'delete') {
-        $person->deleteAllNormalAllergyTypes();
-        Person::delete($_POST['Id']);
     } elseif ($operation == 'update') {
+
+        
         
         $person = Person::newFromArray($_POST);
+        if ($person->UserId != $current_user->Id) {
+            header('Location: index.php'); //Inte din person
+            exit;
+        }
+        
+        
         $person->update();
         $person->deleteAllNormalAllergyTypes();
         $person->saveAllNormalAllergyTypes($_POST);

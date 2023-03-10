@@ -27,6 +27,13 @@ require 'header.php';
         }
     }
     
+    
+    if ($operation == 'update' && $person->UserId != $current_user->Id) {
+        header('Location: index.php'); //Inte din person
+        exit;
+    }
+    
+    
     if ($person->isRegistered($current_larp)) {
         header('Location: view_person.php?id='.$person->Id);
         exit;
