@@ -37,7 +37,7 @@ include_once 'includes/error_handling.php';
 					<i class="fas fa-lock"></i>
 				</label>
 				<input type="password" name="password" placeholder="Lösenord" id="password" required>
-			<div class="filler"></div>
+			
 				<input type="submit" value="Logga in" name="submit">
 			</form>
 			</div>
@@ -49,6 +49,10 @@ include_once 'includes/error_handling.php';
 		<div class="register">
 			<h1>Registrera nytt konto</h1>
 			<form action="includes/register.php" method="POST" autocomplete="off">
+				<label for="name">
+					<i class="fas fa-user"></i>
+				</label>
+				<input type="text" name="name" placeholder="Namn" id="name" required>
 				<label for="email">
 					<i class="fas fa-envelope"></i>
 				</label>
