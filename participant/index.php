@@ -50,7 +50,7 @@ $ih = ImageHandler::newWithDefault();
                 echo "<div><b style='color: red'>Lajvet är fullt</b>";
                 echo "</div>";
             }
-            elseif ($current_larp->pastLatestRegistrationDate()) {
+            elseif ($current_larp->isPastLatestRegistrationDate()) {
 
                 echo "<div><b style='color: red'>Sista anmälningsdag har passerat</b>";
                 echo "</div>";
@@ -158,7 +158,9 @@ $ih = ImageHandler::newWithDefault();
         		                else {
         		                    echo "<td><a href='upload_role_image.php?id=$role->Id'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>";
         		                }
-
+        		                if ($current_larp->isEnded()) {
+        		                    echo "<td><a href='larp_report_form.php?id=$role->Id'>Vad hände?</a></td>";
+        		                }
         		            }
         		            else {
             		            echo "<td><a href='role_form.php?operation=update&id=$role->Id'><i class='fa-solid fa-pen'></i></a></td>\n";

@@ -160,6 +160,10 @@ class Role extends BaseModel{
     }
     
     
+    public function getPreviousLarpRoles() {
+        return LARP_Role::getPreviousLarpRoles($this->Id);
+    }
+    
     public static function getRolesForPerson($personId) {
         global $tbl_prefix;
         if (is_null($personId)) return Array();

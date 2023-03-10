@@ -88,7 +88,24 @@ $ih = ImageHandler::newWithDefault();
 			    echo "Intrigerna är inte klara än.";
 			}
 			?>
-		
+		if (isset($previous_larp_roles) && count($previous_larp_roles) > 0) {
+		    echo "<h2>Historik</h2>";
+            foreach ($previous_larp_roles as $prevoius_larp_role) {
+                $prevoius_larp = LARP::loadById($prevoius_larp_role->LARPId);
+                echo "<h3>$prevoius_larp->Name</h3>";
+                echo "<strong>Vad hände för $role->Name?</strong><br>";
+                if (isset($prevoius_larp_role->WhatHappened) && $prevoius_larp_role->WhatHappened != "")
+                    echo $prevoius_larp_role->WhatHappened;
+                    else echo "Inget rapporterat";
+                echo "<br><br>";
+                echo "<strong>Vad hände för andra?</strong><br>";
+                if (isset($prevoius_larp_role->WhatHappendToOthers) && $prevoius_larp_role->WhatHappendToOthers != "")
+                    echo $prevoius_larp_role->WhatHappendToOthers;
+                else echo "Inget rapporterat";
+    
+            }
+
+		}
 
 	</div>
 

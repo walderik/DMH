@@ -86,13 +86,13 @@ class LARP_Role extends BaseModel{
     # Update an existing object in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."larp_role` SET LARPId=?, RoleId=?, Intrigue=?, WhatHappened=?,
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."larp_role` SET Intrigue=?, WhatHappened=?,
                                                                   WhatHappendToOthers=?, StartingMoney=?, EndingMoney=?, Result=?, 
-                                                                  IsMainRole=? WHERE Id = ?;");
+                                                                  IsMainRole=? WHERE LARPId=? AND RoleId=?;");
         
-        if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Intrigue, $this->WhatHappened, 
+        if (!$stmt->execute(array($this->Intrigue, $this->WhatHappened, 
                                     $this->WhatHappendToOthers, $this->StartingMoney, $this->EndingMoney, $this->Result, 
-                                    $this->IsMainRole, $this->Id))) {
+            $this->IsMainRole, $this->LARPId, $this->RoleId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -149,11 +149,45 @@ class LARP_Role extends BaseModel{
         return $resultArray;
     }
 
+    
+    public static function getPreviousLarpRoles($roleId) {
+        global $tbl_prefix, $current_larp;
+        if (is_null($roleId)) return Array();
+        //Koden förutsätter att lajven skapas i den ordning de spelas. 
+        //Om det inte stämmer kommer man att behöva ha en mer avancerad kod
+        $sql = "SELECT * FROM `".$tbl_prefix."larp_role` WHERE RoleId = ? AND LarpId < ? ORDER BY LarpId DESC";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($roleId, $current_larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+
+    }
+    
+    
     # Hämta intrigtyperna
     public function getIntrigueTypes(){
         return IntrigueType::getIntrigeTypesForLarpAndRole($this->LARPId, $this->RoleId);
     }
     
+    
+
     
     public function getSelectedIntrigueTypeIds() {
         global $tbl_prefix;

@@ -73,7 +73,7 @@ function default_value($field) {
 
 
 	<div class="content">
-		<h1>Registrering av karaktär</h1>
+		<h1><?php default_value('action'); ?> karaktär</h1>
 		<form action="logic/role_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
@@ -87,7 +87,7 @@ function default_value($field) {
 			</p>
 			<div class="question">
 				<label for="Person">Deltagare</label>&nbsp;<font style="color:red">*</font><br>
-				<div class="explanation">Vilken deltagare vill du registrera en karaktär för?</div>
+				<div class="explanation">Vilken deltagare spelar karaktären?</div>
 				<?php selectionDropdownByArray('Person', $current_persons, false, true, $role->PersonId); ?>
 			</div>
 
@@ -100,6 +100,28 @@ function default_value($field) {
 				<div class="explanation">Vad jobbar din karaktär med för att överleva?   Vill du ha ett yrke som kan innebära en central roll i lajvet, så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.    Det gäller poster som borgmästare, bypräst eller sheriff.   Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta spela att din karaktär har det yrket. Vi vill helst inte att du spelar prostituerad.</div>
 				<input type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="250" required>
 			</div>
+		<?php 
+		$previous_larp_roles = $role->getPreviousLarpRoles();
+		
+		if (isset($previous_larp_roles) && count($previous_larp_roles) > 0) {
+		    echo "<h2>Historik</h2>";
+            foreach ($previous_larp_roles as $prevoius_larp_role) {
+                $prevoius_larp = LARP::loadById($prevoius_larp_role->LARPId);
+                echo "<h3>$prevoius_larp->Name</h3>";
+                echo "<strong>Vad hände för $role->Name?</strong><br>";
+                if (isset($prevoius_larp_role->WhatHappened) && $prevoius_larp_role->WhatHappened != "")
+                    echo $prevoius_larp_role->WhatHappened;
+                    else echo "Inget rapporterat";
+                echo "<br><br>";
+                echo "<strong>Vad hände för andra?</strong><br>";
+                if (isset($prevoius_larp_role->WhatHappendToOthers) && $prevoius_larp_role->WhatHappendToOthers != "")
+                    echo $prevoius_larp_role->WhatHappendToOthers;
+                else echo "Inget rapporterat";
+    
+            }
+
+		}
+		?>
 
 			<div class="question">
 				<label for="Birthplace">Var är karaktären född?</label>&nbsp;<font style="color:red">*</font><br>
