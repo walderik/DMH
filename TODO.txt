@@ -17,6 +17,7 @@ Vad ska man kunna göra efter anmälningsdag?
 
 
 Vad ska man kunna göra efter att lajvet har börjat/slutat
+Säkerhetskoller när man sparar
 
 
 

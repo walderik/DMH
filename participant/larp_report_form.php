@@ -37,7 +37,7 @@ if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
 	<div class="content">
 		<h1>Vad hände för <?php echo $role->Name; ?> på <?php echo $current_larp->Name; ?></h1>
 		<form action="logic/larp_report_save.php" method="post">
-    		<input type="hidden" id="RoleId" name="Id" value="<?php echo $role->Id; ?>">
+    		<input type="hidden" id="RoleId" name="RoleId" value="<?php echo $role->Id; ?>">
     		<p>För att vi arrangörer ska kunna göra nya spännande intriger som bygger på 
     		det som har hänt behöver vi vet behöver vad just den här karaktären har varit med om.
     		 

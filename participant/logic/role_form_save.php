@@ -17,6 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'update') {
         
         $role = Role::newFromArray($_POST);
+        
+        
         $role->update();
 
     } else {
