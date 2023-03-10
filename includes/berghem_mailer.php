@@ -11,20 +11,37 @@ use PHPMailer\PHPMailer\Exception;
 
 class BerghemMailer {
     
-    public static $from = 'dmh@berghemsvanner.se';
-    public static $myName = "Död Mans Hand";
+    public static $from = 'info@berghemsvanner.se';
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
-    public static function send(string $to_email, string $to_name, string $text, string $subject="Meddelande från Död Mans Hand", ?array $attachments=[]) {
+    public static function send(string $to_email, string $to_name, string $text, string $subject=null, ?array $attachments=[]) {
     
         global $current_larp;
+        
+        
+            
+        $from = static::$from;
+        $myName = "Beghems vänner";
+        $hej = "Hej!";
+            
+        
+        if (!is_null($current_larp)) {
+            $campaign = $current_larp->getCampaign();
+            if (!is_null($campaign)) {
+                $from = $campaign->Email;
+                $myName = $campaign->Name;
+                if ($campaign->Abbreviation=='DMH') $hej = "Howdy";
+            }
+        }
+        
+        if (is_null($subject)) $subject = "Meddelande från $myName";
         
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
         //Set who the message is to be sent from
-        $mail->setFrom(static::$from, utf8_decode(static::$myName));
+        $mail->setFrom($from, utf8_decode($myName));
         //Set an alternative reply-to address
-        $mail->addReplyTo(static::$from, utf8_decode(static::$myName));
+        $mail->addReplyTo($from, utf8_decode($myName));
         //Set who the message is to be sent to
         $mail->addAddress($to_email, utf8_decode($to_name));
 //         $mail->addAddress('mats.rappe@yahoo.se', utf8_decode($to_name));
@@ -66,7 +83,7 @@ class BerghemMailer {
                 <title>Brev från Berghems vänner</title>
         	</head>
         	<body class='loggedin'>
-                Howdy $to_name!<br />
+                $hej $to_name!<br />
                 <p>$text</p>
                 
                 <br />
