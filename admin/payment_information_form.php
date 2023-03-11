@@ -48,7 +48,6 @@ include_once 'header_subpage.php';
     }
     
     ?>
-    
 
     <div class="content"> 
     <h1><?php echo default_value('action');?> avgift</h1>
@@ -58,25 +57,25 @@ include_once 'header_subpage.php';
 		<input type="hidden" id="LARPId" name="LARPId" value="<?php echo $current_larp->Id; ?>">
 		<table>
 			<tr>
-				<td><label for="FromDate">Från och med datum</label></td>
+				<td><label for="FromDate">Från och med datum</label>&nbsp;<font style="color:red">*</font></td>
 				<td><input type="date" id="FromDate"
 					name="FromDate" value="<?php echo $payment->FromDate; ?>" required></td>
 			</tr>
 			<tr>
-				<td><label for="ToDate">Till och med datum</label></td>
+				<td><label for="ToDate">Till och med datum</label>&nbsp;<font style="color:red">*</font></td>
 				<td><input type="date" id="ToDate"
 					name="ToDate" value="<?php echo $payment->ToDate; ?>" required></td>
 			</tr>
 			<tr>
-				<td><label for="FromAge">Från och med ålder</label></td>
+				<td><label for="FromAge">Från och med ålder</label>&nbsp;<font style="color:red">*</font></td>
 				<td><input type="text" id="FromAge" name="FromAge" value="<?php echo $payment->FromAge; ?>" required></td>
 			</tr>
 			<tr>
-				<td><label for="ToAge">Till och med ålder</label></td>
+				<td><label for="ToAge">Till och med ålder</label>&nbsp;<font style="color:red">*</font></td>
 				<td><input type="text" id="ToAge" name="ToAge" value="<?php echo $payment->ToAge; ?>" required></td>
 			</tr>
 			<tr>
-				<td><label for="Cost">Avgift</label></td>
+				<td><label for="Cost">Avgift</label>&nbsp;<font style="color:red">*</font></td>
 				<td><input type="text" id="Cost" name="Cost" value="<?php echo $payment->Cost; ?>" required></td>
 			</tr>
 		</table>
