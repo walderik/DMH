@@ -35,14 +35,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     <div class="content">
         <h1>Avgift</h1>
-        <p>Var noga när du sätter upp det här så att det inte blir några "hål" varken i ålder eller datum.</p>
-            <a href="payment_information_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
- 
+        <p>Var noga när du sätter upp det här så att det inte blir några "hål" varken i ålder eller datum. <br><br>
+        Börja med att köra vår <a href="payment_wizard_pg1.php">"wizard" <i class="fa-solid fa-wand-sparkles"></i></a> för att sätta upp inställningarna. </p>
+  
          <?php
     
         $payment_array = PaymentInformation::allBySelectedLARP();
         if (!empty($payment_array)) {
-            echo "<table id='telegrams' class='data'>";
+            echo "<a href='payment_information_form.php?operation=new'><i class='fa-solid fa-file-circle-plus'></i>Lägg till</a>";
+            
+            echo "<table class='data'>";
             echo "<tr><th>Id</td><th>Från datum</th><th>Till datum</th><th>Från ålder</th><th>Till ålder</th><th>Pris</th><th></th><th></th></tr>\n";
             foreach ($payment_array as $payment) {
                 echo "<tr>\n";
@@ -60,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo "</table>";
         }
  
-        echo PaymentInformation::errorReportBySelectedLARP();
+        //echo PaymentInformation::errorReportBySelectedLARP();
         ?>
     </div>
 	
