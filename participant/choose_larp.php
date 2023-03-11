@@ -82,7 +82,8 @@ $past_larp_array = LARP::allPastLarpsWithRegistrations($current_user);
     			$resultCheck = count($past_larp_array);
     			 if ($resultCheck > 0) {
     			     ?>
-    			 <h3>Tidigare lajv</h3>    
+    			 <h3>Tidigare lajv</h3> 
+    			 <p>Välj det här om du vill fylla i vad som hände på lajvet.</p>   
 				<form action="../includes/set_larp.php" method="POST">
 				<label for="larp">Välj lajv:</label>
 			    <select name='larp' id='larp'>
