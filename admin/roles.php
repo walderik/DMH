@@ -20,8 +20,13 @@
     		        echo "<td>" . $role->Name . "</td>\n";
     		        echo "<td>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
-    		        echo "<td>" . $role->Profession . "</td>\n";
-    		        echo "<td>" . $role->getGroup()->Name . "</td>\n";
+    		        echo "<td>$role->Profession</td>\n";
+    		        $group = $role->getGroup();
+    		        if (is_null($group)) {
+    		            echo "<td>&nbsp;</td>\n";
+    		        } else {
+    		            echo "<td>$group->Name</td>\n";
+    		        }
     		        echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";
     		        echo "<td><a href='edit_intrigue.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        echo "</tr>\n";
@@ -43,7 +48,12 @@
     		        echo "<tr>\n";
     		        echo "<td>" . $role->Name . "</td>\n";
     		        echo "<td>" . $role->Profession . "</td>\n";
-    		        echo "<td>" . $role->getGroup()->Name . "</td>\n";
+    		        $group = $role->getGroup();
+    		        if (is_null($group)) {
+    		            echo "<td>&nbsp;</td>\n";
+    		        } else {
+    		            echo "<td>$group->Name</td>\n";
+    		        }
     		        echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";
     		        echo "<td>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";

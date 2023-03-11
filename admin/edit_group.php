@@ -131,7 +131,7 @@ function existsInArray($entry, $array) {
 		    }
 
          ?>
-		         <a href="remove_group_member.php?groupID=<?php echo $group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
+		         <a href="logic/remove_group_member.php?groupID=<?php echo $group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
 		<?php 
 		    
 
