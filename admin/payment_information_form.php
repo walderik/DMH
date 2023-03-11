@@ -59,12 +59,12 @@ include_once 'header_subpage.php';
 		<table>
 			<tr>
 				<td><label for="FromDate">Från och med datum</label></td>
-				<td><input type="date-local" id="FromDate"
+				<td><input type="date" id="FromDate"
 					name="FromDate" value="<?php echo $payment->FromDate; ?>" required></td>
 			</tr>
 			<tr>
 				<td><label for="ToDate">Till och med datum</label></td>
-				<td><input type="date-local" id="ToDate"
+				<td><input type="date" id="ToDate"
 					name="ToDate" value="<?php echo $payment->ToDate; ?>" required></td>
 			</tr>
 			<tr>

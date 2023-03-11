@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $payment_information = PaymentInformation::newFromArray($_POST);
         $payment_information->create();
     } elseif ($operation == 'delete') {
-        Telegram::delete($_POST['Id']);
+        PaymentInformation::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         $payment_information = PaymentInformation::newFromArray($_POST);
         $payment_information->update();
@@ -59,9 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             }
             echo "</table>";
         }
-        else {
-            echo "<p>Inga registrarade ännu</p>";
-        }
+ 
+        echo PaymentInformation::errorReportBySelectedLARP();
         ?>
     </div>
 	
