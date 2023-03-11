@@ -9,6 +9,7 @@
 class User extends BaseModel{
     
     public $Id;
+    public $Name;
     public $Email;
     public $Password;
     public $IsAdmin = 0;
@@ -22,6 +23,7 @@ class User extends BaseModel{
     public static function newFromArray($post){
         $user = static::newWithDefault();
         if (isset($post['Id'])) $user->Id = $post['Id'];
+        if (isset($post['Name'])) $user->Name = $post['Name'];
         if (isset($post['Email'])) $user->Email = $post['Email'];
         if (isset($post['Password'])) $user->Password = $post['Password'];
         if (isset($post['IsAdmin'])) $user->IsAdmin = $post['IsAdmin'];
@@ -90,9 +92,9 @@ class User extends BaseModel{
     # Update an existing group in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."user SET Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=?, Blocked=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."user SET Name=?, Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=?, Blocked=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked, $this->Id))) {
+        if (!$stmt->execute(array($this->Name, $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -105,9 +107,9 @@ class User extends BaseModel{
     public function create() {
         global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."user (Email, Password, IsAdmin, ActivationCode, EmailChangeCode, Blocked) VALUES (?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."user (Name, Email, Password, IsAdmin, ActivationCode, EmailChangeCode, Blocked) VALUES (?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked))) {
+        if (!$stmt->execute(array($this->Name, $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
