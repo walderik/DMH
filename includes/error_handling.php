@@ -33,6 +33,9 @@ function getMessageText($code) {
         case "email_sent":
             $output = "Ett mail med instruktioner har skickats till dig. Om det inte kommer om några sekunder har det kanske hamnat i din spam-låda.";
             break;
+        case "contact_email_sent":
+            $output = "Ett mail har skickats till dig och din kontakt. Om det inte kommer om några sekunder har det kanske hamnat i din spam-låda.";
+            break;
         case "image_uploaded":
             $output = "Bilden har laddats upp.";
             break;
@@ -108,6 +111,9 @@ function getErrorText($code) {
             break;
         case "no_email":
             $output = "Ingen korrekt epostadress angiven.";
+            break;
+        case "no_text":
+            $output = "Ingen text angiven.";
             break;
         default:
             $output = "Okänt fel: ". $code;
