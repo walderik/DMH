@@ -22,7 +22,7 @@ class BerghemMailer {
             
         $from = static::$from;
         $myName = "Beghems vänner";
-        $hej = "Hej!";
+        $hej = "Hej";
             
         
         if (!is_null($current_larp)) {

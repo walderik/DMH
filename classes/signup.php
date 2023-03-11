@@ -22,11 +22,11 @@ class Signup extends Dbh {
         $stmt = null;
         $url = $this->activation_url($email, $activationCode);
         
-        $text  = "Du har registrerat ett login för lajvet.<br>\n";
-        $text .= "Nu måste du aktivera ditt login.<br><br>\n";
+        $text  = "Du har registrerat ett konto för anmälningssystemet.<br>\n";
+        $text .= "Nu måste du aktivera ditt konto.<br><br>\n";
         $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken.</a><br>\n";
         
-        BerghemMailer::send($email, 'Stranger', $text, "Aktiveringsbrev");
+        BerghemMailer::send($email, $name, $text, "Aktiveringsbrev");
         
     }
     
