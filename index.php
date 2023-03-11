@@ -52,11 +52,11 @@ include_once 'includes/error_handling.php';
 				<label for="name">
 					<i class="fas fa-user"></i>
 				</label>
-				<input type="text" name="name" placeholder="Namn" id="name" required>
+				<input type="text" name="name" placeholder="Namn" id="name" maxlength="250" required>
 				<label for="email">
 					<i class="fas fa-envelope"></i>
 				</label>
-				<input type="email" name="email" placeholder="Epost" id="email" required>
+				<input type="email" name="email" placeholder="Epost" id="email" maxlength="250" required>
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
