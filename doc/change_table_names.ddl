@@ -5,6 +5,7 @@ RENAME TABLE `berghemsvanner_`.`house` TO `berghemsvanner_`.`regsys_house`;
 RENAME TABLE `berghemsvanner_`.`housecaretaker` TO `berghemsvanner_`.`regsys_housecaretaker`;
 RENAME TABLE `berghemsvanner_`.`housing` TO `berghemsvanner_`.`regsys_housing`;
 RENAME TABLE `berghemsvanner_`.`housingrequest` TO `berghemsvanner_`.`regsys_housingrequest`;
+RENAME TABLE `berghemsvanner_`.`image` TO `berghemsvanner_`.`regsys_image`;
 RENAME TABLE `berghemsvanner_`.`intriguetype` TO `berghemsvanner_`.`regsys_intriguetype`;
 RENAME TABLE `berghemsvanner_`.`intriguetype_larp_group` TO `berghemsvanner_`.`regsys_intriguetype_larp_group`;
 RENAME TABLE `berghemsvanner_`.`intriguetype_larp_role` TO `berghemsvanner_`.`regsys_intriguetype_larp_role`;
