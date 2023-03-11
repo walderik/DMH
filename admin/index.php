@@ -51,7 +51,7 @@ include_once '../includes/error_handling.php';
 	  <?php $payment_array = PaymentInformation::allBySelectedLARP();
         if (empty($payment_array)) {
       ?>
-            <div class="content">Inga <a href="payment_information_admin.php">deltagaravgifter</a> är satta. Gör det innan anmälan öppnar.</div>
+            <div class="content"><strong>Inga <a href="payment_information_admin.php">deltagaravgifter</a> är satta. Gör det innan anmälan öppnar!</strong></div>
         <?php
         }
         ?>
