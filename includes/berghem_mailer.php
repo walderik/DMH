@@ -30,7 +30,7 @@ class BerghemMailer {
             if (!is_null($campaign)) {
                 $from = $campaign->Email;
                 $myName = $campaign->Name;
-                if ($campaign->Abbreviation=='DMH') $hej = "Howdy";
+                $hej = $campaign->hej();
             }
         }
         
@@ -97,7 +97,7 @@ class BerghemMailer {
                 <title>$current_larp->Name</title>
         	</head>
         	<body class='loggedin'>
-                Howdy $to_name!<br />
+                $hej $to_name!<br />
                 <p>$text</p>
             
                 <br />
