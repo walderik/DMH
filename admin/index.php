@@ -20,7 +20,7 @@ include_once '../includes/error_handling.php';
               <ul class="drop">
                 <li><a href="groups.php">Grupper</a></li>
                 <li><a href="roles.php">Karaktärer</a></li>
-                <li><a href="role_list.php">Lista alla</a></li>
+                <li><a href="role_list.php">Alla Roller</a></li>
 
                 <li><a href="telegram_admin.php">Telegram</a></li>
                 <li><a href="prop_admin.php">Rekvisita</a></li>
@@ -51,7 +51,7 @@ include_once '../includes/error_handling.php';
 	  <?php $payment_array = PaymentInformation::allBySelectedLARP();
         if (empty($payment_array)) {
       ?>
-            <div class="content"><strong>Inga <a href="payment_information_admin.php">deltagaravgifter</a> är satta. Gör det innan anmälan öppnar!</strong></div>
+            <div class="content">Inga <a href="payment_information_admin.php">deltagaravgifter</a> är satta. Gör det innan anmälan öppnar.</div>
         <?php
         }
         ?>
