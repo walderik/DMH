@@ -6,15 +6,15 @@ include_once $root . '/includes/berghem_mailer.php';
 
 class Signup extends Dbh {
 
-    protected function createUser($email, $password) {
+    protected function createUser($name, $email, $password) {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."user (Email, Password, ActivationCode) VALUES (?, ?, ?);");
+        $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."user (Name, Email, Password, ActivationCode) VALUES (?, ?, ?, ?);");
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $activationCode = uniqid();
                 
         
-        if (!$stmt->execute(array($email, $hashedPassword, $activationCode))) {
+        if (!$stmt->execute(array($name, $email, $hashedPassword, $activationCode))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
