@@ -137,6 +137,7 @@ h1 {
 }
 
 .error {
+    font-weight: bold;
 	background-color: #f2f2f2;
 	padding: 2px 2px 2px 2px;
 	color: red;
@@ -146,6 +147,7 @@ h1 {
 
 
 .message {
+    font-weight: bold;
 	background-color: #f2f2f2;
 	padding: 2px 2px 2px 2px;
 	color: green;
