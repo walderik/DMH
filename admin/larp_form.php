@@ -81,7 +81,7 @@ include_once 'header_subpage.php';
     			</tr>
     			<tr>
     				<td><label for="LatestRegistrationDate">Sista anmälningsdag</label></td>
-    				<td><input type="date-local" id="LatestRegistrationDate"
+    				<td><input type="date" id="LatestRegistrationDate"
     					name="LatestRegistrationDate" value="<?php echo $larp->LatestRegistrationDate; ?>" size="50" required></td>
     			</tr>
     			<tr>
