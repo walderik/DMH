@@ -27,6 +27,9 @@ function getMessageText($code) {
         case "activated":
             $output = "Kontot är aktiverat. Du kan nu logga in.";
             break;
+        case "already_activated":
+            $output = "Kontot är redan aktiverat. Du logga in.";
+            break;
         case "email_sent":
             $output = "Ett mail med instruktioner har skickats till dig. Om det inte kommer om några sekunder har det kanske hamnat i din spam-låda.";
             break;
