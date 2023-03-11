@@ -106,6 +106,9 @@ function getErrorText($code) {
         case "no_role_may_register":
             $output = "Det har ingen roll som går att anmäla eftersom gruppen den är med i inte är anmäld än.";
             break;
+        case "no_email":
+            $output = "Ingen korrekt epostadress angiven.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }
