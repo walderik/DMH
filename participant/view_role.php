@@ -88,6 +88,7 @@ $ih = ImageHandler::newWithDefault();
 			    echo "Intrigerna är inte klara än.";
 			}
 			?>
+			<?php 
 		if (isset($previous_larp_roles) && count($previous_larp_roles) > 0) {
 		    echo "<h2>Historik</h2>";
             foreach ($previous_larp_roles as $prevoius_larp_role) {
@@ -106,7 +107,7 @@ $ih = ImageHandler::newWithDefault();
             }
 
 		}
-
+		?>
 	</div>
 
 
