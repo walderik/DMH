@@ -26,7 +26,13 @@ class PaymentInformation extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        global $current_larp;
+        $payment = new self();
+        if (is_null($payment->FromDate)) $payment->FromDate = PaymentInformation::nextMissingStartDate();
+        if (is_null($payment->ToDate))   $payment->ToDate   = PaymentInformation::nextMissingEndDate();
+        if (is_null($payment->FromAge))  $payment->FromAge  = $current_larp->getCampaign()->MinimumAge;
+        if (is_null($payment->ToAge))    $payment->ToAge    = 200;
+        return $payment;
     }
     
     public static function getPrice($date, $age) {
@@ -114,6 +120,49 @@ class PaymentInformation extends BaseModel{
         }
         $stmt = null;
         return $resultArray;
+    }
+    
+    public static function errorReportBySelectedLARP() {
+        global $current_larp;
+        
+        $errors = "";
+        
+        $allPaymentInformation = static::allBySelectedLARP();
+        if (empty($all)) {
+            if ($current_larp->RegistrationOpen == 1) $errors .= "<p><b>VIKTIGT Anmälan är öppen och ingen avgift är angiven</b></p>";
+            $errors .= "<p>Det finns ännu inget registrerat för vad det kostar att delta på lajvet. Tills vidare är det gratis!</p>\n";
+        }
+        else { 
+            foreach ($allPaymentInformation as $paymentInformation) {
+                
+            }
+        }
+        
+        if ($errors == '') $errors == "All Fine";
+        return $errors;
+    }
+    
+    # Metod som plockar fram nästa datum som inte har någon betalningsinformation
+    public static function nextMissingStartDate() {
+        $first = date("Y-m-d");
+        
+        
+        return $first;
+    }
+    
+    # Metod som plockar fram sista datum som inte har någon betalningsinformation
+    public static function nextMissingEndDate() {
+        
+        global $current_larp;
+        
+        print_r($current_larp);
+        
+        if (!isset($current_larp)) return date("Y-m-d");
+        
+        $last = $current_larp->LatestRegistrationDate;
+        
+        
+        return $last;
     }
     
     
