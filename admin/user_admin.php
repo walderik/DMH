@@ -12,14 +12,15 @@
         $resultCheck = count($user_array);
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
-            echo "<tr><th>Email</th><th>Admin</th><th>Aktivering</th><th>Kan Logga in</th>\n";
+            echo "<tr><th>Namn</th><th>Email</th><th>Admin</th><th>Aktivering</th><th>Kan Logga in</th>\n";
             foreach ($user_array as $user) {
                 if ($user->Blocked) {
                     echo "<tr style = 'text-decoration:line-through;'>\n";
                 } else {
                     echo "<tr>\n";
                 }
-                echo "<td>" . $user->Email . "</td>\n";
+                echo "<td>$user->Name</td>\n";
+                echo "<td>$user->Email</td>\n";
                 if ($current_user->Email == $user->Email ) {
                     echo "<td>" . showStatusIcon($user->IsAdmin) . "</td>\n";
                 } else {
