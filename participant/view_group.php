@@ -1,6 +1,6 @@
 <?php
 
-require 'header.php';
+require 'header_subpage.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
@@ -30,15 +30,6 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
 $ih = ImageHandler::newWithDefault();
 ?>
-
-        <nav id="navigation">
-          <a href="#" class="logo"><?php echo $current_larp->Name;?></a>
-          <ul class="links">
-            <li><a href="index.php"><i class="fa-solid fa-house"></i>Hem</a></li>
-	       	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
-          </ul>
-        </nav>
-
 
 	<div class="content">
 		<h1><?php echo $current_group->Name;?></h1>

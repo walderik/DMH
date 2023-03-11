@@ -1,6 +1,6 @@
 <?php
 
-require 'header.php';
+require 'header_subpage.php';
 
 
 //TODO ta bort personer som redan är anmälda
@@ -62,15 +62,6 @@ function default_value($field) {
 
 
 ?>
-
-    <nav id="navigation">
-      <a href="#" class="logo"><?php echo $current_larp->Name; ?></a>
-      <ul class="links">
-        <li><a href="index.php"><i class="fa-solid fa-house"></i>Hem</a></li>
-       	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
-      </ul>
-    </nav>
-
 
 	<div class="content">
 		<h1><?php default_value('action'); ?> karaktär</h1>
