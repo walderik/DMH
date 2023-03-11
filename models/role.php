@@ -248,7 +248,7 @@ class Role extends BaseModel{
     public static function getAllMainRoles(LARP $larp) {
         global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM regsys_larp_role WHERE larpId =? AND IsMainRole=1) ORDER BY GroupId;";
+        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM regsys_larp_role WHERE larpId =? AND IsMainRole=1) ORDER BY GroupId, Name;";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
