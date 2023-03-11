@@ -103,5 +103,9 @@ class Campaign extends BaseModel{
         return static::newFromArray($row);
     }
     
+    public function hej() {
+        if ($this->Abbreviation=='DMH') return "Howdy";
+        return "Hej";
+    }
 
 }
