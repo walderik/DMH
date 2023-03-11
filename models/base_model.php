@@ -64,7 +64,6 @@ class BaseModel extends Dbh{
         
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            echo "No res";
             return null;
         }
         
