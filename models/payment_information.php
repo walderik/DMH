@@ -28,6 +28,7 @@ class PaymentInformation extends BaseModel{
     public static function newWithDefault() {
         global $current_larp;
         $payment = new self();
+        $payment->LARPId = $current_larp->Id;
         if (is_null($payment->FromDate)) $payment->FromDate = PaymentInformation::nextMissingStartDate();
         if (is_null($payment->ToDate))   $payment->ToDate   = PaymentInformation::nextMissingEndDate();
         if (is_null($payment->FromAge))  $payment->FromAge  = $current_larp->getCampaign()->MinimumAge;
@@ -155,7 +156,7 @@ class PaymentInformation extends BaseModel{
         
         global $current_larp;
         
-        print_r($current_larp);
+        //print_r($current_larp);
         
         if (!isset($current_larp)) return date("Y-m-d");
         

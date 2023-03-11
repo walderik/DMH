@@ -4,7 +4,6 @@ include_once 'header_subpage.php';
 
 global $current_larp;
 
-print_r($current_larp);
 
 if ($_SERVER["REQUEST_METHOD"] != "GET") {
     header('Location: index.php');
