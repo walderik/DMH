@@ -24,7 +24,7 @@ include_once 'header_subpage.php';
     		        echo "<a href='view_person.php?id=$person->Id'><i class='fa-solid fa-eye'></i></a> \n";
     		        echo "<a href='edit_person.php?id=$person->Id'><i class='fa-solid fa-pen'></i></a> \n";    		        echo "<br>\n";
     		        
-    		        echo "Epost: $person->Email, Telefon: $person->PhoneNumber <br>\n";
+    		        echo "Epost: $person->Email ".contactEmailIcon($person->Name,$person->Email).", Telefon: $person->PhoneNumber <br>\n";
     		        
     		        echo "<br>\n";
     		        echo "Roller:<br>\n";

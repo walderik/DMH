@@ -46,11 +46,13 @@ else {
  			<td><input type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="250" required></td></tr>
     		
 			<tr><td valign="top" class="header">Personnummer&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
+				<td><input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
 					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}|\d{12}|\d{8}x{4}"  placeholder="ÅÅÅÅMMDD-NNNN" size="20" maxlength="13" required>
-	</td></tr>
+			</td></tr>
 			<tr><td valign="top" class="header">Email&nbsp;<font style="color:red">*</font></td>
-			<td><input type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="250" required></td></tr>
+			<td><input type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="250" required>
+			<?php  echo contactEmailIcon($person->Name,$person->Email); ?>
+			</td></tr>
 			<tr><td valign="top" class="header">Mobilnummer</td>
 			<td><input type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo $person->PhoneNumber; ?>"  size="100" maxlength="250"></td></tr>
 			<tr><td valign="top" class="header">Närmaste anhörig&nbsp;<font style="color:red">*</font></td>

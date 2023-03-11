@@ -90,3 +90,7 @@ function showStatusIcon($value, ?string $fix_url = NULL) {
     }
 }
 
+function contactEmailIcon($name,$email) {
+    return "<a href='contact_email.php?email=$email&name=$name'><i class='fa-solid fa-envelope-open-text'></i></a>";
+}
+

@@ -13,14 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-$current_person = Person::loadById($PersonId);
+$person = Person::loadById($PersonId);
 
-if (!$current_person->isRegistered($current_larp)) {
+if (!$person->isRegistered($current_larp)) {
     header('Location: index.php'); //Rollen är inte anmäld
     exit;
 }
 
-$registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
+$registration = Registration::loadByIds($person->Id, $current_larp->Id);
 
 if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = $_SERVER['HTTP_REFERER'];
@@ -35,17 +35,17 @@ else {
 
 
 	<div class="content">
-		<h1>Hantera betalning för <?php echo $current_person->Name;?></h1>
+		<h1>Hantera betalning för <?php echo $person->Name;?></h1>
 		<form action="logic/person_payment_save.php" method="post">
     		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $registration->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
-			<tr><td valign="top" class="header">Namn</td><td><?php echo $current_person->Name;?></td></tr>
-			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $current_person->SocialSecurityNumber;?></td></tr>
-			<tr><td valign="top" class="header">Email</td><td><?php echo $current_person->Email;?></td></tr>
-			<tr><td valign="top" class="header">Mobilnummer</td><td><?php echo $current_person->PhoneNumber;?></td></tr>
+			<tr><td valign="top" class="header">Namn</td><td><?php echo $person->Name;?></td></tr>
+			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $person->SocialSecurityNumber;?></td></tr>
+			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email ." ".contactEmailIcon($person->Name,$person->Email);?></td></tr>
+			<tr><td valign="top" class="header">Mobilnummer</td><td><?php echo $person->PhoneNumber;?></td></tr>
 		    <?php 
-		    if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+		    if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		    ?>
 			<tr><td valign="top" class="header">Ansvarig vuxen</td><td><?php echo $registration->Guardian;?></td></tr>
 		    

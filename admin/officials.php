@@ -9,7 +9,8 @@ include_once 'header_subpage.php';
     echo "<table class='data'><tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Typ av funktionär</th><th></th></tr>";
     foreach($persons as $person) {
         $registration = $person->getRegistration($current_larp);
-        echo "<tr><td>$person->Name</td><td>$person->Email</td><td>$person->PhoneNumber</td><td>".commaStringFromArrayObject($registration->getOfficialTypes()).
+        echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td><td>$person->PhoneNumber</td><td>".
+        commaStringFromArrayObject($registration->getOfficialTypes()).
         "&nbsp;<a href='edit_official.php?id=$registration->Id'><i class='fa-solid fa-pen'></i></a>".
         "&nbsp;<a href='person_payment.php?id=$person->Id'><i class='fa-solid fa-money-check-dollar'></i></a></td><td>";
         ?>
@@ -26,7 +27,8 @@ include_once 'header_subpage.php';
     echo "<table class='data'><tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Önskad typ av funktionär</th><th></th></tr>";
     foreach($persons as $person) {
         $registration = $person->getRegistration($current_larp);
-        echo "<tr><td>$person->Name</td><td>$person->Email</td><td>$person->PhoneNumber</td><td>".commaStringFromArrayObject($registration->getOfficialTypes())."</td><td>";
+        echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td><td>$person->PhoneNumber</td><td>";
+        echo commaStringFromArrayObject($registration->getOfficialTypes())."</td><td>";
         ?>
         <form action="logic/official_save.php" method="post"><input type="hidden" id="Id" name="Id" value="<?php echo $registration->Id;?>"><input type="hidden" id="type" name="type" value="single"><input type="submit" value="Lägg till"></form>
     <?php     

@@ -27,7 +27,8 @@ include_once 'header_subpage.php';
             echo "<h3>Enbart $allergy->Name</h3><table class='data'>";
             echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Övrigt</th><th>Vald mat</th></tr>";
             foreach($persons as $person) {
-                echo "<tr><td>$person->Name</td><td>$person->Email</td><td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>".$person->getTypeOfFood()->Name."</td></tr>";
+                echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td>";
+                echo "<td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>".$person->getTypeOfFood()->Name."</td></tr>";
             }
             echo "</table>";
         }
@@ -39,7 +40,9 @@ include_once 'header_subpage.php';
     echo "<h3>Multipla vanliga allergier</h3><table class='data'>";
     echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Allergier</th><th>Övrigt</th><th>Vald mat</th></tr>";
     foreach($persons as $person) {
-        echo "<tr><td>$person->Name</td><td>$person->Email</td><td>$person->PhoneNumber</td><td>" . commaStringFromArrayObject($person->getNormalAllergyTypes()) . "</td><td>$person->FoodAllergiesOther</td><td>" . $person->getTypeOfFood()->Name . "</td></tr>";
+        echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td>";
+        echo "<td>$person->PhoneNumber</td><td>" . commaStringFromArrayObject($person->getNormalAllergyTypes()) . "</td>";
+        echo "<td>$person->FoodAllergiesOther</td><td>" . $person->getTypeOfFood()->Name . "</td></tr>";
     }
     echo "</table>";
     
@@ -49,7 +52,8 @@ include_once 'header_subpage.php';
     echo "<h3>Special</h3><table class='data'>";
     echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Övrigt</th><th>Vald mat</th></tr>";
     foreach($persons as $person) {
-        echo "<tr><td>$person->Name</td><td>$person->Email</td><td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>" . $person->getTypeOfFood()->Name . "</td></tr>";
+        echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td>";
+        echo "<td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>" . $person->getTypeOfFood()->Name . "</td></tr>";
     }
     echo "</table>";
     

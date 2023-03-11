@@ -18,7 +18,7 @@
     		    foreach ($persons as $person)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $person->Name . "</td>\n";
-    		        echo "<td>" . $person->Email . " <a href='contact_email.php?email=$person->Email&name=$person->Name'><i class='fa-solid fa-envelope-open-text'></i></a></td>\n";
+    		        echo "<td>" . $person->Email . " ".contactEmailIcon($person->Name,$person->Email)."</td>\n";
     		        echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>\n";
     		        echo "<td>" . $person->PhoneNumber . "</td>\n";
     		        
