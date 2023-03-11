@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($_POST['action'] == 'activation') {
             if ($user->isActivated()) {
-                header("location: ../index.php?error=noSubmit");
+                header("location: ../index.php?message=already_activated");
             } else {
                 send_activation($user);
                 header("location: ../index.php?message=email_sent");
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Skicka aktiveringsmailet
-function send_activation($user)  {
+function send_activation(User $user)  {
     $mail = $user->Email;
     $code = $user->ActivationCode;
     
@@ -89,14 +89,14 @@ function send_activation($user)  {
         "/regsys/includes/activate.php?email=$mail&code=$code"
         );
     
-    $text  = "Du har begärt en ny aktiveringslänk för att kunna aktivera kontot.<br>\n";
+    $text  = "Du har begärt en ny aktiveringslänk för att kunna aktivera ditt konto.<br>\n";
     $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken och sedan kan du logga in.</a><br>\n";
     
-    BerghemMailer::send($mail, 'Mate', $text, "Aktiveringsbrev");
+    BerghemMailer::send($mail, $user->Name, $text, "Aktiveringsbrev");
 }
 
 // Skicka mail med en länk för att byta lösenord
-function send_change_password($user) {
+function send_change_password(User $user) {
     $mail = $user->Email;
     $code = $user->EmailChangeCode;
     
@@ -110,5 +110,5 @@ function send_change_password($user) {
     $text  = "Du har begärt en länk för att kunna byta lösenord på ditt konto.<br>\n";
     $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken och sedan kan du byta lösenord.</a><br>\n";
     
-    BerghemMailer::send($mail, 'Mate', $text, "Byta Lösenord");
+    BerghemMailer::send($mail, $user->Name, $text, "Byta Lösenord");
 }
