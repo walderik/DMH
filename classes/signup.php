@@ -2,24 +2,23 @@
 global $root;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-include_once $root . '/includes/berghem_mailer.php';
+require $root . '/includes/init.php';
 
 class Signup extends Dbh {
 
     protected function createUser($name, $email, $password) {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."user (Name, Email, Password, ActivationCode) VALUES (?, ?, ?, ?);");
+        $user = User::newWithDefault();
+        $user->Name = $name;
+        $user->Email = $email;
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $activationCode = uniqid();
-                
         
-        if (!$stmt->execute(array($name, $email, $hashedPassword, $activationCode))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        $stmt = null;
+        $user->Password = $hashedPassword;
+        $user->ActivationCode = $activationCode;
+        
+        $user->create();
+        
         $url = $this->activation_url($email, $activationCode);
         
         $text  = "Du har registrerat ett konto för anmälningssystemet.<br>\n";
@@ -32,24 +31,11 @@ class Signup extends Dbh {
     
     
     protected function checkUserExists($email) {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("SELECT id FROM ".$tbl_prefix."user WHERE email = ?;");
+        $user = User::loadByEmail($email);
         
+        if (is_null($user)) return false;
         
-        if (!$stmt->execute(array($email))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        $resultCheck;
-        if ($stmt->rowCount() > 0) {
-            $resultCheck = true;   
-        }
-        else {
-            $resultCheck = false;
-        }
-        return $resultCheck;
+        return true;
     }
     
     protected function activation_url($email, $activationCode){
