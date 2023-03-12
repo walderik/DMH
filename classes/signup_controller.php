@@ -2,7 +2,7 @@
 global $root;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require $root . '/includes/init.php';
+include_once $root . '/includes/all_includes.php';
 
 class SignupController {
     private $name;
@@ -11,7 +11,6 @@ class SignupController {
     private $passwordrepeat;
     
     public function __construct($name, $email, $password, $passwordrepeat) {
-        echo "Contruct";
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
@@ -19,7 +18,6 @@ class SignupController {
     }
     
     public function signupUser() {
-        echo "Sinupuser";
         if ($this->emptyInput()) {
             header("location: ../index.php?error=emptyInput");
             exit();
