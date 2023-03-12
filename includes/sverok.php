@@ -1,4 +1,3 @@
-
 <?php
 //     API för att kontrollera medlemskap i Berghems Vänner:
 //     API-Nyckel för Berghems vänner 

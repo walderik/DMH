@@ -1,4 +1,6 @@
 <?php
+// We need to use sessions, so you should always start sessions using the below code.
+session_start();
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
 global $current_user, $current_larp, $root, $tbl_prefix;
 
@@ -6,8 +8,7 @@ $tbl_prefix = "regsys_";
 
 include_once $root . '/includes/all_includes.php';
 
-// We need to use sessions, so you should always start sessions using the below code.
-session_start();
+
 
 
 // If the user is not logged in redirect to the login page...

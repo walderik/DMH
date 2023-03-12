@@ -1,4 +1,4 @@
- <?php
+<?php
 
 //         bind_param
 //     i	corresponding variable has type int
