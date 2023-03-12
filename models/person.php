@@ -417,14 +417,15 @@ class Person extends BaseModel{
         //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
         if ($registration->IsMember == 1) return true;
         
-
-        //Vi kollar inte oftare en gång i timmen
-        if (isset($registration->MembershipCheckedAt) && strtotime($registration->MembershipCheckedAt) < (time() + 60*60)) return false;
+        //Kolla inte oftare än en gång per kvart
+        if (isset($registration->MembershipCheckedAt) && (time()-strtotime($registration->MembershipCheckedAt) < 15*60)) return false;
 
 
         $year = substr($larp->StartDate, 0, 4);
-        
+
         $val = check_membership($this->SocialSecurityNumber, $year);
+        
+
         if ($val == 1) {
             $registration->IsMember=1;
         }

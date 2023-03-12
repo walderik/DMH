@@ -55,7 +55,9 @@ function check_membership(string $socialsecuritynumber, string $year)
     DATA;
     
     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-    
+    //echo "Sverok fråga: ";
+    //print_r($data);
+    //echo "<br>";
     $resp = curl_exec($curl);
     curl_close($curl);
     
@@ -64,7 +66,9 @@ function check_membership(string $socialsecuritynumber, string $year)
 
     if (!isset($obj->response) || is_null($obj->response)) return false;
     $response = $obj->response;
-
+    //echo "Sverok: ";
+    //print_r($response);
+    //echo "<br>";
     if (!isset($response->member_found) || is_null($response->member_found) || strlen($response->member_found)==0 ) {
         return false;
         
