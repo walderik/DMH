@@ -107,7 +107,7 @@ class User extends BaseModel{
     public function create() {
         global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."user (Name, Email, Password, IsAdmin, ActivationCode, EmailChangeCode, Blocked) VALUES (?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."user (Name, Email, Password, IsAdmin, ActivationCode, EmailChangeCode, Blocked) VALUES (?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked))) {
             $stmt = null;
