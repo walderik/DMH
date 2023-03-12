@@ -155,8 +155,7 @@ class PaymentInformation extends BaseModel{
     public static function nextMissingEndDate() {
         
         global $current_larp;
-        
-        //print_r($current_larp);
+       
         
         if (!isset($current_larp)) return date("Y-m-d");
         
