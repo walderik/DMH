@@ -2,10 +2,10 @@
 
 Props: ändra ägare (grupp/roll)
 		ladda och visa bild
-Titledeeds tilldela ägare (roll)
-Titledeeds sätta upp hur mycket resurser de producerar / behöver	
+Lagfarter tilldela ägare (roll)
+Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 
-NPC'er
+NPC'er (skapa, tilldela)
 
 Intrigverktyg
 
