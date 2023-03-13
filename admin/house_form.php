@@ -47,7 +47,7 @@ include_once 'header.php';
     ?>
     <div class="content"> 
     	<h1><?php echo default_value('action');?> hus</h1>
-    	<form action="larp_admin.php" method="post">
+    	<form action="house_admin.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
     		<table>
@@ -61,11 +61,11 @@ include_once 'header.php';
     			</tr>
     			<tr>
     				<td><label for="PositionInVillage">Plats i byn</label></td>
-    				<td><input type="text" id="PositionInVillage" name="PositionInVillage" value="<?php echo $house->PositionInVillage; ?>"></td>
+    				<td><textarea id="PositionInVillage" name="PositionInVillage" rows="4" cols="121" maxlength="60000" required><?php echo $house->PositionInVillage; ?></textarea></td>
     			</tr>
     			<tr>
     				<td><label for="Description">Beskrivning</label></td>
-    				<td><input type="text" id="Description" name="Description" value="<?php echo $house->Description; ?>"></td>
+    				<td><textarea id="Description" name="Description" rows="4" cols="121" maxlength="60000" required><?php echo $house->Description; ?></textarea></td>
     			</tr>
     		</table>
      		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
