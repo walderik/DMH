@@ -263,7 +263,7 @@ function populateWealth() {
     
     $wealth = Wealth::newWithDefault();
     $wealth->Name = "5. Jätterik";
-    $wealth->Description = "Kan gössla med pengar";
+    $wealth->Description = "Kan gödsla med pengar";
     $wealth->CampaignId = $campaign->Id;
     $wealth->create();
     echo "Skapade " . sizeof(Wealth::all()) . " rikedom<br>";
@@ -324,8 +324,14 @@ function populatePlaceOfResidence() {
     $place->create();
     
     $place = PlaceOfResidence::newWithDefault();
-    $place->Name = "Minnekapi";
+    $place->Name = "Övriga Minnekapi";
     $place->Description = "Övriga delstaten";
+    $place->CampaignId = $campaign->Id;
+    $place->create();
+    
+    $place = PlaceOfResidence::newWithDefault();
+    $place->Name = "Colorado";
+    $place->Description = "Delstaten";
     $place->CampaignId = $campaign->Id;
     $place->create();
     
@@ -342,8 +348,8 @@ function populatePlaceOfResidence() {
     $place->create();
     
     $place = PlaceOfResidence::newWithDefault();
-    $place->Name = "Indianer";
-    $place->Description = "Ange i beskrivningen vilken stam karaktären tillhör";
+    $place->Name = "Kringflackande";
+    $place->Description = "(t ex circusfolk, vissa indian-stammar)";
     $place->CampaignId = $campaign->Id;
     $place->create();
     echo "Skapade " . sizeof(PlaceOfResidence::all()) . " boplatser<br>";
@@ -572,13 +578,13 @@ function populateHousingRequest() {
     $campaign = Campaign::loadByAbbreviation("DMH");
     $housing = HousingRequest::newWithDefault();
     $housing->Name = "Hus i byn";
-    $housing->Description = "En otätad kojja.";
+    $housing->Description = "Ett hus i byn.";
     $housing->CampaignId = $campaign->Id;
     $housing->create();
 
     $housing = HousingRequest::newWithDefault();
     $housing->Name = "Eget hus i byn";
-    $housing->Description = "Jag förvaltar en otätad kojja i Berghem.";
+    $housing->Description = "Vi har en i vår grupp som förvaltar ett hus som gruppen vill använda.";
     $housing->CampaignId = $campaign->Id;
     $housing->create();
 
