@@ -56,16 +56,19 @@ include_once 'header.php';
     				<td><input type="text" id="Name" name="Name" value="<?php echo $house->Name; ?>" required></td>
     			</tr>
     			<tr>
-    				<td><label for="NumberOfBeds">Anta lsovplatser</label></td>
+    				<td><label for="NumberOfBeds">Antal sovplatser</label></td>
     				<td><input type="text" id="NumberOfBeds" name="NumberOfBeds" value="<?php echo $house->NumberOfBeds; ?>" required></td>
     			</tr>
     			<tr>
-    				<td><label for="Information">Tag line</label></td>
-    				<td><input type="text" id="Information" name="Information" value="<?php echo $house->Information; ?>"></td>
+    				<td><label for="PositionInVillage">Plats i byn</label></td>
+    				<td><input type="text" id="PositionInVillage" name="PositionInVillage" value="<?php echo $house->PositionInVillage; ?>"></td>
+    			</tr>
+    			<tr>
+    				<td><label for="Description">Beskrivning</label></td>
+    				<td><input type="text" id="Description" name="Description" value="<?php echo $house->Description; ?>"></td>
     			</tr>
     		</table>
-    
-    		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
+     		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
     	</form>
     	</div>
     </body>

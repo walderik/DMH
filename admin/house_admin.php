@@ -40,7 +40,7 @@ include 'navigation_subpage.php';
         $resultCheck = count($house_array);
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Antal sovplatser</th><th>Information</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Antal sovplatser</th><th>Ploats i byn</th><th>Beskrivning</th><th></th></tr>\n";
             foreach ($house_array as $house) {
                 echo "<tr>\n";
                 echo "<td>" . $house->Id . "</td>\n";
