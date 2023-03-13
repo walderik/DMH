@@ -1,4 +1,6 @@
-<?php require 'header_subpage.php'; ?>
+<?php require 'header.php'; 
+include 'navigation_subpage.php';
+?>
 
 	<div class="content">
 		<h1>Hjälp</h1>

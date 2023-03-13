@@ -1,6 +1,6 @@
 <?php
 
-require 'header_subpage.php';
+require 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "new";
@@ -20,6 +20,7 @@ if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
     exit;
 }
 
+include 'navigation_subpage.php';
 ?>
 
 	<div class="content">

@@ -1,6 +1,6 @@
 <?php
 
-require 'header_subpage.php';
+require 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
@@ -29,6 +29,8 @@ $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
 $ih = ImageHandler::newWithDefault();
+
+include 'navigation_subpage.php';
 ?>
 
 	<div class="content">

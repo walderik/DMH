@@ -1,6 +1,6 @@
 <?php
 
-require 'header_subpage.php';
+require 'header.php';
 
 $current_persons = $current_user->getUnregisteredPersonsForUser($current_larp);
 
@@ -15,6 +15,8 @@ if (count($current_persons) == 1) {
     
 }
 
+
+include 'navigation_subpage.php';
 ?>
 
 	<div class="content">

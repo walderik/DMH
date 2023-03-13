@@ -1,6 +1,6 @@
 <?php
 
-require 'header_subpage.php';
+require 'header.php';
 
 $current_persons = $current_user->getPersons();
 
@@ -53,7 +53,7 @@ function default_value($field) {
 }
 
 
-
+include 'navigation_subpage.php';
 ?>
 
 	<div class="content">

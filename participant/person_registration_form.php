@@ -1,6 +1,6 @@
 <?php
 
-require 'header_subpage.php';
+require 'header.php';
 
 if (!$current_larp->mayRegister()) {
     header('Location: index.php');
@@ -73,6 +73,7 @@ if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()-
     exit;
 }
 
+include 'navigation_subpage.php';
 ?>
 
 	<div class="content">

@@ -1,5 +1,5 @@
 <?php
-    require 'header_subpage.php'; 
+    require 'header.php'; 
     $person = Person::newWithDefault();
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -50,6 +50,7 @@
         echo $output;
     }
     
+    include 'navigation_subpage.php';
 ?>
 
 	<div class="content">

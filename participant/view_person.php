@@ -1,6 +1,6 @@
 <?php
 
-require 'header_subpage.php';
+require 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
@@ -26,6 +26,8 @@ if (!$current_person->isRegistered($current_larp)) {
 
 $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 
+
+include 'navigation_subpage.php';
 ?>
 
 	<div class="content">

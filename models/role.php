@@ -4,7 +4,7 @@ class Role extends BaseModel{
     
     public $Id;
     public $Name;
-    public $IsNPC = false;
+    public $IsNPC = 0;
     public $Profession;
     public $Description;
     public $PreviousLarps;

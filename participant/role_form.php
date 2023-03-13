@@ -1,6 +1,6 @@
 <?php
 
-require 'header_subpage.php';
+require 'header.php';
 
 
 //TODO ta bort personer som redan är anmälda
@@ -59,7 +59,7 @@ function default_value($field) {
     echo $output;
 }
 
-
+include 'navigation_subpage.php';
 
 ?>
 

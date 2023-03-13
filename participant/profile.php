@@ -1,5 +1,6 @@
 <?php
-require 'header_subpage.php';
+require 'header.php';
+include 'navigation_subpage.php';
 ?>
 		<h2>Profil</h2>
 		<div class="content">

@@ -1,6 +1,6 @@
 <?php
 
-require 'header_subpage.php';
+require 'header.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -53,6 +53,7 @@ if (isset($_FILES["upload"])) {
     }
 }
 
+include 'navigation_subpage.php';
 ?>
 
 	<div class="content">

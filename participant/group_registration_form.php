@@ -1,6 +1,6 @@
 <?php
 
-require 'header_subpage.php';
+require 'header.php';
 
 $current_groups = $current_user->getUnregisteredGroupsForUser($current_larp);
 
@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+include 'navigation_subpage.php';
 ?>
 
 	<div class="content">
