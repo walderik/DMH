@@ -55,7 +55,7 @@ else {
 			<tr><td valign="top" class="header">Mobilnummer</td>
 			<td><input type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo $person->PhoneNumber; ?>"  size="100" maxlength="250"></td></tr>
 			<tr><td valign="top" class="header">Närmaste anhörig&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" required><?php echo $person->EmergencyContact; ?></textarea></td></tr>
+			<td><textarea id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" maxlength="60000" required><?php echo $person->EmergencyContact; ?></textarea></td></tr>
 		    <?php 
 		    if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		    ?>
@@ -83,7 +83,7 @@ else {
 			<td><?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?></td></tr>
 
 			<tr><td valign="top" class="header">Andra allergier</td>
-			<td><textarea id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100"><?php echo $person->FoodAllergiesOther; ?></textarea></td></tr>
+			<td><textarea id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100" maxlength="60000"><?php echo $person->FoodAllergiesOther; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">NPC önskemål</td>
 			<td><input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="250" value="<?php echo $registration->NPCDesire;?>"></td></tr>
@@ -94,7 +94,7 @@ else {
 
 
 			<tr><td valign="top" class="header">Annan information</td>
-			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100"><?php echo $person->OtherInformation; ?></textarea></td></tr>
+			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $person->OtherInformation; ?></textarea></td></tr>
 			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($person->isMember($current_larp))?></td></tr>
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
 			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->Approved)) { echo $registration->Approved; } else { echo "Nej"; }?></td></tr>

@@ -78,7 +78,7 @@ include_once '../includes/selection_data_control.php';
 
 				<td><label for="Description">Beskrivning</label></td>
 				<td><textarea id="Description" name=Description rows="4"
-						cols="50" required><?php echo $object->Description; ?></textarea></td>
+						cols="50" maxlength="60000" required><?php echo $object->Description; ?></textarea></td>
 			</tr>
 			<tr>
 

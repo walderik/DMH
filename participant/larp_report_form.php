@@ -35,13 +35,13 @@ if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
 				veta allt som relaterar till de intriger som karakären fick, men begränsa dig inte till det. 
 				Skriv så mycket du kan. Det kan dessutom vara till hjälp om du ska spela karaktären vid ett 
 				senare tillfälle.</div>
-				<textarea id="WhatHappened" name="WhatHappened" rows="10" cols="100"><?php echo $larp_role->WhatHappened; ?></textarea>
+				<textarea id="WhatHappened" name="WhatHappened" rows="10" cols="100" maxlength="60000"><?php echo $larp_role->WhatHappened; ?></textarea>
 			</div>
 
 			<div class="question">
 				<label for="WhatHappendToOthers">Vad såg du hände med andra?</label><br> 
 				<div class="explanation">Var du med om, eller såg något som hände en annan karkatär. Berätta! Vi vill veta allt. :)</div>
-				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" cols="100"><?php echo $larp_role->WhatHappendToOthers; ?></textarea>
+				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" cols="100" maxlength="60000"><?php echo $larp_role->WhatHappendToOthers; ?></textarea>
 			</div>
 
 			<input type="submit" value="Spara">

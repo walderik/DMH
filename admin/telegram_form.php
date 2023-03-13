@@ -86,13 +86,13 @@ include_once 'header_subpage.php';
 			<tr>
 
 				<td><label for="Message">Meddelande</label></td>
-				<td><textarea id="Message" name="Message" rows="4" cols="50"
+				<td><textarea id="Message" name="Message" rows="4" cols="50" maxlength="60000"
 					 required><?php echo $telegram->Message; ?></textarea></td>
 			</tr>
 			<tr>
 
 				<td><label for="OrganizerNotes">Anteckningar om telegrammet</label></td>
-				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4"
+				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
 						cols="50"><?php echo $telegram->OrganizerNotes; ?></textarea></td>
 
 			</tr>

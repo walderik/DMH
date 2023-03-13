@@ -36,13 +36,13 @@ else {
 			Byt till rätt gruppledare när du har lagt in medlemmar i gruppen.</td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning</td>
-			<td><textarea id="Description" name="Description" rows="4" cols="50" required><?php echo $group->Description; ?></textarea></td></tr>
+			<td><textarea id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo $group->Description; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Vänner</td>
-			<td><textarea id="Friends" name="Friends" rows="4" cols="50"><?php echo $group->Friends; ?></textarea></td></tr>
+			<td><textarea id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo $group->Friends; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Fiender</td>
-			<td><textarea id="Enemies" name="Enemies" rows="4" cols="50"><?php echo $group->Enemies; ?></textarea></td></tr>
+			<td><textarea id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo $group->Enemies; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Rikedom</td>
 			<td><?php Wealth::selectionDropdown(false, true, $group->WealthId);?></td></tr>
@@ -62,13 +62,13 @@ else {
 			<td><?php IntrigueType::selectionDropdown(true, false, $larp_group->getSelectedIntrigueTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
-			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50"><?php echo $group->IntrigueIdeas; ?></textarea></td></tr>
+			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo $group->IntrigueIdeas; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Kvarvarande intriger</td>
-			<td><textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="50"><?php echo $larp_group->RemainingIntrigues; ?></textarea></td></tr>
+			<td><textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="50" maxlength="60000"><?php echo $larp_group->RemainingIntrigues; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Annan information</td>
-			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50"><?php echo $group->OtherInformation; ?></textarea></td></tr>
+			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50" maxlength="60000"><?php echo $group->OtherInformation; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Antal medlemmar</td>
 			<td><input type="text" id="ApproximateNumberOfMembers" name="ApproximateNumberOfMembers" value="<?php echo $larp_group->ApproximateNumberOfMembers; ?>" required></td></tr>

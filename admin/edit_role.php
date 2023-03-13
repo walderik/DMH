@@ -60,19 +60,19 @@ else {
 			<td><input type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="Description" name="Description" rows="4" cols="100" required><?php echo $role->Description; ?></textarea></td></tr>
+			<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="60000" required><?php echo $role->Description; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Tidigare lajv</td>
-			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100"><?php echo $role->PreviousLarps; ?></textarea></td></tr>
+			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="60000"><?php echo $role->PreviousLarps; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Varför befinner sig<br>karaktären i Slow River?&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea></td></tr>
+			<td><textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Religion</td>
 			<td><input type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="250"></td></tr>
 
 			<tr><td valign="top" class="header">Mörk hemlighet&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" required><?php echo $role->DarkSecret; ?> </textarea></td></tr>
+			<td><textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000" required><?php echo $role->DarkSecret; ?> </textarea></td></tr>
 
 			<tr><td valign="top" class="header">Mörk hemlighet - intrig idéer&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required></td></tr>
@@ -81,16 +81,16 @@ else {
 			<td><?php selectionDropdownByArray('IntrigueType' , IntrigueType::allActive(), true, false, $larp_role->getSelectedIntrigueTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
-			<td><textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100"><?php echo $role->IntrigueSuggestions; ?></textarea></td></tr>
+			<td><textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Saker karaktären inte vill spela på</td>
 			<td><input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="250"></td></tr>
 
 			<tr><td valign="top" class="header">Relationer med andra</td>
-			<td><textarea id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100"><?php echo $role->CharactersWithRelations; ?></textarea></td></tr>
+			<td><textarea id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100" maxlength="60000"><?php echo $role->CharactersWithRelations; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Annan information</td>
-			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100"><?php echo $role->OtherInformation; ?></textarea></td></tr>
+			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $role->OtherInformation; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Rikedom&nbsp;<font style="color:red">*</font></td>
 			<td><?php Wealth::selectionDropdown(false,true, $role->WealthId); ?></td></tr>

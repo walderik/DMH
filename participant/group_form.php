@@ -96,7 +96,7 @@ function default_value($field) {
 			
 			<div class="question">
     			<label for="Description">Beskrivning av gruppen</label>&nbsp;<font style="color:red">*</font><br>
-    			<textarea id="Description" name="Description" rows="4" cols="50" required><?php echo $group->Description; ?></textarea>
+    			<textarea id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo $group->Description; ?></textarea>
 			
 			 
 			</div>
@@ -105,12 +105,12 @@ function default_value($field) {
 			<div class="question">
 				<label for="Friends">Vänner</label>
 				<div class="explanation">Beskriv vilka gruppen anser vara sina vänner. Det vara både grupper och  beskrivning av egenskaper hos dem som är vänner. Exempelvis: Cheriffen, bankrånare och telegrafarbetare</div>
-				<textarea id="Friends" name="Friends" rows="4" cols="50"><?php echo $group->Friends; ?></textarea>
+				<textarea id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo $group->Friends; ?></textarea>
 			</div>
 			<div class="question">
 				<label for="Enemies">Fiender</label>
 				<div class="explanation">Beskriv vilka gruppen anser vara sina fiender. Det vara både grupper och  beskrivning av egenskaper hos dem som är fiender. Exempelvis: Guldletare, Big Bengt och alla som gillar öl.</div>
-				<textarea id="Enemies" name="Enemies" rows="4" cols="50"><?php echo $group->Enemies; ?></textarea>
+				<textarea id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo $group->Enemies; ?></textarea>
 			</div>
 
 
@@ -144,14 +144,14 @@ function default_value($field) {
 			<div class="explanation">
 			Har ni några grupprykten som ni vill ha hjälp med att sprida? 
 			</div>
-			<textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50"><?php echo $group->IntrigueIdeas; ?></textarea>
+			<textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo $group->IntrigueIdeas; ?></textarea>
 			
 			
 			</div>
 						
 			<div class="question">
 			<label for="OtherInformation">Något annat arrangörerna bör veta om er grupp?</label><br>
-			<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50"><?php echo $group->OtherInformation; ?></textarea>
+			<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50" maxlength="60000"><?php echo $group->OtherInformation; ?></textarea>
 			
 			 
 			</div>

@@ -89,7 +89,7 @@
 					<br> 
 					<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678. <br />
 					Det bör vara någon som inte är med på lajvet.</div>
-    				<textarea id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" required><?php echo $person->EmergencyContact; ?></textarea>
+    				<textarea id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" maxlength="60000" required><?php echo $person->EmergencyContact; ?></textarea>
 				</div>
 			</p>
 			
@@ -153,13 +153,13 @@
 			<div class="question">
 				<label for="FoodAllergiesOther">Har du matallergier eller annan specialkost? </label><br>
 				<div class="explanation">Om du har allergier eller specialkost som inte täcks av de två ovanstående frågorna vill vi att du skriver om det här.</div>
-				<textarea id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100"><?php echo $person->FoodAllergiesOther; ?></textarea>
+				<textarea id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100" maxlength="60000"><?php echo $person->FoodAllergiesOther; ?></textarea>
 			</div>
 			
 			<div class="question">
 				<label for="OtherInformation">Övrig information</label><br>
 				<div class="explanation">Är det något annat kring din off-person arrangörerna bör veta? Tex andra allergier eller sjukdomar, eller bra kunskaper tex sjukvårdare.</div>
-				<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100"><?php echo $person->OtherInformation; ?></textarea>
+				<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $person->OtherInformation; ?></textarea>
 			
 			 
 			</div>

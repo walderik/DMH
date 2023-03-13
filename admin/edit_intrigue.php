@@ -69,7 +69,7 @@ else {
 		<form action="logic/edit_intrigue_save.php" method="post">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $current_role->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-		<textarea id="Intrigue" name="Intrigue" rows="20" cols="150"><?php    echo $larp_role->Intrigue; ?></textarea>
+		<textarea id="Intrigue" name="Intrigue" rows="20" cols="150" maxlength="60000"><?php    echo $larp_role->Intrigue; ?></textarea>
 		
 		<input type="submit" value="Spara">
 

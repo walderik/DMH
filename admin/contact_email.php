@@ -39,7 +39,7 @@ $hej = $campaign->hej();
     		
     		<p><br />
     		<p><?php echo "$hej $name"; ?> !<br></p>
-			<p><textarea id="text" name="text" rows="8" cols="121" required></textarea></p>
+			<p><textarea id="text" name="text" rows="8" cols="121" maxlength="60000" required></textarea></p>
 			Med vänliga hälsningar<br /><br />
 			<b>Arrangörerna av <?php echo $current_larp->Name; ?></b><br>
 			</p>

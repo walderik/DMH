@@ -134,7 +134,7 @@ function default_value($field) {
 			<div class="question">
 				<label for="CharactersWithRelations">Relationer med andra</label><br> 
 				<div class="explanation">Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för din karaktär och mycket kort hur vi kan ge spel på dessa karaktärer.</div>
-				<textarea id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100"><?php echo $role->CharactersWithRelations; ?></textarea>
+				<textarea id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100" maxlength="60000"><?php echo $role->CharactersWithRelations; ?></textarea>
 			</div>
 			
 			
@@ -147,7 +147,7 @@ function default_value($field) {
 				                         Allt som din karaktär har råkat ut för är sådan som kan påverka händelser i karaktärens framtid. 
 				                         Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
 				                         att du därmed får en intressantare lajvupplevelse.</div>
-				<textarea id="Description" name="Description" rows="4" cols="100" required><?php echo $role->Description; ?></textarea>
+				<textarea id="Description" name="Description" rows="4" cols="100" maxlength="60000" required><?php echo $role->Description; ?></textarea>
 			</div>
 			
 				
@@ -164,7 +164,7 @@ function default_value($field) {
 				<div class="explanation">Självklart har din karaktär en anledning att vara i just den här hålan. Om din karaktär bor här så finns det en anledning att bo kvar.    
 Är du besökande så lär det finnas en bra anledning att inte bara åka vidare efter en natts vila, utan stanna till ett par nätter.    
 Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</div>
-				<textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea>
+				<textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea>
 			</div>
 				
 			<div class="question">
@@ -174,7 +174,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 					Om du var med förra året med din karaktär, vad hände med din karaktär som är bra att komma ihåg? Gjorde den några särskilt bra affärer? Var den med i en duell? Blev den svindlad eller svindlade den någon? Hur gick det med kärleken?<br><br>
 					Har din karaktär gjort något minnesvärt tidigare år?
 				</div>
-				<textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100"><?php echo $role->PreviousLarps; ?></textarea>
+				<textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="60000"><?php echo $role->PreviousLarps; ?></textarea>
 			</div>
 			<div class="question">
 				<label for="Religion">Religion</label><br>
@@ -192,7 +192,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 				<div class="explanation">Alla har någonting de inte vill berätta så gärna för andra. Vad har din karaktär för mörk hemlighet?    
 Du måste ange en mörk hemlighet.    
 Det kan kännas svårt att göra karaktären sårbar på det här sättet, men försök. Det ger mer spännande spel.</div>
-				<textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" required><?php echo $role->DarkSecret; ?> </textarea>
+				<textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000" required><?php echo $role->DarkSecret; ?> </textarea>
 			</div>
 			<div class="question">
 				<label for="DarkSecretIntrigueIdeas">Mörk hemlighet - intrig idéer</label>&nbsp;<font style="color:red">*</font><br>
@@ -202,7 +202,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			<div class="question">
 				<label for="IntrigueSuggestions">Intrigideer</label><br> 
 				<div class="explanation">Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar". </div>
-				<textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100"><?php echo $role->IntrigueSuggestions; ?></textarea>
+				<textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea>
 			</div>
 			<div class="question">
 				<label for="NotAcceptableIntrigues">Saker karaktären absolut inte vill spela på</label><br>
@@ -216,7 +216,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			<div class="question">
 				<label for="OtherInformation">Övrig information</label><br>
 				<div class="explanation">Är det något annat kring karaktären arrangörerna bör veta?</div>
-				<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100"><?php echo $role->OtherInformation; ?></textarea>
+				<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $role->OtherInformation; ?></textarea>
 			
 			 
 			</div>

@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 			<div class="question">
     			<label for="RemainingIntrigues">Kvarvarande intriger</label>
     			<div class="explanation">Har gruppen någon pågående/oavslutad intrig sedan tidigare? </div>
-				<textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="100"></textarea>
+				<textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="100" maxlength="60000"></textarea>
             </div>
 
 			
