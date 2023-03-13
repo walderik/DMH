@@ -1,5 +1,5 @@
 <?php
-include_once 'header_subpage.php';
+include_once 'header.php';
 
 ?>
    
@@ -45,6 +45,7 @@ include_once 'header_subpage.php';
         echo $output;
     }
     
+    include 'navigation_subpage.php';
     
     ?>
     <div class="content"> 

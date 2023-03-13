@@ -1,6 +1,6 @@
 <?php
 
-include_once 'header_subpage.php';
+include_once 'header.php';
 
 global $current_larp;
 
@@ -26,6 +26,8 @@ if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
 $campaign = $current_larp->getCampaign();
 
 $hej = $campaign->hej();
+
+include 'navigation_subpage.php';
 ?>
 
 	<div class="content">

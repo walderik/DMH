@@ -1,10 +1,7 @@
 <?php
-include_once 'header_subpage.php';
-?>
+include_once 'header.php';
 
 
-
-<?php
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -40,7 +37,7 @@ elseif (isset($prop->RoleId)) {
     $role = Role::loadById($prop->RoleId);
     $owner = $role->Name;
 }
-
+include 'navigation_subpage.php';
 ?>
 
     <div class="content">

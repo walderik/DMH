@@ -1,5 +1,5 @@
 <?php
-include_once 'header_subpage.php';
+include_once 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $first_date=$_POST['first_date'];
@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
     
 
-
+include 'navigation_subpage.php';
 
 ?>
 

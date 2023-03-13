@@ -1,5 +1,5 @@
 <?php
- include_once 'header_subpage.php';
+ include_once 'header.php';
  include_once '../includes/selection_data_control.php';
  
  $type;
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $objectType = getObjectType($type);
 }
 
-
+include 'navigation_subpage.php';
 
 ?>
     <div class="content">   

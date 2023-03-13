@@ -1,10 +1,5 @@
 <?php
-include_once 'header_subpage.php';
-?>
-
-
-
-<?php
+include_once 'header.php';
 
 // BerghemMailer::send('Mats.rappe@yahoo.se', 'Mats Rappe', "Det här är ett mail");
 
@@ -33,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+include 'navigation_subpage.php';
 ?>
 
     <div class="content">

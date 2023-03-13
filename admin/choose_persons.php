@@ -1,5 +1,5 @@
 <?php
- include_once 'header_subpage.php';
+ include_once 'header.php';
  
  if ($_SERVER["REQUEST_METHOD"] == "GET") {
      
@@ -18,6 +18,7 @@
      $referer = "";
  }
  
+ include 'navigation_subpage.php';
 ?>
 
 

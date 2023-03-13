@@ -1,6 +1,6 @@
 <?php
 
-include_once 'header_subpage.php';
+include_once 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
@@ -26,6 +26,7 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
 $ih = ImageHandler::newWithDefault();
 
+include 'navigation_subpage.php';
 ?>
 
 

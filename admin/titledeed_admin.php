@@ -1,10 +1,5 @@
 <?php
-include_once 'header_subpage.php';
-?>
-
-
-
-<?php
+include_once 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -31,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+include 'navigation_subpage.php';
 ?>
 
     <div class="content">

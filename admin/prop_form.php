@@ -1,10 +1,5 @@
 <?php
-include_once 'header_subpage.php';
-
-?>
-
-    
-    <?php
+include_once 'header.php';
 
     $prop = Prop::newWithDefault();;
     
@@ -47,6 +42,7 @@ include_once 'header_subpage.php';
         echo $output;
     }
     
+    include 'navigation_subpage.php';
     ?>
     
 

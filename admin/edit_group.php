@@ -1,6 +1,6 @@
 <?php
 
-include_once 'header_subpage.php';
+include_once 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
@@ -45,6 +45,8 @@ function existsInArray($entry, $array) {
     }
     return false;
 }
+
+include 'navigation_subpage.php';
 ?>
 
 
