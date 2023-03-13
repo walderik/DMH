@@ -21,7 +21,7 @@ class BerghemMailer {
         
             
         $from = static::$from;
-        $myName = "Beghems vänner";
+        $myName = "Berghems vänner";
         $hej = "Hej";
             
         
