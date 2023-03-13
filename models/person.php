@@ -124,7 +124,8 @@ class Person extends BaseModel{
     public static function getAllRegistered($larp) {
         global $tbl_prefix;
         if (is_null($larp)) return array();
-        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".$tbl_prefix."Registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".
+        $tbl_prefix."registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
@@ -152,7 +153,8 @@ class Person extends BaseModel{
     public static function getAllToApprove($larp) {
         global $tbl_prefix;
         if (is_null($larp)) return array();
-        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".$tbl_prefix."Registration` WHERE LarpId = ? AND Approved IS Null)  ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".
+        $tbl_prefix."registration` WHERE LarpId = ? AND Approved IS Null)  ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
@@ -183,7 +185,10 @@ class Person extends BaseModel{
         global $tbl_prefix;
         if (is_null($group) || is_null($larp)) return Array();
         
-        $sql="select * from `".$tbl_prefix."person` WHERE id IN (SELECT DISTINCT ".$tbl_prefix."role.PersonId FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".$tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
+        $sql="select * from `".$tbl_prefix."person` WHERE id IN (SELECT DISTINCT ".
+        $tbl_prefix."role.PersonId FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".
+        $tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".
+        $tbl_prefix."larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($group->Id, $larp->Id))) {
@@ -254,7 +259,8 @@ class Person extends BaseModel{
             return; 
         }
         foreach($post['NormalAllergyTypeId'] as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."NormalAllergyType_Person (NormalAllergyTypeId, PersonId) VALUES (?,?);");
+            $stmt = $this->connect()->prepare("INSERT INTO ".
+                $tbl_prefix."normalallergytype_person (NormalAllergyTypeId, PersonId) VALUES (?,?);");
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -267,7 +273,7 @@ class Person extends BaseModel{
     
     public function deleteAllNormalAllergyTypes() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."NormalAllergyType_Person WHERE PersonId = ?;");
+        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."normalallergytype_person WHERE PersonId = ?;");
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -308,7 +314,8 @@ class Person extends BaseModel{
         global $tbl_prefix;
         if (is_null($this->Id)) return array();
         
-        $stmt = $this->connect()->prepare("SELECT * FROM ".$tbl_prefix."NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
+        $stmt = $this->connect()->prepare("SELECT * FROM ".
+            $tbl_prefix."normalallergytype_person where PersonId = ? ORDER BY NormalAllergyTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
@@ -334,7 +341,8 @@ class Person extends BaseModel{
         global $tbl_prefix;
         if (is_null($this->Id)) return array();
         
-        $stmt = $this->connect()->prepare("SELECT NormalAllergyTypeId FROM ".$tbl_prefix."NormalAllergyType_Person where PersonId = ? ORDER BY NormalAllergyTypeId;");
+        $stmt = $this->connect()->prepare("SELECT NormalAllergyTypeId FROM ".
+            $tbl_prefix."normalallergytype_person where PersonId = ? ORDER BY NormalAllergyTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
@@ -444,7 +452,16 @@ class Person extends BaseModel{
         global $tbl_prefix;
         if (is_null($allergy) OR is_null($larp)) return Array();
 
-        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".$tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, ".$tbl_prefix."Registration, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".$tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount = 1 AND Counted.PersonId = ".$tbl_prefix."normalallergytype_person.PersonId and ".$tbl_prefix."normalallergytype_person.NormalAllergyTypeId=? AND ".$tbl_prefix."Registration.PersonId=".$tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."Registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
+        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".
+        $tbl_prefix."normalallergytype_person.PersonId FROM ".
+        $tbl_prefix."normalallergytype_person, ".
+        $tbl_prefix."registration, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".
+        $tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount = 1 AND Counted.PersonId = ".
+        $tbl_prefix."normalallergytype_person.PersonId and ".
+        $tbl_prefix."normalallergytype_person.NormalAllergyTypeId=? AND ".
+        $tbl_prefix."registration.PersonId=".
+        $tbl_prefix."normalallergytype_person.PersonId AND ".
+        $tbl_prefix."registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
 
         $stmt = static::connectStatic()->prepare($sql);
         
@@ -473,7 +490,12 @@ class Person extends BaseModel{
         global $tbl_prefix;
 
         if (is_null($larp)) return Array();
-        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".$tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, ".$tbl_prefix."Registration, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".$tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount > 1 AND Counted.PersonId = ".$tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."Registration.PersonId=".$tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."Registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
+        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".
+        $tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, ".
+        $tbl_prefix."registration, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".
+        $tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount > 1 AND Counted.PersonId = ".
+        $tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."registration.PersonId=".
+        $tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
 
         if (!$stmt->execute(array($larp->Id))) {
@@ -503,7 +525,7 @@ class Person extends BaseModel{
 
         
         $sql="select * from ".$tbl_prefix."person WHERE id IN ".
-            "(SELECT PersonId from ".$tbl_prefix."Registration WHERE LarpId =? AND PersonId NOT IN ".
+            "(SELECT PersonId from ".$tbl_prefix."registration WHERE LarpId =? AND PersonId NOT IN ".
             "(SELECT PersonId FROM ".$tbl_prefix."normalallergytype_person)) AND FoodAllergiesOther !='' ".
             "ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
@@ -537,7 +559,7 @@ class Person extends BaseModel{
         
         
         $sql="select * from ".$tbl_prefix."person WHERE id IN ".
-            "(SELECT PersonId from ".$tbl_prefix."Registration WHERE IsOfficial=1 and LARPId=?) ".
+            "(SELECT PersonId from ".$tbl_prefix."registration WHERE IsOfficial=1 and LARPId=?) ".
             "ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
@@ -569,7 +591,8 @@ class Person extends BaseModel{
         
         
         $sql="select * from ".$tbl_prefix."person WHERE id IN ".
-            "(SELECT PersonId from ".$tbl_prefix."Registration WHERE IsOfficial=0 and LARPId=? AND Id IN (SELECT RegistrationId FROM ".$tbl_prefix."OfficialType_Person)) ".
+            "(SELECT PersonId from ".$tbl_prefix."registration WHERE IsOfficial=0 and LARPId=? AND Id IN (SELECT RegistrationId FROM ".
+            $tbl_prefix."officialtype_person)) ".
             "ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         

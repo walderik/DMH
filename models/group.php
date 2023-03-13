@@ -51,7 +51,7 @@ class Group extends BaseModel{
     public static function getRegistered($larp) {
         global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."group` WHERE Id IN (SELECT GroupId from ".$tbl_prefix."LARP_Group where LARPId = ?);";
+        $sql = "SELECT * FROM `".$tbl_prefix."group` WHERE Id IN (SELECT GroupId from ".$tbl_prefix."larp_group where LARPId = ?);";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {

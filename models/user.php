@@ -173,7 +173,9 @@ class User extends BaseModel{
 
         if (!isset($group)) return false;
         
-        $sql = "SELECT COUNT(*) AS Num FROM `".$tbl_prefix."role`, ".$tbl_prefix."person WHERE ".$tbl_prefix."role.GroupId=? AND ".$tbl_prefix."role.PersonId = ".$tbl_prefix."person.Id AND ".$tbl_prefix."person.UserId=?;";
+        $sql = "SELECT COUNT(*) AS Num FROM `".$tbl_prefix."role`, ".$tbl_prefix."person WHERE ".
+        $tbl_prefix."role.GroupId=? AND ".$tbl_prefix."role.PersonId = ".
+        $tbl_prefix."person.Id AND ".$tbl_prefix."person.UserId=?;";
 
         $stmt = static::connectStatic()->prepare($sql);
         

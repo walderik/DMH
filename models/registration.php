@@ -168,7 +168,8 @@ class Registration extends BaseModel{
     {
         global $tbl_prefix;
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."registration` WHERE PersonId = ? AND LARPId = ?");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".
+            $tbl_prefix."registration` WHERE PersonId = ? AND LARPId = ?");
         
         if (!$stmt->execute(array($personId, $larpId))) {
             $stmt = null;
@@ -200,7 +201,8 @@ class Registration extends BaseModel{
         global $tbl_prefix;
         if (is_null($this->Id)) return array();
         
-        $stmt = $this->connect()->prepare("SELECT * FROM ".$tbl_prefix."OfficialType_Person where RegistrationId = ? ORDER BY OfficialTypeId;");
+        $stmt = $this->connect()->prepare("SELECT * FROM ".
+            $tbl_prefix."officialtype_person where RegistrationId = ? ORDER BY OfficialTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
@@ -229,7 +231,8 @@ class Registration extends BaseModel{
             return;
         }
         foreach($post['OfficialTypeId'] as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."OfficialType_Person (OfficialTypeId, RegistrationId) VALUES (?,?);");
+            $stmt = $this->connect()->prepare("INSERT INTO ".
+                $tbl_prefix."officialtype_person (OfficialTypeId, RegistrationId) VALUES (?,?);");
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -242,7 +245,8 @@ class Registration extends BaseModel{
     
     public function deleteAllOfficialTypes() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."OfficialType_Person WHERE RegistrationId = ?;");
+        $stmt = $this->connect()->prepare("DELETE FROM ".
+            $tbl_prefix."officialtype_person WHERE RegistrationId = ?;");
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -255,7 +259,8 @@ class Registration extends BaseModel{
         global $tbl_prefix;
         if (is_null($this->Id)) return array();
         
-        $stmt = $this->connect()->prepare("SELECT OfficialTypeId FROM ".$tbl_prefix."OfficialType_Person where RegistrationId = ? ORDER BY OfficialTypeId;");
+        $stmt = $this->connect()->prepare("SELECT OfficialTypeId FROM ".
+            $tbl_prefix."officialtype_person where RegistrationId = ? ORDER BY OfficialTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;

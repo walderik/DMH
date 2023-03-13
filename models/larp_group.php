@@ -121,7 +121,7 @@ class LARP_Group extends BaseModel{
             return;
         }
         foreach($post['IntrigueTypeId'] as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."IntrigueType_LARP_Group (IntrigueTypeId, LARP_GroupGroupId, LARP_GroupLARPId) VALUES (?,?, ?);");
+            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."intriguetype_larp_group (IntrigueTypeId, LARP_GroupGroupId, LARP_GroupLARPId) VALUES (?,?, ?);");
             if (!$stmt->execute(array($Id, $this->GroupId, $this->LARPId))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -133,7 +133,7 @@ class LARP_Group extends BaseModel{
     
     public function deleteAllIntrigueTypes() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."IntrigueType_LARP_Group WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ?;");
+        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."intriguetype_larp_group WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ?;");
         if (!$stmt->execute(array($this->GroupId, $this->LARPId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");

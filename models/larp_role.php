@@ -221,7 +221,7 @@ class LARP_Role extends BaseModel{
             return;
         }
         foreach($idArr as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."IntrigueType_LARP_Role (IntrigueTypeId, LARP_RoleRoleId, LARP_RoleLARPId) VALUES (?,?, ?);");
+            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."intriguetype_larp_role (IntrigueTypeId, LARP_RoleRoleId, LARP_RoleLARPId) VALUES (?,?, ?);");
             if (!$stmt->execute(array($Id, $this->RoleId, $this->LARPId))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -233,7 +233,7 @@ class LARP_Role extends BaseModel{
     
     public function deleteAllIntrigueTypes() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."IntrigueType_LARP_Role WHERE LARP_RoleRoleId = ? AND LARP_RoleLARPId = ?;");
+        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."intriguetype_larp_role WHERE LARP_RoleRoleId = ? AND LARP_RoleLARPId = ?;");
         if (!$stmt->execute(array($this->RoleId, $this->LARPId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");

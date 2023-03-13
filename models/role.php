@@ -195,7 +195,10 @@ class Role extends BaseModel{
     public static function getRegistredRolesForPerson(Person $person, LARP $larp) {
         global $tbl_prefix;
         if (is_null($person) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".$tbl_prefix."role`.PersonId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".
+        $tbl_prefix."role`.PersonId = ? AND `".$tbl_prefix."role`.Id=".
+        $tbl_prefix."larp_role.RoleId AND ".
+        $tbl_prefix."larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($person->Id, $larp->Id))) {
@@ -222,7 +225,9 @@ class Role extends BaseModel{
     public static function getRegisteredRolesInGroup($group, $larp) {
         global $tbl_prefix;
         if (is_null($group) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".$tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".
+        $tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".
+        $tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($group->Id, $larp->Id))) {
@@ -248,7 +253,8 @@ class Role extends BaseModel{
     public static function getAllMainRoles(LARP $larp) {
         global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM regsys_larp_role WHERE larpId =? AND IsMainRole=1) ORDER BY GroupId, Name;";
+        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
+        $tbl_prefix."larp_role WHERE larpId =? AND IsMainRole=1) ORDER BY GroupId, Name;";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
@@ -275,7 +281,8 @@ class Role extends BaseModel{
     public static function getAllNotMainRoles(LARP $larp) {
         global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM regsys_larp_role WHERE larpId =? AND IsMainRole=0) ORDER BY GroupId;";
+        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
+        $tbl_prefix."larp_role WHERE larpId =? AND IsMainRole=0) ORDER BY GroupId;";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
