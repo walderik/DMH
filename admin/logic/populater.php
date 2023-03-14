@@ -226,6 +226,14 @@ Spisen är i nuläget tyvärr demonterad i väntan på nya brandsäkerhetsbestä
     $house->Description = "Liten, enkel stuga med lös inredning. Plats för några sängplatser och ett bord.";
     $house->NumberOfBeds = "2-3";
     $house->create();
+    
+    $house = House::newWithDefault();
+    $house->Name = "Skarven";
+    $house->PositionInVillage = "Mitt i byn.";
+    $house->Description = "Ett skrytbygge som inte går att bo i. ;).";
+    $house->NumberOfBeds = "0";
+    $house->create();
+    
     echo "Skapade " . sizeof(House::all()) . " hus<br>";
 }
 
