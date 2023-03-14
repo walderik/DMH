@@ -84,12 +84,12 @@ include 'navigation_subpage.php';
 
 			<div class="question">
 				<label for="Name">Karaktärens namn</label>&nbsp;<font style="color:red">*</font>
-				<br> <input type="text" id="Name" name="Name" value="<?php echo $role->Name; ?>" size="100" maxlength="250" required>
+				<br> <input type="text" id="Name" name="Name" value="<?php echo $role->Name; ?>" size="100" maxlength="20" required>
 			</div>
 			<div class="question">
 				<label for="Profession">Yrke</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Vad jobbar din karaktär med för att överleva?   Vill du ha ett yrke som kan innebära en central roll i lajvet, så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.    Det gäller poster som borgmästare, bypräst eller sheriff.   Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta spela att din karaktär har det yrket. Vi vill helst inte att du spelar prostituerad.</div>
-				<input type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="250" required>
+				<input type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="100" required>
 			</div>
 		<?php 
 		$previous_larp_roles = $role->getPreviousLarpRoles();
@@ -117,7 +117,7 @@ include 'navigation_subpage.php';
 			<div class="question">
 				<label for="Birthplace">Var är karaktären född?</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Skriv land, delstat, stad</div>
-				<input type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="250" required>
+				<input type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="100" required>
 			</div>
 			
 			<div class="question">
@@ -180,7 +180,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			<div class="question">
 				<label for="Religion">Religion</label><br>
 				<div class="explanation">Vissa religioner har bättre anseende än andra. Är du kristen, så ange inte bara det utan vilken typ av kristen du är. Katoliker har generellt sett fortfarande lite sämre anseende än andra kristna.</div>
-				<input type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="250">
+				<input type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="100">
 			</div>
 			<div class="question">
 				<label for="WealthsId">Hur rik är karaktären?</label>&nbsp;<font style="color:red">*</font><br>
@@ -198,7 +198,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			<div class="question">
 				<label for="DarkSecretIntrigueIdeas">Mörk hemlighet - intrig idéer</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Hur kan vi spela på din mörka hemlighet?</div>
-				<input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required>
+				<input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="100" required>
 			</div>
 			<div class="question">
 				<label for="IntrigueSuggestions">Intrigideer</label><br> 
@@ -208,7 +208,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			<div class="question">
 				<label for="NotAcceptableIntrigues">Saker karaktären absolut inte vill spela på</label><br>
 				<div class="explantion">Är det något den här karaktären aldrig skulle göra? Vill du helst undvika farligt spel är det också bra att ange.</div>
-				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="250">
+				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="100">
 			</div>
 
 

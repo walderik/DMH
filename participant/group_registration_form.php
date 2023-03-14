@@ -85,7 +85,7 @@ include 'navigation_subpage.php';
 					gruppmedlemmar kommer ni att bli?</div>
 					<input type="text"
 					id="ApproximateNumberOfMembers"
-					name="ApproximateNumberOfMembers" required>
+					name="ApproximateNumberOfMembers"  maxlength="5" required>
 			</div>
 			<div class="question">
     			<label for="HousingRequest">Boende</label>&nbsp;<font style="color:red">*</font>

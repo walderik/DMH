@@ -96,7 +96,7 @@ include 'navigation_subpage.php';
     			<div class="explanation">Eftersom <?php echo $current_person->Name; ?> bara är <?php  echo $current_person->getAgeAtLarp($current_larp); ?> år behövs en ansvarig vuxen. 
     			Den ansvarige måste vara tillfrågad och accepera ansvaret.
 				</div>
-                <input type="text" id="Guardian" name="Guardian" size="100" maxlength="250" required>
+                <input type="text" id="Guardian" name="Guardian" size="100" maxlength="100" required>
             </div>
 		    
 		    <?php 
@@ -159,7 +159,7 @@ include 'navigation_subpage.php';
 					NPC = Non Player Character, en roll som styrs helt/delvis av arrangörsgruppen och spelas en kortare stund under lajvet för att skapa scener/händelser.<br>
 					Vi kommer återkomma till de som är intresserade, men skriv gärna en rad om du redan nu har några idéer.
 				</div>
-                <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="250">
+                <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="100">
             </div>
 
 

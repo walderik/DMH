@@ -68,12 +68,12 @@
 			<p>
 				<div class="question">
 					<label for="Name">För och efternamn</label>&nbsp;<font style="color:red">*</font>
-					<br> <input type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="250" required>
+					<br> <input type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="25" required>
 				</div>
 				<div class="question">
 					<label for="Email">E-post</label>&nbsp;<font style="color:red">*</font><br>
 					<div class="explanation">E-post är det sättet arrangörerna skickar ut information till deltagare, dvs allmänna utskick, intrig och boendeinformation. Det är också det sättet vi kommer att kontakta dig om vi har några frågor kring din anmälan. Se till att det är en epost som du läser regelbundet.</div>
-					<input type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="250" required>
+					<input type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="100" required>
 				</div>
 				<div class="question">
 					<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
@@ -85,7 +85,7 @@
 				</div>
 				<div class="question">
 					<label for="PhoneNumber">Mobilnummer</label>
-					<br> <input type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo $person->PhoneNumber; ?>"  size="100" maxlength="250">
+					<br> <input type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo $person->PhoneNumber; ?>"  size="100" maxlength="100">
 				</div>
 				<div class="question">
 					<label for="EmergencyContact">Närmaste anhörig</label>&nbsp;<font style="color:red">*</font>
@@ -124,7 +124,7 @@
 				                         Jag är action-lajvare och vill spela den sökta rollen NN.<br>
 				                         Jag är action-lajvare och har inget emot en våldsam död.</div>
 					<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
-					<br> <input type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="250">
+					<br> <input type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="100">
 				</div>
 			<div class="question">
 				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
@@ -135,7 +135,7 @@
 				<label for="NotAcceptableIntrigues">Vilken typ av intriger vill du absolut inte spela på?</label>
 				<br> 
 				<div class="explanation">Eftersom vi inte vill att någon ska må dåligt är det bra att veta vilka begränsningar du som person har vad det gäller intriger.</div>
-				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $person->NotAcceptableIntrigues; ?>" size="100" maxlength="250" >
+				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $person->NotAcceptableIntrigues; ?>" size="100" maxlength="100" >
 			</div>
 
 			<h2>Hälsa</h2>

@@ -91,7 +91,7 @@ include 'navigation_subpage.php';
 			
 			<div class="question">
 				<label for="Name">Gruppens namn</label>&nbsp;<font style="color:red">*</font><br> 
-				<input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required>
+				<input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" maxlength="20" required>
 			</div>
 			
 			<div class="question">
