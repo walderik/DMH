@@ -64,7 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 function send_registration_mail(Registration $registration) {
     $person = $registration->getPerson();
-    $mail = $person->Email;
     
     $larp = $registration->getLARP();
     $roles = $person->getRolesAtLarp($larp);
@@ -91,10 +90,26 @@ function send_registration_mail(Registration $registration) {
         if (isset($role->GroupId)) {
             $group = $role->getGroup();
             $text .= ", medlem i $group->Name";
+            send_registration_information_mail_to_group($role, $group, $larp);
         }
         
         $text .= "<br>\n";
     }
 
-    BerghemMailer::send($mail, $person->Name, $text, "Bekräftan av anmälan till $larp->Name");
+    BerghemMailer::send($person->Email, $person->Name, $text, "Bekräftan av anmälan till $larp->Name");
 }
+
+function send_registration_information_mail_to_group(Role $role, Group $group, Larp $larp) {
+    $admin_person = $group->getPerson();
+    
+    $text  = "$role->Name är anmäld till $group->Name.<br>\n";
+    $text .= "Det gäller lajvet $larp->Name.<br>\n";
+    $text .= "<br>\n";
+    $text .= "Du kan manuellt ta bort rollen ur gruppen om det är fel.";
+    $text .= "<br>\n";
+    
+    BerghemMailer::send($admin_person->Email, $admin_person->Name, $text, "Anmälan till $group->Name i $larp->Name");
+}
+
+
+
