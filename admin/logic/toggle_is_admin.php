@@ -21,7 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         header('Location: ../../participant/index.php');
         exit;
     }
-    $user->IsAdmin = !$user->IsAdmin;
+    if ($user->IsAdmin == 0) {
+        $user->IsAdmin = 1;
+    }
+    else {
+        $user->IsAdmin = 0;
+        
+    }
     $user->update();
     header('Location: ../../admin/user_admin.php');
     exit;

@@ -21,7 +21,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         header('Location: ../../participant/index.php');
         exit;
     }
-    $user->Blocked = !$user->Blocked;
+    if ($user->Blocked == 0) {
+        $user->Blocked = 1;
+    }
+    else {
+        $user->Blocked = 0;
+        
+    }
+
     $user->update();
     header('Location: ../../admin/user_admin.php');
     exit;
