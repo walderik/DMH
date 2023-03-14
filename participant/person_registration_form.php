@@ -197,7 +197,7 @@ include 'navigation_subpage.php';
 			<div class="question">
 					Regler&nbsp;<font style="color:red">*</font><br>
     			<div class="explanation">Genom att kryssa i denna ruta så lovar jag med heder och samvete att jag har läst igenom alla 
-			hemsidans regler, har godkänt dem och är införstådd med vad som förväntas av mig som deltagare 
+			<a href="https://dmh.berghemsvanner.se/" target="_blank">hemsidans regler</a>, har godkänt dem och är införstådd med vad som förväntas av mig som deltagare 
 			på lajvet. Om jag inte har läst reglerna så kryssar jag inte i denna ruta.</div>
 
 			<input type="checkbox" id="Rules" name="Rules" value="Ja" required>

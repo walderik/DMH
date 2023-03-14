@@ -104,6 +104,19 @@ include 'navigation_subpage.php';
     			<label for="NeedFireplace_no">Nej</label>
     		</div>
 			
+			
+			<div class="question">
+			Genom att kryssa i denna ruta så lovar jag med
+			heder och samvete att jag har läst igenom alla 
+			<a href="https://dmh.berghemsvanner.se/" target="_blank">hemsidans regler</a> och
+			förmedlat dessa till mina gruppmedlemmar. Vi har även alla godkänt
+			dem och är införstådda med vad som förväntas av oss som grupp av
+			deltagare på lajvet. Om jag inte har läst reglerna så kryssar jag
+			inte i denna ruta.&nbsp;<font style="color:red">*</font><br>
+			
+			<input type="checkbox" id="rules" name="rules" value="Ja" required>
+  			<label for="rules">Jag lovar</label> 
+			</div>
 
 			  <input type="submit" value="Anmäl">
 
