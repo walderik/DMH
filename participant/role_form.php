@@ -116,6 +116,7 @@ include 'navigation_subpage.php';
 
 			<div class="question">
 				<label for="Birthplace">Var är karaktären född?</label>&nbsp;<font style="color:red">*</font><br>
+				<div class="explanation">Skriv land, delstat, stad</div>
 				<input type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="250" required>
 			</div>
 			

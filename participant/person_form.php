@@ -72,12 +72,14 @@
 				</div>
 				<div class="question">
 					<label for="Email">E-post</label>&nbsp;<font style="color:red">*</font><br>
+					<div class="explanation">E-post är det sättet arrangörerna skickar ut information till deltagare, dvs allmänna utskick, intrig och boendeinformation. Det är också det sättet vi kommer att kontakta dig om vi har några frågor kring din anmälan. Se till att det är en epost som du läser regelbundet.</div>
 					<input type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="250" required>
 				</div>
 				<div class="question">
 					<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
 					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN.<br />
-					Om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.</div>
+					Om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.<br />
+					Personnumret kommer att kontrolleras mot medlemsregistret eftersom medlemsskap krävs för att få delta på lajvet. </div>
 					<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
 					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}|\d{12}|\d{8}x{4}"  placeholder="ÅÅÅÅMMDD-NNNN" size="20" maxlength="13" required>
 				</div>
