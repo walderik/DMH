@@ -27,9 +27,7 @@ if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
     exit;
 }
 
-$ih = ImageHandler::newWithDefault();
-$id = $ih->deleteImage($role->ImageId);
-$role->ImageId = null;
-$role->update();
-header('Location: ../index.php?message=image_deleted');
-exit;
+Role::delete($role->Id);
+
+header('Location: ../index.php?message=role_deleted');
+

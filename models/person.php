@@ -394,6 +394,36 @@ class Person extends BaseModel{
         return false;
     }
     
+    public function isNeverRegistered() {
+        global $tbl_prefix;
+        
+
+        
+        $sql = "SELECT COUNT(*) AS Num FROM `".$tbl_prefix."registration` WHERE PersonId=?;";
+        
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return true;
+            
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+        
+        
+        if ($res[0]['Num'] == 0) return true;
+        return false;
+        
+    }
+    
 
     public function isApproved(LARP $larp) {
         $registration = Registration::loadByIds($this->Id, $larp->Id);

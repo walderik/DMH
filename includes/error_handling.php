@@ -42,6 +42,15 @@ function getMessageText($code) {
         case "image_deleted":
             $output = "Bilden har raderats.";
             break;
+        case "person_deleted":
+            $output = "Deltagare har raderats.";
+            break;
+        case "role_deleted":
+            $output = "Karaktären har raderats.";
+            break;
+        case "group_deleted":
+            $output = "Gruppen har raderats.";
+            break;
         default:
             $output = "Okänt meddelande: ". $code;
     }

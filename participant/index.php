@@ -108,7 +108,11 @@ $ih = ImageHandler::newWithDefault();
     		            echo "<h3>$person->Name&nbsp;<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye' title='Visa deltagare'></i></a></h3>\n";    		            
     		        }
     		        else {
-    		            echo "<h3>$person->Name&nbsp;<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen' title='Ändra deltagare'></i></a></h3>\n";
+    		            echo "<h3>$person->Name&nbsp;<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen' title='Ändra deltagare'></i></a>";
+    		            if($person->isNeverRegistered() && (!isset($roles) or count($roles) == 0) && (!isset($groups) or count($groups) == 0)) {
+    		                echo "&nbsp;<a href='logic/delete_person.php?id=" . $person->Id . "'><i class='fa-solid fa-trash' title='Ta bort deltagare'></i></a>";
+    		            }
+    		            echo "</h3>\n";
     		        }
     		        echo "Epost: " . $person->Email. "<br>\n";
     		        echo "Mobilnummer: " . $person->PhoneNumber. "<br>\n";
@@ -147,6 +151,10 @@ $ih = ImageHandler::newWithDefault();
     		            else {
     		                echo $group->Name . " " . "<a href='group_form.php?operation=update&id=" . 
     		                 $group->Id . "'><i class='fa-solid fa-pen' title='Ändra grupp'></i></a>"; 
+    		                 if($group->isNeverRegistered()) {
+    		                     echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
+    		                 }
+    		                 
     		            }
     		            echo " Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "<br>\n";
     		        }
@@ -176,7 +184,12 @@ $ih = ImageHandler::newWithDefault();
         		                }
         		            }
         		            else {
-            		            echo "<td><a href='role_form.php?operation=update&id=$role->Id'><i class='fa-solid fa-pen'></i></a></td>\n";
+            		            echo "<td><a href='role_form.php?operation=update&id=$role->Id'><i class='fa-solid fa-pen'></i></a>";
+            		            if($role->isNeverRegistered()) {
+            		                echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
+            		            }
+            		            
+            		            echo "</td>\n";
         		            }
         		            echo "</tr>\n";
         		            
