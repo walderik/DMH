@@ -24,8 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $role->update();
 
-    } else {
-        echo $operation;
-    }
+    } 
     header('Location: ../index.php');
 }

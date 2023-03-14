@@ -4,7 +4,7 @@ include_once 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-     //echo $operation;
+     
     if ($operation == 'insert') {
         $titledeed = Titledeed::newFromArray($_POST);
         $titledeed->create();
@@ -13,9 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'update') {
         $titledeed = Titledeed::newFromArray($_POST);
         $titledeed->update();
-    } else {
-        echo $operation;
-    }
+    } 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

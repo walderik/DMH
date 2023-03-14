@@ -4,7 +4,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-     //echo $operation;
+     
     if ($operation == 'insert') {
         $house = House::newFromArray($_POST);
         $house->create();
@@ -14,9 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $house = House::newFromArray($_POST);
         $house->update();
-    } else {
-        echo $operation;
-    }
+    } 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

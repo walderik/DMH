@@ -13,8 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $larp_group = LARP_Group::newFromArray($_POST);
         $larp_group->create();
         $larp_group->saveAllIntrigueTypes($_POST);
-    } else {
-        echo $operation;
-    }
+    } 
     header('Location: ../index.php');
 }

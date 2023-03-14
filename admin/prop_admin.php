@@ -6,7 +6,7 @@ include_once 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-     //echo $operation;
+     
     if ($operation == 'insert') {
         $prop = Prop::newFromArray($_POST);
         $prop->create();
@@ -15,9 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'update') {
         $prop = Prop::newFromArray($_POST);
         $prop->update();
-    } else {
-        echo $operation;
-    }
+    } 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

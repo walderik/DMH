@@ -6,7 +6,7 @@ include_once 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-     //echo $operation;
+     
     if ($operation == 'insert') {
         $telegram = Telegram::newFromArray($_POST);
         $telegram->create();
@@ -15,9 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'update') {
         $telegram = Telegram::newFromArray($_POST);
         $telegram->update();
-    } else {
-        echo $operation;
-    }
+    } 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

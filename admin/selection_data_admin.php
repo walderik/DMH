@@ -26,9 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'update') {
         $data = call_user_func($user_func, $_POST);
         $data->update();
-    } else {
-        echo $operation;
-    }
+    } 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

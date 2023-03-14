@@ -42,8 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
         exit;
-    } else {
-        echo $operation;
-    }
+    } 
 }
 header('Location: ../index.php');

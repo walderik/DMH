@@ -30,8 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $person->update();
         $person->deleteAllNormalAllergyTypes();
         $person->saveAllNormalAllergyTypes($_POST);
-    } else {
-        echo $operation;
-    }
+    } 
     header('Location: ../index.php');
 }

@@ -5,7 +5,7 @@ include_once 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-     //echo $operation;
+     
     if ($operation == 'insert') {
         $resource = Resource::newFromArray($_POST);
         $resource->create();
@@ -14,9 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'update') {
         $resource = Resource::newFromArray($_POST);
         $resource->update();
-    } else {
-        echo $operation;
-    }
+    } 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

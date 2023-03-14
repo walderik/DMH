@@ -10,7 +10,7 @@ include 'navigation_subpage.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-     //echo $operation;
+     
     if ($operation == 'insert') {
         $payment_information = PaymentInformation::newFromArray($_POST);
         $payment_information->create();
@@ -19,9 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'update') {
         $payment_information = PaymentInformation::newFromArray($_POST);
         $payment_information->update();
-    } else {
-        echo $operation;
-    }
+    } 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

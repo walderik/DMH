@@ -34,16 +34,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         
         if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
-        echo "Mainrole = x" . $mainRole."x <br />\n";
+
 
 //         exit;
         foreach ($roleIdArr as $roleId) {
-            echo "roleId = x" . $roleId."x <br />\n";
+            
             $larp_role = LARP_Role::newWithDefault();
             $larp_role->RoleId = $roleId;
             $larp_role->LARPId = $current_larp->Id;
             if ($mainRole == $roleId) {
-                 echo "Main role: " . $larp_role->Id;
+                
                 $larp_role->IsMainRole = 1;
             }
             $larp_role->create();            
@@ -55,9 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $larp_role->saveAllIntrigueTypes($intrigueTypeRole);
         }
         send_registration_mail($registration);
-    } else {
-        echo $operation;
-    }
+    } 
     
     header('Location: ../index.php');
     exit;

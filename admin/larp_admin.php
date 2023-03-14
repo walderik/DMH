@@ -4,7 +4,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-     //echo $operation;
+     
     if ($operation == 'insert') {
         $larp = LARP::newFromArray($_POST);
         $larp->create();
@@ -14,9 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $larp = LARP::newFromArray($_POST);
         $larp->update();
-    } else {
-        echo $operation;
-    }
+    } 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
