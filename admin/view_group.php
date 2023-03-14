@@ -64,7 +64,7 @@ include 'navigation_subpage.php';
 		    }
 		    
 		    echo "- " . 
-            $group_member->Profession . " spelas av " . 
+            $group_member->Profession . ". Spelas av " . 
             "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>" .
             $group_member->getPerson()->Name . "</a>";
 

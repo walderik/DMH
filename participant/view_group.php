@@ -73,7 +73,7 @@ include 'navigation_subpage.php';
 		    }
 		    
 		  	echo " - " . 
-                 $group_member->Profession . " spelas av " . 
+                 $group_member->Profession . ". Spelad av " . 
                  $group_member->getPerson()->Name;
 
 
