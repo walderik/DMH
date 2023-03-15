@@ -180,7 +180,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			<div class="question">
 				<label for="Religion">Religion</label><br>
 				<div class="explanation">Vissa religioner har bättre anseende än andra. Är du kristen, så ange inte bara det utan vilken typ av kristen du är. Katoliker har generellt sett fortfarande lite sämre anseende än andra kristna.</div>
-				<input type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="100">
+				<input type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="200">
 			</div>
 			<div class="question">
 				<label for="WealthsId">Hur rik är karaktären?</label>&nbsp;<font style="color:red">*</font><br>
@@ -198,7 +198,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			<div class="question">
 				<label for="DarkSecretIntrigueIdeas">Mörk hemlighet - intrig idéer</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Hur kan vi spela på din mörka hemlighet?</div>
-				<input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="100" required>
+				<input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="200" required>
 			</div>
 			<div class="question">
 				<label for="IntrigueSuggestions">Intrigideer</label><br> 
@@ -208,7 +208,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			<div class="question">
 				<label for="NotAcceptableIntrigues">Saker karaktären absolut inte vill spela på</label><br>
 				<div class="explantion">Är det något den här karaktären aldrig skulle göra? Vill du helst undvika farligt spel är det också bra att ange.</div>
-				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="100">
+				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="200">
 			</div>
 
 

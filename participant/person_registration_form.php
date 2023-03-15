@@ -159,7 +159,7 @@ include 'navigation_subpage.php';
 					NPC = Non Player Character, en roll som styrs helt/delvis av arrangörsgruppen och spelas en kortare stund under lajvet för att skapa scener/händelser.<br>
 					Vi kommer återkomma till de som är intresserade, men skriv gärna en rad om du redan nu har några idéer.
 				</div>
-                <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="100">
+                <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="200">
             </div>
 
 

@@ -124,7 +124,7 @@
 				                         Jag är action-lajvare och vill spela den sökta rollen NN.<br>
 				                         Jag är action-lajvare och har inget emot en våldsam död.</div>
 					<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
-					<br> <input type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="100">
+					<br> <input type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
 				</div>
 			<div class="question">
 				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
@@ -135,7 +135,7 @@
 				<label for="NotAcceptableIntrigues">Vilken typ av intriger vill du absolut inte spela på?</label>
 				<br> 
 				<div class="explanation">Eftersom vi inte vill att någon ska må dåligt är det bra att veta vilka begränsningar du som person har vad det gäller intriger.</div>
-				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $person->NotAcceptableIntrigues; ?>" size="100" maxlength="100" >
+				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $person->NotAcceptableIntrigues; ?>" size="100" maxlength="200" >
 			</div>
 
 			<h2>Hälsa</h2>
