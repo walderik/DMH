@@ -158,7 +158,7 @@ include 'navigation_subpage.php';
 			
 
 			  <input type="submit" name="action" value="<?php default_value('action'); ?>">
-			  <?php if ($current_larp->RegistrationOpen == 0) { ?>
+			  <?php if ($current_larp->RegistrationOpen == 1) { ?>
 			  <input type="submit" name="action" value="<?php default_value('action'); ?> och gå direkt till anmälan">
 			  <?php }?>
 		</form>
