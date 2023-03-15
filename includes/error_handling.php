@@ -76,6 +76,9 @@ function getErrorText($code) {
         case "invalidEmail":
             $output = "Ogiltig epostadress";
             break;
+        case "enterBothNames":
+            $output = "Ange både för- och efternamn";
+            break;
         case "passwordNotMatch":
             $output = "Lösenorden är inte lika";
             break;

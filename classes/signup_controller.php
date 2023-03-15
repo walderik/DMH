@@ -22,6 +22,10 @@ class SignupController {
             header("location: ../index.php?error=emptyInput");
             exit();
         }
+        if ($this->oneOneName()) {
+            header("location: ../index.php?error=enterBothNames");
+            exit();
+        }
         if ($this->invalidEmail()) {
             header("location: ../index.php?error=invalidEmail");
             exit();            
@@ -40,6 +44,18 @@ class SignupController {
         }
         
         $this->createUser($this->name, $this->email, $this->password);
+    }
+    
+    
+    private function oneOneName() {
+        $result;
+        if (str_word_count($this->name)) {
+            $result = true;
+        }
+        else {
+            $result = false;
+        }
+        return $result;
     }
     
     private function emptyInput() {
