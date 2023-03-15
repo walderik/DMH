@@ -52,7 +52,7 @@ include_once 'includes/error_handling.php';
 				<label for="name">
 					<i class="fas fa-user"></i>
 				</label>
-				<input type="text" name="name" placeholder="Namn" id="name" maxlength="250" required>
+				<input type="text" name="name" placeholder="Förnamn Efternamn" id="name" maxlength="250" required>
 				<label for="email">
 					<i class="fas fa-envelope"></i>
 				</label>
