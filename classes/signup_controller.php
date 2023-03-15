@@ -49,7 +49,7 @@ class SignupController {
     
     private function oneOneName() {
         $result;
-        if (str_word_count($this->name)) {
+        if (str_word_count($this->name) < 2) {
             $result = true;
         }
         else {
