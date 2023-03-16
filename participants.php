@@ -1,21 +1,26 @@
 <?php 
 
-global $root;
+global $root, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require $root . '/includes/init.php';
+include_once $root . '/includes/all_includes.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
         $Id = $_GET['id'];
+
     }
     else {
+
         header('Location: index.php');
         exit;
     }
 }
 
+
 $larp = Larp::loadById($Id);
+$current_larp=$larp;
+
 if (is_null($larp)) {
     header('Location: index.php');
     exit;
