@@ -60,10 +60,14 @@ include 'navigation_subpage.php';
 			<td><input type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="60000" required><?php echo $role->Description; ?></textarea></td></tr>
+			<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="15000" required><?php echo $role->Description; ?></textarea></td></tr>
+			<tr><td valign="top" class="header">Beskrivning för gruppen</td>
+			<td><textarea id="DescriptionForGroup" name="DescriptionForGroup" rows="4" cols="100" maxlength="15000"><?php echo $role->DescriptionForGroup; ?></textarea></td></tr>
+			<tr><td valign="top" class="header">Beskrivning för andra</td>
+			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="15000"><?php echo $role->DescriptionForOthers; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Tidigare lajv</td>
-			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="60000"><?php echo $role->PreviousLarps; ?></textarea></td></tr>
+			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo $role->PreviousLarps; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Varför befinner sig<br>karaktären i Slow River?&nbsp;<font style="color:red">*</font></td>
 			<td><textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea></td></tr>

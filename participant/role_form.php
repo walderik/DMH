@@ -148,7 +148,28 @@ include 'navigation_subpage.php';
 				                         Allt som din karaktär har råkat ut för är sådan som kan påverka händelser i karaktärens framtid. 
 				                         Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
 				                         att du därmed får en intressantare lajvupplevelse.</div>
-				<textarea id="Description" name="Description" rows="4" cols="100" maxlength="60000" required><?php echo $role->Description; ?></textarea>
+				<textarea id="Description" name="Description" rows="4" cols="100" maxlength="15000" required><?php echo $role->Description; ?></textarea>
+			</div>
+			
+			<div class="question">
+				<label for="DescriptionForGroup">Beskrivning för din grupp</label><br> 
+				<div class="explanation">Vad vet din grupp om dig? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar. 
+										 Gärna roliga anekdoter från förr. Och vad de i gruppen gillar med dig, eller inte gillar.
+									     Ju mer ni vet om varandra desto roligare spel kan ni få i gruppen.<br><br>
+									     Efter att du är anmäld kan du gå in och titta på gruppen så får du se de andra som är anmälda och vad de har skrivit om sig.
+									     </div>
+
+				<textarea id="DescriptionForGroup" name="DescriptionForGroup" rows="4" cols="100" maxlength="15000"><?php echo $role->DescriptionForGroup; ?></textarea>
+			</div>
+			
+			<div class="question">
+				<label for="DescriptionForOthers">Beskrivning för andra</label><br> 
+				<div class="explanation">Vad är allmänt känt om dig? Beskriv sådant som de flesta vet om dig. 
+				                         Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter mellan dig och då får du roligare spel.<br><br>
+									     Efter att du är anmäld kommer din karaktär och den här beskrivningen 
+									     att <a href="../participants.php?id=<?php echo $current_larp->Id;?>" target="_blank">synas för alla</a>. 
+									     Lägg gärna upp en bild på dig också så att de andra känner igen dig.</div>
+				<textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="15000"><?php echo $role->DescriptionForOthers; ?></textarea>
 			</div>
 			
 				
@@ -156,7 +177,7 @@ include 'navigation_subpage.php';
 			<div class="question">
 				<label for="GroupsId">Vilken grupp är karaktären med i?</label><br>
        			<div class="explanation">Finns inte din grupp med på anmälan ska du kontakta den som är ansvarig för din grupp och se till att den är anmäld innan du själv anmäler dig.    
-Är gruppen anmäld, men ändå inte syns här så måste du kontakta arrangörerna som får se till att den är valbar i listan.<br>Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i det <a href="group_form-php">här formuläret</a>.</div>
+Är gruppen anmäld, men ändå inte syns här så måste du kontakta arrangörerna som får se till att den är valbar i listan.<br>Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i det <a href="group_form.php">här formuläret</a>.</div>
                 <?php selectionDropdownByArray('Group', Group::getRegistered($current_larp), false, false, $role->GroupId); ?>
             </div>
 				
@@ -175,7 +196,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 					Om du var med förra året med din karaktär, vad hände med din karaktär som är bra att komma ihåg? Gjorde den några särskilt bra affärer? Var den med i en duell? Blev den svindlad eller svindlade den någon? Hur gick det med kärleken?<br><br>
 					Har din karaktär gjort något minnesvärt tidigare år?
 				</div>
-				<textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="60000"><?php echo $role->PreviousLarps; ?></textarea>
+				<textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo $role->PreviousLarps; ?></textarea>
 			</div>
 			<div class="question">
 				<label for="Religion">Religion</label><br>

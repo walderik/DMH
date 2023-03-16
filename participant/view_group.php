@@ -59,19 +59,16 @@ include 'navigation_subpage.php';
 		<?php 
 
 		foreach($group_members as $group_member) {
-
-
-		    if ($group_member->hasImage()) {
-		        
-		        $image = $ih->loadImage($group_member->ImageId);
-		        echo " <a href='show_role_image.php?id=$group_member->Id'>";
-		        echo $group_member->Name;
-		        echo "<img width=30 src='data:image/jpeg;base64,".base64_encode($image)."'/></a>";
-		    }
-		    else {
-		        echo $group_member->Name;
-		    }
+    
+		    echo " <a href='show_role_for_group.php?id=$group_member->Id'>";
+		    echo $group_member->Name;
 		    
+		    if ($group_member->hasImage()) { 
+		        $image = $ih->loadImage($group_member->ImageId);
+		        echo "<img width=30 src='data:image/jpeg;base64,".base64_encode($image)."'/>";
+		    }
+
+		    echo "</a>";
 		  	echo " - " . 
                  $group_member->Profession . ". Spelad av " . 
                  $group_member->getPerson()->Name;

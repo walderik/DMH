@@ -6,8 +6,6 @@ require 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     if (isset($_GET['id'])) {
-        echo "Laddar " . $_GET['id'] . "<br>";
-        
         $role = Role::loadById($_GET['id']);
     } else {
         
@@ -17,12 +15,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 //Finns ingen sådan roll, eller rollen har ingen bild
-if (!isset($role) or !isset($role->ImageId)){
+if (!isset($role)){
     header('Location: index.php');
     exit;
 }
 
-//Ingen behörighetskontroll. Alla får se
+$group = Group::loadById($role->GroupId);
+
+//Man måste vara med i samma grupp för att få se
+if (!empty($group) && !$current_user->isMember($group) && !$current_user->isGroupLeader($group)) {
+    header('Location: index.php?error=no_member'); //Inte medlem i gruppen
+    exit;
+}
+
 
 $ih = ImageHandler::newWithDefault();
 $image = $ih->loadImage($role->ImageId);
@@ -33,9 +38,11 @@ include 'navigation_subpage.php';
 <div class="content">
 	<h1><?php echo $role->Name?></h1>
 
-<?php 
+<?php if ($role->hasImage()) {
 echo '<img src="data:image/jpeg;base64,'.base64_encode($image).'"/>';
+}
 ?>
+<p><?php echo $role->DescriptionForGroup?></p>
 
 	</div>
 

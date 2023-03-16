@@ -51,7 +51,8 @@ $ih = ImageHandler::newWithDefault();
     		    }
     		}
     		
-            echo "<b>$role->Name</b></td>";
+            echo "<b>$role->Name</b><br>";
+            echo "$role->DescriptionForOthers</td>";
             $i++;
             // Ny rad
     		if ($i > 10) {

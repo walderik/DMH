@@ -7,6 +7,8 @@ class Role extends BaseModel{
     public $IsNPC = 0;
     public $Profession;
     public $Description;
+    public $DescriptionForGroup;
+    public $DescriptionForOthers;
     public $PreviousLarps;
     public $ReasonForBeingInSlowRiver;
     public $Religion;
@@ -42,6 +44,8 @@ class Role extends BaseModel{
         if (isset($arr['IsNPC'])) $this->IsNPC = $arr['IsNPC'];
         if (isset($arr['Profession'])) $this->Profession = $arr['Profession'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        if (isset($arr['DescriptionForGroup'])) $this->DescriptionForGroup = $arr['DescriptionForGroup'];
+        if (isset($arr['DescriptionForOthers'])) $this->DescriptionForOthers = $arr['DescriptionForOthers'];
         if (isset($arr['PreviousLarps'])) $this->PreviousLarps = $arr['PreviousLarps'];
         if (isset($arr['ReasonForBeingInSlowRiver'])) $this->ReasonForBeingInSlowRiver = $arr['ReasonForBeingInSlowRiver'];
         if (isset($arr['Religion'])) $this->Religion = $arr['Religion'];
@@ -78,12 +82,14 @@ class Role extends BaseModel{
     public function update() {
         global $tbl_prefix;
         $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Name=?, IsNPC=?, Profession=?, Description=?,
+                                                              DescriptionForGroup=?, DescriptionForOthers=?,
                                                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
                                                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                                                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, Birthplace=?, 
                                                               CharactersWithRelations=?, CampaignId=?, ImageId=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, $this->PreviousLarps,
+        if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, 
+            $this->PreviousLarps, $this->DescriptionForGroup, $this->DescriptionForOthers,
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId,
@@ -99,13 +105,15 @@ class Role extends BaseModel{
     public function create() { 
         global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, IsNPC, Profession, Description, PreviousLarps,
+        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, IsNPC, Profession, Description, 
+                                                            DescriptionForGroup, DescriptionForOthers, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId,
-                                                            Birthplace, CharactersWithRelations, CampaignId, ImageId) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
+                                                            Birthplace, CharactersWithRelations, CampaignId, ImageId) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?);");
         
-        if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, $this->PreviousLarps,
+        if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, $this->DescriptionForGroup, 
+            $this->DescriptionForOthers,$this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId,

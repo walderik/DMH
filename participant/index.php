@@ -47,6 +47,7 @@ $ih = ImageHandler::newWithDefault();
         	<li><a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a></li>
         	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
           </ul>
+          
         </nav>
 		<div class="content">
 			<h1>Anmälan till <?php echo $current_larp->Name;?></h1>
@@ -105,10 +106,10 @@ $ih = ImageHandler::newWithDefault();
     		        echo "<div class='person'>\n";
     		        
     		        if ($person->isRegistered($current_larp)) {
-    		            echo "<h3>$person->Name&nbsp;<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye' title='Visa deltagare'></i></a></h3>\n";    		            
+    		            echo "<a href='view_person.php?id=" . $person->Id . "'><h3>$person->Name&nbsp;</a></h3>\n";    		            
     		        }
     		        else {
-    		            echo "<h3>$person->Name&nbsp;<a href='person_form.php?operation=update&id=" . $person->Id . "'><i class='fa-solid fa-pen' title='Ändra deltagare'></i></a>";
+    		            echo "<a href='person_form.php?operation=update&id=" . $person->Id . "'><h3>$person->Name&nbsp;</a>";
     		            if($person->isNeverRegistered() && (!isset($roles) or count($roles) == 0) && (!isset($groups) or count($groups) == 0)) {
     		                echo "&nbsp;<a href='logic/delete_person.php?id=" . $person->Id . "'><i class='fa-solid fa-trash' title='Ta bort deltagare'></i></a>";
     		            }
@@ -144,13 +145,11 @@ $ih = ImageHandler::newWithDefault();
     		        }
     		        foreach ($groups as $group)  {
     		            if ($group->isRegistered($current_larp)) {
-    		                echo $group->Name . " " . "<a href='view_group.php?id=" .
-        		                $group->Id . "'><i class='fa-solid fa-eye' title='Visa grupp'></i></a>";
+    		                echo  "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
         		                
     		            }
     		            else {
-    		                echo $group->Name . " " . "<a href='group_form.php?operation=update&id=" . 
-    		                 $group->Id . "'><i class='fa-solid fa-pen' title='Ändra grupp'></i></a>"; 
+    		                echo "<a href='group_form.php?operation=update&id=$group->Id'>$group->Name</a>"; 
     		                 if($group->isNeverRegistered()) {
     		                     echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
     		                 }
@@ -164,13 +163,17 @@ $ih = ImageHandler::newWithDefault();
     		            echo "<table class='roles'>\n";   		            
         		        foreach ($roles as $role)  {
         		            $role_group = $role->getGroup();
-        		            $role_group_name = "";
-        		            if (isset($role_group)) {
+        		            $role_group_name = " (Inte med i någon grupp)";
+        		            if (isset($role_group) && $role->isRegistered($current_larp)) {
+        		                $role_group_name = " - <a href='view_group.php?id=$role_group->Id'>$role_group->Name</a>";
+        		            }
+        		            elseif (isset($role_group)) {
         		                $role_group_name = " - $role_group->Name";
         		            }
-        		            echo "<tr><td style='font-weight: normal; padding-right: 0px;'>$role->Name - $role->Profession $role_group_name</td>";
+        		            echo "<tr><td style='font-weight: normal; padding-right: 0px;'>";
+
         		            if ($role->isRegistered($current_larp)) {
-        		                echo "<td style='padding-right: 20px;'><a href='view_role.php?id=$role->Id'><i class='fa-solid fa-eye' title='Visa roll'></i></a></td>\n";
+        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name</a> - $role->Profession $role_group_name</td>";
         		                if ($role->hasImage()) {
         		                    
         		                    $image = $ih->loadImage($role->ImageId);
@@ -184,7 +187,7 @@ $ih = ImageHandler::newWithDefault();
         		                }
         		            }
         		            else {
-            		            echo "<td><a href='role_form.php?operation=update&id=$role->Id'><i class='fa-solid fa-pen'></i></a>";
+        		                echo "<a href='role_form.php?operation=update&id=$role->Id'>$role->Name</a> - $role->Profession $role_group_name";
             		            if($role->isNeverRegistered()) {
             		                echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
             		            }

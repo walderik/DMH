@@ -33,6 +33,8 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">NPC</td><td><?php echo ja_nej($role->IsNPC);?></td></tr>
 			<tr><td valign="top" class="header">Yrke</td><td><?php echo $role->Profession;?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br($role->Description);?></td></tr>
+			<tr><td valign="top" class="header">Beskrivning för gruppen</td><td><?php echo nl2br($role->DescriptionForGroup);?></td></tr>
+			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo nl2br($role->DescriptionForOthers);?></td></tr>
 			<tr><td valign="top" class="header">Tidigare lajv</td><td><?php echo $role->PreviousLarps;?></td></tr>
 			<tr><td valign="top" class="header">Varför befinner sig karaktären i Slow River?</td><td><?php echo $role->ReasonForBeingInSlowRiver;?></td></tr>
 			<tr><td valign="top" class="header">Religion</td><td><?php echo $role->Religion;?></td></tr>

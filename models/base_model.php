@@ -53,6 +53,8 @@ class BaseModel extends Dbh{
     public static function loadById($id)
     {
         global $tbl_prefix;
+        
+        if (empty($id)) return null;
 
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
         $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Id = ?");
