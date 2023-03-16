@@ -89,7 +89,7 @@ class Role extends BaseModel{
                                                               CharactersWithRelations=?, CampaignId=?, ImageId=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, 
-            $this->PreviousLarps, $this->DescriptionForGroup, $this->DescriptionForOthers,
+            $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId,
@@ -262,10 +262,40 @@ class Role extends BaseModel{
         global $tbl_prefix;
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
-        $tbl_prefix."larp_role WHERE larpId =? AND IsMainRole=1) ORDER BY GroupId, Name;";
+            $tbl_prefix."larp_role WHERE larpid=? AND IsMainRole=1) ORDER BY GroupId, Name;";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(array($larp->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $resultArray[] = static::newFromArray($row);
+            }
+            $stmt = null;
+            return $resultArray;
+    }
+    
+    
+    
+    public static function getAllMainRolesInGroup(Group $group, LARP $larp) {
+        global $tbl_prefix;
+        if (is_null($group) or is_null($larp)) return Array();
+        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
+        $tbl_prefix."larp_role WHERE groupId =? AND larpid=? AND IsMainRole=1) ORDER BY Name;";
         $stmt = static::connectStatic()->prepare($sql);
         
-        if (!$stmt->execute(array($larp->Id))) {
+        if (!$stmt->execute(array($group->Id, $larp->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
@@ -285,6 +315,35 @@ class Role extends BaseModel{
         $stmt = null;
         return $resultArray;
     }
+    
+    public static function getAllMainRolesWithoutGroup(LARP $larp) {
+        global $tbl_prefix;
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
+            $tbl_prefix."larp_role WHERE groupId IS NULL AND larpid=? AND IsMainRole=1) ORDER BY Name;";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(array($larp->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $resultArray[] = static::newFromArray($row);
+            }
+            $stmt = null;
+            return $resultArray;
+    }
+    
     
     public static function getAllNotMainRoles(LARP $larp) {
         global $tbl_prefix;
