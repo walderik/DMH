@@ -1,4 +1,3 @@
-
 <?php
 
 global $root;
