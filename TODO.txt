@@ -1,4 +1,4 @@
-
+Mobilanpassa deltagar-delen
 
 Props: ändra ägare (grupp/roll)
 		ladda och visa bild
@@ -13,7 +13,9 @@ Husfördelning
 
 "döda" roller och grupper
 
-
+Ide från deltagare: Det kanske inte hör till anmälan men transport, finns ju en del som behöver hjälp till platsen. 
+      Ni som arrangörer kanske inte organiserar det men om ni gör kanske en bit där man kan klicka i att man 
+      behöver bli upphämtad på närmsta station osv
 
 Senare:
 Historiken för rollen kan göras snyggare. man kanske vill se de intriger man fick också?
