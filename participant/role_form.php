@@ -169,7 +169,7 @@ include 'navigation_subpage.php';
 									     Efter att du är anmäld kommer din karaktär och den här beskrivningen 
 									     att <a href="../participants.php?id=<?php echo $current_larp->Id;?>" target="_blank">synas för alla</a>. 
 									     Lägg gärna upp en bild på dig också så att de andra känner igen dig.</div>
-				<textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="15000"><?php echo $role->DescriptionForOthers; ?></textarea>
+				<textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="2000"><?php echo $role->DescriptionForOthers; ?></textarea>
 			</div>
 			
 				
