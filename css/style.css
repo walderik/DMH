@@ -1,12 +1,13 @@
 * {
   	box-sizing: border-box;
   	font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
-  	font-size: 14px;
+  	font-size: 1em;  	
   	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
 }
+
 body {
-  	background-color: #435165;
+	background-color: #f3f4f7;
 }
 
 .required:after {
@@ -28,7 +29,7 @@ body.loggedin {
 .content h1 {
 	margin-top: 70px;
 	padding: 25px 0;
-	font-size: 22px;
+	font-size: 1.6em;
 	border-bottom: 1px solid #e0e0e3;
 	color: #4a536e;
 }
@@ -52,7 +53,7 @@ body.loggedin {
 	margin: 0;
 	padding-top:  10px;
 	padding-bottom: 0px;
-	font-size: 16px;
+	font-size: 1.1em;
 	color: #4a536e;
 }
  
@@ -71,19 +72,22 @@ body.loggedin {
 }
 
 .checks > p table td:first-child, .content > div table td:first-child {
+
 	font-weight: bold;
-	color: #4a536e;
+	  font-size: 1em;
 	padding-right: 15px;
 }
+
+.checks td, .checks th {
+  font-size: 1em;
+  padding: 8px;
+}
+
 .checks > div p {
+	  font-size: 1em;
 	padding: 5px;
 	margin: 0 0 10px 0;
 }
-
-body {
-	background-color: black;
-}
-
 
 p {
 	width: 80%;
@@ -92,15 +96,16 @@ p {
 
 h1 {
 	font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
-	font-size: 30px;
+	font-size: 2.1em;
 	font-weight: bold;
 	color: #000000;
 }
 
 h2 {
 	border-top: 1px solid #808080;
+	padding-top: 6px;
 	font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
-	font-size: 20px;
+	font-size: 1.4em;
 	font-weight: bold;
 	color: #000000;
 }
@@ -115,17 +120,17 @@ li {
 	padding: 10px 20px 20px 20px; /*top right bottom left*/
 	background-color: #e3e3e3;
 	border-radius: 2px;
-	font-size: 16px;
+	font-size: 1em;
 }
 
 .explanation {
 	padding: 10px 20px 10px 20px; /*top right bottom left*/
-	font-size: 14px;
+	font-size: 1em;
 }
 
 .tooltip {
 	padding-top: 10px;
-	font-size: 14px;
+	font-size: 1em;
 }
 
 table.helpBox td {
@@ -134,22 +139,17 @@ table.helpBox td {
 
 
 
-.roles > p table td:first-child, .roles > div table td:first-child {
-  font-weight: normal;
-	color: #00ff40;
-  border-collapse: collapse;
-}
 
 
 .roles {
   font-weight: normal;
-	color: #ff0080;
+    font-size: 1em;
   border-collapse: collapse;
 
 }
 
 .roles td, .roles th {
-
+  font-size: 1em;
   padding: 8px;
 }
 
