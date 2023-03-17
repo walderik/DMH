@@ -53,9 +53,9 @@ include 'navigation_subpage.php';
 		    }
 		    ?>
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
-			<tr><td valign="top" class="header">Belopp att betala</td><td><input type="text" id="AmountToPay" name="AmountToPay" value="<?php echo $registration->AmountToPay; ?>"  size="10" maxlength="250"> SEK</td></tr>
-			<tr><td valign="top" class="header">Belopp betalat</td><td><input type="text" id="AmountPayed" name="AmountPayed" value="<?php echo $registration->AmountPayed; ?>"  size="10" maxlength="250"> SEK</td></tr>
-			<tr><td valign="top" class="header">Betalat datum</td><td><input type="text" id="Payed" name="Payed" value="<?php echo $registration->Payed; ?>"  size="15" maxlength="250"></td></tr>
+			<tr><td valign="top" class="header">Belopp att betala</td><td><input type="number" id="AmountToPay" name="AmountToPay" value="<?php echo $registration->AmountToPay; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
+			<tr><td valign="top" class="header">Belopp betalat</td><td><input type="number" id="AmountPayed" name="AmountPayed" value="<?php echo $registration->AmountPayed; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
+			<tr><td valign="top" class="header">Betalat datum</td><td><input type="date" id="Payed" name="Payed" value="<?php echo $registration->Payed; ?>"  size="15" maxlength="250"></td></tr>
 
 			<tr><td valign="top" class="header">Avbokad</td>
 			<td>
@@ -66,8 +66,8 @@ include 'navigation_subpage.php';
 			</td></tr>
 			<tr><td valign="top" class="header">Anledning till avbokning</td><td><input type="text" id="NotComingReason" name="NotComingReason" value="<?php echo $registration->NotComingReason; ?>"  size="100" maxlength="250"></td></tr>
 			
-			<tr><td valign="top" class="header">Återbetalning</td><td><input type="text" id="ToBeRefunded" name="ToBeRefunded" value="<?php echo $registration->ToBeRefunded; ?>"  size="10" maxlength="250"> SEK</td></tr>
-			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><input type="text" id="RefundDate" name="RefundDate" value="<?php echo $registration->RefundDate; ?>"  size="15" maxlength="250"></td></tr>
+			<tr><td valign="top" class="header">Återbetalning</td><td><input type="number" id="ToBeRefunded" name="ToBeRefunded" value="<?php echo $registration->ToBeRefunded; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
+			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><input type="date" id="RefundDate" name="RefundDate" value="<?php echo $registration->RefundDate; ?>"  size="15" maxlength="250"></td></tr>
 
 		</table>		
 			<input type="submit" value="Spara">

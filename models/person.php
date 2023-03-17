@@ -150,6 +150,37 @@ class Person extends BaseModel{
         
     }
     
+    
+    public static function getAllInterestedNPC($larp) {
+        global $tbl_prefix;
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".
+            $tbl_prefix."registration` WHERE LarpId = ? AND NPCDesire <> '')  ORDER BY ".static::$orderListBy.";";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(array($larp->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $resultArray[] = static::newFromArray($row);
+            }
+            $stmt = null;
+            return $resultArray;
+            
+    }
+    
+    
     public static function getAllToApprove($larp) {
         global $tbl_prefix;
         if (is_null($larp)) return array();
@@ -442,7 +473,7 @@ class Person extends BaseModel{
         if (!isset($registration)) {
             return false;
         }
-        if ($registration->Payed == 1) {
+        if ($registration->AmountToPay <= $registration->AmountPayed) {
             return true;
         }
         return false;

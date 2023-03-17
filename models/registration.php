@@ -10,13 +10,13 @@ class Registration extends BaseModel{
     public $Approved; //Date
     public $RegisteredAt;
     public $PaymentReference;
-    public $AmountToPay;
+    public $AmountToPay = 0;
     public $AmountPayed = 0;
     public $Payed; //Datum
     public $IsMember; 
     public $MembershipCheckedAt;
     public $NotComing = 0;
-    public $ToBeRefunded;
+    public $ToBeRefunded = 0;
     public $RefundDate; 
     public $IsOfficial = 0;
     public $NPCDesire;
@@ -119,12 +119,12 @@ class Registration extends BaseModel{
     public function update() {
         global $tbl_prefix;
         $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."registration SET LARPId=?, PersonId=?, Approved=?, 
-                RegisteredAt=?, PaymentReference=?, AmountToPay=?,
+                RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, Guardian=?, NotComingReason=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, 
-            $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, 
+            $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded, 
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->Guardian, $this->NotComingReason, $this->Id))) {
             $stmt = null;
