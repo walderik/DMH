@@ -55,7 +55,6 @@ function myFunction() {
 	    </button>
 	    <div class="dropdown-content">
 	      <a href="select_person.php">Deltagare</a>
-	      <a href="role_form.php">Karaktär</a>
 	      <a href="group_registration_form.php">Grupp</a>
 	    </div>
 	  </div> 
