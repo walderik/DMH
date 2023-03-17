@@ -7,10 +7,9 @@ if (!$current_larp->mayRegister()) {
     exit;
 }
 
-echo $_SERVER["REQUEST_METHOD"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo "post";
+    
     if (isset($_POST['PersonId'])) {
         $PersonId = $_POST['PersonId'];
     }
@@ -22,11 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    echo "get";
+    
     if (isset($_GET['PersonId'])) {
 
         $PersonId = $_GET['PersonId'];
-        echo $PersonId;
+        
     }
     else {
 

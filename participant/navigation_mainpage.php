@@ -36,6 +36,7 @@ function myFunction() {
 	    </button>
 	  </div> 
 
+	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
 
 	  <div class="dropdown">
 	    <button class="dropbtn">Registrera 
