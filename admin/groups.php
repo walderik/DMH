@@ -18,7 +18,10 @@
     		    echo "<tr><th>Namn</th><th></th><th>Gruppledare</th><th colspan='2'>Intrig</th></tr>\n";
     		    foreach ($groups as $group)  {
     		        echo "<tr>\n";
-    		        echo "<td>" . $group->Name . "</td>\n";
+    		        echo "<td>" . $group->Name;
+    		        if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
+    		        
+    		        echo "</td>\n";
     		        echo "<td>" . "<a href='view_group.php?id=" . $group->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		        echo "<a href='edit_group.php?id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        echo "<td>" . $group->getPerson()->Name . "</td>\n";

@@ -2,7 +2,7 @@
 
 require 'header.php';
 
-$current_groups = $current_user->getUnregisteredGroupsForUser($current_larp);
+$current_groups = $current_user->getUnregisteredAliveGroupsForUser($current_larp);
 
 if (empty($current_groups)) {
     header('Location: index.php?error=no_group');

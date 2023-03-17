@@ -62,6 +62,8 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Gruppansvarig&nbsp;<font style="color:red">*</font></td>
 			<td><?php selectionDropdownByArray('Person', $persons_in_group, false, true, $group->PersonId);?></td></tr>
 
+
+
 			<tr><td valign="top" class="header">Beskrivning&nbsp;<font style="color:red">*</font></td>
 			<td><textarea id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo $group->Description; ?></textarea></td></tr>
 
@@ -109,6 +111,13 @@ include 'navigation_subpage.php';
     			<label for="NeedFireplace_yes">Ja</label><br> 
     			<input type="radio" id="NeedFireplace_no" name="NeedFireplace" value="0" <?php if ($larp_group->NeedFireplace == 0) echo 'checked="checked"'?>> 
     			<label for="NeedFireplace_no">Nej</label>
+			</td></tr>
+			<tr><td valign="top" class="header">Död/Ej i spel&nbsp;<font style="color:red">*</font></td>
+			<td>
+				<input type="radio" id="IsDead_yes" name="IsDead" value="1" <?php if ($group->IsDead == 1) echo 'checked="checked"'?>> 
+    			<label for="IsDead_yes">Ja</label><br> 
+    			<input type="radio" id="IsDead_no" name="IsDead" value="0" <?php if ($group->IsDead == 0) echo 'checked="checked"'?>> 
+    			<label for="IsDead_no">Nej</label>
 			</td></tr>
 		</table>		
 			<input type="submit" value="Spara">

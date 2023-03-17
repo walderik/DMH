@@ -34,7 +34,11 @@ include 'navigation_subpage.php';
 
 
 	<div class="content">
-		<h1><?php echo $role->Name;?>&nbsp;<a href='edit_role.php?id=<?php echo $role->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
+		<h1><?php echo $role->Name;?>&nbsp;
+		<?php if ($role->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
+		
+		<a href='edit_role.php?id=<?php echo $role->Id;?>'>
+		<i class='fa-solid fa-pen'></i></a></h1>
 		<table>
 			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $role->getPerson()->Name; ?></a></td>
 		<?php 
@@ -68,6 +72,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Rikedom</td><td><?php echo Wealth::loadById($role->WealthId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Var är karaktären född?</td><td><?php echo $role->Birthplace;?></td></tr>
 			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo PlaceOfResidence::loadById($role->PlaceOfResidenceId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Död</td><td><?php echo ja_nej($role->IsDead);?></td></tr>
 
 		</table>		
 

@@ -13,6 +13,7 @@ class Group extends BaseModel{
     public $PlaceOfResidenceId;
     public $PersonId; # Gruppansvarig
     public $CampaignId;
+    public $IsDead;
     
 //     public static $tableName = 'group';
     public static $orderListBy = 'Name';
@@ -35,6 +36,7 @@ class Group extends BaseModel{
         if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
         if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+        if (isset($arr['IsDead'])) $this->IsDead = $arr['IsDead'];
         
         
     }
@@ -81,11 +83,11 @@ class Group extends BaseModel{
         
         $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."group` SET Name=?, Friends=?, Enemies=?,
                                                                   Description=?, IntrigueIdeas=?, OtherInformation=?,
-                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=? WHERE Id = ?");
+                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=?, IsDead=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
             $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, 
-            $this->CampaignId, $this->Id))) {
+            $this->CampaignId, $this->IsDead, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -101,12 +103,13 @@ class Group extends BaseModel{
         global $tbl_prefix;
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."group` (Name,  
-                         Friends, Description, Enemies, IntrigueIdeas, OtherInformation, WealthId, PlaceOfResidenceId, PersonId, CampaignId) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?);");
+                         Friends, Description, Enemies, IntrigueIdeas, OtherInformation, 
+                         WealthId, PlaceOfResidenceId, PersonId, CampaignId, IsDead) 
+                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?);");
         
         if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
-            $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId))) {
+            $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId, $this->IsDead))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");

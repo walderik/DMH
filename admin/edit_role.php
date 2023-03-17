@@ -106,6 +106,15 @@ include 'navigation_subpage.php';
 			<td><?php
             PlaceOfResidence::selectionDropdown(false, true, $role->PlaceOfResidenceId);
             ?></td></tr>
+            
+           
+			<tr><td valign="top" class="header">Död&nbsp;<font style="color:red">*</font></td>
+			<td>
+				<input type="radio" id="IsDead_yes" name="IsDead" value="1" <?php if ($role->IsDead == 1) echo 'checked="checked"'?>> 
+    			<label for="IsDead_yes">Ja</label><br> 
+    			<input type="radio" id="IsDead_no" name="IsDead" value="0" <?php if ($role->IsDead == 0) echo 'checked="checked"'?>> 
+    			<label for="IsDead_no">Nej</label>
+			</td></tr>
 
 
 		</table>		

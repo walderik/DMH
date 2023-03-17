@@ -26,6 +26,7 @@ class Role extends BaseModel{
     public $CharactersWithRelations;
     public $CampaignId;
     public $ImageId;
+    public $IsDead;
     
 
     public static $orderListBy = 'Name';
@@ -62,6 +63,7 @@ class Role extends BaseModel{
         if (isset($arr['CharactersWithRelations'])) $this->CharactersWithRelations = $arr['CharactersWithRelations'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
+        if (isset($arr['IsDead'])) $this->IsDead = $arr['IsDead'];
         
         if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
@@ -86,14 +88,14 @@ class Role extends BaseModel{
                                                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
                                                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                                                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, Birthplace=?, 
-                                                              CharactersWithRelations=?, CampaignId=?, ImageId=? WHERE Id = ?;");
+                                                              CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId,
-            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->Id))) {
+            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -110,14 +112,14 @@ class Role extends BaseModel{
                                                             ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId,
-                                                            Birthplace, CharactersWithRelations, CampaignId, ImageId) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?);");
+                                                            Birthplace, CharactersWithRelations, CampaignId, ImageId, IsDead) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, $this->DescriptionForGroup, 
             $this->DescriptionForOthers,$this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId,
-            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId))) {
+            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");

@@ -104,10 +104,13 @@ $ih = ImageHandler::newWithDefault();
     		        foreach ($groups as $group)  {
     		            if ($group->isRegistered($current_larp)) {
     		                echo  "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
+    		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		                
     		            }
     		            else {
     		                echo "<a href='group_form.php?operation=update&id=$group->Id'>$group->Name</a>"; 
+    		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
+    		                
     		                 if($group->isNeverRegistered()) {
     		                     echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
     		                 }
@@ -131,7 +134,10 @@ $ih = ImageHandler::newWithDefault();
         		            echo "<tr><td style='font-weight: normal; padding-right: 0px;'>";
 
         		            if ($role->isRegistered($current_larp)) {
-        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name</a> - $role->Profession $role_group_name</td>";
+        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name</a>";
+        		                if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
+        		                
+        		                echo "- $role->Profession $role_group_name</td>";
         		                if ($role->hasImage()) {
         		                    
         		                    $image = $ih->loadImage($role->ImageId);
@@ -145,7 +151,10 @@ $ih = ImageHandler::newWithDefault();
         		                }
         		            }
         		            else {
-        		                echo "<a href='role_form.php?operation=update&id=$role->Id'>$role->Name</a> - $role->Profession $role_group_name";
+        		                echo "<a href='role_form.php?operation=update&id=$role->Id'>$role->Name</a>";
+        		                if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
+        		                
+        		                echo "- $role->Profession $role_group_name";
             		            if($role->isNeverRegistered()) {
             		                echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
             		            }
