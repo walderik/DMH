@@ -26,7 +26,7 @@ class Role extends BaseModel{
     public $CharactersWithRelations;
     public $CampaignId;
     public $ImageId;
-    public $IsDead;
+    public $IsDead = 0;
     
 
     public static $orderListBy = 'Name';

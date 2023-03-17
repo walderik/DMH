@@ -13,7 +13,7 @@ class Group extends BaseModel{
     public $PlaceOfResidenceId;
     public $PersonId; # Gruppansvarig
     public $CampaignId;
-    public $IsDead;
+    public $IsDead = 0;
     
 //     public static $tableName = 'group';
     public static $orderListBy = 'Name';
