@@ -201,7 +201,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			<div class="question">
 				<label for="Religion">Religion</label><br>
 				<div class="explanation">Vissa religioner har bättre anseende än andra. Är du kristen, så ange inte bara det utan vilken typ av kristen du är. Katoliker har generellt sett fortfarande lite sämre anseende än andra kristna.</div>
-				<input type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="200">
+				<input class="input_field" type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="200">
 			</div>
 			<div class="question">
 				<label for="WealthsId">Hur rik är karaktären?</label>&nbsp;<font style="color:red">*</font><br>
