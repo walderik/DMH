@@ -75,7 +75,7 @@ include 'navigation_subpage.php';
 			<div class="question">
     			<label for="RemainingIntrigues">Kvarvarande intriger</label>
     			<div class="explanation">Har gruppen någon pågående/oavslutad intrig sedan tidigare? </div>
-				<textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="100" maxlength="60000"></textarea>
+				<textarea class="input_field" id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="100" maxlength="60000"></textarea>
             </div>
 
 			
@@ -83,7 +83,7 @@ include 'navigation_subpage.php';
 				<label for="ApproximateNumberOfMembers">Antal medlemmar</label>&nbsp;<font style="color:red">*</font> 
 					<div class="explanation">Ungefär hur många
 					gruppmedlemmar kommer ni att bli?</div>
-					<input type="number"
+					<input class="input_field" type="number"
 					id="ApproximateNumberOfMembers"
 					name="ApproximateNumberOfMembers"  maxlength="5" min="1" max="40" required>
 			</div>

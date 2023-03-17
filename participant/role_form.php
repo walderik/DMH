@@ -84,12 +84,12 @@ include 'navigation_subpage.php';
 
 			<div class="question">
 				<label for="Name">Karaktärens namn</label>&nbsp;<font style="color:red">*</font>
-				<br> <input type="text" id="Name" name="Name" value="<?php echo $role->Name; ?>" size="100" maxlength="20" required>
+				<br> <input class="input_field" type="text" id="Name" name="Name" value="<?php echo $role->Name; ?>" size="100" maxlength="20" required>
 			</div>
 			<div class="question">
 				<label for="Profession">Yrke</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Vad jobbar din karaktär med för att överleva?   Vill du ha ett yrke som kan innebära en central roll i lajvet, så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.    Det gäller poster som borgmästare, bypräst eller sheriff.   Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta spela att din karaktär har det yrket. Vi vill helst inte att du spelar prostituerad.</div>
-				<input type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="100" required>
+				<input class="input_field" type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="100" required>
 			</div>
 		<?php 
 		$previous_larp_roles = $role->getPreviousLarpRoles();
@@ -117,7 +117,7 @@ include 'navigation_subpage.php';
 			<div class="question">
 				<label for="Birthplace">Var är karaktären född?</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Skriv land, delstat, stad</div>
-				<input type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="100" required>
+				<input class="input_field" type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="100" required>
 			</div>
 			
 			<div class="question">
@@ -135,7 +135,7 @@ include 'navigation_subpage.php';
 			<div class="question">
 				<label for="CharactersWithRelations">Relationer med andra</label><br> 
 				<div class="explanation">Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för din karaktär och mycket kort hur vi kan ge spel på dessa karaktärer.</div>
-				<textarea id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100" maxlength="60000"><?php echo $role->CharactersWithRelations; ?></textarea>
+				<textarea class="input_field" id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100" maxlength="60000"><?php echo $role->CharactersWithRelations; ?></textarea>
 			</div>
 			
 			
@@ -148,7 +148,7 @@ include 'navigation_subpage.php';
 				                         Allt som din karaktär har råkat ut för är sådan som kan påverka händelser i karaktärens framtid. 
 				                         Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
 				                         att du därmed får en intressantare lajvupplevelse.</div>
-				<textarea id="Description" name="Description" rows="4" cols="100" maxlength="15000" required><?php echo $role->Description; ?></textarea>
+				<textarea class="input_field" id="Description" name="Description" rows="4" cols="100" maxlength="15000" required><?php echo $role->Description; ?></textarea>
 			</div>
 			
 			<div class="question">
@@ -159,7 +159,7 @@ include 'navigation_subpage.php';
 									     Efter att du är anmäld kan du gå in och titta på gruppen så får du se de andra som är anmälda och vad de har skrivit om sig.
 									     </div>
 
-				<textarea id="DescriptionForGroup" name="DescriptionForGroup" rows="4" cols="100" maxlength="15000"><?php echo $role->DescriptionForGroup; ?></textarea>
+				<textarea class="input_field" id="DescriptionForGroup" name="DescriptionForGroup" rows="4" cols="100" maxlength="15000"><?php echo $role->DescriptionForGroup; ?></textarea>
 			</div>
 			
 			<div class="question">
@@ -169,7 +169,7 @@ include 'navigation_subpage.php';
 									     Efter att du är anmäld kommer din karaktär och den här beskrivningen 
 									     att <a href="../participants.php?id=<?php echo $current_larp->Id;?>" target="_blank">synas för alla</a>. 
 									     Lägg gärna upp en bild på dig också så att de andra känner igen dig.</div>
-				<textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="2000"><?php echo $role->DescriptionForOthers; ?></textarea>
+				<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="2000"><?php echo $role->DescriptionForOthers; ?></textarea>
 			</div>
 			
 				
@@ -186,7 +186,7 @@ include 'navigation_subpage.php';
 				<div class="explanation">Självklart har din karaktär en anledning att vara i just den här hålan. Om din karaktär bor här så finns det en anledning att bo kvar.    
 Är du besökande så lär det finnas en bra anledning att inte bara åka vidare efter en natts vila, utan stanna till ett par nätter.    
 Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</div>
-				<textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea>
+				<textarea class="input_field" id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea>
 			</div>
 				
 			<div class="question">
@@ -196,7 +196,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 					Om du var med förra året med din karaktär, vad hände med din karaktär som är bra att komma ihåg? Gjorde den några särskilt bra affärer? Var den med i en duell? Blev den svindlad eller svindlade den någon? Hur gick det med kärleken?<br><br>
 					Har din karaktär gjort något minnesvärt tidigare år?
 				</div>
-				<textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo $role->PreviousLarps; ?></textarea>
+				<textarea class="input_field" id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo $role->PreviousLarps; ?></textarea>
 			</div>
 			<div class="question">
 				<label for="Religion">Religion</label><br>
@@ -219,17 +219,17 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			<div class="question">
 				<label for="DarkSecretIntrigueIdeas">Mörk hemlighet - intrig idéer</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Hur kan vi spela på din mörka hemlighet?</div>
-				<input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="200" required>
+				<input class="input_field" type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="200" required>
 			</div>
 			<div class="question">
 				<label for="IntrigueSuggestions">Intrigideer</label><br> 
 				<div class="explanation">Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar". </div>
-				<textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea>
+				<textarea class="input_field" id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea>
 			</div>
 			<div class="question">
 				<label for="NotAcceptableIntrigues">Saker karaktären absolut inte vill spela på</label><br>
 				<div class="explantion">Är det något den här karaktären aldrig skulle göra? Vill du helst undvika farligt spel är det också bra att ange.</div>
-				<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="200">
+				<input class="input_field" type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="200">
 			</div>
 
 
@@ -238,7 +238,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			<div class="question">
 				<label for="OtherInformation">Övrig information</label><br>
 				<div class="explanation">Är det något annat kring karaktären arrangörerna bör veta?</div>
-				<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $role->OtherInformation; ?></textarea>
+				<textarea class="input_field" id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $role->OtherInformation; ?></textarea>
 			
 			 
 			</div>
