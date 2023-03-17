@@ -10,6 +10,10 @@ body {
 	background-color: #f3f4f7;
 }
 
+td {
+	vertical-align: text-top;
+}
+
 .required:after {
     content:" *";
     color: red;
@@ -19,11 +23,9 @@ body {
   background: red;
 }
 
-body.loggedin {
-	background-color: #f3f4f7;
-}
+
 .content {
-	width: 1000px;
+	width: 95%;
 	margin: 5px auto;
 	padding-left:16px;
 }
