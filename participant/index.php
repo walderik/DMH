@@ -4,51 +4,9 @@ include_once '../includes/error_handling.php';
 
 $ih = ImageHandler::newWithDefault();
 ?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title><?php echo $current_larp->Name;?></title>
-		<link href="../css/style.css" rel="stylesheet" type="text/css">
-		<link href="../css/participant_style.css" rel="stylesheet" type="text/css">
-		<link rel="icon" type="image/x-icon" href="../images/<?php echo $current_larp->getCampaign()->Icon; ?>">
-		<script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
-	</head>
-	<body class="loggedin">
-        <nav id="navigation">
-          <a href="<?php echo $current_larp->getCampaign()->Homepage ?>" class="logo" target="_blank">
-        	<img src="../images/<?php echo $current_larp->getCampaign()->Icon; ?>" width="30" height="30"/>
-          </a>
-          <a href="choose_larp.php" class="logo"><?php echo $current_larp->Name;?></a>
-          <ul class="links">
-              <li class="dropdown"><a href="#" class="trigger-drop">Registrera<i class="arrow"></i></a>
-              <ul class="drop">
-                <li><a href="person_form.php">Deltagare</a></li>
-                <li><a href="role_form.php">Karaktär</a></li>
-                <li><a href="group_form.php">Grupp</a></li>
-              </ul>
-            </li>
-          <?php if ($current_larp->mayRegister()) {?>
-          <ul class="links">
-              <li class="dropdown"><a href="#" class="trigger-drop">Anmäl<i class="arrow"></i></a>
-              <ul class="drop">
-                <li><a href="select_person.php">Deltagare</a></li>
-                <li><a href="group_registration_form.php">Grupp</a></li>
-              </ul>
-            </li>
-            <?php }?>
-        	<?php 
-        	 if (isset($_SESSION['admin'])) {
-        	 ?>
-        	     <li><a href="../admin/" style="color: red"><i class="fa-solid fa-lock"></i>Admin</a></li>  
-        	 <?php 
-        	 }
-        	 ?>
-        	<li><a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a></li>
-        	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
-          </ul>
-          
-        </nav>
+
+<?php include "navigation_mainpage.php" ?>
+
 		<div class="content">
 			<h1>Anmälan till <?php echo $current_larp->Name;?></h1>
         	  <?php if (isset($error_message) && strlen($error_message)>0) {
