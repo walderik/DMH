@@ -11,24 +11,43 @@ $past_larp_array = LARP::allPastLarpsWithRegistrations($current_user);
 ?>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Berghems vänners anmälningssystem</title>
-		<link href="../css/style.css" rel="stylesheet" type="text/css">
-		<link href="../css/participant_style.css" rel="stylesheet" type="text/css">
-		<link rel="icon" type="image/x-icon" href="../images/bv.ico">
-		<script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
-	</head>
-	<body class="loggedin">
+<head>
+<script>
+function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
+    <link href="../css/navigation_participant.css" rel="stylesheet" type="text/css">
+	<link href="../css/style.css" rel="stylesheet" type="text/css">
+	<link rel="icon" type="image/x-icon" href="../images/bv.ico">
+	<title>Berghems vänners anmälningssystem</title>
+	
+</head>
+<body>
+<div class="topnav"  id="myTopnav">
+    <div id="right">
+
+	  
+	  <div id="placeholder" class="dropdown">&nbsp;<br>&nbsp;
+	    <button class="dropbtn">   
+	    </button>
+	  </div> 
 
 
-
-        <nav id="navigation">
-          <ul class="links">
-        	<li><a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut</a></li>
-          </ul>
-        </nav>
-
+	  <a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
+	  <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+	  </div>
+    
+    </div>
 
 		<div class="content">
 			<h1>Vilket lajv?</h1>

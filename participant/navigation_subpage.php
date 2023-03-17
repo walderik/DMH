@@ -18,7 +18,7 @@ function myFunction() {
     <link href="../css/navigation_participant.css" rel="stylesheet" type="text/css">
 	<link href="../css/style.css" rel="stylesheet" type="text/css">
 	<link rel="icon" type="image/x-icon" href="../images/<?php echo $current_larp->getCampaign()->Icon; ?>">
-	
+	<title><?php echo $current_larp->Name;?></title>	
 </head>
 <body>
 <div class="topnav"  id="myTopnav">
