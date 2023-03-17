@@ -49,7 +49,7 @@ if ($current_person->UserId != $current_user->Id) {
 }
 
 
-$roles = $current_person->getRoles();
+$roles = $current_person->getAliveRoles();
 
 if (empty($roles)) {
     header('Location: index.php?error=no_role');

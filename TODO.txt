@@ -10,7 +10,7 @@ Intrigverktyg
 
 Husfördelning
 
-"döda" roller och grupper (admin funktion)
+
 
 byta user för en person (admin funktion)
 
