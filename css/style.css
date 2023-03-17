@@ -25,6 +25,7 @@ body.loggedin {
 .content {
 	width: 1000px;
 	margin: 5px auto;
+	padding-left:16px;
 }
 .content h1 {
 	padding: 25px 0;
