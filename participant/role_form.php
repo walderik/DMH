@@ -89,7 +89,7 @@ include 'navigation.php';
 			<div class="question">
 				<label for="Profession">Yrke</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Vad jobbar din karaktär med för att överleva?   Vill du ha ett yrke som kan innebära en central roll i lajvet, så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.    Det gäller poster som borgmästare, bypräst eller sheriff.   Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta spela att din karaktär har det yrket. Vi vill helst inte att du spelar prostituerad.</div>
-				<input class="input_field" type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="100" required>
+				<input class="input_field" type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="200" required>
 			</div>
 		<?php 
 		$previous_larp_roles = $role->getPreviousLarpRoles();
