@@ -53,7 +53,7 @@ if (isset($_FILES["upload"])) {
     }
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

@@ -32,7 +32,7 @@ if (!empty($group) && !$current_user->isMember($group) && !$current_user->isGrou
 $ih = ImageHandler::newWithDefault();
 $image = $ih->loadImage($role->ImageId);
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 <div class="content">

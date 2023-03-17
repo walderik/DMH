@@ -5,7 +5,7 @@ include_once '../includes/error_handling.php';
 $ih = ImageHandler::newWithDefault();
 ?>
 
-<?php include "navigation_mainpage.php" ?>
+<?php include "navigation.php" ?>
 
 		<div class="content">
 			<h1>Anmälan till <?php echo $current_larp->Name;?></h1>

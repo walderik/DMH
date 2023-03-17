@@ -72,7 +72,7 @@ if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()-
     exit;
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

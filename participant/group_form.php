@@ -53,7 +53,7 @@ function default_value($field) {
 }
 
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

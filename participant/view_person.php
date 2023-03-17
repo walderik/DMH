@@ -27,7 +27,7 @@ if (!$current_person->isRegistered($current_larp)) {
 $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
 
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

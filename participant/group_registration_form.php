@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

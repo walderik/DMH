@@ -20,7 +20,7 @@ if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
     exit;
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

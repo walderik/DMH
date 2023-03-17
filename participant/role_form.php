@@ -59,7 +59,7 @@ function default_value($field) {
     echo $output;
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 
 ?>
 

@@ -1,5 +1,5 @@
 <?php require 'header.php'; 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

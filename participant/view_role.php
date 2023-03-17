@@ -34,7 +34,7 @@ if (isset($role->GroupId)) {
 
 $ih = ImageHandler::newWithDefault();
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

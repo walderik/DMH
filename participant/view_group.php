@@ -30,7 +30,7 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
 $ih = ImageHandler::newWithDefault();
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

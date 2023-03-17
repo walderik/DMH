@@ -16,7 +16,7 @@ if (count($current_persons) == 1) {
 }
 
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">
