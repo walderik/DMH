@@ -11,6 +11,31 @@ include 'navigation_subpage.php';
             <a href="create_npc_group.php"><i class="fa-solid fa-file-circle-plus"></i>Skapa NPC grupp</a>  
             
             <div>
+            <h2>Alla tilldelade NPC'er</h2>
+            <?php 
+            $npcs=NPC::getAllAssigned($current_larp);
+            foreach($npcs as $npc) {
+                $person=$npc->getPerson();
+                $registration = $person->getRegistration($current_larp);
+                echo "$npc->Name: $npc->time<br>$npc->Descrption<br>"; 
+                echo "Speas av $person->Name: $registration->NPCDesire<br>";
+                
+            }
+            ?>
+            </div>
+            
+            <div>
+            <h2>Alla NPC'er som inte är tilldelade</h2>
+            <?php 
+            $npcs=NPC::getAllUnassigned($current_larp);
+            foreach($npcs as $npc) {
+                echo "$npc->Name: $npc->time<br>$npc->Descrption<br>"; 
+            }
+            ?>
+            </div>
+            
+            <div>
+            <h2>Personer som vill vara NPC</h2>
             <?php 
             $persons=Person::getAllInterestedNPC($current_larp);
             foreach($persons as $person) {
