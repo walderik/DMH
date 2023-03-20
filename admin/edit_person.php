@@ -89,7 +89,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">NPC önskemål</td>
 			<td><input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="250" value="<?php echo $registration->NPCDesire;?>"></td></tr>
 			<tr><td valign="top" class="header">Husförvaltare</td>
-			<td><?php selectionDropdownByArray('House', House::all(), false, false, $person->HouseId); ?></td></tr>
+			<td><?php selectionByArray('House', House::all(), false, false, $person->HouseId); ?></td></tr>
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown(false,true,$registration->HousingRequestId);?></td></tr>
 

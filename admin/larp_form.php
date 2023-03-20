@@ -60,7 +60,7 @@ include_once 'header.php';
     			</tr>
     			<tr>
     				<td><label for="Campaign">Kampanj</label></td>
-    				<td><?php selectionDropdownByArray("Campaign" , Campaign::all(), false, true, $larp->CampaignId); ?></td>
+    				<td><?php selectionByArray("Campaign" , Campaign::all(), false, true, $larp->CampaignId); ?></td>
     			</tr>
     			<tr>
     				<td><label for="TagLine">Tag line</label></td>

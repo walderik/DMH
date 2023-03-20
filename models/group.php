@@ -7,6 +7,7 @@ class Group extends BaseModel{
     public $Friends;
     public $Enemies;
     public $Description;
+    public $DescriptionForOthers;
     public $IntrigueIdeas;
     public $OtherInformation;
     public $WealthId;
@@ -30,6 +31,7 @@ class Group extends BaseModel{
         if (isset($arr['Friends'])) $this->Friends = $arr['Friends'];
         if (isset($arr['Enemies'])) $this->Enemies = $arr['Enemies'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        if (isset($arr['DescriptionForOthers'])) $this->DescriptionForOthers = $arr['DescriptionForOthers'];
         if (isset($arr['IntrigueIdeas'])) $this->IntrigueIdeas = $arr['IntrigueIdeas'];
         if (isset($arr['OtherInformation'])) $this->OtherInformation = $arr['OtherInformation'];
         if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
@@ -82,11 +84,11 @@ class Group extends BaseModel{
         global $tbl_prefix;
         
         $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."group` SET Name=?, Friends=?, Enemies=?,
-                                                                  Description=?, IntrigueIdeas=?, OtherInformation=?,
+                                                                  Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?,
                                                                   WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=?, IsDead=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
-            $this->Description, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, 
+            $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, 
             $this->CampaignId, $this->IsDead, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -103,12 +105,12 @@ class Group extends BaseModel{
         global $tbl_prefix;
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."group` (Name,  
-                         Friends, Description, Enemies, IntrigueIdeas, OtherInformation, 
+                         Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
                          WealthId, PlaceOfResidenceId, PersonId, CampaignId, IsDead) 
                          VALUES (?,?,?,?,?, ?,?,?,?,?, ?);");
         
         if (!$stmt->execute(array($this->Name,  
-            $this->Friends, $this->Description, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
+            $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
             $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId, $this->IsDead))) {
             $this->connect()->rollBack();
             $stmt = null;

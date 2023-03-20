@@ -99,7 +99,7 @@ class SelectionData extends BaseModel{
     # En dropdown där man kan välja den här
     public static function selectionDropdown(?bool $multiple=false, ?bool $required=true, $selected=null) {
         $selectionDatas = static::allActive();
-        selectionDropdownByArray(static::class , $selectionDatas, $multiple, $required, $selected);
+        selectionByArray(static::class , $selectionDatas, $multiple, $required, $selected);
     }
 
     

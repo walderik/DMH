@@ -70,7 +70,8 @@ include 'navigation.php';
 
 
 			<p>En grupp är en gruppering av roller som gör något tillsammans på
-				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett rallarlag.</p>
+				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett rallarlag.<br><br>
+				Det som du skriver i anmälan kommer att vara synligt för alla i gruppen, förrutom intrigidéer.</p>
 				
 				
 			<h2>Gruppansvarig</h2>
@@ -81,7 +82,7 @@ include 'navigation.php';
 			<div class="question">
 				<label for="Person">Gruppansvarig</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Vem är gruppansvarig?</div>
-				<?php selectionDropdownByArray('Person', $current_persons, false, true, $group->PersonId) ?>
+				<?php selectionByArray('Person', $current_persons, false, true, $group->PersonId) ?>
 			</div>
 			
 			
@@ -97,6 +98,18 @@ include 'navigation.php';
 			<div class="question">
     			<label for="Description">Beskrivning av gruppen</label>&nbsp;<font style="color:red">*</font><br>
     			<textarea class="input_field" id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo $group->Description; ?></textarea>
+			
+			 
+			</div>
+			<div class="question">
+    			<label for="DescriptionForOthers">Beskrivning av gruppen för andra</label>
+				<div class="explanation">Vad är allmänt känt om gruppen? Beskriv sådant som de flesta vet om er. 
+                         Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter med er och då får ni roligare spel.<br><br>
+					     Efter att gruppen är anmäld kommer namnet på gruppen och den här beskrivningen 
+					     att <a href="../participants.php?id=<?php echo $current_larp->Id;?>" target="_blank">synas för alla</a>. 
+					     </div>
+    			
+    			<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000" required><?php echo $group->DescriptionForOthers; ?></textarea>
 			
 			 
 			</div>
@@ -142,7 +155,7 @@ include 'navigation.php';
 			<div class="question">
 			<label for="IntrigueIdeas">Intrigidéer</label>
 			<div class="explanation">
-			Har ni några grupprykten som ni vill ha hjälp med att sprida? 
+			Har ni några grupprykten som ni vill ha hjälp med att sprida? <br>Denna del är inte synlig för medlemmarna i gruppen.
 			</div>
 			<textarea class="input_field" id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo $group->IntrigueIdeas; ?></textarea>
 			

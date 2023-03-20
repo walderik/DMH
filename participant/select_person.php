@@ -38,7 +38,7 @@ include 'navigation.php';
 			<div class="question">
 				<label for="PersonId">Deltagare</label><br>
 				<div class="explanation">Vilken deltagare vill du anmäla?</div>
-				<?php selectionDropdownByArray('Person', $possible_persons, false, true) ?>
+				<?php selectionByArray('Person', $possible_persons, false, true) ?>
 			</div>
 			  <input type="submit" value="Välj">
 

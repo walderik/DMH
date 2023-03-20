@@ -125,7 +125,7 @@ include 'navigation.php';
             			    echo '</td><td>&nbsp;</td><td valign="top">';
     
             			    $name = 'IntrigueTypeId[' . $role->Id . ']';
-            			    selectionDropdownByArray($name , IntrigueType::allActive(), true, false);
+            			    selectionByArray($name , IntrigueType::allActive(), true, false);
             			    echo '</td></tr></table>';
             			    echo '</div>';
         			    }

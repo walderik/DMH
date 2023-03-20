@@ -50,7 +50,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $role->getPerson()->Name; ?></td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>
-			<td><?php selectionDropdownByArray('Group', Group::getRegistered($current_larp), false, false, $role->GroupId); ?></td></tr>
+			<td><?php selectionByArray('Group', Group::getRegistered($current_larp), false, false, $role->GroupId); ?></td></tr>
 
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
 
@@ -82,7 +82,7 @@ include 'navigation_subpage.php';
 			<td><input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Intrigtyper</td>
-			<td><?php selectionDropdownByArray('IntrigueType' , IntrigueType::allActive(), true, false, $larp_role->getSelectedIntrigueTypeIds());?></td></tr>
+			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive(), true, false, $larp_role->getSelectedIntrigueTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
 			<td><textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea></td></tr>

@@ -47,9 +47,9 @@ include 'navigation.php';
 				<label for="GroupId">Grupp</label>&nbsp;<font style="color:red">*</font><br>
 				<?php 
 				if (isset($new_group) && !is_null($new_group)) {
-				    selectionDropdownByArray('Group', $current_groups, false, true, $new_group->Id);
+				    selectionByArray('Group', $current_groups, false, true, $new_group->Id);
 				} else {
-				    selectionDropdownByArray('Group', $current_groups, false, true);
+				    selectionByArray('Group', $current_groups, false, true);
 				} ?>
 				
 			</div>

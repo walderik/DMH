@@ -60,12 +60,15 @@ include 'navigation_subpage.php';
 			<td><input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required></td></tr>
 
 			<tr><td valign="top" class="header">Gruppansvarig&nbsp;<font style="color:red">*</font></td>
-			<td><?php selectionDropdownByArray('Person', $persons_in_group, false, true, $group->PersonId);?></td></tr>
+			<td><?php selectionByArray('Person', $persons_in_group, false, true, $group->PersonId);?></td></tr>
 
 
 
 			<tr><td valign="top" class="header">Beskrivning&nbsp;<font style="color:red">*</font></td>
 			<td><textarea id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo $group->Description; ?></textarea></td></tr>
+
+			<tr><td valign="top" class="header">Beskrivning för andra</td>
+			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000" required><?php echo $group->DescriptionForOthers; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Vänner</td>
 			<td><textarea id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo $group->Friends; ?></textarea></td></tr>
