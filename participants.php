@@ -29,7 +29,7 @@ if (is_null($larp)) {
 
 function print_role($role) {
     $ih = ImageHandler::newWithDefault();
-    //echo "<td valign='top'>\n";
+
     echo "<div class='responsive'>";
     echo "<div class='gallery'>";
     echo "<div class='name'>$role->Name</div>";
@@ -41,7 +41,7 @@ function print_role($role) {
             echo "<img width=300 src='data:image/jpeg;base64,".base64_encode($image)."'/>\n";
         }
     }
-    //echo "</td>";
+
     echo "</div>";
     echo "</div>";
     
@@ -53,10 +53,37 @@ function print_role($role) {
 <html>
 	<head>
 	<style>
+	
+	
+body {
+	padding: 25px;
+}
+
+.participants > p {
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+	margin: 25px 0;
+	padding: 25px;
+	background-color: #fff;
+	width: 100%
+}
+    
+div {
+-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	    background-color: none;
+
+
+}
+	
 div.gallery {
   border: 1px solid #ccc;
   border-radius: 10px;
   background: white;
+  
+  
+  height: 100%;
+
 }
 
 div.gallery:hover {
@@ -65,19 +92,28 @@ div.gallery:hover {
 }
 
 div.gallery img {
-padding 10px;
-  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
   height: auto;
+  padding-bottom: 10px;
 }
 
 div.desc {
-  padding: 15px;
+  padding-top: 0px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
   text-align: left;
 }
 
 div.name {
   font-weight: bold;
-  padding: 15px;
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+  padding-left: 15px;
   text-align: center;
 }
 
@@ -89,7 +125,15 @@ div.name {
   padding: 6px 6px;
   float: left;
   width: 24.99999%;
+      background-color: #f3f4f7;
+  /* flex: 1; */
 }
+
+/* 
+.responsive-container {
+  display: flex;
+}
+*/
 
 @media only screen and (max-width: 700px) {
   .responsive {
@@ -122,7 +166,7 @@ div.name {
 
 	</head>
 	<body>
-		<div>
+		<div class="participants">
 	  <h1>Roller på <?php  echo $larp->Name; ?></h1>
 		<?php 
 		$groups = Group::getRegistered($larp);
@@ -131,19 +175,24 @@ div.name {
 		    $roles = Role::getAllMainRolesInGroup($group, $larp);
 
 		    echo "<h2>$group->Name</h2>";
-		    //echo "<table border=1><tr>\n";
-		    //echo "<div class='container'>";
+		    if ($group->DescriptionForOthers !="") {
+		        echo "<p>$group->DescriptionForOthers</p>";
+		    }
+
+
 		    if (empty($roles) or count($roles)==0) {
 		        echo "Inga anmälda i gruppen än.";
 		    }
-		
-    		foreach ($roles as $role) {
-    		    print_role($role);
-    		}
-    		
-    		//echo "</tr></table>\n";
+		    else {
+		        echo "<div class='responsive-container'>";
+        		foreach ($roles as $role) { 
+        		    print_role($role);
+        		}
+    		echo "</div>";
+		    }
 
-    		echo "<div class='clearfix'></div>";
+
+    		echo "<span class='clearfix'></span>";
     		
 		}
 		
