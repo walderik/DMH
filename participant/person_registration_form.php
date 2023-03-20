@@ -167,11 +167,10 @@ include 'navigation.php';
 
 
 			<div class="question">
-    			<label for="OfficialType">Funktionär</label>
+    			<label for="OfficialType">Intresseranmälan för funktionär</label>
     			<div class="explanation">
         			Det är mycket som behövs för att ett lajv ska fungera på plats. <br>   
                     Allt ifrån att någon måste laga mat till att någon måste se till att det finns toapapper på dassen.<br> 
-                    Just nu söker vi någon som kan ta Trygghetsansvar, folk till saloonen och någon som kan hålla i spel på saloonen.<br>  
                     Säkert finns det också något som du gärna kan hjälpa till med och som vi inte har tänkt på.<br> 
                     Beroende på arbetsbörda återbetalas delar eller hela anmälningsavgifter efter lajvet.<br>
     				<?php OfficialType::helpBox(true); ?>
