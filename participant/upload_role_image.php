@@ -6,7 +6,7 @@ require 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     if (isset($_GET['id'])) {
-        echo "Laddar " . $_GET['id'] . "<br>";
+        //echo "Laddar " . $_GET['id'] . "<br>";
         
         $role = Role::loadById($_GET['id']);
     } else {

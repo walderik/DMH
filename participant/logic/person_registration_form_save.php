@@ -1,6 +1,6 @@
 <?php
 
-global $root, $current_user;
+global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
@@ -9,15 +9,18 @@ if (!$current_larp->mayRegister()) {
     exit;
 }
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
+
     
     if ($operation == 'insert') {
         if (isset($_POST['IsMainRole'])) $mainRole = $_POST['IsMainRole'];
         // Skapa en ny registrering
         $registration = Registration::newFromArray($_POST);
-        $age = Person::loadById($registration->PersonId)->getAgeAtLarp($current_larp);
+        $person = Person::loadById($registration->PersonId);
+        $age = $person->getAgeAtLarp($current_larp);
         $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age);
             
         $registration->PaymentReference = $registration->LARPId . $registration->PersonId;
@@ -25,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $now = new Datetime();
         $registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
 
+        
         
         $registration->create();
         
@@ -36,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
 
 
-//         exit;
+
         foreach ($roleIdArr as $roleId) {
             
             $larp_role = LARP_Role::newWithDefault();
@@ -48,19 +52,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $larp_role->create();            
         }
-        $intrigueTypeRoleArr = $_POST['IntrigueTypeId'];
-
-        foreach ($intrigueTypeRoleArr as  $key => $intrigueTypeRole) {
-            $larp_role = LARP_Role::loadByIds($key, $current_larp->Id);
-            $larp_role->saveAllIntrigueTypes($intrigueTypeRole);
+        
+        
+        if (isset($_POST['IntrigueTypeId'])) {
+            $intrigueTypeRoleArr = $_POST['IntrigueTypeId'];
+    
+            foreach ($intrigueTypeRoleArr as  $key => $intrigueTypeRole) {
+                $larp_role = LARP_Role::loadByIds($key, $current_larp->Id);
+                $larp_role->saveAllIntrigueTypes($intrigueTypeRole);
+            }
         }
         send_registration_mail($registration);
+        
+
+        if (!empty($registration->Guardian)) {           
+            $guardian = Person::loadById($registration->Guardian);
+            if ($guardian->UserId != $current_user->Id) {
+
+                send_guardian_mail($guardian, $person, $current_larp);
+            }
+        }
     } 
     
     header('Location: ../index.php');
     exit;
 }
 
+
+function send_guardian_mail(Person $guardian, Person $minor, LARP $larp) {
+    $text  = "$minor->Name har angett dig som ansvarig vuxen på lajvet $larp->Name<br>\n";
+    $text .= "Om det inte stämmer måste du kontakta arrangörerna på ".$larp->getCampaign()->Email.
+      " så att vi kan kontakta $minor->Name och reda ut det.\n";
+    $text .= "<br>\n";
+
+    
+    BerghemMailer::send($guardian->Email, $guardian->Name, $text, "Ansvarig vuxen för $minor->Name på $larp->Name");
+    
+    
+}
 
 function send_registration_mail(Registration $registration) {
     $person = $registration->getPerson();
