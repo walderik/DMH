@@ -59,6 +59,19 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
     echo "</div>\n";
 }
 
+
+
+
+# En selector där man kan välja i en array
+function selectionDropDownByArray(String $name, Array $selectionDatas, $selected=null) {
+   echo "<select name='$name' id='$name'>\n";
+    foreach ($selectionDatas as $selectionData) {
+     echo "   <option value='$selectionData->Id'>$selectionData->Name</option>\n";
+    }
+    echo "</select>\n";
+    
+}
+
 # Tar en array av object och gör en komma-separerad lista av deras namn
 function commaStringFromArrayObject($objectArray) {
     $output="";

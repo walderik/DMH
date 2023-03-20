@@ -150,6 +150,37 @@ class Person extends BaseModel{
         
     }
     
+    public static function getAllRegisteredAdults($larp) {
+        global $tbl_prefix, $current_larp;
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".
+            $tbl_prefix."registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(array($larp->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $item = static::newFromArray($row);
+                if ($item->getAgeAtLarp($current_larp) >= 18) {
+                    $resultArray[] = $item;
+                }
+            }
+            $stmt = null;
+            return $resultArray;
+            
+    }
     
     public static function getAllInterestedNPC($larp) {
         global $tbl_prefix;

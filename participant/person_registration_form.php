@@ -93,9 +93,13 @@ include 'navigation.php';
 			<div class="question">
     			<label for="Guardian">Ansvarig vuxen</label>&nbsp;<font style="color:red">*</font>
     			<div class="explanation">Eftersom <?php echo $current_person->Name; ?> bara är <?php  echo $current_person->getAgeAtLarp($current_larp); ?> år behövs en ansvarig vuxen. 
-    			Den ansvarige måste vara tillfrågad och accepera ansvaret.
+    			Den ansvarige måste vara tillfrågad och accepera ansvaret.<br>
+    			Den ansvarige måste redan vara anmäld till lajvet så att du kan välja personen.
 				</div>
-                <input class="input_field" type="text" id="Guardian" name="Guardian" size="100" maxlength="100" required>
+				<?php 
+				$possible_persons = Person::getAllRegisteredAdults($current_larp);
+				selectionDropDownByArray('Guardian', $possible_persons, false, true);
+				?>
             </div>
 		    
 		    <?php 
