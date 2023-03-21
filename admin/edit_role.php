@@ -64,7 +64,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Beskrivning för gruppen</td>
 			<td><textarea id="DescriptionForGroup" name="DescriptionForGroup" rows="4" cols="100" maxlength="15000"><?php echo $role->DescriptionForGroup; ?></textarea></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för andra</td>
-			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="2000"><?php echo $role->DescriptionForOthers; ?></textarea></td></tr>
+			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="400"><?php echo $role->DescriptionForOthers; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Tidigare lajv</td>
 			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo $role->PreviousLarps; ?></textarea></td></tr>

@@ -169,7 +169,7 @@ include 'navigation.php';
 									     Efter att du är anmäld kommer din karaktär och den här beskrivningen 
 									     att <a href="../participants.php?id=<?php echo $current_larp->Id;?>" target="_blank">synas för alla</a>. 
 									     Lägg gärna upp en bild på dig också så att de andra känner igen dig.</div>
-				<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="2000"><?php echo $role->DescriptionForOthers; ?></textarea>
+				<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="400"><?php echo $role->DescriptionForOthers; ?></textarea>
 			</div>
 			
 				

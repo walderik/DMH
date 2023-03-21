@@ -12,6 +12,7 @@ Husfördelning
 
 
 
+
 byta user för en person (admin funktion)
 
 Ide från deltagare: Det kanske inte hör till anmälan men transport, finns ju en del som behöver hjälp till platsen. 
