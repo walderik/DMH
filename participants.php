@@ -174,6 +174,7 @@ div.name {
 		$groups = Group::getRegistered($larp);
 		foreach ($groups as $group) {
 		    $roles = Role::getAllMainRolesInGroup($group, $larp);
+		    $non_main_roles = Role::getAllNonMainRolesInGroup($group, $larp);
 		    
 			echo "<DIV class='clearfix'>";
 		    echo "<h2>$group->Name</h2>";
@@ -183,25 +184,32 @@ div.name {
 		    }
 		    echo "<DIV class='responsive-container'>";
 		    
-		    if (empty($roles) or count($roles)==0) {
+		    if ((empty($roles) or count($roles)==0) &&(empty($non_main_roles) or count($non_main_roles)==0)) {
 		        echo "Inga anmälda i gruppen än.";
 		    }
 		    else {
     		    foreach ($roles as $role) {
     		        print_role($role);
     		    }
+		        foreach ($non_main_roles as $role) {
+		            print_role($role);
+		        }
 		    }
-
+		    
 		echo "</DIV>";
 		}
 		
 		
 		$roles = Role::getAllMainRolesWithoutGroup($larp);
-		if (!empty($roles) && count($roles)!=0) {
+		$non_main_roles = Role::getAllNonMainRolesWithoutGroup($larp);
+		if ((!empty($roles) && count($roles)!=0) or (!empty($non_main_roles) && count($non_main_roles)!=0)) {
 		    echo "<DIV class='clearfix'>";
 		    echo "<h2>Roller utan grupp</h2>";
 		    echo "</DIV>";
 		    foreach ($roles as $role) {
+		        print_role($role);
+		    }
+		    foreach ($non_main_roles as $role) {
 		        print_role($role);
 		    }
 		}
