@@ -33,10 +33,13 @@ function print_role($role, $group) {
     global $current_user, $current_larp;
     
     echo "<li>\n";
-    echo "<div class='name'>$role->Name</div>\n";
+    echo "<div class='name'>$role->Name";
     if ($current_user->isGroupLeader($group)) {
-    	echo "<a href='logic/remove_group_member.php?groupID=<?php echo $group->Id; ?>&roleID=<?php echo $role->Id; ?>' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\"><i class'fa-solid fa-trash-can' title='Ta bort roll ur gruppen'></i></a>";
+        echo " <a href='logic/remove_group_member.php?groupID=<?php echo $group->Id; ?>&roleID=<?php echo $role->Id; ?>' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
+        echo "<i class='fa-solid fa-trash-can'></i>";
+        echo "</a>";
     }
+    echo "</div>\n";
     echo "Yrke: ".$role->Profession . "<br>";
     echo "Spelas av ".$role->getPerson()->Name."<br>";
     
