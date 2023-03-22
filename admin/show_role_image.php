@@ -25,8 +25,7 @@ if (!isset($role) or !isset($role->ImageId)){
 
 
 
-$ih = ImageHandler::newWithDefault();
-$image = $ih->loadImage($role->ImageId);
+$image = Image::loadById($role->ImageId);
 
 include 'navigation_subpage.php';
 ?>
@@ -35,5 +34,6 @@ include 'navigation_subpage.php';
 		<h1>Bild för <?php echo $role->Name?></h1>
 
 <?php 
-echo '<img src="data:image/jpeg;base64,'.base64_encode($image).'"/>';
+echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
+if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
 ?>

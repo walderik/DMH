@@ -1,12 +1,20 @@
 <?php
 
-class ImageHandler extends BaseModel{
+class Image extends BaseModel{
+    public $Id;
+    public $file_name;
+    public $file_mime;
+    public $file_data;
+    public $Photographer;
+    
+    
+    
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
         return new self();
     }
     
-    public function maySave() {
+    public static function maySave() {
         $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
         $filename = $_FILES["upload"]["name"];
         $filetype = $_FILES["upload"]["type"];
@@ -27,18 +35,19 @@ class ImageHandler extends BaseModel{
     }
         
     # Create a new image in db
-    public function saveImage() {
+    public static function saveImage() {
         global $tbl_prefix;
         
-        $error = $this->maySave();
+        $error = static::maySave();
         if (isset($error)) return null;
         
-        $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."image (`file_name`, `file_mime`, `file_data`) VALUES (?,?,?)");
+        $connection = static::connectStatic();
+        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."image (`file_name`, `file_mime`, `file_data`, Photographer) VALUES (?,?,?,?)");
         
         if (!$stmt->execute(array($_FILES["upload"]["name"],
             mime_content_type($_FILES["upload"]["tmp_name"]),
-            file_get_contents($_FILES["upload"]["tmp_name"])))) {
+            file_get_contents($_FILES["upload"]["tmp_name"]), 
+            $_POST['Photographer']))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -49,10 +58,10 @@ class ImageHandler extends BaseModel{
     }
     
      
-    public function loadImage ($Id) {
+    public static function loadById ($Id) {
         global $tbl_prefix;
-        $connection = $this->connect();
-        $stmt = $connection->prepare("SELECT file_name, `file_mime`, `file_data` FROM `regsys_image` WHERE `Id`=?");
+        $connection = static::connectStatic();
+        $stmt = $connection->prepare("SELECT file_name, `file_mime`, `file_data`, Photographer FROM `regsys_image` WHERE `Id`=?");
         
         if (!$stmt->execute(array($Id))) {
                 $stmt = null;
@@ -65,8 +74,12 @@ class ImageHandler extends BaseModel{
             echo "$Id not found";
             return false;
         }
-        
-        return $file["file_data"];
+        $image = Image::newWithDefault();
+        $image->file_data = $file["file_data"];
+        $image->file_name = $file["file_name"];
+        $image->file_mime = $file["file_mime"];
+        $image->Photographer = $file["Photographer"];
+        return $image;
     }
     
     # Create a new image in db

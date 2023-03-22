@@ -193,6 +193,10 @@ class Registration extends BaseModel{
         return Person::loadById($this->PersonId);
     }
     
+    public function getGuardian() {
+        return Person::loadById($this->Guardian);
+    }
+    
     public function getLARP() {
         return LARP::loadById($this->LARPId);
     }

@@ -2,7 +2,6 @@
 require 'header.php';
 include_once '../includes/error_handling.php';
 
-$ih = ImageHandler::newWithDefault();
 ?>
 
 <?php include "navigation.php" ?>
@@ -140,8 +139,8 @@ $ih = ImageHandler::newWithDefault();
         		                echo "- $role->Profession $role_group_name</td>";
         		                if ($role->hasImage()) {
         		                    
-        		                    $image = $ih->loadImage($role->ImageId);
-        		                    echo "<td><a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image)."'/></a> <a href='logic/delete_role_image.php?id=$role->Id'>Ta bort bild</a></td>";
+        		                    $image = Image::loadById($role->ImageId);
+        		                    echo "<td><a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></a> <a href='logic/delete_role_image.php?id=$role->Id'>Ta bort bild</a></td>";
         		                }
         		                else {
         		                    echo "<td><a href='upload_role_image.php?id=$role->Id'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>";

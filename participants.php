@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         
     }
     else {
-
+        
         header('Location: index.php');
         exit;
     }
@@ -28,128 +28,27 @@ if (is_null($larp)) {
 
 
 function print_role($role) {
-    $ih = ImageHandler::newWithDefault();
-    echo "<DIV class='responsive'>";
-    echo "<DIV class='gallery'>";
-    echo "<DIV class='name'>$role->Name</DIV>";
-    echo "<DIV class='desc'>$role->DescriptionForOthers</DIV>";
+    
+    echo "<li>\n";
+    echo "<div class='name'>$role->Name</div>\n";
+    echo "<div class='description'>$role->DescriptionForOthers</div>\n";
     if (isset($role->ImageId) && !is_null($role->ImageId)) {
-        $image = $ih->loadImage($role->ImageId);
-        if (!is_null($image) && strlen($image) > 0) {
-            echo "<img width=300 src='data:image/jpeg;base64,".base64_encode($image)."'/>\n";
+        $image = Image::loadById($role->ImageId);
+        if (!is_null($image)) {
+            
+            echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+            if (!empty($image->Photographer) && $image->Photographer!="") {
+                echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
+            }
         }
     }
-    
-    echo "</DIV>";
-    echo "</DIV>";
+    echo "</li>\n\n";
     
 }
 ?>
-
-
 <HTML>
 
 <HEAD>
-
-<STYLE type="text/css">
-
-img{
-  display: block;
-    max-height:250px;
-    max-width:200px;
-    height:auto;
-    width:auto;
-}
-
-body {
-	padding: 25px;
-}
-
-.participants>p {
-	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
-	margin: 25px 0;
-	padding: 25px;
-	background-color: #fff;
-	width: 100%;
-	border: 1px solid green;
-}
-
-div {
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	box-shadow: none;
-	background-color: none;
-}
-
-div.gallery {
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	background: white;
-	height: 100%;
-}
-
-div.gallery:hover {
-	border: 1px solid #777;
-	border-radius: 10px;
-}
-
-div.gallery img {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 90%;
-	height: auto;
-	padding-bottom: 10px;
-}
-
-div.desc {
-	padding-top: 0px;
-	padding-right: 15px;
-	padding-bottom: 15px;
-	padding-left: 15px;
-	text-align: left;
-}
-
-div.name {
-	font-weight: bold;
-	padding-top: 15px;
-	padding-right: 15px;
-	padding-bottom: 5px;
-	padding-left: 15px;
-	text-align: center;
-}
-
-* {
-	box-sizing: border-box;
-}
-
-.responsive {
-	padding: 6px 6px;
-	float: left;
-	width: 32.99999%;
-	background-color: #f3f4f7;
-	height: 100%;
-}
-
-@media only screen and (max-width: 700px) {
-	.responsive {
-		width: 49.99999%;
-		margin: 6px 0;
-	}
-}
-
-@media only screen and (max-width: 500px) {
-	.responsive {
-		width: 100%;
-	}
-}
-
-.clearfix {
-	clear: both;
-	padding-top: 20px;
-}
-</STYLE>
-
 
 
 		<meta charset="utf-8">
@@ -160,11 +59,96 @@ div.name {
 
 
 
+<style>
 
+/* ======================================
+Responsive Image gallery Style rules
+======================================*/
+
+.participants>p {
+	box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+	padding: 25px;
+	background-color: #fff;
+	width: 100%;
+	border: 1px solid gray;
+}
+
+* {
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    padding: 25px;
+}
+
+.name {
+	font-weight: bold;
+	text-align: center;
+}
+
+.photographer {
+  text-align: center;
+}
+
+.container {
+  /* padding: 40px 5%; */
+}
+
+
+
+
+ul {
+  list-style: none;
+}
+
+/* Responsive image gallery rules begin*/
+
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.image-gallery > li {
+  flex-basis: 350px; /*width: 350px;*/
+  position: relative;
+  cursor: pointer;
+  	border: 1px solid #ccc;
+	border-radius: 10px;
+	background: white;
+	height: 100%;
+  padding: 5px;
+}
+
+.image-gallery::after {
+  content: "";
+  flex-basis: 350px;
+}
+
+.image-gallery li img {
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border-radius: 5px;
+  margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+
+
+
+
+</style>
 
 </HEAD>
 
 <BODY>
+
 
 	<DIV class="participants">
 
@@ -176,51 +160,68 @@ div.name {
 		    $roles = Role::getAllMainRolesInGroup($group, $larp);
 		    $non_main_roles = Role::getAllNonMainRolesInGroup($group, $larp);
 		    
-			echo "<DIV class='clearfix'>";
-		    echo "<h2>$group->Name</h2>";
-		    echo "</DIV>";
+		    echo "<h2>$group->Name</h2>\n";
 		    if ($group->DescriptionForOthers !="") {
-		        echo "<p>$group->DescriptionForOthers</p>";
+		        echo "<p>$group->DescriptionForOthers</p>\n";
 		    }
-		    echo "<DIV class='responsive-container'>";
 		    
-		    if ((empty($roles) or count($roles)==0) &&(empty($non_main_roles) or count($non_main_roles)==0)) {
-		        echo "Inga anmälda i gruppen än.";
-		    }
-		    else {
+
+
+            echo "<div class='container'>\n";
+            if ((empty($roles) or count($roles)==0) &&(empty($non_main_roles) or count($non_main_roles)==0)) {
+                echo "Inga anmälda i gruppen än.";
+            }
+            else {
+                echo "<ul class='image-gallery'>\n";
+                foreach ($roles as $role) {
+                    print_role($role);
+                }
+                foreach ($non_main_roles as $role) {
+                    print_role($role);
+                }
+                echo "</ul>\n";
+            }
+            
+            echo "</DIV>\n";
+            
+            
+		}
+		
+		
+		
+		/* Karaktärer utan grupp */	
+		$roles = Role::getAllMainRolesWithoutGroup($larp);
+		$non_main_roles = Role::getAllNonMainRolesWithoutGroup($larp);
+		
+		if ((!empty($roles) && count($roles)!=0) or (!empty($non_main_roles) && count($non_main_roles)!=0)) {
+		
+		  echo "<h2>Roller utan grupp</h2>\n";
+		
+		
+    		echo "<div class='container'>\n";
+    		if ((empty($roles) or count($roles)==0) &&(empty($non_main_roles) or count($non_main_roles)==0)) {
+    		    echo "Inga anmälda i gruppen än.";
+    		}
+    		else {
+    		    echo "<ul class='image-gallery'>\n";
     		    foreach ($roles as $role) {
     		        print_role($role);
     		    }
-		        foreach ($non_main_roles as $role) {
-		            print_role($role);
-		        }
-		    }
-		    
-		echo "</DIV>";
+    		    foreach ($non_main_roles as $role) {
+    		        print_role($role);
+    		    }
+    		    echo "</ul>\n";
+    		}
+    		
+    		echo "</DIV>\n";
 		}
-		
-		
-		$roles = Role::getAllMainRolesWithoutGroup($larp);
-		$non_main_roles = Role::getAllNonMainRolesWithoutGroup($larp);
-		if ((!empty($roles) && count($roles)!=0) or (!empty($non_main_roles) && count($non_main_roles)!=0)) {
-		    echo "<DIV class='clearfix'>";
-		    echo "<h2>Roller utan grupp</h2>";
-		    echo "</DIV>";
-		    foreach ($roles as $role) {
-		        print_role($role);
-		    }
-		    foreach ($non_main_roles as $role) {
-		        print_role($role);
-		    }
-		}
-		
-		
 		
 		?>
+	</DIV>
 
 
 
 </BODY>
 
 </HTML>
-
+		

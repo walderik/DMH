@@ -42,10 +42,10 @@ if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
 
 // (A) SAVE IMAGE INTO DATABASE
 if (isset($_FILES["upload"])) {
-    $ih = ImageHandler::newWithDefault();
-    $error = $ih->maySave();
+
+    $error = Image::maySave();
     if (!isset($error)) {
-        $id = $ih->saveImage();
+        $id = Image::saveImage();
         $role->ImageId = $id;
         $role->update();
         header('Location: index.php?message=image_uploaded');
@@ -64,7 +64,11 @@ include 'navigation.php';
 
     	<form method="post" enctype="multipart/form-data">
         	<input type="hidden" id="id" name="id" value="<?php echo $role->Id; ?>">
-          	<input type="file" name="upload" required>
+          	<input type="file" name="upload" required><br><br>
+				<label for=Photographer>Fotograf</label>
+				
+				<input class="input_field" type="text" id="Photographer" name="Photographer" value=""  size="25" maxlength="100">
+          	<br><br>
           	<input type="submit" name="submit" value="Ladda upp bild">
           	<p><strong>OBS:</strong> Bara .jpg, .jpeg, .gif, .png bilder är tillåtna och max storlek 0.5 MB.<br>
           	Bäst blir det om du har en bild som är 300 * 400 pixlar.</p>

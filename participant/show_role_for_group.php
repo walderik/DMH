@@ -29,8 +29,7 @@ if (!empty($group) && !$current_user->isMember($group) && !$current_user->isGrou
 }
 
 
-$ih = ImageHandler::newWithDefault();
-$image = $ih->loadImage($role->ImageId);
+$image = Image::loadById($role->ImageId);
 
 include 'navigation.php';
 ?>
@@ -40,6 +39,7 @@ include 'navigation.php';
 
 <?php if ($role->hasImage()) {
 echo '<img src="data:image/jpeg;base64,'.base64_encode($image).'"/>';
+if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
 }
 ?>
 <p><?php echo $role->DescriptionForGroup?></p>

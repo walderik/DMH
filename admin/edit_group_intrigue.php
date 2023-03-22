@@ -32,7 +32,7 @@ $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 
 $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
-$ih = ImageHandler::newWithDefault();
+
 
 include 'navigation_subpage.php';
 ?>
@@ -68,8 +68,8 @@ include 'navigation_subpage.php';
 		    $group_member->Name . "</a>";
 		    if ($group_member->hasImage()) {
 		        
-		        $image = $ih->loadImage($group_member->ImageId);
-		        echo " <img width=30 src='data:image/jpeg;base64,".base64_encode($image)."'/>";
+		        $image = Image::loadById($group_member->ImageId);
+		        echo " <img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
 		    }
 		    
 		    echo "- " . 

@@ -24,8 +24,8 @@ if (!isset($role) or !isset($role->ImageId)){
 
 //Ingen behörighetskontroll. Alla får se
 
-$ih = ImageHandler::newWithDefault();
-$image = $ih->loadImage($role->ImageId);
+
+$image = Image::loadById($role->ImageId);
 
 include 'navigation.php';
 ?>
@@ -34,7 +34,8 @@ include 'navigation.php';
 	<h1><?php echo $role->Name?></h1>
 
 <?php 
-echo '<img src="data:image/jpeg;base64,'.base64_encode($image).'"/>';
+echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
+if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
 ?>
 
 	</div>
