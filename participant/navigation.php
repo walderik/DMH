@@ -13,10 +13,11 @@ function myFunction() {
 </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
     <link href="../css/navigation_participant.css" rel="stylesheet" type="text/css">
 	<link href="../css/style.css" rel="stylesheet" type="text/css">
+	<link href="../css/gallery.css" rel="stylesheet" type="text/css">
 	<link rel="icon" type="image/x-icon" href="../images/<?php echo $current_larp->getCampaign()->Icon; ?>">
 	<title><?php echo $current_larp->Name;?></title>
 	
