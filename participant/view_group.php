@@ -29,7 +29,7 @@ $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
 
-function print_role($role, $group) {
+function print_role(Role $role, Group $group) {
     global $current_user, $current_larp;
     
     echo "<li>\n";
@@ -41,6 +41,9 @@ function print_role($role, $group) {
     }
     echo "</div>\n";
     echo "Yrke: ".$role->Profession . "<br>";
+    if ($role->isMain($current_larp)==0) {
+        echo "Sidokaraktär<br>";
+    }
     echo "Spelas av ".$role->getPerson()->Name."<br>";
     
     if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
@@ -57,6 +60,10 @@ function print_role($role, $group) {
                 echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
             }
         }
+    }
+    else {
+        echo "<img src='images/man-shape.png' />\n";
+        echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
     }
     echo "</li>\n\n";
     

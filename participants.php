@@ -42,6 +42,10 @@ function print_role($role) {
             }
         }
     }
+    else {
+        echo "<img src='images/man-shape.png' />\n";
+        echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
+    }
     echo "</li>\n\n";
     
 }
