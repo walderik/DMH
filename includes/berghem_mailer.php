@@ -116,4 +116,21 @@ class BerghemMailer {
             
     } // End contruct
     
+    
+    public static function send_guardian_mail(Person $guardian, Person $minor, LARP $larp) {
+        $text  = "$minor->Name har angett dig som ansvarig vuxen på lajvet $larp->Name<br>\n";
+        $text .= "Om det inte stämmer måste du kontakta arrangörerna på ".$larp->getCampaign()->Email.
+        " så att vi kan kontakta $minor->Name och reda ut det.\n";
+        $text .= "<br>\n";
+        
+        
+        BerghemMailer::send($guardian->Email, $guardian->Name, $text, "Ansvarig vuxen för $minor->Name på $larp->Name");
+        
+        
+    }
+    
 }
+
+
+
+

@@ -28,8 +28,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $now = new Datetime();
         $registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
 
-        
-        
+        //Hitta rätt Guardian
+        if (isset($_POST['GuardianInfo'])) {
+            $guardianInfo = $_POST['GuardianInfo'];
+            
+            //Kolla om man har angett ett personnummer så att det innehåller ett streck
+            if (startsWithNumber($guardianInfo)) {
+                if (strpos($guardianInfo, "-") == false) {
+                    $guardianInfo = substr($guardianInfo, 0, 8) . "-" . substr($guardianInfo, 8);
+                }
+            }
+            
+            
+            
+            $guardian = Person::findGuardian($guardianInfo, $current_larp);
+
+            if (!empty($guardian)) {
+                $registration->Guardian = $guardian->Id;
+            }
+        }
+
+
         $registration->create();
         
         $registration->saveAllOfficialTypes($_POST);
@@ -69,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $guardian = Person::loadById($registration->Guardian);
             if ($guardian->UserId != $current_user->Id) {
 
-                send_guardian_mail($guardian, $person, $current_larp);
+                BerghemMailer::send_guardian_mail($guardian, $person, $current_larp);
             }
         }
     } 
@@ -78,17 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit;
 }
 
-
-function send_guardian_mail(Person $guardian, Person $minor, LARP $larp) {
-    $text  = "$minor->Name har angett dig som ansvarig vuxen på lajvet $larp->Name<br>\n";
-    $text .= "Om det inte stämmer måste du kontakta arrangörerna på ".$larp->getCampaign()->Email.
-      " så att vi kan kontakta $minor->Name och reda ut det.\n";
-    $text .= "<br>\n";
-
-    
-    BerghemMailer::send($guardian->Email, $guardian->Name, $text, "Ansvarig vuxen för $minor->Name på $larp->Name");
-    
-    
+function startsWithNumber($string) {
+    return strlen($string) > 0 && ctype_digit(substr($string, 0, 1));
 }
 
 function send_registration_mail(Registration $registration) {

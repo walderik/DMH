@@ -91,15 +91,13 @@ include 'navigation.php';
 		    if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		    ?>
 			<div class="question">
-    			<label for="Guardian">Ansvarig vuxen</label>&nbsp;<font style="color:red">*</font>
+    			<label for="GuardianInfo">Ansvarig vuxen</label>&nbsp;<font style="color:red">*</font>
     			<div class="explanation">Eftersom <?php echo $current_person->Name; ?> bara är <?php  echo $current_person->getAgeAtLarp($current_larp); ?> år behövs en ansvarig vuxen. 
     			Den ansvarige måste vara tillfrågad och accepera ansvaret.<br>
-    			Den ansvarige måste redan vara anmäld till lajvet så att du kan välja personen.
+    			Skriv in namn eller personnummer på den ansvarige. Personnummer anges på formen ÅÅÅÅMMDD-NNNN.
+    			Om den ansvarige inte går att hitta kommer inte din anmälan att kunna godkännas förrän det är löst.
 				</div>
-				<?php 
-				$possible_persons = Person::getAllRegisteredAdults($current_larp);
-				selectionDropDownByArray('Guardian', $possible_persons, false, true);
-				?>
+				<input class="GuardianInfo" type="text" id="GuardianInfo" name="GuardianInfo" size="100" maxlength="25" >
             </div>
 		    
 		    <?php 

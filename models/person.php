@@ -150,37 +150,6 @@ class Person extends BaseModel{
         
     }
     
-    public static function getAllRegisteredAdults($larp) {
-        global $tbl_prefix, $current_larp;
-        if (is_null($larp)) return array();
-        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".
-            $tbl_prefix."registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($larp->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $item = static::newFromArray($row);
-                if ($item->getAgeAtLarp($current_larp) >= 18) {
-                    $resultArray[] = $item;
-                }
-            }
-            $stmt = null;
-            return $resultArray;
-            
-    }
     
     public static function getAllInterestedNPC($larp) {
         global $tbl_prefix;
@@ -239,6 +208,41 @@ class Person extends BaseModel{
         $stmt = null;
         return $resultArray;
         
+    }
+ 
+    
+    
+    public static function findGuardian($guardianInfo, $larp) {
+        global $tbl_prefix;
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from `".$tbl_prefix."person` WHERE (Name=? OR SocialSecurityNumber = ?) AND Id in (SELECT PersonId FROM `".
+            $tbl_prefix."registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(array($guardianInfo, $guardianInfo, $larp->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return null;
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $person = static::newFromArray($row);
+                if ($person->getAgeAtLarp($larp) >= 18) {
+                    $resultArray[] = $person;
+                }
+            }
+            $stmt = null;
+            if (count($resultArray) == 0) return null;
+            return $resultArray[0];
+            
     }
     
     

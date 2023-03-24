@@ -79,10 +79,25 @@ include_once '../includes/error_handling.php';
                         echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id"). "</td></tr>\n";
     		        }
                     if ($person->isRegistered($current_larp)) {
+                        $registration = Registration::loadByIds($person->Id, $current_larp->Id);
+                        if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
+                            echo "<tr><td>Ansvarig vuxen</td><td>";
+                            if (empty($registration->Guardian)) {
+                                echo showStatusIcon(false);
+                                echo "</td><td><a href='input_guardian.php?PersonId=$person->Id'>Ange ansvarig vuxen</a>";
+                            }
+                            else {
+                                echo showStatusIcon(true);
+                                
+                                
+                                echo "</td><td>".$registration->getGuardian()->Name;
+                            }
+                            echo "</td></tr>\n";                            
+                        }
                         echo "<tr><td>Godkänd</td><td>" . showStatusIcon($person->isApproved($current_larp)). "</td></tr>\n";
                         echo "<tr><td>Betalat</td><td>" . showStatusIcon($person->hasPayed($current_larp));
                         if (!$person->hasPayed($current_larp)) {
-                            $registration = Registration::loadByIds($person->Id, $current_larp->Id);
+
                             $campaign = $current_larp->getCampaign();
                             echo "</td><td>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>";
                         }
