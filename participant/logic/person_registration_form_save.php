@@ -97,9 +97,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit;
 }
 
-function startsWithNumber($string) {
-    return strlen($string) > 0 && ctype_digit(substr($string, 0, 1));
-}
 
 function send_registration_mail(Registration $registration) {
     $person = $registration->getPerson();

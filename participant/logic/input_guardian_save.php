@@ -45,7 +45,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-function startsWithNumber($string) {
-    return strlen($string) > 0 && ctype_digit(substr($string, 0, 1));
-}
 
