@@ -21,7 +21,7 @@ class Registration extends BaseModel{
     public $IsOfficial = 0;
     public $NPCDesire;
     public $HousingRequestId;
-    public $Guardian;
+    public $GuardianId;
     public $NotComingReason;
     
     public static $orderListBy = 'RegisteredAt';
@@ -51,7 +51,7 @@ class Registration extends BaseModel{
         if (isset($arr['IsOfficial'])) $this->IsOfficial = $arr['IsOfficial'];
         if (isset($arr['NPCDesire'])) $this->NPCDesire = $arr['NPCDesire'];
         if (isset($arr['HousingRequestId'])) $this->HousingRequestId = $arr['HousingRequestId'];
-        if (isset($arr['Guardian'])) $this->Guardian = $arr['Guardian'];
+        if (isset($arr['GuardianId'])) $this->GuardianId = $arr['GuardianId'];
         if (isset($arr['NotComingReason'])) $this->NotComingReason = $arr['NotComingReason'];
         
     }
@@ -121,12 +121,12 @@ class Registration extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."registration SET LARPId=?, PersonId=?, Approved=?, 
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
-                RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, Guardian=?, NotComingReason=? WHERE Id = ?");
+                RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, NotComingReason=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, 
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded, 
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->Guardian, $this->NotComingReason, $this->Id))) {
+            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -144,11 +144,11 @@ class Registration extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."registration (LARPId, PersonId, Approved, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, ToBeRefunded, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId, Guardian, NotComingReason) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, GuardianId, NotComingReason) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded,
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->Guardian, $this->NotComingReason))) {
+            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -194,7 +194,7 @@ class Registration extends BaseModel{
     }
     
     public function getGuardian() {
-        return Person::loadById($this->Guardian);
+        return Person::loadById($this->GuardianId);
     }
     
     public function getLARP() {

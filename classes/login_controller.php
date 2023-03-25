@@ -56,12 +56,14 @@ class LoginController {
             exit();
         }
         
+
+        
         //Log in
         session_start();
         session_unset();
         
         
-        $_SESSION['loggedin'] = true;
+        $_SESSION['is_loggedin'] = true;
         $_SESSION['id'] = $user->Id;
         $isAdmin = $user->IsAdmin;
         

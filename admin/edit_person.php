@@ -62,7 +62,7 @@ include 'navigation_subpage.php';
 		    ?>
 			<tr><td valign="top" class="header">Ansvarig vuxen&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="GuardianInfo" placeholder="Ange namn eller personnummer på den som är ansvarig vuxen" 
-			value="<?php if (!empty($registration->Guardian)) echo $registration->getGuardian()->Name;?>" size="100" maxlength="250"></td></tr>
+			value="<?php if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name;?>" size="100" maxlength="250"></td></tr>
 		    
 		    <?php 
 		    }

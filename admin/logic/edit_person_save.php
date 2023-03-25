@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $guardian = Person::findGuardian($guardianInfo, $current_larp);
         
         if (!empty($guardian)) {
-            $registration->Guardian = $guardian->Id;
+            $registration->GuardianId = $guardian->Id;
         }
         $registration->update();
   

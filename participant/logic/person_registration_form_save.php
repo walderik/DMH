@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $guardian = Person::findGuardian($guardianInfo, $current_larp);
 
             if (!empty($guardian)) {
-                $registration->Guardian = $guardian->Id;
+                $registration->GuardianId = $guardian->Id;
             }
         }
 
@@ -84,8 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         send_registration_mail($registration);
         
 
-        if (!empty($registration->Guardian)) {           
-            $guardian = Person::loadById($registration->Guardian);
+        if (!empty($registration->GuardianId)) {           
+            $guardian = Person::loadById($registration->GuardianId);
             if ($guardian->UserId != $current_user->Id) {
 
                 BerghemMailer::send_guardian_mail($guardian, $person, $current_larp);

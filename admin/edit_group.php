@@ -141,7 +141,11 @@ include 'navigation_subpage.php';
 
 
             if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-                echo ", ansvarig vuxen är " . $group_member->getRegistration($current_larp)->Guardian;
+                echo ", ansvarig vuxen är ";
+                if (!empty($registration->GuardianId)) {
+                    $group_member->getRegistration($current_larp)->getGuardian()->Name;
+                }
+                
 		    }
 
          ?>

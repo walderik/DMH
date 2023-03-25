@@ -7,6 +7,7 @@ if (!isset($_GET['code']) || !isset($_GET['email'])) {
 
 $code = $_GET['code'];
 
+
 session_start();
 session_unset();
 

@@ -1,5 +1,7 @@
 <?php
-// We need to use sessions, so you should always start sessions using the below code.
+
+
+
 session_start();
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
 global $current_user, $current_larp, $root, $tbl_prefix;
@@ -12,7 +14,7 @@ include_once $root . '/includes/all_includes.php';
 
 
 // If the user is not logged in redirect to the login page...
-if (!isset($_SESSION['loggedin'])) {
+if (!isset($_SESSION['is_loggedin'])) {
     header('Location: ../index.php');
     exit;
 }

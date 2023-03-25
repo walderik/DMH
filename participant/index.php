@@ -82,7 +82,7 @@ include_once '../includes/error_handling.php';
                         $registration = Registration::loadByIds($person->Id, $current_larp->Id);
                         if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
                             echo "<tr><td>Ansvarig vuxen</td><td>";
-                            if (empty($registration->Guardian)) {
+                            if (empty($registration->GuardianId)) {
                                 echo showStatusIcon(false);
                                 echo "</td><td><a href='input_guardian.php?PersonId=$person->Id'>Ange ansvarig vuxen</a>";
                             }
