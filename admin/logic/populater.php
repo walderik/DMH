@@ -73,8 +73,8 @@ function createDMH2023() {
     $larp->EndDate = "2023-09-17 12:00";
     $larp->LatestRegistrationDate = "2023-07-15";
     
-    $larp->StartTimeLARPTime = "1867-09-15 18:00";
-    $larp->EndTimeLARPTime = "1867-09-17 12:00";
+    $larp->StartTimeLARPTime = "1868-09-15 18:00";
+    $larp->EndTimeLARPTime = "1868-09-17 12:00";
     
     $larp->CampaignId = $campaign->Id;
     $larp->create();
