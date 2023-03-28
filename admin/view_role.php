@@ -44,8 +44,9 @@ include 'navigation_subpage.php';
 		if ($role->hasImage()) {
 		    
 		    $image = Image::loadById($role->ImageId);
-		    echo "<td rowspan='20' valign='top'><img width='300' src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></td>";
+		    echo "<td rowspan='20' valign='top'><img width='300' src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+		    echo "</td>";
 		}
 		?>
 			

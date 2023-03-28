@@ -64,7 +64,7 @@ include 'navigation_subpage.php';
 		        
 		        $image = Image::loadById($group_member->ImageId);
 		        echo " <img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
-		        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+		        
 		    }
 		    
 		    echo "- " . 
@@ -75,6 +75,7 @@ include 'navigation_subpage.php';
 
             if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
                 echo ", ansvarig vuxen är ";
+                $registration = Registration::loadByIds($group_member->PersonId, $current_larp->Id);
                 if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name; else echo showStatusIcon(false);
 
  		    }
