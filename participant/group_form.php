@@ -109,7 +109,7 @@ include 'navigation.php';
 					     att <a href="../participants.php?id=<?php echo $current_larp->Id;?>" target="_blank">synas för alla</a>. 
 					     </div>
     			
-    			<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000" required><?php echo $group->DescriptionForOthers; ?></textarea>
+    			<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000"><?php echo $group->DescriptionForOthers; ?></textarea>
 			
 			 
 			</div>

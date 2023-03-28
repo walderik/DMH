@@ -315,6 +315,33 @@ class Role extends BaseModel{
             return $resultArray;
     }
     
+    public static function getAllUnregisteredRoles(LARP $larp) {
+        global $tbl_prefix;
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id NOT IN (SELECT RoleId FROM ".
+            $tbl_prefix."larp_role WHERE larpid=?) AND CampaignId = ? ORDER BY GroupId, Name;";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(array($larp->Id, $larp->CampaignId))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $resultArray[] = static::newFromArray($row);
+            }
+            $stmt = null;
+            return $resultArray;
+    }
     
     
     public static function getAllMainRolesInGroup(Group $group, LARP $larp) {

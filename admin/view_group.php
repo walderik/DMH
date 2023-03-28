@@ -75,14 +75,14 @@ include 'navigation_subpage.php';
 
             if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
                 echo ", ansvarig vuxen är ";
-                if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name; else echo showStatusIcon(false);?></td></tr>
+                if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name; else echo showStatusIcon(false);
+
  		    }
 
-		    ?>
-		    <a href="logic/remove_group_member.php?groupID=<?php echo $current_group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" 
-		    	onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
-		<?php 
 		    
+		    echo "</td></tr>";
+		    echo " <a href='logic/remove_group_member.php?groupID=$current_group->Id&roleID=$group_member->Id".
+		    	"onclick='return confirm(\"Är du säker på att du vill ta bort karaktären från gruppen?\");'><i class='fa-solid fa-trash-can'></i></a>";
 
             echo "<br>"; 
 		}

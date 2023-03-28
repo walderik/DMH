@@ -98,6 +98,7 @@ include_once '../includes/error_handling.php';
                 
 
 		</div>
+		<div class="content">
 			<?php 
 			$approval_count = count (Person::getAllToApprove($current_larp));
 			if ($approval_count>0) {?>
@@ -107,6 +108,12 @@ include_once '../includes/error_handling.php';
 			
 			<?php }?>
 		</div>
+		<div class="content">
+            <a href="not_registered_roles.php">Karaktärer som inte är anmälda (än) i år</a>
+		
+		</div>
+		
+		
 		<div class="content">
 		<a href="doh_ssn_check.php">DOH 2023 medlemskontroll.</a> Enbart för DOH's arrangörsgrupp
 		</div>

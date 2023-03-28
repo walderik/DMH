@@ -18,7 +18,7 @@ class User extends BaseModel{
     public $Blocked = 0;
     
 //     public static $tableName = 'user';
-    public static $orderListBy = 'Email';
+    public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
         $user = static::newWithDefault();
