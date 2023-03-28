@@ -47,7 +47,9 @@ class SelectionData extends BaseModel{
     }
     
     public static function allActive() {
-        global $tbl_prefix;
+        global $tbl_prefix;        
+        //TODO begränsa till kampanjen
+        
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray 
         # strtolower(static::class)
         $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE active = 1 ORDER BY SortOrder;");

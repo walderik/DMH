@@ -51,6 +51,9 @@ function getMessageText($code) {
         case "group_deleted":
             $output = "Gruppen har raderats.";
             break;
+        case "registration_done":
+            $output = "Anmälan har registrerats.";
+            exit;
         default:
             $output = "Okänt meddelande: ". $code;
     }
