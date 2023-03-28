@@ -106,7 +106,7 @@ include 'navigation.php';
 				
 			<div class="question">
 				<label for="RoleId">Karaktärer</label>&nbsp;<font style="color:red">*</font><br>
-				<div class="explanation">Vilka karaktärer vill du spela på lajvet? Markera checkboxen för varje karaktär du vill spela.<br>
+				<div class="explanation">Vilka karaktärer vill du spela på lajvet? Avmarkera checkboxen för de karaktärer som inte ska vara med.<br>
 				     En av dina karaktärer är din huvudkaraktär. Vi måste veta vilken.<br>
 				     Andra karaktärer är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
 				     <br>Och vilka intriger den karaktären vill ha<br>

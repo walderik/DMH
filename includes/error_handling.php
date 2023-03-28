@@ -100,6 +100,9 @@ function getErrorText($code) {
         case "no_role":
             $output = "Du måste registrera en karaktär först";
             break;
+        case "no_role_chosen":
+            $output = "Du måste välja minst en karaktär";
+            break;
         case "too_young_for_larp":
             $output = "Deltagaren är för ung för att få vara med på lajvet";
             break;

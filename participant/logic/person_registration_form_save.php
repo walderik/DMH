@@ -16,6 +16,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     
     if ($operation == 'insert') {
+        if (empty($_POST['roleId']) or count($_POST['roleId']) ==0) {
+            header('Location: ../index.php?error=no_role_chosen');
+            exit;
+        }
+
         if (isset($_POST['IsMainRole'])) $mainRole = $_POST['IsMainRole'];
         // Skapa en ny registrering
         $registration = Registration::newFromArray($_POST);
@@ -53,12 +58,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $registration->saveAllOfficialTypes($_POST);
         
-        $roleIdArr = $_POST['roleId'];
+
 
         
         if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
 
-
+        $roleIdArr = $_POST['roleId'];
 
         foreach ($roleIdArr as $roleId) {
             

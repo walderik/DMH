@@ -177,7 +177,10 @@ include 'navigation.php';
 			<div class="question">
 				<label for="GroupsId">Vilken grupp är karaktären med i?</label><br>
        			<div class="explanation">Finns inte din grupp med på anmälan ska du kontakta den som är ansvarig för din grupp och se till att den är anmäld innan du själv anmäler dig.    
-Är gruppen anmäld, men ändå inte syns här så måste du kontakta arrangörerna som får se till att den är valbar i listan.<br>Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i det <a href="group_form.php">här formuläret</a>.</div>
+Är gruppen anmäld, men ändå inte syns här så måste du kontakta arrangörerna som får se till att den är valbar i listan.<br>Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i det <a href="group_form.php">här formuläret</a>.
+<br><br>
+Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste</strong> då ändra den efter att gruppen är anmäld och innan du anmäler dig så att karaktären kommer med i gruppen. Ändra den gör du genom att du klickar på namnet på karaktären från huvudsidan.
+</div>
                 <?php selectionByArray('Group', Group::getRegistered($current_larp), false, false, $role->GroupId); ?>
             </div>
 				
