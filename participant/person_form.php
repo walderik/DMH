@@ -1,6 +1,7 @@
 <?php
     require 'header.php'; 
     $person = Person::newWithDefault();
+    $person->Email = $current_user->Email;
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $operation = "new";
@@ -9,7 +10,7 @@
         }
         if ($operation == 'new') {
         } elseif ($operation == 'update') {
-            $person = Person::loadById($_GET['id']);
+            $person = Person::loadById($_GET['id']);           
         } else {
         }
     }
@@ -68,7 +69,7 @@
 			<p>
 				<div class="question">
 					<label for="Name">För och efternamn</label>&nbsp;<font style="color:red">*</font>
-					<br> <input class="input_field" type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="25" required>
+					<br> <input class="input_field" type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="50" required>
 				</div>
 				<div class="question">
 					<label for="Email">E-post</label>&nbsp;<font style="color:red">*</font><br>

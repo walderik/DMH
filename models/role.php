@@ -147,6 +147,13 @@ class Role extends BaseModel{
         return LARP_Role::isRegistered($this->Id, $larp->Id);
         
     } 
+
+    public function userMayEdit(LARP $larp) {
+        return LARP_Role::userMayEdit($this->Id, $larp->Id);
+        
+    }
+    
+    
     
     public function hasIntrigue(LARP $larp) {
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);

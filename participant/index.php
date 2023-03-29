@@ -46,6 +46,13 @@ include_once '../includes/error_handling.php';
 			 	</ol>
 			 	Det går att hantera flera deltagare från ett konto, tex om ni är en familj.<br><br>
 			 	Till nästa lajv kommer alla registrerade deltagare, grupper och karaktärer att finnas kvar. Så då kan du bara kontrollera att allt ser rätt och sedan skicka in anmälan.
+			 	<br><br>
+			 	<strong>Symboler</strong><br>
+			 	<?php echo showStatusIcon(false); ?> - Något behöver göras<br>
+			 	<?php echo showStatusIcon(true); ?> - Allt klart på den här punkten<br>
+			 	<i class='fa-solid fa-eye'></i> - Visa<br>
+			 	<i class='fa-solid fa-pen'></i> - Ändra
+			 	
 			 </div>
 		</div>
 		<div class="content">
@@ -63,10 +70,10 @@ include_once '../includes/error_handling.php';
     		        echo "<div class='person'>\n";
     		        
     		        if ($person->isRegistered($current_larp)) {
-    		            echo "<a href='view_person.php?id=" . $person->Id . "'><h3>$person->Name&nbsp;</a></h3>\n";    		            
+    		            echo "<a href='view_person.php?id=" . $person->Id . "'><h3>$person->Name&nbsp;<i class='fa-solid fa-eye'></i></a></h3>\n";    		            
     		        }
     		        else {
-    		            echo "<a href='person_form.php?operation=update&id=" . $person->Id . "'><h3>$person->Name&nbsp;</a>";
+    		            echo "<a href='person_form.php?operation=update&id=" . $person->Id . "'><h3>$person->Name&nbsp;<i class='fa-solid fa-pen'></i></a>";
     		            if($person->isNeverRegistered() && (!isset($roles) or count($roles) == 0) && (!isset($groups) or count($groups) == 0)) {
     		                echo "&nbsp;<a href='logic/delete_person.php?id=" . $person->Id . "'><i class='fa-solid fa-trash' title='Ta bort deltagare'></i></a>";
     		            }
@@ -117,12 +124,12 @@ include_once '../includes/error_handling.php';
     		        }
     		        foreach ($groups as $group)  {
     		            if ($group->isRegistered($current_larp)) {
-    		                echo  "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
+    		                echo  "<a href='view_group.php?id=$group->Id'>$group->Name <i class='fa-solid fa-eye'></i></a>";
     		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		                
     		            }
     		            else {
-    		                echo "<a href='group_form.php?operation=update&id=$group->Id'>$group->Name</a>"; 
+    		                echo "<a href='group_form.php?operation=update&id=$group->Id'>$group->Name <i class='fa-solid fa-pen'></i></a>"; 
     		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		                
     		                 if($group->isNeverRegistered()) {
@@ -140,15 +147,15 @@ include_once '../includes/error_handling.php';
         		            $role_group = $role->getGroup();
         		            $role_group_name = " (Inte med i någon grupp)";
         		            if (isset($role_group) && $role->isRegistered($current_larp)) {
-        		                $role_group_name = " - <a href='view_group.php?id=$role_group->Id'>$role_group->Name</a>";
+        		                $role_group_name = " - <a href='view_group.php?id=$role_group->Id'>$role_group->Name <i class='fa-solid fa-eye'></i></a>";
         		            }
         		            elseif (isset($role_group)) {
         		                $role_group_name = " - $role_group->Name";
         		            }
         		            echo "<tr><td style='font-weight: normal; padding-right: 0px;'>";
 
-        		            if ($role->isRegistered($current_larp)) {
-        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name</a>";
+        		            if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
+        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name <i class='fa-solid fa-eye'></i></a>";
         		                if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
         		                
         		                echo "- $role->Profession $role_group_name</td>";
@@ -165,7 +172,7 @@ include_once '../includes/error_handling.php';
         		                }
         		            }
         		            else {
-        		                echo "<a href='role_form.php?operation=update&id=$role->Id'>$role->Name</a>";
+        		                echo "<a href='role_form.php?operation=update&id=$role->Id'>$role->Name <i class='fa-solid fa-pen'></i></a>";
         		                if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
         		                
         		                echo "- $role->Profession $role_group_name";

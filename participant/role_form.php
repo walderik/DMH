@@ -18,6 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['operation'])) {
         $operation = $_GET['operation'];
     }
+    else {
+
+    }
     if ($operation == 'new') {
     } elseif ($operation == 'update') {
         $role = Role::loadById($_GET['id']);
@@ -25,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-if ($role->isRegistered($current_larp)) {
+if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
     header('Location: view_role.php?id='.$role->Id);
     exit;
 }
