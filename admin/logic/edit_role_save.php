@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role->update();
     
     $larp_role->deleteAllIntrigueTypes();
-    $larp_role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+    if (isset($_POST['IntrigueTypeId'])) $larp_role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         
     if (isset($_POST['Referer']) && $_POST['Referer']!="") {
         header('Location: ' . $_POST['Referer']);

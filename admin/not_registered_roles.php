@@ -11,7 +11,7 @@ include 'navigation_subpage.php';
         
         <p>Om man lägger till en sidokaraktär härifrån kommer inga intrigtyper att väljas. Det får du redigera på rollen efteråt.<br>
         <br>Om man anmäler någon härifrån kommer de att välja det första alternativet på boende. Du får redigera det på personen. Och rollen blir som ovan.</p>
-
+<br><br><strong>OBS! Det tar tid. Vänta ett par sekunder efter att ni har klickat!</strong>
      		<?php 
     		$roles = Role::getAllUnregisteredRoles($current_larp);
     		if (empty($roles)) {

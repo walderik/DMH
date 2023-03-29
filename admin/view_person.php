@@ -79,8 +79,29 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><?php echo $registration->RefundDate;?></td></tr>
 			<?php  }?>
 		</table>		
+		<?php 
+    		        echo "<br>\n";
+    		        echo "<strong>Roller:</strong><br>\n";
+    		        $roles = $person->getRolesAtLarp($current_larp);
+    		        foreach($roles as $role) {
 
+		                $role_group = $role->getGroup();
+		                $role_group_name = "";
+		                if (isset($role_group)) {
+		                    $role_group_name = " - $role_group->Name";
+		                }
+		                echo $role->Name . " - " . $role->Profession . " " . $role_group_name;
+    		            if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
+    		              echo " Sidokaraktär";
+    		            }
+    		            echo "&nbsp;<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
+    		            echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
+		            
+    		            echo "<br>\n";
+    		            
+    		        }
 
+    		        ?>
 	</div>
 
 

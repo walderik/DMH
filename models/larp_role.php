@@ -11,7 +11,7 @@ class LARP_Role extends BaseModel{
     public $StartingMoney;
     public $EndingMoney;
     public $Result;
-    public $IsMainRole = false;
+    public $IsMainRole = 0;
 
     public static $orderListBy = 'RoleId';
     

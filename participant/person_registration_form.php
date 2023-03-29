@@ -77,7 +77,8 @@ include 'navigation.php';
 
 	<div class="content">
 		<h1>Anmälan av <?php echo $current_person->Name;?> till <?php echo $current_larp->Name;?></h1>
-		<form action="logic/person_registration_form_save.php" method="post"  onsubmit="return confirm('Är allt rätt inmatat? Om du fortsätter kommer du inte längre att kunna redigera deltagaren eller någon av de anmälda karaktärerna.');>
+		<form action="logic/person_registration_form_save.php" method="post"  
+		   onsubmit="return confirm('Är allt rätt inmatat? Om du fortsätter kommer du inte längre att kunna redigera deltagaren eller någon av de anmälda karaktärerna.')">
     		<input type="hidden" id="operation" name="operation" value="insert"> 
     		<input type="hidden" id="LARPId" name="LARPId" value="<?php echo $current_larp->Id ?>">
     		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $current_person->Id ?>">

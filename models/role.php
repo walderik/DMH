@@ -319,7 +319,7 @@ class Role extends BaseModel{
         global $tbl_prefix;
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id NOT IN (SELECT RoleId FROM ".
-            $tbl_prefix."larp_role WHERE larpid=?) AND CampaignId = ? ORDER BY GroupId, Name;";
+            $tbl_prefix."larp_role WHERE larpid=?) AND CampaignId = ? ORDER BY PersonId, Name;";
             $stmt = static::connectStatic()->prepare($sql);
             
             if (!$stmt->execute(array($larp->Id, $larp->CampaignId))) {

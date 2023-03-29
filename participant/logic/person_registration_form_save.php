@@ -11,7 +11,6 @@ if (!$current_larp->mayRegister()) {
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
     $operation = $_POST['operation'];
 
     
@@ -19,6 +18,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST['roleId']) or count($_POST['roleId']) ==0) {
             header('Location: ../index.php?error=no_role_chosen');
             exit;
+        }
+        
+        //Redan anmäld
+        if (!empty(Registration::loadByIds($_POST['PersonId'], $current_larp->Id))) {
+            header('Location: ../index.php');
+            exit; 
         }
 
         if (isset($_POST['IsMainRole'])) $mainRole = $_POST['IsMainRole'];
