@@ -32,6 +32,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($larp_role)) {
             $larp_role->UserMayEdit = 0;
             $larp_role->update();
+            
+            
+            //Sätt deltagaren till icke-godkänd
+            $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
+            if (!empty($registration)) {
+                $registration->Approved=null;
+                $registration->update();
+            }
+            
         }
     }
     
