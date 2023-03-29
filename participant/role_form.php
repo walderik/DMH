@@ -87,7 +87,7 @@ include 'navigation.php';
 
 			<div class="question">
 				<label for="Name">Karaktärens namn</label>&nbsp;<font style="color:red">*</font>
-				<br> <input class="input_field" type="text" id="Name" name="Name" value="<?php echo $role->Name; ?>" size="100" maxlength="20" required>
+				<br> <input class="input_field" type="text" id="Name" name="Name" value="<?php echo $role->Name; ?>" size="100" maxlength="40" required>
 			</div>
 			<div class="question">
 				<label for="Profession">Yrke</label>&nbsp;<font style="color:red">*</font><br>
