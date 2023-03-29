@@ -102,7 +102,7 @@ include_once '../includes/error_handling.php';
 			<?php 
 			$approval_count = count (Person::getAllToApprove($current_larp));
 			if ($approval_count>0) {?>
-			<div class="content">
+
 				<?php echo $approval_count; ?> deltagare väntar på <a href="persons_to_approve.php">godkännande</a>. 
 			
 			
@@ -113,7 +113,10 @@ include_once '../includes/error_handling.php';
 		
 		</div>
 		
-		
+		<div class="content">
+			Förväntade intäkter: <?php echo Registration::totalIncomeToBe($current_larp);?> SEK<br>
+		    Faktiskta intäkter: <?php echo Registration::totalIncomeToday($current_larp)?> SEK
+		</div>
 		<div class="content">
 		<a href="doh_ssn_check.php">DOH 2023 medlemskontroll.</a> Enbart för DOH's arrangörsgrupp
 		</div>
