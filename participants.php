@@ -28,9 +28,11 @@ if (is_null($larp)) {
 
 
 function print_role($role) {
-    
+    global $current_larp;
+    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
     echo "<li>\n";
     echo "<div class='name'>$role->Name</div>\n";
+    if($larp_role->IsMainRole == 0) echo "<div>Sidokaraktär</div>\n";
     echo "<div class='description'>$role->DescriptionForOthers</div>\n";
     if (isset($role->ImageId) && !is_null($role->ImageId)) {
         $image = Image::loadById($role->ImageId);
