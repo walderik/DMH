@@ -19,6 +19,7 @@
     		        echo "<tr>\n";
     		        echo "<td>" . $role->Name;
     		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
+    		        if ($role->userMayEdit($current_larp)) echo "<br>Deltagaren får ändra rollen " . showStatusIcon(false);
     		        echo "</td>\n";
     		        echo "<td>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";

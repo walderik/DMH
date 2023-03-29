@@ -31,8 +31,9 @@ include 'navigation_subpage.php';
     		        echo "<br>\n";
     		        echo "Roller:<br>\n";
     		        $roles = $person->getRolesAtLarp($current_larp);
+    		        $userMayEdit = false;
     		        foreach($roles as $role) {
-
+                        if ($role->userMayEdit($current_larp)) $userMayEdit = true;
 		                $role_group = $role->getGroup();
 		                $role_group_name = "";
 		                if (isset($role_group)) {
@@ -49,7 +50,12 @@ include 'navigation_subpage.php';
     		            
     		        }
     		        echo "<br>\n";
-    		        echo "<input type='submit' value='Godkänn'>";
+    		        if ($userMayEdit) {
+    		            echo "Deltagaren får ändra på minst en av rollerna och kan därför inte godkännas.";
+    		        }
+    		        else {
+    		          echo "<input type='submit' value='Godkänn'>";
+    		        }
     		        echo "</form>";
     		        echo "</div>";
     		    }
