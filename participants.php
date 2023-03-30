@@ -26,11 +26,77 @@ if (is_null($larp)) {
     exit;
 }
 
+//SESSION_START();
+
+//kolla bredd på användarens skärm för att bestämma antal kolumner med karaktärer
+
+// Check if the "mobile" word exists in User-Agent
+$isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
+
+if($isMob){
+    $columns=2;
+    $type="Mobile";
+    // echo 'Using Mobile Device...';
+}else{
+    
+    $columns=5;
+    $type="Computer";
+    // echo 'Using Desktop...';
+}
+
+
+
+
+
+
+
+
+
+
+
+$temp=0;
+/*$_SESSION['tempwidth'] ="<script>document.write(screen.width); </script>";
+ $width=intval($_SESSION['tempwidth']);
+ if($width<=700)
+ {
+ //$columns=2;
+ // echo "<script>window.location.replace('...'); </script>";   window.location.replace('...');
+ 
+ } else
+ {
+ //$columns=5;
+ $_SESSION['type']="computer";
+ 
+ }
+ 
+ //echo $width;
+ if(isset($_SESSION['type']))
+ {
+ $type=$_SESSION['type'];
+ //  echo $type;
+ if ($type=="mobile")
+ {
+ $columns=2;
+ } else
+ {
+ $columns=5;
+ }
+ }
+ 
+ session_destroy();*/
 
 function print_role($role) {
     global $current_larp;
+    global $type;
     $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
-    echo "<li>\n";
+    if($type=="Computer")
+    {
+        echo "<li style='display:table-cell; width:19%;'>\n";
+    } else
+    {
+        echo "<li style='display:table-cell; width:49%;'>\n";
+    }
+    
     echo "<div class='name'>$role->Name</div>\n";
     if($larp_role->IsMainRole == 0) echo "<div>Sidokaraktär</div>\n";
     echo "<div class='description'>$role->DescriptionForOthers</div>\n";
@@ -86,7 +152,6 @@ function print_role($role) {
 		    if ($group->DescriptionForOthers !="") {
 		        echo "<p>$group->DescriptionForOthers</p>\n";
 		    }
-		    
 
 
             echo "<div class='container'>\n";
@@ -94,16 +159,31 @@ function print_role($role) {
                 echo "Inga anmälda i gruppen än.";
             }
             else {
-                echo "<ul class='image-gallery'>\n";
+                echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
                 foreach ($roles as $role) {
                     print_role($role);
+                   $temp++;
+                    if($temp==$columns)
+                    {
+                        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+                        $temp=0;
+                    } 
+                    
                 }
+                $temp=0;
                 foreach ($non_main_roles as $role) {
                     print_role($role);
+                    $temp++;
+                    if($temp==$columns)
+                    {
+                        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+                        $temp=0;
+                    }
+                
                 }
+                $temp=0;
                 echo "</ul>\n";
             }
-            
             echo "</DIV>\n";
             
             
@@ -114,7 +194,7 @@ function print_role($role) {
 		/* Karaktärer utan grupp */	
 		$roles = Role::getAllMainRolesWithoutGroup($larp);
 		$non_main_roles = Role::getAllNonMainRolesWithoutGroup($larp);
-		
+
 		if ((!empty($roles) && count($roles)!=0) or (!empty($non_main_roles) && count($non_main_roles)!=0)) {
 		
 		  echo "<h2>Roller utan grupp</h2>\n";
@@ -125,13 +205,28 @@ function print_role($role) {
     		    echo "Inga anmälda i gruppen än.";
     		}
     		else {
-    		    echo "<ul class='image-gallery'>\n";
+    		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
     		    foreach ($roles as $role) {
     		        print_role($role);
+    		        $temp++;
+                    if($temp==$columns)
+                    {
+                        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+                        $temp=0;
+                    }
     		    }
+    		    echo "</ul><ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
+    		    $temp=0;
     		    foreach ($non_main_roles as $role) {
     		        print_role($role);
+    		        $temp++;
+                    if($temp==$columns)
+                    {
+                        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+                        $temp=0;
+                    }
     		    }
+    		    $temp=0;
     		    echo "</ul>\n";
     		}
     		
