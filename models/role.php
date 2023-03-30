@@ -265,6 +265,40 @@ class Role extends BaseModel{
         return $resultArray;
     }
    
+    
+    
+    # Hämta huvudrollen för en person har anmält till ett lajv
+    public static function getMainRoleForPerson(Person $person, LARP $larp) {
+        global $tbl_prefix;
+        if (is_null($person) || is_null($larp)) return Array();
+        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".
+            $tbl_prefix."role`.PersonId = ? AND ".
+            "`".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".
+            $tbl_prefix."larp_role.IsMainRole = 1 AND ".
+            $tbl_prefix."larp_role.LarpId=?;";
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(array($person->Id, $larp->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultArray = array();
+            foreach ($rows as $row) {
+                $resultArray[] = static::newFromArray($row);
+            }
+            $stmt = null;
+            return $resultArray[0];
+    }
+    
+    
     # Hämta anmälda roller i en grupp
     public static function getRegisteredRolesInGroup($group, $larp) {
         global $tbl_prefix;

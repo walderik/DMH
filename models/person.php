@@ -62,7 +62,9 @@ class Person extends BaseModel{
         Global $current_user;
         
         $person = new self();
-        $person->UserId = $current_user->Id;
+        if (isset($current_user)) {
+            $person->UserId = $current_user->Id;
+        }
         return $person;
     }
     
@@ -442,6 +444,10 @@ class Person extends BaseModel{
     public function getRolesAtLarp($larp) {
         return Role::getRegistredRolesForPerson($this, $larp);
     }
+
+    public function getMainRole($larp) {
+        return Role::getMainRoleForPerson($this, $larp);
+    }
     
     
     public function getGroups() {
@@ -685,6 +691,40 @@ class Person extends BaseModel{
     }
 
 
+    public static function getAllOfficialsByType(OfficialType $officialtype, LARP $larp) {
+        global $tbl_prefix;
+        
+        
+        
+        $sql="select * from ".$tbl_prefix."person WHERE id IN ".
+            "(SELECT PersonId from ".$tbl_prefix."registration, ".$tbl_prefix."officialtype_person ".
+            "WHERE IsOfficial=1 and LARPId=? AND ".$tbl_prefix."registration.Id = ".$tbl_prefix."officialtype_person.RegistrationId ".
+            "AND OfficialTypeId = ?) ".
+            "ORDER BY ".static::$orderListBy.";";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($larp->Id, $officialtype->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+        
+    }
+    
+    
     public static function getAllWhoWantToBeOffical(LARP $larp) {
         global $tbl_prefix;
         
