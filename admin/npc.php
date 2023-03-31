@@ -13,6 +13,8 @@ include 'navigation_subpage.php';
             <div>
             <h2>Alla tilldelade NPC'er</h2>
             <?php 
+            $persons=Person::getAllInterestedNPC($current_larp);
+            
             
             $npcs=NPC::getAllAssigned($current_larp);
             foreach($npcs as $npc) {
@@ -20,7 +22,6 @@ include 'navigation_subpage.php';
                 $registration = $person->getRegistration($current_larp);
                 echo "$npc->Name: $npc->time<br>$npc->Descrption<br>"; 
                 echo "Spelas av $person->Name: $registration->NPCDesire<br><br>";
-                
             }
             
             ?>
@@ -32,8 +33,15 @@ include 'navigation_subpage.php';
             
             $npcs=NPC::getAllUnassigned($current_larp);
             foreach($npcs as $npc) {
-                echo "$npc->Name: $npc->Time<br>$npc->Description<br><br>"; 
+                echo "$npc->Name: $npc->Time<br>$npc->Description";
+                echo "<form action='logic/assign_npc' method='post'><input type='hidden' name='Id' value=$npc->Id>";
+                echo selectionDropDownByArray("Person", $persons);
+                echo "<input type ='button' value='Tilldela'>";
+                echo "</form>";
+                echo "<br><br>"; 
             }
+            
+            
             
             ?>
             </div>
@@ -41,7 +49,7 @@ include 'navigation_subpage.php';
             <div>
             <h2>Personer som vill vara NPC</h2>
             <?php 
-            $persons=Person::getAllInterestedNPC($current_larp);
+
             foreach($persons as $person) {
                 $registration = $person->getRegistration($current_larp);
             
