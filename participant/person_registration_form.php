@@ -159,7 +159,10 @@ include 'navigation.php';
     			<label for="NPCDesire">NPC</label>
     			<div class="explanation">Kan du tänka dig att ställa upp som NPC?<br>
 					NPC = Non Player Character, en roll som styrs helt/delvis av arrangörsgruppen och spelas en kortare stund under lajvet för att skapa scener/händelser.<br>
-					Vi kommer återkomma till de som är intresserade, men skriv gärna en rad om du redan nu har några idéer.
+					Vi kommer återkomma till de som är intresserade, men skriv gärna en rad om du redan nu har några idéer.<br>
+					<br>
+					Om du inte är intresserad kan du lämna fältet tomt.
+	    
 				</div>
                 <input class="input_field" type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="200">
             </div>

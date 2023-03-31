@@ -162,7 +162,8 @@
 			
 			<div class="question">
 				<label for="OtherInformation">Övrig information</label><br>
-				<div class="explanation">Är det något annat kring din off-person arrangörerna bör veta? Tex andra allergier eller sjukdomar, eller bra kunskaper tex sjukvårdare.</div>
+				<div class="explanation">Är det något annat kring din off-person arrangörerna bör veta? Tex andra allergier eller sjukdomar, eller bra kunskaper tex sjukvårdare.<br><br>
+				Om du inte har något, skriv inget.</div>
 				<textarea class="input_field" id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $person->OtherInformation; ?></textarea>
 			
 			 
