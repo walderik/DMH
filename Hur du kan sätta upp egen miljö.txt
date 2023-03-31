@@ -1,0 +1,17 @@
+
+Hur du sätter upp en egen utvecklingsmiljö för Omnes Mundos
+===========================================================
+
+1. Registrera dig på GitHub:
+https://github.com/signup?source=login
+
+2. Installera XAMPP som innehåller en webserver, en MySql-databas och en del annat, men det är det du behöver:
+https://www.apachefriends.org/index.html
+
+3. Installera GitHub Desktop:
+https://desktop.github.com/
+
+4. Starta GitHub Desktop
+
+5. Clone existerande kod i GitHub Desktop:
+File -> Clone repository. 
