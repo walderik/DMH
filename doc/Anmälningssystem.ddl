@@ -433,3 +433,29 @@ CREATE TABLE `regsys_officialtype_person` (
   FOREIGN KEY (`OfficialTypeId`) REFERENCES `regsys_officialtype`(`Id`)
 );
 
+CREATE TABLE `regsys_NPC_Group` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` varchar(255),
+  `Time` varchar(255),
+  `LARPId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`)
+);
+
+CREATE TABLE `regsys_NPC` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` varchar(255),
+  `Time` varchar(255),
+  `PersonId` int,
+  `NPCGroupId` int,
+  `LARPId` int,
+  `ImageId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`PersonId`) REFERENCES `regsys_person`(`Id`),
+  FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`),
+  FOREIGN KEY (`ImageId`) REFERENCES `regsys_image`(`Id`),
+  FOREIGN KEY (`NPCGroupId`) REFERENCES `regsys_NPC_Group`(`Id`)
+);
+
