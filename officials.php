@@ -97,10 +97,10 @@ function print_role($role) {
         echo "<li style='display:table-cell; width:49%;'>\n";
     }
     
-    echo "<div class='name'>$role->Name</div>\n";
+    echo "<div class='name'>".$role->getPerson()->Name."</div>\n";
     
     
-    echo "<div>Spelas av ".$role->getPerson()->Name."</div>";
+    echo "<div>Spelar ".$role->Name."</div>";
     if (isset($role->ImageId) && !is_null($role->ImageId)) {
         $image = Image::loadById($role->ImageId);
         if (!is_null($image)) {
