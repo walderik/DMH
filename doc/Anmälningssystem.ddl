@@ -1,95 +1,435 @@
-CREATE TABLE Person (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, SocialSecurityNumber varchar(255) NOT NULL, PhoneNumber varchar(255), EmergencyContact text, Email varchar(255) NOT NULL, FoodAllergiesOther text, TypeOfLarperComment text, OtherInformation text, ExperienceId int(11) NOT NULL, TypeOfFoodId int(11) NOT NULL, LarperTypeId int(11) NOT NULL, UserId int(11) NOT NULL, NotAcceptableIntrigues varchar(255), HouseId int(11), PRIMARY KEY (Id));
-CREATE TABLE Role (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, IsNPC tinyint(1) NOT NULL, Profession varchar(255) NOT NULL, Description mediumtext NOT NULL, PreviousLarps mediumtext, ReasonForBeingInSlowRiver text NOT NULL, Religion varchar(255), DarkSecret text NOT NULL, DarkSecretIntrigueIdeas varchar(255) NOT NULL, IntrigueSuggestions text, NotAcceptableIntrigues varchar(255), OtherInformation text, PersonId int(11) NOT NULL, GroupId int(11), WealthId int(11) NOT NULL, PlaceOfResidenceId int(11) NOT NULL, Birthplace varchar(255) NOT NULL, CharactersWithRelations text, CampaignId int(11) NOT NULL, ImageId int(11), PRIMARY KEY (Id));
-CREATE TABLE `Group` (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Friends text, Description text NOT NULL, Enemies text, IntrigueIdeas text, OtherInformation text, WealthId int(11) NOT NULL, PlaceOfResidenceId int(11) NOT NULL, PersonId int(11) NOT NULL, CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE LARP (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, TagLine varchar(255), StartDate datetime NOT NULL, EndDate datetime NOT NULL, MaxParticipants int(11) NOT NULL, LatestRegistrationDate date, StartTimeLARPTime datetime NULL, EndTimeLARPTime datetime NULL, DisplayIntrigues tinyint(1) NOT NULL, CampaignId int(11) NOT NULL, RegistrationOpen tinyint(1), PRIMARY KEY (Id));
-CREATE TABLE House (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, NumberOfBeds varchar(255) NOT NULL, PositionInVillage text NOT NULL, Description text NOT NULL, ImageId int(11), PRIMARY KEY (Id));
-CREATE TABLE LARP_Role (LARPId int(11) NOT NULL, RoleId int(11) NOT NULL, Intrigue text, WhatHappened text, WhatHappendToOthers text, StartingMoney int(11), EndingMoney int(11), Result text, IsMainRole tinyint(1) NOT NULL, PRIMARY KEY (LARPId, RoleId));
-CREATE TABLE LarperType (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE IntrigueType (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(111) DEFAULT 1 NOT NULL, SortOrder int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE HouseCaretaker (AdditionalPlayers int(10) NOT NULL, LARPId int(11) NOT NULL, HouseId int(11) NOT NULL, PersonId int(11) NOT NULL);
-CREATE TABLE Experience (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE HousingRequest (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE TypeOfFood (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE Wealth (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE Telegram (Id int(11) NOT NULL AUTO_INCREMENT, Deliverytime datetime NOT NULL, Sender varchar(255) NOT NULL, SenderCity varchar(255) NOT NULL, Reciever varchar(255) NOT NULL, RecieverCity varchar(255) NOT NULL, Message text NOT NULL, OrganizerNotes text, LARPId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE PlaceOfResidence (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE TitleDeed (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Location varchar(255) NOT NULL, Tradeable tinyint(1), IsTradingPost tinyint(1) NOT NULL, CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE TitleDeed_Role (TitleDeedId int(11) NOT NULL, RoleId int(11) NOT NULL, PRIMARY KEY (TitleDeedId, RoleId));
-CREATE TABLE Resource (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255), UnitSingular varchar(255), UnitPlural varchar(255), PriceSlowRiver int(11), PriceJunkCity int(11), IsRare tinyint(1) NOT NULL, CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE Resource_TitleDeed (ResourceId int(11) NOT NULL, TitleDeedId int(11) NOT NULL, Quantity int(11), QuantityForUpgrade int(11), PRIMARY KEY (ResourceId, TitleDeedId));
-CREATE TABLE Housing (LARPId int(11) NOT NULL, PersonId int(11) NOT NULL, HouseId int(11) NOT NULL);
-CREATE TABLE OfficialType (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text NOT NULL, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE OfficialType_Person (OfficialTypeId int(11) NOT NULL, RegistrationId int(11) NOT NULL, PRIMARY KEY (OfficialTypeId, RegistrationId));
-CREATE TABLE Registration (Id int(11) NOT NULL AUTO_INCREMENT, LARPId int(11) NOT NULL, PersonId int(11) NOT NULL, Approved date, RegisteredAt datetime NULL, PaymentReference varchar(255), AmountToPay int(11), AmountPayed int(11), Payed date, IsMember tinyint(1), MembershipCheckedAt datetime NULL, NotComing tinyint(1), ToBeRefunded int(11), RefundDate date, IsOfficial tinyint(1) NOT NULL, NPCDesire varchar(255), HousingRequestId int(11) NOT NULL, Guardian varchar(255), NotComingReason varchar(255), PRIMARY KEY (Id));
-CREATE TABLE TitleDeedResult (TitleDeedId int(11) NOT NULL, LARPId int(11) NOT NULL, Result text);
-CREATE TABLE LARP_Group (GroupId int(11) NOT NULL, LARPId int(11) NOT NULL, WantIntrigue tinyint(1) NOT NULL, Intrigue text, RemainingIntrigues text, ApproximateNumberOfMembers int(10) NOT NULL, HousingRequestId int(11) NOT NULL, NeedFireplace tinyint(1) NOT NULL, PRIMARY KEY (GroupId, LARPId));
-CREATE TABLE NormalAllergyType (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text, Active tinyint(1) DEFAULT 1 NOT NULL, SortOrder int(11), CampaignId int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE NormalAllergyType_Person (NormalAllergyTypeId int(11) NOT NULL, PersonId int(11) NOT NULL, PRIMARY KEY (NormalAllergyTypeId, PersonId));
-CREATE TABLE `User` (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Email varchar(255) NOT NULL, Password varchar(255) NOT NULL, IsAdmin tinyint(1) DEFAULT 0 NOT NULL, ActivationCode varchar(255), EmailChangeCode varchar(255), Blocked tinyint(1) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE IntrigueType_LARP_Group (LARP_GroupGroupId int(11) NOT NULL, LARP_GroupLARPId int(11) NOT NULL, IntrigueTypeId int(11) NOT NULL, PRIMARY KEY (LARP_GroupGroupId, LARP_GroupLARPId, IntrigueTypeId));
-CREATE TABLE IntrigueType_LARP_Role (IntrigueTypeId int(11) NOT NULL, LARP_RoleLARPid int(11) NOT NULL, LARP_RoleRoleId int(11) NOT NULL, PRIMARY KEY (IntrigueTypeId, LARP_RoleLARPid, LARP_RoleRoleId));
-CREATE TABLE Prop (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Description text, StorageLocation varchar(255), GroupId int(11), RoleId int(11), CampaignId int(11) NOT NULL, ImageId int(11), PRIMARY KEY (Id));
-CREATE TABLE PaymentInformation (Id int(11) NOT NULL AUTO_INCREMENT, LARPId int(11) NOT NULL, FromDate date NOT NULL, ToDate date NOT NULL, FromAge int(11) NOT NULL, ToAge int(11) NOT NULL, Cost int(11) NOT NULL, PRIMARY KEY (Id));
-CREATE TABLE Campaign (Id int(11) NOT NULL AUTO_INCREMENT, Name varchar(255) NOT NULL, Abbreviation varchar(255) NOT NULL, Description varchar(255), Icon varchar(255) NOT NULL, Homepage varchar(255) NOT NULL, Email varchar(255) NOT NULL, Bankaccount varchar(255) NOT NULL, MinimumAge int(11), MinimumAgeWithoutGuardian int(11), PRIMARY KEY (Id));
-CREATE TABLE Image (Id int(11) NOT NULL AUTO_INCREMENT, file_name varchar(255) NOT NULL, file_mime varchar(255) NOT NULL, file_data longblob NOT NULL, PRIMARY KEY (Id));
-ALTER TABLE Role ADD CONSTRAINT IsPlayedBy FOREIGN KEY (PersonId) REFERENCES Person (Id);
-ALTER TABLE LARP_Role ADD CONSTRAINT FKLARP_Role146219 FOREIGN KEY (LARPId) REFERENCES LARP (Id);
-ALTER TABLE LARP_Role ADD CONSTRAINT FKLARP_Role421832 FOREIGN KEY (RoleId) REFERENCES Role (Id);
-ALTER TABLE HouseCaretaker ADD CONSTRAINT FKHouseCaret167131 FOREIGN KEY (HouseId) REFERENCES House (Id);
-ALTER TABLE HouseCaretaker ADD CONSTRAINT FKHouseCaret557191 FOREIGN KEY (LARPId) REFERENCES LARP (Id);
-ALTER TABLE HouseCaretaker ADD CONSTRAINT FKHouseCaret326645 FOREIGN KEY (PersonId) REFERENCES Person (Id);
-ALTER TABLE Person ADD CONSTRAINT FKPerson256526 FOREIGN KEY (ExperienceId) REFERENCES Experience (Id);
-ALTER TABLE Person ADD CONSTRAINT FKPerson458285 FOREIGN KEY (TypeOfFoodId) REFERENCES TypeOfFood (Id);
-ALTER TABLE Role ADD CONSTRAINT FKRole127269 FOREIGN KEY (WealthId) REFERENCES Wealth (Id);
-ALTER TABLE `Group` ADD CONSTRAINT FKGroup650928 FOREIGN KEY (WealthId) REFERENCES Wealth (Id);
-ALTER TABLE Role ADD CONSTRAINT FKRole409701 FOREIGN KEY (PlaceOfResidenceId) REFERENCES PlaceOfResidence (Id);
-ALTER TABLE `Group` ADD CONSTRAINT FKGroup886041 FOREIGN KEY (PlaceOfResidenceId) REFERENCES PlaceOfResidence (Id);
-ALTER TABLE TitleDeed_Role ADD CONSTRAINT FKTitleDeed_235065 FOREIGN KEY (TitleDeedId) REFERENCES TitleDeed (Id);
-ALTER TABLE TitleDeed_Role ADD CONSTRAINT FKTitleDeed_784593 FOREIGN KEY (RoleId) REFERENCES Role (Id);
-ALTER TABLE Resource_TitleDeed ADD CONSTRAINT FKResource_T569064 FOREIGN KEY (ResourceId) REFERENCES Resource (Id);
-ALTER TABLE Resource_TitleDeed ADD CONSTRAINT FKResource_T990336 FOREIGN KEY (TitleDeedId) REFERENCES TitleDeed (Id);
-ALTER TABLE Housing ADD CONSTRAINT FKHousing905119 FOREIGN KEY (LARPId) REFERENCES LARP (Id);
-ALTER TABLE Housing ADD CONSTRAINT FKHousing135666 FOREIGN KEY (PersonId) REFERENCES Person (Id);
-ALTER TABLE Housing ADD CONSTRAINT FKHousing295180 FOREIGN KEY (HouseId) REFERENCES House (Id);
-ALTER TABLE OfficialType_Person ADD CONSTRAINT FKOfficialTy968435 FOREIGN KEY (OfficialTypeId) REFERENCES OfficialType (Id);
-ALTER TABLE Registration ADD CONSTRAINT FKRegistrati709651 FOREIGN KEY (LARPId) REFERENCES LARP (Id);
-ALTER TABLE Registration ADD CONSTRAINT FKRegistrati940197 FOREIGN KEY (PersonId) REFERENCES Person (Id);
-ALTER TABLE Person ADD CONSTRAINT FKPerson858970 FOREIGN KEY (LarperTypeId) REFERENCES LarperType (Id);
-ALTER TABLE TitleDeedResult ADD CONSTRAINT FKTitleDeedR124770 FOREIGN KEY (TitleDeedId) REFERENCES TitleDeed (Id);
-ALTER TABLE TitleDeedResult ADD CONSTRAINT FKTitleDeedR868815 FOREIGN KEY (LARPId) REFERENCES LARP (Id);
-ALTER TABLE LARP_Group ADD CONSTRAINT FKLARP_Group836318 FOREIGN KEY (GroupId) REFERENCES `Group` (Id);
-ALTER TABLE LARP_Group ADD CONSTRAINT FKLARP_Group374108 FOREIGN KEY (LARPId) REFERENCES LARP (Id);
-ALTER TABLE NormalAllergyType_Person ADD CONSTRAINT FKNormalAlle861454 FOREIGN KEY (NormalAllergyTypeId) REFERENCES NormalAllergyType (Id);
-ALTER TABLE NormalAllergyType_Person ADD CONSTRAINT FKNormalAlle960015 FOREIGN KEY (PersonId) REFERENCES Person (Id);
-ALTER TABLE LARP_Group ADD CONSTRAINT FKLARP_Group496361 FOREIGN KEY (HousingRequestId) REFERENCES HousingRequest (Id);
-ALTER TABLE Registration ADD CONSTRAINT FKRegistrati831904 FOREIGN KEY (HousingRequestId) REFERENCES HousingRequest (Id);
-ALTER TABLE Telegram ADD CONSTRAINT FKTelegram875373 FOREIGN KEY (LARPId) REFERENCES LARP (Id);
-ALTER TABLE Person ADD CONSTRAINT FKPerson603198 FOREIGN KEY (UserId) REFERENCES `User` (Id);
-ALTER TABLE `Group` ADD CONSTRAINT FKGroup964147 FOREIGN KEY (PersonId) REFERENCES Person (Id);
-ALTER TABLE OfficialType_Person ADD CONSTRAINT FKOfficialTy127443 FOREIGN KEY (RegistrationId) REFERENCES Registration (Id);
-ALTER TABLE IntrigueType_LARP_Group ADD CONSTRAINT FKIntrigueTy460353 FOREIGN KEY (LARP_GroupGroupId, LARP_GroupLARPId) REFERENCES LARP_Group (GroupId, LARPId);
-ALTER TABLE IntrigueType_LARP_Group ADD CONSTRAINT FKIntrigueTy716976 FOREIGN KEY (IntrigueTypeId) REFERENCES IntrigueType (Id);
-ALTER TABLE IntrigueType_LARP_Role ADD CONSTRAINT FKIntrigueTy819563 FOREIGN KEY (IntrigueTypeId) REFERENCES IntrigueType (Id);
-ALTER TABLE Prop ADD CONSTRAINT FKProp658852 FOREIGN KEY (GroupId) REFERENCES `Group` (Id);
-ALTER TABLE Prop ADD CONSTRAINT FKProp499335 FOREIGN KEY (RoleId) REFERENCES Role (Id);
-ALTER TABLE Role ADD CONSTRAINT `Ingår i` FOREIGN KEY (GroupId) REFERENCES `Group` (Id);
-ALTER TABLE Person ADD CONSTRAINT FKPerson239050 FOREIGN KEY (HouseId) REFERENCES House (Id);
-ALTER TABLE PaymentInformation ADD CONSTRAINT FKPaymentInf462816 FOREIGN KEY (LARPId) REFERENCES LARP (Id);
-ALTER TABLE LARP ADD CONSTRAINT FKLARP267043 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE Prop ADD CONSTRAINT FKProp434227 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE TitleDeed ADD CONSTRAINT FKTitleDeed671521 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE Resource ADD CONSTRAINT FKResource516999 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE `Group` ADD CONSTRAINT FKGroup14482 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE Role ADD CONSTRAINT FKRole490822 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE Wealth ADD CONSTRAINT FKWealth22193 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE PlaceOfResidence ADD CONSTRAINT FKPlaceOfRes206849 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE IntrigueType ADD CONSTRAINT FKIntrigueTy623945 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE OfficialType ADD CONSTRAINT FKOfficialTy15169 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE LarperType ADD CONSTRAINT FKLarperType83591 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE HousingRequest ADD CONSTRAINT FKHousingReq101250 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE Experience ADD CONSTRAINT FKExperience134107 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE TypeOfFood ADD CONSTRAINT FKTypeOfFood933238 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE NormalAllergyType ADD CONSTRAINT FKNormalAlle534322 FOREIGN KEY (CampaignId) REFERENCES Campaign (Id);
-ALTER TABLE Role ADD CONSTRAINT FKRole65667 FOREIGN KEY (ImageId) REFERENCES Image (Id);
-ALTER TABLE Prop ADD CONSTRAINT FKProp122262 FOREIGN KEY (ImageId) REFERENCES Image (Id);
-ALTER TABLE House ADD CONSTRAINT FKHouse702165 FOREIGN KEY (ImageId) REFERENCES Image (Id);
+CREATE TABLE `regsys_campaign` (
+  `Id` int,
+  `Name` varchar(255),
+  `Abbreviation` varchar(255),
+  `Description` varchar(255),
+  `Icon` varchar(255),
+  `Homepage` varchar(255),
+  `Email` varchar(255),
+  `Bankaccount` varchar(255),
+  `MinimumAge` int,
+  `MinimumAgeWithoutGuardian` int,
+  PRIMARY KEY (`Id`)
+);
+
+CREATE TABLE `regsys_intriguetype` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_intriguetype_larp_role` (
+  `IntrigueTypeId` int,
+  `LARP_RoleLARPid` int,
+  `LARP_RoleRoleId` int,
+  PRIMARY KEY (`IntrigueTypeId`, `LARP_RoleLARPid`, `LARP_RoleRoleId`),
+  FOREIGN KEY (`IntrigueTypeId`) REFERENCES `regsys_intriguetype`(`Id`)
+);
+
+CREATE TABLE `regsys_officialtype` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_image` (
+  `Id` int,
+  `file_name` varchar(255),
+  `file_mime` varchar(255),
+  `file_data` longblob,
+  `Photographer` varchar(255),
+  PRIMARY KEY (`Id`)
+);
+
+CREATE TABLE `regsys_placeofresidence` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_wealth` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_typeoffood` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_experience` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_house` (
+  `Id` int,
+  `Name` varchar(255),
+  `NumberOfBeds` varchar(255),
+  `PositionInVillage` text(65535),
+  `Description` text(65535),
+  `ImageId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`ImageId`) REFERENCES `regsys_image`(`Id`)
+);
+
+CREATE TABLE `regsys_larpertype` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_user` (
+  `Id` int,
+  `Name` varchar(255),
+  `Email` varchar(255),
+  `Password` varchar(255),
+  `IsAdmin` tinyint,
+  `ActivationCode` varchar(255),
+  `EmailChangeCode` varchar(255),
+  `Blocked` tinyint,
+  PRIMARY KEY (`Id`)
+);
+
+CREATE TABLE `regsys_person` (
+  `Id` int,
+  `Name` varchar(255),
+  `SocialSecurityNumber` varchar(255),
+  `PhoneNumber` varchar(255),
+  `EmergencyContact` text(65535),
+  `Email` varchar(255),
+  `FoodAllergiesOther` text(65535),
+  `TypeOfLarperComment` text(65535),
+  `OtherInformation` text(65535),
+  `ExperienceId` int,
+  `TypeOfFoodId` int,
+  `LarperTypeId` int,
+  `UserId` int,
+  `NotAcceptableIntrigues` varchar(255),
+  `HouseId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`TypeOfFoodId`) REFERENCES `regsys_typeoffood`(`Id`),
+  FOREIGN KEY (`ExperienceId`) REFERENCES `regsys_experience`(`Id`),
+  FOREIGN KEY (`HouseId`) REFERENCES `regsys_house`(`Id`),
+  FOREIGN KEY (`LarperTypeId`) REFERENCES `regsys_larpertype`(`Id`),
+  FOREIGN KEY (`UserId`) REFERENCES `regsys_user`(`Id`)
+);
+
+CREATE TABLE `regsys_group` (
+  `Id` int,
+  `Name` varchar(255),
+  `Friends` text(65535),
+  `Description` text(65535),
+  `DescriptionForOthers` mediumtext,
+  `Enemies` text(65535),
+  `IntrigueIdeas` text(65535),
+  `OtherInformation` text(65535),
+  `WealthId` int,
+  `PlaceOfResidenceId` int,
+  `PersonId` int,
+  `CampaignId` int,
+  `IsDead` tinyint,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`PlaceOfResidenceId`) REFERENCES `regsys_placeofresidence`(`Id`),
+  FOREIGN KEY (`WealthId`) REFERENCES `regsys_wealth`(`Id`),
+  FOREIGN KEY (`PersonId`) REFERENCES `regsys_person`(`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_housingrequest` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_larp` (
+  `Id` int,
+  `Name` varchar(255),
+  `TagLine` varchar(255),
+  `StartDate` datetime,
+  `EndDate` datetime,
+  `MaxParticipants` int,
+  `LatestRegistrationDate` date,
+  `StartTimeLARPTime` datetime,
+  `EndTimeLARPTime` datetime,
+  `DisplayIntrigues` tinyint,
+  `CampaignId` int,
+  `RegistrationOpen` tinyint,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_larp_group` (
+  `GroupId` int,
+  `LARPId` int,
+  `WantIntrigue` tinyint,
+  `Intrigue` text(65535),
+  `RemainingIntrigues` text(65535),
+  `ApproximateNumberOfMembers` int,
+  `HousingRequestId` int,
+  `NeedFireplace` tinyint,
+  PRIMARY KEY (`GroupId`, `LARPId`),
+  FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`),
+  FOREIGN KEY (`GroupId`) REFERENCES `regsys_group`(`Id`),
+  FOREIGN KEY (`HousingRequestId`) REFERENCES `regsys_housingrequest`(`Id`)
+);
+
+CREATE TABLE `regsys_normalallergytype` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_normalallergytype_person` (
+  `NormalAllergyTypeId` int,
+  `PersonId` int,
+  PRIMARY KEY (`NormalAllergyTypeId`, `PersonId`),
+  FOREIGN KEY (`PersonId`) REFERENCES `regsys_person`(`Id`),
+  FOREIGN KEY (`NormalAllergyTypeId`) REFERENCES `regsys_normalallergytype`(`Id`)
+);
+
+CREATE TABLE `regsys_titledeed` (
+  `Id` int,
+  `Name` varchar(255),
+  `Location` varchar(255),
+  `Tradeable` tinyint,
+  `IsTradingPost` tinyint,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_resource` (
+  `Id` int,
+  `Name` varchar(255),
+  `UnitSingular` varchar(255),
+  `UnitPlural` varchar(255),
+  `PriceSlowRiver` int,
+  `PriceJunkCity` int,
+  `IsRare` tinyint,
+  `CampaignId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_resource_titledeed` (
+  `ResourceId` int,
+  `TitleDeedId` int,
+  `Quantity` int,
+  `QuantityForUpgrade` int,
+  PRIMARY KEY (`ResourceId`, `TitleDeedId`),
+  FOREIGN KEY (`TitleDeedId`) REFERENCES `regsys_titledeed`(`Id`),
+  FOREIGN KEY (`ResourceId`) REFERENCES `regsys_resource`(`Id`)
+);
+
+CREATE TABLE `regsys_registration` (
+  `Id` int,
+  `LARPId` int,
+  `PersonId` int,
+  `Approved` date,
+  `RegisteredAt` datetime,
+  `PaymentReference` varchar(255),
+  `AmountToPay` int,
+  `AmountPayed` int,
+  `Payed` date,
+  `IsMember` tinyint,
+  `MembershipCheckedAt` datetime,
+  `NotComing` tinyint,
+  `ToBeRefunded` int,
+  `RefundDate` date,
+  `IsOfficial` tinyint,
+  `NPCDesire` varchar(255),
+  `HousingRequestId` int,
+  `GuardianId` int,
+  `NotComingReason` varchar(255),
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`HousingRequestId`) REFERENCES `regsys_housingrequest`(`Id`),
+  FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`),
+  FOREIGN KEY (`PersonId`) REFERENCES `regsys_person`(`Id`)
+);
+
+CREATE TABLE `regsys_housing` (
+  `LARPId` int,
+  `PersonId` int,
+  `HouseId` int,
+  FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`),
+  FOREIGN KEY (`HouseId`) REFERENCES `regsys_house`(`Id`),
+  FOREIGN KEY (`PersonId`) REFERENCES `regsys_person`(`Id`)
+);
+
+CREATE TABLE `regsys_role` (
+  `Id` int,
+  `Name` varchar(255),
+  `IsNPC` tinyint,
+  `Profession` varchar(255),
+  `Description` mediumtext,
+  `PreviousLarps` mediumtext,
+  `ReasonForBeingInSlowRiver` text(65535),
+  `Religion` varchar(255),
+  `DarkSecret` text(65535),
+  `DarkSecretIntrigueIdeas` varchar(255),
+  `IntrigueSuggestions` text(65535),
+  `NotAcceptableIntrigues` varchar(255),
+  `OtherInformation` text(65535),
+  `PersonId` int,
+  `GroupId` int,
+  `WealthId` int,
+  `PlaceOfResidenceId` int,
+  `Birthplace` varchar(255),
+  `CharactersWithRelations` text(65535),
+  `CampaignId` int,
+  `ImageId` int,
+  `DescriptionForGroup` mediumtext,
+  `DescriptionForOthers` mediumtext,
+  `IsDead` tinyint,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`WealthId`) REFERENCES `regsys_wealth`(`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`),
+  FOREIGN KEY (`GroupId`) REFERENCES `regsys_group`(`Id`),
+  FOREIGN KEY (`PersonId`) REFERENCES `regsys_person`(`Id`),
+  FOREIGN KEY (`PlaceOfResidenceId`) REFERENCES `regsys_placeofresidence`(`Id`),
+  FOREIGN KEY (`ImageId`) REFERENCES `regsys_image`(`Id`)
+);
+
+CREATE TABLE `regsys_larp_role` (
+  `LARPId` int,
+  `RoleId` int,
+  `Intrigue` text(65535),
+  `WhatHappened` text(65535),
+  `WhatHappendToOthers` text(65535),
+  `StartingMoney` int,
+  `EndingMoney` int,
+  `Result` text(65535),
+  `UserMayEdit` tinyint,
+  `IsMainRole` tinyint,
+  PRIMARY KEY (`LARPId`, `RoleId`),
+  FOREIGN KEY (`RoleId`) REFERENCES `regsys_role`(`Id`),
+  FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`)
+);
+
+CREATE TABLE `regsys_prop` (
+  `Id` int,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `StorageLocation` varchar(255),
+  `GroupId` int,
+  `RoleId` int,
+  `CampaignId` int,
+  `ImageId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`ImageId`) REFERENCES `regsys_image`(`Id`),
+  FOREIGN KEY (`RoleId`) REFERENCES `regsys_role`(`Id`),
+  FOREIGN KEY (`GroupId`) REFERENCES `regsys_group`(`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_paymentinformation` (
+  `Id` int,
+  `LARPId` int,
+  `FromDate` date,
+  `ToDate` date,
+  `FromAge` int,
+  `ToAge` int,
+  `Cost` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`)
+);
+
+CREATE TABLE `regsys_housecaretaker` (
+  `AdditionalPlayers` int,
+  `LARPId` int,
+  `HouseId` int,
+  `PersonId` int,
+  FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`),
+  FOREIGN KEY (`HouseId`) REFERENCES `regsys_house`(`Id`),
+  FOREIGN KEY (`PersonId`) REFERENCES `regsys_person`(`Id`)
+);
+
+CREATE TABLE `regsys_intriguetype_larp_group` (
+  `LARP_GroupGroupId` int,
+  `LARP_GroupLARPId` int,
+  `IntrigueTypeId` int,
+  PRIMARY KEY (`LARP_GroupGroupId`, `LARP_GroupLARPId`, `IntrigueTypeId`),
+  FOREIGN KEY (`IntrigueTypeId`) REFERENCES `regsys_intriguetype`(`Id`),
+  FOREIGN KEY (`LARP_GroupLARPId`) REFERENCES `regsys_larp_group`(`LARPId`),
+  FOREIGN KEY (`LARP_GroupGroupId`) REFERENCES `regsys_larp_group`(`GroupId`)
+);
+
+CREATE TABLE `regsys_titledeed_role` (
+  `TitleDeedId` int,
+  `RoleId` int,
+  PRIMARY KEY (`TitleDeedId`, `RoleId`),
+  FOREIGN KEY (`TitleDeedId`) REFERENCES `regsys_titledeed`(`Id`),
+  FOREIGN KEY (`RoleId`) REFERENCES `regsys_role`(`Id`)
+);
+
+CREATE TABLE `regsys_telegram` (
+  `Id` int,
+  `Deliverytime` datetime,
+  `Sender` varchar(255),
+  `SenderCity` varchar(255),
+  `Reciever` varchar(255),
+  `RecieverCity` varchar(255),
+  `Message` text(65535),
+  `OrganizerNotes` text(65535),
+  `LARPId` int,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`)
+);
+
+CREATE TABLE `regsys_officialtype_person` (
+  `OfficialTypeId` int,
+  `RegistrationId` int,
+  PRIMARY KEY (`OfficialTypeId`, `RegistrationId`),
+  FOREIGN KEY (`RegistrationId`) REFERENCES `regsys_registration`(`Id`),
+  FOREIGN KEY (`OfficialTypeId`) REFERENCES `regsys_officialtype`(`Id`)
+);
+
