@@ -16,9 +16,9 @@ class NPC extends BaseModel{
     
     
     public static function newFromArray($post){
-        $role = static::newWithDefault();
-        $role->setValuesByArray($post);
-        return $role;
+        $npc = static::newWithDefault();
+        $npc->setValuesByArray($post);
+        return $npc;
     }
     
     public function setValuesByArray($arr) {
@@ -32,7 +32,7 @@ class NPC extends BaseModel{
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         
-        if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
+        if (isset($this->NPCGroupId) && $this->NPCGroupId=='null') $this->NPCGroupId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         
     }
@@ -50,7 +50,7 @@ class NPC extends BaseModel{
     # Update an existing object in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Name=?, Description=?,
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."npc` SET Name=?, Description=?,
                                                               Time=?, PersonId=?, NPCGroupId=?, LarpId=?, ImageId=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Description,
@@ -67,7 +67,8 @@ class NPC extends BaseModel{
     public function create() {
         global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, Description,
+        
+       $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."npc` (Name, Description,
                                                             Time, PersonId,
                                                             NPCGroupId, LarpId, ImageId) VALUES (?,?,?,?,?, ?,?);");
         
@@ -84,11 +85,13 @@ class NPC extends BaseModel{
     }
     
     
+    
+   
    
     public static function getAllAssigned(LARP $larp) {
         global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."npc` WHERE `".
+        $sql = "SELECT * FROM ".$tbl_prefix."npc WHERE ".
             "PersonId IS NOT NULL AND LarpId = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
@@ -116,7 +119,7 @@ class NPC extends BaseModel{
     public static function getAllUnassigned(LARP $larp) {
         global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."npc` WHERE `".
+        $sql = "SELECT * FROM ".$tbl_prefix."npc WHERE ".
             "PersonId IS NULL AND LarpId = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
@@ -168,7 +171,20 @@ class NPC extends BaseModel{
             $stmt = null;
             return $resultArray;
     }
-    
 
+    
+    public function IsAssigned() {
+        if (empty($this->PersonId)) {
+            return false;
+        }
+        return true;
+    }
+    
+    public function getPerson() {
+        if (!empty($this->PersonId)) {
+            return Person::loadById($this->PersonId);
+        }
+        return null;
+    }
     
 }

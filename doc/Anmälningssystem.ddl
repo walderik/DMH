@@ -1,5 +1,5 @@
 CREATE TABLE `regsys_campaign` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Abbreviation` varchar(255),
   `Description` varchar(255),
@@ -13,7 +13,7 @@ CREATE TABLE `regsys_campaign` (
 );
 
 CREATE TABLE `regsys_intriguetype` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -32,7 +32,7 @@ CREATE TABLE `regsys_intriguetype_larp_role` (
 );
 
 CREATE TABLE `regsys_officialtype` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -43,7 +43,7 @@ CREATE TABLE `regsys_officialtype` (
 );
 
 CREATE TABLE `regsys_image` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `file_name` varchar(255),
   `file_mime` varchar(255),
   `file_data` longblob,
@@ -52,7 +52,7 @@ CREATE TABLE `regsys_image` (
 );
 
 CREATE TABLE `regsys_placeofresidence` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -63,7 +63,7 @@ CREATE TABLE `regsys_placeofresidence` (
 );
 
 CREATE TABLE `regsys_wealth` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -74,7 +74,7 @@ CREATE TABLE `regsys_wealth` (
 );
 
 CREATE TABLE `regsys_typeoffood` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -85,7 +85,7 @@ CREATE TABLE `regsys_typeoffood` (
 );
 
 CREATE TABLE `regsys_experience` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -96,7 +96,7 @@ CREATE TABLE `regsys_experience` (
 );
 
 CREATE TABLE `regsys_house` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `NumberOfBeds` varchar(255),
   `PositionInVillage` text(65535),
@@ -107,7 +107,7 @@ CREATE TABLE `regsys_house` (
 );
 
 CREATE TABLE `regsys_larpertype` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -118,7 +118,7 @@ CREATE TABLE `regsys_larpertype` (
 );
 
 CREATE TABLE `regsys_user` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Email` varchar(255),
   `Password` varchar(255),
@@ -130,7 +130,7 @@ CREATE TABLE `regsys_user` (
 );
 
 CREATE TABLE `regsys_person` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `SocialSecurityNumber` varchar(255),
   `PhoneNumber` varchar(255),
@@ -154,7 +154,7 @@ CREATE TABLE `regsys_person` (
 );
 
 CREATE TABLE `regsys_group` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Friends` text(65535),
   `Description` text(65535),
@@ -175,7 +175,7 @@ CREATE TABLE `regsys_group` (
 );
 
 CREATE TABLE `regsys_housingrequest` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -186,7 +186,7 @@ CREATE TABLE `regsys_housingrequest` (
 );
 
 CREATE TABLE `regsys_larp` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `TagLine` varchar(255),
   `StartDate` datetime,
@@ -218,7 +218,7 @@ CREATE TABLE `regsys_larp_group` (
 );
 
 CREATE TABLE `regsys_normalallergytype` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -237,7 +237,7 @@ CREATE TABLE `regsys_normalallergytype_person` (
 );
 
 CREATE TABLE `regsys_titledeed` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Location` varchar(255),
   `Tradeable` tinyint,
@@ -248,7 +248,7 @@ CREATE TABLE `regsys_titledeed` (
 );
 
 CREATE TABLE `regsys_resource` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `UnitSingular` varchar(255),
   `UnitPlural` varchar(255),
@@ -271,7 +271,7 @@ CREATE TABLE `regsys_resource_titledeed` (
 );
 
 CREATE TABLE `regsys_registration` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `LARPId` int,
   `PersonId` int,
   `Approved` date,
@@ -306,7 +306,7 @@ CREATE TABLE `regsys_housing` (
 );
 
 CREATE TABLE `regsys_role` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `IsNPC` tinyint,
   `Profession` varchar(255),
@@ -356,7 +356,7 @@ CREATE TABLE `regsys_larp_role` (
 );
 
 CREATE TABLE `regsys_prop` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `StorageLocation` varchar(255),
@@ -372,7 +372,7 @@ CREATE TABLE `regsys_prop` (
 );
 
 CREATE TABLE `regsys_paymentinformation` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `LARPId` int,
   `FromDate` date,
   `ToDate` date,
@@ -412,7 +412,7 @@ CREATE TABLE `regsys_titledeed_role` (
 );
 
 CREATE TABLE `regsys_telegram` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Deliverytime` datetime,
   `Sender` varchar(255),
   `SenderCity` varchar(255),
@@ -433,8 +433,8 @@ CREATE TABLE `regsys_officialtype_person` (
   FOREIGN KEY (`OfficialTypeId`) REFERENCES `regsys_officialtype`(`Id`)
 );
 
-CREATE TABLE `regsys_NPC_Group` (
-  `Id` int,
+CREATE TABLE `regsys_NPCGroup` (
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` varchar(255),
   `Time` varchar(255),
@@ -444,7 +444,7 @@ CREATE TABLE `regsys_NPC_Group` (
 );
 
 CREATE TABLE `regsys_NPC` (
-  `Id` int,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` varchar(255),
   `Time` varchar(255),
@@ -456,6 +456,6 @@ CREATE TABLE `regsys_NPC` (
   FOREIGN KEY (`PersonId`) REFERENCES `regsys_person`(`Id`),
   FOREIGN KEY (`LARPId`) REFERENCES `regsys_larp`(`Id`),
   FOREIGN KEY (`ImageId`) REFERENCES `regsys_image`(`Id`),
-  FOREIGN KEY (`NPCGroupId`) REFERENCES `regsys_NPC_Group`(`Id`)
+  FOREIGN KEY (`NPCGroupId`) REFERENCES `regsys_NPCGroup`(`Id`)
 );
 
