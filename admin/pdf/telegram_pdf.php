@@ -17,7 +17,7 @@ class TELEGRAM_PDF extends FPDF {
     
     function Header()
     {
-        $this->Image('../images/telegram.png',null,null,200);
+        $this->Image('../../images/telegram.png',null,null,200);
     }
     
     function SetText(string $sender, string $receiver, string $message, ?string $when) {
@@ -65,7 +65,7 @@ foreach ($arrayOfTelegrams as $telegram)  {
 }
 $doc = $pdf->Output('S');
 
-$attachments = ['Telegrammen' => $doc];
+// $attachments = ['Telegrammen' => $doc];
 //BerghemMailer::send('Mats.rappe@yahoo.se', 'Admin', "Det här är alla telegrammen", "Alla Telegrammen som PDF", $attachments);
 
 $pdf->Output();
