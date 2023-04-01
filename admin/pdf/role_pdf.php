@@ -9,53 +9,100 @@ require $root . '/includes/init.php';
 
 class ROLE_PDF extends FPDF {
     
-    public static $MarginLeft = 21;
+    public static $Margin = 5;
+    
+    public static $x_min = 5;
+    public static $x_max = 205;
+    public static $y_min = 5;
+    public static $y_max = 291;
+    
+    public static $cell_y = 5;
+    
+    public static $header_fontsize = 6;
+    public static $text_fontsize = 12;
+    
+    
     
     function Header()
     {
         global $root;
 //         $this->Image($root . '/images/telegram.png',null,null,200);
-        $this->SetLineWidth(2);
+        $this->SetLineWidth(1);
 //         $this->Line(float x1, float y1, float x2, float y2)
 
-        $x_max = 210;
-        $y_max = 296;
-        
-        $this->Line(0, 0, $x_max, 0);
-        $this->Line(0, 0, 0, $y_max);
-        $this->Line(0, $y_max, $x_max, $y_max);
-        $this->Line($x_max, 0, $x_max, $y_max);
+        $this->Line(static::$x_min, static::$y_min, static::$x_max, static::$y_min);
+        $this->Line(static::$x_min, static::$y_min, static::$x_min, static::$y_max);
+        $this->Line(static::$x_min, static::$y_max, static::$x_max, static::$y_max);
+        $this->Line(static::$x_max, static::$y_min, static::$x_max, static::$y_max);
     }
     
-    function SetText(Role $role) {
-		$this->SetFont('Helvetica','',14);    # OK är Times, Arial, Helvetica
-		# För mer fonter använder du http://www.fpdf.org/makefont/
-		$left = static::$MarginLeft;
-		
-		if (!is_null($when)) {
-		    $this->SetXY(150,60);
-		    $this->Cell(80,10,$when,0,1);
-		}
-		$this->SetXY($left, 68);
-		# http://www.fpdf.org/en/doc/cell.htm
-		# https://stackoverflow.com/questions/3514076/special-characters-in-fpdf-with-php
-        $this->Cell(80,10,utf8_decode($sender),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad	
+    # Skriv ut lajvnamnet högst upp.
+    function title()
+    {
+        global $x, $y, $left, $current_larp;
+
+        $font_size = (strlen(utf8_decode($current_larp->Name)) * (26.5 / 9));
+        $this->SetFont('Helvetica','', $font_size);    # OK är Times, Arial, Helvetica
         
-		$this->SetXY($left, 88);
-		$this->Cell(80,10,utf8_decode($receiver),0,1);
-		$this->SetXY($left, 112);
-		$this->MultiCell(0,8,utf8_decode($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->SetXY($left, $y-2);
+        $this->Cell(0, static::$cell_y*5, utf8_decode($current_larp->Name),0,0,'L');
+        
+        $y = static::$y_min + (static::$cell_y*5) + (static::$Margin);
+        
+        $this->bar();
+    }
+    
+    # Dra en linje tvärs över arket på höjd $y
+    function bar()
+    {
+        global $y;
+        $this->Line(static::$x_min, $y, static::$x_max, $y);
+    }
+    
+    function name(Role $role) 
+    {
+        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
+        
+        $down = $y + $cell_y_space;
+        $this->Line($mitten, $y, $mitten, $down);
+        
+        $this->SetXY($left, $y + static::$Margin);
+        $this->SetFont('Helvetica','',24);
+        $this->Cell($cell_width, static::$cell_y, utf8_decode($role->Name),0,0,'L');
+        
+        $person = $role->getPerson();
+        
+        $this->SetXY($left2, $y);
+        $this->SetFont('Helvetica','',static::$header_fontsize);
+        $this->Cell($cell_width, static::$cell_y, utf8_decode('Spelare'),0,0,'L');
+        
+        $this->SetXY($left2, $y + static::$Margin);
+        $this->SetFont('Helvetica','',static::$text_fontsize);
+        $this->Cell($cell_width, static::$cell_y, utf8_decode($person->Name),0,0,'L');
+        
+        
+        $y = $down;
+        
+        $this->bar();
     }
     
     function new_character_cheet(Role $role)
     {
-        $this->SetFont('Helvetica','',24);    # OK är Times, Arial, Helvetica
+        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
+        
+        $y = static::$y_min + static::$Margin;
+        $left = static::$x_min + static::$Margin;
+        $x = $left;
+        $cell_width = (static::$x_max - static::$x_min) / 2 ;
+        $cell_y_space = static::$cell_y + (2*static::$Margin);
+        $mitten = $cell_width + static::$x_min;
+        $left2 = $mitten + static::$Margin;
+        
         $this->AddPage();
         
-        $this->SetXY(static::$MarginLeft, 68);
-        $this->Cell(80,10,utf8_decode($role->Name),0,1);
-        
-//         $this->SetText($sender, $reciever, $telegram->Message, $deliverytime);
+        $this->title();
+        $this->name($role);
+
 	}
 }
 
