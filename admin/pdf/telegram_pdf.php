@@ -15,6 +15,7 @@ if (!isset($_SESSION['admin'])) {
 
 class TELEGRAM_PDF extends FPDF {
     
+    
     function Header()
     {
         global $root;
@@ -58,7 +59,7 @@ class TELEGRAM_PDF extends FPDF {
 $arrayOfTelegrams = Telegram::allBySelectedLARP();
 $pdf = new TELEGRAM_PDF();
 $pdf->SetTitle('Telegram');
-$pdf->SetAuthor($current_larp->Name);
+$pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('SpecialElite','');
 $pdf->SetSubject('Telegram');
