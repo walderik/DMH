@@ -13,6 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 $role = Role::loadById($RoleId);
+if (empty($role)) {
+    header('Location: index.php'); //Rollen finns inte
+    exit;
+}
 
 
 if (!$role->isRegistered($current_larp)) {
