@@ -1,7 +1,7 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-global $root, $current_user;
+global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/fpdf185/fpdf.php';
 require $root . '/includes/init.php';
@@ -17,7 +17,8 @@ class TELEGRAM_PDF extends FPDF {
     
     function Header()
     {
-        $this->Image('../../images/telegram.png',null,null,200);
+        global $root;
+        $this->Image($root . '/images/telegram.png',null,null,200);
     }
     
     function SetText(string $sender, string $receiver, string $message, ?string $when) {
@@ -57,13 +58,14 @@ class TELEGRAM_PDF extends FPDF {
 $arrayOfTelegrams = Telegram::allBySelectedLARP();
 $pdf = new TELEGRAM_PDF();
 $pdf->SetTitle('Telegram');
-$pdf->SetAuthor('Dod mans hand');
-$pdf->SetCreator('Mats Rappe');
+$pdf->SetAuthor($current_larp->Name);
+$pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('SpecialElite','');
+$pdf->SetSubject('Telegram');
 foreach ($arrayOfTelegrams as $telegram)  {
     $pdf->nytt_telegram($telegram);            
 }
-$doc = $pdf->Output('S');
+// $doc = $pdf->Output('S');
 
 // $attachments = ['Telegrammen' => $doc];
 //BerghemMailer::send('Mats.rappe@yahoo.se', 'Admin', "Det här är alla telegrammen", "Alla Telegrammen som PDF", $attachments);
