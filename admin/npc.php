@@ -5,6 +5,22 @@ include 'navigation_subpage.php';
 ?>
 
 
+<style>
+div.groupname {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    font-size: 1.4em;
+    color: #4a536e;
+    font-weight: bold;
+}
+
+div.npc {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+</style>
     <div class="content">   
         <h1>NPC</h1>
             <a href="npc_form.php"><i class="fa-solid fa-file-circle-plus"></i>Skapa NPC</a>  
@@ -23,21 +39,40 @@ include 'navigation_subpage.php';
             foreach ($npc_groups as $npc_group) {
                 $npcs=NPC::getAllAssignedByGroup($npc_group, $current_larp);
                 if (!empty($npcs)) {
-                    echo "<h3>$npc_group->Name</h3>";
+                    echo "<div class='groupname'><a href='npc_group_form.php?operation=update&id=$npc_group->Id'>$npc_group->Name<i class='fa-solid fa-pen'></i></a>";
+                    echo " <a href='logic/delete_npc_group.php?id=$npc_group->Id'><i class='fa-solid fa-trash'></i></a></div>";
                 }
                 foreach($npcs as $npc) {
+                    echo "<div class='npc'>";
                     $person=$npc->getPerson();
-                    $registration = $person->getRegistration($current_larp);
-                    echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name <i class='fa-solid fa-pen'></i></a> \n";
+
+                    echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name<i class='fa-solid fa-pen'></i></a> \n";
                     echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> \n";
-                    echo "$npc->Time<br>$npc->Description\n";
-                    echo "Spelas av $person->Name: $registration->NPCDesire \n";
+                    echo "$npc->Time<br>$npc->Description<br>\n";
+                    echo "Spelas av $person->Name\n";
                     echo "<form action='logic/assign_npc.php' method='post'><input type='hidden' name='id' value='$npc->Id'>\n";
                     echo "<input type='hidden' name='PersonId' value='null'>\n";
                     echo "<input type ='submit' value='Ta bort från deltagaren'>\n";
                     echo "</form>\n";
-                    echo "<br>\n<br>\n";
+                    echo "</div>";
                 }
+            }
+            $npcs=NPC::getAllAssignedWithoutGroup($current_larp);
+            if (!empty($npcs)) {
+                echo "<div class='groupname'>Utan grupp</div>";
+            }
+            foreach($npcs as $npc) {
+                $person=$npc->getPerson();
+                echo "<div class='npc'>";
+                echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name<i class='fa-solid fa-pen'></i></a> \n";
+                echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> \n";
+                echo "$npc->Time<br>$npc->Description<br>\n";
+                echo "Spelas av $person->Name\n";
+                echo "<form action='logic/assign_npc.php' method='post'><input type='hidden' name='id' value='$npc->Id'>\n";
+                echo "<input type='hidden' name='PersonId' value='null'>\n";
+                echo "<input type ='submit' value='Ta bort från deltagaren'>\n";
+                echo "</form>\n";
+                echo "</div>";
             }
             
             ?>
@@ -51,11 +86,13 @@ include 'navigation_subpage.php';
             
             foreach ($npc_groups as $npc_group) {
                 $npcs=NPC::getAllUnassignedByGroup($npc_group, $current_larp);
-                if (!empty($npcs)) {
-                    echo "<h3>$npc_group->Name</h3>";
-                }
+                
+                echo "<div class='groupname'><a href='npc_group_form.php?operation=update&id=$npc_group->Id'>$npc_group->Name<i class='fa-solid fa-pen'></i></a>";
+                echo " <a href='logic/delete_npc_group.php?id=$npc_group->Id'><i class='fa-solid fa-trash'></i></a></div>";
+                
 
                 foreach($npcs as $npc) {
+                    echo "<div class='npc'>";
                     echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name <i class='fa-solid fa-pen'></i></a> ";
                     echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> ";
                     echo "$npc->Time<br>$npc->Description";
@@ -63,12 +100,17 @@ include 'navigation_subpage.php';
                     echo selectionDropDownByArray("PersonId", $persons);
                     echo "<input type ='submit' value='Tilldela'>";
                     echo "</form>";
-                    echo "<br><br>"; 
+                    echo "</div>";
+
                 }
             }
  
-            $npcs=NPC::getAllUnassignedByGroup(null, $current_larp);
+            $npcs=NPC::getAllUnassignedWithoutGroup($current_larp);
+            if (!empty($npcs)) {
+                echo "<div class='groupname'>Utan grupp</div>";
+            }
             foreach($npcs as $npc) {
+                echo "<div class='npc'>";
                 echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name <i class='fa-solid fa-pen'></i></a> ";
                 echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> ";
                 echo "$npc->Time<br>$npc->Description";
@@ -76,7 +118,7 @@ include 'navigation_subpage.php';
                 echo selectionDropDownByArray("PersonId", $persons);
                 echo "<input type ='submit' value='Tilldela'>";
                 echo "</form>";
-                echo "<br><br>";
+                echo "</div>";
             }
 
 

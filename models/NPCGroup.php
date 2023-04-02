@@ -7,6 +7,7 @@ class NPCGroup extends BaseModel{
     public $Description;
     public $Time;
     public $LarpId;
+    public $IsReleased = 0;
     
     
     
@@ -26,6 +27,7 @@ class NPCGroup extends BaseModel{
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['Time'])) $this->Time = $arr['Time'];
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
+        if (isset($arr['IsReleased'])) $this->IsReleased = $arr['IsReleased'];
         
         
     }
@@ -42,12 +44,12 @@ class NPCGroup extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."npcgroup` SET Name=?, Description=?,
-                                                              Time=?, LarpId=?, WHERE Id = ?;");
+
+        $stmt = $this->connect()->prepare("UPDATE regsys_npcgroup SET Name=?, Description=?,
+                                                              Time=?, LarpId=?, IsReleased=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Description,
-            $this->Time, $this->LarpId, $this->Id))) {
+            $this->Time, $this->LarpId, $this->IsReleased, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -57,15 +59,15 @@ class NPCGroup extends BaseModel{
     
     # Create a new object in db
     public function create() {
-        global $tbl_prefix;
+
         $connection = $this->connect();
         
         
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."npcgroup` (Name, Description,
-                                                            Time, LarpId) VALUES (?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_npcgroup(Name, Description,
+                                                            Time, LarpId, IsReleased) VALUES (?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Description, $this->Time,
-            $this->LarpId))) {
+            $this->LarpId, $this->IsReleased))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -76,6 +78,22 @@ class NPCGroup extends BaseModel{
             $stmt = null;
     }
     
+    public function release() {
+        $this->IsReleased = 1;
+        $npcs = getNPCsInGroup();
+        foreach ($npcs as $npc) {
+            $npc->release();
+        }
+        $this->update();
+        
+        
+    }
+    
+    
+    public function IsReleased() {
+        if ($this->IsReleased==1) return true;
+        return false;
+    }
     
     
     public static function getAllForLARP(LARP $larp) {
@@ -83,31 +101,14 @@ class NPCGroup extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM ".$tbl_prefix."npcgroup WHERE ".
             "LarpId = ? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-        
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     
-    
+    public function getNPCsInGroup() {
+        global $current_larp;
+        return NPC::getNPCsInGroup($this, $current_larp);
+    }
     
     
 }
