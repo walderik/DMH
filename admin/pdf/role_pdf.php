@@ -24,8 +24,7 @@ class ROLE_PDF extends FPDF {
     
     
     
-    function Header()
-    {
+    function Header() {
         global $root, $y;
         $this->SetLineWidth(1);
         $this->Line(static::$x_min, static::$y_min, static::$x_max, static::$y_min);
@@ -37,8 +36,7 @@ class ROLE_PDF extends FPDF {
     }
     
     # Skriv ut lajvnamnet högst upp.
-    function title($left)
-    {
+    function title($left) {
         global $y, $current_larp;
 
         $font_size = (850 / strlen(utf8_decode($current_larp->Name)));
@@ -56,8 +54,7 @@ class ROLE_PDF extends FPDF {
     
     
     # Namnen på roll och spelare
-    function names($left, $left2) 
-    {
+    function names($left, $left2) {
         global $y, $cell_width, $mitten, $current_larp, $role;
         
         $person = $role->getPerson();        
@@ -83,18 +80,15 @@ class ROLE_PDF extends FPDF {
         $this->SetFont('Helvetica','B',24); # Extra stora bokstäver på karaktärens namn
        
         $this->Cell($cell_width, static::$cell_y, utf8_decode($role->Name),0,0,'L');
-        
     }
     
-    function yrke($left) 
-    {
+    function yrke($left) {
         global $role;
         $this->set_header($left, 'Yrke');
         $this->set_text($left, $role->Profession);
     }
     
-    function epost($left)
-    {
+    function epost($left) {
         global $role;
         $this->set_header($left, 'Epost');
         $person = $role->getPerson();
@@ -102,8 +96,7 @@ class ROLE_PDF extends FPDF {
         $this->set_text($left, $person->Email);
     }
     
-    function erfarenhet($left)
-    {  
+    function erfarenhet($left) {  
         global $role;
         if (!Experience::is_in_use()) return;
         $this->set_header($left, 'Erfarenhet');
@@ -112,16 +105,15 @@ class ROLE_PDF extends FPDF {
         $this->set_text($left, $person->getExperience()->Name);
     }
     
-    function rikedom($left)
-    {
+    function rikedom($left) {
         global $role;
         if (!Wealth::is_in_use()) return;
         $this->set_header($left, 'Rikedom');
-        $this->set_text($left, Wealth::loadById($role->WealthId)->Name);
+        $text = ($role->is_trading()) ? " (Handel)" : " (Ingen handel)";
+        $this->set_text($left, Wealth::loadById($role->WealthId)->Name.$text);
     }
     
-    function lajvar_typ($left)
-    {
+    function lajvar_typ($left) {
         global $role;
         if (!LarperType::is_in_use()) return;
         
@@ -132,8 +124,7 @@ class ROLE_PDF extends FPDF {
         $this->set_text($left, $text );
     }
     
-    function group($left)
-    {
+    function group($left) {
         global $role;
         $this->set_header($left, 'Grupp');
         $group = $role->getGroup();
@@ -141,19 +132,30 @@ class ROLE_PDF extends FPDF {
         $this->set_text($left, $group->Name);
     }
     
-    function born($left)
-    {
+    function born($left) {
         global $role;
         $this->set_header($left, 'Född');
         $this->set_text($left, $role->Birthplace);
     }
     
-    function bor($left)
-    {
+    function bor($left) {
         global $role;
         $this->set_header($left, 'Bor');
         $this->set_text($left, $role->getPlaceOfResidence()->Name);
     }
+    
+    function religion($left) {
+        global $role;
+        $this->set_header($left, 'Religion');
+        $this->set_text($left, $role->Religion);
+    }
+    
+    function reason_for_being_in_here($left) {
+        global $role;
+        $this->set_header($left, 'Orsak för att vistas här');
+        $this->set_text($left, $role->ReasonForBeingInSlowRiver);
+    }
+    
     
     function beskrivning()
     {
@@ -208,7 +210,12 @@ class ROLE_PDF extends FPDF {
         $y += $cell_y_space;
         $this->bar();
         
-//         $this->lajvar_typ_kommentar($left);
+        $this->reason_for_being_in_here($left);
+        $this->mittlinje();
+        $this->religion($left2);
+        
+        $y += $cell_y_space;
+        $this->bar();
         
         $this->AddPage();
         $this->beskrivning();
