@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     if ($operation == 'new') {
     } elseif ($operation == 'update') {
-        $npc = Role::loadById($_GET['id']);
+        $npc = NPC::loadById($_GET['id']);
     } else {
     }
 }
