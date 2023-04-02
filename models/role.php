@@ -151,6 +151,15 @@ class Role extends BaseModel{
         
     }
     
+    public function getWealth() {
+        if (is_null($this->WealthId)) return null;
+        return Wealth::loadById($this->WealthId);
+    }
+    
+    public function getPlaceOfResidence() {
+        if (is_null($this->PlaceOfResidenceId)) return null;
+        return PlaceOfResidence::loadById($this->PlaceOfResidenceId);
+    }
     
     
     public function hasIntrigue(LARP $larp) {

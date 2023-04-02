@@ -141,6 +141,20 @@ class ROLE_PDF extends FPDF {
         $this->set_text($left, $group->Name);
     }
     
+    function born($left)
+    {
+        global $role;
+        $this->set_header($left, 'Född');
+        $this->set_text($left, $role->Birthplace);
+    }
+    
+    function bor($left)
+    {
+        global $role;
+        $this->set_header($left, 'Bor');
+        $this->set_text($left, $role->getPlaceOfResidence()->Name);
+    }
+    
     function beskrivning()
     {
         global $role;
@@ -184,6 +198,12 @@ class ROLE_PDF extends FPDF {
         $this->mittlinje();
         $this->rikedom($left2);
         
+        $y += $cell_y_space;
+        $this->bar();
+        
+        $this->born($left);
+        $this->mittlinje();
+        $this->bor($left2);
         
         $y += $cell_y_space;
         $this->bar();

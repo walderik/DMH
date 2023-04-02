@@ -81,9 +81,9 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Saker karaktären inte vill spela på</td><td><?php echo $role->NotAcceptableIntrigues;?></td></tr>
 			<tr><td valign="top" class="header">Relationer med andra</td><td><?php echo $role->CharactersWithRelations;?></td></tr>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $role->OtherInformation;?></td></tr>
-			<tr><td valign="top" class="header">Rikedom</td><td><?php echo Wealth::loadById($role->WealthId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Rikedom</td><td><?php echo $role->getWealth()->Name; ?></td></tr>
 			<tr><td valign="top" class="header">Var är karaktären född?</td><td><?php echo $role->Birthplace;?></td></tr>
-			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo PlaceOfResidence::loadById($role->PlaceOfResidenceId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo $role->getPlaceOfResidence()->Name; ?></td></tr>
 			<tr><td valign="top" class="header">Död</td><td><?php echo ja_nej($role->IsDead);?></td></tr>
 
 		</table>		
