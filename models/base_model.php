@@ -57,23 +57,8 @@ class BaseModel extends Dbh{
         if (empty($id)) return null;
 
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Id = ?");
-        if (!$stmt->execute(array($id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return null;
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $row = $rows[0];
-        $stmt = null;
-        
-        return static::newFromArray($row);
+        $sql = "SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Id = ?";
+        return static::getOneObjectQuery($sql, array($id));
     }
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
@@ -101,6 +86,52 @@ class BaseModel extends Dbh{
     public function destroy()
     {
         static::delete($this->id);
+    }
+    
+    protected static function getSeveralObjectsqQuery($sql, $var_array) {
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute($var_array)) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = static::newFromArray($row);
+        }
+        $stmt = null;
+        return $resultArray;
+        
+    }
+    
+    protected static function getOneObjectQuery($sql, $var_array)
+    {
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute($var_array)) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return null;
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $rows[0];
+        $stmt = null;
+        
+        return static::newFromArray($row);
     }
     
 }

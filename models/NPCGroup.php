@@ -14,9 +14,9 @@ class NPCGroup extends BaseModel{
     
     
     public static function newFromArray($post){
-        $role = static::newWithDefault();
-        $role->setValuesByArray($post);
-        return $role;
+        $npc_group = static::newWithDefault();
+        $npc_group->setValuesByArray($post);
+        return $npc_group;
     }
     
     public function setValuesByArray($arr) {
@@ -43,7 +43,7 @@ class NPCGroup extends BaseModel{
     # Update an existing object in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Name=?, Description=?,
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."npcgroup` SET Name=?, Description=?,
                                                               Time=?, LarpId=?, WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Description,
@@ -59,7 +59,9 @@ class NPCGroup extends BaseModel{
     public function create() {
         global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, Description,
+        
+        
+        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."npcgroup` (Name, Description,
                                                             Time, LarpId) VALUES (?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Description, $this->Time,
