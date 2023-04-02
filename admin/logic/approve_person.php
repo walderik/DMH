@@ -49,8 +49,6 @@ function send_approval_mail(Registration $registration) {
         $text .= '* '.$role->Name;
         if ($role->isMain($larp)) {
             $text .= " - Din huvudkaraktär";
-        } elseif ($role->IsNPC) {
-            $text .= " - En NPC";
         }
         $text .= "<br>\n";
     }

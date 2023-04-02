@@ -130,9 +130,7 @@ function send_registration_mail(Registration $registration) {
         $text .= '* '.$role->Name;
         if ($role->isMain($larp)) {
             $text .= " - Din huvudkaraktär";
-        } elseif ($role->IsNPC) {
-            $text .= " - En NPC";
-        }
+        } 
         if (isset($role->GroupId)) {
             $group = $role->getGroup();
             $text .= ", medlem i $group->Name";

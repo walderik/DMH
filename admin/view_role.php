@@ -67,7 +67,6 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a></td></tr>
 		<?php }?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
-			<tr><td valign="top" class="header">NPC</td><td><?php echo ja_nej($role->IsNPC);?></td></tr>
 			<tr><td valign="top" class="header">Yrke</td><td><?php echo $role->Profession;?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br($role->Description);?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för gruppen</td><td><?php echo nl2br($role->DescriptionForGroup);?></td></tr>
