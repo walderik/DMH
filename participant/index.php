@@ -199,7 +199,7 @@ include_once '../includes/error_handling.php';
     		        }
         		        
 
-    		        echo "</div>\n";
+
     		        
     		        
     		        
@@ -214,15 +214,15 @@ include_once '../includes/error_handling.php';
     		                
     		                if ($npc->IsInGroup()) {
     		                  $npc_group = $npc->getNPCGroup();
-		                      echo "<a href='view_npc_group.php?id=$npc->NPCGroupId'>$npc->Name <i class='fa-solid fa-eye'></i></a>";
+		                      echo " - <a href='view_npc_group.php?id=$npc->NPCGroupId'>$npc_group->Name <i class='fa-solid fa-eye'></i></a>";
     		                }
 
     		                    
     		            }
-    		                
+    		            echo "</table>";    
     		            
     		        }
-    		        
+    		        echo "</div>\n";
     		        
     		    }
     		}

@@ -60,7 +60,11 @@ include 'navigation_subpage.php';
 		<table>
  			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
  			<td><input type="text" id="Name" name="Name" value="<?php echo $npc->Name; ?>" size="100" maxlength="250" required></td></tr>
-			<tr><td valign="top" class="header">Spelas av</td><td><?php if ($npc->IsAssigned()) echo $npc->getPerson()->Name; ?></td></tr>
+			<tr><td valign="top" class="header">Spelas av</td>
+			    <td><?php if ($npc->IsAssigned()) {
+			                 echo $npc->getPerson()->Name; 
+			                 echo "<input type='hidden' name='PersonId' value='$npc->PersonId'>";
+			    }?></td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>
 			<td><?php selectionByArray('NPCGroup', NPCGroup::getAllForLARP($current_larp), false, false, $npc->NPCGroupId); ?></td></tr>

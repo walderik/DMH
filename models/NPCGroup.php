@@ -80,7 +80,7 @@ class NPCGroup extends BaseModel{
     
     public function release() {
         $this->IsReleased = 1;
-        $npcs = getNPCsInGroup();
+        $npcs = $this->getNPCsInGroup();
         foreach ($npcs as $npc) {
             $npc->release();
         }
