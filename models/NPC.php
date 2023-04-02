@@ -10,6 +10,7 @@ class NPC extends BaseModel{
     public $NPCGroupId;
     public $LarpId;
     public $ImageId;
+    public $IsReleased = 0;
     
     
     public static $orderListBy = 'Name';
@@ -31,6 +32,7 @@ class NPC extends BaseModel{
         if (isset($arr['NPCGroupId'])) $this->NPCGroupId = $arr['NPCGroupId'];
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
+        if (isset($arr['IsReleased'])) $this->IsReleased = $arr['IsReleased'];
         
         if (isset($this->NPCGroupId) && $this->NPCGroupId=='null') $this->NPCGroupId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
@@ -50,12 +52,13 @@ class NPC extends BaseModel{
     # Update an existing object in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."npc` SET Name=?, Description=?,
-                                                              Time=?, PersonId=?, NPCGroupId=?, LarpId=?, ImageId=? WHERE Id = ?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_npc SET Name=?, Description=?,
+                Time=?, PersonId=?, NPCGroupId=?, 
+                LarpId=?, ImageId=?, IsReleased=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Description,
             $this->Time, $this->PersonId,
-            $this->NPCGroupId, $this->LarpId, $this->ImageId, $this->Id))) {
+            $this->NPCGroupId, $this->LarpId, $this->ImageId, $this->IsReleased, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -68,12 +71,13 @@ class NPC extends BaseModel{
         global $tbl_prefix;
         $connection = $this->connect();
         
-       $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."npc` (Name, Description,
+       $stmt = $connection->prepare("INSERT INTO regsys_npc (Name, Description,
                                                             Time, PersonId,
-                                                            NPCGroupId, LarpId, ImageId) VALUES (?,?,?,?,?, ?,?);");
+                                                            NPCGroupId, LarpId, ImageId, IsReleased) 
+                                                            VALUES (?,?,?,?,?, ?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Description, $this->Time,
-            $this->PersonId, $this->NPCGroupId, $this->LarpId, $this->ImageId))) {
+            $this->PersonId, $this->NPCGroupId, $this->LarpId, $this->ImageId, $this->IsReleased))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -88,26 +92,30 @@ class NPC extends BaseModel{
    
    
     public static function getAllAssignedByGroup(NPCGroup $group, LARP $larp) {
-        global $tbl_prefix;
-        if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM ".$tbl_prefix."npc WHERE ".
+        if (is_null($larp) or is_null($group)) return Array();
+        $sql = "SELECT * FROM regsys_npc WHERE ".
             "PersonId IS NOT NULL AND LarpId = ? AND NPCGroupId = ? ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
     }
      
     public static function getAllUnassignedByGroup(NPCGroup $group, LARP $larp) {
-        global $tbl_prefix;
-        if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM ".$tbl_prefix."npc WHERE ".
+        if (is_null($larp) or is_null($group)) return Array();
+        $sql = "SELECT * FROM regsys_npc WHERE ".
             "PersonId IS NULL AND LarpId = ? AND NPCGroupId=? ORDER BY Name;";
 
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
     }
     
-    public static function getAllUnassignedWithoutGroup(LARP $larp) {
-        global $tbl_prefix;
+    public static function getAllAssignedWithoutGroup(LARP $larp) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM ".$tbl_prefix."npc WHERE ".
+        $sql = "SELECT * FROM regsys_npc WHERE ".
+            "PersonId IS NOT NULL AND LarpId = ? AND NPCGroupId IS NULL ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    public static function getAllUnassignedWithoutGroup(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_npc WHERE ".
             "PersonId IS NULL AND LarpId = ? AND NPCGroupId IS NULL ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
@@ -115,13 +123,31 @@ class NPC extends BaseModel{
     
     # Hämta NPCer i en grupp
     public static function getNPCsInGroup(NPCGroup $npc_group, LARP $larp) {
-        global $tbl_prefix;
         if (is_null($npc_group) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."npc` WHERE `".
-            "GroupId = ? AND LarpId = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_npc WHERE ".
+            "NPCGroupId = ? AND LarpId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($npc_group->Id, $larp->Id));
     }
 
+    
+    public function release() {
+        $this->IsReleased = 1;
+        BerghemMailer::send
+        $npcs = getNPCsInGroup();
+        foreach ($npcs as $npc) {
+            $npc->release();
+        }
+        $this->update();
+        
+        
+    }
+    
+    
+    
+    public function IsReleased() {
+        if ($this->IsReleased==1) return true;
+        return false;
+    }
     
     public function IsAssigned() {
         if (empty($this->PersonId)) {
