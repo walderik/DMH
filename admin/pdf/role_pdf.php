@@ -67,7 +67,23 @@ class ROLE_PDF extends FPDF {
         $this->Line($mitten, $y, $mitten, $down);
     }
     
-    function name(Role $role) 
+    # Gemensamt sätt beräkna var rubriken i ett fält ska ligga
+    function set_header_start($l)
+    {
+        global $y;
+        $this->SetXY($l, $y);
+        $this->SetFont('Helvetica','',static::$header_fontsize);
+    }
+    
+    # Gemensamt sätt beräkna var texten i ett fält ska ligga
+    function set_text_start($l)
+    {
+        global $y;
+        $this->SetXY($l, $y + static::$Margin + 1);
+        $this->SetFont('Helvetica','',static::$text_fontsize);
+    }
+    
+    function names(Role $role) 
     {
         global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
         
@@ -79,8 +95,7 @@ class ROLE_PDF extends FPDF {
             $type = 'Avliden';
             $this->Line(static::$x_min, $y+static::$Margin*1.5, $mitten, $y+static::$Margin*1.5);
         }
-        
-        
+         
         $this->Cell($cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
         
         $this->SetXY($left, $y + static::$Margin);
@@ -92,18 +107,40 @@ class ROLE_PDF extends FPDF {
         
         $person = $role->getPerson();
         
-        $this->SetXY($left2, $y);
-        $this->SetFont('Helvetica','',static::$header_fontsize);
+        $this->set_header_start($left2);
         $this->Cell($cell_width, static::$cell_y, utf8_decode('Spelare'),0,0,'L');
         
-        $this->SetXY($left2, $y + static::$Margin + 1);
-        $this->SetFont('Helvetica','',static::$text_fontsize);
+        $this->set_text_start($left2);
         $this->Cell($cell_width, static::$cell_y, utf8_decode($person->Name),0,0,'L');
         
         
         $y += $cell_y_space;
         
         $this->bar();
+    }
+    
+    function yrke(Role $role) 
+    {
+        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
+        $this->set_header_start($left);
+        $this->Cell($cell_width, static::$cell_y, utf8_decode('Yrke'),0,0,'L');
+        
+        $this->set_text_start($left);
+        $this->Cell($cell_width, static::$cell_y, utf8_decode($role->Profession),0,0,'L');
+        
+        $this->mittlinje();
+    }
+    
+    function group(Group $group)
+    {
+        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
+        $this->set_header_start($left2);
+        $this->Cell($cell_width, static::$cell_y, utf8_decode('Grupp'),0,0,'L');
+        
+        $this->set_text_start($left2);
+        $this->Cell($cell_width, static::$cell_y, utf8_decode($group->Name),0,0,'L');
+        
+        $this->mittlinje();
     }
     
     function new_character_cheet(Role $role)
@@ -121,8 +158,15 @@ class ROLE_PDF extends FPDF {
         $this->AddPage();
         
         $this->title();
-        $this->name($role);
-
+        $this->names($role);
+        $this->yrke($role);
+        $group = $role->getGroup();
+        if (!empty($group)) {
+            $this->group($group);
+        }
+        
+        $y += $cell_y_space;
+        $this->bar();
 	}
 }
 
