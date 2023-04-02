@@ -20,7 +20,7 @@ class ROLE_PDF extends FPDF {
     
     public static $header_fontsize = 6;
     public static $text_fontsize = 12;
-    public static $text_max_length = 45;
+    public static $text_max_length = 52;
     
     
     
@@ -37,9 +37,9 @@ class ROLE_PDF extends FPDF {
     }
     
     # Skriv ut lajvnamnet högst upp.
-    function title()
+    function title($left)
     {
-        global $x, $y, $left, $current_larp;
+        global $y, $current_larp;
 
         $font_size = (850 / strlen(utf8_decode($current_larp->Name)));
         if ($font_size > 90) $font_size = 90;
@@ -53,87 +53,22 @@ class ROLE_PDF extends FPDF {
         $this->bar();
     }
     
-    # Dra en linje tvärs över arket på höjd $y
-    function bar()
-    {
-        global $y;
-        $this->Line(static::$x_min, $y, static::$x_max, $y);
-    }
     
-    function mittlinje()
-    {
-        global $y, $cell_y_space, $mitten;
-        $down = $y + $cell_y_space;
-        $this->Line($mitten, $y, $mitten, $down);
-    }
-    
-    # Gemensamt sätt beräkna var rubriken i ett fält ska ligga
-    function set_header_start($venster)
-    {
-        global $y;
-        $this->SetXY($venster, $y);
-        $this->SetFont('Helvetica','',static::$header_fontsize);
-    }
-    
-    # Gemensamt sätt beräkna var texten i ett fält ska ligga
-    function set_text_start($venster)
-    {
-        global $y;
-        $this->SetXY($venster, $y + static::$Margin + 1);
-        $this->SetFont('Helvetica','',static::$text_fontsize);
-    }
-    
-    # Gemensam funktion för all logik för att skriva ut ett rubriken
-    function set_header($venster, $text)
-    {
-        global $cell_width;
-        $this->set_header_start($venster);
-        $this->Cell($cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
-    }
-    
-    # Gemensam funktion för all logik för att skriva ut ett fält
-    function set_text($venster, $text)
-    {
-        global $y, $cell_width;
-        
-        if (empty($text)) return;
-        
-        $text = utf8_decode($text);
-        # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
-        if (strlen($text)>static::$text_max_length){
-            $this->SetXY($venster, $y + static::$Margin-1);
-            $this->SetFont('Helvetica','',static::$text_fontsize/1.5);
-            $this->MultiCell($cell_width, static::$cell_y-1.5, $text, 0,'L');
-            return;
-        }
-        # Normal utskrift
-        $this->set_text_start($venster);
-        $this->Cell($cell_width, static::$cell_y, $text,0,0,'L');
-    }
-    
-    function set_full_page($header, $text)
-    {
-        global  $y, $left, $cell_width;
-        
-        $text = utf8_decode($text);
-        $this->set_header($left, $header);
-        $this->SetXY($left, $y + static::$Margin+1);
-        
-        if (strlen($text)>4000){
-            $this->SetFont('Helvetica','',static::$text_fontsize/2); # Hantering för riktigt långa texter
-            $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L');
-            return;
-        }
-        $this->SetFont('Helvetica','',static::$text_fontsize);
-        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
-    }
     
     # Namnen på roll och spelare
-    function names(Role $role) 
+    function names($left, $left2) 
     {
-        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
+        global $y, $cell_width, $mitten, $current_larp, $role;
         
-        $this->SetXY($left, $y);
+        $person = $role->getPerson();        
+        $this->set_header($left, 'Spelare');
+        $age = (empty($person)) ? '?' : $person->getAgeAtLarp($current_larp);
+        $namn = "$person->Name ($age)";
+        if (!empty($person)) $this->set_text($left, $namn);
+        
+        $this->mittlinje();
+        
+        $this->SetXY($left2, $y);
         $this->SetFont('Helvetica','',static::$header_fontsize);
         $type = ($role->isMain($current_larp)) ? 'Huvudkaraktär' : 'Sidokaraktär';
         
@@ -144,46 +79,77 @@ class ROLE_PDF extends FPDF {
          
         $this->Cell($cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
         
-        $this->SetXY($left, $y + static::$Margin);
+        $this->SetXY($left2, $y + static::$Margin);
         $this->SetFont('Helvetica','B',24); # Extra stora bokstäver på karaktärens namn
+       
         $this->Cell($cell_width, static::$cell_y, utf8_decode($role->Name),0,0,'L');
         
-        $this->mittlinje();
-        
-        $person = $role->getPerson();
-        
-        $this->set_header($left2, 'Spelare');  
-        $this->set_text($left2, $person->Name);
-        
-        $this->bar();
     }
     
-    function yrke(Role $role) 
+    function yrke($left) 
     {
-        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
+        global $role;
         $this->set_header($left,'Yrke');
         $this->set_text($left, $role->Profession);
     }
     
-    function group(Role $role)
+    function epost($left)
     {
-        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
-        $this->set_header($left2, 'Grupp');
-        $group = $role->getGroup();
-        if (empty($group)) return;
-        $this->set_text($left2, $group->Name);
+        global $role;
+        $this->set_header($left,'Epost');
+        $person = $role->getPerson();
+        if (empty($person)) return;
+        $this->set_text($left, $person->Email);
     }
     
-    function beskrivning(Role $role)
+    function erfarenhet($left)
+    {  
+        global $role;
+        if (!Experience::in_use()) return;
+        $this->set_header($left,'Erfarenhet');
+        $person = $role->getPerson();
+        if (empty($person)) return;
+        $this->set_text($left, $person->getExperience()->Name);
+    }
+    
+    function rikedom($left)
     {
+        global $role;
+        if (!Wealth::in_use()) return;
+        $this->set_header($left,'Rikedom');
+        $this->set_text($left, Wealth::loadById($role->WealthId)->Name);
+    }
+    
+    function lajvar_typ($left)
+    {
+        global $role;
+        if (!LarperType::in_use()) return;
+        
+        $this->set_header($left,'Lajvartyp');
+        $person = $role->getPerson();
+        if (empty($person)) return;
+        $this->set_text($left, $person->getLarperType()->Name);
+    }
+    
+    function group($left)
+    {
+        global $role;
+        $this->set_header($left, 'Grupp');
+        $group = $role->getGroup();
+        if (empty($group)) return;
+        $this->set_text($left, $group->Name);
+    }
+    
+    function beskrivning()
+    {
+        global $role;
         $this->set_full_page('Beskrivning', $role->Description);
     }
     
     function new_character_cheet(Role $role)
     {
-        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
+        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp, $role;
         
-//         $y = static::$y_min + static::$Margin;
         $left = static::$x_min + static::$Margin;
         $x = $left;
         $cell_width = (static::$x_max - static::$x_min) / 2 - (2*static::$Margin);
@@ -193,23 +159,110 @@ class ROLE_PDF extends FPDF {
         
         $this->AddPage();
         
-        $this->title();
-        $this->names($role);
+        $this->title($left);
+        $this->names($left, $left2);
         
         $y += $cell_y_space;
         $this->bar();
         
-        $this->yrke($role);
+        $this->epost($left);
         $this->mittlinje();
-        $this->group($role);
+        $this->yrke($left2);
+        
+        $y += $cell_y_space;
+        $this->bar();
+        
+        $this->erfarenhet($left);
+        $this->mittlinje();
+        $this->rikedom($left2);
+        
+        $y += $cell_y_space;
+        $this->bar();
+        
+        $this->lajvar_typ($left);
+        $this->mittlinje();
+        $this->group($left2);
         
         $y += $cell_y_space;
         $this->bar();
         
         $this->AddPage();
-        $this->beskrivning($role);
+        $this->beskrivning();
         
 	}
+	
+	
+	
+	
+	# Dra en linje tvärs över arket på höjd $y
+	private function bar() {
+	    global $y;
+	    $this->Line(static::$x_min, $y, static::$x_max, $y);
+	}
+	
+	private function mittlinje() {
+	    global $y, $cell_y_space, $mitten;
+	    $down = $y + $cell_y_space;
+	    $this->Line($mitten, $y, $mitten, $down);
+	}
+	
+	# Gemensamt sätt beräkna var rubriken i ett fält ska ligga
+	private function set_header_start($venster) {
+	    global $y;
+	    $this->SetXY($venster, $y);
+	    $this->SetFont('Helvetica','',static::$header_fontsize);
+	}
+	
+	# Gemensamt sätt beräkna var texten i ett fält ska ligga
+	private function set_text_start($venster) {
+	    global $y;
+	    $this->SetXY($venster, $y + static::$Margin + 1);
+	    $this->SetFont('Helvetica','',static::$text_fontsize);
+	}
+	
+	# Gemensam funktion för all logik för att skriva ut ett rubriken
+	private function set_header($venster, $text) {
+	    global $cell_width;
+	    $this->set_header_start($venster);
+	    $this->Cell($cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
+	}
+	
+	# Gemensam funktion för all logik för att skriva ut ett fält
+	private function set_text($venster, $text) {
+	    global $y, $cell_width;
+	    
+	    if (empty($text)) return;
+	    
+	    $text = utf8_decode($text);
+	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
+	    if (strlen($text)>static::$text_max_length){
+	        $this->SetXY($venster, $y + static::$Margin-1);
+	        $this->SetFont('Helvetica','',static::$text_fontsize/1.5);
+	        $this->MultiCell($cell_width, static::$cell_y-1.5, $text, 0,'L');
+	        return;
+	    }
+	    # Normal utskrift
+	    $this->set_text_start($venster);
+	    $this->Cell($cell_width, static::$cell_y, $text,0,0,'L');
+	}
+	
+	private function set_full_page($header, $text) {
+	    global  $y, $left, $cell_width;
+	    
+	    $text = utf8_decode($text);
+	    $this->set_header($left, $header);
+	    $this->SetXY($left, $y + static::$Margin+1);
+	    
+	    if (strlen($text)>4000){
+	        $this->SetFont('Helvetica','',static::$text_fontsize/2); # Hantering för riktigt långa texter
+	        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L');
+	        return;
+	    }
+	    $this->SetFont('Helvetica','',static::$text_fontsize);
+	    $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
+	}
+	
+	
 }
 
 //If the user isnt admin it may not use this page
