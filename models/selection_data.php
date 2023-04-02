@@ -13,7 +13,7 @@ class SelectionData extends BaseModel{
     public static $orderListBy = 'SortOrder';
     
     # Används den här tabellen
-    public static function in_use() {
+    public static function is_in_use() {
         global $tbl_prefix; 
         $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE active = 1 ORDER BY SortOrder LIMIT 1;");
         
@@ -25,10 +25,10 @@ class SelectionData extends BaseModel{
         
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            return 0;
+            return false;
         }
         $stmt = null;
-        return 1;
+        return true;
     }
     
     public static function newFromArray($post) {

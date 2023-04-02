@@ -105,7 +105,7 @@ class ROLE_PDF extends FPDF {
     function erfarenhet($left)
     {  
         global $role;
-        if (!Experience::in_use()) return;
+        if (!Experience::is_in_use()) return;
         $this->set_header($left,'Erfarenhet');
         $person = $role->getPerson();
         if (empty($person)) return;
@@ -115,7 +115,7 @@ class ROLE_PDF extends FPDF {
     function rikedom($left)
     {
         global $role;
-        if (!Wealth::in_use()) return;
+        if (!Wealth::is_in_use()) return;
         $this->set_header($left,'Rikedom');
         $this->set_text($left, Wealth::loadById($role->WealthId)->Name);
     }
@@ -123,7 +123,7 @@ class ROLE_PDF extends FPDF {
     function lajvar_typ($left)
     {
         global $role;
-        if (!LarperType::in_use()) return;
+        if (!LarperType::is_in_use()) return;
         
         $this->set_header($left,'Lajvartyp');
         $person = $role->getPerson();
