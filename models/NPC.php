@@ -92,14 +92,14 @@ class NPC extends BaseModel{
    
    
     public static function getAllAssignedByGroup(NPCGroup $group, LARP $larp) {
-        if (is_null($larp) or is_null($group)) return Array();
+        if (empty($larp) or empty($group)) return Array();
         $sql = "SELECT * FROM regsys_npc WHERE ".
             "PersonId IS NOT NULL AND LarpId = ? AND NPCGroupId = ? ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
     }
      
     public static function getAllUnassignedByGroup(NPCGroup $group, LARP $larp) {
-        if (is_null($larp) or is_null($group)) return Array();
+        if (empty($larp) or empty($group)) return Array();
         $sql = "SELECT * FROM regsys_npc WHERE ".
             "PersonId IS NULL AND LarpId = ? AND NPCGroupId=? ORDER BY Name;";
 
@@ -107,14 +107,14 @@ class NPC extends BaseModel{
     }
     
     public static function getAllAssignedWithoutGroup(LARP $larp) {
-        if (is_null($larp)) return Array();
+        if (empty($larp)) return Array();
         $sql = "SELECT * FROM regsys_npc WHERE ".
             "PersonId IS NOT NULL AND LarpId = ? AND NPCGroupId IS NULL ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     public static function getAllUnassignedWithoutGroup(LARP $larp) {
-        if (is_null($larp)) return Array();
+        if (empty($larp)) return Array();
         $sql = "SELECT * FROM regsys_npc WHERE ".
             "PersonId IS NULL AND LarpId = ? AND NPCGroupId IS NULL ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
@@ -123,25 +123,41 @@ class NPC extends BaseModel{
     
     # Hämta NPCer i en grupp
     public static function getNPCsInGroup(NPCGroup $npc_group, LARP $larp) {
-        if (is_null($npc_group) || is_null($larp)) return Array();
+        if (empty($npc_group) || empty($larp)) return Array();
         $sql = "SELECT * FROM regsys_npc WHERE ".
             "NPCGroupId = ? AND LarpId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($npc_group->Id, $larp->Id));
     }
 
     
-    public function release() {
-        $this->IsReleased = 1;
-        BerghemMailer::send
-        $npcs = getNPCsInGroup();
-        foreach ($npcs as $npc) {
-            $npc->release();
-        }
-        $this->update();
-        
-        
+    
+    
+    public static function getReleasedNPCsForPerson(Person $person) {
+        if (empty($person))return Array();
+        $sql = "SELECT * FROM regsys_npc WHERE PersonId=? AND IsReleased=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id));
     }
     
+    public function release() {
+        if ($this->IsReleased()) return;
+        $this->IsReleased = 1;
+        $this->update();
+        //TODO fixa mail när npc är klar
+        //BerghemMailer::sendNPCMail();
+  
+    }
+    
+    public function getNPCGroup() {
+        if ($this->IsInGroup()) {
+            return NPCGroup::loadById($this->NPCGroupId);
+        }
+        return null;
+    }
+    
+    public function IsInGroup() {
+        if (empty($this->NPCGroupId)) return false;
+        return true;
+    }
     
     
     public function IsReleased() {

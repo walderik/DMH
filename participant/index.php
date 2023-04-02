@@ -59,6 +59,8 @@ include_once '../includes/error_handling.php';
     		<h2>Registreringar /anmälningar</h2>
     		<div>
     		<?php 
+    		
+    		//Personer
     		$persons = $current_user->getPersons();
     		if (empty($persons)) {
     		    echo "<a href='person_form.php'>Registrera en deltagare.</a>";
@@ -119,6 +121,8 @@ include_once '../includes/error_handling.php';
                     }
                     echo "</table>";
     		        
+                    
+                    //Grupper
     		        if (isset($groups) && count($groups) > 0) {
     		            echo "<br><b>Gruppansvarig för:</b><br>\n";
     		        }
@@ -140,6 +144,8 @@ include_once '../includes/error_handling.php';
     		            echo " Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "<br>\n";
     		        }
     		       
+    		        
+    		        //Karaktärer
     		        if (isset($roles) && count($roles) > 0) {
     		            echo "<br><b>Karaktärer:</b><br>\n";
     		            echo "<table class='roles'>\n";   		            
@@ -194,6 +200,30 @@ include_once '../includes/error_handling.php';
         		        
 
     		        echo "</div>\n";
+    		        
+    		        
+    		        
+    		        //NPC'er
+    		        $npcs = NPC::getReleasedNPCsForPerson($person);
+    		        if (isset($npcs) && count($npcs) > 0) {
+    		            echo "<br><b>NPC:</b><br>\n";
+    		            echo "<table class='roles'>\n";
+    		            foreach ($npcs as $npc)  {
+    		                echo "<tr><td style='font-weight: normal; padding-right: 0px;'>";
+    		                echo "<a href='view_npc.php?id=$npc->Id'>$npc->Name <i class='fa-solid fa-eye'></i></a>";
+    		                
+    		                if ($npc->IsInGroup()) {
+    		                  $npc_group = $npc->getNPCGroup();
+		                      echo "<a href='view_npc_group.php?id=$npc->NPCGroupId'>$npc->Name <i class='fa-solid fa-eye'></i></a>";
+    		                }
+
+    		                    
+    		            }
+    		                
+    		            
+    		        }
+    		        
+    		        
     		    }
     		}
     		?>

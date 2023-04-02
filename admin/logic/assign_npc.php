@@ -35,6 +35,7 @@ if ($personId == "null") {
 }
 
 $npc->PersonId = $personId;
+$npc->IsReleased = 0;
 $npc->update();
 
 

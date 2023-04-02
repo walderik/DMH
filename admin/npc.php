@@ -41,6 +41,15 @@ div.npc {
                 if (!empty($npcs)) {
                     echo "<div class='groupname'><a href='npc_group_form.php?operation=update&id=$npc_group->Id'>$npc_group->Name<i class='fa-solid fa-pen'></i></a>";
                     echo " <a href='logic/delete_npc_group.php?id=$npc_group->Id'><i class='fa-solid fa-trash'></i></a></div>";
+                    
+                    if ($npc_group->IsReleased()) {
+                        echo "Deltagarna har fått sina npc'er.\n";
+                    }
+                    else {
+                        echo "<form action='logic/release_npc_group.php' method='post'><input type='hidden' name='id' value='$npc_group->Id'>\n";
+                        echo "<input type ='submit' value='Skicka npc'er till deltagarna'>\n";
+                        echo "</form>\n";
+                    }
                 }
                 foreach($npcs as $npc) {
                     echo "<div class='npc'>";
@@ -54,6 +63,15 @@ div.npc {
                     echo "<input type='hidden' name='PersonId' value='null'>\n";
                     echo "<input type ='submit' value='Ta bort från deltagaren'>\n";
                     echo "</form>\n";
+                    
+                    
+                    if ($npc_group->IsReleased() && !$npc->IsReleased()) {
+                        echo "<form action='logic/release_npc.php' method='post'><input type='hidden' name='id' value='$npc->Id'>\n";
+                        echo "<input type ='submit' value='Skicka npc till deltagaren'>\n";
+                        echo "</form>\n";
+                    }
+                    
+                    
                     echo "</div>";
                 }
             }
@@ -72,6 +90,18 @@ div.npc {
                 echo "<input type='hidden' name='PersonId' value='null'>\n";
                 echo "<input type ='submit' value='Ta bort från deltagaren'>\n";
                 echo "</form>\n";
+
+                if ($npc->IsReleased()) {
+                    echo "Deltagaren har fått sin npc.\n";
+                }
+                else {
+                    echo "<form action='logic/release_npc.php' method='post'><input type='hidden' name='id' value='$npc->Id'>\n";
+                    echo "<input type ='submit' value='Skicka npc till deltagaren'>\n";
+                    echo "</form>\n";
+                }
+                
+                
+                
                 echo "</div>";
             }
             
