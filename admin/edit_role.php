@@ -58,8 +58,6 @@ include 'navigation_subpage.php';
 
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
 
-			<tr><td valign="top" class="header">NPC</td><td><?php echo ja_nej($role->IsNPC);?></td></tr>
-
 			<tr><td valign="top" class="header">Yrke&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="250" required></td></tr>
 

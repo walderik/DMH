@@ -89,14 +89,14 @@ class ROLE_PDF extends FPDF {
     function yrke($left) 
     {
         global $role;
-        $this->set_header($left,'Yrke');
+        $this->set_header($left, 'Yrke');
         $this->set_text($left, $role->Profession);
     }
     
     function epost($left)
     {
         global $role;
-        $this->set_header($left,'Epost');
+        $this->set_header($left, 'Epost');
         $person = $role->getPerson();
         if (empty($person)) return;
         $this->set_text($left, $person->Email);
@@ -106,7 +106,7 @@ class ROLE_PDF extends FPDF {
     {  
         global $role;
         if (!Experience::is_in_use()) return;
-        $this->set_header($left,'Erfarenhet');
+        $this->set_header($left, 'Erfarenhet');
         $person = $role->getPerson();
         if (empty($person)) return;
         $this->set_text($left, $person->getExperience()->Name);
@@ -116,7 +116,7 @@ class ROLE_PDF extends FPDF {
     {
         global $role;
         if (!Wealth::is_in_use()) return;
-        $this->set_header($left,'Rikedom');
+        $this->set_header($left, 'Rikedom');
         $this->set_text($left, Wealth::loadById($role->WealthId)->Name);
     }
     
@@ -125,10 +125,11 @@ class ROLE_PDF extends FPDF {
         global $role;
         if (!LarperType::is_in_use()) return;
         
-        $this->set_header($left,'Lajvartyp');
+        $this->set_header($left, 'Lajvartyp');
         $person = $role->getPerson();
         if (empty($person)) return;
-        $this->set_text($left, $person->getLarperType()->Name);
+        $text = $person->getLarperType()->Name." (".trim($person->TypeOfLarperComment).")";
+        $this->set_text($left, $text );
     }
     
     function group($left)
@@ -167,24 +168,27 @@ class ROLE_PDF extends FPDF {
         
         $this->epost($left);
         $this->mittlinje();
-        $this->yrke($left2);
+        $this->group($left2);
         
         $y += $cell_y_space;
         $this->bar();
         
         $this->erfarenhet($left);
         $this->mittlinje();
-        $this->rikedom($left2);
+        $this->yrke($left2);
         
         $y += $cell_y_space;
         $this->bar();
         
         $this->lajvar_typ($left);
         $this->mittlinje();
-        $this->group($left2);
+        $this->rikedom($left2);
+        
         
         $y += $cell_y_space;
         $this->bar();
+        
+//         $this->lajvar_typ_kommentar($left);
         
         $this->AddPage();
         $this->beskrivning();
@@ -233,7 +237,7 @@ class ROLE_PDF extends FPDF {
 	    
 	    if (empty($text)) return;
 	    
-	    $text = utf8_decode($text);
+	    $text = trim(utf8_decode($text));
 	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
 	    if (strlen($text)>static::$text_max_length){
 	        $this->SetXY($venster, $y + static::$Margin-1);

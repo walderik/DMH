@@ -4,7 +4,6 @@ class Role extends BaseModel{
     
     public $Id;
     public $Name;
-    public $IsNPC = 0;
     public $Profession;
     public $Description;
     public $DescriptionForGroup;
@@ -42,7 +41,6 @@ class Role extends BaseModel{
 
         if (isset($arr['Id']))   $this->Id = $arr['Id'];
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
-        if (isset($arr['IsNPC'])) $this->IsNPC = $arr['IsNPC'];
         if (isset($arr['Profession'])) $this->Profession = $arr['Profession'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['DescriptionForGroup'])) $this->DescriptionForGroup = $arr['DescriptionForGroup'];
@@ -83,14 +81,14 @@ class Role extends BaseModel{
     # Update an existing object in db
     public function update() {
         global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Name=?, IsNPC=?, Profession=?, Description=?,
+        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Name=?, Profession=?, Description=?,
                                                               DescriptionForGroup=?, DescriptionForOthers=?,
                                                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
                                                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                                                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, Birthplace=?, 
                                                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, 
+        if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
@@ -107,14 +105,14 @@ class Role extends BaseModel{
     public function create() { 
         global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, IsNPC, Profession, Description, 
+        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, Profession, Description, 
                                                             DescriptionForGroup, DescriptionForOthers, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId,
                                                             Birthplace, CharactersWithRelations, CampaignId, ImageId, IsDead) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?);");
         
-        if (!$stmt->execute(array($this->Name, $this->IsNPC, $this->Profession, $this->Description, $this->DescriptionForGroup, 
+        if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, $this->DescriptionForGroup, 
             $this->DescriptionForOthers,$this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
