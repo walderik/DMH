@@ -20,20 +20,20 @@ class ROLE_PDF extends FPDF {
     
     public static $header_fontsize = 6;
     public static $text_fontsize = 12;
+    public static $text_max_length = 45;
     
     
     
     function Header()
     {
-        global $root;
-//         $this->Image($root . '/images/telegram.png',null,null,200);
+        global $root, $y;
         $this->SetLineWidth(1);
-//         $this->Line(float x1, float y1, float x2, float y2)
-
         $this->Line(static::$x_min, static::$y_min, static::$x_max, static::$y_min);
         $this->Line(static::$x_min, static::$y_min, static::$x_min, static::$y_max);
         $this->Line(static::$x_min, static::$y_max, static::$x_max, static::$y_max);
         $this->Line(static::$x_max, static::$y_min, static::$x_max, static::$y_max);
+        
+        $y = static::$y_min + static::$Margin;
     }
     
     # Skriv ut lajvnamnet högst upp.
@@ -68,21 +68,67 @@ class ROLE_PDF extends FPDF {
     }
     
     # Gemensamt sätt beräkna var rubriken i ett fält ska ligga
-    function set_header_start($l)
+    function set_header_start($venster)
     {
         global $y;
-        $this->SetXY($l, $y);
+        $this->SetXY($venster, $y);
         $this->SetFont('Helvetica','',static::$header_fontsize);
     }
     
     # Gemensamt sätt beräkna var texten i ett fält ska ligga
-    function set_text_start($l)
+    function set_text_start($venster)
     {
         global $y;
-        $this->SetXY($l, $y + static::$Margin + 1);
+        $this->SetXY($venster, $y + static::$Margin + 1);
         $this->SetFont('Helvetica','',static::$text_fontsize);
     }
     
+    # Gemensam funktion för all logik för att skriva ut ett rubriken
+    function set_header($venster, $text)
+    {
+        global $cell_width;
+        $this->set_header_start($venster);
+        $this->Cell($cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
+    }
+    
+    # Gemensam funktion för all logik för att skriva ut ett fält
+    function set_text($venster, $text)
+    {
+        global $y, $cell_width;
+        
+        if (empty($text)) return;
+        
+        $text = utf8_decode($text);
+        # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
+        if (strlen($text)>static::$text_max_length){
+            $this->SetXY($venster, $y + static::$Margin-1);
+            $this->SetFont('Helvetica','',static::$text_fontsize/1.5);
+            $this->MultiCell($cell_width, static::$cell_y-1.5, $text, 0,'L');
+            return;
+        }
+        # Normal utskrift
+        $this->set_text_start($venster);
+        $this->Cell($cell_width, static::$cell_y, $text,0,0,'L');
+    }
+    
+    function set_full_page($header, $text)
+    {
+        global  $y, $left, $cell_width;
+        
+        $text = utf8_decode($text);
+        $this->set_header($left, $header);
+        $this->SetXY($left, $y + static::$Margin+1);
+        
+        if (strlen($text)>4000){
+            $this->SetFont('Helvetica','',static::$text_fontsize/2); # Hantering för riktigt långa texter
+            $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L');
+            return;
+        }
+        $this->SetFont('Helvetica','',static::$text_fontsize);
+        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
+    }
+    
+    # Namnen på roll och spelare
     function names(Role $role) 
     {
         global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
@@ -102,19 +148,12 @@ class ROLE_PDF extends FPDF {
         $this->SetFont('Helvetica','B',24); # Extra stora bokstäver på karaktärens namn
         $this->Cell($cell_width, static::$cell_y, utf8_decode($role->Name),0,0,'L');
         
-        
         $this->mittlinje();
         
         $person = $role->getPerson();
         
-        $this->set_header_start($left2);
-        $this->Cell($cell_width, static::$cell_y, utf8_decode('Spelare'),0,0,'L');
-        
-        $this->set_text_start($left2);
-        $this->Cell($cell_width, static::$cell_y, utf8_decode($person->Name),0,0,'L');
-        
-        
-        $y += $cell_y_space;
+        $this->set_header($left2, 'Spelare');  
+        $this->set_text($left2, $person->Name);
         
         $this->bar();
     }
@@ -122,51 +161,54 @@ class ROLE_PDF extends FPDF {
     function yrke(Role $role) 
     {
         global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
-        $this->set_header_start($left);
-        $this->Cell($cell_width, static::$cell_y, utf8_decode('Yrke'),0,0,'L');
-        
-        $this->set_text_start($left);
-        $this->Cell($cell_width, static::$cell_y, utf8_decode($role->Profession),0,0,'L');
-        
-        $this->mittlinje();
+        $this->set_header($left,'Yrke');
+        $this->set_text($left, $role->Profession);
     }
     
-    function group(Group $group)
+    function group(Role $role)
     {
         global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
-        $this->set_header_start($left2);
-        $this->Cell($cell_width, static::$cell_y, utf8_decode('Grupp'),0,0,'L');
-        
-        $this->set_text_start($left2);
-        $this->Cell($cell_width, static::$cell_y, utf8_decode($group->Name),0,0,'L');
-        
-        $this->mittlinje();
+        $this->set_header($left2, 'Grupp');
+        $group = $role->getGroup();
+        if (empty($group)) return;
+        $this->set_text($left2, $group->Name);
+    }
+    
+    function beskrivning(Role $role)
+    {
+        $this->set_full_page('Beskrivning', $role->Description);
     }
     
     function new_character_cheet(Role $role)
     {
         global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
         
-        $y = static::$y_min + static::$Margin;
+//         $y = static::$y_min + static::$Margin;
         $left = static::$x_min + static::$Margin;
         $x = $left;
-        $cell_width = (static::$x_max - static::$x_min) / 2 ;
+        $cell_width = (static::$x_max - static::$x_min) / 2 - (2*static::$Margin);
         $cell_y_space = static::$cell_y + (2*static::$Margin);
-        $mitten = $cell_width + static::$x_min;
+        $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
         $left2 = $mitten + static::$Margin;
         
         $this->AddPage();
         
         $this->title();
         $this->names($role);
-        $this->yrke($role);
-        $group = $role->getGroup();
-        if (!empty($group)) {
-            $this->group($group);
-        }
         
         $y += $cell_y_space;
         $this->bar();
+        
+        $this->yrke($role);
+        $this->mittlinje();
+        $this->group($role);
+        
+        $y += $cell_y_space;
+        $this->bar();
+        
+        $this->AddPage();
+        $this->beskrivning($role);
+        
 	}
 }
 
