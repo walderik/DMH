@@ -12,6 +12,25 @@ class SelectionData extends BaseModel{
     //public static $tableName = 'wealths';
     public static $orderListBy = 'SortOrder';
     
+    # Används den här tabellen
+    public static function in_use() {
+        global $tbl_prefix; 
+        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE active = 1 ORDER BY SortOrder LIMIT 1;");
+        
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return 0;
+        }
+        $stmt = null;
+        return 1;
+    }
+    
     public static function newFromArray($post) {
         $selectionData = static::newWithDefault();
         if (isset($post['SortOrder'])) $selectionData->SortOrder = $post['SortOrder'];
