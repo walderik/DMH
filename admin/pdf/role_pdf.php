@@ -41,11 +41,12 @@ class ROLE_PDF extends FPDF {
     {
         global $x, $y, $left, $current_larp;
 
-        $font_size = (strlen(utf8_decode($current_larp->Name)) * (26.5 / 9));
-        $this->SetFont('Helvetica','', $font_size);    # OK är Times, Arial, Helvetica
+        $font_size = (850 / strlen(utf8_decode($current_larp->Name)));
+        if ($font_size > 90) $font_size = 90;
+        $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
         $this->SetXY($left, $y-2);
-        $this->Cell(0, static::$cell_y*5, utf8_decode($current_larp->Name),0,0,'L');
+        $this->Cell(0, static::$cell_y*5, utf8_decode($current_larp->Name),0,0,'C');
         
         $y = static::$y_min + (static::$cell_y*5) + (static::$Margin);
         
@@ -59,16 +60,35 @@ class ROLE_PDF extends FPDF {
         $this->Line(static::$x_min, $y, static::$x_max, $y);
     }
     
+    function mittlinje()
+    {
+        global $y, $cell_y_space, $mitten;
+        $down = $y + $cell_y_space;
+        $this->Line($mitten, $y, $mitten, $down);
+    }
+    
     function name(Role $role) 
     {
         global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp;
         
-        $down = $y + $cell_y_space;
-        $this->Line($mitten, $y, $mitten, $down);
+        $this->SetXY($left, $y);
+        $this->SetFont('Helvetica','',static::$header_fontsize);
+        $type = ($role->isMain($current_larp)) ? 'Huvudkaraktär' : 'Sidokaraktär';
+        
+        if ($role->IsDead) {
+            $type = 'Avliden';
+            $this->Line(static::$x_min, $y+static::$Margin*1.5, $mitten, $y+static::$Margin*1.5);
+        }
+        
+        
+        $this->Cell($cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
         
         $this->SetXY($left, $y + static::$Margin);
-        $this->SetFont('Helvetica','',24);
+        $this->SetFont('Helvetica','B',24); # Extra stora bokstäver på karaktärens namn
         $this->Cell($cell_width, static::$cell_y, utf8_decode($role->Name),0,0,'L');
+        
+        
+        $this->mittlinje();
         
         $person = $role->getPerson();
         
@@ -76,12 +96,12 @@ class ROLE_PDF extends FPDF {
         $this->SetFont('Helvetica','',static::$header_fontsize);
         $this->Cell($cell_width, static::$cell_y, utf8_decode('Spelare'),0,0,'L');
         
-        $this->SetXY($left2, $y + static::$Margin);
+        $this->SetXY($left2, $y + static::$Margin + 1);
         $this->SetFont('Helvetica','',static::$text_fontsize);
         $this->Cell($cell_width, static::$cell_y, utf8_decode($person->Name),0,0,'L');
         
         
-        $y = $down;
+        $y += $cell_y_space;
         
         $this->bar();
     }
