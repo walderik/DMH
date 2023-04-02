@@ -104,8 +104,23 @@ class Campaign extends BaseModel{
     }
     
     public function hej() {
-        if ($this->Abbreviation=='DMH') return "Howdy";
+        if ($this->is_dmh) return "Howdy";
         return "Hej";
     }
+    
+    # Är det här Död Mans Hand
+    public function is_dmh() {
+        return ($this->Abbreviation=='DMH');
+    }
 
+    # Är det här Domen Över Hjorvard
+    public function is_domen() {
+        return ($this->Abbreviation=='DÖH');
+    }
+    
+    # Är det här Kampen i Ringen
+    public function is_kir() {
+        return ($this->Abbreviation=='KIR');
+    }
+    
 }
