@@ -31,7 +31,7 @@ include 'navigation_subpage.php';
 
     <div class="content">
         <h1>Telegram</h1>
-            <a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
         
             <a href="pdf/telegram_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a>  
         

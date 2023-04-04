@@ -20,7 +20,7 @@ class ROLE_PDF extends FPDF {
     
     public static $header_fontsize = 6;
     public static $text_fontsize = 12;
-    public static $text_max_length = 52;
+    public static $text_max_length = 50;
     
     
     
@@ -171,8 +171,14 @@ class ROLE_PDF extends FPDF {
     
     function beskrivning()
     {
-        global $role;
-        $this->set_full_page('Beskrivning', $role->Description);
+        global $role, $y;
+//         $this->set_full_page('Beskrivning '.strlen($role->Description), $role->Description);
+        $text = $role->Description; #.' '.strlen($role->Description);
+        if (($y > (static::$y_max/2)-static::$Margin) || (strlen($text)>2600)) {
+            $this->set_full_page('Beskrivning', $text);
+        } else {
+            $this->set_rest_of_page('Beskrivning', $text);
+        }
     }
     
     function new_character_cheet(Role $role)
@@ -229,7 +235,6 @@ class ROLE_PDF extends FPDF {
         $y += $cell_y_space;
         $this->bar();
         
-        $this->AddPage();
         $this->beskrivning();
         
 	}
@@ -280,8 +285,14 @@ class ROLE_PDF extends FPDF {
 	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
 	    if (strlen($text)>static::$text_max_length){
 	        $this->SetXY($venster, $y + static::$Margin-1);
-	        $this->SetFont('Helvetica','',static::$text_fontsize/1.5);
-	        $this->MultiCell($cell_width, static::$cell_y-1.5, $text, 0,'L');
+	        $this->SetFont('Arial','',static::$text_fontsize/1.5);
+	        
+	        if (strlen($text)>210) {
+	            $this->SetFont('Arial','',static::$header_fontsize);
+	            $this->MultiCell($cell_width+5, static::$cell_y-2.1, $text, 0,'L'); # Väldigt liten och tät text
+	        } else {
+	            $this->MultiCell($cell_width+5, static::$cell_y-1.5, $text, 0,'L');
+	        }
 	        return;
 	    }
 	    # Normal utskrift
@@ -292,11 +303,34 @@ class ROLE_PDF extends FPDF {
 	private function set_full_page($header, $text) {
 	    global  $y, $left, $cell_width;
 	    
+	    $this->AddPage();
+	    
 	    $text = utf8_decode($text);
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    
-	    if (strlen($text)>4000){
+	    if (strlen($text)>3500){
+	        $this->SetFont('Helvetica','',static::$header_fontsize);
+	        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-2.5, $text, 0,'L'); # Mindre radavstånd
+	        return;
+	    }
+	    if (strlen($text)>2900){
+	        $this->SetFont('Helvetica','',static::$text_fontsize-1);
+	        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L'); # Mindre radavstånd
+	        return;
+	    }
+	    $this->SetFont('Helvetica','',static::$text_fontsize);
+	    $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
+	}
+	
+	private function set_rest_of_page($header, $text) {
+	    global  $y, $left, $cell_width;
+	    
+	    $text = utf8_decode($text);
+	    $this->set_header($left, $header);
+	    $this->SetXY($left, $y + static::$Margin+1);
+	    
+	    if (strlen($text)>2000){
 	        $this->SetFont('Helvetica','',static::$text_fontsize/2); # Hantering för riktigt långa texter
 	        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L');
 	        return;
