@@ -16,7 +16,7 @@ class Person extends BaseModel{
     public $LarperTypeId;
     public $UserId; # Användare som registrerat personen
     public $NotAcceptableIntrigues;
-    public $HouseId;
+    public $HouseId; #Förvaltare av huset
 
     public static $orderListBy = 'Name';
     
@@ -66,6 +66,14 @@ class Person extends BaseModel{
             $person->UserId = $current_user->Id;
         }
         return $person;
+    }
+    
+    public static function getHouseCaretakers(LARP $larp) {
+        if (!isset($larp)) return Array();
+        $sql = "SELECT * FROM regsys_person WHERE Id IN ".
+            "(SELECT PersonId FROM regsys_registration WHERE LarpId=?) AND ".
+            "HouseId Is NOT NULL ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     public static function SSNAlreadyExists($ssn) {

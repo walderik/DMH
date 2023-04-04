@@ -218,7 +218,7 @@ class Role extends BaseModel{
             "regsys_role.Id=regsys_larp_role.RoleId AND ".
             "regsys_larp_role.IsMainRole = 1 AND ".
             "regsys_larp_role.LarpId=?;";
-        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+        return static::getOneObjectQuery($sql, array($person->Id, $larp->Id));
     }
     
     
