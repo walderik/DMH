@@ -44,3 +44,7 @@ Nu ska du ha en databas redo
 
 Nu ska du konna testa din nya lokal site med att starta Apache i XAMPP. och surfa till din lokala server på 
 http://localhost/regsys/index.php
+
+
+8. Dags skaffa en bra editor. Här i Skirebo kör vi med Eclipse PDT eftersom vi är vana vid den, men vilket EDI som helst funkar.
+https://www.eclipse.org/pdt/

@@ -321,7 +321,7 @@ if (!$role->isRegistered($current_larp)) {
 
 
 $pdf = new ROLE_PDF();
-$pdf->SetTitle(utf8_decode('Karaktärsblad'));
+$pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('Helvetica','');
