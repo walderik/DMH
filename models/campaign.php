@@ -48,8 +48,7 @@ class Campaign extends BaseModel{
     
     # Update an existing campaign in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix.strtolower(static::class)." SET Name=?, Abbreviation=?, Description=?, Icon=?, Homepage=?, Email=?, Bankaccount=?, MinimumAge=?, MinimumAgeWithoutGuardian=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_campaign SET Name=?, Abbreviation=?, Description=?, Icon=?, Homepage=?, Email=?, Bankaccount=?, MinimumAge=?, MinimumAgeWithoutGuardian=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
             $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Id))) {
@@ -63,9 +62,8 @@ class Campaign extends BaseModel{
     
     # Create a new campaign in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix.strtolower(static::class)." (Name, Abbreviation, Description, Icon, Homepage, Email, Bankaccount, MinimumAge, MinimumAgeWithoutGuardian) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_campaign (Name, Abbreviation, Description, Icon, Homepage, Email, Bankaccount, MinimumAge, MinimumAgeWithoutGuardian) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
             $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian))) {
@@ -79,32 +77,15 @@ class Campaign extends BaseModel{
     }
     
     
-    public static function loadByAbbreviation($abbreviation)
-    {
-        global $tbl_prefix;
+    public static function loadByAbbreviation($abbreviation) {
+    
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Abbreviation = ?");
-        
-        if (!$stmt->execute(array($abbreviation))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return null;
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $row = $rows[0];
-        $stmt = null;
-        
-        return static::newFromArray($row);
-    }
+        $sql = "SELECT * FROM regsys_campaign WHERE Abbreviation = ?";
+        return static::getOneObjectQuery($sql, array($abbreviation));
+     }
     
     public function hej() {
-        if ($this->is_dmh) return "Howdy";
+        if ($this->is_dmh()) return "Howdy";
         return "Hej";
     }
     

@@ -5,7 +5,7 @@ include 'navigation_subpage.php';
 
 <div class="content">
     <h1>Köket</h1>
-    Totalt är det <?php echo count(Registration::allBySelectedLARP()); ?> anmälda deltagare.<br>
+    Totalt är det <?php echo count(Registration::allBySelectedLARP($current_larp)); ?> anmälda deltagare.<br>
     <h2>Vald mat</h2>
     <?php 
     $count = TypeOfFood::countByType($current_larp);
@@ -38,15 +38,17 @@ include 'navigation_subpage.php';
     
     //Multipla allergier
     $persons = Person::getAllWithMultipleAllergies($current_larp);
-    echo "<h3>Multipla vanliga allergier</h3><table class='data'>";
-    echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Allergier</th><th>Övrigt</th><th>Vald mat</th></tr>";
-    foreach($persons as $person) {
-        echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td>";
-        echo "<td>$person->PhoneNumber</td><td>" . commaStringFromArrayObject($person->getNormalAllergyTypes()) . "</td>";
-        echo "<td>$person->FoodAllergiesOther</td><td>" . $person->getTypeOfFood()->Name . "</td></tr>";
+    if (!empty($persons) && count($persons) > 0) {
+        echo "<h3>Multipla vanliga allergier</h3>";
+        echo "<table class='data'>";
+        echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Allergier</th><th>Övrigt</th><th>Vald mat</th></tr>";
+        foreach($persons as $person) {
+            echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td>";
+            echo "<td>$person->PhoneNumber</td><td>" . commaStringFromArrayObject($person->getNormalAllergyTypes()) . "</td>";
+            echo "<td>$person->FoodAllergiesOther</td><td>" . $person->getTypeOfFood()->Name . "</td></tr>";
+        }
+        echo "</table>";
     }
-    echo "</table>";
-    
     
     //Hitta alla som inte har någon vald allergi, men som har en kommentar
     $persons = Person::getAllWithoutAllergiesButWithComment($current_larp);

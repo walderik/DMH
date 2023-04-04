@@ -41,58 +41,23 @@ class User extends BaseModel{
     }
     
     public static function loadByEmail($email) {
-        global $tbl_prefix;
         if (is_null($email)) return null;
         
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."user` WHERE Email = ?;");
-        
-        if (!$stmt->execute(array($email))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return null;
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $row = $rows[0];
-        $stmt = null;
-        
-        return static::newFromArray($row);
+        $sql = "SELECT * FROM regsys_user WHERE Email = ?;";
+        return static::getOneObjectQuery($sql, array($email));
     }
     
     # För att hitta användaren som vill byta lösenord
     public static function loadByEmailChangeCode($code) {
-        global $tbl_prefix;
         if (is_null($code)) return null;
         
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."user` WHERE EmailChangeCode = ?;");
-        
-        if (!$stmt->execute(array($code))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return null;
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $row = $rows[0];
-        $stmt = null;
-        
-        return static::newFromArray($row);
+        $sql = "SELECT * FROM regsys_user WHERE EmailChangeCode = ?;";
+        return static::getOneObjectQuery($sql, array($code));
     }
     
     # Update an existing group in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix."user SET Name=?, Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=?, Blocked=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_user SET Name=?, Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=?, Blocked=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked, $this->Id))) {
             $stmt = null;
@@ -105,9 +70,8 @@ class User extends BaseModel{
     
     # Create a new group in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."user (Name, Email, Password, IsAdmin, ActivationCode, EmailChangeCode, Blocked) VALUES (?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_user (Name, Email, Password, IsAdmin, ActivationCode, EmailChangeCode, Blocked) VALUES (?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked))) {
             $stmt = null;
@@ -168,14 +132,12 @@ class User extends BaseModel{
     
     public function isMember($group) {
         //Kollar om användaren har en person som har en roll som är med i gruppen (och anmäld)
-        global $tbl_prefix;
-            
-
         if (!isset($group)) return false;
         
-        $sql = "SELECT COUNT(*) AS Num FROM `".$tbl_prefix."role`, ".$tbl_prefix."person WHERE ".
-        $tbl_prefix."role.GroupId=? AND ".$tbl_prefix."role.PersonId = ".
-        $tbl_prefix."person.Id AND ".$tbl_prefix."person.UserId=?;";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_role, regsys_person WHERE ".
+        "regsys_role.GroupId=? AND ".
+        "regsys_role.PersonId = regsys_person.Id AND ".
+        "regsys_person.UserId=?;";
 
         $stmt = static::connectStatic()->prepare($sql);
         

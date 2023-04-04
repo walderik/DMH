@@ -47,8 +47,7 @@ class LARP extends BaseModel{
     
     # Update an existing larp in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix.strtolower(static::class)." SET Name=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, DisplayIntrigues=?, CampaignId=?, RegistrationOpen=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp SET Name=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, DisplayIntrigues=?, CampaignId=?, RegistrationOpen=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
@@ -63,10 +62,8 @@ class LARP extends BaseModel{
     
     # Create a new larp in db
     public function create() {
-        global $tbl_prefix;
-
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix.strtolower(static::class)." (Name, TagLine, StartDate, EndDate, MaxParticipants, 
+        $stmt = $connection->prepare("INSERT INTO regsys_larp (Name, TagLine, StartDate, EndDate, MaxParticipants, 
             LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId, RegistrationOpen) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
@@ -112,84 +109,21 @@ class LARP extends BaseModel{
     }
     
     public static function allFutureOpenLARPs() {
-            global $tbl_prefix;
-
-            $sql = "SELECT * FROM `".$tbl_prefix."larp` WHERE StartDate >= CURDATE() AND RegistrationOpen=1 ORDER BY ".static::$orderListBy.";";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute()) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray;
+            $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND RegistrationOpen=1 ORDER BY ".static::$orderListBy.";";
+            return static::getSeveralObjectsqQuery($sql, null);
         }
         
         public static function allFutureNotYetOpenLARPs() {
-            global $tbl_prefix;
-            
-            $sql = "SELECT * FROM `".$tbl_prefix."larp` WHERE StartDate >= CURDATE() AND RegistrationOpen=0 AND LatestRegistrationDate >= CURDATE() ORDER BY ".static::$orderListBy.";";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute()) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray;
+            $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND RegistrationOpen=0 ".
+                "AND LatestRegistrationDate >= CURDATE() ORDER BY ".static::$orderListBy.";";
+            return static::getSeveralObjectsqQuery($sql, null);
         }
         
         public static function allPastLarpsWithRegistrations(User $user) {
-            global $tbl_prefix;
-            
-            $sql = "SELECT * FROM `".$tbl_prefix."larp` WHERE StartDate <= CURDATE() AND Id IN (SELECT DISTINCT ".$tbl_prefix."registration.LARPId FROM ".$tbl_prefix."person, ".$tbl_prefix."registration WHERE ".$tbl_prefix."person.id = ".$tbl_prefix."registration.PersonId AND ".$tbl_prefix."person.UserId = ?) ORDER BY ".static::$orderListBy.";";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($user->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray;
+            $sql = "SELECT * FROM regsys_larp WHERE StartDate <= CURDATE() AND Id IN ".
+                "(SELECT DISTINCT regsys_registration.LARPId FROM regsys_person, regsys_registration WHERE ".
+                "regsys_person.id = regsys_registration.PersonId AND regsys_person.UserId = ?) ORDER BY ".static::$orderListBy.";";
+            return static::getSeveralObjectsqQuery($sql, array($user->Id));
         }
         
         

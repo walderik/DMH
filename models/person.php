@@ -70,12 +70,9 @@ class Person extends BaseModel{
     
     public static function SSNAlreadyExists($ssn) {
         //Kollar om det redan finns en deltagare med det här personnumret
-        global $tbl_prefix;
-        
-        
         if (!isset($ssn)) return false;
         
-        $sql = "SELECT Id FROM `".$tbl_prefix."person` WHERE SocialSecurityNumber=?;";
+        $sql = "SELECT Id FROM regsys_person WHERE SocialSecurityNumber=?;";
         
         $stmt = static::connectStatic()->prepare($sql);
         
@@ -98,193 +95,69 @@ class Person extends BaseModel{
     
     
     public static function getPersonsForUser($userId) {
-        global $tbl_prefix;
-        $sql = "SELECT * FROM ".$tbl_prefix.strtolower(static::class)." WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($userId))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_person WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($userId));
     }
     
     public static function getAllRegistered($larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return array();
-        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".
-        $tbl_prefix."registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-        
+        $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
+        "regsys_registration WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     
     public static function getAllInterestedNPC($larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return array();
-        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".
-            $tbl_prefix."registration` WHERE LarpId = ? AND NPCDesire <> '')  ORDER BY ".static::$orderListBy.";";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($larp->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray;
-            
+        $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
+            "regsys_registration WHERE LarpId = ? AND NPCDesire <> '') ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     
     public static function getAllToApprove($larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return array();
-        $sql = "SELECT * from `".$tbl_prefix."person` WHERE Id in (SELECT PersonId FROM `".
-        $tbl_prefix."registration` WHERE LarpId = ? AND Approved IS Null)  ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-        
+        $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
+        "regsys_registration WHERE LarpId = ? AND Approved IS Null) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
  
     
     
     public static function findGuardian($guardianInfo, $larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return array();
-        $sql = "SELECT * from `".$tbl_prefix."person` WHERE (Name=? OR SocialSecurityNumber = ?) AND Id in (SELECT PersonId FROM `".
-            $tbl_prefix."registration` WHERE LarpId = ?)  ORDER BY ".static::$orderListBy.";";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($guardianInfo, $guardianInfo, $larp->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
+        $sql = "SELECT * from regsys_person WHERE (Name=? OR SocialSecurityNumber = ?) AND Id IN ".
+            "(SELECT PersonId FROM regsys_registration WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        $persons = static::getSeveralObjectsqQuery($sql, array($guardianInfo, $guardianInfo, $larp->Id));
+        foreach ($persons as $person) {
+            if ($person->getAgeAtLarp($larp) >= 18) {
+                $resultArray[] = $person;
             }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return null;
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $person = static::newFromArray($row);
-                if ($person->getAgeAtLarp($larp) >= 18) {
-                    $resultArray[] = $person;
-                }
-            }
-            $stmt = null;
-            if (count($resultArray) == 0) return null;
-            return $resultArray[0];
+        }
+        if (count($resultArray) == 0) return null;
+        return $resultArray[0];
             
     }
     
     
     # Hämta anmälda deltagare i en grupp
     public static function getPersonsInGroupAtLarp($group, $larp) {
-        global $tbl_prefix;
         if (is_null($group) || is_null($larp)) return Array();
         
-        $sql="select * from `".$tbl_prefix."person` WHERE id IN (SELECT DISTINCT ".
-        $tbl_prefix."role.PersonId FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".
-        $tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".
-        $tbl_prefix."larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($group->Id, $larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql="select * from regsys_person WHERE id IN ".
+            "(SELECT DISTINCT regsys_role.PersonId ".
+            "FROM regsys_role, regsys_larp_role WHERE ".
+            "regsys_role.GroupId = ? AND ".
+            "regsys_role.Id=regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
     
     
     # Update an existing person in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix.strtolower(static::class)." SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
+        $stmt = $this->connect()->prepare("UPDATE regsys_person SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperienceId=?,
                                                                   TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=?, HouseId=? WHERE Id = ?;");
         
@@ -301,9 +174,8 @@ class Person extends BaseModel{
     
     # Create a new person in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix.strtolower(static::class)." (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
+        $stmt = $connection->prepare("INSERT INTO regsys_person (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
                                                                     TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues, HouseId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
         
@@ -322,13 +194,12 @@ class Person extends BaseModel{
     
     # Spara den här relationen
     public function saveAllNormalAllergyTypes($post) {
-        global $tbl_prefix;
         if (!isset($post['NormalAllergyTypeId'])) {
             return; 
         }
         foreach($post['NormalAllergyTypeId'] as $Id) {
             $stmt = $this->connect()->prepare("INSERT INTO ".
-                $tbl_prefix."normalallergytype_person (NormalAllergyTypeId, PersonId) VALUES (?,?);");
+                "regsys_normalallergytype_person (NormalAllergyTypeId, PersonId) VALUES (?,?);");
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -340,8 +211,7 @@ class Person extends BaseModel{
 
     
     public function deleteAllNormalAllergyTypes() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."normalallergytype_person WHERE PersonId = ?;");
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_normalallergytype_person WHERE PersonId = ?;");
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -379,11 +249,10 @@ class Person extends BaseModel{
     }
     
     public function getNormalAllergyTypes() {
-        global $tbl_prefix;
         if (is_null($this->Id)) return array();
         
         $stmt = $this->connect()->prepare("SELECT * FROM ".
-            $tbl_prefix."normalallergytype_person where PersonId = ? ORDER BY NormalAllergyTypeId;");
+            "regsys_normalallergytype_person WHERE PersonId = ? ORDER BY NormalAllergyTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
@@ -406,11 +275,10 @@ class Person extends BaseModel{
     }
     
     public function getSelectedNormalAllergyTypeIds() {
-        global $tbl_prefix;
         if (is_null($this->Id)) return array();
         
         $stmt = $this->connect()->prepare("SELECT NormalAllergyTypeId FROM ".
-            $tbl_prefix."normalallergytype_person where PersonId = ? ORDER BY NormalAllergyTypeId;");
+            "regsys_normalallergytype_person WHERE PersonId = ? ORDER BY NormalAllergyTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
@@ -471,11 +339,7 @@ class Person extends BaseModel{
     }
     
     public function isNeverRegistered() {
-        global $tbl_prefix;
-        
-
-        
-        $sql = "SELECT COUNT(*) AS Num FROM `".$tbl_prefix."registration` WHERE PersonId=?;";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE PersonId=?;";
         
         $stmt = static::connectStatic()->prepare($sql);
         
@@ -555,205 +419,71 @@ class Person extends BaseModel{
     }
     
     public static function getAllWithSingleAllergy(NormalAllergyType $allergy, LARP $larp) {
-        global $tbl_prefix;
         if (is_null($allergy) OR is_null($larp)) return Array();
 
-        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".
-        $tbl_prefix."normalallergytype_person.PersonId FROM ".
-        $tbl_prefix."normalallergytype_person, ".
-        $tbl_prefix."registration, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".
-        $tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount = 1 AND Counted.PersonId = ".
-        $tbl_prefix."normalallergytype_person.PersonId and ".
-        $tbl_prefix."normalallergytype_person.NormalAllergyTypeId=? AND ".
-        $tbl_prefix."registration.PersonId=".
-        $tbl_prefix."normalallergytype_person.PersonId AND ".
-        $tbl_prefix."registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
-
-        $stmt = static::connectStatic()->prepare($sql);
+        $sql="SELECT * FROM regsys_person WHERE id IN ".
+            "(SELECT regsys_normalallergytype_person.PersonId FROM ".
+            "regsys_normalallergytype_person, regsys_registration, ".
+            "(SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".
+            "regsys_normalallergytype_person GROUP BY PersonId) as Counted WHERE amount = 1 AND Counted.PersonId = ".
+            "regsys_normalallergytype_person.PersonId AND ".
+            "regsys_normalallergytype_person.NormalAllergyTypeId=? AND ".
+            "regsys_registration.PersonId=regsys_normalallergytype_person.PersonId AND ".
+            "regsys_registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
         
-        if (!$stmt->execute(array($allergy->Id, $larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-        
+        return static::getSeveralObjectsqQuery($sql, array($allergy->Id, $larp->Id));
     }
     
     public static function getAllWithMultipleAllergies(LARP $larp) {
-        global $tbl_prefix;
-
         if (is_null($larp)) return Array();
-        $sql="select * from `".$tbl_prefix."person` WHERE id IN (Select ".
-        $tbl_prefix."normalallergytype_person.PersonId FROM ".$tbl_prefix."normalallergytype_person, ".
-        $tbl_prefix."registration, (SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".
-        $tbl_prefix."normalallergytype_person GROUP BY PersonId) as Counted WHERE amount > 1 AND Counted.PersonId = ".
-        $tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."registration.PersonId=".
-        $tbl_prefix."normalallergytype_person.PersonId AND ".$tbl_prefix."registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-        
+        $sql="SELECT * FROM regsys_person WHERE id IN ".
+            "(SELECT regsys_normalallergytype_person.PersonId FROM ".
+            "regsys_normalallergytype_person, regsys_registration, ".
+            "(SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".
+            "regsys_normalallergytype_person GROUP BY PersonId) AS Counted WHERE amount > 1 AND ".
+            "Counted.PersonId = regsys_normalallergytype_person.PersonId AND ".
+            "regsys_registration.PersonId = regsys_normalallergytype_person.PersonId AND ".
+            "regsys_registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     public static function getAllWithoutAllergiesButWithComment(LARP $larp) {
-        global $tbl_prefix;
-        
-
-        
-        $sql="select * from ".$tbl_prefix."person WHERE id IN ".
-            "(SELECT PersonId from ".$tbl_prefix."registration WHERE LarpId =? AND PersonId NOT IN ".
-            "(SELECT PersonId FROM ".$tbl_prefix."normalallergytype_person)) AND FoodAllergiesOther !='' ".
+        if (is_null($larp)) return Array();
+        $sql="SELECT * FROM regsys_person WHERE id IN ".
+            "(SELECT PersonId from regsys_registration WHERE LarpId =? AND PersonId NOT IN ".
+            "(SELECT PersonId FROM regsys_normalallergytype_person)) AND FoodAllergiesOther !='' ".
             "ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-        
-    }
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+     }
     
     
     
-    public static function getAllOfficials(LARP $larp) {
-        global $tbl_prefix;
-        
-        
-        
-        $sql="select * from ".$tbl_prefix."person WHERE id IN ".
-            "(SELECT PersonId from ".$tbl_prefix."registration WHERE IsOfficial=1 and LARPId=?) ".
+    public static function getAllOfficials(LARP $larp) { 
+        if (is_null($larp)) return Array();
+        $sql="SELECT * FROM regsys_person WHERE id IN ".
+            "(SELECT PersonId FROM regsys_registration WHERE IsOfficial=1 and LARPId=?) ".
             "ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-        
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
 
 
     public static function getAllOfficialsByType(OfficialType $officialtype, LARP $larp) {
-        global $tbl_prefix;
-        
-        
-        
-        $sql="select * from ".$tbl_prefix."person WHERE id IN ".
-            "(SELECT PersonId from ".$tbl_prefix."registration, ".$tbl_prefix."officialtype_person ".
-            "WHERE IsOfficial=1 and LARPId=? AND ".$tbl_prefix."registration.Id = ".$tbl_prefix."officialtype_person.RegistrationId ".
+        if (is_null($larp) or is_null($officialtype)) return Array();
+        $sql="SELECT * FROM regsys_person WHERE id IN ".
+            "(SELECT PersonId from regsys_registration, regsys_officialtype_person ".
+            "WHERE IsOfficial=1 and LARPId=? AND regsys_registration.Id = regsys_officialtype_person.RegistrationId ".
             "AND OfficialTypeId = ?) ".
             "ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larp->Id, $officialtype->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-        
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $officialtype->Id));
     }
     
     
     public static function getAllWhoWantToBeOffical(LARP $larp) {
-        global $tbl_prefix;
-        
-        
-        
-        $sql="select * from ".$tbl_prefix."person WHERE id IN ".
-            "(SELECT PersonId from ".$tbl_prefix."registration WHERE IsOfficial=0 and LARPId=? AND Id IN (SELECT RegistrationId FROM ".
-            $tbl_prefix."officialtype_person)) ".
+        if (is_null($larp)) return Array();
+        $sql="SELECT * FROM regsys_person WHERE id IN ".
+            "(SELECT PersonId FROM regsys_registration WHERE IsOfficial=0 and LARPId=? AND Id IN ".
+            "(SELECT RegistrationId FROM regsys_officialtype_person)) ".
             "ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-        
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
 }

@@ -97,9 +97,8 @@ class NPCGroup extends BaseModel{
     
     
     public static function getAllForLARP(LARP $larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM ".$tbl_prefix."npcgroup WHERE ".
+        $sql = "SELECT * FROM regsys_npcgroup WHERE ".
             "LarpId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
@@ -110,5 +109,34 @@ class NPCGroup extends BaseModel{
         return NPC::getNPCsInGroup($this, $current_larp);
     }
     
+    public function IsMember(User $user) {
+        if (empty($user)) return false;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_npc, regsys_person WHERE ".
+            "regsys_npc.NPCGroupId=? AND ".
+            "regsys_npc.PersonId = regsys_person.Id AND ".
+            "regsys_person.UserId=?;";
+            
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(array($this->Id, $user->Id))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+            }
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return false;
+                
+            }
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            $stmt = null;
+            
+            
+            if ($res[0]['Num'] == 0) return false;
+            return true;
+            
+    }
     
 }

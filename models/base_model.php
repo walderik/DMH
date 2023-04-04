@@ -9,8 +9,7 @@ class BaseModel extends Dbh{
     
     # Hämta alla av den här sorten
     public static function all() {
-        global $tbl_prefix;
-        $sql = "SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_".strtolower(static::class)." ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute()) {
@@ -37,8 +36,7 @@ class BaseModel extends Dbh{
     
     # Hur många finns det av den här sorten
     public static function numberOff() {
-        global $tbl_prefix;
-        $sql = "SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_".strtolower(static::class)." ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute()) {
@@ -52,12 +50,10 @@ class BaseModel extends Dbh{
     
     public static function loadById($id)
     {
-        global $tbl_prefix;
-        
         if (empty($id)) return null;
 
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $sql = "SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Id = ?";
+        $sql = "SELECT * FROM regsys_".strtolower(static::class)." WHERE Id = ?";
         return static::getOneObjectQuery($sql, array($id));
     }
     
@@ -72,8 +68,7 @@ class BaseModel extends Dbh{
     
     public static function delete($id)
     {
-        global $tbl_prefix;
-        $stmt = static::connectStatic()->prepare("DELETE FROM `".$tbl_prefix.strtolower(static::class)."` WHERE Id = ?");
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_".strtolower(static::class)." WHERE Id = ?");
         
         if (!$stmt->execute(array($id))) {
             $stmt = null;

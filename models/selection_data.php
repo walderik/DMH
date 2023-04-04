@@ -9,13 +9,12 @@ class SelectionData extends BaseModel{
     public  $SortOrder;
     public  $CampaignId;
     
-    //public static $tableName = 'wealths';
+
     public static $orderListBy = 'SortOrder';
     
     # Används den här tabellen
     public static function is_in_use() {
-        global $tbl_prefix; 
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE active = 1 ORDER BY SortOrder LIMIT 1;");
+        $stmt = static::connectStatic()->prepare("SELECT * FROM regsys_".strtolower(static::class)." WHERE active = 1 ORDER BY SortOrder LIMIT 1;");
         
         if (!$stmt->execute()) {
             $stmt = null;
@@ -65,33 +64,16 @@ class SelectionData extends BaseModel{
         return $newOne;
     }
     
-    public static function allActive() {
-        global $tbl_prefix;        
+    public static function allActive() {       
         //TODO begränsa till kampanjen
-        
-        # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray 
-        # strtolower(static::class)
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix.strtolower(static::class)."` WHERE active = 1 ORDER BY SortOrder;");
-        
-        if (!$stmt->execute()) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_".strtolower(static::class)." WHERE active = 1 ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, null);
     }
     
     # Update an existing object in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix.strtolower(static::class)."` SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_".strtolower(static::class)." SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
         
         if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name, $this->Id))) {
             $stmt = null;
@@ -101,11 +83,10 @@ class SelectionData extends BaseModel{
          $stmt = null;
     }
     
-    # Create a new telegram in db
+    # Create a new object in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix.strtolower(static::class)."` (SortOrder, Active, Description, Name, CampaignId) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_".strtolower(static::class)." (SortOrder, Active, Description, Name, CampaignId) VALUES (?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->SortOrder, $this->Active, $this->Description, $this->Name, $this->CampaignId))) {
             $stmt = null;
@@ -138,20 +119,20 @@ class SelectionData extends BaseModel{
     }
     
     
-    public static function countByType(?LARP $larp = NULL) {
-        global $tbl_prefix, $current_larp;
-        
-        if (!isset($larp) || is_null($larp)) $larp = $current_larp;
+    public static function countByType(LARP $larp) {
+        if (is_null($larp)) return Array();
         
         $type = strtolower(static::class)."Id";
-        $sql = "select count(".$tbl_prefix."registration.Id) AS Num, ".$tbl_prefix.strtolower(static::class). ".Name AS Name FROM ".
-            $tbl_prefix."registration, ".$tbl_prefix."person, ".$tbl_prefix.strtolower(static::class).
-            " WHERE larpId=? AND PersonId = ".
-            $tbl_prefix."person.Id AND ".$tbl_prefix.strtolower(static::class).".Id=".$type." GROUP BY ".$type.";";
 
+        $sql = "select count(regsys_registration.Id) AS Num, regsys_".strtolower(static::class). ".Name AS Name FROM ".
+            "regsys_registration, regsys_person, regsys_".strtolower(static::class)." WHERE ".
+            "larpId=? AND ".
+            "PersonId = regsys_person.Id AND ".
+            "regsys_".strtolower(static::class).".Id=".$type." GROUP BY ".$type.";";
+ 
         $stmt = static::connectStatic()->prepare($sql);
         
-        if (!$stmt->execute(array($larp->Id))) {
+        if (!$stmt->execute(Array($larp->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

@@ -33,7 +33,7 @@ include 'navigation_subpage.php';
         
        <?php
     
-       $titledeed_array = Titledeed::allByCampaign();
+       $titledeed_array = Titledeed::allByCampaign($current_larp);
         if (!empty($titledeed_array)) {
             echo "<table class='data'>";
             echo "<tr><th>Id</td><th>Namn</th><th>Plats</th><th>Kan säljas</th><th>Handelsstation</th><th></th><th></th></tr>\n";

@@ -47,8 +47,7 @@ class Prop extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."prop` SET Name=?, 
+        $stmt = $this->connect()->prepare("UPDATE regsys_prop SET Name=?, 
             Description=?, StorageLocation=?, GroupId=?, RoleId=?,
             CampaignId=? WHERE Id = ?;");
         
@@ -63,9 +62,8 @@ class Prop extends BaseModel{
     
     # Create a new object in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."prop` (Name, Description, 
+        $stmt = $connection->prepare("INSERT INTO regsys_prop (Name, Description, 
             StorageLocation, GroupId, RoleId, CampaignId) VALUES (?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Description, $this->StorageLocation, 
@@ -80,31 +78,10 @@ class Prop extends BaseModel{
         $stmt = null;
     }
     
-    public static function allByCampaign() {
-        global $tbl_prefix, $current_larp;
-        
-        $sql = "SELECT * FROM ".$tbl_prefix.strtolower(static::class)." WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($current_larp->CampaignId))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+    public static function allByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_prop WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
     

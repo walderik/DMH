@@ -38,8 +38,7 @@ class LARP_Role extends BaseModel{
     }
     
     public static function isRegistered($roleId, $larpId) {
-        global $tbl_prefix;
-        $sql = "SELECT * FROM `".$tbl_prefix."larp_role` WHERE RoleId = ? AND LARPId = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_larp_role WHERE RoleId = ? AND LARPId = ? ORDER BY ".static::$orderListBy.";";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($roleId, $larpId))) {
@@ -68,34 +67,17 @@ class LARP_Role extends BaseModel{
     //     public static function getByLarpAndRole($larpId, $roleId){
     public static function loadByIds($roleId, $larpId)
     {
-        global $tbl_prefix;
+
         # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."larp_role` WHERE RoleId = ? AND LARPId = ?");
-        
-        if (!$stmt->execute(array($roleId, $larpId))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return null;
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $row = $rows[0];
-        $stmt = null;
-        
-        return static::newFromArray($row);
+        $sql = "SELECT * FROM regsys_larp_role WHERE RoleId = ? AND LARPId = ?";
+        return static::getOneObjectQuery($sql, array($roleId, $larpId));
     }
     
     
     
     # Update an existing object in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."larp_role` SET Intrigue=?, WhatHappened=?,
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp_role SET Intrigue=?, WhatHappened=?,
                                                                   WhatHappendToOthers=?, StartingMoney=?, EndingMoney=?, Result=?, 
                                                                   IsMainRole=?, UserMayEdit=? WHERE LARPId=? AND RoleId=?;");
         
@@ -111,9 +93,8 @@ class LARP_Role extends BaseModel{
     
     # Create a new object in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."larp_role` (LARPId, RoleId, Intrigue, WhatHappened,
+        $stmt = $connection->prepare("INSERT INTO regsys_larp_role (LARPId, RoleId, Intrigue, WhatHappened,
                                                                 WhatHappendToOthers, StartingMoney, EndingMoney, Result, 
                                                                 IsMainRole, UserMayEdit) VALUES (?,?,?,?,?,?,?,?,?,?);");
         
@@ -132,61 +113,20 @@ class LARP_Role extends BaseModel{
     
     # returnera en array med alla roller som är anmälda till lajvet
     public static function getRegisteredRoles($larpId) {
-        global $tbl_prefix;
         if (is_null($larpId)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."larp_role` WHERE LARPId = ? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larpId))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_larp_role WHERE LARPId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larpId));
     }
 
     
     public static function getPreviousLarpRoles($roleId) {
-        global $tbl_prefix, $current_larp;
+        global $current_larp;
         if (is_null($roleId)) return Array();
         //Koden förutsätter att lajven skapas i den ordning de spelas. 
         //Om det inte stämmer kommer man att behöva ha en mer avancerad kod
-        $sql = "SELECT * FROM `".$tbl_prefix."larp_role` WHERE RoleId = ? AND LarpId < ? ORDER BY LarpId DESC";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($roleId, $current_larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
-
+        //TODO sortera lajven i rätt ordning efter startdatum
+        $sql = "SELECT * FROM regsys_larp_role WHERE RoleId = ? AND LarpId < ? ORDER BY LarpId DESC";
+        return static::getSeveralObjectsqQuery($sql, array($roleId, $current_larp->Id));
     }
     
     
@@ -199,9 +139,7 @@ class LARP_Role extends BaseModel{
 
     
     public function getSelectedIntrigueTypeIds() {
-        global $tbl_prefix;
-        
-        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  `".$tbl_prefix."intriguetype_larp_role` WHERE LARP_RoleLARPid = ? AND LARP_RoleRoleId = ? ORDER BY IntrigueTypeId;");
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  regsys_intriguetype_larp_role WHERE LARP_RoleLARPid = ? AND LARP_RoleRoleId = ? ORDER BY IntrigueTypeId;");
         
         if (!$stmt->execute(array($this->LARPId, $this->RoleId))) {
             $stmt = null;
@@ -225,12 +163,11 @@ class LARP_Role extends BaseModel{
     }
     
     public function saveAllIntrigueTypes($idArr) {
-        global $tbl_prefix;
         if (!isset($idArr)) {
             return;
         }
         foreach($idArr as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO ".$tbl_prefix."intriguetype_larp_role (IntrigueTypeId, LARP_RoleRoleId, LARP_RoleLARPId) VALUES (?,?, ?);");
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_larp_role (IntrigueTypeId, LARP_RoleRoleId, LARP_RoleLARPId) VALUES (?,?, ?);");
             if (!$stmt->execute(array($Id, $this->RoleId, $this->LARPId))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -241,8 +178,7 @@ class LARP_Role extends BaseModel{
     }
     
     public function deleteAllIntrigueTypes() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("DELETE FROM ".$tbl_prefix."intriguetype_larp_role WHERE LARP_RoleRoleId = ? AND LARP_RoleLARPId = ?;");
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_larp_role WHERE LARP_RoleRoleId = ? AND LARP_RoleLARPId = ?;");
         if (!$stmt->execute(array($this->RoleId, $this->LARPId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");

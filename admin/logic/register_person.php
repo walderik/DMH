@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $registration->HousingRequestId = HousingRequest::allActive()[0]->Id;
 
     $age = $person->getAgeAtLarp($current_larp);
-    $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age);
+    $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age, $current_larp);
         
     $registration->PaymentReference = $registration->LARPId . $registration->PersonId;
 

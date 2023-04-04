@@ -9,14 +9,14 @@ include 'navigation_subpage.php';
         <p>Den här guiden kommer att hjälpa dig att enkelt sätta upp 
         deltagaravgifterna för lajvet så att de täcker in alla relavanta datum och åldrar.<br><br>
         <?php 
-        $payment_array = PaymentInformation::allBySelectedLARP();
+        $payment_array = PaymentInformation::allBySelectedLARP($current_larp);
         if (!empty($payment_array)) {           
         ?>
         <strong>OBS!</strong> Alla tidigare inställningar för avgifter kommer att raderas. <br>
         <?php 
         }?>
         <?php 
-        if (count(Registration::allBySelectedLARP()) > 0) {
+        if (count(Registration::allBySelectedLARP($current_larp)) > 0) {
         ?>
         
         <strong>OBS!</strong> Avgiften för de anmälningar som redan är gjorda kommer inte att påverkas.<br>

@@ -80,8 +80,7 @@ class Role extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."role` SET Name=?, Profession=?, Description=?,
+        $stmt = $this->connect()->prepare("UPDATE regsys_role SET Name=?, Profession=?, Description=?,
                                                               DescriptionForGroup=?, DescriptionForOthers=?,
                                                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
                                                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
@@ -103,14 +102,13 @@ class Role extends BaseModel{
     
     # Create a new object in db
     public function create() { 
-        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."role` (Name, Profession, Description, 
+        $stmt = $connection->prepare("INSERT INTO regsys_role (Name, Profession, Description, 
                                                             DescriptionForGroup, DescriptionForOthers, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId,
-                                                            Birthplace, CharactersWithRelations, CampaignId, ImageId, IsDead) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?);");
+                                                            Birthplace, CharactersWithRelations, CampaignId, ImageId, IsDead) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, $this->DescriptionForGroup, 
             $this->DescriptionForOthers,$this->PreviousLarps,
@@ -189,351 +187,110 @@ class Role extends BaseModel{
     }
     
     public static function getRolesForPerson($personId) {
-        global $tbl_prefix;
         if (is_null($personId)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($personId))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_role WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($personId));
     }
     
     public static function getAliveRolesForPerson($personId) {
-        global $tbl_prefix;
         if (is_null($personId)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE PersonId = ? AND IsDead=0 ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($personId))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_role WHERE PersonId = ? AND IsDead=0 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($personId));
     }
     
     # Hämta de roller en person har anmält till ett lajv
     public static function getRegistredRolesForPerson(Person $person, LARP $larp) {
-        global $tbl_prefix;
         if (is_null($person) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".
-        $tbl_prefix."role`.PersonId = ? AND `".$tbl_prefix."role`.Id=".
-        $tbl_prefix."larp_role.RoleId AND ".
-        $tbl_prefix."larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($person->Id, $larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
+        "regsys_role.PersonId = ? AND ".
+        "regsys_role.Id=regsys_larp_role.RoleId AND ".
+        "regsys_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
     }
    
     
     
     # Hämta huvudrollen för en person har anmält till ett lajv
     public static function getMainRoleForPerson(Person $person, LARP $larp) {
-        global $tbl_prefix;
         if (is_null($person) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".
-            $tbl_prefix."role`.PersonId = ? AND ".
-            "`".$tbl_prefix."role`.Id=".$tbl_prefix."larp_role.RoleId AND ".
-            $tbl_prefix."larp_role.IsMainRole = 1 AND ".
-            $tbl_prefix."larp_role.LarpId=?;";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($person->Id, $larp->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray[0];
+        $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
+            "regsys_role.PersonId = ? AND ".
+            "regsys_role.Id=regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.IsMainRole = 1 AND ".
+            "regsys_larp_role.LarpId=?;";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
     }
     
     
     # Hämta anmälda roller i en grupp
     public static function getRegisteredRolesInGroup($group, $larp) {
-        global $tbl_prefix;
         if (is_null($group) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role`, ".$tbl_prefix."larp_role WHERE `".
-        $tbl_prefix."role`.GroupId = ? AND `".$tbl_prefix."role`.Id=".
-        $tbl_prefix."larp_role.RoleId AND ".$tbl_prefix."larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($group->Id, $larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
+        "regsys_role.GroupId = ? AND ".
+        "regsys_role.Id=regsys_larp_role.RoleId AND ".
+        "regsys_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
     public static function getAllMainRoles(LARP $larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
-            $tbl_prefix."larp_role WHERE larpid=? AND IsMainRole=1) ORDER BY GroupId, Name;";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($larp->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray;
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_larp_role WHERE larpid=? AND IsMainRole=1) ".
+            "ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     public static function getAllUnregisteredRoles(LARP $larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id NOT IN (SELECT RoleId FROM ".
-            $tbl_prefix."larp_role WHERE larpid=?) AND CampaignId = ? ORDER BY PersonId, Name;";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($larp->Id, $larp->CampaignId))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray;
+        $sql = "SELECT * FROM regsys_role WHERE Id NOT IN ".
+            "(SELECT RoleId FROM regsys_larp_role WHERE larpid=?) AND ".
+            "CampaignId = ? ORDER BY PersonId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $larp->CampaignId));
     }
     
     
     public static function getAllMainRolesInGroup(Group $group, LARP $larp) {
-        global $tbl_prefix;
         if (is_null($group) or is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
-        $tbl_prefix."larp_role WHERE groupId =? AND larpid=? AND IsMainRole=1) ORDER BY Name;";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($group->Id, $larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_larp_role WHERE ".
+            "groupId =? AND larpid=? AND IsMainRole=1) ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
     
     public static function getAllNonMainRolesInGroup(Group $group, LARP $larp) {
-        global $tbl_prefix;
         if (is_null($group) or is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
-            $tbl_prefix."larp_role WHERE groupId =? AND larpid=? AND IsMainRole=0) ORDER BY Name;";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($group->Id, $larp->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray;
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_larp_role WHERE ".
+            "groupId =? AND larpid=? AND IsMainRole=0) ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
     
     public static function getAllMainRolesWithoutGroup(LARP $larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
-            $tbl_prefix."larp_role WHERE groupId IS NULL AND larpid=? AND IsMainRole=1) ORDER BY Name;";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($larp->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray;
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_larp_role WHERE ".
+            "groupId IS NULL AND larpid=? AND IsMainRole=1) ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
  
     
     public static function getAllNonMainRolesWithoutGroup(LARP $larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
-            $tbl_prefix."larp_role WHERE groupId IS NULL AND larpid=? AND IsMainRole=0) ORDER BY Name;";
-            $stmt = static::connectStatic()->prepare($sql);
-            
-            if (!$stmt->execute(array($larp->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-            
-            
-            if ($stmt->rowCount() == 0) {
-                $stmt = null;
-                return array();
-            }
-            
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $resultArray = array();
-            foreach ($rows as $row) {
-                $resultArray[] = static::newFromArray($row);
-            }
-            $stmt = null;
-            return $resultArray;
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_larp_role WHERE ".
+            "groupId IS NULL AND larpid=? AND IsMainRole=0) ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     
     public static function getAllNotMainRoles(LARP $larp) {
-        global $tbl_prefix;
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."role` WHERE Id IN (SELECT RoleId FROM ".
-        $tbl_prefix."larp_role WHERE larpId =? AND IsMainRole=0) ORDER BY GroupId;";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_larp_role WHERE ".
+        "larpId =? AND IsMainRole=0) ORDER BY GroupId;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     public function groupIsRegistered(Larp $larp) {
@@ -542,11 +299,7 @@ class Role extends BaseModel{
     }
     
     public function isNeverRegistered() {
-        global $tbl_prefix;
-        
-        
-        
-        $sql = "SELECT COUNT(*) AS Num FROM `".$tbl_prefix."larp_role` WHERE RoleId=?;";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_larp_role WHERE RoleId=?;";
         
         $stmt = static::connectStatic()->prepare($sql);
         

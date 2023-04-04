@@ -53,37 +53,17 @@ class Group extends BaseModel{
     }
     
     public static function getRegistered($larp) {
-        global $tbl_prefix;
+
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM `".$tbl_prefix."group` WHERE IsDead=0 AND Id IN (SELECT GroupId from ".$tbl_prefix."larp_group where LARPId = ?);";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+        $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND Id IN ".
+            "(SELECT GroupId from regsys_larp_group where LARPId = ?);";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     # Update an existing group in db
     public function update() {
-        global $tbl_prefix;
-        
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."group` SET Name=?, Friends=?, Enemies=?,
+       
+        $stmt = $this->connect()->prepare("UPDATE regsys_group SET Name=?, Friends=?, Enemies=?,
                                                                   Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?,
                                                                   WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=?, IsDead=? WHERE Id = ?");
         
@@ -102,9 +82,8 @@ class Group extends BaseModel{
     
     # Create a new group in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."group` (Name,  
+        $stmt = $connection->prepare("INSERT INTO regsys_group (Name,  
                          Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
                          WealthId, PlaceOfResidenceId, PersonId, CampaignId, IsDead) 
                          VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?);");
@@ -153,64 +132,20 @@ class Group extends BaseModel{
      }
      
      public static function getAllRegistered(LARP $larp) {
-         global $tbl_prefix;
          if (is_null($larp)) return Array();
-         $sql = "SELECT * FROM `".$tbl_prefix."group` WHERE Id IN (SELECT GroupId FROM regsys_larp_group WHERE larpId =?) ORDER BY ".static::$orderListBy.";";
-         $stmt = static::connectStatic()->prepare($sql);
-         
-         if (!$stmt->execute(array($larp->Id))) {
-             $stmt = null;
-             header("location: ../participant/index.php?error=stmtfailed");
-             exit();
-         }
-         
-         
-         if ($stmt->rowCount() == 0) {
-             $stmt = null;
-             return array();
-         }
-         
-         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-         $resultArray = array();
-         foreach ($rows as $row) {
-             $resultArray[] = static::newFromArray($row);
-         }
-         $stmt = null;
-         return $resultArray;
+         $sql = "SELECT * FROM regsys_group WHERE Id IN ".
+            "(SELECT GroupId FROM regsys_larp_group WHERE larpId =?) ".
+            "ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
      
      public static function getGroupsForPerson($personId) {
-         global $tbl_prefix;
-         $sql = "SELECT * FROM `".$tbl_prefix."group` WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
-         $stmt = static::connectStatic()->prepare($sql);
-         
-         if (!$stmt->execute(array($personId))) {
-             $stmt = null;
-             header("location: ../participant/index.php?error=stmtfailed");
-             exit();
-         }
-         
-         
-         if ($stmt->rowCount() == 0) {
-             $stmt = null;
-             return array();
-         }
-         
-         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-         $resultArray = array();
-         foreach ($rows as $row) {
-             $resultArray[] = static::newFromArray($row);
-         }
-         $stmt = null;
-         return $resultArray;
+         $sql = "SELECT * FROM regsys_group WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($personId));
      }
      
-     public function isNeverRegistered() {
-         global $tbl_prefix;
-         
-         
-         
-         $sql = "SELECT COUNT(*) AS Num FROM `".$tbl_prefix."larp_group` WHERE GroupId=?;";
+     public function isNeverRegistered() {         
+         $sql = "SELECT COUNT(*) AS Num FROM regsys_larp_group WHERE GroupId=?;";
          
          $stmt = static::connectStatic()->prepare($sql);
          
