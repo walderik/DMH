@@ -25,12 +25,24 @@ class ROLE_PDF extends FPDF {
     
     
     function Header() {
-        global $root, $y;
-        $this->SetLineWidth(1);
+        global $root, $y, $mitten;
+        $this->SetLineWidth(0.6);
         $this->Line(static::$x_min, static::$y_min, static::$x_max, static::$y_min);
         $this->Line(static::$x_min, static::$y_min, static::$x_min, static::$y_max);
         $this->Line(static::$x_min, static::$y_max, static::$x_max, static::$y_max);
         $this->Line(static::$x_max, static::$y_min, static::$x_max, static::$y_max);
+        
+        $space = 1.2;
+        $this->Line(static::$x_min-$space, static::$y_min-$space, static::$x_max+$space, static::$y_min-$space);
+        $this->Line(static::$x_min-$space, static::$y_min-$space, static::$x_min-$space, static::$y_max+$space);
+        $this->Line(static::$x_min-$space, static::$y_max+$space, static::$x_max+$space, static::$y_max-$space);
+        $this->Line(static::$x_max+$space, static::$y_min-$space, static::$x_max+$space, static::$y_max+$space);
+        
+        
+        $this->SetXY($mitten-15, 3);
+        $this->SetFont('Helvetica','',static::$text_fontsize/1.1);
+        $this->SetFillColor(255,255,255);
+        $this->MultiCell(30, 4, utf8_decode('Karaktärsblad'), 0,'C',true);
         
         $y = static::$y_min + static::$Margin;
     }
