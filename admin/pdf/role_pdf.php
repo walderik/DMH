@@ -35,7 +35,7 @@ class ROLE_PDF extends FPDF {
         $space = 1.2;
         $this->Line(static::$x_min-$space, static::$y_min-$space, static::$x_max+$space, static::$y_min-$space);
         $this->Line(static::$x_min-$space, static::$y_min-$space, static::$x_min-$space, static::$y_max+$space);
-        $this->Line(static::$x_min-$space, static::$y_max+$space, static::$x_max+$space, static::$y_max-$space);
+         $this->Line(static::$x_min-$space, static::$y_max+$space, static::$x_max+$space, static::$y_max+$space);
         $this->Line(static::$x_max+$space, static::$y_min-$space, static::$x_max+$space, static::$y_max+$space);
         
         
