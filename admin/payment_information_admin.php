@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
   
          <?php
     
-        $payment_array = PaymentInformation::allBySelectedLARP();
+        $payment_array = PaymentInformation::allBySelectedLARP($current_larp);
         if (!empty($payment_array)) {
             echo "<a href='payment_information_form.php?operation=new'><i class='fa-solid fa-file-circle-plus'></i>Lägg till</a>";
             
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo "</table>";
         }
  
-        //echo PaymentInformation::errorReportBySelectedLARP();
+        //echo PaymentInformation::errorReportBySelectedLARP($current_larp);
         ?>
     </div>
 	

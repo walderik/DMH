@@ -4,9 +4,8 @@
 
 session_start();
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
-global $current_user, $current_larp, $root, $tbl_prefix;
+global $current_user, $current_larp, $root;
 
-$tbl_prefix = "regsys_";
 
 include_once $root . '/includes/all_includes.php';
 

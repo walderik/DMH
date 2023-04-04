@@ -51,7 +51,6 @@ class NPC extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        global $tbl_prefix;
         $stmt = $this->connect()->prepare("UPDATE regsys_npc SET Name=?, Description=?,
                 Time=?, PersonId=?, NPCGroupId=?, 
                 LarpId=?, ImageId=?, IsReleased=? WHERE Id = ?;");
@@ -68,7 +67,6 @@ class NPC extends BaseModel{
     
     # Create a new object in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
         
        $stmt = $connection->prepare("INSERT INTO regsys_npc (Name, Description,
@@ -132,10 +130,10 @@ class NPC extends BaseModel{
     
     
     
-    public static function getReleasedNPCsForPerson(Person $person) {
-        if (empty($person))return Array();
-        $sql = "SELECT * FROM regsys_npc WHERE PersonId=? AND IsReleased=1 ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($person->Id));
+    public static function getReleasedNPCsForPerson(Person $person, LARP $larp) {
+        if (empty($person) or empty($larp))return Array();
+        $sql = "SELECT * FROM regsys_npc WHERE PersonId=? AND IsReleased=1 AND LARPId =? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
     }
     
     public function release() {

@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $registration = Registration::newFromArray($_POST);
         $person = Person::loadById($registration->PersonId);
         $age = $person->getAgeAtLarp($current_larp);
-        $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age);
+        $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age, $current_larp);
             
         $registration->PaymentReference = $registration->LARPId . $registration->PersonId;
 

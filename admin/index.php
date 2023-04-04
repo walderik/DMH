@@ -62,7 +62,7 @@ include_once '../includes/error_handling.php';
 	  <?php if (isset($message_message) && strlen($message_message)>0) {
 	      echo '<div class="message">'.$message_message.'</div>';
 	  }?>
-	  <?php $payment_array = PaymentInformation::allBySelectedLARP();
+	  <?php $payment_array = PaymentInformation::allBySelectedLARP($current_larp);
         if (empty($payment_array)) {
       ?>
             <div class="content">Inga <a href="payment_information_admin.php">deltagaravgifter</a> är satta. Gör det innan anmälan öppnar.</div>
@@ -87,7 +87,7 @@ include_once '../includes/error_handling.php';
 
         </div>
 		<div class="content">
-			Just nu är det <?php echo count(Registration::allBySelectedLARP()); ?> anmälda deltagare.<br> 
+			Just nu är det <?php echo count(Registration::allBySelectedLARP($current_larp)); ?> anmälda deltagare.<br> 
         <?php 
 
                     if ($current_larp->isFull()) {

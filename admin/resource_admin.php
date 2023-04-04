@@ -34,7 +34,7 @@ include 'navigation_subpage.php';
         
        <?php
     
-       $resource_array = Resource::allByCampaign();
+       $resource_array = Resource::allByCampaign($current_larp);
         if (!empty($resource_array)) {
             echo "<table class='data'>";
             echo "<tr><th>Id</td><th>Namn</th><th>Enhet singular</th><th>Enhet plural</th><th>Pris i Slow River</th><th>Pris i Junk City</th><th>Ovanlig</th><th></th><th></th></tr>\n";

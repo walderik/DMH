@@ -44,7 +44,7 @@ include 'navigation_subpage.php';
         
        <?php
     
-       $prop_array = Prop::allByCampaign();
+       $prop_array = Prop::allByCampaign($current_larp);
         if (!empty($prop_array)) {
             echo "<table class='data'>";
             echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Innehavare</th><th></th><th></th></tr>\n";

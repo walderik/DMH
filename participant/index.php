@@ -51,7 +51,12 @@ include_once '../includes/error_handling.php';
 			 	<?php echo showStatusIcon(false); ?> - Något behöver göras<br>
 			 	<?php echo showStatusIcon(true); ?> - Allt klart på den här punkten<br>
 			 	<i class='fa-solid fa-eye'></i> - Visa<br>
-			 	<i class='fa-solid fa-pen'></i> - Ändra
+			 	<i class='fa-solid fa-pen'></i> - Ändra (går bara att göra om man inte är anmäld)<br>
+			 	<i class='fa-solid fa-trash'></i> - Ta bort (går bara att göra om man inte är anmäld)<br>
+			 	<i class='fa-solid fa-image-portrait'></i> - Ladda upp bild (går bara efter anmälan)<br>
+			 	<i class='fa-solid fa-skull-crossbones'></i> - Död
+			 	
+			 	
 			 	
 			 </div>
 		</div>
@@ -204,7 +209,7 @@ include_once '../includes/error_handling.php';
     		        
     		        
     		        //NPC'er
-    		        $npcs = NPC::getReleasedNPCsForPerson($person);
+    		        $npcs = NPC::getReleasedNPCsForPerson($person, $current_larp);
     		        if (isset($npcs) && count($npcs) > 0) {
     		            echo "<br><b>NPC:</b><br>\n";
     		            echo "<table class='roles'>\n";

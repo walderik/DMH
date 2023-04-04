@@ -1,11 +1,5 @@
 <?php
 
-//         bind_param
-//     i	corresponding variable has type int
-//     d	corresponding variable has type float
-//     s	corresponding variable has type string
-//     b	corresponding variable is a blob and will be sent in packets
-
 class Telegram extends BaseModel{
     
     public  $Id;
@@ -50,39 +44,17 @@ class Telegram extends BaseModel{
     }
     
     
-    public static function allBySelectedLARP() {
-        global $tbl_prefix, $current_larp;
-        
-        $sql = "SELECT * FROM ".$tbl_prefix.strtolower(static::class)." WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($current_larp->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+    public static function allBySelectedLARP(Larp $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_telegram WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     
     
     # Update an existing telegram in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE ".$tbl_prefix.strtolower(static::class)." SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_telegram SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->Id))) {
             $stmt = null;
@@ -95,9 +67,8 @@ class Telegram extends BaseModel{
     
     # Create a new telegram in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO ".$tbl_prefix.strtolower(static::class)." (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_telegram (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->LARPid))) {
             $stmt = null;

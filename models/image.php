@@ -35,14 +35,12 @@ class Image extends BaseModel{
     }
         
     # Create a new image in db
-    public static function saveImage() {
-        global $tbl_prefix;
-        
+    public static function saveImage() {        
         $error = static::maySave();
         if (isset($error)) return null;
         
         $connection = static::connectStatic();
-        $stmt = $connection->prepare("INSERT INTO ".$tbl_prefix."image (`file_name`, `file_mime`, `file_data`, Photographer) VALUES (?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_image (file_name, file_mime, file_data, Photographer) VALUES (?,?,?,?)");
         
         if (!$stmt->execute(array($_FILES["upload"]["name"],
             mime_content_type($_FILES["upload"]["tmp_name"]),
@@ -59,9 +57,10 @@ class Image extends BaseModel{
     
      
     public static function loadById ($Id) {
-        global $tbl_prefix;
+
         $connection = static::connectStatic();
-        $stmt = $connection->prepare("SELECT file_name, `file_mime`, `file_data`, Photographer FROM `regsys_image` WHERE `Id`=?");
+        $stmt = $connection->prepare("SELECT file_name, file_mime, file_data, Photographer ".
+            "FROM regsys_image WHERE Id=?");
         
         if (!$stmt->execute(array($Id))) {
                 $stmt = null;
@@ -84,12 +83,10 @@ class Image extends BaseModel{
     
     # Create a new image in db
     public function deleteImage($id) {
-        global $tbl_prefix;
-        
         $connection = $this->connect();
-        $stmt = $connection->prepare("DELETE FROM ".$tbl_prefix."image WHERE Id=?");
+        $stmt = $connection->prepare("DELETE FROM regsys_image WHERE Id=?");
         
-        if (!$stmt->execute(array($Id))) {
+        if (!$stmt->execute(array($id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

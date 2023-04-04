@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit;
 }
 
-$payment_array = PaymentInformation::allBySelectedLARP();
+$payment_array = PaymentInformation::allBySelectedLARP($current_larp);
 foreach ($payment_array as $payment) {
     PaymentInformation::delete($payment->Id);
 }

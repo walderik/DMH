@@ -36,34 +36,18 @@ class PaymentInformation extends BaseModel{
         return $payment;
     }
     
-    public static function getPrice($date, $age) {
-        global $tbl_prefix, $current_larp;
-        $stmt = static::connectStatic()->prepare("SELECT * FROM `".$tbl_prefix."paymentinformation` WHERE 
+    public static function getPrice($date, $age, $larp) {
+        $sql = "SELECT * FROM regsys_paymentinformation WHERE 
                                DATE(FromDate) <= ? AND DATE(ToDate) >= ? AND 
-                               FromAge <= ? AND ToAge >= ? AND LARPId = ?");
-        
-        if (!$stmt->execute(array($date, $date, $age, $age, $current_larp->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return null;
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $row = $rows[0];
-        $stmt = null;
-        
-        return static::newFromArray($row)->Cost;
+                               FromAge <= ? AND ToAge >= ? AND LARPId = ?";
+        $payment_information = static::getOneObjectQuery($sql, array($date, $date, $age, $age, $larp->Id));
+        if (empty($payment_information)) return 0;
+        return $payment_information->Cost;
         
     }
     # Update an existing object in db
     public function update() {
-        global $tbl_prefix;
-        $stmt = $this->connect()->prepare("UPDATE `".$tbl_prefix."paymentinformation` SET LARPId=?, FromDate=?, ToDate=?, FromAge=?, ToAge=?,
+        $stmt = $this->connect()->prepare("UPDATE regsys_paymentinformation SET LARPId=?, FromDate=?, ToDate=?, FromAge=?, ToAge=?,
                                                                   Cost=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->LARPId, $this->FromDate, $this->ToDate, $this->FromAge, $this->ToAge,
@@ -78,10 +62,9 @@ class PaymentInformation extends BaseModel{
     
     # Create a new object in db
     public function create() {
-        global $tbl_prefix;
         $connection = $this->connect();
 
-        $stmt = $connection->prepare("INSERT INTO `".$tbl_prefix."paymentinformation` (LARPId, FromDate, ToDate, FromAge, ToAge,
+        $stmt = $connection->prepare("INSERT INTO regsys_paymentinformation (LARPId, FromDate, ToDate, FromAge, ToAge,
                                                                 Cost) VALUES (?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->LARPId, $this->FromDate, $this->ToDate, $this->FromAge, $this->ToAge,
@@ -96,41 +79,18 @@ class PaymentInformation extends BaseModel{
             $stmt = null;
     }
     
-    public static function allBySelectedLARP() {
-        global $tbl_prefix, $current_larp;
-        
-        $sql = "SELECT * FROM `".$tbl_prefix."paymentinformation` WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($current_larp->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = static::newFromArray($row);
-        }
-        $stmt = null;
-        return $resultArray;
+    public static function allBySelectedLARP(LARP $larp) {
+        $sql = "SELECT * FROM regsys_paymentinformation WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
-    public static function errorReportBySelectedLARP() {
-        global $current_larp;
-        
+    public static function errorReportBySelectedLARP(Larp $larp) {
+       
         $errors = "";
         
-        $allPaymentInformation = static::allBySelectedLARP();
-        if (empty($all)) {
-            if ($current_larp->RegistrationOpen == 1) $errors .= "<p><b>VIKTIGT Anmälan är öppen och ingen avgift är angiven</b></p>";
+        $allPaymentInformation = static::allBySelectedLARP($larp);
+        if (empty($allPaymentInformation)) {
+            if ($larp->RegistrationOpen == 1) $errors .= "<p><b>VIKTIGT Anmälan är öppen och ingen avgift är angiven</b></p>";
             $errors .= "<p>Det finns ännu inget registrerat för vad det kostar att delta på lajvet. Tills vidare är det gratis!</p>\n";
         }
         else { 
