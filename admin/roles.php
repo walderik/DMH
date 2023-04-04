@@ -14,7 +14,7 @@
     		    echo "Inga anmälda roller";
     		} else {
     		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>&nbp; &nbsp; </th><th>Profession</th><th>Group</th><th colspan='2'>Intrig</th></tr>\n";
+    		    echo "<tr><th>Namn</th><th>&nbsp; &nbsp; </th><th>Profession</th><th>Group</th><th colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $role->Name;
