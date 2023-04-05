@@ -13,8 +13,8 @@
     		    echo "Inga anmälda deltagare";
     		} else {
     		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th></th><th>Epost</th><th>Ålder på lajvet</th><th>Godkänd</th>";
-    		    echo "<th>Medlem</th><th>Betalnings-<br>referens</th><th colspan='2'>Betalat</th><th>Bekräftad<br>plats på lajvet</th></tr>\n";
+    		    echo "<tr><th>Namn</th><th></th><th>Epost</th><th>Ålder<br>på lajvet</th><th>Godkända<br>karaktärer</th>";
+    		    echo "<th>Medlem</th><th>Betalnings-<br>referens</th><th colspan='2'>Betalat</th><th colspan='2'>Plats på lajvet</th></tr>\n";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<tr>\n";
@@ -40,6 +40,24 @@
     		        echo "<td>".$registration->PaymentReference .  "</td>\n";
     		        echo "<td align='center'>" . showStatusIcon($registration->hasPayed()) . "</td>";
     		        echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		        
+    		        echo "<td>";
+    		        if ($registration->SpotAtLARP == 1) {
+    		            echo showStatusIcon(true);
+    		        }
+    		        else {
+        		        echo showStatusIcon(false);
+        		        echo "</td><td>";
+        		        if ($registration->allChecksPassed()) {
+            		        echo "<form method='post' action='give_spot.php'>";
+            		        echo "<input type='hidden' id='RegistrationId' name='RegistrationId' value='$registration->Id'>";
+            		        
+            		        echo "<input type='button' value='Ge plats'>";
+            		        echo "</form>";
+        		        }
+    		        }
+    		        echo "</td>";
+    		            
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";

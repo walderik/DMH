@@ -174,7 +174,7 @@ class BerghemMailer {
         
         $text  = "Du har nu anmält att du ska vara med i lajvet $larp->Name<br>\n";
         $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>.<br>\n";
-        if (!$person->isMember($larp)) {
+        if (!$registration->isMember()) {
             $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
         }
         $text .= "<br>\n";
@@ -201,6 +201,79 @@ class BerghemMailer {
     
     
     
+    function send_approval_mail(Registration $registration) {
+        $person = $registration->getPerson();
+        $mail = $person->Email;
+        
+        $larp = $registration->getLARP();
+        $roles = $person->getRolesAtLarp($larp);
+        
+        
+        $text  = "Dina karaktärer är nu godkända för att vara med i lajvet $larp->Name<br>\n";
+        $text .= "<br>\n";
+        $text .= "De karaktärer du har anmält är:<br>\n";
+        $text .= "<br>\n";
+        foreach ($roles as $role) {
+            $text .= '* '.$role->Name;
+            if ($role->isMain($larp)) {
+                $text .= " - Din huvudkaraktär";
+            }
+            $text .= "<br>\n";
+        }
+        
+        static::send($mail, $person->Name, $text, "Godkända karaktärer till ".$larp->Name);
+    }
+    
+    
+    
+    static function send_spot_at_larp(Registration $registration) {
+        $person = $registration->getPerson();
+        $mail = $person->Email;
+        
+        $larp = $registration->getLARP();
+ 
+        $roles = $person->getRolesAtLarp($larp);
+        
+        //TODO bättre text
+        $text  = "Du har nu en plats på lajvet $larp->Name<br>\n";
+        $text .= "<br>\n";
+        $text .= "De karaktärer du har anmält är:<br>\n";
+        $text .= "<br>\n";
+        foreach ($roles as $role) {
+            $text .= '* '.$role->Name;
+            if ($role->isMain($larp)) {
+                $text .= " - Din huvudkaraktär";
+            }
+            $text .= "<br>\n";
+        }
+        
+        static::send($mail, $person->Name, $text, "Plats på ".$larp->Name);
+        
+    }
+    
+    static function sendNPCMail(NPC $npc) {
+ 
+        $person = $npc->getPerson();
+        $mail = $person->Email;
+        
+        $larp = $npc->getLARP();
+        
+        
+        //TODO bättre text näe npc är klar
+        $text  = "Du har fått en NPC på lajvet $larp->Name<br>\n";
+        $text .= "<br>\n";
+        $text .= "Namn: $npc->Name";
+        $text .= "<br>\n";
+        $text .= "Beskrivning: $npc->Description";
+        $text .= "<br>\n";
+        $text .= "Tiden när vi vill att du spelar npc'n: $npc->Time";
+        $text .= "<br>\n";
+        
+        
+        static::send($mail, $person->Name, $text, "NPC på ".$larp->Name);
+        
+        
+    }
     
     
 }

@@ -23,6 +23,7 @@ class Registration extends BaseModel{
     public $HousingRequestId;
     public $GuardianId;
     public $NotComingReason;
+    public $SpotAtLARP = 0;
     
     public static $orderListBy = 'RegisteredAt';
     
@@ -53,6 +54,7 @@ class Registration extends BaseModel{
         if (isset($arr['HousingRequestId'])) $this->HousingRequestId = $arr['HousingRequestId'];
         if (isset($arr['GuardianId'])) $this->GuardianId = $arr['GuardianId'];
         if (isset($arr['NotComingReason'])) $this->NotComingReason = $arr['NotComingReason'];
+        if (isset($arr['SpotAtLARP'])) $this->SpotAtLARP = $arr['SpotAtLARP'];
         
     }
     
@@ -94,12 +96,14 @@ class Registration extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?, ApprovedCharacters=?, 
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
-                RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, NotComingReason=? WHERE Id = ?");
+                RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, NotComingReason=?,
+                SpotAtLARP=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, 
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded, 
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason, $this->Id))) {
+            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason, 
+            $this->SpotAtLARP, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -116,11 +120,12 @@ class Registration extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, ApprovedCharacters, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, ToBeRefunded, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId, GuardianId, NotComingReason) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded,
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason))) {
+            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason,
+            $this->SpotAtLARP))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -154,7 +159,8 @@ class Registration extends BaseModel{
         $larp = LARP::loadById($this->LARPId);
         $year = substr($larp->StartDate, 0, 4);
         
-        $val = check_membership($this->SocialSecurityNumber, $year);
+        
+        $val = check_membership($this->getPerson()->SocialSecurityNumber, $year);
         
         
         if ($val == 1) {
@@ -189,6 +195,20 @@ class Registration extends BaseModel{
     
     public function getLARP() {
         return LARP::loadById($this->LARPId);
+    }
+    
+    public function allChecksPassed() {
+        if (!$this->isApprovedCharacters()) return false;
+        if (!$this->isMember()) return false;
+        if (!$this->hasPayed()) return false;
+        
+        $person = $this->getPerson();
+        $larp = $this->getLARP();
+        if ($person->getAgeAtLarp($larp) < $larp->getCampaign()->MinimumAgeWithoutGuardian && 
+            empty($this->GuardianId))  return false;
+        return true;
+            
+            
     }
 
     public function getOfficialTypes() {

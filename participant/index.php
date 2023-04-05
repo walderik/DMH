@@ -118,8 +118,8 @@ include_once '../includes/error_handling.php';
                         echo "</td></tr>\n";
  
                         
-                        echo "<tr><td>Medlem</td><td>".showStatusIcon($person->isMember($current_larp), "https://ebas.sverok.se/signups/index/5915")."</a>";
-                        if (!$person->isMember($current_larp)) {
+                        echo "<tr><td>Medlem</td><td>".showStatusIcon($registration->isMember(), "https://ebas.sverok.se/signups/index/5915")."</a>";
+                        if (!$registration->isMember()) {
                             echo "</td><td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>Betala medlemsavgiften</a>";
                             echo "</td></tr>\n";
                         }

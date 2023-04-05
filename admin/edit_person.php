@@ -97,7 +97,7 @@ include 'navigation_subpage.php';
 
 			<tr><td valign="top" class="header">Annan information</td>
 			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $person->OtherInformation; ?></textarea></td></tr>
-			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($person->isMember($current_larp))?></td></tr>
+			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($registration->isMember())?></td></tr>
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
 			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->ApprovedCharacters)) { echo $registration->ApprovedCharacters; } else { echo "Nej"; }?></td></tr>
 			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>

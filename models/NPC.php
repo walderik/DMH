@@ -140,8 +140,8 @@ class NPC extends BaseModel{
         if ($this->IsReleased()) return;
         $this->IsReleased = 1;
         $this->update();
-        //TODO fixa mail när npc är klar
-        //BerghemMailer::sendNPCMail();
+
+        BerghemMailer::sendNPCMail($this);
   
     }
     
@@ -173,6 +173,13 @@ class NPC extends BaseModel{
     public function getPerson() {
         if (!empty($this->PersonId)) {
             return Person::loadById($this->PersonId);
+        }
+        return null;
+    }
+
+    public function getLARP() {
+        if (!empty($this->LarpId)) {
+            return LARP::loadById($this->LarpId);
         }
         return null;
     }
