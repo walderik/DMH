@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     //Karaktären måste godkännas.
     $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
-    $registration->Approved = null;
+    $registration->ApprovedCharacters = null;
     
     BerghemMailer::send_added_role_mail($role, $current_larp);
         

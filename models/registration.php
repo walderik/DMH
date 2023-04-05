@@ -7,7 +7,7 @@ class Registration extends BaseModel{
     public $Id;
     public $LARPId;
     public $PersonId;
-    public $Approved; //Date
+    public $ApprovedCharacters; //Date
     public $RegisteredAt;
     public $PaymentReference;
     public $AmountToPay = 0;
@@ -37,7 +37,7 @@ class Registration extends BaseModel{
         if (isset($arr['Id']))   $this->Id = $arr['Id'];
         if (isset($arr['LARPId'])) $this->LARPId = $arr['LARPId'];
         if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
-        if (isset($arr['Approved'])) $this->Approved = $arr['Approved'];
+        if (isset($arr['ApprovedCharacters'])) $this->ApprovedCharacters = $arr['ApprovedCharacters'];
         if (isset($arr['RegisteredAt'])) $this->RegisteredAt = $arr['RegisteredAt'];
         if (isset($arr['PaymentReference'])) $this->PaymentReference = $arr['PaymentReference'];
         if (isset($arr['AmountToPay'])) $this->AmountToPay = $arr['AmountToPay'];
@@ -91,12 +91,12 @@ class Registration extends BaseModel{
     
     # Update an existing registration in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?, Approved=?, 
+        $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?, ApprovedCharacters=?, 
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, NotComingReason=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, 
+        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, 
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded, 
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason, $this->Id))) {
@@ -113,12 +113,12 @@ class Registration extends BaseModel{
     # Create a new registration in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, Approved, RegisteredAt, 
+        $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, ApprovedCharacters, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, ToBeRefunded, RefundDate, IsOfficial, 
             NPCDesire, HousingRequestId, GuardianId, NotComingReason) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->Approved, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
+        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded,
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason))) {
             $stmt = null;
@@ -129,11 +129,47 @@ class Registration extends BaseModel{
         $stmt = null;
     }
     
-    public function isApproved() {
-        if (isset($this->Approved)) {
+    public function isApprovedCharacters() {
+        if (isset($this->ApprovedCharacters)) {
             return true;
         }
         return false;
+    }
+    
+    public function hasPayed() {
+        if ($this->AmountToPay <= $this->AmountPayed) {
+            return true;
+        }
+        return false;
+        
+    }
+    
+    public function isMember() {
+        //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
+        if ($this->IsMember == 1) return true;
+        
+        //Kolla inte oftare än en gång per kvart
+        if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false;
+        
+        $larp = LARP::loadById($this->LARPId);
+        $year = substr($larp->StartDate, 0, 4);
+        
+        $val = check_membership($this->SocialSecurityNumber, $year);
+        
+        
+        if ($val == 1) {
+            $this->IsMember=1;
+        }
+        else {
+            $this->IsMember = 0;
+        }
+        $now = new Datetime();
+        $this->MembershipCheckedAt = date_format($now,"Y-m-d H:i:s");
+        $this->update();
+        
+        if ($this->IsMember == 1) return true;
+        return false;
+        
     }
  
     public static function loadByIds($personId, $larpId)

@@ -108,7 +108,7 @@ include_once '../includes/error_handling.php';
                             }
                             echo "</td></tr>\n";                            
                         }
-                        echo "<tr><td>Godkänd</td><td>" . showStatusIcon($person->isApproved($current_larp)). "</td></tr>\n";
+                        echo "<tr><td>Godkända karaktärer</td><td>" . showStatusIcon($person->isApprovedCharacters($current_larp)). "</td></tr>\n";
                         echo "<tr><td>Betalat</td><td>" . showStatusIcon($person->hasPayed($current_larp));
                         if (!$person->hasPayed($current_larp)) {
 

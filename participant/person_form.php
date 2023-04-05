@@ -79,10 +79,10 @@
 				<div class="question">
 					<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
 					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN.<br />
-					Om du saknar personnummer/samordningsnummer får du skriva xxxx på de fyra sista.<br />
+					Om du saknar personnummer kommer du att behöva hjälp av Berghems Vänner för att kunna bli medlem. Skriv då in 0000 som de fyra sista så länge.<br />
 					Personnumret kommer att kontrolleras mot medlemsregistret eftersom medlemsskap krävs för att få delta på lajvet. </div>
 					<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
-					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{8}-x{4}|\d{12}|\d{8}x{4}"  placeholder="ÅÅÅÅMMDD-NNNN" size="20" maxlength="13" required>
+					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{12}"  placeholder="ÅÅÅÅMMDD-NNNN" size="20" maxlength="13" required>
 				</div>
 				<div class="question">
 					<label for="PhoneNumber">Mobilnummer</label>

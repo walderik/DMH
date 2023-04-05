@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registration = Registration::loadById($registrationId);
     if (isset($registration)) {
 
-        $registration->Approved = date("Y-m-d");
+        $registration->ApprovedCharacters= date("Y-m-d");
         
         $registration->update();
         send_approval_mail($registration);

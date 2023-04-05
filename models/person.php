@@ -126,7 +126,7 @@ class Person extends BaseModel{
     public static function getAllToApprove($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
-        "regsys_registration WHERE LarpId = ? AND Approved IS Null) ORDER BY ".static::$orderListBy.";";
+        "regsys_registration WHERE LarpId = ? AND ApprovedCharacters IS Null) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
  
@@ -373,12 +373,12 @@ class Person extends BaseModel{
     }
     
 
-    public function isApproved(LARP $larp) {
+    public function isApprovedCharacters(LARP $larp) {
         $registration = Registration::loadByIds($this->Id, $larp->Id);
         if (!isset($registration)) {
             return false;
         }
-        return $registration->isApproved();
+        return $registration->isApprovedCharacters();
     }
     
     public function hasPayed($larp) {
@@ -386,10 +386,7 @@ class Person extends BaseModel{
         if (!isset($registration)) {
             return false;
         }
-        if ($registration->AmountToPay <= $registration->AmountPayed) {
-            return true;
-        }
-        return false;
+        return $registration->hasPayed();
     }
     
     
@@ -399,31 +396,7 @@ class Person extends BaseModel{
         //Vi bryr oss inte om ifall personer är medlemmar om det inte är anmälda till ett lajv
         if (!isset($registration)) return false;
         
-
-        //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
-        if ($registration->IsMember == 1) return true;
-        
-        //Kolla inte oftare än en gång per kvart
-        if (isset($registration->MembershipCheckedAt) && (time()-strtotime($registration->MembershipCheckedAt) < 15*60)) return false;
-
-
-        $year = substr($larp->StartDate, 0, 4);
-
-        $val = check_membership($this->SocialSecurityNumber, $year);
-        
-
-        if ($val == 1) {
-            $registration->IsMember=1;
-        }
-        else {
-            $registration->IsMember = 0;
-        }
-        $now = new Datetime();
-        $registration->MembershipCheckedAt = date_format($now,"Y-m-d H:i:s");
-        $registration->update();
-
-        if ($registration->IsMember == 1) return true;
-        return false;
+        return $registration->IsMember();
     }
     
     public static function getAllWithSingleAllergy(NormalAllergyType $allergy, LARP $larp) {

@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //Sätt deltagaren till icke-godkänd
             $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
             if (!empty($registration)) {
-                $registration->Approved=null;
+                $registration->ApprovedCharacters=null;
                 $registration->update();
             }
             

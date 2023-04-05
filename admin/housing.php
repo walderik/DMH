@@ -68,3 +68,4 @@ include 'navigation_subpage.php';
 	    echo "<br>";
 	}
 	?>
+</div>
