@@ -27,10 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     //Karaktären måste godkännas.
     $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
     $registration->ApprovedCharacters = null;
+    $registration->update();
     
     BerghemMailer::send_added_role_mail($role, $current_larp);
         
-    header('Location: ../index.php?message=registration_done');
+    header('Location: ../not_registered_roles.php');
     exit;
 }
 header('Location: ../index.php');

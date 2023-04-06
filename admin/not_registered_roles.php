@@ -18,7 +18,7 @@ include 'navigation_subpage.php';
     		    echo "Inga anmälda roller";
     		} else {
     		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Yrke</th><th>Grupp</th><th>Spelare</th><th>Senast spelad</th></tr>\n";
+    		    echo "<tr><th>Namn</th><th>Yrke</th><th>Grupp</th><th>Spelare</th><th>Senast spelad</th><th>Lägg till</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
     		        echo "<tr>\n";
@@ -33,17 +33,25 @@ include 'navigation_subpage.php';
     		            echo "<td>$group->Name</td>\n";
     		        }
     		        echo "<td>$person->Name</td>";
+    		        $larp = $role->lastLarp();
+    		        echo "<td>";
+    		        if (empty($larp)) {
+    		            echo "Aldrig spelad";
+    		        }
+    		        else {
+    		            echo $larp->Name;
+    		        }
+    		        echo "</td>";
+
+    		        
     		        if ($person->isRegistered($current_larp)) {
-    		            echo "<td><a href='logic/add_role.php?id=$role->Id'>Lägg till som sidokaraktär</a><td>";
+    		            echo "<td><a href='logic/add_role.php?id=$role->Id'>Lägg till som sidokaraktär</a></td>";
     		        }
                     else {
-                        echo "<td><a href='logic/register_person.php?id=$role->Id'>Anmäl med denna som huvudkaraktär</a><td>";
+                        echo "<td><a href='logic/register_person.php?id=$role->Id'>Anmäl med denna som huvudkaraktär</a></td>";
                     }
-
-    		        //TODO leta rätt på när rollen senast var anmäld
-    		        echo "<td></td>";
-    		        echo "</tr>\n";
-    		    }
+                    echo "</tr>\n";
+      		    }
     		    echo "</table>";
     		}
     		?>

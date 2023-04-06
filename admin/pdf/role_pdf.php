@@ -121,7 +121,7 @@ class ROLE_PDF extends FPDF {
         global $role;
         if (!Wealth::is_in_use()) return;
         $this->set_header($left, 'Rikedom');
-        $text = ($role->is_trading()) ? " (Handel)" : " (Ingen handel)";
+        $text = ($role->is_trading($current_larp)) ? " (Handel)" : " (Ingen handel)";
         $this->set_text($left, Wealth::loadById($role->WealthId)->Name.$text);
     }
     

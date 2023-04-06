@@ -333,7 +333,7 @@ class Person extends BaseModel{
     public function getAgeAtLarp(LARP $larp) {
         $date = $larp->StartDate;
         $birthday = DateTime::createFromFormat('Ymd', substr($this->SocialSecurityNumber, 0, 7));
-        $larpStartDate = DateTime::createFromFormat('Y-m-d', substr($date, 0, 9));
+        $larpStartDate = DateTime::createFromFormat('Y-m-d', substr($date, 0, 10));
         $interval = date_diff($birthday, $larpStartDate);  
         return $interval->format('%Y');
     }

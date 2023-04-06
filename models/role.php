@@ -324,16 +324,19 @@ class Role extends BaseModel{
         
     }
     
-    public function is_trading() {
-        global $current_larp;
-        $campaign = $current_larp->getCampaign();
+    public function is_trading(LARP $larp) {
+        $campaign = $larp->getCampaign();
         if (!$campaign->is_dmh()) return false;
         if ($this->WealthId > 2) return true;
-        $larp_role = LARP_Role::loadByIds($this->Id, $current_larp->Id);
+        $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
         if (empty($larp_role)) return false; 
         $intrigtyper = commaStringFromArrayObject($larp_role->getIntrigueTypes());
         return (str_contains($intrigtyper, 'Handel'));
         # Hantering för de som har gamla lagfarter
+    }
+    
+    public function lastLarp() {
+        return LARP::lastLarp($this);
     }
     
 }

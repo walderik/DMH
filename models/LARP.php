@@ -109,23 +109,28 @@ class LARP extends BaseModel{
     }
     
     public static function allFutureOpenLARPs() {
-            $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND RegistrationOpen=1 ORDER BY ".static::$orderListBy.";";
-            return static::getSeveralObjectsqQuery($sql, null);
-        }
+        $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND RegistrationOpen=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, null);
+    }
+    
+    public static function allFutureNotYetOpenLARPs() {
+        $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND RegistrationOpen=0 ".
+            "AND LatestRegistrationDate >= CURDATE() ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, null);
+    }
+    
+    public static function allPastLarpsWithRegistrations(User $user) {
+        $sql = "SELECT * FROM regsys_larp WHERE StartDate <= CURDATE() AND Id IN ".
+            "(SELECT DISTINCT regsys_registration.LARPId FROM regsys_person, regsys_registration WHERE ".
+            "regsys_person.id = regsys_registration.PersonId AND regsys_person.UserId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($user->Id));
+    }
         
-        public static function allFutureNotYetOpenLARPs() {
-            $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND RegistrationOpen=0 ".
-                "AND LatestRegistrationDate >= CURDATE() ORDER BY ".static::$orderListBy.";";
-            return static::getSeveralObjectsqQuery($sql, null);
-        }
-        
-        public static function allPastLarpsWithRegistrations(User $user) {
-            $sql = "SELECT * FROM regsys_larp WHERE StartDate <= CURDATE() AND Id IN ".
-                "(SELECT DISTINCT regsys_registration.LARPId FROM regsys_person, regsys_registration WHERE ".
-                "regsys_person.id = regsys_registration.PersonId AND regsys_person.UserId = ?) ORDER BY ".static::$orderListBy.";";
-            return static::getSeveralObjectsqQuery($sql, array($user->Id));
-        }
-        
-        
+    public static function lastLarp(Role $role) {
+        $sql="SELECT * FROM regsys_larp WHERE Id IN ".
+            "(SELECT LarpId from regsys_larp_role WHERE RoleId=?) ".
+            "ORDER BY StartDate DESC";
+        return static::getOneObjectQuery($sql, array($role->Id));
+    }
         
 }

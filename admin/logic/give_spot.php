@@ -16,7 +16,7 @@ if (!isset( $_POST['RegistrationId'])) {
     exit;
 }
 
-$registration = Registration::loadByIds($_POST['RegistrationId']);
+$registration = Registration::loadById($_POST['RegistrationId']);
 if (empty($registration)) {
     header('Location: ../index.php');
     exit;

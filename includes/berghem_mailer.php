@@ -201,7 +201,7 @@ class BerghemMailer {
     
     
     
-    function send_approval_mail(Registration $registration) {
+    public static function send_approval_mail(Registration $registration) {
         $person = $registration->getPerson();
         $mail = $person->Email;
         
@@ -226,32 +226,26 @@ class BerghemMailer {
     
     
     
-    static function send_spot_at_larp(Registration $registration) {
+    public static function send_spot_at_larp(Registration $registration) {
         $person = $registration->getPerson();
         $mail = $person->Email;
         
         $larp = $registration->getLARP();
  
-        $roles = $person->getRolesAtLarp($larp);
-        
-        //TODO bättre text
-        $text  = "Du har nu en plats på lajvet $larp->Name<br>\n";
+
+        $larpStartDateText = substr($larp->StartDate, 0, 10);
+
+        $text  = "Du är nu fullt anmäld till lajvet Så nu är det bara att vänta in lajvstart. ";
+        $text .= "$larpStartDateText ses vi på $larp->Name.<br>\n";
         $text .= "<br>\n";
-        $text .= "De karaktärer du har anmält är:<br>\n";
-        $text .= "<br>\n";
-        foreach ($roles as $role) {
-            $text .= '* '.$role->Name;
-            if ($role->isMain($larp)) {
-                $text .= " - Din huvudkaraktär";
-            }
-            $text .= "<br>\n";
-        }
+        $text .= "Närmare lajvet kommer intriger och information om boende.<br>\n";
         
-        static::send($mail, $person->Name, $text, "Plats på ".$larp->Name);
+        //static::send($mail, $person->Name, $text, "Plats på ".$larp->Name);
+        static::send("karin@tellen.se", $person->Name, $text, "Plats på ".$larp->Name);
         
     }
     
-    static function sendNPCMail(NPC $npc) {
+    public static function sendNPCMail(NPC $npc) {
  
         $person = $npc->getPerson();
         $mail = $person->Email;
@@ -259,7 +253,7 @@ class BerghemMailer {
         $larp = $npc->getLARP();
         
         
-        //TODO bättre text näe npc är klar
+        //TODO bättre text när npc är klar
         $text  = "Du har fått en NPC på lajvet $larp->Name<br>\n";
         $text .= "<br>\n";
         $text .= "Namn: $npc->Name";
