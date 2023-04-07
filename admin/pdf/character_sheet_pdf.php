@@ -7,7 +7,7 @@ require $root . '/includes/fpdf185/fpdf.php';
 require $root . '/includes/init.php';
 
 
-class ROLE_PDF extends FPDF {
+class CharacterSheet_PDF extends FPDF {
     
     public static $Margin = 5;
     
@@ -366,7 +366,7 @@ if (!$role->isRegistered($current_larp)) {
 }
 
 
-$pdf = new ROLE_PDF();
+$pdf = new CharacterSheet_PDF();
 $pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundos');

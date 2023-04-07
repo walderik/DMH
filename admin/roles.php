@@ -23,7 +23,7 @@
     		        echo "</td>\n";
     		        echo "<td nowrap>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye' title='Se rollen'></i></a>\n";
     		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera rollen'></i></a>\n";
-    		        echo "<a href='pdf/role_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
+    		        echo "<a href='pdf/character_sheet_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
     		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
     		        $group = $role->getGroup();
@@ -62,7 +62,7 @@
     		        echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";
     		        echo "<td>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye' title='Se rollen'></i></a>\n";
     		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera rollen'></i></a>\n";
-    		        echo "<a href='pdf/role_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
+    		        echo "<a href='pdf/character_sheet_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
     		        echo "</td>\n";
     		        echo "</tr>\n";
     		    }
