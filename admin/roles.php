@@ -32,8 +32,12 @@
     		        } else {
     		            echo "<td>$group->Name</td>\n";
     		        }
-    		        echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";
-    		        echo "<td><a href='edit_intrigue.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		        if ($role->getPerson()->isMysLajvare()) {
+    		            echo "<td colspan=2>N/A</td>\n";
+    		        } else {
+        		        echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";
+        		        echo "<td><a href='edit_intrigue.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		        }
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";
@@ -59,7 +63,11 @@
     		        } else {
     		            echo "<td>$group->Name</td>\n";
     		        }
-    		        echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";
+    		        if ($role->getPerson()->isMysLajvare()) {
+    		            echo "<td>N/A</td>\n";
+    		        } else {
+    		            echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";
+    		        }
     		        echo "<td>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye' title='Se rollen'></i></a>\n";
     		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera rollen'></i></a>\n";
     		        echo "<a href='pdf/character_sheet_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
