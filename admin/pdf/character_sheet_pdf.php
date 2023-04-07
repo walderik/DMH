@@ -358,7 +358,7 @@ class CharacterSheet_PDF extends FPDF {
 	    
 	    if (empty($text)) return;
 	    
- 	    $text = $this->GetY().' - '.$text;
+//  	    $text = $this->GetY().' - '.$text;
 	    
 	    $text = trim(utf8_decode($text));
 	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
