@@ -13,10 +13,10 @@ class SelectionData extends BaseModel{
     public static $orderListBy = 'SortOrder';
     
     # Används den här tabellen
-    public static function is_in_use() {
-        $stmt = static::connectStatic()->prepare("SELECT * FROM regsys_".strtolower(static::class)." WHERE active = 1 ORDER BY SortOrder LIMIT 1;");
+    public static function isInUse(LARP $larp) {
+        $stmt = static::connectStatic()->prepare("SELECT * FROM regsys_".strtolower(static::class)." WHERE active = 1 AND CampaignId = ? ORDER BY SortOrder LIMIT 1;");
         
-        if (!$stmt->execute()) {
+        if (!$stmt->execute(array($larp->CampaignId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

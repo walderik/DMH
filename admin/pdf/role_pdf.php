@@ -109,8 +109,8 @@ class ROLE_PDF extends FPDF {
     }
     
     function erfarenhet($left) {  
-        global $role;
-        if (!Experience::is_in_use()) return;
+        global $role, $current_larp;
+        if (!Experience::isInUse($current_larp)) return;
         $this->set_header($left, 'Erfarenhet');
         $person = $role->getPerson();
         if (empty($person)) return;
@@ -118,16 +118,16 @@ class ROLE_PDF extends FPDF {
     }
     
     function rikedom($left) {
-        global $role;
-        if (!Wealth::is_in_use()) return;
+        global $role, $current_larp;
+        if (!Wealth::isInUse($current_larp)) return;
         $this->set_header($left, 'Rikedom');
         $text = ($role->is_trading($current_larp)) ? " (Handel)" : " (Ingen handel)";
         $this->set_text($left, Wealth::loadById($role->WealthId)->Name.$text);
     }
     
     function lajvar_typ($left) {
-        global $role;
-        if (!LarperType::is_in_use()) return;
+        global $role, $current_larp;
+        if (!LarperType::isInUse($current_larp)) return;
         
         $this->set_header($left, 'Lajvartyp');
         $person = $role->getPerson();
