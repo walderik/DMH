@@ -22,7 +22,7 @@ class CharacterSheet_PDF extends FPDF {
     public static $text_fontsize = 12;
     public static $text_max_length = 50;
     
-    
+    public $person;
     
     function Header() {
         global $root, $y, $mitten;
@@ -69,11 +69,11 @@ class CharacterSheet_PDF extends FPDF {
     function names($left, $left2) {
         global $y, $cell_width, $mitten, $current_larp, $role;
         
-        $person = $role->getPerson();        
+        $persn = $this->person;        
         $this->set_header($left, 'Spelare');
-        $age = (empty($person)) ? '?' : $person->getAgeAtLarp($current_larp);
-        $namn = "$person->Name ($age)";
-        if (!empty($person)) $this->set_text($left, $namn);
+        $age = (empty($this->person)) ? '?' : $persn->getAgeAtLarp($current_larp);
+        $namn = "$persn->Name ($age)";
+        if (!empty($persn)) $this->set_text($left, $namn);
         
         $this->mittlinje();
         
@@ -104,9 +104,9 @@ class CharacterSheet_PDF extends FPDF {
     function epost($left) {
         global $role;
         $this->set_header($left, 'Epost');
-        $person = $role->getPerson();
-        if (empty($person)) return true;
-        $this->set_text($left, $person->Email);
+//         $person = $role->getPerson();
+        if (empty($this->person)) return true;
+        $this->set_text($left, $this->person->Email);
         return true;
     }
     
@@ -114,9 +114,9 @@ class CharacterSheet_PDF extends FPDF {
         global $role, $current_larp;
         if (!Experience::isInUse($current_larp)) return false;
         $this->set_header($left, 'Erfarenhet');
-        $person = $role->getPerson();
-        if (empty($person)) return true;
-        $this->set_text($left, $person->getExperience()->Name);
+//         $person = $role->getPerson();
+        if (empty($this->person)) return true;
+        $this->set_text($left, $this->person->getExperience()->Name);
         return true;
     }
     
@@ -134,9 +134,9 @@ class CharacterSheet_PDF extends FPDF {
         if (!LarperType::isInUse($current_larp)) return false;
         
         $this->set_header($left, 'Lajvartyp');
-        $person = $role->getPerson();
-        if (empty($person)) return true;
-        $text = $person->getLarperType()->Name." (".trim($person->TypeOfLarperComment).")";
+//         $person = $role->getPerson();
+        if (empty($this->person)) return true;
+        $text = $this->person->getLarperType()->Name." (".trim($this->person->TypeOfLarperComment).")";
         $this->set_text($left, $text );
         return true;
     }
@@ -194,6 +194,8 @@ class CharacterSheet_PDF extends FPDF {
     function new_character_cheet(Role $role)
     {
         global $x, $y, $left, $left2, $current_left, $cell_width, $cell_y_space, $mitten, $current_larp, $role;
+        
+        $this->person = $role->getPerson();
         
         $left = static::$x_min + static::$Margin;
         $x = $left;
@@ -344,11 +346,6 @@ class CharacterSheet_PDF extends FPDF {
 	
 }
 
-//If the user isnt admin it may not use this page
-if (!isset($_SESSION['admin'])) {
-    header('Location: ../../participant/index.php');
-    exit;
-}
 
 if ($_SERVER["REQUEST_METHOD"] != "GET" || empty($_GET['id'])) {
     header('Location: ../../admin/index.php');
@@ -360,6 +357,15 @@ $role = Role::loadById($roleId);
 if (empty($role)) {
     header('Location: index.php'); //Rollen finns inte
     exit;
+}
+
+# Kolla behörigheten
+if (!$current_user->IsAdmin) {
+    $person = $role->getPerson();
+    if ($person->UserId != $current_user->Id) {
+        header('Location: ../../participant/index.php');
+        exit;
+    }
 }
 
 if (!$role->isRegistered($current_larp)) {
@@ -375,8 +381,5 @@ $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('Helvetica','');
 $pdf->SetSubject(utf8_decode($role->Name));
 $pdf->new_character_cheet($role);
-
-// $attachments = ['Telegrammen' => $doc];
-//BerghemMailer::send('Mats.rappe@yahoo.se', 'Admin', "Det här är alla telegrammen", "Alla Telegrammen som PDF", $attachments);
 
 $pdf->Output();
