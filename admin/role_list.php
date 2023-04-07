@@ -3,7 +3,7 @@
 include_once 'header.php';
 
 
-$roles = Role::getAllMainRoles($current_larp);
+$roles = $current_larp->getAllMainRoles();
 
 include 'navigation_subpage.php';
 ?>

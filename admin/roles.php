@@ -9,7 +9,7 @@
         <h1>Roller</h1>
         <h2>Huvudroller</h2>
      		<?php 
-    		$roles = Role::getAllMainRoles($current_larp);
+     		$roles = $current_larp->getAllMainRoles();
     		if (empty($roles)) {
     		    echo "Inga anmälda roller";
     		} else {
@@ -43,7 +43,7 @@
         
                 <h2>Övriga roller</h2>
      		<?php 
-    		$roles = Role::getAllNotMainRoles($current_larp);
+     		$roles = $current_larp->getAllNotMainRoles();
     		if (empty($roles)) {
     		    echo "Inga anmälda roller";
     		} else {
