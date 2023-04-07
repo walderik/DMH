@@ -22,7 +22,9 @@ class CharacterSheet_PDF extends FPDF {
     public static $text_fontsize = 12;
     public static $text_max_length = 50;
     
+    public $role;
     public $person;
+    public $larp;
     
     function Header() {
         global $root, $y, $mitten;
@@ -49,14 +51,14 @@ class CharacterSheet_PDF extends FPDF {
     
     # Skriv ut lajvnamnet högst upp.
     function title($left) {
-        global $y, $current_larp;
+        global $y;
 
-        $font_size = (850 / strlen(utf8_decode($current_larp->Name)));
+        $font_size = (850 / strlen(utf8_decode($this->larp->Name)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
         $this->SetXY($left, $y-2);
-        $this->Cell(0, static::$cell_y*5, utf8_decode($current_larp->Name),0,0,'C');
+        $this->Cell(0, static::$cell_y*5, utf8_decode($this->larp->Name),0,0,'C');
         
         $y = static::$y_min + (static::$cell_y*5) + (static::$Margin);
         
@@ -67,11 +69,11 @@ class CharacterSheet_PDF extends FPDF {
     
     # Namnen på roll och spelare
     function names($left, $left2) {
-        global $y, $cell_width, $mitten, $current_larp, $role;
+        global $y, $cell_width, $mitten;
         
         $persn = $this->person;        
         $this->set_header($left, 'Spelare');
-        $age = (empty($this->person)) ? '?' : $persn->getAgeAtLarp($current_larp);
+        $age = (empty($this->person)) ? '?' : $persn->getAgeAtLarp($this->larp);
         $namn = "$persn->Name ($age)";
         if (!empty($persn)) $this->set_text($left, $namn);
         
@@ -79,9 +81,9 @@ class CharacterSheet_PDF extends FPDF {
         
         $this->SetXY($left2, $y);
         $this->SetFont('Helvetica','',static::$header_fontsize);
-        $type = ($role->isMain($current_larp)) ? 'Huvudkaraktär' : 'Sidokaraktär';
+        $type = ($this->role->isMain($this->larp)) ? 'Huvudkaraktär' : 'Sidokaraktär';
         
-        if ($role->IsDead) {
+        if ($this->role->IsDead) {
             $type = 'Avliden';
             $this->Line(static::$x_min, $y+static::$Margin*1.5, $mitten, $y+static::$Margin*1.5);
         }
@@ -91,50 +93,44 @@ class CharacterSheet_PDF extends FPDF {
         $this->SetXY($left2, $y + static::$Margin);
         $this->SetFont('Helvetica','B',24); # Extra stora bokstäver på karaktärens namn
        
-        $this->Cell($cell_width, static::$cell_y, utf8_decode($role->Name),0,0,'L');
+        $this->Cell($cell_width, static::$cell_y, utf8_decode($this->role->Name),0,0,'L');
     }
     
     function yrke($left) {
-        global $role;
         $this->set_header($left, 'Yrke');
-        $this->set_text($left, $role->Profession);
+        $this->set_text($left, $this->role->Profession);
         return true;
     }
     
     function epost($left) {
-        global $role;
         $this->set_header($left, 'Epost');
-//         $person = $role->getPerson();
         if (empty($this->person)) return true;
         $this->set_text($left, $this->person->Email);
         return true;
     }
     
     function erfarenhet($left) {  
-        global $role, $current_larp;
-        if (!Experience::isInUse($current_larp)) return false;
+        if (!Experience::isInUse($this->larp)) return false;
+        
         $this->set_header($left, 'Erfarenhet');
-//         $person = $role->getPerson();
         if (empty($this->person)) return true;
         $this->set_text($left, $this->person->getExperience()->Name);
         return true;
     }
     
     function rikedom($left) {
-        global $role, $current_larp;
-        if (!Wealth::isInUse($current_larp)) return false;
+        if (!Wealth::isInUse($this->larp)) return false;
+        
         $this->set_header($left, 'Rikedom');
-        $text = ($role->is_trading($current_larp)) ? " (Handel)" : " (Ingen handel)";
-        $this->set_text($left, Wealth::loadById($role->WealthId)->Name.$text);
+        $text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
+        $this->set_text($left, $this->role->getWealth()->Name.$text);
         return true;
     }
     
     function lajvar_typ($left) {
-        global $role, $current_larp;
-        if (!LarperType::isInUse($current_larp)) return false;
+        if (!LarperType::isInUse($this->larp)) return false;
         
         $this->set_header($left, 'Lajvartyp');
-//         $person = $role->getPerson();
         if (empty($this->person)) return true;
         $text = $this->person->getLarperType()->Name." (".trim($this->person->TypeOfLarperComment).")";
         $this->set_text($left, $text );
@@ -142,47 +138,42 @@ class CharacterSheet_PDF extends FPDF {
     }
     
     function group($left) {
-        global $role;
         $this->set_header($left, 'Grupp');
-        $group = $role->getGroup();
+        $group = $this->role->getGroup();
         if (empty($group)) return true;
         $this->set_text($left, $group->Name);
         return true;
     }
     
     function birth_place($left) {
-        global $role;
         $this->set_header($left, 'Född');
-        $this->set_text($left, $role->Birthplace);
+        $this->set_text($left, $this->role->Birthplace);
         return true;
     }
     
     function bor($left) {
-        global $role;
         $this->set_header($left, 'Bor');
-        $this->set_text($left, $role->getPlaceOfResidence()->Name);
+        $this->set_text($left, $this->role->getPlaceOfResidence()->Name);
         return true;
     }
     
     function religion($left) {
-        global $role;
         $this->set_header($left, 'Religion');
-        $this->set_text($left, $role->Religion);
+        $this->set_text($left, $this->role->Religion);
         return true;
     }
     
     function reason_for_being_in_here($left) {
-        global $role;
         $this->set_header($left, 'Orsak för att vistas här');
-        $this->set_text($left, $role->ReasonForBeingInSlowRiver);
+        $this->set_text($left, $this->role->ReasonForBeingInSlowRiver);
         return true;
     }
     
     
     function beskrivning()
     {
-        global $role, $y;
-        $text = $role->Description; #.' '.strlen($role->Description);
+        global $y;
+        $text = $this->role->Description; #.' '.strlen($role->Description);
         if (($y > (static::$y_max/2)-static::$Margin) || (strlen($text)>2600)) {
             $this->set_full_page('Beskrivning', $text);
         } else {
@@ -191,11 +182,13 @@ class CharacterSheet_PDF extends FPDF {
         return true;
     }
     
-    function new_character_cheet(Role $role)
+    function new_character_cheet(Role $role_in, LARP $larp_in)
     {
-        global $x, $y, $left, $left2, $current_left, $cell_width, $cell_y_space, $mitten, $current_larp, $role;
+        global $x, $y, $left, $left2, $current_left, $cell_width, $cell_y_space, $mitten;
         
-        $this->person = $role->getPerson();
+        $this->role = $role_in;
+        $this->person = $this->role->getPerson();
+        $this->larp = $larp_in;
         
         $left = static::$x_min + static::$Margin;
         $x = $left;
@@ -380,6 +373,6 @@ $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('Helvetica','');
 $pdf->SetSubject(utf8_decode($role->Name));
-$pdf->new_character_cheet($role);
+$pdf->new_character_cheet($role, $current_larp);
 
 $pdf->Output();
