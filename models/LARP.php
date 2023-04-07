@@ -82,6 +82,19 @@ class LARP extends BaseModel{
     public function getCampaign() {
         return Campaign::loadById($this->CampaignId);
     }
+    
+    public function getAllRoles() {
+        return Role::getAllRoles($this);
+    }
+    
+    public function getAllMainRoles() {
+        return Role::getAllMainRoles($this);
+    }
+    
+    public function getAllNotMainRoles() {
+        return Role::getAllNotMainRoles($this);
+    }
+    
     public function isPastLatestRegistrationDate() {
         $today = date("Y-m-d");
         if ($today <= $this->LatestRegistrationDate) return false;
