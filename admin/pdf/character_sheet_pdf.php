@@ -98,92 +98,102 @@ class CharacterSheet_PDF extends FPDF {
         global $role;
         $this->set_header($left, 'Yrke');
         $this->set_text($left, $role->Profession);
+        return true;
     }
     
     function epost($left) {
         global $role;
         $this->set_header($left, 'Epost');
         $person = $role->getPerson();
-        if (empty($person)) return;
+        if (empty($person)) return true;
         $this->set_text($left, $person->Email);
+        return true;
     }
     
     function erfarenhet($left) {  
         global $role, $current_larp;
-        if (!Experience::isInUse($current_larp)) return;
+        if (!Experience::isInUse($current_larp)) return false;
         $this->set_header($left, 'Erfarenhet');
         $person = $role->getPerson();
-        if (empty($person)) return;
+        if (empty($person)) return true;
         $this->set_text($left, $person->getExperience()->Name);
+        return true;
     }
     
     function rikedom($left) {
         global $role, $current_larp;
-        if (!Wealth::isInUse($current_larp)) return;
+        if (!Wealth::isInUse($current_larp)) return false;
         $this->set_header($left, 'Rikedom');
         $text = ($role->is_trading($current_larp)) ? " (Handel)" : " (Ingen handel)";
         $this->set_text($left, Wealth::loadById($role->WealthId)->Name.$text);
+        return true;
     }
     
     function lajvar_typ($left) {
         global $role, $current_larp;
-        if (!LarperType::isInUse($current_larp)) return;
+        if (!LarperType::isInUse($current_larp)) return false;
         
         $this->set_header($left, 'Lajvartyp');
         $person = $role->getPerson();
-        if (empty($person)) return;
+        if (empty($person)) return true;
         $text = $person->getLarperType()->Name." (".trim($person->TypeOfLarperComment).")";
         $this->set_text($left, $text );
+        return true;
     }
     
     function group($left) {
         global $role;
         $this->set_header($left, 'Grupp');
         $group = $role->getGroup();
-        if (empty($group)) return;
+        if (empty($group)) return true;
         $this->set_text($left, $group->Name);
+        return true;
     }
     
-    function born($left) {
+    function birth_place($left) {
         global $role;
         $this->set_header($left, 'Född');
         $this->set_text($left, $role->Birthplace);
+        return true;
     }
     
     function bor($left) {
         global $role;
         $this->set_header($left, 'Bor');
         $this->set_text($left, $role->getPlaceOfResidence()->Name);
+        return true;
     }
     
     function religion($left) {
         global $role;
         $this->set_header($left, 'Religion');
         $this->set_text($left, $role->Religion);
+        return true;
     }
     
     function reason_for_being_in_here($left) {
         global $role;
         $this->set_header($left, 'Orsak för att vistas här');
         $this->set_text($left, $role->ReasonForBeingInSlowRiver);
+        return true;
     }
     
     
     function beskrivning()
     {
         global $role, $y;
-//         $this->set_full_page('Beskrivning '.strlen($role->Description), $role->Description);
         $text = $role->Description; #.' '.strlen($role->Description);
         if (($y > (static::$y_max/2)-static::$Margin) || (strlen($text)>2600)) {
             $this->set_full_page('Beskrivning', $text);
         } else {
             $this->set_rest_of_page('Beskrivning', $text);
         }
+        return true;
     }
     
     function new_character_cheet(Role $role)
     {
-        global $x, $y, $left, $left2, $cell_width, $cell_y_space, $mitten, $current_larp, $role;
+        global $x, $y, $left, $left2, $current_left, $cell_width, $cell_y_space, $mitten, $current_larp, $role;
         
         $left = static::$x_min + static::$Margin;
         $x = $left;
@@ -200,47 +210,39 @@ class CharacterSheet_PDF extends FPDF {
         $y += $cell_y_space;
         $this->bar();
         
-        $this->epost($left);
-        $this->mittlinje();
-        $this->group($left2);
-        
-        $y += $cell_y_space;
-        $this->bar();
-        
-        $this->erfarenhet($left);
-        $this->mittlinje();
-        $this->yrke($left2);
-        
-        $y += $cell_y_space;
-        $this->bar();
-        
-        $this->lajvar_typ($left);
-        $this->mittlinje();
-        $this->rikedom($left2);
-        
-        $y += $cell_y_space;
-        $this->bar();
-        
-        $this->born($left);
-        $this->mittlinje();
-        $this->bor($left2);
-        
-        $y += $cell_y_space;
-        $this->bar();
-        
-        $this->reason_for_being_in_here($left);
-        $this->mittlinje();
-        $this->religion($left2);
-        
-        $y += $cell_y_space;
-        $this->bar();
+        # Uppräkning av ett antal fält som kan finnas eller inte
+        $this->draw_field('epost');
+        $this->draw_field('group');
+        $this->draw_field('erfarenhet');
+        $this->draw_field('yrke');
+        $this->draw_field('lajvar_typ');
+        $this->draw_field('rikedom');
+        $this->draw_field('birth_place');
+        $this->draw_field('bor');
+        $this->draw_field('reason_for_being_in_here');
+        $this->draw_field('religion');
         
         $this->beskrivning();
         
 	}
 	
 	
-	
+	private function draw_field($func) {
+	    global $y, $left, $left2, $current_left, $cell_y_space;
+	    if (empty($current_left)) $current_left = $left;
+	    $to_execute = '$draw_ok = $this->'.$func.'($current_left);';
+	    eval($to_execute);
+	    if ($draw_ok) {
+	        if ($current_left == $left) {
+	            $this->mittlinje();
+	            $current_left = $left2;
+	        } else {
+	            $current_left = $left;
+	            $y += $cell_y_space;
+	            $this->bar();
+	        }
+	    }
+	}
 	
 	# Dra en linje tvärs över arket på höjd $y
 	private function bar() {
