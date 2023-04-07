@@ -24,7 +24,12 @@ class CharacterSheet_PDF extends FPDF {
     
     public $role;
     public $person;
+    public $isMyslajvare;
     public $larp;
+    public $all;
+    public $current_left;
+    public $current_cell_height;
+    public $cell_y_space;
     
     function Header() {
         global $root, $y, $mitten;
@@ -37,14 +42,19 @@ class CharacterSheet_PDF extends FPDF {
         $space = 1.2;
         $this->Line(static::$x_min-$space, static::$y_min-$space, static::$x_max+$space, static::$y_min-$space);
         $this->Line(static::$x_min-$space, static::$y_min-$space, static::$x_min-$space, static::$y_max+$space);
-         $this->Line(static::$x_min-$space, static::$y_max+$space, static::$x_max+$space, static::$y_max+$space);
+        $this->Line(static::$x_min-$space, static::$y_max+$space, static::$x_max+$space, static::$y_max+$space);
         $this->Line(static::$x_max+$space, static::$y_min-$space, static::$x_max+$space, static::$y_max+$space);
         
         
         $this->SetXY($mitten-15, 3);
         $this->SetFont('Helvetica','',static::$text_fontsize/1.1);
         $this->SetFillColor(255,255,255);
-        $this->MultiCell(30, 4, utf8_decode('Karaktärsblad'), 0,'C',true);
+        if ($this->all) {
+            $txt = $this->role->Name;
+        } else {
+            $txt = 'Karaktärsblad';
+        }
+        $this->MultiCell(30, 4, utf8_decode($txt), 0, 'C', true);
         
         $y = static::$y_min + static::$Margin;
     }
@@ -65,8 +75,6 @@ class CharacterSheet_PDF extends FPDF {
         $this->bar();
     }
     
-    
-    
     # Namnen på roll och spelare
     function names($left, $left2) {
         global $y, $cell_width, $mitten;
@@ -85,7 +93,7 @@ class CharacterSheet_PDF extends FPDF {
         
         if ($this->role->IsDead) {
             $type = 'Avliden';
-            $this->Line(static::$x_min, $y+static::$Margin*1.5, $mitten, $y+static::$Margin*1.5);
+            $this->cross_over();
         }
          
         $this->Cell($cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
@@ -95,83 +103,9 @@ class CharacterSheet_PDF extends FPDF {
        
         $this->Cell($cell_width, static::$cell_y, utf8_decode($this->role->Name),0,0,'L');
     }
+
     
-    function yrke($left) {
-        $this->set_header($left, 'Yrke');
-        $this->set_text($left, $this->role->Profession);
-        return true;
-    }
-    
-    function epost($left) {
-        $this->set_header($left, 'Epost');
-        if (empty($this->person)) return true;
-        $this->set_text($left, $this->person->Email);
-        return true;
-    }
-    
-    function erfarenhet($left) {  
-        if (!Experience::isInUse($this->larp)) return false;
-        
-        $this->set_header($left, 'Erfarenhet');
-        if (empty($this->person)) return true;
-        $this->set_text($left, $this->person->getExperience()->Name);
-        return true;
-    }
-    
-    function rikedom($left) {
-        if (!Wealth::isInUse($this->larp)) return false;
-        
-        $this->set_header($left, 'Rikedom');
-        $text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
-        $this->set_text($left, $this->role->getWealth()->Name.$text);
-        return true;
-    }
-    
-    function lajvar_typ($left) {
-        if (!LarperType::isInUse($this->larp)) return false;
-        
-        $this->set_header($left, 'Lajvartyp');
-        if (empty($this->person)) return true;
-        $text = $this->person->getLarperType()->Name." (".trim($this->person->TypeOfLarperComment).")";
-        $this->set_text($left, $text );
-        return true;
-    }
-    
-    function group($left) {
-        $this->set_header($left, 'Grupp');
-        $group = $this->role->getGroup();
-        if (empty($group)) return true;
-        $this->set_text($left, $group->Name);
-        return true;
-    }
-    
-    function birth_place($left) {
-        $this->set_header($left, 'Född');
-        $this->set_text($left, $this->role->Birthplace);
-        return true;
-    }
-    
-    function bor($left) {
-        $this->set_header($left, 'Bor');
-        $this->set_text($left, $this->role->getPlaceOfResidence()->Name);
-        return true;
-    }
-    
-    function religion($left) {
-        $this->set_header($left, 'Religion');
-        $this->set_text($left, $this->role->Religion);
-        return true;
-    }
-    
-    function reason_for_being_in_here($left) {
-        $this->set_header($left, 'Orsak för att vistas här');
-        $this->set_text($left, $this->role->ReasonForBeingInSlowRiver);
-        return true;
-    }
-    
-    
-    function beskrivning()
-    {
+    function beskrivning() {
         global $y;
         $text = $this->role->Description; #.' '.strlen($role->Description);
         if (($y > (static::$y_max/2)-static::$Margin) || (strlen($text)>2600)) {
@@ -182,27 +116,31 @@ class CharacterSheet_PDF extends FPDF {
         return true;
     }
     
-    function new_character_cheet(Role $role_in, LARP $larp_in)
-    {
-        global $x, $y, $left, $left2, $current_left, $cell_width, $cell_y_space, $mitten;
+    function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_in=false) {
+        global $x, $y, $left, $left2, $cell_width, $mitten;
         
         $this->role = $role_in;
         $this->person = $this->role->getPerson();
+        $this->isMyslajvare = $this->person->isMysLajvare();
         $this->larp = $larp_in;
+        $this->all = $all_in;
         
         $left = static::$x_min + static::$Margin;
         $x = $left;
         $cell_width = (static::$x_max - static::$x_min) / 2 - (2*static::$Margin);
-        $cell_y_space = static::$cell_y + (2*static::$Margin);
+        $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
         $left2 = $mitten + static::$Margin;
+        
+        $this->current_left = $left;
         
         $this->AddPage();
         
         $this->title($left);
         $this->names($left, $left2);
         
-        $y += $cell_y_space;
+        $y += $this->cell_y_space;
+        $this->current_cell_height = $this->cell_y_space;
         $this->bar();
         
         # Uppräkning av ett antal fält som kan finnas eller inte
@@ -212,29 +150,166 @@ class CharacterSheet_PDF extends FPDF {
         $this->draw_field('yrke');
         $this->draw_field('lajvar_typ');
         $this->draw_field('rikedom');
+        if ($this->all) $this->draw_field('intrigtyper');
         $this->draw_field('birth_place');
+        if ($this->all) $this->draw_field('intrigsuggestions');
         $this->draw_field('bor');
+        if ($this->all) $this->draw_field('notOkIntrigues');
         $this->draw_field('reason_for_being_in_here');
         $this->draw_field('religion');
+        if ($this->all) $this->draw_field('darkSecret');
+        
+        # Fixa till om vi skapat ett udda antal fält
+        if ($this->current_left == $left2) $this->draw_field('empty');
         
         $this->beskrivning();
-        
+	}
+	
+	function all_character_sheets(LARP $larp_in ) {
+	    $this->larp = $larp_in;
+	    $roles = $this->larp->getAllRoles();
+	    foreach($roles as $role) {
+ 	        $this->new_character_sheet($role, $larp_in, true);
+	    }
+	}
+	
+	# Dynamiska småfält
+	
+	protected function empty($left) {
+	    $this->set_text($left, '');
+	    return true;
+	}
+	
+	protected function yrke($left) {
+	    $this->set_header($left, 'Yrke');
+	    $this->set_text($left, $this->role->Profession);
+	    return true;
+	}
+	
+	protected function epost($left) {
+	    $this->set_header($left, 'Epost');
+	    if (empty($this->person)) return true;
+	    $this->set_text($left, $this->person->Email);
+	    return true;
+	}
+	
+	protected function erfarenhet($left) {
+	    if (!Experience::isInUse($this->larp)) return false;
+	    
+	    $this->set_header($left, 'Erfarenhet');
+	    if (empty($this->person)) return true;
+	    $this->set_text($left, $this->person->getExperience()->Name);
+	    return true;
+	}
+	
+	protected function rikedom($left) {
+	    if (!Wealth::isInUse($this->larp)) return false;
+	    
+	    if ($this->isMyslajvare) $this->cross_over();
+	    
+	    $this->set_header($left, 'Rikedom');
+	    $text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
+	    $this->set_text($left, $this->role->getWealth()->Name . $text);
+	    return true;
+	}
+	
+	protected function intrigtyper($left) {
+	    if (!IntrigueType::isInUse($this->larp)) return false;
+	    
+	    $this->set_header($left, 'Intrigtyper');
+	    if ($this->isMyslajvare) return true;
+	    $larp_role = LARP_Role::loadByIds($this->role->Id, $this->larp->Id);
+	    $text = commaStringFromArrayObject($larp_role->getIntrigueTypes());
+	    $this->set_text($left, $text);
+	    return true;
+	}
+	
+	protected function intrigsuggestions($left) {  
+	    $this->set_header($left, 'Intrigförslag');
+	    if ($this->isMyslajvare) return true;
+	    $this->set_text($left, $this->role->IntrigueSuggestions);
+	    return true;
+	}
+	
+	protected function notOkIntrigues($left) {
+	    $this->set_header($left, 'Inget spel på');
+	    if ($this->isMyslajvare) return true;
+	    $this->set_text($left, $this->role->NotAcceptableIntrigues);
+	    return true;
+	}
+	
+	protected function darkSecret($left) {
+	    $this->set_header($left, 'Mörk hemlighet');
+	    if ($this->isMyslajvare) return true;
+	    $this->set_text($left, $this->role->DarkSecret);
+	    return true;
+	}
+	
+	protected function lajvar_typ($left) {
+	    if (!LarperType::isInUse($this->larp)) return false;
+	    
+	    $this->set_header($left, 'Lajvartyp');
+	    if (empty($this->person)) return true;
+	    $mertext = (empty(trim($this->person->TypeOfLarperComment))) ? '' : " (".trim($this->person->TypeOfLarperComment).")";
+	    $text = $this->person->getLarperType()->Name.$mertext;
+	    $this->set_text($left, $text );
+	    return true;
+	}
+	
+	protected function group($left) {
+	    $this->set_header($left, 'Grupp');
+	    $group = $this->role->getGroup();
+	    if (empty($group)) return true;
+	    $this->set_text($left, $group->Name);
+	    return true;
+	}
+	
+	protected function birth_place($left) {
+	    $this->set_header($left, 'Född');
+	    $this->set_text($left, $this->role->Birthplace);
+	    return true;
+	}
+	
+	protected function bor($left) {
+	    $this->set_header($left, 'Bor');
+	    $this->set_text($left, $this->role->getPlaceOfResidence()->Name);
+	    return true;
+	}
+	
+	protected function religion($left) {
+	    $this->set_header($left, 'Religion');
+	    $this->set_text($left, $this->role->Religion);
+	    return true;
+	}
+	
+	protected function reason_for_being_in_here($left) {
+	    $this->set_header($left, 'Orsak för att vistas här');
+	    $this->set_text($left, $this->role->ReasonForBeingInSlowRiver);
+	    return true;
 	}
 	
 	
+	# Rita en ruta
+	# Håll reda på om nästa ruta är till höger eller vänster
 	private function draw_field($func) {
-	    global $y, $left, $left2, $current_left, $cell_y_space;
-	    if (empty($current_left)) $current_left = $left;
-	    $to_execute = '$draw_ok = $this->'.$func.'($current_left);';
+	    global $y, $left, $left2;
+	    $to_execute = '$draw_ok = $this->'.$func.'($this->current_left);';
 	    eval($to_execute);
 	    if ($draw_ok) {
-	        if ($current_left == $left) {
+// 	        $current_y = $this->GetY();
+// 	        # Hantering om resultatet av cellen är för stort för att få plats.
+// 	        if ($current_y > $y + $this->current_cell_height) {
+// 	            $this->current_cell_height = $y - $current_y;
+// 	        }
+	        if ($this->current_left == $left) {
+	            $this->current_left = $left2;
+	        } else { 
+	            # Vi har just ritat den högra rutan
 	            $this->mittlinje();
-	            $current_left = $left2;
-	        } else {
-	            $current_left = $left;
-	            $y += $cell_y_space;
+	            $this->current_left = $left;
+	            $y += $this->current_cell_height;
 	            $this->bar();
+	            $this->current_cell_height = $this->cell_y_space;
 	        }
 	    }
 	}
@@ -246,9 +321,14 @@ class CharacterSheet_PDF extends FPDF {
 	}
 	
 	private function mittlinje() {
-	    global $y, $cell_y_space, $mitten;
-	    $down = $y + $cell_y_space;
+	    global $y, $mitten;
+	    $down = $y + $this->cell_y_space;
 	    $this->Line($mitten, $y, $mitten, $down);
+	}
+	
+	private function cross_over() {
+	    global $y, $mitten;
+	    $this->Line($this->current_left, $y+static::$Margin*1.5, ($this->current_left+$mitten-(3*static::$Margin)), $y+static::$Margin*1.5);
 	}
 	
 	# Gemensamt sätt beräkna var rubriken i ett fält ska ligga
@@ -278,6 +358,8 @@ class CharacterSheet_PDF extends FPDF {
 	    
 	    if (empty($text)) return;
 	    
+ 	    $text = $this->GetY().' - '.$text;
+	    
 	    $text = trim(utf8_decode($text));
 	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
 	    if (strlen($text)>static::$text_max_length){
@@ -295,6 +377,7 @@ class CharacterSheet_PDF extends FPDF {
 	    # Normal utskrift
 	    $this->set_text_start($venster);
 	    $this->Cell($cell_width, static::$cell_y, $text,0,0,'L');
+	    return;
 	}
 	
 	private function set_full_page($header, $text) {
@@ -340,39 +423,49 @@ class CharacterSheet_PDF extends FPDF {
 }
 
 
-if ($_SERVER["REQUEST_METHOD"] != "GET" || empty($_GET['id'])) {
+if ($_SERVER["REQUEST_METHOD"] != "GET") {
     header('Location: ../../admin/index.php');
     exit;
 }
 
-$roleId = $_GET['id'];
-$role = Role::loadById($roleId);
-if (empty($role)) {
-    header('Location: index.php'); //Rollen finns inte
-    exit;
+if (isset($_GET['id'])) {
+    $roleId = $_GET['id'];
+    $role = Role::loadById($roleId);
 }
 
-# Kolla behörigheten
 if (!$current_user->IsAdmin) {
+    if (empty($role)) {
+        header('Location: index.php'); //Rollen finns inte
+        exit;
+    }
+    
+    # Kolla behörigheten
     $person = $role->getPerson();
     if ($person->UserId != $current_user->Id) {
         header('Location: ../../participant/index.php');
         exit;
     }
-}
 
-if (!$role->isRegistered($current_larp)) {
-    header('Location: index.php'); //Rollen är inte anmäld
-    exit;
+    if (!$role->isRegistered($current_larp)) {
+        header('Location: index.php'); //Rollen är inte anmäld
+        exit;
+    }
 }
 
 
 $pdf = new CharacterSheet_PDF();
-$pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
+$title = (empty($role)) ? 'Alla Karaktärer' : ('Karaktärsblad '.$role->Name) ;
+$pdf->SetTitle(utf8_decode($title));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('Helvetica','');
-$pdf->SetSubject(utf8_decode($role->Name));
-$pdf->new_character_cheet($role, $current_larp);
+$subject = (empty($role)) ? 'ALLA' : $role->Name;
+$pdf->SetSubject(utf8_decode($subject));
+
+if (empty($role)) {
+    $pdf->all_character_sheets($current_larp);
+} else {
+    $pdf->new_character_sheet($role, $current_larp);
+}
 
 $pdf->Output();
