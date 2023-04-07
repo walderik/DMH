@@ -232,6 +232,14 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
+    public static function getAllRoles(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_larp_role WHERE larpid=?) ".
+            "ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
     public static function getAllMainRoles(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
@@ -327,6 +335,9 @@ class Role extends BaseModel{
     public function is_trading(LARP $larp) {
         $campaign = $larp->getCampaign();
         if (!$campaign->is_dmh()) return false;
+        $person = $this->getPerson();
+        if (empty($person)) return false;
+        if ($person->isMysLajvare()) return false;
         if ($this->WealthId > 2) return true;
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
         if (empty($larp_role)) return false; 
