@@ -60,15 +60,15 @@ class CharacterSheet_PDF extends FPDF {
     }
     
     # Skriv ut lajvnamnet högst upp.
-    function title($left) {
+    function title($left, $text) {
         global $y;
 
-        $font_size = (850 / strlen(utf8_decode($this->larp->Name)));
+        $font_size = (850 / strlen(utf8_decode($text)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
         $this->SetXY($left, $y-2);
-        $this->Cell(0, static::$cell_y*5, utf8_decode($this->larp->Name),0,0,'C');
+        $this->Cell(0, static::$cell_y*5, utf8_decode($text),0,0,'C');
         
         $y = static::$y_min + (static::$cell_y*5) + (static::$Margin);
         
@@ -136,7 +136,7 @@ class CharacterSheet_PDF extends FPDF {
         
         $this->AddPage();
         
-        $this->title($left);
+        $this->title($left, $this->larp->Name);
         $this->names($left, $left2);
         
         $y += $this->cell_y_space;
@@ -156,13 +156,37 @@ class CharacterSheet_PDF extends FPDF {
         $this->draw_field('bor');
         if ($this->all) $this->draw_field('notOkIntrigues');
         $this->draw_field('reason_for_being_in_here');
-        $this->draw_field('religion');
+        
         if ($this->all) $this->draw_field('darkSecret');
+        $this->draw_field('religion');
+        if ($this->all) $this->draw_field('darkSecretSuggestion');
+        
+        if ($this->all) $this->draw_field('charactersWithRelations');
+        if ($this->all) $this->draw_field('tidigareLajv');
+       
         
         # Fixa till om vi skapat ett udda antal fält
         if ($this->current_left == $left2) $this->draw_field('empty');
         
         $this->beskrivning();
+        
+        $previous_larp_roles = $this->role->getPreviousLarpRoles();
+        if (isset($previous_larp_roles) && count($previous_larp_roles) > 0) {
+            foreach ($previous_larp_roles as $prevoius_larp_role) {
+                $prevoius_larp = LARP::loadById($prevoius_larp_role->LARPId);
+                $this->AddPage();
+                $this->title($left, "Historik $prevoius_larp->Name");
+                $this->names($left, $left2);
+                echo "<strong>Vad hände för $this->role->Name?</strong><br>";
+                $text = (isset($prevoius_larp_role->WhatHappened) && $prevoius_larp_role->WhatHappened != "") ? $prevoius_larp_role->WhatHappened : "Inget att rapportera";
+                $this->set_rest_of_page("Vad hände för $this->role->Name?", $text);
+                $y = $this->GetX();
+                $this->bar();
+                $text = (isset($prevoius_larp_role->WhatHappendToOthers) && $prevoius_larp_role->WhatHappendToOthers != "") ? $prevoius_larp_role->WhatHappendToOthers : "Inget att rapportera";
+                $this->set_rest_of_page("Vad hände för andra?", $text);                        
+            }
+            
+        }
 	}
 	
 	function all_character_sheets(LARP $larp_in ) {
@@ -244,6 +268,26 @@ class CharacterSheet_PDF extends FPDF {
 	    $this->set_text($left, $this->role->DarkSecret);
 	    return true;
 	}
+	
+	protected function darkSecretSuggestion($left) {
+	    $this->set_header($left, 'Spel på Mörk hemlighet');
+	    if ($this->isMyslajvare) return true;
+	    $this->set_text($left, $this->role->DarkSecretIntrigueIdeas);
+	    return true;
+	}
+	
+	protected function charactersWithRelations($left) {
+	    $this->set_header($left, 'Viktigare personer');
+	    $this->set_text($left, $this->role->CharactersWithRelations);
+	    return true;
+	}
+	
+	protected function tidigareLajv($left){
+	    $this->set_header($left, 'Tidigare lajv');
+	    $this->set_text($left, $this->role->PreviousLarps);
+	    return true;
+	}
+
 	
 	protected function lajvar_typ($left) {
 	    if (!LarperType::isInUse($this->larp)) return false;
