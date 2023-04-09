@@ -108,11 +108,11 @@ class CharacterSheet_PDF extends FPDF {
     function beskrivning() {
         global $y;
         $text = $this->role->Description; #.' '.strlen($role->Description);
-        if (($y > (static::$y_max/2)-static::$Margin) || (strlen($text)>2600)) {
-            $this->set_full_page('Beskrivning', $text);
-        } else {
+//         if (($y > (static::$y_max/2)-static::$Margin) || (strlen($text)>2600)) {
+//             $this->set_full_page('Beskrivning', $text);
+//         } else {
             $this->set_rest_of_page('Beskrivning', $text);
-        }
+//         }
         return true;
     }
     
@@ -162,7 +162,7 @@ class CharacterSheet_PDF extends FPDF {
         # Fixa till om vi skapat ett udda antal fält
         if ($this->current_left == $left2) $this->draw_field('empty');
         
-//         $this->beskrivning();
+        $this->beskrivning();
 	}
 	
 	function all_character_sheets(LARP $larp_in ) {
@@ -411,9 +411,9 @@ class CharacterSheet_PDF extends FPDF {
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    
-	    if (strlen($text)>2000){
-	        $this->SetFont('Helvetica','',static::$text_fontsize/2); # Hantering för riktigt långa texter
-	        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L');
+	    if (strlen($text)>1800){
+	        $this->SetFont('Helvetica','',static::$text_fontsize/1.5); # Hantering för riktigt långa texter
+	        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-1.3, $text, 0,'L');
 	        return;
 	    }
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
