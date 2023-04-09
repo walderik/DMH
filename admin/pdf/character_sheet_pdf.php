@@ -162,7 +162,7 @@ class CharacterSheet_PDF extends FPDF {
         # Fixa till om vi skapat ett udda antal fält
         if ($this->current_left == $left2) $this->draw_field('empty');
         
-        $this->beskrivning();
+//         $this->beskrivning();
 	}
 	
 	function all_character_sheets(LARP $larp_in ) {
@@ -296,11 +296,12 @@ class CharacterSheet_PDF extends FPDF {
 	    $to_execute = '$draw_ok = $this->'.$func.'($this->current_left);';
 	    eval($to_execute);
 	    if ($draw_ok) {
-// 	        $current_y = $this->GetY();
-// 	        # Hantering om resultatet av cellen är för stort för att få plats.
-// 	        if ($current_y > $y + $this->current_cell_height) {
-// 	            $this->current_cell_height = $y - $current_y;
-// 	        }
+	        $current_y = $this->GetY();
+	        # Hantering om resultatet av cellen är för stort för att få plats.
+	        if ($current_y > $y + $this->current_cell_height) {
+ 	            $new_height = $current_y-$y;
+ 	            $this->current_cell_height = $new_height;
+	        }
 	        if ($this->current_left == $left) {
 	            $this->current_left = $left2;
 	        } else { 
@@ -322,7 +323,7 @@ class CharacterSheet_PDF extends FPDF {
 	
 	private function mittlinje() {
 	    global $y, $mitten;
-	    $down = $y + $this->cell_y_space;
+	    $down = $y + $this->current_cell_height;
 	    $this->Line($mitten, $y, $mitten, $down);
 	}
 	
@@ -358,8 +359,6 @@ class CharacterSheet_PDF extends FPDF {
 	    
 	    if (empty($text)) return;
 	    
-//  	    $text = $this->GetY().' - '.$text;
-	    
 	    $text = trim(utf8_decode($text));
 	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
 	    if (strlen($text)>static::$text_max_length){
@@ -368,15 +367,17 @@ class CharacterSheet_PDF extends FPDF {
 	        
 	        if (strlen($text)>210) {
 	            $this->SetFont('Arial','',static::$header_fontsize);
-	            $this->MultiCell($cell_width+5, static::$cell_y-2.1, $text, 0,'L'); # Väldigt liten och tät text
+	            $this->MultiCell($cell_width+5, static::$cell_y-2.1, $text, 0, 'L'); # Väldigt liten och tät text
 	        } else {
-	            $this->MultiCell($cell_width+5, static::$cell_y-1.5, $text, 0,'L');
+	            $this->MultiCell($cell_width+5, static::$cell_y-1.5, $text, 0, 'L');
 	        }
+
 	        return;
 	    }
 	    # Normal utskrift
 	    $this->set_text_start($venster);
-	    $this->Cell($cell_width, static::$cell_y, $text,0,0,'L');
+	    $this->Cell($cell_width, static::$cell_y, $text, 0, 0, 'L');
+	    
 	    return;
 	}
 	
