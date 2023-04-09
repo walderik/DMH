@@ -83,6 +83,8 @@ include 'navigation.php';
 			}
 			?>
 			<?php 
+			
+	    $previous_larp_roles = $role->getPreviousLarpRoles();
 		if (isset($previous_larp_roles) && count($previous_larp_roles) > 0) {
 		    echo "<h2>Historik</h2>";
             foreach ($previous_larp_roles as $prevoius_larp_role) {
