@@ -240,8 +240,8 @@ class BerghemMailer {
         $text .= "<br>\n";
         $text .= "Närmare lajvet kommer intriger och information om boende.<br>\n";
         
-        //static::send($mail, $person->Name, $text, "Plats på ".$larp->Name);
-        static::send("karin@tellen.se", $person->Name, $text, "Plats på ".$larp->Name);
+        static::send($mail, $person->Name, $text, "Plats på ".$larp->Name);
+
         
     }
     
