@@ -4,13 +4,14 @@ Props: ändra ägare (grupp/roll)
 Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 
-NPC'er (skapa, tilldela)
 
 Intrigverktyg
 
 Husfördelning
 
+Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anmäld till, men som inte har varit så ska man sättas till icke-godkänd
 
+Kolla vid operation=update att man alltid läser upp objketet först innan man sätter värden
 
 
 byta user för en person (admin funktion)

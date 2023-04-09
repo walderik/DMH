@@ -62,6 +62,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $registration->NPCDesire;?></td></tr>
 			<tr><td valign="top" class="header">Husförvaltare</td><td><?php if (isset($current_person->HouseId)) { echo $current_person->getHouse()->Name; }?></td></tr>
 			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo $current_person->HousingComment;?></td></tr>
 
 
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo nl2br($current_person->OtherInformation);?></td></tr>

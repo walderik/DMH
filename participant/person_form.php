@@ -66,36 +66,36 @@
 
 			Vi behöver veta en del saker om dig som person som är skilt från de karaktärer du spelar.</p>
 			<h2>Personuppgifter</h2>
-			<p>
-				<div class="question">
-					<label for="Name">För och efternamn</label>&nbsp;<font style="color:red">*</font>
-					<br> <input class="input_field" type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="50" required>
-				</div>
-				<div class="question">
-					<label for="Email">E-post</label>&nbsp;<font style="color:red">*</font><br>
-					<div class="explanation">E-post är det sättet arrangörerna skickar ut information till deltagare, dvs allmänna utskick, intrig och boendeinformation. Det är också det sättet vi kommer att kontakta dig om vi har några frågor kring din anmälan. Se till att det är en epost som du läser regelbundet.</div>
-					<input  class="input_field" type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="100" required>
-				</div>
-				<div class="question">
-					<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
-					<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN.<br />
-					Om du saknar personnummer kommer du att behöva hjälp av Berghems Vänner för att kunna bli medlem. Skriv då in 0000 som de fyra sista så länge.<br />
-					Personnumret kommer att kontrolleras mot medlemsregistret eftersom medlemsskap krävs för att få delta på lajvet. </div>
-					<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
-					name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{12}"  placeholder="ÅÅÅÅMMDD-NNNN" size="20" maxlength="13" required>
-				</div>
-				<div class="question">
-					<label for="PhoneNumber">Mobilnummer</label>
-					<br> <input class="input_field" type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo $person->PhoneNumber; ?>"  size="100" maxlength="100">
-				</div>
-				<div class="question">
-					<label for="EmergencyContact">Närmaste anhörig</label>&nbsp;<font style="color:red">*</font>
-					<br> 
-					<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678. <br />
-					Det bör vara någon som inte är med på lajvet.</div>
-    				<textarea class="input_field" id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" maxlength="60000" required><?php echo $person->EmergencyContact; ?></textarea>
-				</div>
-			</p>
+			
+			<div class="question">
+				<label for="Name">För och efternamn</label>&nbsp;<font style="color:red">*</font>
+				<br> <input class="input_field" type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="50" required>
+			</div>
+			<div class="question">
+				<label for="Email">E-post</label>&nbsp;<font style="color:red">*</font><br>
+				<div class="explanation">E-post är det sättet arrangörerna skickar ut information till deltagare, dvs allmänna utskick, intrig och boendeinformation. Det är också det sättet vi kommer att kontakta dig om vi har några frågor kring din anmälan. Se till att det är en epost som du läser regelbundet.</div>
+				<input  class="input_field" type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="100" required>
+			</div>
+			<div class="question">
+				<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
+				<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN.<br />
+				Om du saknar personnummer kommer du att behöva hjälp av Berghems Vänner för att kunna bli medlem. Skriv då in 0000 som de fyra sista så länge.<br />
+				Personnumret kommer att kontrolleras mot medlemsregistret eftersom medlemsskap krävs för att få delta på lajvet. </div>
+				<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
+				name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{12}"  placeholder="ÅÅÅÅMMDD-NNNN" size="20" maxlength="13" required>
+			</div>
+			<div class="question">
+				<label for="PhoneNumber">Mobilnummer</label>
+				<br> <input class="input_field" type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo $person->PhoneNumber; ?>"  size="100" maxlength="100">
+			</div>
+			<div class="question">
+				<label for="EmergencyContact">Närmaste anhörig</label>&nbsp;<font style="color:red">*</font>
+				<br> 
+				<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678. <br />
+				Det bör vara någon som inte är med på lajvet.</div>
+				<textarea class="input_field" id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" maxlength="60000" required><?php echo $person->EmergencyContact; ?></textarea>
+			</div>
+			
 			
 			<h2>Husförvaltare</h2>
 			<div class="question">
@@ -156,9 +156,18 @@
 			
 			<div class="question">
 				<label for="FoodAllergiesOther">Har du matallergier eller annan specialkost? </label><br>
-				<div class="explanation">Om du har allergier eller specialkost som inte täcks av de två ovanstående frågorna vill vi att du skriver om det här.</div>
+				<div class="explanation">Om du har allergier eller specialkost som inte täcks av de två ovanstående frågorna vill vi att du skriver om det här.<br>
+				Om du inte har något, skriv inget.</div>
 				<textarea class="input_field" id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100" maxlength="60000"><?php echo $person->FoodAllergiesOther; ?></textarea>
 			</div>
+
+			<div class="question">
+				<label for="HousingComment">Boendehänsyn</label><br>
+				<div class="explanation">Har du några speciella saker vi behöver ta hänsyn till när vi planerar boendet?<br>
+				Om du inte har något, skriv inget.</div>
+				<textarea class="input_field" id="HousingComment" name="HousingComment" rows="4" cols="100" maxlength="60000"><?php echo $person->HousingComment; ?></textarea>
+			</div>
+
 			
 			<div class="question">
 				<label for="OtherInformation">Övrig information</label><br>

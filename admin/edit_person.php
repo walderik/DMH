@@ -93,6 +93,8 @@ include 'navigation_subpage.php';
 			<td><?php selectionByArray('House', House::all(), false, false, $person->HouseId); ?></td></tr>
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown(false,true,$registration->HousingRequestId);?></td></tr>
+			<tr><td valign="top" class="header">Boendehänsyn</td>
+			<td><?php $person->HousingComment;?></td></tr>
 
 
 			<tr><td valign="top" class="header">Annan information</td>

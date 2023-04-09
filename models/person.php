@@ -17,6 +17,7 @@ class Person extends BaseModel{
     public $UserId; # Användare som registrerat personen
     public $NotAcceptableIntrigues;
     public $HouseId; #Förvaltare av huset
+    public $HousingComment;
 
     public static $orderListBy = 'Name';
     
@@ -51,6 +52,7 @@ class Person extends BaseModel{
         if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
         if (isset($arr['NotAcceptableIntrigues'])) $this->NotAcceptableIntrigues = $arr['NotAcceptableIntrigues'];
         if (isset($arr['HouseId'])) $this->HouseId = $arr['HouseId'];
+        if (isset($arr['HousingComment'])) $this->HousingComment = $arr['HousingComment'];
         
         if (isset($this->HouseId) && $this->HouseId=='null') $this->HouseId = null;
         
@@ -167,11 +169,11 @@ class Person extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_person SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, TypeOfLarperComment=?, OtherInformation=?, ExperienceId=?,
-                                                                  TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=?, HouseId=? WHERE Id = ?;");
+                                                                  TypeOfFoodId=?, LarperTypeId=?, UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId,
-            $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->Id))) {
+            $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -185,11 +187,12 @@ class Person extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_person (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, TypeOfLarperComment, OtherInformation, ExperienceId,
-                                                                    TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues, HouseId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+                                                                    TypeOfFoodId, LarperTypeId, UserId, NotAcceptableIntrigues, HouseId, HousingComment) 
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->TypeOfLarperComment, $this->OtherInformation, $this->ExperienceId, 
-                $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId))) {
+                $this->TypeOfFoodId, $this->LarperTypeId, $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
