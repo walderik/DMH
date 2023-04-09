@@ -47,10 +47,15 @@ include 'navigation_subpage.php';
 	        $person = $group_member->getPerson();
 	        $index_of_person = array_search($person, $persons);
 	        if (!empty($index_of_person)) {
-    	        echo "$person->Name ";
+    	        echo $person->Name;
     	        $housing_requestId = $group_member->getRegistration($current_larp)->HousingRequestId;
     	        if ($housing_requestId != $group_housing_requestId) {
-    	            echo HousingRequest::loadById($housing_requestId)->Name;
+    	            echo ", ".HousingRequest::loadById($housing_requestId)->Name;
+    	        }
+    	        
+    	        
+    	        if (!empty($person->HousingComment)) {
+    	            echo ", ".$person->HousingComment;
     	        }
     	        echo "<br>";
     	        unset($persons[$index_of_person]);
@@ -63,8 +68,11 @@ include 'navigation_subpage.php';
 	echo "<h3>Övriga</h3>";
 
 	foreach ($persons as $person) {
-	    echo "$person->Name ";
-	    echo HousingRequest::loadById($person->getRegistration($current_larp)->HousingRequestId)->Name;
+	    echo $person->Name;
+	    echo ", ".HousingRequest::loadById($person->getRegistration($current_larp)->HousingRequestId)->Name;
+	    if (!empty($person->HousingComment)) {
+	        echo ", ".$person->HousingComment;
+	    }
 	    echo "<br>";
 	}
 	?>

@@ -94,7 +94,8 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown(false,true,$registration->HousingRequestId);?></td></tr>
 			<tr><td valign="top" class="header">Boendehänsyn</td>
-			<td><?php $person->HousingComment;?></td></tr>
+			<td><textarea id="HousingComment" name="HousingComment" rows="4" cols="100" maxlength="60000"><?php echo $person->HousingComment; ?></textarea></td></tr>
+
 
 
 			<tr><td valign="top" class="header">Annan information</td>
