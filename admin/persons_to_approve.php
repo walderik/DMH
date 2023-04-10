@@ -24,7 +24,8 @@ include 'navigation_subpage.php';
 
     		        echo $person->Name.", ".$person->getAgeAtLarp($current_larp)." år ";
     		        echo "<a href='view_person.php?id=$person->Id'><i class='fa-solid fa-eye'></i></a> \n";
-    		        echo "<a href='edit_person.php?id=$person->Id'><i class='fa-solid fa-pen'></i></a> \n";    		        echo "<br>\n";
+    		        echo "<a href='edit_person.php?id=$person->Id'><i class='fa-solid fa-pen'></i></a> \n";    		        
+    		        echo "<br>\n";
     		        
     		        echo "Epost: $person->Email ".contactEmailIcon($person->Name,$person->Email).", Telefon: $person->PhoneNumber <br>\n";
     		        
@@ -45,6 +46,7 @@ include 'navigation_subpage.php';
     		            }
     		            echo "&nbsp;<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		            echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
+    		            echo "<a href='pdf/character_sheet_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
 		            
     		            echo "<br>\n";
     		            
