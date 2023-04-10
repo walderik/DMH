@@ -4,6 +4,9 @@ require_once 'PHPMailer/src/Exception.php';
 require_once 'PHPMailer/src/PHPMailer.php';
 require_once 'PHPMailer/src/SMTP.php';
 
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+require_once $root . '/admin/pdf/character_sheet_pdf.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -132,9 +135,6 @@ class BerghemMailer {
     
     public static function send_added_role_mail(Role $role, Larp $larp) {
         $person = $role->getPerson();
-
-        
-        $campaign = $larp->getCampaign();
         
         $text  = "Arrangörerna har lagt till en karaktär till din anmälan till lajvet $larp->Name<br>\n";
         $text .= "<br>\n";
@@ -229,7 +229,6 @@ class BerghemMailer {
     public static function send_spot_at_larp(Registration $registration) {
         $person = $registration->getPerson();
         $mail = $person->Email;
-//         $mail = "mats.rappe@yahoo.se";
         
         $larp = $registration->getLARP();
         $roles = Role::getRegistredRolesForPerson($person, $larp);
@@ -240,10 +239,20 @@ class BerghemMailer {
         $text .= "$larpStartDateText ses vi på $larp->Name.<br>\n";
         $text .= "<br>\n";
         $text .= "Närmare lajvet kommer intriger och information om boende.<br>\n";
-        
-        static::send($mail, $person->Name, $text, "Plats på ".$larp->Name);
 
+        $sheets = Array();
+        foreach($roles as $role) {
+            $pdf = new CharacterSheet_PDF();
+            $pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
+            $pdf->SetAuthor(utf8_decode($larp->Name));
+            $pdf->SetCreator('Omnes Mundos');
+            $pdf->AddFont('Helvetica','');
+            $pdf->SetSubject(utf8_decode($role->Name));
+            $pdf->new_character_sheet($role, $larp);
+            $sheets[] = $pdf->Output('S');
+        }
         
+        static::send($mail, $person->Name, $text, "Plats på ".$larp->Name, $sheets);        
     }
     
     public static function sendNPCMail(NPC $npc) {
