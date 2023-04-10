@@ -9,13 +9,15 @@ include 'navigation_subpage.php';
 
 
     <div class="content">   
-        <h1>Deltagare med karaktärer som ska godkännas</h1>
+        <h1>Karaktärer som ska godkännas per deltagare</h1>
      		<?php 
     		$persons = Person::getAllToApprove($current_larp);
     		if (empty($persons)) {
     		    echo "<p>Alla anmälda är godkända</p>";
     		} else {
-    		    echo "Kontrollera att all viktig information finns med och att alla karaktärer fungerar på lajvet innan du godkänner. Om inte allt är ok, kontakta deltagaren och kom överens om förändringar.";
+    		    echo "Kontrollera att all viktig information finns med och att alla karaktärer fungerar på lajvet innan du godkänner. 
+                      Om inte allt är ok, kontakta deltagaren och kom överens om förändringar.<br>";
+    		    echo "Den här sidan är till för att godkänna karaktärer och inte kontrollera betalning och medlemsskap mm.";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<div>";
@@ -55,9 +57,9 @@ include 'navigation_subpage.php';
     		        if ($userMayEdit) {
     		            echo "Deltagaren får ändra på minst en av karaktärerna och kan därför inte godkännas.";
     		        } elseif (empty($roles)) {
-    		            echo "Deltagaren måste ha minst en roll för att kunna godkännas.";
+    		            echo "Deltagaren måste ha minst en karaktär som för att ha något att godkänna.";
     		        } else {
-    		          echo "<input type='submit' value='Godkänn'>";
+    		          echo "<input type='submit' value='Godkänn karaktärerna'>";
     		        }
     		        echo "</form>";
     		        echo "</div>";
