@@ -54,8 +54,9 @@ include 'navigation_subpage.php';
     		        echo "<br>\n";
     		        if ($userMayEdit) {
     		            echo "Deltagaren får ändra på minst en av karaktärerna och kan därför inte godkännas.";
-    		        }
-    		        else {
+    		        } elseif (empty($roles)) {
+    		            echo "Deltagaren måste ha minst en roll för att kunna godkännas.";
+    		        } else {
     		          echo "<input type='submit' value='Godkänn'>";
     		        }
     		        echo "</form>";
