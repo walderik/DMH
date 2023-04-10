@@ -30,7 +30,7 @@ if ($person->UserId != $current_user->Id) {
 $roles = $person->getRoles();
 $groups = $person->getGroups();
 
-//Kolla om personen har roller 
+//Kolla om personen har karaktärer 
 if (isset($roles) && count($roles) > 0) {
     header('Location: ../index.php'); 
     exit;

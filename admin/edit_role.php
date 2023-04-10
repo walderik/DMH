@@ -14,13 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $role = Role::loadById($RoleId);
 if (empty($role)) {
-    header('Location: index.php'); //Rollen finns inte
+    header('Location: index.php'); // Karaktären finns inte
     exit;
 }
 
 
 if (!$role->isRegistered($current_larp)) {
-    header('Location: index.php'); //Rollen är inte anmäld
+    header('Location: index.php'); // Karaktären är inte anmäld
     exit;
 }
 

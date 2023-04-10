@@ -6,16 +6,16 @@ include 'navigation_subpage.php';
 
 
     <div class="content">   
-        <h1>Roller i kampanjen som inte är anmälda (än) i år</h1>
+        <h1>Karaktärer i kampanjen som inte är anmälda (än) i år</h1>
         
         
-        <p>Om man lägger till en sidokaraktär härifrån kommer inga intrigtyper att väljas. Det får du redigera på rollen efteråt.<br>
-        <br>Om man anmäler någon härifrån kommer de att välja det första alternativet på boende. Du får redigera det på personen. Och rollen blir som ovan.</p>
-<br><br><strong>OBS! Det tar tid. Vänta ett par sekunder efter att ni har klickat!</strong>
+        <p>Om man lägger till en sidokaraktär härifrån kommer inga intrigtyper att väljas. Det får du redigera på karaktären efteråt.<br>
+        <br>Om man anmäler någon härifrån kommer de att välja det första alternativet på boende. Du får redigera det på personen. Och karaktären blir som ovan.</p>
+		<br><br><strong>OBS! Det tar tid. Vänta ett par sekunder efter att ni har klickat!</strong>
      		<?php 
     		$roles = Role::getAllUnregisteredRoles($current_larp);
     		if (empty($roles)) {
-    		    echo "Inga anmälda roller";
+    		    echo "Inga anmälda Karaktärer";
     		} else {
     		    echo "<table class='data'>";
     		    echo "<tr><th>Namn</th><th>Yrke</th><th>Grupp</th><th>Spelare</th><th>Senast spelad</th><th>Lägg till</th></tr>\n";

@@ -29,8 +29,8 @@ include_once '../includes/error_handling.php';
             elseif ($current_larp->RegistrationOpen == 0) {
 
                 echo "<div><b style='color: red'>Anmälan inte öppen</b>";
-                echo "<br><br>Du kan registrera deltagare, grupper och roller i väntan på att anmälan ska öppna. <br><br>"; 
-                echo "OBS! En roll kan bara bli medlem i en grupp om den är anmäld. Så det får du editera efter att anmälan har öppnat. Men övrig information kan du fylla i så länge.";
+                echo "<br><br>Du kan registrera deltagare, grupper och karaktärer i väntan på att anmälan ska öppna. <br><br>"; 
+                echo "OBS! En karaktär kan bara bli medlem i en grupp om den är anmäld. Så det får du editera efter att anmälan har öppnat. Men övrig information kan du fylla i så länge.";
                 echo "</div>";
             }
             ?>

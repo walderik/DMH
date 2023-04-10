@@ -69,7 +69,7 @@ include 'navigation.php';
     		<input type="hidden" id="Id" name="Id" value="<?php echo $group->Id; ?>">
 
 
-			<p>En grupp är en gruppering av roller som gör något tillsammans på
+			<p>En grupp är en gruppering av karaktärer som gör något tillsammans på
 				lajvet. Exempelvis en familj på lajvet, en rånarliga eller ett rallarlag.<br><br>
 				Det som du skriver i anmälan kommer att vara synligt för alla i gruppen, förrutom intrigidéer.</p>
 				

@@ -16,7 +16,7 @@ if (!isset($role) or !isset($larp_role)) {
 }
 
 if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
-    header('Location: index.php?error=not_yours'); //Inte din roll
+    header('Location: index.php?error=not_yours'); //Inte din karaktär
     exit;
 }
 

@@ -125,10 +125,10 @@ function getErrorText($code) {
             $output = "En deltagare med det personnumret finns redan i systemet.";
             break;
         case "no_role_may_register":
-            $output = "Du har ingen roll som går att anmäla eftersom gruppen den är med i inte är anmäld än.";
+            $output = "Du har ingen karaktär som går att anmäla eftersom gruppen den är med i inte är anmäld än.";
             break;
         case "may_not_edit_role":
-            $output = "Rollen får inte ändras.";
+            $output = "Karaktären får inte ändras.";
             break;
         case "no_email":
             $output = "Ingen korrekt epostadress angiven.";

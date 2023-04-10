@@ -158,7 +158,7 @@ class BerghemMailer {
         $text  = "$role->Name är anmäld till $group->Name.<br>\n";
         $text .= "Det gäller lajvet $larp->Name.<br>\n";
         $text .= "<br>\n";
-        $text .= "Du kan manuellt ta bort rollen ur gruppen om det är fel.";
+        $text .= "Du kan manuellt ta bort karaktären ur gruppen om det är fel.";
         $text .= "<br>\n";
         
         static::send($admin_person->Email, $admin_person->Name, $text, "Anmälan till $group->Name i $larp->Name");

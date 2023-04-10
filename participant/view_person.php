@@ -15,12 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $current_person = Person::loadById($PersonId);
 
 if (Person::loadById($current_person->Id)->UserId != $current_user->Id) {
-    header('Location: index.php'); //Inte din person
+    header('Location: index.php'); // Inte din person
     exit;
 }
 
 if (!$current_person->isRegistered($current_larp)) {
-    header('Location: index.php'); //Rollen är inte anmäld
+    header('Location: index.php'); // karaktären är inte anmäld
     exit;
 }
 

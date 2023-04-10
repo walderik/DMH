@@ -198,7 +198,7 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($personId));
     }
     
-    # Hämta de roller en person har anmält till ett lajv
+    # Hämta de karaktärer en person har anmält till ett lajv
     public static function getRegistredRolesForPerson(Person $person, LARP $larp) {
         if (is_null($person) || is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
@@ -210,7 +210,7 @@ class Role extends BaseModel{
    
     
     
-    # Hämta huvudrollen för en person har anmält till ett lajv
+    # Hämta huvudkaraktären för en person har anmält till ett lajv
     public static function getMainRoleForPerson(Person $person, LARP $larp) {
         if (is_null($person) || is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
@@ -222,7 +222,7 @@ class Role extends BaseModel{
     }
     
     
-    # Hämta anmälda roller i en grupp
+    # Hämta anmälda karaktärer i en grupp
     public static function getRegisteredRolesInGroup($group, $larp) {
         if (is_null($group) || is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".

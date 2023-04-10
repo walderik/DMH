@@ -140,7 +140,7 @@ function print_role($role) {
 
 	<DIV class="participants">
 
-		<H1>Roller på <?php  echo $larp->Name; ?></H1>
+		<H1>Karaktärer i <?php  echo $larp->Name; ?></H1>
 
 		<?php 
 		$groups = Group::getRegistered($larp);
@@ -197,7 +197,7 @@ function print_role($role) {
 
 		if ((!empty($roles) && count($roles)!=0) or (!empty($non_main_roles) && count($non_main_roles)!=0)) {
 		
-		  echo "<h2>Roller utan grupp</h2>\n";
+		  echo "<h2>Karaktärer utan grupp</h2>\n";
 		
 		
     		echo "<div class='container'>\n";

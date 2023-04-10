@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $person = Person::loadById($PersonId);
 
 if (!$person->isRegistered($current_larp)) {
-    header('Location: index.php'); //Rollen är inte anmäld
+    header('Location: index.php'); // karaktären är inte anmäld
     exit;
 }
 
@@ -82,7 +82,7 @@ include 'navigation_subpage.php';
 		</table>		
 		<?php 
     		        echo "<br>\n";
-    		        echo "<strong>Roller:</strong><br>\n";
+    		        echo "<strong>Karaktärer:</strong><br>\n";
     		        $roles = $person->getRolesAtLarp($current_larp);
     		        foreach($roles as $role) {
 

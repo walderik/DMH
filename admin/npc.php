@@ -166,7 +166,7 @@ div.npc {
             
                 echo "<a href='view_person.php?id=$person->Id'><strong>$person->Name</strong></a>, ";
                 echo LarperType::loadById($person->LarperTypeId)->Name."<br>";
-                echo "Roll(er): ";
+                echo "karaktär(er): ";
                 $roles = Role::getRegistredRolesForPerson($person, $current_larp);
                 foreach ($roles as $role) {
                     echo "<a href='view_role.php?id=$role->Id'>$role->Name</a> ";

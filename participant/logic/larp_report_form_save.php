@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = Role::loadById($larp_role->RoleId);
 
     if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
-        header('Location: index.php'); //Inte din roll
+        header('Location: index.php'); //Inte din karaktär
         exit;
     }
     $larp_role->WhatHappened = $_POST['WhatHappened'];

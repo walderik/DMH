@@ -16,7 +16,7 @@ $role = Role::loadById($RoleId);
 
 
 if (!$role->isRegistered($current_larp)) {
-    header('Location: index.php'); //Rollen är inte anmäld
+    header('Location: index.php'); // karaktären är inte anmäld
     exit;
 }
 
@@ -39,12 +39,12 @@ include 'navigation_subpage.php';
 		<a href='edit_role.php?id=<?php echo $role->Id;?>'>
 		<i class='fa-solid fa-pen'></i></a></h1>
             <?php if ($larp_role->UserMayEdit  == 1) {
-                echo "Deltagaren får ändra rollen " . showStatusIcon(false);
+                echo "Deltagaren får ändra karaktären " . showStatusIcon(false);
                 $editButton = "Ta bort tillåtelsen att ändra";
             }
             else {
                 
-                $editButton = "Tillåt deltagaren att ändra rollen";
+                $editButton = "Tillåt deltagaren att ändra karaktären";
             }
                   
                 ?>

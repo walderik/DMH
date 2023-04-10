@@ -11,7 +11,7 @@ include 'navigation_subpage.php';
 
 	<div class="content">
 	
-		<h1>Alla roller</h1>
+		<h1>Alla karaktärer</h1>
 	
 		<?php foreach ($roles as $role) {
 		    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);

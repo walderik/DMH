@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-//Finns ingen sådan roll, eller rollen har ingen bild
+//Finns ingen sådan karaktär, eller karaktären har ingen bild
 if (!isset($role) or !isset($role->ImageId)){
     header('Location: index.php');
     exit;

@@ -57,7 +57,7 @@ if (empty($roles)) {
 
 }
 
-//Kolla att minst en roll går att anmäla
+//Kolla att minst en karaktär går att anmäla
 $mayRegister = false;
 foreach ($roles as $role) {
     if ($role->groupIsRegistered($current_larp)) $mayRegister = true;
@@ -135,7 +135,7 @@ include 'navigation.php';
         			    else {
         			        echo "<div class='role'>\n";
         			        echo "<h3>$role->Name</h3>";
-        			        echo "Rollen kan inte anmälas eftersom gruppen " . $role->getGroup()->Name . " inte är anmäld.";
+        			        echo "Karaktären kan inte anmälas eftersom gruppen " . $role->getGroup()->Name . " inte är anmäld.";
         			        echo "</div>";
         			    }
         			}		
@@ -158,7 +158,7 @@ include 'navigation.php';
 			<div class="question">
     			<label for="NPCDesire">NPC</label>
     			<div class="explanation">Kan du tänka dig att ställa upp som NPC?<br>
-					NPC = Non Player Character, en roll som styrs helt/delvis av arrangörsgruppen och spelas en kortare stund under lajvet för att skapa scener/händelser.<br>
+					NPC = Non Player Character, en karaktär som styrs helt/delvis av arrangörsgruppen och spelas en kortare stund under lajvet för att skapa scener/händelser.<br>
 					Vi kommer återkomma till de som är intresserade, men skriv gärna en rad om du redan nu har några idéer.<br>
 					<br>
 					Om du inte är intresserad kan du lämna fältet tomt.

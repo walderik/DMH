@@ -33,7 +33,7 @@ if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
 }
 
 if ($operation == 'update' && Person::loadById($role->PersonId)->UserId != $current_user->Id) {
-    header('Location: index.php'); //Inte din roll
+    header('Location: index.php'); //Inte din karaktär
     exit;
 }
 
@@ -73,10 +73,10 @@ include 'navigation.php';
 
 
 			<p>Vi vill veta vilken karaktär du vill spela.<br />
-			Om du vill spela en av lajvets sökta roller ber vi dig att kontakta arrangörerna innan du fyller i din anmälan.<br />
+			Om du vill spela en av lajvets sökta karaktärer ber vi dig att kontakta arrangörerna innan du fyller i din anmälan.<br />
 			Tänk på att din karaktär också måste godkännas av arrangörerna.   <br>
 			<br>
-			Efter anmälan kommer du att kunna ladda upp en bild på din roll. 
+			Efter anmälan kommer du att kunna ladda upp en bild på din karaktär. 
 			</p>
 			<div class="question">
 				<label for="Person">Deltagare</label>&nbsp;<font style="color:red">*</font><br>
@@ -90,7 +90,13 @@ include 'navigation.php';
 			</div>
 			<div class="question">
 				<label for="Profession">Yrke</label>&nbsp;<font style="color:red">*</font><br>
-				<div class="explanation">Vad jobbar din karaktär med för att överleva?   Vill du ha ett yrke som kan innebära en central roll i lajvet, så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.    Det gäller poster som borgmästare, bypräst eller sheriff.   Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta spela att din karaktär har det yrket. Vi vill helst inte att du spelar prostituerad.</div>
+				<div class="explanation">
+					Vad jobbar din karaktär med för att överleva? 
+					Vill du ha ett yrke som kan innebära en central karaktär i lajvet, så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.
+					Det gäller poster som borgmästare, bypräst eller sheriff.   
+					Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta spela att din karaktär har det yrket. 
+					Vi vill helst inte att du spelar prostituerad.
+				</div>
 				<input class="input_field" type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="200" required>
 			</div>
 		<?php 

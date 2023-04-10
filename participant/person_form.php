@@ -122,7 +122,7 @@
 				                         Jag är passiv lajvare, men kan tänka mig aktiva intriger som rör X, Y och Z.<br>
 				                         Jag är karaktärslajvare och klarar mig utan intriger, men om ni har tankar om saker min karaktär kann vara involverad i som ger spel åt andra kan jag vara intresserad.<br>
 				                         Jag är aktiv lajvare, men vill helst undvika våldsamma intriger.<br>
-				                         Jag är action-lajvare och vill spela den sökta rollen NN.<br>
+				                         Jag är action-lajvare och vill spela den sökta karaktären NN.<br>
 				                         Jag är action-lajvare och har inget emot en våldsam död.</div>
 					<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
 					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="200">

@@ -75,7 +75,7 @@ class CharacterSheet_PDF extends FPDF {
         $this->bar();
     }
     
-    # Namnen på roll och spelare
+    # Namnen på karaktär och spelare
     function names($left, $left2) {
         global $y, $cell_width, $mitten;
         
@@ -480,7 +480,7 @@ if (isset($_GET['id'])) {
 
 if (!$current_user->IsAdmin) {
     if (empty($role)) {
-        header('Location: index.php'); //Rollen finns inte
+        header('Location: index.php'); // Karaktären finns inte
         exit;
     }
     
@@ -492,7 +492,7 @@ if (!$current_user->IsAdmin) {
     }
 
     if (!$role->isRegistered($current_larp)) {
-        header('Location: index.php'); //Rollen är inte anmäld
+        header('Location: index.php'); // Karaktären är inte anmäld
         exit;
     }
 }

@@ -111,7 +111,7 @@ class LARP_Role extends BaseModel{
             $stmt = null;
     }
     
-    # returnera en array med alla roller som är anmälda till lajvet
+    # returnera en array med alla karaktärer som är anmälda till lajvet
     public static function getRegisteredRoles($larpId) {
         if (is_null($larpId)) return Array();
         $sql = "SELECT * FROM regsys_larp_role WHERE LARPId = ? ORDER BY ".static::$orderListBy.";";

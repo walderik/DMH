@@ -16,7 +16,7 @@ $role = Role::loadById($RoleId);
 
 
 if (!$role->isRegistered($current_larp)) {
-    header('Location: index.php'); //Rollen är inte anmäld
+    header('Location: index.php'); // Karaktären är inte anmäld
     exit;
 }
 

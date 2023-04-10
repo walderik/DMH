@@ -131,7 +131,7 @@ class User extends BaseModel{
     }
     
     public function isMember($group) {
-        //Kollar om användaren har en person som har en roll som är med i gruppen (och anmäld)
+        //Kollar om användaren har en person som har en karaktär som är med i gruppen (och anmäld)
         if (!isset($group)) return false;
         
         $sql = "SELECT COUNT(*) AS Num FROM regsys_role, regsys_person WHERE ".

@@ -23,7 +23,7 @@ if (!isset($role)) {
 
 
 if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
-    header('Location: ../index.php'); //Inte din roll
+    header('Location: ../index.php'); //Inte din karaktär
     exit;
 }
 

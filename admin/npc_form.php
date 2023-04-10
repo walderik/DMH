@@ -72,7 +72,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Beskrivning</td>
  			<td><input type="text" id="Description" name="Description" value="<?php echo $npc->Description; ?>" size="100" maxlength="250"></td></tr>
 
- 			<tr><td valign="top" class="header">När ska rollen spelas?<br>Om den ska spelas vid ett särskillt tillfälle.</td>
+ 			<tr><td valign="top" class="header">När ska karaktären spelas?<br>Om den ska spelas vid ett särskillt tillfälle.</td>
  			<td><input type="text" id="Time" name="Time" value="<?php echo $npc->Time; ?>" size="100" maxlength="250"></td></tr>
 
 		</table>		

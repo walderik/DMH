@@ -15,7 +15,7 @@ include 'navigation_subpage.php';
     		if (empty($persons)) {
     		    echo "<p>Alla anmälda är godkända</p>";
     		} else {
-    		    echo "Kontrollera att all viktig information finns med och att alla roller fungerar på lajvet innan du godkänner. Om inte allt är ok, kontakta deltagaren och kom överens om förändringar.";
+    		    echo "Kontrollera att all viktig information finns med och att alla karaktärer fungerar på lajvet innan du godkänner. Om inte allt är ok, kontakta deltagaren och kom överens om förändringar.";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<div>";
@@ -29,7 +29,7 @@ include 'navigation_subpage.php';
     		        echo "Epost: $person->Email ".contactEmailIcon($person->Name,$person->Email).", Telefon: $person->PhoneNumber <br>\n";
     		        
     		        echo "<br>\n";
-    		        echo "Roller:<br>\n";
+    		        echo "Karaktärer:<br>\n";
     		        $roles = $person->getRolesAtLarp($current_larp);
     		        $userMayEdit = false;
     		        foreach($roles as $role) {
@@ -51,7 +51,7 @@ include 'navigation_subpage.php';
     		        }
     		        echo "<br>\n";
     		        if ($userMayEdit) {
-    		            echo "Deltagaren får ändra på minst en av rollerna och kan därför inte godkännas.";
+    		            echo "Deltagaren får ändra på minst en av karaktärerna och kan därför inte godkännas.";
     		        }
     		        else {
     		          echo "<input type='submit' value='Godkänn'>";
