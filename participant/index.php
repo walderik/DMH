@@ -93,7 +93,8 @@ include_once '../includes/error_handling.php';
                         echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id"). "</td></tr>\n";
     		        }
                     if ($person->isRegistered($current_larp)) {
-                        $registration = Registration::loadByIds($person->Id, $current_larp->Id);
+//                         $registration = Registration::loadByIds($person->Id, $current_larp->Id);
+                        $registration = $person->getRegistration($current_larp);
                         if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
                             echo "<tr><td>Ansvarig vuxen</td><td>";
                             if (empty($registration->GuardianId)) {
@@ -102,8 +103,6 @@ include_once '../includes/error_handling.php';
                             }
                             else {
                                 echo showStatusIcon(true);
-                                
-                                
                                 echo "</td><td>".$registration->getGuardian()->Name;
                             }
                             echo "</td></tr>\n";                            
@@ -169,17 +168,20 @@ include_once '../includes/error_handling.php';
         		                echo "<a href='view_role.php?id=$role->Id'>$role->Name <i class='fa-solid fa-eye'></i></a>";
         		                if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
         		                
-        		                echo "- $role->Profession $role_group_name</td>";
+        		                echo " - $role->Profession $role_group_name</td>";
         		                if ($role->hasImage()) {
         		                    
         		                    $image = Image::loadById($role->ImageId);
-        		                    echo "<td><a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></a> <a href='logic/delete_role_image.php?id=$role->Id'>Ta bort bild</a></td>";
+        		                    echo "<td><a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></a> <a href='logic/delete_role_image.php?id=$role->Id'>Ta bort bild</a></td>\n";
         		                }
         		                else {
-        		                    echo "<td><a href='upload_role_image.php?id=$role->Id'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>";
+        		                    echo "<td><a href='upload_role_image.php?id=$role->Id'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
+        		                }
+        		                if ($registration->SpotAtLARP==1) {
+        		                    echo "<td><a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a></td>\n";
         		                }
         		                if ($current_larp->isEnded()) {
-        		                    echo "<td><a href='larp_report_form.php?id=$role->Id'>Vad hände?</a></td>";
+        		                    echo "<td><a href='larp_report_form.php?id=$role->Id'>Vad hände?</a></td>\n";
         		                }
         		            }
         		            else {
