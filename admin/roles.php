@@ -8,7 +8,7 @@
     <div class="content">   
         <h1>Karaktärer</h1>
         <a href="role_list.php"><i class='fa-solid fa-eye' title='Se alla karaktärer samlat på en sida'> En sida med alla</i></a> &nbsp; &nbsp; &nbsp;
-        <a href='pdf/character_sheet_pdf.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Allt om alla karkatärer som en stor PDF (tar tid att generera)'> allt om alla</i></a>
+        <a href='character_sheet.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Allt om alla karkatärer som en stor PDF (tar tid att generera)'> allt om alla</i></a>
         <h2>Huvudkaraktärer</h2>
      		<?php 
      		$roles = $current_larp->getAllMainRoles();
@@ -25,7 +25,7 @@
     		        echo "</td>\n";
     		        echo "<td nowrap>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye' title='Se karaktären'></i></a>\n";
     		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>\n";
-    		        echo "<a href='pdf/character_sheet_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
+    		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
     		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
     		        $group = $role->getGroup();
@@ -72,7 +72,7 @@
     		        }
     		        echo "<td>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye' title='Se karaktären'></i></a>\n";
     		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>\n";
-    		        echo "<a href='pdf/character_sheet_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
+    		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
     		        echo "</td>\n";
     		        echo "</tr>\n";
     		    }

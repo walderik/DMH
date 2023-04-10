@@ -229,9 +229,10 @@ class BerghemMailer {
     public static function send_spot_at_larp(Registration $registration) {
         $person = $registration->getPerson();
         $mail = $person->Email;
+//         $mail = "mats.rappe@yahoo.se";
         
         $larp = $registration->getLARP();
- 
+        $roles = Role::getRegistredRolesForPerson($person, $larp);
 
         $larpStartDateText = substr($larp->StartDate, 0, 10);
 
