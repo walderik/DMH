@@ -37,7 +37,7 @@ include 'navigation_subpage.php';
 
 
 	<div class="content">
-		<h1>DOH 2023 medlemskontroll</h1>
+		<h1>Medlemskontroll flera personnummer</h1>
 		
 		<table class="small_data">
 		
