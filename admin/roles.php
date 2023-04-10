@@ -6,12 +6,14 @@
 
 
     <div class="content">   
-        <h1>Roller</h1>
+        <h1>Karaktärer</h1>
+        <a href="role_list.php"><i class='fa-solid fa-eye' title='Se alla karaktärer samlat på en sida'> En sida med alla</i></a> &nbsp; &nbsp; &nbsp;
+        <a href='pdf/character_sheet_pdf.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Allt om alla karkatärer som en stor PDF (tar tid att generera)'> allt om alla</i></a>
         <h2>Huvudroller</h2>
      		<?php 
      		$roles = $current_larp->getAllMainRoles();
     		if (empty($roles)) {
-    		    echo "Inga anmälda roller";
+    		    echo "Inga anmälda karaktärer";
     		} else {
     		    echo "<table class='data'>";
     		    echo "<tr><th>Namn</th><th>&nbsp; &nbsp; </th><th>Profession</th><th>Group</th><th colspan='2'>Intrig</th></tr>\n";
@@ -19,11 +21,11 @@
     		        echo "<tr>\n";
     		        echo "<td>" . $role->Name;
     		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
-    		        if ($role->userMayEdit($current_larp)) echo "<br>Deltagaren får ändra rollen " . showStatusIcon(false);
+    		        if ($role->userMayEdit($current_larp)) echo "<br>Deltagaren får ändra karaktären " . showStatusIcon(false);
     		        echo "</td>\n";
-    		        echo "<td nowrap>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye' title='Se rollen'></i></a>\n";
-    		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera rollen'></i></a>\n";
-    		        echo "<a href='pdf/character_sheet_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
+    		        echo "<td nowrap>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye' title='Se karaktären'></i></a>\n";
+    		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>\n";
+    		        echo "<a href='pdf/character_sheet_pdf.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
     		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
     		        $group = $role->getGroup();
