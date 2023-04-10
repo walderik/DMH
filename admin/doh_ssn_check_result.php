@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     foreach ($ssn_array as $ssn) {
         $ssn = trim($ssn);
         if (strlen($ssn) > 6) {
-            $val = check_membership($ssn, "2023");
+            $val = check_membership($ssn, date("Y"));
             
             
             if ($val == 1) {
