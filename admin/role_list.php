@@ -23,7 +23,11 @@ include 'navigation_subpage.php';
 		    
 		    
 		    ?>
-		<h2><?php echo $role->Name;?>&nbsp;<a href='edit_role.php?id=<?php echo $role->Id;?>'><i class='fa-solid fa-pen'></i></a></h2>
+		<h2>
+			<?php echo $role->Name;?>&nbsp;
+			<a href='edit_role.php?id=<?php echo $role->Id;?>'><i class='fa-solid fa-pen'></i></a>
+			<a href='character_sheet.php?id=<?php echo $role->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>
+		</h2>
 		<table>
 			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $role->getPerson()->Name; ?></a></td></tr>
 		<?php if (isset($group)) {?>
