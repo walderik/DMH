@@ -3,8 +3,10 @@
 
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+
 require_once $root . '/includes/fpdf185/fpdf.php';
-require_once $root . '/includes/init.php';
+
+require_once $root . '/includes/all_includes.php';
 
 
 class CharacterSheet_PDF extends FPDF {
