@@ -78,7 +78,7 @@ td {
 	font-weight: bold;
 }
 
-.checks > p table td:first-child, .content > div table td:first-child {
+.checks > p table td:first-child, .content > div table td:first-child, .list td:first-child {
 
 	font-weight: bold;
 	  font-size: 1em;

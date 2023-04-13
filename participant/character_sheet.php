@@ -3,7 +3,7 @@
 
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
-require_once $root . '/admin/pdf/character_sheet_pdf.php';
+require_once $root . '/pdf/character_sheet_pdf.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] != "GET") {

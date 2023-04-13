@@ -6,12 +6,6 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/fpdf185/fpdf.php';
 require $root . '/includes/init.php';
 
-//If the user isnt admin it may not use this page
-if (!isset($_SESSION['admin'])) {
-    header('Location: ../../participant/index.php');
-    exit;
-}
-
 
 class TELEGRAM_PDF extends FPDF {
     
@@ -55,21 +49,3 @@ class TELEGRAM_PDF extends FPDF {
 	}
 }
 
-
-$arrayOfTelegrams = Telegram::allBySelectedLARP($current_larp);
-$pdf = new TELEGRAM_PDF();
-$pdf->SetTitle('Telegram');
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator('Omnes Mundos');
-$pdf->AddFont('SpecialElite','');
-$pdf->SetSubject('Telegram');
-foreach ($arrayOfTelegrams as $telegram)  {
-    $pdf->nytt_telegram($telegram);            
-}
-// $doc = $pdf->Output('S');
-
-// $attachments = ['Telegrammen' => $doc];
-//BerghemMailer::send('Mats.rappe@yahoo.se', 'Admin', "Det här är alla telegrammen", "Alla Telegrammen som PDF", $attachments);
-
-$pdf->Output();
-?>

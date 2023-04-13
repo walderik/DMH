@@ -104,6 +104,13 @@ class Person extends BaseModel{
     }
     
     
+    public static function personsAssignedToHouse(House $house, LARP $larp) {
+        $sql = "SELECT * FROM regsys_person WHERE Id IN ".
+        "(SELECT PersonId FROM regsys_housing WHERE HouseId=? AND LarpId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($house->Id, $larp->Id));
+        
+    }
+    
     public static function getPersonsForUser($userId) {
         $sql = "SELECT * FROM regsys_person WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($userId));
@@ -115,6 +122,30 @@ class Person extends BaseModel{
         "regsys_registration WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
+    
+    
+    public static function getAllRegisteredWithoutHousing($larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
+            "regsys_registration WHERE LarpId = ? AND PersonId NOT IN ".
+            "(SELECT PersonId from regsys_housing WHERE LarpId=?)) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $larp->Id));
+    }
+    
+    
+    # Hämta anmälda personer som har en huvudkaraktär i en grupp
+    public static function getPersonsInGroup($group, $larp) {
+        if (is_null($group) || is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_person WHERE Id IN ".
+            "(SELECT regsys_registration.PersonId FROM regsys_registration, regsys_group, regsys_role, regsys_larp_role WHERE ".
+            "regsys_registration.PersonId = regsys_Role.PersonId AND ".
+            "regsys_role.GroupId = ? AND ".
+            "regsys_role.Id=regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.IsMainRole=1 AND ".
+            "regsys_larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
+    }
+    
     
     
     public static function getAllInterestedNPC($larp) {
@@ -475,5 +506,11 @@ class Person extends BaseModel{
             "(SELECT RegistrationId FROM regsys_officialtype_person)) ".
             "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    public function hasHousing(LARP $larp) {
+        $housing = Housing::getHousing($this, $larp);
+        if (empty($housing)) return false;
+        return true;
     }
 }

@@ -5,7 +5,7 @@ require_once 'PHPMailer/src/PHPMailer.php';
 require_once 'PHPMailer/src/SMTP.php';
 
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
-require_once $root . '/admin/pdf/character_sheet_pdf.php';
+require_once $root . '/pdf/character_sheet_pdf.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
