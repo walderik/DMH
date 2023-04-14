@@ -32,7 +32,7 @@ include 'navigation_subpage.php';
 	<h2>Deltagare som inte har tilldelats boende</h2>
 	<?php 
 	
-	
+	//TODO ta bort grupper som inte har någon kvar.
 	$persons=Person::getAllRegisteredWithoutHousing($current_larp);
 	$groups = Group::getAllRegistered($current_larp);
 	
@@ -41,7 +41,10 @@ include 'navigation_subpage.php';
 	    $group_housing_requestId = $larp_group->HousingRequestId;
 	    echo "<h3>$group->Name</h3>";
 	    echo "<table><tr><td>";
-	    echo "Ungefär $larp_group->ApproximateNumberOfMembers st, ";
+	    
+	    $group_members = Person::getPersonsInGroup($group, $current_larp);
+
+	    echo "Ca $larp_group->ApproximateNumberOfMembers st, just nu ".count($group_members).", ";
 	    echo HousingRequest::loadById($group_housing_requestId)->Name;
 	    echo "</td><td>";
 	    echo "<form method='post' action='assign_to_house.php'>";
@@ -52,7 +55,7 @@ include 'navigation_subpage.php';
         echo "</td></tr></table>";
 
 	    
-	    $group_members = Person::getPersonsInGroup($group, $current_larp);
+
 	    echo "<table class='list'>";
 	    foreach ($group_members as $person) {
 	        $index_of_person = array_search($person, $persons);

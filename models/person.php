@@ -138,7 +138,7 @@ class Person extends BaseModel{
         if (is_null($group) || is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_person WHERE Id IN ".
             "(SELECT regsys_registration.PersonId FROM regsys_registration, regsys_group, regsys_role, regsys_larp_role WHERE ".
-            "regsys_registration.PersonId = regsys_Role.PersonId AND ".
+            "regsys_registration.PersonId = regsys_role.PersonId AND ".
             "regsys_role.GroupId = ? AND ".
             "regsys_role.Id=regsys_larp_role.RoleId AND ".
             "regsys_larp_role.IsMainRole=1 AND ".
