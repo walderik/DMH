@@ -83,14 +83,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         
-        if (isset($_POST['IntrigueTypeId'])) {
-            $intrigueTypeRoleArr = $_POST['IntrigueTypeId'];
-    
-            foreach ($intrigueTypeRoleArr as  $key => $intrigueTypeRole) {
-                $larp_role = LARP_Role::loadByIds($key, $current_larp->Id);
-                $larp_role->saveAllIntrigueTypes($intrigueTypeRole);
-            }
-        }
         BerghemMailer::send_registration_mail($registration);
         
 

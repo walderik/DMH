@@ -97,7 +97,7 @@ include 'navigation.php';
 					Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta spela att din karaktär har det yrket. 
 					Vi vill helst inte att du spelar prostituerad.
 				</div>
-				<input class="input_field" type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="200" required>
+				<input class="input_field" type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="30" maxlength="200" required>
 			</div>
 		<?php 
 		$previous_larp_roles = $role->getPreviousLarpRoles();
@@ -221,6 +221,27 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
             </div>
 
 			<div class="question">
+				<label for="IntrigueSuggestions">Intrigideer</label><br> 
+				<div class="explanation">Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar". </div>
+				<textarea class="input_field" id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea>
+			</div>
+			<div class="question">
+				<label for="IntrigueTypeId">Intrigtyper</label><br> 
+				<div class="explanation">Vilken typ av intriger vill du ha?
+				<?php IntrigueType::helpBox(true); ?>
+				</div>
+				<?php 
+				selectionByArray('IntrigueType' , IntrigueType::allActive(), true, false, $role->getSelectedIntrigueTypeIds());
+				?>
+			</div>
+			<div class="question">
+				<label for="NotAcceptableIntrigues">Saker karaktären absolut inte vill spela på</label><br>
+				<div class="explantion">Är det något den här karaktären aldrig skulle göra? Vill du helst undvika farligt spel är det också bra att ange.</div>
+				<input class="input_field" type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="200">
+			</div>
+
+
+			<div class="question">
 				<label for="DarkSecret">Mörk hemlighet</label>&nbsp;<font style="color:red">*</font><br> 
 				<div class="explanation">Alla har någonting de inte vill berätta så gärna för andra. Vad har din karaktär för mörk hemlighet?    
 Du måste ange en mörk hemlighet.    
@@ -232,18 +253,6 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 				<div class="explanation">Hur kan vi spela på din mörka hemlighet?</div>
 				<input class="input_field" type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="200" required>
 			</div>
-			<div class="question">
-				<label for="IntrigueSuggestions">Intrigideer</label><br> 
-				<div class="explanation">Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar". </div>
-				<textarea class="input_field" id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea>
-			</div>
-			<div class="question">
-				<label for="NotAcceptableIntrigues">Saker karaktären absolut inte vill spela på</label><br>
-				<div class="explantion">Är det något den här karaktären aldrig skulle göra? Vill du helst undvika farligt spel är det också bra att ange.</div>
-				<input class="input_field" type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="200">
-			</div>
-
-
 
 
 			<div class="question">

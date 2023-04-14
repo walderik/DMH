@@ -339,9 +339,7 @@ class Role extends BaseModel{
         if (empty($person)) return false;
         if ($person->isMysLajvare()) return false;
         if ($this->WealthId > 2) return true;
-        $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
-        if (empty($larp_role)) return false; 
-        $intrigtyper = commaStringFromArrayObject($larp_role->getIntrigueTypes());
+        $intrigtyper = commaStringFromArrayObject($this->getIntrigueTypes());
         return (str_contains($intrigtyper, 'Handel'));
         # Hantering för de som har gamla lagfarter
     }
@@ -349,5 +347,63 @@ class Role extends BaseModel{
     public function lastLarp() {
         return LARP::lastLarp($this);
     }
+    
+    # Hämta intrigtyperna
+    public function getIntrigueTypes(){
+        return IntrigueType::getIntrigeTypesForRole($this->Id);
+    }
+    
+    
+    
+    
+    public function getSelectedIntrigueTypeIds() {
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  regsys_intriguetype_role WHERE RoleId = ? ORDER BY IntrigueTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['IntrigueTypeId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function saveAllIntrigueTypes($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_role (IntrigueTypeId, RoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllIntrigueTypes() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_role WHERE RoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
     
 }

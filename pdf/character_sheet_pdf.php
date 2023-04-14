@@ -244,8 +244,7 @@ class CharacterSheet_PDF extends FPDF {
 	    
 	    $this->set_header($left, 'Intrigtyper');
 	    if ($this->isMyslajvare) return true;
-	    $larp_role = LARP_Role::loadByIds($this->role->Id, $this->larp->Id);
-	    $text = commaStringFromArrayObject($larp_role->getIntrigueTypes());
+	    $text = commaStringFromArrayObject($this->role->getIntrigueTypes());
 	    $this->set_text($left, $text);
 	    return true;
 	}

@@ -27,8 +27,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
         
+
+        $role->deleteAllIntrigueTypes();
+        if (isset($_POST['IntrigueTypeId'])) {
+            $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+        }
+        
         
         $role->update();
+        
         if (!empty($larp_role)) {
             $larp_role->UserMayEdit = 0;
             $larp_role->update();

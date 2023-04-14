@@ -84,7 +84,7 @@ include 'navigation_subpage.php';
 			<td><input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Intrigtyper</td>
-			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive(), true, false, $larp_role->getSelectedIntrigueTypeIds());?></td></tr>
+			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive(), true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
 			<td><textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea></td></tr>

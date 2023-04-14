@@ -85,7 +85,7 @@ include 'navigation.php';
 
 
 			<p>
-			<strong>När anmälan är gjort går det varken att redigera deltagaren eller någon av de anmälda karaktärerna.</strong>
+			<strong>När anmälan är gjord går det varken att redigera deltagaren eller någon av de anmälda karaktärerna.</strong>
 			</p>
 				
 		    <?php 
@@ -110,27 +110,19 @@ include 'navigation.php';
 				<div class="explanation">Vilka karaktärer vill du spela på lajvet? Avmarkera checkboxen för de karaktärer som inte ska vara med.<br>
 				     En av dina karaktärer är din huvudkaraktär. Vi måste veta vilken.<br>
 				     Andra karaktärer är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
-				     <br>Och vilka intriger den karaktären vill ha<br>
-				     <?php IntrigueType::helpBox(true); ?></div>
-			
+				</div>
+				<table class="list">
         			<?php 
         			foreach($roles as $role) {
         			    if ($role->groupIsRegistered($current_larp)) {
-            			    echo "<div class='role'>\n";
-            			    echo "<h3><input type='checkbox' id='roleId$role->Id' name='roleId[]' value='$role->Id' checked='checked'>";
+            			    echo "<tr><td>\n";
+            			    echo "<input type='checkbox' id='roleId$role->Id' name='roleId[]' value='$role->Id' checked='checked'>";
             			    echo "\n";
-            			    echo "<label for='roleId$role->Id'>$role->Name</label></h3>\n";
+            			    echo "<label for='roleId$role->Id'>$role->Name</label>\n";
+            			    echo "</td><td>";
             			    echo "<input type='radio' id='mainRole$role->Id' name='IsMainRole' value='$role->Id' required>\n";
             			    echo "<label for='mainRole$role->Id'>Huvudkaraktär</label><br><br>\n";   			    
-    
-            			    echo '<table border=0><tr><td valign="top">';
-    
-            			    echo '</td><td>&nbsp;</td><td valign="top">';
-    
-            			    $name = 'IntrigueTypeId[' . $role->Id . ']';
-            			    selectionByArray($name , IntrigueType::allActive(), true, false);
-            			    echo '</td></tr></table>';
-            			    echo '</div>';
+            			    echo '</td></tr>';
         			    }
         			    else {
         			        echo "<div class='role'>\n";
@@ -139,9 +131,10 @@ include 'navigation.php';
         			        echo "</div>";
         			    }
         			}		
-        			
+
         			?>
-			</div>
+        		</table>
+        	</div>
 			
 			
 			<div class="question">
@@ -157,7 +150,7 @@ include 'navigation.php';
 
 			<div class="question">
     			<label for="NPCDesire">NPC</label>
-    			<div class="explanation">Kan du tänka dig att ställa upp som NPC?<br>
+    			<div class="explanation">Kan du tänka dig att ställa upp som NPC? Vad vill du i så fall göra?<br>
 					NPC = Non Player Character, en karaktär som styrs helt/delvis av arrangörsgruppen och spelas en kortare stund under lajvet för att skapa scener/händelser.<br>
 					Vi kommer återkomma till de som är intresserade, men skriv gärna en rad om du redan nu har några idéer.<br>
 					<br>

@@ -19,8 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role->setValuesByArray($_POST);
     $role->update();
     
-    $larp_role->deleteAllIntrigueTypes();
-    if (isset($_POST['IntrigueTypeId'])) $larp_role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+    $role->deleteAllIntrigueTypes();
+    if (isset($_POST['IntrigueTypeId'])) $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         
     if (isset($_POST['Referer']) && $_POST['Referer']!="") {
         header('Location: ' . $_POST['Referer']);
