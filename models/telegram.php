@@ -10,6 +10,7 @@ class Telegram extends BaseModel{
     public  $RecieverCity = 'Slow River';
     public  $Message;
     public  $OrganizerNotes;
+    public  $Approved = 1;
     public  $LARPid;
     
 //     public static $tableName = 'telegrams';
@@ -29,6 +30,7 @@ class Telegram extends BaseModel{
         if (isset($arr['RecieverCity'])) $this->RecieverCity = $arr['RecieverCity'];
         if (isset($arr['Message'])) $this->Message = $arr['Message'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
+        if (isset($arr['Approved'])) $this->Approved = $arr['Approved'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
         
@@ -53,12 +55,20 @@ class Telegram extends BaseModel{
     }
     
     
+    public static function allApprovedBySelectedLARP(Larp $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_telegram WHERE LARPid = ? AND Approved=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
+    
     
     # Update an existing telegram in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_telegram SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_telegram SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, OrganizerNotes=?, Approved=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->Id))) {
+        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->Approved, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -70,9 +80,9 @@ class Telegram extends BaseModel{
     # Create a new telegram in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_telegram (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_telegram (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, OrganizerNotes, Approved, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->LARPid))) {
+        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->OrganizerNotes, $this->Approved, $this->LARPid))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

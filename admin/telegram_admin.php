@@ -30,8 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 include 'navigation_subpage.php';
 ?>
 
+
     <div class="content">
         <h1>Telegram</h1>
+        <p>Telegram skapade av arrangörer blir automatiskt godkända. Telegram skapade av deltagare behöver godkännas av arrangörer innan de kommer med i pdf'en.</p> 
             <a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
         
             <a href="telegram_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a>  
@@ -41,7 +43,7 @@ include 'navigation_subpage.php';
         $telegram_array = Telegram::allBySelectedLARP($current_larp);
         if (!empty($telegram_array)) {
             echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Anteckningar</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Ok</th><th>Anteckningar</th><th></th><th></th></tr>\n";
             foreach ($telegram_array as $telegram) {
                 echo "<tr>\n";
                 echo "<td>" . $telegram->Id . "</td>\n";
@@ -51,6 +53,7 @@ include 'navigation_subpage.php';
                 echo "<td>" . $telegram->Reciever . "</td>\n";
                 echo "<td>" . $telegram->RecieverCity . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
+                echo "<td>" . showStatusIcon($telegram->Approved) . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->OrganizerNotes) . "</td>\n";
                 
                 echo "<td>" . "<a href='telegram_form.php?operation=update&id=" . $telegram->Id . "'><i class='fa-solid fa-pen'></i></td>\n";

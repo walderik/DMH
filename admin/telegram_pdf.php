@@ -15,7 +15,7 @@ if (!isset($_SESSION['admin'])) {
 }
 
 
-$arrayOfTelegrams = Telegram::allBySelectedLARP($current_larp);
+$arrayOfTelegrams = Telegram::allApprovedBySelectedLARP($current_larp);
 $pdf = new TELEGRAM_PDF();
 $pdf->SetTitle('Telegram');
 $pdf->SetAuthor(utf8_decode($current_larp->Name));

@@ -89,6 +89,16 @@ include_once 'header.php';
 			</tr>
 			<tr>
 
+				<td><label for="Approved">Godkänt</label></td>
+				<td>
+				<input type="radio" id="Approved_yes" name="Approved" value="1" <?php if ($telegram->Approved == 1) echo 'checked="checked"'?>> 
+    			<label for="Approved_yes">Ja</label><br> 
+    			<input type="radio" id="Approved_no" name="Approved" value="0" <?php if ($telegram->Approved == 0) echo 'checked="checked"'?>> 
+    			<label for="Approved_no">Nej</label>
+				</td>
+			</tr>
+			<tr>
+
 				<td><label for="OrganizerNotes">Anteckningar om telegrammet</label></td>
 				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
 						cols="50"><?php echo $telegram->OrganizerNotes; ?></textarea></td>
