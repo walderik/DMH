@@ -13,9 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = Role::newFromArray($_POST);
         $role->create();
     } elseif ($operation == 'update') {
+        $role = Role::loadById($_POST['Id']);
         
-
-        $role = Role::newFromArray($_POST);
         $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
         if (!empty($larp_role) && $larp_role->UserMayEdit == 0) {
             //Redan anmäld, utan tillåtelse att redigera
@@ -26,16 +25,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('Location: index.php'); //Inte din karaktär
             exit;
         }
-        
+ 
+        $role->setValuesByArray($_POST);
+        $role->update();
 
         $role->deleteAllIntrigueTypes();
         if (isset($_POST['IntrigueTypeId'])) {
             $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         }
         
-        
-        $role->update();
-        
+
         if (!empty($larp_role)) {
             $larp_role->UserMayEdit = 0;
             $larp_role->update();
