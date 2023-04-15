@@ -11,8 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'delete') {
         LARP::delete($_POST['Id']);
     } elseif ($operation == 'update') {
-
-        $house = House::newFromArray($_POST);
+        $house=House::loadById($_POST['Id']);
+        $house->setValuesByArray($_POST);
         $house->update();
     } 
 }

@@ -7,7 +7,6 @@ Lagfarter sätta upp hur mycket resurser de producerar / behöver
 
 Intrigverktyg
 
-Husfördelning
 
 Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anmäld till, men som inte har varit så ska man sättas till icke-godkänd
 

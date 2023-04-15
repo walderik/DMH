@@ -13,7 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'delete') {
         Telegram::delete($_POST['Id']);
     } elseif ($operation == 'update') {
-        $telegram = Telegram::newFromArray($_POST);
+        $telegram=Telegram::loadById($_POST['Id']);
+        $telegram->setValuesByArray($_POST);
         $telegram->update();
     } 
 }

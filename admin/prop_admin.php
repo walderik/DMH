@@ -13,7 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'delete') {
         Titledeed::delete($_POST['Id']);
     } elseif ($operation == 'update') {
-        $prop = Prop::newFromArray($_POST);
+        $prop=Prop::loadById($_POST['Id']);
+        $prop->setValuesByArray($_POST);
         $prop->update();
     } 
 }

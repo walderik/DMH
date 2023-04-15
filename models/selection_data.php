@@ -32,27 +32,32 @@ class SelectionData extends BaseModel{
     
     public static function newFromArray($post) {
         $selectionData = static::newWithDefault();
-        if (isset($post['SortOrder'])) $selectionData->SortOrder = $post['SortOrder'];
-        if (isset($post['Active'])) {
-            if ($post['Active'] == "on" || $post['Active'] == 1) {
-                $selectionData->Active = 1;
-            }
-            else {
-                $selectionData->Active = 0;
-            }
-        }
-        else {
-            $selectionData->Active = 0;
-        }
-        if (isset($post['Description'])) $selectionData->Description = $post['Description'];
-        if (isset($post['Name'])) $selectionData->Name = $post['Name'];
-        if (isset($post['Id'])) {
-            $selectionData->Id = $post['Id'];
-        }
-        if (isset($post['CampaignId'])) $selectionData->CampaignId = $post['CampaignId'];
+        $selectionData->setValuesByArray($post);
         return $selectionData;
     }
      
+    public function setValuesByArray($arr) {
+        if (isset($arr['SortOrder'])) $this->SortOrder = $arr['SortOrder'];
+        if (isset($arr['Active'])) {
+            if ($arr['Active'] == "on" || $arr['Active'] == 1) {
+                $this->Active = 1;
+            }
+            else {
+                $this->Active = 0;
+            }
+        }
+        else {
+            $this->Active = 0;
+        }
+        if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        if (isset($arr['Name'])) $this->Name = $arr['Name'];
+        if (isset($arr['Id'])) {
+            $this->Id = $arr['Id'];
+        }
+        if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+        
+    }
+    
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
         global $current_larp;

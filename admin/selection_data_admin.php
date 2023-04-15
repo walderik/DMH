@@ -17,14 +17,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
 
-    $user_func = $objectType . '::newFromArray';
+
 
     if ($operation == 'insert') {
+        $user_func = $objectType . '::newFromArray';
         $data = call_user_func($user_func, $_POST);
 
         $data->create();
     } elseif ($operation == 'update') {
-        $data = call_user_func($user_func, $_POST);
+        $user_func = $objectType . '::loadById';
+        $data = call_user_func($user_func,$_POST['Id']);
+        $data->setValuesByArray($_POST);
         $data->update();
     } 
 }

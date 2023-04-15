@@ -14,14 +14,18 @@ class PaymentInformation extends BaseModel{
     
     public static function newFromArray($post){
         $payment_information = static::newWithDefault();
-        if (isset($post['Id']))   $payment_information->Id = $post['Id'];
-        if (isset($post['LARPId'])) $payment_information->LARPId = $post['LARPId'];
-        if (isset($post['FromDate'])) $payment_information->FromDate = $post['FromDate'];
-        if (isset($post['ToDate'])) $payment_information->ToDate = $post['ToDate'];
-        if (isset($post['FromAge'])) $payment_information->FromAge = $post['FromAge'];
-        if (isset($post['ToAge'])) $payment_information->ToAge = $post['ToAge'];
-        if (isset($post['Cost'])) $payment_information->Cost = $post['Cost'];
+        $payment_information->setValuesByArray($post);
         return $payment_information;
+    }
+    
+    public function setValuesByArray($arr) {
+        if (isset($arr['Id']))   $this->Id = $arr['Id'];
+        if (isset($arr['LARPId'])) $this->LARPId = $arr['LARPId'];
+        if (isset($arr['FromDate'])) $this->FromDate = $arr['FromDate'];
+        if (isset($arr['ToDate'])) $this->ToDate = $arr['ToDate'];
+        if (isset($arr['FromAge'])) $this->FromAge = $arr['FromAge'];
+        if (isset($arr['ToAge'])) $this->ToAge = $arr['ToAge'];
+        if (isset($arr['Cost'])) $this->Cost = $arr['Cost'];
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen

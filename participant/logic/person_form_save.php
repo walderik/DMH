@@ -17,15 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $person->create();
         $person->saveAllNormalAllergyTypes($_POST);
     } elseif ($operation == 'update') {
+        $person=Person::loadById($_POST['Id']);
 
-        
-        
-        $person = Person::newFromArray($_POST);
         if ($person->UserId != $current_user->Id) {
             header('Location: index.php'); //Inte din person
             exit;
         }
         
+        $person->setValuesByArray($_POST);
         
         $person->update();
         $person->deleteAllNormalAllergyTypes();

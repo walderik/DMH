@@ -12,15 +12,18 @@ class House extends BaseModel{
     
     public static function newFromArray($post){
         $house = static::newWithDefault();
-        if (isset($post['Id'])) $house->Id = $post['Id'];
-        if (isset($post['Name'])) $house->Name = $post['Name'];
-        if (isset($post['NumberOfBeds'])) $house->NumberOfBeds = $post['NumberOfBeds'];
-        if (isset($post['PositionInVillage'])) $house->PositionInVillage = $post['PositionInVillage'];
-        if (isset($post['Description'])) $house->Description = $post['Description'];
-        
+        $house->setValuesByArray($post);
         return $house;
     }
     
+    public function setValuesByArray($arr) {
+        if (isset($arr['Id'])) $this->Id = $arr['Id'];
+        if (isset($arr['Name'])) $this->Name = $arr['Name'];
+        if (isset($arr['NumberOfBeds'])) $this->NumberOfBeds = $arr['NumberOfBeds'];
+        if (isset($arr['PositionInVillage'])) $this->PositionInVillage = $arr['PositionInVillage'];
+        if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        
+    }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {

@@ -17,20 +17,22 @@ class Telegram extends BaseModel{
     
     public static function newFromArray($post) {
         $telegram = static::newWithDefault();
-        if (isset($post['Deliverytime'])) $telegram->Deliverytime = $post['Deliverytime'];
-        if (isset($post['Sender'])) $telegram->Sender = $post['Sender'];
-        if (isset($post['SenderCity'])) $telegram->SenderCity = $post['SenderCity'];
-        if (isset($post['Reciever'])) $telegram->Reciever = $post['Reciever'];
-        if (isset($post['RecieverCity'])) $telegram->RecieverCity = $post['RecieverCity'];
-        if (isset($post['Message'])) $telegram->Message = $post['Message'];
-        if (isset($post['OrganizerNotes'])) $telegram->OrganizerNotes = $post['OrganizerNotes'];
-        if (isset($post['Id'])) $telegram->Id = $post['Id'];
-        if (isset($post['LARPid'])) $telegram->LARPid = $post['LARPid'];
-        
+        $telegram->setValuesByArray($post);
         return $telegram;
     }
      
-     
+    public function setValuesByArray($arr) {
+        if (isset($arr['Deliverytime'])) $this->Deliverytime = $arr['Deliverytime'];
+        if (isset($arr['Sender'])) $this->Sender = $arr['Sender'];
+        if (isset($arr['SenderCity'])) $this->SenderCity = $arr['SenderCity'];
+        if (isset($arr['Reciever'])) $this->Reciever = $arr['Reciever'];
+        if (isset($arr['RecieverCity'])) $this->RecieverCity = $arr['RecieverCity'];
+        if (isset($arr['Message'])) $this->Message = $arr['Message'];
+        if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
+        if (isset($arr['Id'])) $this->Id = $arr['Id'];
+        if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
+        
+    }
     
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen

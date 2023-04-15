@@ -21,24 +21,25 @@ class LARP extends BaseModel{
     
     public static function newFromArray($post){
         $larp = static::newWithDefault();
-        if (isset($post['Name'])) $larp->Name = $post['Name'];
-        if (isset($post['TagLine'])) $larp->TagLine = $post['TagLine'];
-        if (isset($post['StartDate'])) $larp->StartDate = $post['StartDate'];
-        if (isset($post['EndDate'])) $larp->EndDate = $post['EndDate'];
-        if (isset($post['MaxParticipants'])) $larp->MaxParticipants = $post['MaxParticipants'];
-        if (isset($post['LatestRegistrationDate'])) $larp->LatestRegistrationDate = $post['LatestRegistrationDate'];
-        if (isset($post['StartTimeLARPTime'])) $larp->StartTimeLARPTime = $post['StartTimeLARPTime'];
-        if (isset($post['EndTimeLARPTime'])) $larp->EndTimeLARPTime = $post['EndTimeLARPTime'];
-        if (isset($post['DisplayIntrigues'])) $larp->DisplayIntrigues = $post['DisplayIntrigues'];
-        if (isset($post['Id'])) $larp->Id = $post['Id'];
-        if (isset($post['CampaignId'])) $larp->CampaignId = $post['CampaignId'];
-        if (isset($post['RegistrationOpen'])) $larp->RegistrationOpen = $post['RegistrationOpen'];
-        
+        $larp->setValuesByArray($post);
         return $larp;
     }
      
      
-    
+    public function setValuesByArray($arr) {
+        if (isset($arr['Name'])) $this->Name = $arr['Name'];
+        if (isset($arr['TagLine'])) $this->TagLine = $arr['TagLine'];
+        if (isset($arr['StartDate'])) $this->StartDate = $arr['StartDate'];
+        if (isset($arr['EndDate'])) $this->EndDate = $arr['EndDate'];
+        if (isset($arr['MaxParticipants'])) $this->MaxParticipants = $arr['MaxParticipants'];
+        if (isset($arr['LatestRegistrationDate'])) $this->LatestRegistrationDate = $arr['LatestRegistrationDate'];
+        if (isset($arr['StartTimeLARPTime'])) $this->StartTimeLARPTime = $arr['StartTimeLARPTime'];
+        if (isset($arr['EndTimeLARPTime'])) $this->EndTimeLARPTime = $arr['EndTimeLARPTime'];
+        if (isset($arr['DisplayIntrigues'])) $this->DisplayIntrigues = $arr['DisplayIntrigues'];
+        if (isset($arr['Id'])) $this->Id = $arr['Id'];
+        if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+        if (isset($arr['RegistrationOpen'])) $this->RegistrationOpen = $arr['RegistrationOpen'];        
+    }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {

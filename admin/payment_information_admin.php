@@ -17,7 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'delete') {
         PaymentInformation::delete($_POST['Id']);
     } elseif ($operation == 'update') {
-        $payment_information = PaymentInformation::newFromArray($_POST);
+        $payment_information = PaymentInformation::loadById(['Id']);
+        $payment_information->setValuesByArray($_POST);
         $payment_information->update();
     } 
 }

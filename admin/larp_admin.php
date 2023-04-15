@@ -11,8 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'delete') {
         LARP::delete($_POST['Id']);
     } elseif ($operation == 'update') {
-
-        $larp = LARP::newFromArray($_POST);
+        $larp=LARP::loadById($_POST['Id']);
+        $larp->setValuesByArray($_POST);
         $larp->update();
     } 
 }

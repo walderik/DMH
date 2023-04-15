@@ -14,7 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $npc->create();
     } elseif ($operation == 'update') {
                
-        $npc = NPC::newFromArray($_POST);      
+        $npc=NPC::loadById($_POST['Id']);
+        $npc->setValuesByArray($_POST);  
         $npc->update();
     }
     
