@@ -13,6 +13,7 @@ class Letter extends BaseModel{
     public  $Approved = 1;
     public  $LARPid;
     public  $Font;
+    public  $UserId; 
 
     
 
@@ -35,6 +36,7 @@ class Letter extends BaseModel{
         if (isset($arr['Approved'])) $this->Approved = $arr['Approved'];
         if (isset($arr['Font'])) $this->Font = $arr['Font'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
+        if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
         if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
         
     }
@@ -42,13 +44,15 @@ class Letter extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_larp;
+        global $current_larp, $current_user;
         
         $letter = new self();
         $letter->Deliverytime = $current_larp->StartTimeLARPTime;
         $letter->LARPid = $current_larp->Id;
+        $letter->UserId = $current_user->Id;
         return $letter;
     }
+    
     
     
     public static function allBySelectedLARP(Larp $larp) {
@@ -69,9 +73,9 @@ class Letter extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_letter SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, Font=?, OrganizerNotes=?, Approved=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_letter SET Deliverytime=?, Sender=?, SenderCity=?, Reciever=?, RecieverCity=?, Message=?, Font=?, OrganizerNotes=?, Approved=?, UserId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->Id))) {
+        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -83,15 +87,19 @@ class Letter extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_letter (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, Font, OrganizerNotes, Approved, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_letter (Deliverytime, Sender, SenderCity, Reciever, RecieverCity, Message, Font, OrganizerNotes, Approved, UserId, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->LARPid))) {
+        if (!$stmt->execute(array($this->Deliverytime, $this->Sender, $this->SenderCity, $this->Reciever, $this->RecieverCity, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->LARPid))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
         }
         $this->Id = $connection->lastInsertId();
         $stmt = null;
+    }
+    
+    public function getUser() {
+        return User::loadById($this->UserId);
     }
     
     

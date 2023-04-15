@@ -54,7 +54,7 @@ include 'navigation_subpage.php';
                 echo "<td>" . $telegram->Reciever . "</td>\n";
                 echo "<td>" . $telegram->RecieverCity . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
-                echo "<td>USER</td>\n";
+                echo "<td>" . $telegram->getUser()->Name . "</td>\n";
                 echo "<td>" . showStatusIcon($telegram->Approved,  "logic/approve_telegram.php?id=$telegram->Id") . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->OrganizerNotes) . "</td>\n";
                 

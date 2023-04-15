@@ -41,7 +41,8 @@ include 'navigation_subpage.php';
         $letter_array = Letter::allBySelectedLARP($current_larp);
         if (!empty($letter_array)) {
             echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Font</th><th>Ok</th><th>Anteckningar</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th>";
+            echo "<th>Mottagarens stad</th><th>Meddelande</th><th>Font</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th></th><th></th></tr>\n";
             foreach ($letter_array as $letter) {
                 echo "<tr>\n";
                 echo "<td>" . $letter->Id . "</td>\n";
@@ -52,6 +53,7 @@ include 'navigation_subpage.php';
                 echo "<td>" . $letter->RecieverCity . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $letter->Message) . "</td>\n";
                 echo "<td>" . $letter->Font . "</td>\n";
+                echo "<td>" . $letter->getUser()->Name . "</td>\n";
                 echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $letter->OrganizerNotes) . "</td>\n";
                 
