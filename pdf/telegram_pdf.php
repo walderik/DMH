@@ -17,7 +17,7 @@ class TELEGRAM_PDF extends FPDF {
     }
     
     function SetText(string $sender, string $receiver, string $message, ?string $when) {
-		$this->SetFont('SpecialElite','',14);    # OK är Times, Arial, Helvetica
+        $this->SetFont('SpecialElite','',14);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
 		# För mer fonter använder du http://www.fpdf.org/makefont/
 		$left = 21;
 		if (!is_null($when)) {

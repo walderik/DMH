@@ -43,7 +43,8 @@ include 'navigation_subpage.php';
         $telegram_array = Telegram::allBySelectedLARP($current_larp);
         if (!empty($telegram_array)) {
             echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th><th>Meddelande</th><th>Ok</th><th>Anteckningar</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th>";
+            echo "<th>Meddelande</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th></th><th></th></tr>\n";
             foreach ($telegram_array as $telegram) {
                 echo "<tr>\n";
                 echo "<td>" . $telegram->Id . "</td>\n";
@@ -53,6 +54,7 @@ include 'navigation_subpage.php';
                 echo "<td>" . $telegram->Reciever . "</td>\n";
                 echo "<td>" . $telegram->RecieverCity . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
+                echo "<td>USER</td>\n";
                 echo "<td>" . showStatusIcon($telegram->Approved,  "logic/approve_telegram.php?id=$telegram->Id") . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->OrganizerNotes) . "</td>\n";
                 

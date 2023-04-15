@@ -91,7 +91,7 @@ include_once '../includes/error_handling.php';
 			Just nu är det <?php echo count(Registration::allBySelectedLARP($current_larp)); ?> anmälda deltagare.<br> 
         <?php 
 
-                    if ($current_larp->isFull()) {
+            if ($current_larp->isFull()) {
                 echo "<br>Lajvet är fullt nu.";
             }
             
