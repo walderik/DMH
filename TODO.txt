@@ -11,7 +11,6 @@ Visa på hus vilka som anmält sig som husägare på resp hus.
 
 Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anmäld till, men som inte har varit så ska man sättas till icke-godkänd
 
-User ska sparas för telegram och brev.
 Sida för deltagare att lägga till telegram och brev.
 Pdf för brev.
 
