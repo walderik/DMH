@@ -45,16 +45,36 @@ include_once 'header.php';
     include 'navigation_subpage.php';
     ?>
     
+<style>
+
+img {
+  float: right;
+}
+</style>
+
 
     <div class="content"> 
     <h1><?php echo default_value('action');?> rekvisita</h1>
+    
+   
 	<form action="prop_admin.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
+        <?php 
+            if ($prop->hasImage()) {
+                $image = Image::loadById($prop->ImageId);
+                echo "<td>";
+                echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
+                if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+                echo "</td>";
+            }
+            ?>
+		
 		<table>
 			<tr>
 				<td><label for="Name">Namn</label></td>
 				<td><input type="text" id="Name" name="Name" value="<?php echo $prop->Name; ?>" size="100" maxlength="250" required></td>
+
 			</tr>
 			<tr>
 

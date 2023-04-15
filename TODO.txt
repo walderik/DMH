@@ -1,12 +1,13 @@
 
 Props: ändra ägare (grupp/roll)
-		ladda och visa bild
+
 Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 
 
 Intrigverktyg
 
+Visa på hus vilka som anmält sig som husägare på resp hus.
 
 Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anmäld till, men som inte har varit så ska man sättas till icke-godkänd
 

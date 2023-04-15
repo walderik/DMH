@@ -48,7 +48,7 @@ include 'navigation_subpage.php';
        $prop_array = Prop::allByCampaign($current_larp);
         if (!empty($prop_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Innehavare</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Innehavare</th><th>Bild</th><th></th><th></th></tr>\n";
             foreach ($prop_array as $prop) {
                 echo "<tr>\n";
                 echo "<td>" . $prop->Id . "</td>\n";
@@ -57,7 +57,14 @@ include 'navigation_subpage.php';
                 echo "<td>" . $prop->StorageLocation . "</td>\n";
                 echo "<td>" . $owner . "</td>\n";
 
-
+                if ($prop->hasImage()) {
+                    $image = Image::loadById($prop->ImageId);
+                    echo "<td><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/> <a href='logic/delete_image.php?id=$prop->Id&type=prop'>Ta bort bild</a></td>\n";
+                }
+                else {
+                    echo "<td><a href='upload_image.php?id=$prop->Id&type=prop'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
+                }
+                
                 
                 echo "<td>" . "<a href='prop_form.php?operation=update&id=" . $prop->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='prop_admin.php?operation=delete&id=" . $prop->Id . "'><i class='fa-solid fa-trash'></i></td>\n";

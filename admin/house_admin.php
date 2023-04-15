@@ -38,7 +38,7 @@ include 'navigation_subpage.php';
         $resultCheck = count($house_array);
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Antal sovplatser</th><th>Plats i byn</th><th>Beskrivning</th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Antal sovplatser</th><th>Plats i byn</th><th>Beskrivning</th><th></th><th></th><th></th></tr>\n";
             foreach ($house_array as $house) {
                 echo "<tr>\n";
                 echo "<td>" . $house->Id . "</td>\n";
@@ -46,6 +46,15 @@ include 'navigation_subpage.php';
                 echo "<td>" . $house->NumberOfBeds . "</td>\n";
                 echo "<td>" . $house->PositionInVillage . "</td>\n";
                 echo "<td>" . $house->Description . "</td>\n";
+                
+                if ($house->hasImage()) {
+                    $image = Image::loadById($house->ImageId);
+                    echo "<td><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/> <a href='logic/delete_image.php?id=$house->Id&type=house'>Ta bort bild</a></td>\n";
+                }
+                else {
+                    echo "<td><a href='upload_image.php?id=$house->Id&type=house'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
+                }
+                
                 
                 echo "<td>" . "<a href='house_form.php?operation=update&id=" . $house->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='house_admin.php?operation=delete&id=" . $house->Id . "'><i class='fa-solid fa-trash'></i></td>\n";

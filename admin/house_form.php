@@ -45,8 +45,28 @@ include_once 'header.php';
     include 'navigation_subpage.php';
     
     ?>
+    
+     
+<style>
+
+img {
+  float: right;
+}
+</style>
+
     <div class="content"> 
     	<h1><?php echo default_value('action');?> hus</h1>
+    	        <?php 
+    	        if ($house->hasImage()) {
+                $image = Image::loadById($house->ImageId);
+                echo "<td>";
+                echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
+                if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+                echo "</td>";
+            }
+            ?>
+    	
+    	
     	<form action="house_admin.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">

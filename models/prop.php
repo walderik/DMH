@@ -6,7 +6,7 @@ class Prop extends BaseModel{
     public $Name;
     public $Description;
     public $StorageLocation;
-    public $Image = 0;
+    public $ImageId = null;
     public $GroupId = null;
     public $RoleId = null;
     public $CampaignId;
@@ -26,12 +26,15 @@ class Prop extends BaseModel{
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['StorageLocation'])) $this->StorageLocation = $arr['StorageLocation'];
+        if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
         if (isset($arr['RoleId'])) $this->RoleId = $arr['RoleId'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
 
         if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
         if (isset($this->RoleId) && $this->RoleId=='null') $this->RoleId = null;
+        if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
+        
         
     }
     
@@ -48,11 +51,11 @@ class Prop extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_prop SET Name=?, 
-            Description=?, StorageLocation=?, GroupId=?, RoleId=?,
+            Description=?, StorageLocation=?, ImageId=?, GroupId=?, RoleId=?,
             CampaignId=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Description, $this->StorageLocation, 
-            $this->GroupId, $this->RoleId, $this->CampaignId, $this->Id))) {
+            $this->ImageId, $this->GroupId, $this->RoleId, $this->CampaignId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -82,6 +85,11 @@ class Prop extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_prop WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    public function hasImage() {
+        if (isset($this->ImageId)) return true;
+        return false;
     }
     
     

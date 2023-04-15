@@ -27,8 +27,9 @@ if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
     exit;
 }
 
-Image::delete($role->ImageId);
 $role->ImageId = null;
 $role->update();
+Image::delete($role->ImageId);
+
 header('Location: ../index.php?message=image_deleted');
 exit;
