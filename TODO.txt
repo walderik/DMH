@@ -10,9 +10,9 @@ Intrigverktyg
 
 Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anmäld till, men som inte har varit så ska man sättas till icke-godkänd
 
-Godkänt-kolumn för telegram.
-Gör brev som telegram. (Med olika fonter)
-
+User ska sparas för telegram och brev.
+Sida för deltagare att lägga till telegram och brev.
+Pdf för brev.
 
 byta user för en person (admin funktion)
 
