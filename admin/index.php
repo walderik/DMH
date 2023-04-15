@@ -37,6 +37,7 @@ include_once '../includes/error_handling.php';
                 <li><a href="roles.php">Karaktärer</a></li>
 
                 <li><a href="telegram_admin.php">Telegram</a></li>
+                <li><a href="letter_admin.php">Brev</a></li>
                 <li><a href="prop_admin.php">Rekvisita</a></li>
                 <li><a href="npc.php">NPC'er</a></li>
               </ul>

@@ -20,6 +20,7 @@ include_once $root . '/models/intrigue_type.php';
 include_once $root . '/models/larp_group.php';
 include_once $root . '/models/larp_role.php';
 include_once $root . '/models/larper_type.php';
+include_once $root . '/models/letter.php';
 include_once $root . '/models/NPC.php';
 include_once $root . '/models/NPCGroup.php';
 include_once $root . '/models/normal_allergy_type.php';
