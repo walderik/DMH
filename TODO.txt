@@ -10,8 +10,6 @@ Intrigverktyg
 
 Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anmäld till, men som inte har varit så ska man sättas till icke-godkänd
 
-Kolla vid operation=update att man alltid läser upp objketet först innan man sätter värden
-
 Godkänt-kolumn för telegram.
 Gör brev som telegram. (Med olika fonter)
 
