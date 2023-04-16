@@ -3,11 +3,12 @@
 
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+require $root . '/includes/init.php';
 require_once $root . '/pdf/character_sheet_pdf.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] != "GET") {
-    header('Location: ../../admin/index.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -23,8 +24,8 @@ if (empty($role)) {
 
 # Kolla behörigheten
 $person = $role->getPerson();
-if (!$current_user->IsAdmin && $person->UserId != $current_user->Id) {
-    header('Location: ../../participant/index.php'); # Inte din karaktär
+if ($current_user->IsAdmin==0 && $person->UserId != $current_user->Id) {
+    header("Location: index.php"); # Inte din karaktär
     exit;
 }
 
