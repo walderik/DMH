@@ -122,6 +122,8 @@ include_once '../includes/error_handling.php';
                             echo "</td><td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>Betala medlemsavgiften</a>";
                             echo "</td></tr>\n";
                         }
+
+                        echo "<tr><td>Säker plats på lajvet</td><td>".showStatusIcon(($registration->SpotAtLARP==1))."</a>";
                     }
                     echo "</table>";
     		        
