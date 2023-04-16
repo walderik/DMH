@@ -111,7 +111,6 @@ include_once '../includes/error_handling.php';
 		</div>
 		<div class="content">
             <a href="not_registered_roles.php">Karaktärer som inte är anmälda (än) i år</a>
-		
 		</div>
 		
 		<div class="content">
@@ -121,5 +120,8 @@ include_once '../includes/error_handling.php';
 		<div class="content">
 		<a href="doh_ssn_check.php">Medlemskontroll flera personnummer.</a> 
 		</div>
+
+		<!?= fontDropDown('font'); ?>
+		<!?php print_r(OurFonts::fontsToLoad()) ?>
 	</body>
 </html>

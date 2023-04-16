@@ -110,3 +110,18 @@ function contactEmailIcon($name,$email) {
 function startsWithNumber($string) {
     return strlen($string) > 0 && ctype_digit(substr($string, 0, 1));
 }
+
+# En HTML-selector för fonter
+function fontDropDown(String $name, ?String $selected=null) {
+    echo "<div class='fontDropdown'>\n";
+    
+    foreach (OurFonts::fontArray() as $font) {
+        $row_option = 'required';
+        # Kolla om något är selected
+        if (!is_null($selected) && $selected == $font) $row_option = $row_option.' checked="checked"';
+        
+        echo "<input type='radio' id='" .$font . "' name='" . $name . "' value='" . $font . "' " . $row_option . ">\n";
+        echo "<label for='" .$font . "'>" .  $font . "</label><br>\n";
+    }
+    echo "</div>\n";
+}
