@@ -61,7 +61,7 @@ include_once '../includes/error_handling.php';
 			 </div>
 		</div>
 		<div class="content">
-    		<h2>Registreringar /anmälningar</h2>
+    		<h2>Registreringar / anmälningar</h2>
     		<div>
     		<?php 
     		
@@ -123,10 +123,38 @@ include_once '../includes/error_handling.php';
                             echo "</td></tr>\n";
                         }
 
-                        echo "<tr><td>Säker plats på lajvet</td><td>".showStatusIcon(($registration->SpotAtLARP==1))."</a>";
+                        echo "<tr><td>Säker plats på lajvet</td><td>".showStatusIcon(($registration->SpotAtLARP==1))."</a></td></tr>";
+                       
                     }
                     echo "</table>";
     		        
+                    if ($registration->SpotAtLARP==1) {
+                        echo "<p><a href='telegram_suggestion.php'><b>Skapa ett telegram</b></i></a>\n";
+
+                        $telegram_array = $current_user->getTelegramsAtLarp($current_larp);
+                        if(isset($telegram_array) && count($telegram_array) > 0) {
+                            echo "<br><b>Telegram av $person->Name:</b><br>\n";
+                            echo "<table id='telegrams' class='data'>";
+                            echo "<tr><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th>";
+                            echo "<th>Meddelande</th><th>Ok</th><th></th><th></th></tr>\n";
+                            foreach ($telegram_array as $telegram) {
+                                echo "<tr>\n";
+                                echo "<td>" . $telegram->Deliverytime . "</td>\n";
+                                echo "<td>" . $telegram->Sender . "</td>\n";
+                                echo "<td>" . $telegram->SenderCity . "</td>\n";
+                                echo "<td>" . $telegram->Reciever . "</td>\n";
+                                echo "<td>" . $telegram->RecieverCity . "</td>\n";
+                                echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
+                                echo "<td>" . showStatusIcon($telegram->Approved) . "</td>\n";
+    
+                                if (!$telegram->Approved) {
+                                    echo "<td>" . "<a href='telegram_suggestion.php?operation=update&id=" . $telegram->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                                }
+                                echo "</tr>\n";
+                            }
+                            echo "</table></p>";
+                        }
+                    }
                     
                     //Grupper
     		        if (isset($groups) && count($groups) > 0) {
@@ -159,7 +187,7 @@ include_once '../includes/error_handling.php';
         		            $role_group = $role->getGroup();
         		            $role_group_name = " (Inte med i någon grupp)";
         		            if (isset($role_group) && $role->isRegistered($current_larp)) {
-        		                $role_group_name = " - <a href='view_group.php?id=$role_group->Id'>$role_group->Name <i class='fa-solid fa-eye'></i></a>";
+        		                $role_group_name = " - <a href='view_group.php?id=$role_group->Id'>$role_group->Name <i class='fa-solid fa-eye' title='Titta på $role_group->Name'></i></a>";
         		            }
         		            elseif (isset($role_group)) {
         		                $role_group_name = " - $role_group->Name";
@@ -167,7 +195,7 @@ include_once '../includes/error_handling.php';
         		            echo "<tr><td style='font-weight: normal; padding-right: 0px;'>";
 
         		            if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
-        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name <i class='fa-solid fa-eye'></i></a>";
+        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name <i class='fa-solid fa-eye' title='Titta på rollen'></i></a>";
         		                if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
         		                
         		                echo " - $role->Profession $role_group_name</td>";

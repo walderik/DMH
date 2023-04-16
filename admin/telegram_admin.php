@@ -20,8 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    
-//     $operation = $_GET['operation'];
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
         Telegram::delete($_GET['id']);
     }
@@ -33,7 +31,7 @@ include 'navigation_subpage.php';
 
     <div class="content">
         <h1>Telegram</h1>
-        <p>Telegram skapade av arrangörer blir automatiskt godkända. Telegram skapade av deltagare behöver godkännas av arrangörer innan de kommer med i pdf'en.</p> 
+        <p>Telegram skapade av arrangörer blir automatiskt godkända. Telegram skapade av deltagare behöver godkännas av arrangörer innan de kommer med i pdf:en.</p> 
             <a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
         
             <a href="telegram_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a>  

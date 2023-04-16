@@ -48,6 +48,7 @@ include_once 'header.php';
 
     <div class="content"> 
     <h1><?php echo default_value('action');?> telegram</h1>
+    <p>Telegrammet kommer att granskas av arrangörerna innan det godkäns för lajvet.<br /></p>
 	<form action="logic/telegram_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
