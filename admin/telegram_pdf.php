@@ -25,9 +25,5 @@ $pdf->SetSubject('Telegram');
 foreach ($arrayOfTelegrams as $telegram)  {
     $pdf->nytt_telegram($telegram);
 }
-// $doc = $pdf->Output('S');
-
-// $attachments = ['Telegrammen' => $doc];
-//BerghemMailer::send('Mats.rappe@yahoo.se', 'Admin', "Det här är alla telegrammen", "Alla Telegrammen som PDF", $attachments);
 
 $pdf->Output();

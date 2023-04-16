@@ -4,7 +4,8 @@ global $root;
 
 include_once $root . '/includes/berghem_mailer.php'; 
 include_once $root . '/includes/html_helpers.php'; 
-include_once $root . '/includes/sverok.php'; 
+include_once $root . '/includes/sverok.php';
+include_once $root . '/includes/our_fonts.php'; 
 
 include_once $root . '/classes/dbh.php';
 include_once $root . '/models/base_model.php';
