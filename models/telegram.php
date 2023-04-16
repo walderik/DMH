@@ -57,6 +57,11 @@ class Telegram extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getAllToApprove($larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_telegram WHERE LARPid = ? AND Approved=0 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
     
     public static function allApprovedBySelectedLARP(Larp $larp) {
         if (is_null($larp)) return Array();

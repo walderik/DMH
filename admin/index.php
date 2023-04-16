@@ -99,16 +99,23 @@ include_once '../includes/error_handling.php';
                 
 
 		</div>
-		<div class="content">
-			<?php 
-			$approval_count = count (Person::getAllToApprove($current_larp));
-			if ($approval_count>0) {?>
-
-				<?php echo $approval_count; ?> deltagare har karaktärer som väntar på <a href="persons_to_approve.php">godkännande</a>. 
-			
-			
-			<?php }?>
-		</div>
+		<?php 
+		$approval_count = count (Person::getAllToApprove($current_larp));
+		if ($approval_count>0) { ?>
+			<div class="content">
+			<?php echo $approval_count; ?> deltagare har karaktärer som väntar på <a href="persons_to_approve.php">godkännande</a>. 
+		
+			</div>			
+		<?php }
+		
+		$approval_t_count = count (Telegram::getAllToApprove($current_larp));
+		if ($approval_t_count>0) { ?>
+			<div class="content">
+			<?php echo $approval_t_count; ?> telegram som väntar på <a href="telegram_admin.php">godkännande</a>. 
+		
+			</div>			
+		<?php }?>
+		
 		<div class="content">
             <a href="not_registered_roles.php">Karaktärer som inte är anmälda (än) i år</a>
 		</div>
@@ -121,7 +128,7 @@ include_once '../includes/error_handling.php';
 		<a href="doh_ssn_check.php">Medlemskontroll flera personnummer.</a> 
 		</div>
 
-		<!?= fontDropDown('font'); ?>
-		<!?php print_r(OurFonts::fontsToLoad()) ?>
+		<?= fontDropDown('font'); ?>
+		<?php print_r(OurFonts::fontsToLoad()) ?>
 	</body>
 </html>
