@@ -114,14 +114,21 @@ function startsWithNumber($string) {
 # En HTML-selector för fonter
 function fontDropDown(String $name, ?String $selected=null) {
     echo "<div class='fontDropdown'>\n";
-    
+    echo "<select name='$name' id='$name' required>";
     foreach (OurFonts::fontArray() as $font) {
-        $row_option = 'required';
+        //$row_option = 'required';
+        $row_option = "";
         # Kolla om något är selected
-        if (!is_null($selected) && $selected == $font) $row_option = $row_option.' checked="checked"';
+        if (!is_null($selected) && $selected == $font) {
+            //$row_option = $row_option.' checked="checked"';
+            $row_option="selected";
+        }
         
-        echo "<input type='radio' id='" .$font . "' name='" . $name . "' value='" . $font . "' " . $row_option . ">\n";
-        echo "<label for='" .$font . "'>" .  $font . "</label><br>\n";
+
+        echo "<option value='$font' $row_option>$font</option>\n"; 
+        //echo "<input type='radio' id='" .$font . "' name='" . $name . "' value='" . $font . "' " . $row_option . ">\n";
+        //echo "<label for='" .$font . "'>" .  $font . "</label><br>\n";
     }
+    echo "</select>\n";
     echo "</div>\n";
 }

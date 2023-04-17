@@ -15,6 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     } elseif ($operation == 'update') {
         $telegram=Telegram::loadById($_POST['Id']);
+        if ($telegram->UserId != $current_user->Id) {
+            header('Location: index.php'); //Inte ditt telegram
+            exit;
+        }
+        
         $telegram->setValuesByArray($_POST);
         $telegram->Approved = 0;
         $telegram->UserId = $current_user->Id;

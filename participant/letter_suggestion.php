@@ -1,8 +1,6 @@
 <?php
 include_once 'header.php';
 
-
-
 $letter = Letter::newWithDefault();;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -13,7 +11,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($operation == 'new') {
     } elseif ($operation == 'update') {
         $letter = Letter::loadById($_GET['id']);
+        if ($letter->UserId != $current_user->Id) {
+            header('Location: index.php'); //Inte ditt brev
+            exit;
+        }
+        
     } else {
+        header('Location: index.php');
+        exit;
     }
 }
 
@@ -44,13 +49,14 @@ function default_value($field) {
     echo $output;
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
     
 
     <div class="content"> 
-    <h1><?php echo default_value('action');?> telegram</h1>
-	<form action="letter_admin.php" method="post">
+    <h1><?php echo default_value('action');?> brev</h1>
+    <p>Brevet kommer att granskas av arrangörerna innan det godkäns för lajvet.<br /></p>
+	<form action="logic/letter_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
 		<table>
@@ -85,16 +91,6 @@ include 'navigation_subpage.php';
 					<?php fontDropDown("Font", $letter->Font); ?><br>
 			
 
-				</td>
-			</tr>
-			<tr>
-
-				<td><label for="Approved">Godkänt</label></td>
-				<td>
-				<input type="radio" id="Approved_yes" name="Approved" value="1" <?php if ($letter->Approved == 1) echo 'checked="checked"'?>> 
-    			<label for="Approved_yes">Ja</label><br> 
-    			<input type="radio" id="Approved_no" name="Approved" value="0" <?php if ($letter->Approved == 0) echo 'checked="checked"'?>> 
-    			<label for="Approved_no">Nej</label>
 				</td>
 			</tr>
 			<tr>

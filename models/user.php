@@ -116,6 +116,10 @@ class User extends BaseModel{
         return Telegram::allBySelectedUserIdAndLARP($this->Id, $larp);
     }
     
+    public function getLettersAtLarp($larp) {
+        return Letter::allBySelectedUserIdAndLARP($this->Id, $larp);
+    }
+    
     public function isActivated() {
         if ($this->ActivationCode == 'activated') return true;
         return false;
