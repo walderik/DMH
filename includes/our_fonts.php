@@ -1,5 +1,6 @@
 <?php 
 
+# Testa med http://localhost/regsys/includes/font_test.php
 class OurFonts {
     
     public static function fontArray() {
@@ -19,7 +20,7 @@ class OurFonts {
             if (str_ends_with($font_name, 'bi')) continue;
             $out_files[] = $font_name;
         }
-
+        sort($out_files, SORT_NATURAL  | SORT_FLAG_CASE );
         return $out_files;
     }
     
@@ -37,7 +38,7 @@ class OurFonts {
             if (!str_ends_with($file, '.z')) continue;
             $out_files[] = substr($file, 0, -2);
         }
-        
+        sort($out_files, SORT_NATURAL  | SORT_FLAG_CASE );
         return $out_files;
     }
     
