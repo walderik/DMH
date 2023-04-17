@@ -1,7 +1,7 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-global $root, $current_user, $current_larp;
+global $root;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/fpdf185/fpdf.php';
 require $root . '/includes/init.php';
