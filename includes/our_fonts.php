@@ -12,9 +12,12 @@ class OurFonts {
         
         $out_files = Array();
         foreach ($files as $file) {
-            if (str_ends_with($file, '.php')) {
-                $out_files[] = substr($file, 0, -4);
-            }
+            if (!str_ends_with($file, '.php')) continue;
+            $font_name = substr($file, 0, -4);
+            if (str_ends_with($font_name, 'b')) continue;
+            if (str_ends_with($font_name, 'i')) continue;
+            if (str_ends_with($font_name, 'bi')) continue;
+            $out_files[] = $font_name;
         }
 
         return $out_files;
@@ -31,14 +34,11 @@ class OurFonts {
         
         $out_files = Array();
         foreach ($files as $file) {
-            if (str_ends_with($file, '.z')) {
-                $out_files[] = substr($file, 0, -2);
-            }
+            if (!str_ends_with($file, '.z')) continue;
+            $out_files[] = substr($file, 0, -2);
         }
         
         return $out_files;
     }
-    
-    
     
 }
