@@ -232,35 +232,62 @@ $someOneHasSpotOnLarp = false;
     		?>
     		</div>
 		</div>
-		<?php if ($someOneHasSpotOnLarp) {
+		<?php 
+		  if ($someOneHasSpotOnLarp) {
 		        echo "</div><div class='content'>\n";
 		        echo "<h2>Telegram</h2>\n";
 		        echo "<div>\n";
 		        $telegram_array = $current_user->getTelegramsAtLarp($current_larp);
 		        if(isset($telegram_array) && count($telegram_array) > 0) {
-		            echo "<br><b>Telegram av $current_user->Name:</b><br>\n";
-		            echo "<table id='telegrams' align='left'>";
-		            echo "<tr align='left'><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th>";
-		            echo "<th>Meddelande</th><th>Ok</th><th></th><th></th></tr>\n";
+		            echo "<b>Telegram av $current_user->Name:</b><br>\n";
+		            echo "<table class='data' id='telegrams' align='left'>";
+		            echo "<tr align='left'><th>Leveranstid</th><th>Avsändare</th><th>Mottagare</th>";
+		            echo "<th>Meddelande</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
 		            foreach ($telegram_array as $telegram) {
 		                echo "<tr>\n";
-		                echo "<td>" . $telegram->Deliverytime . "</td>\n";
-		                echo "<td>" . $telegram->Sender . "</td>\n";
-		                echo "<td>" . $telegram->SenderCity . "</td>\n";
-		                echo "<td>" . $telegram->Reciever . "</td>\n";
-		                echo "<td>" . $telegram->RecieverCity . "</td>\n";
+		                echo "<td style='font-weight:normal'>" . $telegram->Deliverytime . "</td>\n";
+		                echo "<td>" . $telegram->Sender ."<br>". $telegram->SenderCity. "</td>\n";
+		                echo "<td>" . $telegram->Reciever ."<br>". $telegram->RecieverCity . "</td>\n";
 		                echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
 		                echo "<td>" . showStatusIcon($telegram->Approved) . "</td>\n";
-		                
-		                if (!$telegram->Approved) {
-		                    echo "<td>" . "<a href='telegram_suggestion.php?operation=update&id=" . $telegram->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-		                }
+		                echo "<td align='center'>" . "<a href='telegram_suggestion.php?operation=update&id=" . $telegram->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+		                echo "<td align='center'>" . "<a href='logic/show_telegram.php?id=" . $telegram->Id . "'  target='_blank'><i class='fa-solid fa-file-pdf'></i></td>\n";
 		                echo "</tr>\n";
 		            }
 		            echo "</table></p>\n";
 		            echo "<p><a href='telegram_suggestion.php'><b>Skapa ett telegram</b></i></a>\n";
-		            echo "</div></div>";
+
 		        }
-		    } ?>
+		        echo "</div></div>";
+		        
+		        
+		        echo "</div><div class='content'>\n";
+		        echo "<h2>Brev</h2>\n";
+		        echo "<div>\n";
+		        $letter_array = $current_user->getLettersAtLarp($current_larp);
+		        if(isset($letter_array) && count($letter_array) > 0) {
+		            echo "<b>Brev av $current_user->Name:</b><br>\n";
+		            echo "<table class='data' id='letters' align='left'>";
+		            echo "<tr align='left'><th>Ort och datum</th><th>Hälsningsfras</th>";
+		            echo "<th>Meddelande</th><th>Underskrift</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
+		            foreach ($letter_array as $letter) {
+		                echo "<tr>\n";
+		                echo "<td style='font-weight:normal'>$letter->WhenWhere</td>\n";
+		                echo "<td>$letter->Greeting</td>\n";
+		                echo "<td>" . str_replace("\n", "<br>", $letter->Message) . "</td>\n";
+		                echo "<td>$letter->Signature</td>\n";
+		                echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
+		                echo "<td align='center'>" . "<a href='letter_suggestion.php?operation=update&id=" . $letter->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+		                echo "<td align='center'>" . "<a href='logic/show_letter.php?id=" . $letter->Id . "'  target='_blank'><i class='fa-solid fa-file-pdf'></i></td>\n";
+		                echo "</tr>\n";
+		            }
+		            echo "</table></p>\n";
+		            echo "<p><a href='letter_suggestion.php'><b>Skapa ett brev</b></i></a>\n";
+		            
+		        }
+		        echo "</div></div>";
+		        
+		    } 
+		    ?>
 	</body>
 </html>
