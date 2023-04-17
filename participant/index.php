@@ -2,20 +2,19 @@
 require 'header.php';
 include_once '../includes/error_handling.php';
 
+include "navigation.php";
+$someOneHasSpotOnLarp = false;
 ?>
-
-<?php include "navigation.php" ?>
 
 		<div class="content">
 			<h1>Anmälan till <?php echo $current_larp->Name;?></h1>
         	  <?php if (isset($error_message) && strlen($error_message)>0) {
         	      echo '<div class="error">'.$error_message.'</div>';
-        	  }?>
-        	  <?php if (isset($message_message) && strlen($message_message)>0) {
+        	  }
+        	  if (isset($message_message) && strlen($message_message)>0) {
         	      echo '<div class="message">'.$message_message.'</div>';
-        	  }?>
-            
-            <?php 
+        	  }
+        	  
             if ($current_larp->isFull()) {
 
                 echo "<div><b style='color: red'>Lajvet är fullt</b>";
@@ -54,9 +53,7 @@ include_once '../includes/error_handling.php';
 			 	<i class='fa-solid fa-pen'></i> - Ändra (går bara att göra om man inte är anmäld)<br>
 			 	<i class='fa-solid fa-trash'></i> - Ta bort (går bara att göra om man inte är anmäld)<br>
 			 	<i class='fa-solid fa-image-portrait'></i> - Ladda upp bild (går bara efter anmälan)<br>
-			 	<i class='fa-solid fa-skull-crossbones'></i> - Död
-			 	
-			 	
+			 	<i class='fa-solid fa-skull-crossbones'></i> - Död	
 			 	
 			 </div>
 		</div>
@@ -93,7 +90,6 @@ include_once '../includes/error_handling.php';
                         echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id"). "</td></tr>\n";
     		        }
                     if ($person->isRegistered($current_larp)) {
-//                         $registration = Registration::loadByIds($person->Id, $current_larp->Id);
                         $registration = $person->getRegistration($current_larp);
                         if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
                             echo "<tr><td>Ansvarig vuxen</td><td>";
@@ -128,33 +124,7 @@ include_once '../includes/error_handling.php';
                     }
                     echo "</table>";
     		        
-                    if ($registration->SpotAtLARP==1) {
-                        echo "<p><a href='telegram_suggestion.php'><b>Skapa ett telegram</b></i></a>\n";
-
-                        $telegram_array = $current_user->getTelegramsAtLarp($current_larp);
-                        if(isset($telegram_array) && count($telegram_array) > 0) {
-                            echo "<br><b>Telegram av $person->Name:</b><br>\n";
-                            echo "<table id='telegrams' class='data'>";
-                            echo "<tr><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th>";
-                            echo "<th>Meddelande</th><th>Ok</th><th></th><th></th></tr>\n";
-                            foreach ($telegram_array as $telegram) {
-                                echo "<tr>\n";
-                                echo "<td>" . $telegram->Deliverytime . "</td>\n";
-                                echo "<td>" . $telegram->Sender . "</td>\n";
-                                echo "<td>" . $telegram->SenderCity . "</td>\n";
-                                echo "<td>" . $telegram->Reciever . "</td>\n";
-                                echo "<td>" . $telegram->RecieverCity . "</td>\n";
-                                echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
-                                echo "<td>" . showStatusIcon($telegram->Approved) . "</td>\n";
-    
-                                if (!$telegram->Approved) {
-                                    echo "<td>" . "<a href='telegram_suggestion.php?operation=update&id=" . $telegram->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                                }
-                                echo "</tr>\n";
-                            }
-                            echo "</table></p>";
-                        }
-                    }
+                    if ($registration->SpotAtLARP==1) $someOneHasSpotOnLarp = true;
                     
                     //Grupper
     		        if (isset($groups) && count($groups) > 0) {
@@ -234,11 +204,7 @@ include_once '../includes/error_handling.php';
     		        else {
     		            echo "<br><b>Har ännu ingen karaktär</b>&nbsp;&nbsp;<a href='role_form.php'>".showStatusIcon(false)."</a><br>\n";
     		        }
-        		        
-
-
-    		        
-    		        
+        		          
     		        
     		        //NPC'er
     		        $npcs = NPC::getReleasedNPCsForPerson($person, $current_larp);
@@ -266,5 +232,35 @@ include_once '../includes/error_handling.php';
     		?>
     		</div>
 		</div>
+		<?php if ($someOneHasSpotOnLarp) {
+		        echo "</div><div class='content'>\n";
+		        echo "<h2>Telegram</h2>\n";
+		        echo "<div>\n";
+		        $telegram_array = $current_user->getTelegramsAtLarp($current_larp);
+		        if(isset($telegram_array) && count($telegram_array) > 0) {
+		            echo "<br><b>Telegram av $current_user->Name:</b><br>\n";
+		            echo "<table id='telegrams' align='left'>";
+		            echo "<tr align='left'><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th>";
+		            echo "<th>Meddelande</th><th>Ok</th><th></th><th></th></tr>\n";
+		            foreach ($telegram_array as $telegram) {
+		                echo "<tr>\n";
+		                echo "<td>" . $telegram->Deliverytime . "</td>\n";
+		                echo "<td>" . $telegram->Sender . "</td>\n";
+		                echo "<td>" . $telegram->SenderCity . "</td>\n";
+		                echo "<td>" . $telegram->Reciever . "</td>\n";
+		                echo "<td>" . $telegram->RecieverCity . "</td>\n";
+		                echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
+		                echo "<td>" . showStatusIcon($telegram->Approved) . "</td>\n";
+		                
+		                if (!$telegram->Approved) {
+		                    echo "<td>" . "<a href='telegram_suggestion.php?operation=update&id=" . $telegram->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+		                }
+		                echo "</tr>\n";
+		            }
+		            echo "</table></p>\n";
+		            echo "<p><a href='telegram_suggestion.php'><b>Skapa ett telegram</b></i></a>\n";
+		            echo "</div></div>";
+		        }
+		    } ?>
 	</body>
 </html>
