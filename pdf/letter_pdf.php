@@ -24,9 +24,9 @@ class Letter_PDF extends FPDF {
 		$this->Cell(80,10,utf8_decode($greeting),0,1);
 		$this->SetXY($left, 72);
 		$this->MultiCell(0,8,utf8_decode($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
-		$this->SetXY(70, 140);
+		$this->SetXY(140, $this->GetY()+30);
 		$this->Cell(80,10,utf8_decode($endingPhrase),0,1);
-		$this->SetXY(70, 150);
+		$this->SetX(140);
 		$this->Cell(80,10,utf8_decode($signature),0,1);
     }
     
