@@ -99,7 +99,7 @@ class Letter extends BaseModel{
         $connection = $this->connect();
         $stmt =  $connection->prepare("INSERT INTO regsys_letter (WhenWhere, Greeting, Signature, Message, Font, OrganizerNotes, Approved, UserId, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->Signature, $this->Reciever, $this->RecieverCity, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->LARPid))) {
+        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->LARPid))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

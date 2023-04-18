@@ -56,7 +56,7 @@ include 'navigation_subpage.php';
                 echo "<td>" . str_replace("\n", "<br>", $letter->OrganizerNotes) . "</td>\n";
                 
                 echo "<td>" . "<a href='letter_form.php?operation=update&id=" . $letter->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='show_letter.php?id=" . $letter->Id . "'><i class='fa-solid fa-file-pdf'></i></td>\n";
+                echo "<td>" . "<a href='logic/show_letter.php?id=" . $letter->Id . "' target='_blank'><i class='fa-solid fa-file-pdf'></i></td>\n";
                 echo "<td>" . "<a href='letter_admin.php?operation=delete&id=" . $letter->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }
