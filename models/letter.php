@@ -7,6 +7,7 @@ class Letter extends BaseModel{
     public  $WhenWhere;
     public  $Greeting;
     public  $Message;
+    public  $EndingPhrase;
     public  $Signature;
     public  $OrganizerNotes;
     public  $Approved = 1;
@@ -28,6 +29,7 @@ class Letter extends BaseModel{
         if (isset($arr['WhenWhere'])) $this->WhenWhere = $arr['WhenWhere'];
         if (isset($arr['Greeting'])) $this->Greeting = $arr['Greeting'];
         if (isset($arr['Message'])) $this->Message = $arr['Message'];
+        if (isset($arr['EndingPhrase'])) $this->EndingPhrase = $arr['EndingPhrase'];
         if (isset($arr['Signature'])) $this->Signature = $arr['Signature'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['Approved'])) $this->Approved = $arr['Approved'];
@@ -83,9 +85,9 @@ class Letter extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_letter SET WhenWhere=?, Greeting=?, Signature=?, Message=?, Font=?, OrganizerNotes=?, Approved=?, UserId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_letter SET WhenWhere=?, Greeting=?, EndingPhrase=?, Signature=?, Message=?, Font=?, OrganizerNotes=?, Approved=?, UserId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->Id))) {
+        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -97,9 +99,9 @@ class Letter extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_letter (WhenWhere, Greeting, Signature, Message, Font, OrganizerNotes, Approved, UserId, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_letter (WhenWhere, Greeting, EndingPhrase, Signature, Message, Font, OrganizerNotes, Approved, UserId, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->LARPid))) {
+        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->LARPid))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

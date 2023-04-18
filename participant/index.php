@@ -269,12 +269,13 @@ $someOneHasSpotOnLarp = false;
 		            echo "<b>Brev av $current_user->Name:</b><br>\n";
 		            echo "<table class='data' id='letters' align='left'>";
 		            echo "<tr align='left'><th>Ort och datum</th><th>Hälsningsfras</th>";
-		            echo "<th>Meddelande</th><th>Underskrift</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
+		            echo "<th>Meddelande</th><th>Hälsning</th><th>Underskrift</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
 		            foreach ($letter_array as $letter) {
 		                echo "<tr>\n";
 		                echo "<td style='font-weight:normal'>$letter->WhenWhere</td>\n";
 		                echo "<td>$letter->Greeting</td>\n";
 		                echo "<td>" . str_replace("\n", "<br>", $letter->Message) . "</td>\n";
+		                echo "<td>$letter->EndingPhrase</td>\n";
 		                echo "<td>$letter->Signature</td>\n";
 		                echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
 		                echo "<td align='center'>" . "<a href='letter_suggestion.php?operation=update&id=" . $letter->Id . "'><i class='fa-solid fa-pen'></i></td>\n";

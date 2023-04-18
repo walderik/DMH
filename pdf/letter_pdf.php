@@ -10,7 +10,7 @@ require $root . '/includes/init.php';
 class Letter_PDF extends FPDF {
     
     
-    function SetText(string $whenwhere, string $greeting, string $signature, string $message, string $font) {
+    function SetText(string $whenwhere, string $greeting, string $endingPhrase, string $signature, string $message, string $font) {
         $this->SetFont($font,'',14);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
 		# För mer fonter använder du http://www.fpdf.org/makefont/
 		$left = 21;
@@ -25,14 +25,17 @@ class Letter_PDF extends FPDF {
 		$this->SetXY($left, 72);
 		$this->MultiCell(0,8,utf8_decode($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
 		$this->SetXY(70, 140);
-		$this->Cell(80,10,utf8_decode($signature),0,1);}
+		$this->Cell(80,10,utf8_decode($endingPhrase),0,1);
+		$this->SetXY(70, 150);
+		$this->Cell(80,10,utf8_decode($signature),0,1);
+    }
     
     function nytt_brev(Letter $letter)
     {
         $this->AddFont($letter->Font,'');
         $this->AddPage();
 
-        $this->SetText($letter->WhenWhere, $letter->Greeting, $letter->Signature, $letter->Message, $letter->Font);
+        $this->SetText($letter->WhenWhere, $letter->Greeting, $letter->EndingPhrase, $letter->Signature, $letter->Message, $letter->Font);
 	}
 }
 

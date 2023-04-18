@@ -71,6 +71,12 @@ include 'navigation_subpage.php';
 			</tr>
 			<tr>
 
+				<td><label for="EndingPhrase">Hälsning</label></td>
+				<td><input type="text" id="EndingPhrase" name="EndingPhrase"
+					 value="<?php echo $letter->EndingPhrase; ?>" size="50" maxlength="50" required></td>
+			</tr>
+			<tr>
+
 				<td><label for="Signature">Underskrift</label></td>
 				<td><input type="text" id="Signature" name="Signature"
 					 value="<?php echo $letter->Signature; ?>" size="50" maxlength="50" required></td>

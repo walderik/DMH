@@ -41,7 +41,7 @@ include 'navigation_subpage.php';
         $letter_array = Letter::allBySelectedLARP($current_larp);
         if (!empty($letter_array)) {
             echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Id</td><th>Ort och datum</th><th>Hälsning</th><th>Meddelande</th><th>Underskrift</th>";
+            echo "<tr><th>Id</td><th>Ort och datum</th><th>Hälsning</th><th>Meddelande</th><th>Hälsning</th><th>Underskrift</th>";
             echo "<th>Font</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th></th><th></th><th></th></tr>\n";
             foreach ($letter_array as $letter) {
                 echo "<tr>\n";
@@ -49,6 +49,7 @@ include 'navigation_subpage.php';
                 echo "<td>" . $letter->WhenWhere . "</td>\n";
                 echo "<td>" . $letter->Greeting . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $letter->Message) . "</td>\n";
+                echo "<td>" . $letter->EndingPhrase . "</td>\n";
                 echo "<td>" . $letter->Signature . "</td>\n";
                 echo "<td>" . $letter->Font . "</td>\n";
                 echo "<td>" . $letter->getUser()->Name . "</td>\n";
