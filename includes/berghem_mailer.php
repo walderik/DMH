@@ -226,7 +226,19 @@ class BerghemMailer {
             $text .= "<br>\n";
         }
         
-        static::send($mail, $person->Name, $text, "Godkända karaktärer till ".$larp->Name);
+        $sheets = Array();
+        foreach($roles as $role) {
+            $pdf = new CharacterSheet_PDF();
+            $pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
+            $pdf->SetAuthor(utf8_decode($larp->Name));
+            $pdf->SetCreator('Omnes Mundos');
+            $pdf->AddFont('Helvetica','');
+            $pdf->SetSubject(utf8_decode($role->Name));
+            $pdf->new_character_sheet($role, $larp);
+            $sheets[$role->Name] = $pdf->Output('S');
+        }
+        
+        static::send($mail, $person->Name, $text, "Godkända karaktärer till ".$larp->Name, $sheets);
     }
     
     
