@@ -40,6 +40,7 @@ include 'navigation_subpage.php';
 
 	<div class="content">
 		<h1><?php echo $role->Name;?>&nbsp;<a href='edit_role.php?id=<?php echo $role->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
+		<div>
 		<table>
 			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $role->getPerson()->Name; ?></a></td></tr>
 		<?php if (isset($group)) {?>
@@ -65,7 +66,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo $role->getPlaceOfResidence()->Name; ?></td></tr>
 
 		</table>		
-
+		</div>
 		
 		<h2>Intrig</h2>
 		<form action="logic/edit_intrigue_save.php" method="post">
@@ -87,10 +88,34 @@ include 'navigation_subpage.php';
 		<input type="submit" value="Spara">
 
 			</form>
-		<h2>Historik</h2>
 		<?php 
-		//TODO visa historik
+		$previous_larps = $role->getPreviousLarps();
+		if (isset($previous_larps) && count($previous_larps) > 0) {
+		    
+		    echo "<h2>Historik</h2>";
+		    foreach ($previous_larps as $prevoius_larp) {
+		        $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
+		        echo "<div class='border'>";
+		        echo "<h3>$prevoius_larp->Name</h3>";
+		        echo "<strong>Intrig</strong><br>";
+		        echo nl2br($previous_larp_role->Intrigue);
+		        echo "<br><strong>Vad hände för $role->Name?</strong><br>";
+		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
+		            echo $previous_larp_role->WhatHappened;
+		            else echo "Inget rapporterat";
+	            echo "<br><strong>Vad hände för andra?</strong><br>";
+	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
+	                echo $previous_larp_role->WhatHappendToOthers;
+	                else echo "Inget rapporterat";
+	            echo "</div>";
+		                
+		    }
+		}
+			    
+			
+			
 		?>
+		
 
 		
 

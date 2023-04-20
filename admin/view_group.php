@@ -33,6 +33,7 @@ include 'navigation_subpage.php';
 		<h1><?php echo $current_group->Name;?>&nbsp;
 		<?php if ($current_group->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
 		<a href='edit_group.php?id=<?php echo $current_group->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
+		<div>
 		<table>
 			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $current_group->getPerson()->Name;?></a></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
@@ -51,7 +52,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Eldplats</td><td><?php echo ja_nej($larp_group->NeedFireplace);?></td></tr>
 			<tr><td valign="top" class="header">Död/Ej i spel</td><td><?php echo ja_nej($current_group->IsDead);?></td></tr>
 		</table>		
-		
+		</div>
 		
 		<h2>Anmälda medlemmar</h2>
 		<?php 
@@ -89,9 +90,13 @@ include 'navigation_subpage.php';
 		}
 		?>
 		<h2>Intrig</h2>
+		<div>
 		<?php echo $larp_group->Intrigue; ?>
+		</div>
 		<h2>Anteckningar (visas inte för deltagarna)</h2>
+		<div>
 		<?php echo $current_group->OrganizerNotes; ?>
+		</div>
 		
 
 	</div>

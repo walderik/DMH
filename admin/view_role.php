@@ -49,7 +49,7 @@ include 'navigation_subpage.php';
                   
                 ?>
             <form action="logic/toggle_user_may_edit_role.php" method="post"><input type="hidden" id="roleId" name="roleId" value="<?php echo $role->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
-		
+		<div>
 		<table>
 			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $role->getPerson()->Name; ?></a></td>
 		<?php 
@@ -87,16 +87,42 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Död</td><td><?php echo ja_nej($role->IsDead);?></td></tr>
 
 		</table>		
-
+		</div>
 		
 		<h2>Intrig</h2>
+		<div>
 		<?php    echo $larp_role->Intrigue; ?>
-
+		</div>
 		<h2>Anteckningar (visas inte för deltagaren)</h2>
+		<div>
 		<?php    echo $role->OrganizerNotes; ?>
-		<h2>Historik</h2>
+		</div>
 		<?php 
-		//TODO visa historik
+		$previous_larps = $role->getPreviousLarps();
+		if (isset($previous_larps) && count($previous_larps) > 0) {
+		    
+		    echo "<h2>Historik</h2>";
+		    foreach ($previous_larps as $prevoius_larp) {
+		        $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
+		        echo "<div class='border'>";
+		        echo "<h3>$prevoius_larp->Name</h3>";
+		        echo "<strong>Intrig</strong><br>";
+		        echo nl2br($previous_larp_role->Intrigue);
+		        echo "<br><strong>Vad hände för $role->Name?</strong><br>";
+		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
+		            echo $previous_larp_role->WhatHappened;
+		            else echo "Inget rapporterat";
+	            echo "<br><strong>Vad hände för andra?</strong><br>";
+	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
+	                echo $previous_larp_role->WhatHappendToOthers;
+	                else echo "Inget rapporterat";
+	            echo "</div>";
+		                
+		    }
+		}
+			    
+			
+			
 		?>
 		
 

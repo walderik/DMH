@@ -28,6 +28,7 @@ include 'navigation_subpage.php';
 
 	<div class="content">
 		<h1><?php echo $person->Name;?>&nbsp;<a href='edit_person.php?id=<?php echo $person->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
+		<div>
 		<table>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $person->SocialSecurityNumber;?></td></tr>
 			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email." ".contactEmailIcon($person->Name,$person->Email);?></td></tr>
@@ -82,9 +83,10 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Återbetalning</td><td><?php echo $registration->ToBeRefunded;?></td></tr>
 			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><?php echo $registration->RefundDate;?></td></tr>
 			<?php  }?>
-		</table>		
+		</table>	
+		</div>	
 		<?php 
-    		        echo "<br>\n";
+    		        echo "<div>\n";
     		        echo "<strong>Karaktärer:</strong><br>\n";
     		        $roles = $person->getRolesAtLarp($current_larp);
     		        foreach($roles as $role) {
@@ -101,7 +103,7 @@ include 'navigation_subpage.php';
     		            echo "&nbsp;<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		            echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
 		            
-    		            echo "<br>\n";
+    		            echo "</div>\n";
     		            
     		        }
 
