@@ -63,9 +63,9 @@ class BerghemMailer {
             foreach ($attachments as $name => $attachment) {
                 if (is_null($name) || is_numeric($name)) {
                     if (is_null($current_larp)) {
-                        $name = "Berghemsvänner";
+                        $name = utf8_decode("Berghemsvänner");
                     } else {
-                        $name = $current_larp->Name;
+                        $name = utf8_decode($current_larp->Name);
                     }
                 }
                 if (!str_ends_with($name,'.pdf')) {
