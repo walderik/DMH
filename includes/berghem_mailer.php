@@ -59,6 +59,11 @@ class BerghemMailer {
         // $mail->addAttachment('images/phpmailer_mini.png');
         //send the message, check for errors
         
+//         foreach ($arr as $key => $value) {
+//             // $arr[3] will be updated with each value from $arr...
+//             echo "{$key} => {$value} ";
+//             print_r($arr);
+//         }
         if (!is_null($attachments) && !empty($attachments)) {
             foreach ($attachments as $name => $attachment) {
                 if (is_null($name) || is_numeric($name)) {
@@ -249,7 +254,7 @@ class BerghemMailer {
             $pdf->AddFont('Helvetica','');
             $pdf->SetSubject(utf8_decode($role->Name));
             $pdf->new_character_sheet($role, $larp);
-            $sheets[] = $pdf->Output('S');
+            $sheets[$role->Name] = $pdf->Output('S');
         }
         
         static::send($mail, $person->Name, $text, "Plats på ".$larp->Name, $sheets);        
