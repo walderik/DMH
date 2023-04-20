@@ -90,6 +90,8 @@ include 'navigation_subpage.php';
 		?>
 		<h2>Intrig</h2>
 		<?php echo $larp_group->Intrigue; ?>
+		<h2>Anteckningar (visas inte för deltagarna)</h2>
+		<?php echo $current_group->OrganizerNotes; ?>
 		
 
 	</div>

@@ -92,6 +92,12 @@ include 'navigation_subpage.php';
 		<h2>Intrig</h2>
 		<?php    echo $larp_role->Intrigue; ?>
 
+		<h2>Anteckningar (visas inte för deltagaren)</h2>
+		<?php    echo $role->OrganizerNotes; ?>
+		<h2>Historik</h2>
+		<?php 
+		//TODO visa historik
+		?>
 		
 
 	</div>

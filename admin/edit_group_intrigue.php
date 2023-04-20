@@ -43,7 +43,7 @@ include 'navigation_subpage.php';
 		<table>
 			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $current_group->getPerson()->Name;?></a></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
-			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo $current_group->DescritpionForOthers;?></td></tr>
+			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo $current_group->DescriptionForOthers;?></td></tr>
 			<tr><td valign="top" class="header">Vänner</td><td><?php echo $current_group->Friends;?></td></tr>
 			<tr><td valign="top" class="header">Fiender</td><td><?php echo $current_group->Enemies;?></td></tr>
 			<tr><td valign="top" class="header">Rikedom</td><td><?php echo $current_group->getWealth()->Name; ?></td></tr>
@@ -95,11 +95,22 @@ include 'navigation_subpage.php';
 		<form action="logic/edit_group_intrigue_save.php" method="post">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $current_group->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-		<textarea id="Intrigue" name="Intrigue" rows="20" cols="150" maxlength="60000"><?php    echo $larp_group->Intrigue; ?></textarea>
+		<textarea id="Intrigue" name="Intrigue" rows="20" cols="150" maxlength="60000"><?php    echo $larp_group->Intrigue; ?></textarea><br>
 		
 		<input type="submit" value="Spara">
 
 			</form>
+
+		<h2>Anteckningar (visas inte för deltagarna)</h2>
+		<form action="logic/edit_group_intrigue_save.php" method="post">
+    		<input type="hidden" id="Id" name="Id" value="<?php echo $current_group->Id; ?>">
+    		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="20" cols="150" maxlength="60000"><?php    echo $current_group->OrganizerNotes; ?></textarea><br>
+		
+		<input type="submit" value="Spara">
+
+			</form>
+
 
 
 	</div>
