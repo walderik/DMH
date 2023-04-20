@@ -27,6 +27,7 @@ if (isset($role->GroupId)) {
     $group=Group::loadById($role->GroupId);
 }
 
+$person = $role->getPerson();
 
 include 'navigation_subpage.php';
 ?>
@@ -38,6 +39,15 @@ include 'navigation_subpage.php';
 		
 		<a href='edit_role.php?id=<?php echo $role->Id;?>'>
 		<i class='fa-solid fa-pen'></i></a></h1>
+				<?php 
+		if ($person->isApprovedCharacters($current_larp)) {
+		  echo "<strong>Godkänd</strong>";
+		}
+		else {
+		    echo "<strong>Ej godkänd</strong>";
+		}
+		?>
+		
             <?php if ($larp_role->UserMayEdit  == 1) {
                 echo "Deltagaren får ändra karaktären " . showStatusIcon(false);
                 $editButton = "Ta bort tillåtelsen att ändra";
@@ -51,7 +61,7 @@ include 'navigation_subpage.php';
             <form action="logic/toggle_user_may_edit_role.php" method="post"><input type="hidden" id="roleId" name="roleId" value="<?php echo $role->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
 		<div>
 		<table>
-			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $role->getPerson()->Name; ?></a></td>
+			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $person->Name; ?></a></td>
 		<?php 
 		if ($role->hasImage()) {
 		    

@@ -16,8 +16,9 @@
     		    echo "Inga anmälda karaktärer";
     		} else {
     		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>&nbsp; &nbsp; </th><th>Profession</th><th>Group</th><th colspan='2'>Intrig</th></tr>\n";
+    		    echo "<tr><th>Namn</th><th>&nbsp; &nbsp; </th><th>Godkänd</th><th>Yrke</th><th>Group</th><th colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
+    		        $person = $role->getPerson();
     		        echo "<tr>\n";
     		        echo "<td>" . $role->Name;
     		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
@@ -27,14 +28,15 @@
     		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>\n";
     		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
     		        echo "</td>\n";
+    		        echo "<td align='center'>".showStatusIcon($person->isApprovedCharacters($current_larp))."</td>\n";
     		        echo "<td>$role->Profession</td>\n";
-    		        $group = $role->getGroup();
+   		        $group = $role->getGroup();
     		        if (is_null($group)) {
     		            echo "<td>&nbsp;</td>\n";
     		        } else {
     		            echo "<td>$group->Name</td>\n";
     		        }
-    		        if ($role->getPerson()->isMysLajvare()) {
+    		        if ($person->isMysLajvare()) {
     		            echo "<td colspan=2>N/A</td>\n";
     		        } else {
         		        echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";

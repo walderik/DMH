@@ -31,6 +31,7 @@ if (isset($role->GroupId)) {
     $group=Group::loadById($role->GroupId);
 }
 
+$person = $role->getPerson();
 
 include 'navigation.php';
 ?>
@@ -39,7 +40,7 @@ include 'navigation.php';
 		<h1><?php echo $role->Name;?></h1>
 		<div>
 		<table>
-			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $role->getPerson()->Name; ?></td>
+			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $person->Name; ?></td>
 		<?php 
 		if ($role->hasImage()) {
 		    
