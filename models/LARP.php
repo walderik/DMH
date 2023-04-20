@@ -146,5 +146,15 @@ class LARP extends BaseModel{
             "ORDER BY StartDate DESC";
         return static::getOneObjectQuery($sql, array($role->Id));
     }
+    
+    public static function getPreviousLarps($roleId) {
+        global $current_larp;
+        if (is_null($roleId)) return Array();
+
+        $sql = "SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_larp_role WHERE RoleId = ? AND LarpId != ?) ORDER BY StartDate DESC";
+        return static::getSeveralObjectsqQuery($sql, array($roleId, $current_larp->Id));
+    }
+    
+    
         
 }

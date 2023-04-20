@@ -75,6 +75,7 @@ include 'navigation.php';
 
 	<div class="content">
 		<h1><?php echo $current_group->Name;?></h1>
+		<div>
 		<table>
 			<tr><td valign="top" class="header">Gruppansvarig</td><td><?php echo Person::loadById($current_group->PersonId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
@@ -101,7 +102,7 @@ include 'navigation.php';
 		<?php 
 
 		
-		echo "<div class='container' style ='background-color: #f3f4f7;box-shadow: none; margin: 0px; padding: 0px;'>\n";
+		echo "<div class='container' style ='box-shadow: none; margin: 0px; padding: 0px;'>\n";
 		if ((empty($group_members) or count($group_members)==0)) {
 		    echo "Inga anmälda i gruppen än.";
 		}
@@ -117,9 +118,10 @@ include 'navigation.php';
 		
 		
 		?>
-		    
+		</div>    
 
 		<h2>Intrig</h2>
+		<div>
 			<?php if ($current_larp->DisplayIntrigues == 1) {
 			    echo $larp_group->Intrigue;    
 			}
@@ -127,7 +129,7 @@ include 'navigation.php';
 			    echo "Intrigerna är inte klara än.";
 			}
 			?>
-		
+		</div>
 
 	</div>
 

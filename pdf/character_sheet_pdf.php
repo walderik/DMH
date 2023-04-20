@@ -172,22 +172,31 @@ class CharacterSheet_PDF extends FPDF {
         
         $this->beskrivning();
         
-        $previous_larp_roles = $this->role->getPreviousLarpRoles();
-        if (isset($previous_larp_roles) && count($previous_larp_roles) > 0) {
-            foreach ($previous_larp_roles as $prevoius_larp_role) {
-                $prevoius_larp = LARP::loadById($prevoius_larp_role->LARPId);
+        
+
+        $previous_larps = $this->role->getPreviousLarps();
+        if (isset($previous_larps) && count($previous_larps) > 0) {
+            
+            foreach ($previous_larps as $prevoius_larp) {
+                $previous_larp_role = LARP_Role::loadByIds($this->role->Id, $prevoius_larp->Id);
                 $this->AddPage();
                 $this->title($left, "Historik $prevoius_larp->Name");
+
                 $this->names($left, $left2);
-                echo "<strong>Vad hände för $this->role->Name?</strong><br>";
+                
+                $text = (isset($prevoius_larp_role->Intrigue) && $prevoius_larp_role->Intrigue != "") ? $prevoius_larp_role->Intrigue : "Inget att rapportera";
+                $this->set_rest_of_page("Intrig", $text);
+                $y = $this->GetX();
+                
+                
+                //echo "<strong>Vad hände för $this->role->Name?</strong><br>";
                 $text = (isset($prevoius_larp_role->WhatHappened) && $prevoius_larp_role->WhatHappened != "") ? $prevoius_larp_role->WhatHappened : "Inget att rapportera";
-                $this->set_rest_of_page("Vad hände för $this->role->Name?", $text);
+                $this->set_rest_of_page("Vad hände för ".$this->role->Name."?", $text);
                 $y = $this->GetX();
                 $this->bar();
                 $text = (isset($prevoius_larp_role->WhatHappendToOthers) && $prevoius_larp_role->WhatHappendToOthers != "") ? $prevoius_larp_role->WhatHappendToOthers : "Inget att rapportera";
-                $this->set_rest_of_page("Vad hände för andra?", $text);                        
+                $this->set_rest_of_page("Vad hände för andra?", $text);
             }
-            
         }
 	}
 	

@@ -119,16 +119,6 @@ class LARP_Role extends BaseModel{
     }
 
     
-    public static function getPreviousLarpRoles($roleId) {
-        global $current_larp;
-        if (is_null($roleId)) return Array();
-        //Koden förutsätter att lajven skapas i den ordning de spelas. 
-        //Om det inte stämmer kommer man att behöva ha en mer avancerad kod
-        //TODO sortera lajven i rätt ordning efter startdatum
-        $sql = "SELECT * FROM regsys_larp_role WHERE RoleId = ? AND LarpId < ? ORDER BY LarpId DESC";
-        return static::getSeveralObjectsqQuery($sql, array($roleId, $current_larp->Id));
-    }
-    
     
    
 }

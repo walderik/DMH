@@ -37,6 +37,7 @@ include 'navigation.php';
 
 	<div class="content">
 		<h1><?php echo $role->Name;?></h1>
+		<div>
 		<table>
 			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $role->getPerson()->Name; ?></td>
 		<?php 
@@ -72,9 +73,10 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo $role->getPlaceOfResidence()->Name; ?></td></tr>
 
 		</table>		
-
+		</div>
 		
 		<h2>Intrig</h2>
+		<div>
 			<?php if ($current_larp->DisplayIntrigues == 1) {
 			    echo $larp_role->Intrigue;    
 			}
@@ -82,27 +84,33 @@ include 'navigation.php';
 			    echo "Intrigerna är inte klara än.";
 			}
 			?>
-			<?php 
-			
-	    $previous_larp_roles = $role->getPreviousLarpRoles();
-		if (isset($previous_larp_roles) && count($previous_larp_roles) > 0) {
+		</div>
+		<?php 
+		$previous_larps = $role->getPreviousLarps();
+		if (isset($previous_larps) && count($previous_larps) > 0) {
+		    
 		    echo "<h2>Historik</h2>";
-            foreach ($previous_larp_roles as $prevoius_larp_role) {
-                $prevoius_larp = LARP::loadById($prevoius_larp_role->LARPId);
-                echo "<h3>$prevoius_larp->Name</h3>";
-                echo "<strong>Vad hände för $role->Name?</strong><br>";
-                if (isset($prevoius_larp_role->WhatHappened) && $prevoius_larp_role->WhatHappened != "")
-                    echo $prevoius_larp_role->WhatHappened;
-                    else echo "Inget rapporterat";
-                echo "<br><br>";
-                echo "<strong>Vad hände för andra?</strong><br>";
-                if (isset($prevoius_larp_role->WhatHappendToOthers) && $prevoius_larp_role->WhatHappendToOthers != "")
-                    echo $prevoius_larp_role->WhatHappendToOthers;
-                else echo "Inget rapporterat";
-    
-            }
-
+		    foreach ($previous_larps as $prevoius_larp) {
+		        $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
+		        echo "<div class='border'>";
+		        echo "<h3>$prevoius_larp->Name</h3>";
+		        echo "<strong>Intrig</strong><br>";
+		        echo nl2br($previous_larp_role->Intrigue);
+		        echo "<br><strong>Vad hände för $role->Name?</strong><br>";
+		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
+		            echo $previous_larp_role->WhatHappened;
+		            else echo "Inget rapporterat";
+	            echo "<br><strong>Vad hände för andra?</strong><br>";
+	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
+	                echo $previous_larp_role->WhatHappendToOthers;
+	                else echo "Inget rapporterat";
+	            echo "</div>";
+		                
+		    }
 		}
+			    
+			
+			
 		?>
 	</div>
 

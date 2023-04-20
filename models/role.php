@@ -184,9 +184,10 @@ class Role extends BaseModel{
     }
     
     
-    public function getPreviousLarpRoles() {
-        return LARP_Role::getPreviousLarpRoles($this->Id);
+    public function getPreviousLarps() {
+        return LARP::getPreviousLarps($this->Id);
     }
+    
     
     public static function getRolesForPerson($personId) {
         if (is_null($personId)) return Array();

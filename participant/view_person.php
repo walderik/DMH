@@ -32,6 +32,7 @@ include 'navigation.php';
 
 	<div class="content">
 		<h1><?php echo $current_person->Name;?></h1>
+		<div>
 		<table>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $current_person->SocialSecurityNumber;?></td></tr>
 			<tr><td valign="top" class="header">Email</td><td><?php echo $current_person->Email;?></td></tr>
@@ -85,7 +86,7 @@ include 'navigation.php';
 			<?php  }?>
 		</table>		
 
-
+		</div>
 	</div>
 
 
