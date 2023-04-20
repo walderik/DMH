@@ -188,8 +188,7 @@ class CharacterSheet_PDF extends FPDF {
                 $this->set_rest_of_page("Intrig", $text);
                 $y = $this->GetX();
                 
-                
-                //echo "<strong>Vad hände för $this->role->Name?</strong><br>";
+               
                 $text = (isset($prevoius_larp_role->WhatHappened) && $prevoius_larp_role->WhatHappened != "") ? $prevoius_larp_role->WhatHappened : "Inget att rapportera";
                 $this->set_rest_of_page("Vad hände för ".$this->role->Name."?", $text);
                 $y = $this->GetX();
