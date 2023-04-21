@@ -68,6 +68,17 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Beskrivning för andra</td>
 			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="400"><?php echo $role->DescriptionForOthers; ?></textarea></td></tr>
 
+
+			<tr><td valign="top" class="header">Myslajvare&nbsp;<font style="color:red">*</font></td>
+			<td>
+				<input type="radio" id="NoIntrigue_yes" name="NoIntrigue" value="1" <?php if ($role->isMysLajvare()) echo 'checked="checked"'?>> 
+    			<label for="NoIntrigue_yes">Ja</label><br> 
+    			<input type="radio" id="NoIntrigue_no" name="NoIntrigue" value="0" <?php if (!$role->isMysLajvare()) echo 'checked="checked"'?>> 
+    			<label for="NoIntrigue_no">Nej</label>
+			</td></tr>
+
+
+
 			<tr><td valign="top" class="header">Tidigare lajv</td>
 			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo $role->PreviousLarps; ?></textarea></td></tr>
 

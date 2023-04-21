@@ -123,7 +123,7 @@ class CharacterSheet_PDF extends FPDF {
         
         $this->role = $role_in;
         $this->person = $this->role->getPerson();
-        $this->isMyslajvare = $this->person->isMysLajvare();
+        $this->isMyslajvare = $this->role->isMysLajvare();
         $this->larp = $larp_in;
         $this->all = $all_in;
         
@@ -239,7 +239,7 @@ class CharacterSheet_PDF extends FPDF {
 	protected function rikedom($left) {
 	    if (!Wealth::isInUse($this->larp)) return false;
 	    
-	    if ($this->isMyslajvare) $this->cross_over();
+	    if ($this->isMyslajvare) return false;
 	    
 	    $this->set_header($left, 'Rikedom');
 	    $text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
@@ -250,48 +250,52 @@ class CharacterSheet_PDF extends FPDF {
 	protected function intrigtyper($left) {
 	    if (!IntrigueType::isInUse($this->larp)) return false;
 	    
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Intrigtyper');
-	    if ($this->isMyslajvare) return true;
+
 	    $text = commaStringFromArrayObject($this->role->getIntrigueTypes());
 	    $this->set_text($left, $text);
 	    return true;
 	}
 	
 	protected function intrigsuggestions($left) {  
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Intrigförslag');
-	    if ($this->isMyslajvare) return true;
+
 	    $this->set_text($left, $this->role->IntrigueSuggestions);
 	    return true;
 	}
 	
 	protected function notOkIntrigues($left) {
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Inget spel på');
-	    if ($this->isMyslajvare) return true;
 	    $this->set_text($left, $this->role->NotAcceptableIntrigues);
 	    return true;
 	}
 	
 	protected function darkSecret($left) {
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Mörk hemlighet');
-	    if ($this->isMyslajvare) return true;
 	    $this->set_text($left, $this->role->DarkSecret);
 	    return true;
 	}
 	
 	protected function darkSecretSuggestion($left) {
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Spel på Mörk hemlighet');
-	    if ($this->isMyslajvare) return true;
 	    $this->set_text($left, $this->role->DarkSecretIntrigueIdeas);
 	    return true;
 	}
 	
 	protected function charactersWithRelations($left) {
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Viktigare personer');
 	    $this->set_text($left, $this->role->CharactersWithRelations);
 	    return true;
 	}
 	
 	protected function tidigareLajv($left){
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Tidigare lajv');
 	    $this->set_text($left, $this->role->PreviousLarps);
 	    return true;
@@ -300,7 +304,7 @@ class CharacterSheet_PDF extends FPDF {
 	
 	protected function lajvar_typ($left) {
 	    if (!LarperType::isInUse($this->larp)) return false;
-	    
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Lajvartyp');
 	    if (empty($this->person)) return true;
 	    $mertext = (empty(trim($this->person->TypeOfLarperComment))) ? '' : " (".trim($this->person->TypeOfLarperComment).")";
@@ -318,24 +322,28 @@ class CharacterSheet_PDF extends FPDF {
 	}
 	
 	protected function birth_place($left) {
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Född');
 	    $this->set_text($left, $this->role->Birthplace);
 	    return true;
 	}
 	
 	protected function bor($left) {
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Bor');
 	    $this->set_text($left, $this->role->getPlaceOfResidence()->Name);
 	    return true;
 	}
 	
 	protected function religion($left) {
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Religion');
 	    $this->set_text($left, $this->role->Religion);
 	    return true;
 	}
 	
 	protected function reason_for_being_in_here($left) {
+	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Orsak för att vistas här');
 	    $this->set_text($left, $this->role->ReasonForBeingInSlowRiver);
 	    return true;

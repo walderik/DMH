@@ -11,13 +11,8 @@ Visa på hus vilka som anmält sig som husägare på resp hus.
 
 Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anmäld till, men som inte har varit så ska man sättas till icke-godkänd
 
-Pdf för brev.
 
 byta user för en person (admin funktion)
-
-
-Senare:
-Historiken för rollen kan göras snyggare. man kanske vill se de intriger man fick också?
 
 Behöver man kunna byta spelare på en roll?
 

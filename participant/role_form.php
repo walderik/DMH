@@ -65,6 +65,63 @@ include 'navigation.php';
 
 ?>
 
+	<script>
+	
+	function setFieldState(isYes) {
+		var intrigueDivs = document.getElementsByClassName("intrigue");
+		var requiredFields = document.getElementsByClassName("requiredIntrigueField");
+		var wealths = document.getElementsByName("WealthId");
+		var placeofresidences = document.getElementsByName("PlaceOfResidenceId");
+        if (isYes) {
+    		for (var i = 0; i < intrigueDivs.length; i++) {
+        		intrigueDivs[i].style.display = "none";
+    		}
+    		for (var i = 0; i < requiredFields.length; i++) {
+        		requiredFields[i].required = false;        		
+    		}
+    		for (var i = 0; i < wealths.length; i++) {
+        		wealths[i].required = false;  
+        		//alert(wealths[i].name + " " + i);      		
+    		}
+    		for (var i = 0; i < placeofresidences.length; i++) {
+        		placeofresidences[i].required = false;        		
+    		}
+        } else {
+    		for (var i = 0; i < intrigueDivs.length; i++) {
+        		intrigueDivs[i].style.display = "block";
+    		}
+     		for (var i = 0; i < requiredFields.length; i++) {
+        		requiredFields[i].required = true;
+    		}
+     		for (var i = 0; i < wealths.length; i++) {
+        		wealths[i].required = true;        		
+    		}
+    		for (var i = 0; i < placeofresidences.length; i++) {
+        		placeofresidences[i].required = true;  
+    		}
+        }
+    }
+    
+    function handleRadioClick() {
+        if (document.getElementById("myslajvare_yes").checked) {
+            setFieldState(true);
+        } else if (document.getElementById("myslajvare_no").checked) {
+            setFieldState(false);
+        }
+    }
+	
+	<?php 
+	if($role->isMysLajvare()) {
+	    echo 'setFieldState(true);';
+	} else {
+	    echo 'setFieldState(false);';
+	}
+	?>
+
+	
+	</script>
+
+	
 	<div class="content">
 		<h1><?php default_value('action'); ?> karaktär</h1>
 		<form action="logic/role_form_save.php" method="post">
@@ -100,34 +157,7 @@ include 'navigation.php';
 				<input class="input_field" type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="30" maxlength="200" required>
 			</div>
 
-			<div class="question">
-				<label for="Birthplace">Var är karaktären född?</label>&nbsp;<font style="color:red">*</font><br>
-				<div class="explanation">Skriv land, delstat, stad</div>
-				<input class="input_field" type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="100" required>
-			</div>
-			
-			<div class="question">
-			<label for="PlaceOfResidence">Var bor karaktären?</label>&nbsp;<font style="color:red">*</font>
-			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om karaktären tillfälligt är i Slow River så vill vi veta var karaktären har sitt hem.<br>
-			   <?php PlaceOfResidence::helpBox(true); ?></div>
-			
-			
-            <?php
-            PlaceOfResidence::selectionDropdown(false, true, $role->PlaceOfResidenceId);
-            ?> 
 
-			</div>
-			
-			<div class="question">
-				<label for="CharactersWithRelations">Relationer med andra</label><br> 
-				<div class="explanation">Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för din karaktär och mycket kort hur vi kan ge spel på dessa karaktärer.</div>
-				<textarea class="input_field" id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100" maxlength="60000"><?php echo $role->CharactersWithRelations; ?></textarea>
-			</div>
-			
-			
-			
-			
-			
 			<div class="question">
 				<label for="Description">Beskrivning</label>&nbsp;<font style="color:red">*</font><br> 
 				<div class="explanation">Beskriv allt om din karaktär som arrangörerna behöver veta.<br>
@@ -170,15 +200,64 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
                 <?php selectionByArray('Group', Group::getRegistered($current_larp), false, false, $role->GroupId); ?>
             </div>
 				
-			<div class="question">
+							<div class="question">
+				<label for="NoIntrigue">Vill du vara myslajvare/statist?</label><br>
+       			<div class="explanation">Du vill bara sitta vid elden och dricka te och småprata om minnen från förr. 
+       			Du får inga intriger och är inte inblandad i någon annans intriger. Du får heller ingen handel.<br>
+       			Du är mest på lajvet för att njuta av stämningen och för att bidra till bra stämning.<br>
+       			Detta rekommenderas inte för nybörjare eller barn.
+</div>
+					
+					
+
+	<input type="radio" id="myslajvare_yes" name="NoIntrigue" value="1" onclick="handleRadioClick()" <?php if ($role->isMysLajvare()) echo 'checked="checked"'?>>
+	<label for="myslajvare_yes">Ja</label><br>
+	<input type="radio" id="myslajvare_no" name="NoIntrigue" value="0" onclick="handleRadioClick()"<?php if (!$role->isMysLajvare()) echo 'checked="checked"'?>>
+	<label for="myslajvare_no">Nej</label><br>
+
+								
+           </div>
+				
+				
+				
+			<div class="question intrigue">
+				<label for="Birthplace">Var är karaktären född?</label>&nbsp;<font style="color:red">*</font><br>
+				<div class="explanation">Skriv land, delstat, stad</div>
+				<input class="input_field requiredIntrigueField" type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="100" required>
+			</div>
+			
+			<div class="question intrigue">
+			<label for="PlaceOfResidence">Var bor karaktären?</label>&nbsp;<font style="color:red">*</font>
+			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om karaktären tillfälligt är i Slow River så vill vi veta var karaktären har sitt hem.<br>
+			   <?php PlaceOfResidence::helpBox(true); ?></div>
+			
+			
+            <?php
+            PlaceOfResidence::selectionDropdown(false, true, $role->PlaceOfResidenceId);
+            ?> 
+
+			</div>
+			
+			<div class="question intrigue">
+				<label for="CharactersWithRelations">Relationer med andra</label><br> 
+				<div class="explanation">Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för din karaktär och mycket kort hur vi kan ge spel på dessa karaktärer.</div>
+				<textarea class="input_field" id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100" maxlength="60000"><?php echo $role->CharactersWithRelations; ?></textarea>
+			</div>
+			
+			
+			
+			
+			
+				
+			<div class="question intrigue">
 				<label for="ReasonForBeingInSlowRiver">Varför befinner sig karaktären i Slow River?</label>&nbsp;<font style="color:red">*</font><br> 
 				<div class="explanation">Självklart har din karaktär en anledning att vara i just den här hålan. Om din karaktär bor här så finns det en anledning att bo kvar.    
 Är du besökande så lär det finnas en bra anledning att inte bara åka vidare efter en natts vila, utan stanna till ett par nätter.    
 Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</div>
-				<textarea class="input_field" id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea>
+				<textarea class="input_field requiredIntrigueField" id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea>
 			</div>
 				
-			<div class="question">
+			<div class="question intrigue">
 				<label for="PreviousLarps">Tidigare lajv</label><br> 
 				<div class="explanation">Död mans hand är ett kampanjlajv. Det innebär att allt din karaktär gör ett år och andra gör mot den ska påverka det här lajvet.    
 					Det är inte så farligt som det låter, utan är ett bra sätt att ge större djup i lajvet och göra din egen karaktär intressantare både för dig själv och andra.<br><br>
@@ -187,23 +266,25 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 				</div>
 				<textarea class="input_field" id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo $role->PreviousLarps; ?></textarea>
 			</div>
-			<div class="question">
+			<div class="question intrigue">
 				<label for="Religion">Religion</label><br>
 				<div class="explanation">Vissa religioner har bättre anseende än andra. Är du kristen, så ange inte bara det utan vilken typ av kristen du är. Katoliker har generellt sett fortfarande lite sämre anseende än andra kristna.</div>
 				<input class="input_field" type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="200">
 			</div>
-			<div class="question">
+
+			<div class="question intrigue">
 				<label for="WealthsId">Hur rik är karaktären?</label>&nbsp;<font style="color:red">*</font><br>
        			<div class="explanation">Om du anser att du har rikedom 3 eller högre förväntas du i regel ha någon form av affärer på gång. Det kan vara att sälja saker din gård producerat, leta guld eller nästan vad som helst som gör att man inte är fattig längre.   Det kommer att vara ett begränsat antal stenrika på lajvet och vi godkänner i regel inte nya. Undantag kan naturligtvis förekomma om det gynnar lajvet.   Däremot är Död Mans Hand ett kampanjlajv så det går att spela sig till att bli stenrik. Det går också att bli fattig om man är stenrik.<?php Wealth::helpBox(true); ?></div>
                 <?php Wealth::selectionDropdown(false,true, $role->WealthId); ?>
             </div>
-
-			<div class="question">
+				
+				
+			<div class="question intrigue">
 				<label for="IntrigueSuggestions">Intrigideer</label><br> 
 				<div class="explanation">Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar". </div>
 				<textarea class="input_field" id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea>
 			</div>
-			<div class="question">
+			<div class="question intrigue">
 				<label for="IntrigueTypeId">Intrigtyper</label><br> 
 				<div class="explanation">Vilken typ av intriger vill du ha?
 				<?php IntrigueType::helpBox(true); ?>
@@ -212,24 +293,24 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 				selectionByArray('IntrigueType' , IntrigueType::allActive(), true, false, $role->getSelectedIntrigueTypeIds());
 				?>
 			</div>
-			<div class="question">
+			<div class="question intrigue">
 				<label for="NotAcceptableIntrigues">Saker karaktären absolut inte vill spela på</label><br>
 				<div class="explantion">Är det något den här karaktären aldrig skulle göra? Vill du helst undvika farligt spel är det också bra att ange.</div>
 				<input class="input_field" type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="200">
 			</div>
 
 
-			<div class="question">
+			<div class="question intrigue">
 				<label for="DarkSecret">Mörk hemlighet</label>&nbsp;<font style="color:red">*</font><br> 
 				<div class="explanation">Alla har någonting de inte vill berätta så gärna för andra. Vad har din karaktär för mörk hemlighet?    
 Du måste ange en mörk hemlighet.    
 Det kan kännas svårt att göra karaktären sårbar på det här sättet, men försök. Det ger mer spännande spel.</div>
-				<textarea class="input_field" id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000" required><?php echo $role->DarkSecret; ?> </textarea>
+				<textarea class="input_field requiredIntrigueField" id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000" required><?php echo $role->DarkSecret; ?> </textarea>
 			</div>
-			<div class="question">
+			<div class="question intrigue">
 				<label for="DarkSecretIntrigueIdeas">Mörk hemlighet - intrig idéer</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Hur kan vi spela på din mörka hemlighet?</div>
-				<input class="input_field" type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="200" required>
+				<input class="input_field requiredIntrigueField" type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="200" required>
 			</div>
 
 
@@ -246,6 +327,23 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			<input type="submit" value="<?php default_value('action'); ?>">
 		</form>
 	</div>
+
+
+
+<script>
+
+	<?php 
+	if($role->isMysLajvare()) {
+	    echo 'setFieldState(true);';
+	} else {
+	    echo 'setFieldState(false);';
+	}
+	?>
+
+
+
+</script>
+
 
 </body>
 </html>

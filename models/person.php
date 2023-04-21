@@ -278,12 +278,6 @@ class Person extends BaseModel{
         return LarperType::loadById($this->LarperTypeId);
     }
     
-    public function isMysLajvare() {
-        $type = $this->getLarperType();
-        if (empty($type)) return false;
-        return ($type->Name == 'Myslajvare');
-    }
-    
     public function getUser() {
         return User::loadById($this->UserId);
     }
