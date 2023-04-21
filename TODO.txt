@@ -16,6 +16,10 @@ byta user för en person (admin funktion)
 
 Behöver man kunna byta spelare på en roll?
 
+Radbrytningar i mailen från kontaktformularet
+
+
+
 
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role
