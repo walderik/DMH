@@ -47,9 +47,6 @@ include 'navigation_subpage.php';
 		    }
 		    ?>
 
-			<tr><td valign="top" class="header">Typ av lajvare</td><td><?php echo LarperType::loadById($person->LarperTypeId)->Name;?></td></tr>
-			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td><td><?php echo $person->TypeOfLarperComment;?></td></tr>
-
 
 			<tr><td valign="top" class="header">Erfarenhet</td><td><?php echo Experience::loadById($person->ExperienceId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td><td><?php echo $person->NotAcceptableIntrigues;?></td></tr>
@@ -63,6 +60,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Husförvaltare</td><td><?php if (isset($person->HouseId)) { echo $person->getHouse()->Name; }?></td></tr>
 			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo $person->HousingComment;?></td></tr>
+			<tr><td valign="top" class="header">Hälsa</td><td><?php echo $person->HealthComment;?></td></tr>
 
 
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo nl2br($person->OtherInformation);?></td></tr>

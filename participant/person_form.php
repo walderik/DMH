@@ -108,26 +108,6 @@
 			<h2>Lajvrelaterat</h2>
 			
 			<div class="question">
-				<label for="LarperTypesId">Vilken typ av lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
-       			<div class="explanation">Tänk igenom ditt val noga. Det är det här som i första hand kommer 
-       			att avgöra hur mycket energi arrangörerna kommer lägga ner på dina intriger.     
-       			Är du ny på lajv? Vi rekommenderar då att du att du väljer ett alternativ som ger mycket intriger. 
-       			Erfarenhetsmässigt brukar man som ny lajvare ha mer nytta av mycket intriger än en 
-       			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.   
-       			<br><?php LarperType::helpBox(true); ?></div>
-                <?php LarperType::selectionDropdown(false, true, $person->LarperTypeId); ?>
-            </div>
-				<div class="question">
-				<div class="explanation">Exempel:<br>
-				                         Jag är passiv lajvare, men kan tänka mig aktiva intriger som rör X, Y och Z.<br>
-				                         Jag är karaktärslajvare och klarar mig utan intriger, men om ni har tankar om saker min karaktär kann vara involverad i som ger spel åt andra kan jag vara intresserad.<br>
-				                         Jag är aktiv lajvare, men vill helst undvika våldsamma intriger.<br>
-				                         Jag är action-lajvare och vill spela den sökta karaktären NN.<br>
-				                         Jag är action-lajvare och har inget emot en våldsam död.</div>
-					<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
-					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
-				</div>
-			<div class="question">
 				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
        			<div class="explanation"><?php Experience::helpBox(true); ?></div>
                 <?php Experience::selectionDropdown(false, true, $person->ExperienceId); ?>
@@ -165,13 +145,21 @@
 				<label for="HousingComment">Boendehänsyn</label><br>
 				<div class="explanation">Har du några speciella saker vi behöver ta hänsyn till när vi planerar boendet?<br>
 				Om du inte har något, skriv inget.</div>
-				<textarea class="input_field" id="HousingComment" name="HousingComment" rows="4" cols="100" maxlength="60000"><?php echo $person->HousingComment; ?></textarea>
+				<input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo $person->HousingComment; ?>" size="100" maxlength="200" >
 			</div>
 
-			
+			<div class="question">
+				<label for="HealthComment">Fysisk och mental hälsa</label><br>
+				<div class="explanation">Är det något som vore bra om våra sjukvårdare/trygghetsvärdar vet om dig för att lättare kunna göra ett bra jobb?<br>
+				Om du inte har något, skriv inget.</div>
+				<textarea class="input_field" id="HealthComment" name="HealthComment" rows="4" cols="100" maxlength="60000"><?php echo $person->HealthComment; ?></textarea>
+			</div>
+
+
+			<h2>Övrigt</h2>
 			<div class="question">
 				<label for="OtherInformation">Övrig information</label><br>
-				<div class="explanation">Är det något annat kring din off-person arrangörerna bör veta? Tex andra allergier eller sjukdomar, eller bra kunskaper tex sjukvårdare.<br><br>
+				<div class="explanation">Är det något annat kring din off-person arrangörerna bör veta? Tex bra kunskaper som sjukvårdare.<br><br>
 				Om du inte har något, skriv inget.</div>
 				<textarea class="input_field" id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $person->OtherInformation; ?></textarea>
 			

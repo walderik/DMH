@@ -307,8 +307,8 @@ class CharacterSheet_PDF extends FPDF {
 	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Lajvartyp');
 	    if (empty($this->person)) return true;
-	    $mertext = (empty(trim($this->person->TypeOfLarperComment))) ? '' : " (".trim($this->person->TypeOfLarperComment).")";
-	    $text = $this->person->getLarperType()->Name.$mertext;
+	    $mertext = (empty(trim($this->role->TypeOfLarperComment))) ? '' : " (".trim($this->role->TypeOfLarperComment).")";
+	    $text = $this->role->getLarperType()->Name.$mertext;
 	    $this->set_text($left, $text );
 	    return true;
 	}

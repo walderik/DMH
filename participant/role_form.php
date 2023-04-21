@@ -218,6 +218,26 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 								
            </div>
 				
+			<div class="question intrigue">
+				<label for="LarperTypesId">Vilken typ av lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
+       			<div class="explanation">Tänk igenom ditt val noga. Det är det här som i första hand kommer 
+       			att avgöra hur mycket energi arrangörerna kommer lägga ner på dina intriger.     
+       			Är du ny på lajv? Vi rekommenderar då att du att du väljer ett alternativ som ger mycket intriger. 
+       			Erfarenhetsmässigt brukar man som ny lajvare ha mer nytta av mycket intriger än en 
+       			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.   
+       			<br><?php LarperType::helpBox(true); ?></div>
+                <?php LarperType::selectionDropdown(false, true, $person->LarperTypeId); ?>
+            </div>
+				<div class="question intrigue">
+				<div class="explanation">Exempel:<br>
+				                         Jag är passiv lajvare, men kan tänka mig aktiva intriger som rör X, Y och Z.<br>
+				                         Jag är karaktärslajvare och klarar mig utan intriger, men om ni har tankar om saker min karaktär kann vara involverad i som ger spel åt andra kan jag vara intresserad.<br>
+				                         Jag är aktiv lajvare, men vill helst undvika våldsamma intriger.<br>
+				                         Jag är action-lajvare och vill spela den sökta karaktären NN.<br>
+				                         Jag är action-lajvare och har inget emot en våldsam död.</div>
+					<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
+					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
+				</div>
 				
 				
 			<div class="question intrigue">

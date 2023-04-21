@@ -82,6 +82,14 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Beskrivning för gruppen</td><td><?php echo nl2br($role->DescriptionForGroup);?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo nl2br($role->DescriptionForOthers);?></td></tr>
 		<?php if (!$role->isMysLajvare()) {?>
+			<tr><td valign="top" class="header">Typ av lajvare</td><td>
+			<?php 
+			$larpertype = $role->getLarperType();
+			if (!empty($larpertype)) echo $larpertype->Name;
+			?>
+			</td></tr>
+			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td><td><?php echo $role->TypeOfLarperComment;?></td></tr>
+		
 			<tr><td valign="top" class="header">Tidigare lajv</td><td><?php echo $role->PreviousLarps;?></td></tr>
 			<tr><td valign="top" class="header">Varför befinner sig karaktären i Slow River?</td><td><?php echo $role->ReasonForBeingInSlowRiver;?></td></tr>
 			<tr><td valign="top" class="header">Religion</td><td><?php echo $role->Religion;?></td></tr>
@@ -92,9 +100,19 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Saker karaktären inte vill spela på</td><td><?php echo $role->NotAcceptableIntrigues;?></td></tr>
 			<tr><td valign="top" class="header">Relationer med andra</td><td><?php echo $role->CharactersWithRelations;?></td></tr>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $role->OtherInformation;?></td></tr>
-			<tr><td valign="top" class="header">Rikedom</td><td><?php echo $role->getWealth()->Name; ?></td></tr>
+			<tr><td valign="top" class="header">Rikedom</td><td>
+			<?php 
+			$wealth = $role->getWealth();
+			if (!empty($wealth)) echo $wealth->Name;
+			?>
+			</td></tr>
 			<tr><td valign="top" class="header">Var är karaktären född?</td><td><?php echo $role->Birthplace;?></td></tr>
-			<tr><td valign="top" class="header">Var bor karaktären?</td><td><?php echo $role->getPlaceOfResidence()->Name; ?></td></tr>
+			<tr><td valign="top" class="header">Var bor karaktären?</td><td>
+			<?php 
+			$por = $role->getPlaceOfResidence();
+			if (!empty($por)) echo $por->Name;
+			?>
+			</td></tr>
 		<?php }?>
 			<tr><td valign="top" class="header">Död</td><td><?php echo ja_nej($role->IsDead);?></td></tr>
 

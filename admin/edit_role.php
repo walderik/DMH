@@ -77,6 +77,12 @@ include 'navigation_subpage.php';
     			<label for="NoIntrigue_no">Nej</label>
 			</td></tr>
 
+			<tr><td valign="top" class="header">Typ av lajvare&nbsp;<font style="color:red">*</font></td>
+			<td><?php LarperType::selectionDropdown(false, true, $role->LarperTypeId); ?></td></tr>
+			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td>
+			<td><input type="text" id="TypeOfLarperComment" value="<?php echo $role->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="250"></td></tr>
+
+
 
 
 			<tr><td valign="top" class="header">Tidigare lajv</td>

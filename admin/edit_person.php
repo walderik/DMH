@@ -68,12 +68,6 @@ include 'navigation_subpage.php';
 		    }
 		    ?>
 
-			<tr><td valign="top" class="header">Typ av lajvare&nbsp;<font style="color:red">*</font></td>
-			<td><?php LarperType::selectionDropdown(false, true, $person->LarperTypeId); ?></td></tr>
-			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td>
-			<td><input type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="250"></td></tr>
-
-
 			<tr><td valign="top" class="header">Erfarenhet&nbsp;<font style="color:red">*</font></td>
 			<td><?php Experience::selectionDropdown(false, true, $person->ExperienceId); ?></td></tr>
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td>
@@ -94,7 +88,12 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown(false,true,$registration->HousingRequestId);?></td></tr>
 			<tr><td valign="top" class="header">Boendehänsyn</td>
-			<td><textarea id="HousingComment" name="HousingComment" rows="4" cols="100" maxlength="60000"><?php echo $person->HousingComment; ?></textarea></td></tr>
+			<td><input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo $person->HousingComment; ?>" size="100" maxlength="200" ></td></tr>
+
+			<tr><td valign="top" class="header">Hälsa</td>
+			<td>
+			<textarea id="HealthComment" name="HealthComment" rows="4" cols="100" maxlength="60000"><?php echo $person->HealthComment; ?></textarea>
+			</td></tr>
 
 
 

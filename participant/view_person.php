@@ -48,8 +48,6 @@ include 'navigation.php';
 		    }
 		    ?>
 
-			<tr><td valign="top" class="header">Typ av lajvare</td><td><?php echo LarperType::loadById($current_person->LarperTypeId)->Name;?></td></tr>
-			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td><td><?php echo $current_person->TypeOfLarperComment;?></td></tr>
 
 
 			<tr><td valign="top" class="header">Erfarenhet</td><td><?php echo Experience::loadById($current_person->ExperienceId)->Name;?></td></tr>
@@ -64,6 +62,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Husförvaltare</td><td><?php if (isset($current_person->HouseId)) { echo $current_person->getHouse()->Name; }?></td></tr>
 			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo $current_person->HousingComment;?></td></tr>
+			<tr><td valign="top" class="header">Hälsa</td><td><?php echo $current_person->HealthComment;?></td></tr>
 
 
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo nl2br($current_person->OtherInformation);?></td></tr>
