@@ -100,8 +100,9 @@ class CharacterSheet_PDF extends FPDF {
          
         $this->Cell($cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
         
+        $font_size = (strlen($this->role->Name)>20) ? 14 : 24;
         $this->SetXY($left2, $y + static::$Margin);
-        $this->SetFont('Helvetica','B',24); # Extra stora bokstäver på karaktärens namn
+        $this->SetFont('Helvetica','B', $font_size); # Extra stora bokstäver på karaktärens namn
        
         $this->Cell($cell_width, static::$cell_y, utf8_decode($this->role->Name),0,0,'L');
     }
