@@ -1,5 +1,5 @@
 <?php
 
-class Experience extends SelectionData{
+class Experience extends SelectionDataGeneral{
       
 }

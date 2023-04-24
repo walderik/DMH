@@ -64,10 +64,10 @@ include 'navigation.php';
 			<div class="question">
     			<label for="IntrigueType">Intrigtyper</label>
     			<div class="explanation">Vilken typ av intriger vill gruppen helst ha?  <br>
-    			    <?php IntrigueType::helpBox(true); ?></div>
+    			    <?php IntrigueType::helpBox($current_larp); ?></div>
                 <?php
     
-                IntrigueType::selectionDropdown(true, false);
+                IntrigueType::selectionDropdown($current_larp, true, false);
                 
                 ?>
             </div>
@@ -89,10 +89,10 @@ include 'navigation.php';
 			</div>
 			<div class="question">
     			<label for="HousingRequest">Boende</label>&nbsp;<font style="color:red">*</font>
-    			<div class="explanation">Hur vill gruppen helst bo? Vi kan inte garantera plats i hus. <br><?php HousingRequest::helpBox(true); ?></div>
+    			<div class="explanation">Hur vill gruppen helst bo? Vi kan inte garantera plats i hus. <br><?php HousingRequest::helpBox($current_larp); ?></div>
                 <?php
     
-                HousingRequest::selectionDropdown(false,true);
+                HousingRequest::selectionDropdown($current_larp, false,true);
                 
                 ?>
             </div>

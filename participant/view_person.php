@@ -53,7 +53,6 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Erfarenhet</td><td><?php echo Experience::loadById($current_person->ExperienceId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td><td><?php echo $current_person->NotAcceptableIntrigues;?></td></tr>
 
-			<tr><td valign="top" class="header">Typ av mat</td><td><?php echo TypeOfFood::loadById($current_person->TypeOfFoodId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Vanliga allergier</td><td><?php echo commaStringFromArrayObject($current_person->getNormalAllergyTypes());?></td></tr>
 
 			<tr><td valign="top" class="header">Andra allergier</td><td><?php echo $current_person->FoodAllergiesOther;?></td></tr>

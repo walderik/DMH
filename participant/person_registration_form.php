@@ -139,16 +139,16 @@ include 'navigation.php';
 			<div class="question">
 				<label for="TypesOfFoodId">Viken typ av mat vill du äta?</label>&nbsp;<font style="color:red">*</font>
 				<br> 
-				<div class="explanation"><?php TypeOfFood::helpBox(true); ?></div>
-				<?php TypeOfFood::selectionDropdown(false, true); ?>
+				<div class="explanation"><?php TypeOfFood::helpBox($current_larp); ?></div>
+				<?php TypeOfFood::selectionDropdown($current_larp, false, true); ?>
 			</div>
 			
 			<div class="question">
     			<label for="HousingRequest">Boende</label>&nbsp;<font style="color:red">*</font>
-    			<div class="explanation">Hur vill du helst bo? Vi kan inte garantera plats i hus. <br><?php HousingRequest::helpBox(true); ?></div>
+    			<div class="explanation">Hur vill du helst bo? Vi kan inte garantera plats i hus. <br><?php HousingRequest::helpBox($current_larp); ?></div>
                 <?php
     
-                HousingRequest::selectionDropdown(false,true);
+                HousingRequest::selectionDropdown($current_larp, false,true);
                 
                 ?>
             </div>
@@ -174,11 +174,11 @@ include 'navigation.php';
                     Allt ifrån att någon måste laga mat till att någon måste se till att det finns toapapper på dassen.<br> 
                     Säkert finns det också något som du gärna kan hjälpa till med och som vi inte har tänkt på.<br> 
                     Beroende på arbetsbörda återbetalas delar eller hela anmälningsavgifter efter lajvet.<br>
-    				<?php OfficialType::helpBox(true); ?>
+    				<?php OfficialType::helpBox($current_larp); ?>
 				</div>
                 <?php
     
-                OfficialType::selectionDropdown(true,false);
+                OfficialType::selectionDropdown($current_larp, true,false);
                 
                 ?>
             </div>

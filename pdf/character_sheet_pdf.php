@@ -229,7 +229,8 @@ class CharacterSheet_PDF extends FPDF {
 	}
 	
 	protected function erfarenhet($left) {
-	    if (!Experience::isInUse($this->larp)) return false;
+	    //TODO vet inte om detta ska vara valbart på lajvet
+	    //if (!Experience::isInUse($this->larp)) return false;
 	    
 	    $this->set_header($left, 'Erfarenhet');
 	    if (empty($this->person)) return true;

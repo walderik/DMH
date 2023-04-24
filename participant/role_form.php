@@ -225,8 +225,8 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
        			Är du ny på lajv? Vi rekommenderar då att du att du väljer ett alternativ som ger mycket intriger. 
        			Erfarenhetsmässigt brukar man som ny lajvare ha mer nytta av mycket intriger än en 
        			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.   
-       			<br><?php LarperType::helpBox(true); ?></div>
-                <?php LarperType::selectionDropdown(false, true, $person->LarperTypeId); ?>
+       			<br><?php LarperType::helpBox($current_larp); ?></div>
+                <?php LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId); ?>
             </div>
 				<div class="question intrigue">
 				<div class="explanation">Exempel:<br>
@@ -236,7 +236,7 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 				                         Jag är action-lajvare och vill spela den sökta karaktären NN.<br>
 				                         Jag är action-lajvare och har inget emot en våldsam död.</div>
 					<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
-					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo $person->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
+					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo $role->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
 				</div>
 				
 				
@@ -249,11 +249,11 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 			<div class="question intrigue">
 			<label for="PlaceOfResidence">Var bor karaktären?</label>&nbsp;<font style="color:red">*</font>
 			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om karaktären tillfälligt är i Slow River så vill vi veta var karaktären har sitt hem.<br>
-			   <?php PlaceOfResidence::helpBox(true); ?></div>
+			   <?php PlaceOfResidence::helpBox($current_larp); ?></div>
 			
 			
             <?php
-            PlaceOfResidence::selectionDropdown(false, true, $role->PlaceOfResidenceId);
+            PlaceOfResidence::selectionDropdown($current_larp, false, true, $role->PlaceOfResidenceId);
             ?> 
 
 			</div>
@@ -294,8 +294,8 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 
 			<div class="question intrigue">
 				<label for="WealthsId">Hur rik är karaktären?</label>&nbsp;<font style="color:red">*</font><br>
-       			<div class="explanation">Om du anser att du har rikedom 3 eller högre förväntas du i regel ha någon form av affärer på gång. Det kan vara att sälja saker din gård producerat, leta guld eller nästan vad som helst som gör att man inte är fattig längre.   Det kommer att vara ett begränsat antal stenrika på lajvet och vi godkänner i regel inte nya. Undantag kan naturligtvis förekomma om det gynnar lajvet.   Däremot är Död Mans Hand ett kampanjlajv så det går att spela sig till att bli stenrik. Det går också att bli fattig om man är stenrik.<?php Wealth::helpBox(true); ?></div>
-                <?php Wealth::selectionDropdown(false,true, $role->WealthId); ?>
+       			<div class="explanation">Om du anser att du har rikedom 3 eller högre förväntas du i regel ha någon form av affärer på gång. Det kan vara att sälja saker din gård producerat, leta guld eller nästan vad som helst som gör att man inte är fattig längre.   Det kommer att vara ett begränsat antal stenrika på lajvet och vi godkänner i regel inte nya. Undantag kan naturligtvis förekomma om det gynnar lajvet.   Däremot är Död Mans Hand ett kampanjlajv så det går att spela sig till att bli stenrik. Det går också att bli fattig om man är stenrik.<?php Wealth::helpBox($current_larp); ?></div>
+                <?php Wealth::selectionDropdown($current_larp, false,true, $role->WealthId); ?>
             </div>
 				
 				
@@ -307,10 +307,10 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			<div class="question intrigue">
 				<label for="IntrigueTypeId">Intrigtyper</label><br> 
 				<div class="explanation">Vilken typ av intriger vill du ha?
-				<?php IntrigueType::helpBox(true); ?>
+				<?php IntrigueType::helpBox($current_larp); ?>
 				</div>
 				<?php 
-				selectionByArray('IntrigueType' , IntrigueType::allActive(), true, false, $role->getSelectedIntrigueTypeIds());
+				selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $role->getSelectedIntrigueTypeIds());
 				?>
 			</div>
 			<div class="question intrigue">

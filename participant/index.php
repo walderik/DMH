@@ -255,9 +255,9 @@ $someOneHasSpotOnLarp = false;
 		                echo "</tr>\n";
 		            }
 		            echo "</table></p>\n";
-		            echo "<p><a href='telegram_suggestion.php'><b>Skapa ett telegram</b></i></a>\n";
 
 		        }
+		        echo "<p><a href='telegram_suggestion.php'><b>Skapa ett telegram</b></i></a>\n";
 		        echo "</div></div>";
 		        
 		        
@@ -283,9 +283,9 @@ $someOneHasSpotOnLarp = false;
 		                echo "</tr>\n";
 		            }
 		            echo "</table></p>\n";
-		            echo "<p><a href='letter_suggestion.php'><b>Skapa ett brev</b></i></a>\n";
 		            
 		        }
+		        echo "<p><a href='letter_suggestion.php'><b>Skapa ett brev</b></i></a>\n";
 		        echo "</div></div>";
 		        
 		    } 

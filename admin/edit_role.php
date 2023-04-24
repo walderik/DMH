@@ -78,7 +78,7 @@ include 'navigation_subpage.php';
 			</td></tr>
 
 			<tr><td valign="top" class="header">Typ av lajvare&nbsp;<font style="color:red">*</font></td>
-			<td><?php LarperType::selectionDropdown(false, true, $role->LarperTypeId); ?></td></tr>
+			<td><?php LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId); ?></td></tr>
 			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td>
 			<td><input type="text" id="TypeOfLarperComment" value="<?php echo $role->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="250"></td></tr>
 
@@ -101,7 +101,7 @@ include 'navigation_subpage.php';
 			<td><input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Intrigtyper</td>
-			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive(), true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
+			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
 			<td><textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea></td></tr>
@@ -116,14 +116,14 @@ include 'navigation_subpage.php';
 			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $role->OtherInformation; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Rikedom&nbsp;<font style="color:red">*</font></td>
-			<td><?php Wealth::selectionDropdown(false,true, $role->WealthId); ?></td></tr>
+			<td><?php Wealth::selectionDropdown($current_larp, false,true, $role->WealthId); ?></td></tr>
 
 			<tr><td valign="top" class="header">Var är karaktären född?&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Var bor karaktären?&nbsp;<font style="color:red">*</font></td>
 			<td><?php
-            PlaceOfResidence::selectionDropdown(false, true, $role->PlaceOfResidenceId);
+			PlaceOfResidence::selectionDropdown($current_larp, false, true, $role->PlaceOfResidenceId);
             ?></td></tr>
             
            

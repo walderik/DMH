@@ -99,12 +99,12 @@ include 'navigation_subpage.php';
     		              echo " Sidokaraktär";
     		            }
     		            echo "&nbsp;<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
-    		            echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
+    		            echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a><br>\n";
 		            
-    		            echo "</div>\n";
     		            
     		        }
-
+    		        echo "</div>\n";
+    		        
     		        ?>
 	</div>
 

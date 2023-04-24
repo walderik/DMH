@@ -27,7 +27,7 @@ include 'navigation_subpage.php';
     		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $registration->Id; ?>">
 		<table>
     		
- 			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php OfficialType::selectionDropdown(true,false,$registration->getSelectedOfficialTypeIds());?></td></tr>
+ 			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php OfficialType::selectionDropdown($current_larp, true,false,$registration->getSelectedOfficialTypeIds());?></td></tr>
 
 		</table>		
 			<input type="submit" value="Spara">

@@ -144,7 +144,7 @@ function print_role($role) {
 		<H1>Funktionärer på <?php  echo $larp->Name; ?></H1>
 
 		<?php 
-		$officialTypes = OfficialType::allActive();
+		$officialTypes = OfficialType::allActive($current_larp);
 		
 		foreach ($officialTypes as $officialType) {
 		    $persons = Person::getAllOfficialsByType($officialType, $larp);

@@ -1,6 +1,6 @@
 <?php
 
-class NormalAllergyType extends SelectionData{
+class NormalAllergyType extends SelectionDataGeneral{
     
 //     public static $tableName = 'normalallergytype';
       

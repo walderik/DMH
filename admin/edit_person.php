@@ -74,7 +74,7 @@ include 'navigation_subpage.php';
 			<td><input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $person->NotAcceptableIntrigues; ?>" size="100" maxlength="250" ></td></tr>
 
 			<tr><td valign="top" class="header">Typ av mat&nbsp;<font style="color:red">*</font></td>
-			<td><?php TypeOfFood::selectionDropdown(false, true, $registration->TypeOfFoodId); ?></td></tr>
+			<td><?php TypeOfFood::selectionDropdown($current_larp, false, true, $registration->TypeOfFoodId); ?></td></tr>
 			<tr><td valign="top" class="header">Vanliga allergier</td>
 			<td><?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?></td></tr>
 
@@ -86,7 +86,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Husförvaltare</td>
 			<td><?php selectionByArray('House', House::all(), false, false, $person->HouseId); ?></td></tr>
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
-			<td><?php HousingRequest::selectionDropdown(false,true,$registration->HousingRequestId);?></td></tr>
+			<td><?php HousingRequest::selectionDropdown($current_larp, false,true,$registration->HousingRequestId);?></td></tr>
 			<tr><td valign="top" class="header">Boendehänsyn</td>
 			<td><input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo $person->HousingComment; ?>" size="100" maxlength="200" ></td></tr>
 
@@ -103,7 +103,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
 			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->ApprovedCharacters)) { echo $registration->ApprovedCharacters; } else { echo "Nej"; }?></td></tr>
 			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
-			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php OfficialType::selectionDropdown(true,false,$registration->getSelectedOfficialTypeIds());?></td></tr>
+			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php OfficialType::selectionDropdown($current_larp, true,false,$registration->getSelectedOfficialTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
 			<tr><td valign="top" class="header">Belopp att betala</td><td><?php echo $registration->AmountToPay;?></td></tr>

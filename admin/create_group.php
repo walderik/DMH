@@ -45,10 +45,10 @@ include 'navigation_subpage.php';
 			<td><textarea id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo $group->Enemies; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Rikedom</td>
-			<td><?php Wealth::selectionDropdown(false, true, $group->WealthId);?></td></tr>
+			<td><?php Wealth::selectionDropdown($current_larp, false, true, $group->WealthId);?></td></tr>
 
 			<tr><td valign="top" class="header">Var bor gruppen?</td>
-			<td><?php PlaceOfResidence::selectionDropdown(false, true, $group->PlaceOfResidenceId);?></td></tr>
+			<td><?php PlaceOfResidence::selectionDropdown($current_larp, false, true, $group->PlaceOfResidenceId);?></td></tr>
 
 			<tr><td valign="top" class="header">Intrig</td>
 			<td>
@@ -59,7 +59,7 @@ include 'navigation_subpage.php';
 			</td></tr>
 
 			<tr><td valign="top" class="header">Intrigtyper</td>
-			<td><?php IntrigueType::selectionDropdown(true, false, $larp_group->getSelectedIntrigueTypeIds());?></td></tr>
+			<td><?php IntrigueType::selectionDropdown($current_larp, true, false, $larp_group->getSelectedIntrigueTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
 			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo $group->IntrigueIdeas; ?></textarea></td></tr>
@@ -74,7 +74,7 @@ include 'navigation_subpage.php';
 			<td><input type="text" id="ApproximateNumberOfMembers" name="ApproximateNumberOfMembers" value="<?php echo $larp_group->ApproximateNumberOfMembers; ?>" required></td></tr>
 
 			<tr><td valign="top" class="header">Önskat boende</td>
-			<td><?php HousingRequest::selectionDropdown(false,true, $larp_group->HousingRequestId);?></td></tr>
+			<td><?php HousingRequest::selectionDropdown($current_larp, false,true, $larp_group->HousingRequestId);?></td></tr>
 
 			<tr><td valign="top" class="header">Eldplats</td>
 			<td>
