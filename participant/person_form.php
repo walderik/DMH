@@ -120,12 +120,6 @@
 			</div>
 
 			<h2>Hälsa</h2>
-			<div class="question">
-				<label for="TypesOfFoodId">Viken typ av mat vill du äta?</label>&nbsp;<font style="color:red">*</font>
-				<br> 
-				<div class="explanation"><?php TypeOfFood::helpBox(true); ?></div>
-				<?php TypeOfFood::selectionDropdown(false, true, $person->TypeOfFoodId); ?>
-			</div>
 
 			<div class="question">
 				<label for="NormalAllergyType">Har du någon eller några av de vanligaste mat-allergierna?</label>

@@ -74,7 +74,7 @@ include 'navigation_subpage.php';
 			<td><input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $person->NotAcceptableIntrigues; ?>" size="100" maxlength="250" ></td></tr>
 
 			<tr><td valign="top" class="header">Typ av mat&nbsp;<font style="color:red">*</font></td>
-			<td><?php TypeOfFood::selectionDropdown(false, true, $person->TypeOfFoodId); ?></td></tr>
+			<td><?php TypeOfFood::selectionDropdown(false, true, $registration->TypeOfFoodId); ?></td></tr>
 			<tr><td valign="top" class="header">Vanliga allergier</td>
 			<td><?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?></td></tr>
 

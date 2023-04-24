@@ -24,6 +24,8 @@ class Registration extends BaseModel{
     public $GuardianId;
     public $NotComingReason;
     public $SpotAtLARP = 0;
+    public $TypeOfFoodId;
+    
     
     public static $orderListBy = 'RegisteredAt';
     
@@ -55,6 +57,7 @@ class Registration extends BaseModel{
         if (isset($arr['GuardianId'])) $this->GuardianId = $arr['GuardianId'];
         if (isset($arr['NotComingReason'])) $this->NotComingReason = $arr['NotComingReason'];
         if (isset($arr['SpotAtLARP'])) $this->SpotAtLARP = $arr['SpotAtLARP'];
+        if (isset($arr['TypeOfFoodId'])) $this->TypeOfFoodId = $arr['TypeOfFoodId'];
         
     }
     
@@ -97,13 +100,13 @@ class Registration extends BaseModel{
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, NotComingReason=?,
-                SpotAtLARP=? WHERE Id = ?");
+                SpotAtLARP=?, TypeOfFoodId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, 
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded, 
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason, 
-            $this->SpotAtLARP, $this->Id))) {
+            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, 
+            $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -120,12 +123,12 @@ class Registration extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, ApprovedCharacters, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, ToBeRefunded, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded,
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason,
-            $this->SpotAtLARP))) {
+            $this->SpotAtLARP, $this->TypeOfFoodId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -196,6 +199,13 @@ class Registration extends BaseModel{
     public function getLARP() {
         return LARP::loadById($this->LARPId);
     }
+    
+    public function getTypeOfFood() {
+        if (is_null($this->TypeOfFoodId)) return null;
+        return TypeOfFood::loadById($this->TypeOfFoodId);
+    }
+    
+    
     
     public function allChecksPassed() {
         if (!$this->isApprovedCharacters()) return false;

@@ -53,18 +53,11 @@ include_once 'header.php';
     	<form action="larp_admin.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
+     		<input type="hidden" id="Campaign" name="Campaign" value="<?php echo $larp->CampaignId?>">
     		<table>
     			<tr>
     				<td><label for="Name">Namn</label></td>
     				<td><input type="text" id="Name" name="Name" value="<?php echo $larp->Name; ?>" size="100" maxlength="250" required></td>
-    			</tr>
-    			<tr>
-    				<td><label for="Campaign">Kampanj</label></td>
-    				<td><?php selectionByArray("Campaign" , Campaign::all(), false, true, $larp->CampaignId); ?></td>
-    			</tr>
-    			<tr>
-    				<td><label for="TagLine">Tag line</label></td>
-    				<td><input type="text" id="TagLine" name="TagLine" value="<?php echo $larp->TagLine; ?>" size="100" maxlength="250" ></td>
     			</tr>
     			<tr>
     				<td><label for="StartDate">Startdatum</label></td>

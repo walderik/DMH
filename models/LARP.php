@@ -155,6 +155,10 @@ class LARP extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($roleId, $current_larp->Id));
     }
     
-    
+    public static function allByCampaign($campaignId) {
+        $sql = "SELECT * FROM regsys_larp WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($campaignId));
+        
+    }
         
 }

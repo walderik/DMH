@@ -11,7 +11,6 @@ class Person extends BaseModel{
     public $FoodAllergiesOther;
     public $OtherInformation;
     public $ExperienceId;
-    public $TypeOfFoodId;
     public $UserId; # Användare som registrerat personen
     public $NotAcceptableIntrigues;
     public $HouseId; #Förvaltare av huset
@@ -45,7 +44,6 @@ class Person extends BaseModel{
         if (isset($arr['IntrigueIdeas'])) $this->IntrigueIdeas = $arr['IntrigueIdeas'];
         if (isset($arr['OtherInformation'])) $this->OtherInformation = $arr['OtherInformation'];
         if (isset($arr['ExperienceId'])) $this->ExperienceId = $arr['ExperienceId'];
-        if (isset($arr['TypeOfFoodId'])) $this->TypeOfFoodId = $arr['TypeOfFoodId'];
         if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
         if (isset($arr['NotAcceptableIntrigues'])) $this->NotAcceptableIntrigues = $arr['NotAcceptableIntrigues'];
         if (isset($arr['HouseId'])) $this->HouseId = $arr['HouseId'];
@@ -198,11 +196,11 @@ class Person extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_person SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
-                                                                  TypeOfFoodId=?, UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=? WHERE Id = ?;");
+                                                                  UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId,
-            $this->TypeOfFoodId, $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->Id))) {
+            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -216,12 +214,12 @@ class Person extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_person (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, OtherInformation, ExperienceId,
-                                                                    TypeOfFoodId, UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment) 
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+                                                                    UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment) 
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId, 
-            $this->TypeOfFoodId, $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment))) {
+            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -265,11 +263,6 @@ class Person extends BaseModel{
         return Experience::loadById($this->ExperienceId);
     }
     
-    
-    public function getTypeOfFood() {
-        if (is_null($this->TypeOfFoodId)) return null;
-        return TypeOfFood::loadById($this->TypeOfFoodId);
-    }
     
     public function getUser() {
         return User::loadById($this->UserId);

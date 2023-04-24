@@ -64,7 +64,7 @@ function myFunction() {
 	<?php 
 	 if (isset($_SESSION['admin'])) {
 	 ?>	
-	  <a href="../admin/" style="color: red"><i class="fa-solid fa-lock"></i>Admin</a>
+	  <a href="../admin/" style="color: red"><i class="fa-solid fa-lock"></i>Arrangör</a>
     <?php }?>
 	  <a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a>
 	  <a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>

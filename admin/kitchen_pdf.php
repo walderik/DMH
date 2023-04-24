@@ -105,7 +105,8 @@ class KITCHEN_PDF extends FPDF {
             if (isset($persons) && count($persons) > 0) {
                 $data = Array();
                  foreach($persons as $person) {
-                    $data[] = Array($person->Name, $person->Email, $person->FoodAllergiesOther, $person->getTypeOfFood()->Name);
+                     $registration=$person->getRegistration($current_larp);
+                     $data[] = Array($person->Name, $person->Email, $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
                 }
                 $this->FancyTable($headline, $header, $data, $columnWidth);
 
@@ -123,7 +124,8 @@ class KITCHEN_PDF extends FPDF {
             $data = Array();
             
             foreach($persons as $person) {
-                $data[] = Array($person->Name, commaStringFromArrayObject($person->getNormalAllergyTypes()), $person->FoodAllergiesOther, $person->getTypeOfFood()->Name);
+                $registration=$person->getRegistration($current_larp);
+                $data[] = Array($person->Name, commaStringFromArrayObject($person->getNormalAllergyTypes()), $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
             }
             $this->FancyTable($headline, $header, $data, $columnWidth);
         }
@@ -138,7 +140,8 @@ class KITCHEN_PDF extends FPDF {
             $columnWidth = Array (35, 90, 40);
             $data = Array();
             foreach($persons as $person) {
-                $data[] = Array($person->Name, $person->FoodAllergiesOther, $person->getTypeOfFood()->Name);
+                $registration=$person->getRegistration($current_larp);
+                $data[] = Array($person->Name, $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
             }
             $this->FancyTable($headline, $header, $data, $columnWidth);
         }
