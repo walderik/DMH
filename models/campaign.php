@@ -104,4 +104,35 @@ class Campaign extends BaseModel{
         return ($this->Abbreviation=='KIR');
     }
     
+    public function hasLarps() {
+
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_larp WHERE CampaignId=?;";
+        
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+            
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+        
+        
+        if ($res[0]['Num'] == 0) return false;
+        return true;
+        
+
+        
+        
+        
+    }
+    
 }

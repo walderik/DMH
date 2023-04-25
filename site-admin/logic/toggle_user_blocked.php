@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin'])) {
 }
 
 if (!isset( $_GET['user_id'])) {
-    header('Location: ../../admin/user_admin.php');
+    header('Location: ../../site-admin/user_admin.php');
     exit;
 }
 
@@ -21,15 +21,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         header('Location: ../../participant/index.php');
         exit;
     }
-    if ($user->IsAdmin == 0) {
-        $user->IsAdmin = 1;
+    if ($user->Blocked == 0) {
+        $user->Blocked = 1;
     }
     else {
-        $user->IsAdmin = 0;
+        $user->Blocked = 0;
         
     }
+
     $user->update();
-    header('Location: ../../admin/user_admin.php');
+    header('Location: ../../site-admin/user_admin.php');
     exit;
 } else  {
     header('Location: ../../participant/index.php');

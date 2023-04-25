@@ -122,6 +122,33 @@ class LARP extends BaseModel{
         return true;
     }
     
+    public function hasRegistrations() {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId=?;";
+        
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+            
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+        
+        
+        if ($res[0]['Num'] == 0) return false;
+        return true;
+        
+    }
+    
+    
     public static function allFutureOpenLARPs() {
         $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND RegistrationOpen=1 ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, null);

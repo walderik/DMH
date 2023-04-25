@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin'])) {
 }
 
 if (!isset( $_GET['user_id'])) {
-    header('Location: ../../admin/user_admin.php');
+    header('Location: ../../site-admin/user_admin.php');
     exit;
 }
 
@@ -21,16 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         header('Location: ../../participant/index.php');
         exit;
     }
-    if ($user->Blocked == 0) {
-        $user->Blocked = 1;
-    }
-    else {
-        $user->Blocked = 0;
-        
-    }
-
+    $user->ActivationCode = 'activated';
     $user->update();
-    header('Location: ../../admin/user_admin.php');
+    header('Location: ../../site-admin/user_admin.php');
     exit;
 } else  {
     header('Location: ../../participant/index.php');

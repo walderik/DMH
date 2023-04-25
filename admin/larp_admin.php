@@ -53,7 +53,12 @@ include 'navigation_subpage.php';
                 echo "<td>" . $larp->EndTimeLARPTime . "</td>\n";
                 
                 echo "<td>" . "<a href='larp_form.php?operation=update&id=" . $larp->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='larp_admin.php?operation=delete&id=" . $larp->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                if (!$larp->hasRegistrations()) {
+                    echo "<td>" . "<a href='larp_admin.php?operation=delete&id=" . $larp->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                }
+                else {
+                    echo "<td></td>";
+                }
                 echo "</tr>\n";
             }
             echo "</table>";

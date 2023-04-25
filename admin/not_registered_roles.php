@@ -9,9 +9,8 @@ include 'navigation_subpage.php';
         <h1>Karaktärer i kampanjen som inte är anmälda (än) i år</h1>
         
         
-        <p>Om man lägger till en sidokaraktär härifrån kommer inga intrigtyper att väljas. Det får du redigera på karaktären efteråt.<br>
         <br>Om man anmäler någon härifrån kommer de att välja det första alternativet på boende. Du får redigera det på personen. Och karaktären blir som ovan.</p>
-		<br><br><strong>OBS! Det tar tid. Vänta ett par sekunder efter att ni har klickat!</strong>
+		<br><br><strong>OBS! Det kan ta tid. Vänta ett par sekunder efter att ni har klickat!</strong>
      		<?php 
     		$roles = Role::getAllUnregisteredRoles($current_larp);
     		if (empty($roles)) {
