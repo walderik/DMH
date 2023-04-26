@@ -13,7 +13,7 @@ include 'navigation_subpage.php';
         <p>
 		    <a href="larp_admin.php">Lajv i kampanjen</a> <br> 
         	<a href="payment_information_admin.php">Avgift för <?php echo $current_larp->Name ?></a>
-        
+        <?php //TODO lägg till så att man kan göra inställningar på kampanjen ?>
         </p>
         
 	    <h2>Basdata</h2>

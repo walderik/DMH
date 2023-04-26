@@ -138,4 +138,9 @@ class Campaign extends BaseModel{
         
     }
     
+    public static function organizerForCampaigns(User $user) {
+        $sql="SELECT * FROM regsys_campaign WHERE Id IN (SELECT CampaignId FROM regsys_access_control WHERE UserId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($user->Id));
+    }
+    
 }

@@ -116,6 +116,29 @@ function myFunction() {
     			 
     			 ?>
 			 </form>
+			 <?php 
+    			 $campaigns = Campaign::organizerForCampaigns($current_user);
+    			 foreach ($campaigns as $campaign) {
+    			     echo "<h3>Arrangör för $campaign->Name</h3>";
+    			     echo "<p>Eftersom du är arrangör för $campaign->Name kan du välja bland alla lajv i kampanjen.</p>";
+    			     $larps_in_campaign=LARP::allByCampaign($campaign->Id);
+    			     ?>
+    			     <form action="../includes/set_larp.php" method="POST">
+    			     <label for="larp">Välj lajv:</label>
+    			     <select name='larp' id='larp'>
+    			     <?php
+    			     foreach ($larps_in_campaign as $larp) {
+    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
+    			     }
+    			     echo "</select>";
+    			     echo '<input type="submit" value="Välj">';
+    			 }
+    			 
+    			 ?>
+			 </form>
+    			     
+  
+			 
 			 </div>
 
 	</body>
