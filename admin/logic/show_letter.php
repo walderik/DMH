@@ -1,17 +1,5 @@
 <?php
-# Läs mer på http://www.fpdf.org/
-
-global $root, $current_user, $current_larp;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
-
-require_once $root . '/pdf/letter_pdf.php';
-
-//If the user isnt admin it may not use this page
-if (!isset($_SESSION['admin'])) {
-    header('Location: ../../participant/index.php');
-    exit;
-}
-
+include_once '../header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     

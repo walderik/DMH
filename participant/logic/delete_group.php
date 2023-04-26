@@ -4,6 +4,8 @@ global $root, $current_user;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
+AccessControl::accessControlCampaign();
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     if (isset($_GET['id'])) {

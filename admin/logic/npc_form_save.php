@@ -1,9 +1,5 @@
 <?php
-
-global $root;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
-require $root . '/includes/init.php';
-
+include_once '../header.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

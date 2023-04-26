@@ -1,13 +1,5 @@
 <?php
-
-require '../header.php';
-
-
-//If the user isnt admin it may not use this page
-if (!isset($_SESSION['admin'])) {
-    header('Location: ../../participant/index.php');
-    exit;
-}
+include_once '../header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (!isset($_GET['groupID']) or !isset($_GET['roleID'])) {

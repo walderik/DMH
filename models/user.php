@@ -169,4 +169,11 @@ class User extends BaseModel{
         return true;
     }
     
+    public static function getAllWithAccessToCampaign(Campaign $campaign) {
+        if (is_null($campaign)) return null;
+        
+        $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId from regsys_access_control WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($campaign->Id));
+        
+    }
 }

@@ -22,22 +22,25 @@ class Campaign extends BaseModel{
     
     public static function newFromArray($post){
         $campaign = static::newWithDefault();
-        if (isset($post['Name'])) $campaign->Name = $post['Name'];
-        if (isset($post['Abbreviation'])) $campaign->Abbreviation = $post['Abbreviation'];
-        if (isset($post['Description'])) $campaign->Description = $post['Description'];
-        if (isset($post['Icon'])) $campaign->Icon = $post['Icon'];
-        if (isset($post['Homepage'])) $campaign->Homepage = $post['Homepage'];
-        if (isset($post['Email'])) $campaign->Email = $post['Email'];
-        if (isset($post['Bankaccount'])) $campaign->Bankaccount = $post['Bankaccount'];
-        if (isset($post['MinimumAge'])) $campaign->MinimumAge = $post['MinimumAge'];
-        if (isset($post['MinimumAgeWithoutGuardian'])) $campaign->MinimumAgeWithoutGuardian = $post['MinimumAgeWithoutGuardian'];
-
-        if (isset($post['Id'])) $campaign->Id = $post['Id'];
-
-        
+        $campaign->setValuesByArray($post);
         return $campaign;
     }
     
+    public function setValuesByArray($arr) {
+        if (isset($arr['Name'])) $this->Name = $arr['Name'];
+        if (isset($arr['Abbreviation'])) $this->Abbreviation = $arr['Abbreviation'];
+        if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        if (isset($arr['Icon'])) $this->Icon = $arr['Icon'];
+        if (isset($arr['Homepage'])) $this->Homepage = $arr['Homepage'];
+        if (isset($arr['Email'])) $this->Email = $arr['Email'];
+        if (isset($arr['Bankaccount'])) $this->Bankaccount = $arr['Bankaccount'];
+        if (isset($arr['MinimumAge'])) $this->MinimumAge = $arr['MinimumAge'];
+        if (isset($arr['MinimumAgeWithoutGuardian'])) $this->MinimumAgeWithoutGuardian = $arr['MinimumAgeWithoutGuardian'];
+        
+        if (isset($arr['Id'])) $this->Id = $arr['Id'];
+        
+        
+    }
     
     
     

@@ -25,12 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-include 'navigation_subpage.php';
+include "navigation.php";
 ?>
 
     <div class="content">   
         <h1>Kampanjer</h1>
-            <a href="larp_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="campaign_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
         
         <?php
         
@@ -61,6 +61,20 @@ include 'navigation_subpage.php';
                     echo "<td></td>";
                 }
                 echo "</tr>\n";
+                
+                echo "<tr>";
+                echo "<td colspan='10'>";
+                echo "Arrangörsgrupp:<br>";
+                $organizers = User::getAllWithAccessToCampaign($campaign);
+                if (count($organizers) == 0) echo "Ingen utsedd än<br>";
+                foreach ($organizers as $organizer) {
+                    echo "$organizer->Name ";
+                    echo "<a href='logic/remove_organizer.php?campaignId=$campaign->Id&userId=$organizer->Id' onclick=\"return confirm('Är du säker på att du vill ta bort $organizer->Name från arrangörsgruppen?');\">";
+                    echo "<i class='fa-solid fa-trash-can'></i></a><br>";
+                }
+                echo "<a href='choose_users.php?campaignId=$campaign->Id&operation=organizer'>Lägg till arrangör</a>";
+                echo "</td>";
+                echo "</tr>";
             }
             echo "</table>";
         }

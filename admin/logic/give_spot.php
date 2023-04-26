@@ -1,15 +1,5 @@
 <?php
-
-global $root, $current_larp;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
-require $root . '/includes/init.php';
-
-//If the user isnt admin it may not use this page
-if (!isset($_SESSION['admin'])) {
-    header('Location: ../../participant/index.php');
-    exit;
-}
-
+include_once '../header.php';
 
 if (!isset( $_POST['RegistrationId'])) {
     header('Location: ../index.php');
