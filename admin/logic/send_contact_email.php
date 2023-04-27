@@ -20,7 +20,7 @@ $campaign = $current_larp->getCampaign();
 
 $email = $_POST['email'];
 $name = (isset($_POST['name'])) ? $_POST['name'] : 'Stranger';
-$text = $_POST['text'];
+$text = nl2br($_POST['text']);
 $subject = "Meddelande till $name från $current_user->Name";
 $referer = (isset($_POST['referer'])) ? $_POST['referer'] : '../../index.php';
 $referer .= "?message=contact_email_sent";
