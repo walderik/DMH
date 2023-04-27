@@ -91,6 +91,8 @@ $someOneHasSpotOnLarp = false;
     		        }
                     if ($person->isRegistered($current_larp)) {
                         $registration = $person->getRegistration($current_larp);
+                        if ($registration->SpotAtLARP==1) $someOneHasSpotOnLarp = true;
+                        
                         if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
                             echo "<tr><td>Ansvarig vuxen</td><td>";
                             if (empty($registration->GuardianId)) {
@@ -124,7 +126,6 @@ $someOneHasSpotOnLarp = false;
                     }
                     echo "</table>";
     		        
-                    if ($registration->SpotAtLARP==1) $someOneHasSpotOnLarp = true;
                     
                     //Grupper
     		        if (isset($groups) && count($groups) > 0) {

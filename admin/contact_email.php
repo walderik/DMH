@@ -44,7 +44,7 @@ include 'navigation_subpage.php';
 			<p><textarea id="text" name="text" rows="8" cols="121" maxlength="60000" required></textarea></p>
 			Med vänliga hälsningar<br /><br />
 			<b>Arrangörerna av <?php echo $current_larp->Name; ?></b><br>
-			</p>
+
 	
     		<br />
     		<input type="submit" value="Skicka">

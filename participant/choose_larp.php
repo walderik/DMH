@@ -67,17 +67,20 @@ function myFunction() {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";
-    			     echo '<input type="submit" value="Välj">';    			 }
+    			     echo '<input type="submit" value="Välj">';  
+    			     echo "<br><hr>";
+    			 }
     			 
     			 ?>
 
 			 </form>
-			 <br>
+
     			<?php
 
     			$resultCheck = count($future_closed_larp_array);
     			 if ($resultCheck > 0) {
     			     ?>
+	     			 
     			     <h3>Kommande lajv (anmälan är inte öppen än)</h3>
 
 					<form action="../includes/set_larp.php" method="POST">
@@ -90,17 +93,19 @@ function myFunction() {
     			     }
     			     echo "</select>";
     			     echo '<input type="submit" value="Välj">';
+    			     echo "<br><hr>";
     			 }
     			 
     			 ?>
     			 
 			 </form>
-			 <br>
+
     			<?php
 
     			$resultCheck = count($past_larp_array);
     			 if ($resultCheck > 0) {
     			     ?>
+     			 <br><hr>
     			 <h3>Tidigare lajv</h3> 
     			 <p>Välj det här om du vill fylla i vad som hände på lajvet.</p>   
 				<form action="../includes/set_larp.php" method="POST">
@@ -112,6 +117,7 @@ function myFunction() {
     			     }
     			     echo "</select>";
     			     echo '<input type="submit" value="Välj">';
+    			     echo "<br><hr>";
     			 }
     			 
     			 ?>
@@ -119,6 +125,7 @@ function myFunction() {
 			 <?php 
     			 $campaigns = Campaign::organizerForCampaigns($current_user);
     			 foreach ($campaigns as $campaign) {
+
     			     echo "<h3>Arrangör för $campaign->Name</h3>";
     			     echo "<p>Eftersom du är arrangör för $campaign->Name kan du välja bland alla lajv i kampanjen.</p>";
     			     $larps_in_campaign=LARP::allByCampaign($campaign->Id);
@@ -132,6 +139,7 @@ function myFunction() {
     			     }
     			     echo "</select>";
     			     echo '<input type="submit" value="Välj">';
+    			     echo "<br><hr>";
     			 }
     			 
     			 ?>

@@ -1,6 +1,9 @@
 <?php
 include_once '../header.php';
 
+global $root;
+require_once $root . '/pdf/letter_pdf.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     $letter=Letter::loadById($_GET['id']);
