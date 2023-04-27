@@ -30,8 +30,9 @@ class CharacterSheet_PDF extends FPDF {
     public $larp;
     public $all;
     public $current_left;
-    public $current_cell_height;
-    public $cell_y_space;
+    public $cell_y_space;        # Standardhöjden på en cell 
+    public $current_cell_height; # Nuvarande höjden på den här radens celler
+    public $cell_width;
     
     function Header() {
         global $root, $y, $mitten;
@@ -79,7 +80,7 @@ class CharacterSheet_PDF extends FPDF {
     
     # Namnen på karaktär och spelare
     function names($left, $left2) {
-        global $y, $cell_width, $mitten;
+        global $y, $mitten;
         
         $persn = $this->person;        
         $this->set_header($left, 'Spelare');
@@ -87,7 +88,7 @@ class CharacterSheet_PDF extends FPDF {
         $namn = "$persn->Name ($age)";
         if (!empty($persn)) $this->set_text($left, $namn);
         
-        $this->mittlinje();
+
         
         $this->SetXY($left2, $y);
         $this->SetFont('Helvetica','',static::$header_fontsize);
@@ -98,13 +99,15 @@ class CharacterSheet_PDF extends FPDF {
             $this->cross_over();
         }
          
-        $this->Cell($cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
+        
+        $this->mittlinje();
         
         $font_size = (strlen($this->role->Name)>20) ? 14 : 24;
         $this->SetXY($left2, $y + static::$Margin);
         $this->SetFont('Helvetica','B', $font_size); # Extra stora bokstäver på karaktärens namn
        
-        $this->Cell($cell_width, static::$cell_y, utf8_decode($this->role->Name),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode($this->role->Name),0,0,'L');
     }
 
     
@@ -120,18 +123,19 @@ class CharacterSheet_PDF extends FPDF {
     }
     
     function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_in=false) {
-        global $x, $y, $left, $left2, $cell_width, $mitten;
+        global $x, $y, $left, $left2, $mitten;
         
         $this->role = $role_in;
         $this->person = $this->role->getPerson();
         $this->isMyslajvare = $this->role->isMysLajvare();
         $this->larp = $larp_in;
         $this->all = $all_in;
+        $this->cell_y_space = static::$cell_y + (2*static::$Margin);
+        $this->current_cell_height = $this->cell_y_space;
         
         $left = static::$x_min + static::$Margin;
         $x = $left;
-        $cell_width = (static::$x_max - static::$x_min) / 2 - (2*static::$Margin);
-        $this->cell_y_space = static::$cell_y + (2*static::$Margin);
+        $this->cell_width = (static::$x_max - static::$x_min) / 2 - (2*static::$Margin);     
         $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
         $left2 = $mitten + static::$Margin;
         
@@ -143,7 +147,7 @@ class CharacterSheet_PDF extends FPDF {
         $this->names($left, $left2);
         
         $y += $this->cell_y_space;
-        $this->current_cell_height = $this->cell_y_space;
+        
         $this->bar();
         
         # Uppräkning av ett antal fält som kan finnas eller inte
@@ -411,14 +415,13 @@ class CharacterSheet_PDF extends FPDF {
 	
 	# Gemensam funktion för all logik för att skriva ut ett rubriken
 	private function set_header($venster, $text) {
-	    global $cell_width;
 	    $this->set_header_start($venster);
-	    $this->Cell($cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
+	    $this->Cell($this->cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
 	}
 	
 	# Gemensam funktion för all logik för att skriva ut ett fält
 	private function set_text($venster, $text) {
-	    global $y, $cell_width;
+	    global $y;
 	    
 	    if (empty($text)) return;
 	    
@@ -430,22 +433,22 @@ class CharacterSheet_PDF extends FPDF {
 	        
 	        if (strlen($text)>210) {
 	            $this->SetFont('Arial','',static::$header_fontsize);
-	            $this->MultiCell($cell_width+5, static::$cell_y-2.1, $text, 0, 'L'); # Väldigt liten och tät text
+	            $this->MultiCell($this->cell_width+5, static::$cell_y-2.1, $text, 0, 'L'); # Väldigt liten och tät text
 	        } else {
-	            $this->MultiCell($cell_width+5, static::$cell_y-1.5, $text, 0, 'L');
+	            $this->MultiCell($this->cell_width+5, static::$cell_y-1.5, $text, 0, 'L');
 	        }
 
 	        return;
 	    }
 	    # Normal utskrift
 	    $this->set_text_start($venster);
-	    $this->Cell($cell_width, static::$cell_y, $text, 0, 0, 'L');
+	    $this->Cell($this->cell_width, static::$cell_y, $text, 0, 0, 'L');
 	    
 	    return;
 	}
 	
 	private function set_full_page($header, $text) {
-	    global  $y, $left, $cell_width;
+	    global  $y, $left;
 	    
 	    $this->AddPage();
 	    
@@ -455,20 +458,20 @@ class CharacterSheet_PDF extends FPDF {
 	    
 	    if (strlen($text)>3500){
 	        $this->SetFont('Helvetica','',static::$header_fontsize);
-	        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-2.5, $text, 0,'L'); # Mindre radavstånd
+	        $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y-2.5, $text, 0,'L'); # Mindre radavstånd
 	        return;
 	    }
 	    if (strlen($text)>2900){
 	        $this->SetFont('Helvetica','',static::$text_fontsize-1);
-	        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L'); # Mindre radavstånd
+	        $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L'); # Mindre radavstånd
 	        return;
 	    }
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
-	    $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
+	    $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
 	}
 	
 	private function set_rest_of_page($header, $text) {
-	    global  $y, $left, $cell_width;
+	    global  $y, $left;
 	    
 	    $text = utf8_decode($text);
 	    $this->set_header($left, $header);
@@ -476,11 +479,11 @@ class CharacterSheet_PDF extends FPDF {
 	    
 	    if (strlen($text)>1800){
 	        $this->SetFont('Helvetica','',static::$text_fontsize/1.5); # Hantering för riktigt långa texter
-	        $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y-1.3, $text, 0,'L');
+	        $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y-1.3, $text, 0,'L');
 	        return;
 	    }
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
-	    $this->MultiCell(($cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
+	    $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
 	}
 	
 	
