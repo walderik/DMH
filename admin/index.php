@@ -24,6 +24,7 @@ include_once '../includes/error_handling.php';
               <li class="dropdown"><a href="#" class="trigger-drop">Administration<i class="arrow"></i></a>
               <ul class="drop">
                 <li><a href="settings.php">Inställningar</a></li>
+                 <li><a href="statistics.php">Statistik</a></li>
                 <li><a href="registered_persons.php">Deltagare</a></li>
                 <li><a href="persons_to_approve.php">Godkänna</a></li>
                 <li><a href="kitchen.php">Köket</a></li>

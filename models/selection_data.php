@@ -126,13 +126,14 @@ class SelectionData extends BaseModel{
         if (is_null($larp)) return Array();
         
         $type = strtolower(static::class)."Id";
-
+        $type = static::class."Id";
+        
         $sql = "select count(regsys_registration.Id) AS Num, regsys_".strtolower(static::class). ".Name AS Name FROM ".
             "regsys_registration, regsys_person, regsys_".strtolower(static::class)." WHERE ".
             "larpId=? AND ".
             "PersonId = regsys_person.Id AND ".
             "regsys_".strtolower(static::class).".Id=".$type." GROUP BY ".$type.";";
- 
+
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(Array($larp->Id))) {
@@ -154,5 +155,38 @@ class SelectionData extends BaseModel{
     
     }
     
-      
+    public static function countByTypeOnRoles(LARP $larp) {
+        if (is_null($larp)) return Array();
+        
+        $type = strtolower(static::class)."Id";
+        $type = static::class."Id";
+        
+        $sql = "select count(regsys_larp_role.RoleId) AS Num, regsys_".strtolower(static::class). ".Name AS Name FROM ".
+            "regsys_larp_role, regsys_role, regsys_".strtolower(static::class)." WHERE ".
+            "larpId=? AND ".
+            "RoleId = regsys_role.Id AND ".
+            "regsys_".strtolower(static::class).".Id=".$type." GROUP BY ".$type.";";
+ 
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(Array($larp->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $rows;
+        
+        
+    }
+    
+    
 }
