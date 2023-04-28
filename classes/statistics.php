@@ -71,5 +71,41 @@ class Statistics  extends Dbh{
         
     }
     
+    public static function countHasPayed(LARP $larp) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND AmountToPay <= AmountPayed;";
+        return static::countQuery($sql, array($larp->Id));
+    }
+    
+    public static function countHasSpot(LARP $larp) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND SpotAtLARP=1;";
+        return static::countQuery($sql, array($larp->Id));
+    }
+    
+    public static function countIsMember(LARP $larp) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND IsMember=1;";
+        return static::countQuery($sql, array($larp->Id));
+    }
+    
+    protected static function countQuery($sql, $var_array) {
+        //Måste märka fältet som räkna med 'Num'
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute($var_array)) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return 0;
+            
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+
+        return $res[0]['Num'];
+    }
     
 }

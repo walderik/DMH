@@ -27,6 +27,11 @@ include 'navigation_subpage.php';
 		Max antal deltagare är <?php echo $current_larp->MaxParticipants ?>.<br>
 		Den yngsta kommer att vara <?php echo Statistics::youngest($current_larp)?> år.<br>
 		Den äldsta kommer att vara <?php echo Statistics::oldest($current_larp)?> år.<br>
+		<br>
+        Antal som har betalat: <?php echo Statistics::countHasPayed($current_larp) ?> st<br>
+        Antal som är medlemmar: <?php echo Statistics::countIsMember($current_larp)?> st<br>
+        Antal som är helt klara: <?php echo Statistics::countHasSpot($current_larp)?> st <br>
+
 
 		<h3>Typ av mat</h3>
     <?php 
