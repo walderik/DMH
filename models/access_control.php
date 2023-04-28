@@ -34,12 +34,12 @@ class AccessControl extends BaseModel{
             exit;
         }
         //If the user has admin privielieges they may always see
-        /*
+        
         if (isset($_SESSION['admin'])) {
             echo "Admin";
             return;
         }
-        */
+        
         if (static::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
             return;
         }
