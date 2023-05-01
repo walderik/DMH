@@ -21,8 +21,10 @@
         		    "<th>&nbsp; &nbsp; </th>".
         		    "<th onclick='sortTable(2, \"$tableId\")'>Godkänd</th>".
         		    "<th onclick='sortTable(3, \"$tableId\")'>Yrke</th>".
-        		    "<th onclick='sortTable(4, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(5, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
+        		    "<th onclick='sortTable(4, \"$tableId\")'>Typ av lajvare</th>".
+        		    "<th onclick='sortTable(5, \"$tableId\")'>Intrigtyper</th>".
+        		    "<th onclick='sortTable(6, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(7, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
     		        echo "<tr>\n";
@@ -36,6 +38,15 @@
     		        echo "</td>\n";
     		        echo "<td align='center'>".showStatusIcon($person->isApprovedCharacters($current_larp))."</td>\n";
     		        echo "<td>$role->Profession</td>\n";
+    		        echo "<td>";
+    		        $larpertype = $role->getLarperType();
+    		        if (!empty($larpertype)) echo $larpertype->Name;
+    		        echo "</td>\n";
+    		        echo "<td>";
+    		        echo commaStringFromArrayObject($role->getIntrigueTypes());
+    		        echo "</td>\n";
+    		        
+    		        
    		        $group = $role->getGroup();
     		        if (is_null($group)) {
     		            echo "<td>&nbsp;</td>\n";
@@ -67,8 +78,10 @@
         		    "<th>&nbsp; &nbsp; </th>".
         		    "<th onclick='sortTable(2, \"$tableId\")'>Godkänd</th>".
         		    "<th onclick='sortTable(3, \"$tableId\")'>Yrke</th>".
-        		    "<th onclick='sortTable(4, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(5, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
+        		    "<th onclick='sortTable(4, \"$tableId\")'>Typ av lajvare</th>".
+        		    "<th onclick='sortTable(5, \"$tableId\")'>Intrigtyper</th>".
+        		    "<th onclick='sortTable(6, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(7, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $role->Name . "</td>\n";
@@ -79,6 +92,14 @@
     		        echo "<td align='center'>".showStatusIcon($person->isApprovedCharacters($current_larp))."</td>\n";
     		        
     		        echo "<td>" . $role->Profession . "</td>\n";
+    		        echo "<td>";
+    		        $larpertype = $role->getLarperType();
+    		        if (!empty($larpertype)) echo $larpertype->Name;
+    		        echo "</td>\n";
+    		        echo "<td>";
+    		        echo commaStringFromArrayObject($role->getIntrigueTypes());
+    		        echo "</td>\n";
+    		        
     		        $group = $role->getGroup();
     		        if (is_null($group)) {
     		            echo "<td>&nbsp;</td>\n";
