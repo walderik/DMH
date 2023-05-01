@@ -36,7 +36,7 @@ class AccessControl extends BaseModel{
         //If the user has admin privielieges they may always see
         
         if (isset($_SESSION['admin'])) {
-            echo "Admin";
+            
             return;
         }
         
