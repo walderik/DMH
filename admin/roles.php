@@ -15,8 +15,14 @@
     		if (empty($roles)) {
     		    echo "Inga anmälda karaktärer";
     		} else {
-    		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>&nbsp; &nbsp; </th><th>Godkänd</th><th>Yrke</th><th>Group</th><th colspan='2'>Intrig</th></tr>\n";
+    		    $tableId = "main_roles";
+    		    echo "<table id='$tableId' class='data'>";
+    		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
+        		    "<th>&nbsp; &nbsp; </th>".
+        		    "<th onclick='sortTable(2, \"$tableId\")'>Godkänd</th>".
+        		    "<th onclick='sortTable(3, \"$tableId\")'>Yrke</th>".
+        		    "<th onclick='sortTable(4, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(5, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
     		        echo "<tr>\n";
@@ -55,8 +61,14 @@
     		if (empty($roles)) {
     		    echo "Inga anmälda karaktärer";
     		} else {
-    		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>&nbsp; &nbsp; </th><th>Godkänd</th><th>Yrke</th><th>Group</th><th colspan='2'>Intrig</th></tr>\n";
+    		    $tableId = "other_roles";
+    		    echo "<table id='$tableId' class='data'>";
+    		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
+        		    "<th>&nbsp; &nbsp; </th>".
+        		    "<th onclick='sortTable(2, \"$tableId\")'>Godkänd</th>".
+        		    "<th onclick='sortTable(3, \"$tableId\")'>Yrke</th>".
+        		    "<th onclick='sortTable(4, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(5, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $role->Name . "</td>\n";
@@ -87,5 +99,6 @@
         
 	</div>
 </body>
+<?php include_once '../javascript/table_sort.js';?>
 
 </html>
