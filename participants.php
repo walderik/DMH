@@ -146,7 +146,7 @@ function print_role($role) {
 		$groups = Group::getRegistered($larp);
 		foreach ($groups as $group) {
 		    $roles = Role::getAllMainRolesInGroup($group, $larp);
-		    $non_main_roles = Role::getAllNonMainRolesInGroup($group, $larp);
+
 		    
 		    echo "<h2>$group->Name</h2>\n";
 		    if ($group->DescriptionForOthers !="") {
@@ -155,7 +155,7 @@ function print_role($role) {
 
 
             echo "<div class='container'>\n";
-            if ((empty($roles) or count($roles)==0) &&(empty($non_main_roles) or count($non_main_roles)==0)) {
+            if ((empty($roles) or count($roles)==0)) {
                 echo "Inga anmälda i gruppen än.";
             }
             else {
@@ -171,17 +171,7 @@ function print_role($role) {
                     
                 }
                 $temp=0;
-                foreach ($non_main_roles as $role) {
-                    print_role($role);
-                    $temp++;
-                    if($temp==$columns)
-                    {
-                        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-                        $temp=0;
-                    }
-                
-                }
-                $temp=0;
+
                 echo "</ul>\n";
             }
             echo "</DIV>\n";
@@ -193,15 +183,15 @@ function print_role($role) {
 		
 		/* Karaktärer utan grupp */	
 		$roles = Role::getAllMainRolesWithoutGroup($larp);
-		$non_main_roles = Role::getAllNonMainRolesWithoutGroup($larp);
+		
 
-		if ((!empty($roles) && count($roles)!=0) or (!empty($non_main_roles) && count($non_main_roles)!=0)) {
+		if ((!empty($roles) && count($roles)!=0)) {
 		
 		  echo "<h2>Karaktärer utan grupp</h2>\n";
 		
 		
     		echo "<div class='container'>\n";
-    		if ((empty($roles) or count($roles)==0) &&(empty($non_main_roles) or count($non_main_roles)==0)) {
+    		if ((empty($roles) or count($roles)==0)) {
     		    echo "Inga anmälda i gruppen än.";
     		}
     		else {
@@ -216,16 +206,6 @@ function print_role($role) {
                     }
     		    }
     		    echo "</ul><ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
-    		    $temp=0;
-    		    foreach ($non_main_roles as $role) {
-    		        print_role($role);
-    		        $temp++;
-                    if($temp==$columns)
-                    {
-                        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-                        $temp=0;
-                    }
-    		    }
     		    $temp=0;
     		    echo "</ul>\n";
     		}
