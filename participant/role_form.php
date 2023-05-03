@@ -69,7 +69,8 @@ include 'navigation.php';
 	
 	function setFieldState(isYes) {
 		var intrigueDivs = document.getElementsByClassName("intrigue");
-		var requiredFields = document.getElementsByClassName("requiredIntrigueField");
+		var requiredFields = document.getElementsByClassName("requiredIntrigueField")
+		var larpertype = document.getElementsByName("LarperTypeId");
 		var wealths = document.getElementsByName("WealthId");
 		var placeofresidences = document.getElementsByName("PlaceOfResidenceId");
         if (isYes) {
@@ -79,9 +80,11 @@ include 'navigation.php';
     		for (var i = 0; i < requiredFields.length; i++) {
         		requiredFields[i].required = false;        		
     		}
+    		for (var i = 0; i < larpertype.length; i++) {
+        		larpertype[i].required = false;  
+    		}
     		for (var i = 0; i < wealths.length; i++) {
         		wealths[i].required = false;  
-        		//alert(wealths[i].name + " " + i);      		
     		}
     		for (var i = 0; i < placeofresidences.length; i++) {
         		placeofresidences[i].required = false;        		
@@ -92,6 +95,9 @@ include 'navigation.php';
     		}
      		for (var i = 0; i < requiredFields.length; i++) {
         		requiredFields[i].required = true;
+    		}
+    		for (var i = 0; i < larpertype.length; i++) {
+        		larpertype[i].required = true;  
     		}
      		for (var i = 0; i < wealths.length; i++) {
         		wealths[i].required = true;        		
