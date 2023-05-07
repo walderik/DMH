@@ -1,9 +1,18 @@
 
 Props: ändra ägare (grupp/roll)
+Visa på karaktärsblad
+
+Gruppintrig och grupp-props på karaktärsblad
+
 
 Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 
+
+Reservlista: 
+* översiktssidan för deltagare
+* inte kunna anmäla igen
+* på adminsidan (se listan, plocka in deltagare från listan)
 
 Intrigverktyg
 
@@ -16,9 +25,7 @@ byta user för en person (admin funktion)
 
 Behöver man kunna byta spelare på en roll?
 
-Radbrytningar i mailen från kontaktformularet
-
-
+Antalet tecken / ord på intrigerna i listan med roller
 
 
 Tips jag hittade:

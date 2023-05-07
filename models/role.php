@@ -121,14 +121,14 @@ class Role extends BaseModel{
                                                             Birthplace, CharactersWithRelations, CampaignId, ImageId, 
                                     IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment) 
                                     VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?);");
-        
-        if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, $this->DescriptionForGroup, 
-            $this->DescriptionForOthers,$this->PreviousLarps,
+
+        if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
+            $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId,
-            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
-            $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment))) {
+            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
+            $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -153,8 +153,8 @@ class Role extends BaseModel{
     }
 
     public function isRegistered(LARP $larp) {
-        return LARP_Role::isRegistered($this->Id, $larp->Id);
-        
+        if (LARP_Role::isRegistered($this->Id, $larp->Id) || Reserve_LARP_Role::isReserve($this->Id, $larp->Id)) return true;
+        return false;
     } 
 
     public function userMayEdit(LARP $larp) {

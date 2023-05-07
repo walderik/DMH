@@ -17,7 +17,7 @@ $someOneHasSpotOnLarp = false;
         	  
             if ($current_larp->isFull()) {
 
-                echo "<div><b style='color: red'>Lajvet är fullt</b>";
+                echo "<div><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b>";
                 echo "</div>";
             }
             elseif ($current_larp->isPastLatestRegistrationDate()) {
@@ -73,7 +73,7 @@ $someOneHasSpotOnLarp = false;
     		        
     		        echo "<div class='person'>\n";
     		        
-    		        if ($person->isRegistered($current_larp)) {
+    		        if ($person->isRegistered($current_larp) || $person->isReserve($current_larp)) {
     		            echo "<a href='view_person.php?id=" . $person->Id . "'><h3>$person->Name&nbsp;<i class='fa-solid fa-eye'></i></a></h3>\n";    		            
     		        }
     		        else {
@@ -87,7 +87,15 @@ $someOneHasSpotOnLarp = false;
     		        echo "Mobilnummer: " . $person->PhoneNumber. "<br>\n";
     		        echo "<table  class='checks'>";
     		        if (isset($roles) && count($roles) > 0) {
-                        echo "<tr><td>Anmäld</td><td>" . showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id"). "</td></tr>\n";
+    		            echo "<tr><td>Anmäld</td><td>";
+
+    		            if ($person->isReserve($current_larp)) {
+    		                echo "Reservlista";
+    		            }
+    		            else {
+    		                echo showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id");
+    		            }
+    		            echo "</td></tr>\n";
     		        }
                     if ($person->isRegistered($current_larp)) {
                         $registration = $person->getRegistration($current_larp);

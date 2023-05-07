@@ -30,6 +30,7 @@ include_once '../includes/error_handling.php';
                 <li><a href="kitchen.php">Köket</a></li>
                 <li><a href="officials.php">Funktionärer</a></li>
                 <li><a href="housing.php">Boende</a></li>
+                <li><a href="reserves.php">Reservlista</a></li>
               </ul>
             </li>
               <li class="dropdown"><a href="#" class="trigger-drop">Intriger<i class="arrow"></i></a>

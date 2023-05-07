@@ -23,7 +23,7 @@ $persons = Person::getAllToApprove($current_larp);
 
 $rows = array();
 foreach($persons as $person) {
-    $rows[] = array($person->Name, $person->Email, $person->PhoneNumber);
+    $rows[] = array($person->Name, $person->Email, $person->PhoneNumber, $person->SocialSecurityNumber);
 }
     
 

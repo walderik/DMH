@@ -204,6 +204,34 @@ class BerghemMailer {
         static::send($person->Email, $person->Name, $text, "Bekräftan av anmälan till $larp->Name");
     }
     
+ 
+    public static function send_reserve_registration_mail(Reserve_Registration $reserve_registration) {
+        $person = $reserve_registration->getPerson();
+        
+        $larp = $reserve_registration->getLARP();
+        $roles = $person->getRolesAtLarp($larp);
+        
+        $campaign = $larp->getCampaign();
+        
+        $text  = "Lajvet $larp->Name är fullt, men du står nu på reservlistan.<br>\n";
+        $text .= "De karaktärer du har anmält är:<br>\n";
+        $text .= "<br>\n";
+        foreach ($roles as $role) {
+            $text .= '* '.$role->Name;
+            if ($role->isMain($larp)) {
+                $text .= " - Din huvudkaraktär";
+            }
+            if (isset($role->GroupId)) {
+                $group = $role->getGroup();
+                $text .= ", medlem i $group->Name";
+            }
+            
+            $text .= "<br>\n";
+        }
+        
+        static::send($person->Email, $person->Name, $text, "Bekräftan av anmälan till $larp->Name");
+    }
+    
     
     
     public static function send_approval_mail(Registration $registration) {

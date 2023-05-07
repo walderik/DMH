@@ -105,7 +105,7 @@ class User extends BaseModel{
         $persons = Person::getPersonsForUser($this->Id);
         $unregistered_persons = Array();
         foreach ($persons as $person) {
-            if (!$person->isRegistered($larp)) {
+            if (!$person->isRegistered($larp) && !$person->isReserve($larp)) {
                 array_push($unregistered_persons,$person);
             }
         }

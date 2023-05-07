@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registration->update();
     
     $registration->deleteAllOfficialTypes();
-    $registration->saveAllOfficialTypes($_POST);
+    $registration->saveAllOfficialTypes($_POST['OfficialTypeId']);
     
     if (isset($_POST['Referer']) && $_POST['Referer']!="") {
         header('Location: ' . $_POST['Referer']);

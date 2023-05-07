@@ -57,6 +57,7 @@ class LARP_Role extends BaseModel{
  
     public static function userMayEdit($roleId, $larpId) {
         $larp_role = static::loadByIds($roleId, $larpId);
+        if (empty($larp_role)) return false;
         if ($larp_role->UserMayEdit == 1) return true;
         return false;
     }

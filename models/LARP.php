@@ -117,7 +117,7 @@ class LARP extends BaseModel{
     
     public function mayRegister() {
         if ($this->isPastLatestRegistrationDate()) return false;
-        if ($this->isFull()) return false;
+        //if ($this->isFull()) return false;
         if ($this->RegistrationOpen == 0) return false;
         return true;
     }
