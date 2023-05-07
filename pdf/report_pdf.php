@@ -28,11 +28,14 @@ class Report_PDF extends FPDF {
     public $larp;
     public $name;
     public $rows;
+    public $num_cols;
     public $lefts = [];
     public $cell_width;
+    public $current_col = 0;
+    public $current_cell_height;
     
     function Header() {
-        global $root, $y, $mitten;
+        global $root, $y;
         $this->SetLineWidth(0.6);
         $this->Line(static::$x_min, static::$y_min, static::$x_max, static::$y_min);
         $this->Line(static::$x_min, static::$y_min, static::$x_min, static::$y_max);
@@ -46,6 +49,8 @@ class Report_PDF extends FPDF {
         $this->Line(static::$x_max+$space, static::$y_min-$space, static::$x_max+$space, static::$y_max+$space);
         
         $mini_header_with = 46;
+        $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
+        
         $this->SetXY($mitten-($mini_header_with/2), 3);
         $this->SetFont('Helvetica','',static::$text_fontsize/1.1);
         $this->SetFillColor(255,255,255);
@@ -70,105 +75,47 @@ class Report_PDF extends FPDF {
         
         $this->bar();
     }
-    
-//     # Namnen på karaktär och spelare
-//     function name($left) {
-//         global $y, $cell_width, $mitten;
-     
-//         $this->set_header($left, 'Rapport');
 
-//         if (!empty($this->name)) $this->set_text($left, $this->name);
-
-//     }
-
-    
-    function beskrivning() {
-        global $y;
-        $text = $this->role->Description; #.' '.strlen($role->Description);
-//         if (($y > (static::$y_max/2)-static::$Margin) || (strlen($text)>2600)) {
-//             $this->set_full_page('Beskrivning', $text);
-//         } else {
-            $this->set_rest_of_page('Beskrivning', $text);
-//         }
-        return true;
-    }
     
     function new_report(LARP $larp, String $name, Array $rows) {
-        global $x, $y, $mitten;
+        global $x, $y;
         
-        $this->larp = $larp;
-        $this->name = $name;
-        $this->rows = $rows;
-        $this->cell_y_space = static::$cell_y + (2*static::$Margin);
-        $this->cell_width = (static::$x_max - static::$x_min) / sizeof($this->rows) - (2*static::$Margin);
+        $this->larp     = $larp;
+        $this->name     = $name;
+        $this->rows     = $rows;
+        $this->num_cols = sizeof($this->rows[0]);
+        
+        $this->cell_height = static::$cell_y + (2*static::$Margin);
+        $this->cell_width = (static::$x_max - static::$x_min) / $this->num_cols - (2*static::$Margin);
         
         $current_left = static::$x_min ;
+        $this->lefts[0] = $current_left;
         
-        for ($i = 0; $i < sizeof($this->rows); $i++){
-            $this->lefts[$i] = $current_left + $this->cell_width + static::$Margin;
+        for ($i = 1; $i < $this->num_cols; $i++){
+            $this->lefts[$i] = $current_left + $this->cell_width + static::$Margin*2;
             $current_left = $this->lefts[$i];
         }
-        
-        
-//         $left = static::$x_min + static::$Margin;
-//         $x = $left;
-        
-        $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
-        $left2 = $mitten + static::$Margin;
-        
-        $this->current_left = $this->lefts[0];
         
         $this->AddPage();
         
         $this->title($this->name);
-//         $this->name($left);
         
-        $y += $this->cell_y_space;
-        $this->current_cell_height = $this->cell_y_space;
+        $this->current_cell_height = $this->cell_height;
+        
+        $rubrik = true;
+        foreach($this->rows as $row){
+            foreach($row as $cell) {
+                $this->set_cell($cell, $rubrik);
+            }
+            $rubrik = false;
+        }
+        
+//         $y += $this->current_cell_height;
 //         $this->bar();
 
 	}
 	
 	# Dynamiska småfält
-	
-	protected function empty($left) {
-	    $this->set_text($left, '');
-	    return true;
-	}
-	
-	protected function yrke($left) {
-// 	    $this->set_header($left, 'Yrke');
-	    $this->set_text($left, $this->role->Profession);
-	    return true;
-	}
-	
-	
-	
-	# Rita en ruta
-	# Håll reda på om nästa ruta är till höger eller vänster
-	private function draw_field($func) {
-	    global $y, $left, $left2;
-	    $to_execute = '$draw_ok = $this->'.$func.'($this->current_left);';
-	    eval($to_execute);
-	    if ($draw_ok) {
-	        $current_y = $this->GetY();
-	        # Hantering om resultatet av cellen är för stort för att få plats.
-	        if ($current_y > $y + $this->current_cell_height) {
- 	            $new_height = $current_y-$y;
- 	            $this->current_cell_height = $new_height;
-	        }
-	        if ($this->current_left == $left) {
-	            $this->current_left = $left2;
-	        } else { 
-	            # Vi har just ritat den högra rutan
-	            $this->mittlinje();
-	            $this->current_left = $left;
-	            $y += $this->current_cell_height;
-	            $this->bar();
-	            $this->current_cell_height = $this->cell_y_space;
-	        }
-	    }
-	}
 	
 	# Dra en linje tvärs över arket på höjd $y
 	private function bar() {
@@ -177,60 +124,80 @@ class Report_PDF extends FPDF {
 	}
 	
 	private function mittlinje() {
-	    global $y, $mitten;
+	    global $y;
+	    $x_pos = $this->lefts[$this->current_col];
 	    $down = $y + $this->current_cell_height;
-	    $this->Line($mitten, $y, $mitten, $down);
+	    $this->Line($x_pos, $y, $x_pos, $down);
 	}
 	
 	private function cross_over() {
 	    global $y, $mitten;
 	    $this->Line($this->current_left, $y+static::$Margin*1.5, ($this->current_left+$mitten-(3*static::$Margin)), $y+static::$Margin*1.5);
 	}
-	
-// 	# Gemensamt sätt beräkna var rubriken i ett fält ska ligga
-// 	private function set_header_start($venster) {
-// 	    global $y;
-// 	    $this->SetXY($venster, $y);
-// 	    $this->SetFont('Helvetica','',static::$header_fontsize);
-// 	}
-	
-	# Gemensamt sätt beräkna var texten i ett fält ska ligga
-	private function set_text_start($venster) {
-	    global $y;
-	    $this->SetXY($venster, $y + static::$Margin + 1);
-	    $this->SetFont('Helvetica','',static::$text_fontsize);
-	}
-	
-	# Gemensam funktion för all logik för att skriva ut ett rubriken
-	private function set_header($venster, $text) {
-	    $this->set_header_start($venster);
-	    $this->Cell($this->cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
-	}
+
 	
 	# Gemensam funktion för all logik för att skriva ut ett fält
-	private function set_text($venster, $text) {
+	private function set_cell($text, $bold) {
 	    global $y;
-	    
-	    if (empty($text)) return;
+	    if (empty($text)) $text = ' ';
 	    
 	    $text = trim(utf8_decode($text));
+	    
 	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
-	    if (strlen($text)>static::$text_max_length){
-	        $this->SetXY($venster, $y + static::$Margin-1);
-	        $this->SetFont('Arial','',static::$text_fontsize/1.5);
+	    # Temporärt bortkommenterat så vi tar den logiken senare
+// 	    if (strlen($text) > static::$text_max_length){
+// 	        $this->SetXY($x_location, $y + static::$Margin-1);
+// 	        $this->SetFont('Arial','',static::$text_fontsize/1.5);
 	        
-	        if (strlen($text)>210) {
-	            $this->SetFont('Arial','',static::$header_fontsize);
-	            $this->MultiCell($this->cell_width+5, static::$cell_y-2.1, $text, 0, 'L'); # Väldigt liten och tät text
-	        } else {
-	            $this->MultiCell($this->cell_width+5, static::$cell_y-1.5, $text, 0, 'L');
-	        }
+// 	        if (strlen($text)>210) {
+// 	            $this->SetFont('Arial','',static::$header_fontsize);
+// 	            $this->MultiCell($this->cell_width+5, static::$cell_y-2.1, $text, 0, 'L'); # Väldigt liten och tät text
+// 	        } else {
+// 	            $this->MultiCell($this->cell_width+5, static::$cell_y-1.5, $text, 0, 'L');
+// 	        }
 
-	        return;
-	    }
+// 	        return;
+// 	    }
+        
+	    $x_location = $this->lefts[$this->current_col]+static::$Margin;
+	    
+// 	    echo "Current col $this->current_col<br>";
+// 	    echo "Lefts : <br>";
+// 	    print_r($this->lefts);
+	    
 	    # Normal utskrift
-	    $this->set_text_start($venster);
+	    $this->SetXY($x_location, $y + static::$Margin + 1);
+	    
+	    # Sätt fonten. Första raden är rubrik och blir fetare
+	    if ($bold) {
+	       $this->SetFont('Helvetica','B',static::$text_fontsize+1);
+	    } else {
+	       $this->SetFont('Helvetica','',static::$text_fontsize);
+	    }
+	    
+	    # Skriv ut texten i cellen
 	    $this->Cell($this->cell_width, static::$cell_y, $text, 0, 0, 'L');
+	    
+	    # Hantering om resultatet av cellen är för stort för att få plats.
+        $current_y = $this->GetY();
+        if ($current_y > $y + $this->current_cell_height) {
+            $new_height = $current_y - $y;
+            $this->current_cell_height = $new_height;
+        }
+        
+        # Räkna upp en cell i bredd
+        $this->current_col += 1;
+        if ($this->num_cols == $this->current_col) { 
+            # Sista cellen i en rad
+            $y += $this->current_cell_height;
+            $this->current_col = 0;
+            $this->bar();
+            $this->current_cell_height = $this->cell_height;
+        } else {
+            $this->mittlinje();
+        }
+
+	    
 	    
 	    return;
 	}

@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = 'Rapporten';
 $persons = Person::getAllToApprove($current_larp);
+
 $rows = array();
 foreach($persons as $person) {
     $rows[] = array($person->Name, $person->Email, $person->PhoneNumber);
