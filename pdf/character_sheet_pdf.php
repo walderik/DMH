@@ -363,12 +363,14 @@ class CharacterSheet_PDF extends FPDF {
 	    $to_execute = '$draw_ok = $this->'.$func.'($this->current_left);';
 	    eval($to_execute);
 	    if ($draw_ok) {
-	        $current_y = $this->GetY();
 	        # Hantering om resultatet av cellen är för stort för att få plats.
+	        $current_y = $this->GetY();
 	        if ($current_y > $y + $this->current_cell_height) {
  	            $new_height = $current_y-$y;
  	            $this->current_cell_height = $new_height;
 	        }
+	        
+	        # Räkna upp en cell i bredd
 	        if ($this->current_left == $left) {
 	            $this->current_left = $left2;
 	        } else { 
