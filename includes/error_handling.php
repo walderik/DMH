@@ -68,7 +68,7 @@ function getErrorText($code) {
             $output = "Kopplingen till databasen misslyckades. Kontakta administratören.";
             break;
         case "userNotFound":
-            $output = "Använaren saknas";
+            $output = "Användaren saknas";
             break;
         case "accountNotActivated":
             $output = "Kontot är inte aktiverat";
