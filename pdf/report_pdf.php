@@ -11,7 +11,7 @@ require_once $root . '/includes/all_includes.php';
 
 class Report_PDF extends FPDF {
     
-    public static $Margin = 5;
+    public static $Margin = 1;
     
     public static $x_min = 5;
     public static $x_max = 205;
@@ -21,7 +21,7 @@ class Report_PDF extends FPDF {
     public static $cell_y = 5;
     
     public static $header_fontsize = 6;
-    public static $text_fontsize = 12;
+    public static $text_fontsize = 10;
     public static $text_max_length = 50;
     
     
@@ -64,7 +64,7 @@ class Report_PDF extends FPDF {
     function title($text) {
         global $y;
 
-        $font_size = (800 / strlen(utf8_decode($text)));
+        $font_size = (600 / strlen(utf8_decode($text)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
@@ -189,9 +189,13 @@ class Report_PDF extends FPDF {
         $this->current_col += 1;
         if ($this->num_cols == $this->current_col) { 
             # Sista cellen i en rad
-            $y += $this->current_cell_height;
             $this->current_col = 0;
+            $y += $this->current_cell_height;
             $this->bar();
+            if ($y > 270) { 
+                $this->AddPage(); # Ny sidan om vi är längst ner
+                $y += 5;
+            }
             $this->current_cell_height = $this->cell_height;
         } else {
             $this->mittlinje();
