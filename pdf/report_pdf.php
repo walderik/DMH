@@ -22,7 +22,6 @@ class Report_PDF extends FPDF {
     
     public static $header_fontsize = 6;
     public static $text_fontsize = 10;
-    public static $text_max_length = 50;
     
     
     public $larp;
@@ -33,6 +32,7 @@ class Report_PDF extends FPDF {
     public $cell_width;
     public $current_col = 0;
     public $current_cell_height;
+    public $text_max_length;
     
     function Header() {
         global $root, $y;
@@ -60,6 +60,16 @@ class Report_PDF extends FPDF {
         $y = static::$y_min + static::$Margin;
     }
     
+    function Footer()
+    {
+        // Go to 1.5 cm from bottom
+        $this->SetY(-15);
+        // Select Arial italic 8
+        $this->SetFont('Arial','I',8);
+        // Print centered page number
+        $this->Cell(0, 10, 'Sidan '.$this->PageNo().'/{nb}', 0, 0, 'R');
+    }
+    
     # Skriv ut Rapportnamnet högst upp.
     function title($text) {
         global $y;
@@ -80,10 +90,13 @@ class Report_PDF extends FPDF {
     function new_report(LARP $larp, String $name, Array $rows) {
         global $x, $y;
         
+        $this->AliasNbPages();
+        
         $this->larp     = $larp;
         $this->name     = $name;
         $this->rows     = $rows;
         $this->num_cols = sizeof($this->rows[0]);
+        $this->text_max_length = 94 / $this->num_cols; #  (Empiriskt testat för vad som ser bra ut)
         
         $this->cell_height = static::$cell_y + (2*static::$Margin);
         $this->cell_width = (static::$x_max - static::$x_min) / $this->num_cols - (2*static::$Margin);
@@ -143,11 +156,18 @@ class Report_PDF extends FPDF {
 	    
 	    $text = trim(utf8_decode($text));
 	    
+	    # Max som får plats är per kolumnbredd = 94 / antalet kolumner:
+	    #  2 - 47 tecken
+	    #  3 - 31 tecken
+	    #  4 - 23 tecken
+	    
+	    $bold_char = $bold ? 'B' : '';
+	    $scaling = 1.2;
+	   
 	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
 	    # Temporärt bortkommenterat så vi tar den logiken senare
-// 	    if (strlen($text) > static::$text_max_length){
-// 	        $this->SetXY($x_location, $y + static::$Margin-1);
-// 	        $this->SetFont('Arial','',static::$text_fontsize/1.5);
+ 	    if (strlen($text) > $this->text_max_length){
+ 	        $this->SetFont('Arial', $bold_char, static::$text_fontsize/$scaling);
 	        
 // 	        if (strlen($text)>210) {
 // 	            $this->SetFont('Arial','',static::$header_fontsize);
@@ -157,36 +177,39 @@ class Report_PDF extends FPDF {
 // 	        }
 
 // 	        return;
-// 	    }
-        
+ 	    } else {
+ 	        $this->SetFont('Helvetica', $bold_char, static::$text_fontsize);
+        }
+    
 	    $x_location = $this->lefts[$this->current_col]+static::$Margin;
-	    
-// 	    echo "Current col $this->current_col<br>";
-// 	    echo "Lefts : <br>";
-// 	    print_r($this->lefts);
 	    
 	    # Normal utskrift
 	    $this->SetXY($x_location, $y + static::$Margin + 1);
 	    
-	    # Sätt fonten. Första raden är rubrik och blir fetare
-	    if ($bold) {
-	       $this->SetFont('Helvetica','B',static::$text_fontsize+1);
-	    } else {
-	       $this->SetFont('Helvetica','',static::$text_fontsize);
-	    }
-	    
 	    # Skriv ut texten i cellen
-	    $this->Cell($this->cell_width, static::$cell_y, $text, 0, 0, 'L');
+	    if (strlen($text) > ($this->text_max_length*$scaling-2)){
+	       $this->MultiCell($this->cell_width, static::$cell_y-1.5, $text, 0, 'L');
+	    } else {
+	       $this->Cell($this->cell_width, static::$cell_y, $text, 0, 0, 'L');
+	    }
 	    
 	    # Hantering om resultatet av cellen är för stort för att få plats.
         $current_y = $this->GetY();
         if ($current_y > $y + $this->current_cell_height) {
             $new_height = $current_y - $y;
             $this->current_cell_height = $new_height;
+            # Efterjustera mittlinjen om det behövs
+            
         }
         
+        # Dra ett streck mellan kolumnerna om det behövs
+        if ($this->current_col > 0){
+            $this->mittlinje();
+        }
+            
         # Räkna upp en cell i bredd
         $this->current_col += 1;
+        
         if ($this->num_cols == $this->current_col) { 
             # Sista cellen i en rad
             $this->current_col = 0;
@@ -197,8 +220,6 @@ class Report_PDF extends FPDF {
                 $y += 5;
             }
             $this->current_cell_height = $this->cell_height;
-        } else {
-            $this->mittlinje();
         }
 
 	    

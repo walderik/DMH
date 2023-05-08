@@ -23,9 +23,11 @@ $persons = Person::getAllToApprove($current_larp);
 
 $rows = array();
 foreach($persons as $person) {
-    $rows[] = array($person->Name, $person->Email, $person->PhoneNumber);
+    $rows[] = array($person->Name, $person->Email, $person->PhoneNumber, $person->PhoneNumber);
+//     $rows[] = array($person->Name, $person->Email);
 }
-    
+
+$rows[] = array('Kalle','1234567890123456789A123456789B123456789C123456789D123456789E123456789F123456789G123456789H','Ulla','Pia');
 
 $pdf = new Report_PDF();
 
