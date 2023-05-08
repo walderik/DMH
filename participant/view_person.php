@@ -19,7 +19,7 @@ if (Person::loadById($current_person->Id)->UserId != $current_user->Id) {
     exit;
 }
 
-if (!$current_person->isRegistered($current_larp)) {
+if (!$current_person->isRegistered($current_larp) && !$current_person->isReserve($current_larp)) {
     header('Location: index.php'); // karaktären är inte anmäld
     exit;
 }

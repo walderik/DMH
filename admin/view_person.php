@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $person = Person::loadById($PersonId);
 
-if (!$person->isRegistered($current_larp)) {
+if (!$person->isRegistered($current_larp) && !$person->isReserve($current_larp)) {
     header('Location: index.php'); // karaktären är inte anmäld
     exit;
 }

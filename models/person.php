@@ -119,6 +119,14 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getAllReserves($larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
+            "regsys_reserve_registration WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
     
     public static function getAllRegisteredWithoutHousing($larp) {
         if (is_null($larp)) return array();
@@ -276,6 +284,12 @@ class Person extends BaseModel{
         return Registration::loadByIds($this->Id, $larp->Id);
     }
     
+    public function getReserveRegistration(LARP $larp) {
+        return Reserve_Registration::loadByIds($this->Id, $larp->Id);
+    }
+    
+    
+    
     public function getNormalAllergyTypes() {
         if (is_null($this->Id)) return array();
         
@@ -368,6 +382,16 @@ class Person extends BaseModel{
         }        
         return false;
     }
+
+    public function isReserve(LARP $larp) {
+        $reserve_registration = Reserve_Registration::loadByIds($this->Id, $larp->Id);
+        if (isset($reserve_registration)) {
+            return true;
+        }
+        return false;
+    }
+    
+    
     
     public function isNeverRegistered() {
         $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE PersonId=?;";

@@ -248,11 +248,11 @@ class Registration extends BaseModel{
     }
     
     # Spara den här relationen
-    public function saveAllOfficialTypes($post) {
-        if (!isset($post['OfficialTypeId'])) {
+    public function saveAllOfficialTypes($officialtypeids) {
+        if (!isset($officialtypeids)) {
             return;
         }
-        foreach($post['OfficialTypeId'] as $Id) {
+        foreach($officialtypeids as $Id) {
             $stmt = $this->connect()->prepare("INSERT INTO ".
                 "regsys_officialtype_person (OfficialTypeId, RegistrationId) VALUES (?,?);");
             if (!$stmt->execute(array($Id, $this->Id))) {

@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registration = Registration::loadById($registrationId);
     
     $registration->deleteAllOfficialTypes();
-    $registration->saveAllOfficialTypes($_POST);
+    $registration->saveAllOfficialTypes($_POST['OfficialTypeId']);
     
     header('Location: ../officials.php');
     exit;

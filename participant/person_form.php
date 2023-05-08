@@ -22,7 +22,7 @@
     }
     
     
-    if ($person->isRegistered($current_larp)) {
+    if ($person->isRegistered($current_larp) || $person->isReserve($current_larp)) {
         header('Location: view_person.php?id='.$person->Id);
         exit;
     }
