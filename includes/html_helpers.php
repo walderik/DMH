@@ -107,9 +107,7 @@ function contactEmailIcon($name,$email) {
     return "<a href='contact_email.php?email=$email&name=$name'><i class='fa-solid fa-envelope-open-text'></i></a>";
 }
 
-function startsWithNumber($string) {
-    return strlen($string) > 0 && ctype_digit(substr($string, 0, 1));
-}
+
 
 # En HTML-selector för fonter
 function fontDropDown(String $name, ?String $selected=null) {

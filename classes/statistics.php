@@ -27,15 +27,7 @@ class Statistics  extends Dbh{
         
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $ssn = $rows[0]['socialsecuritynumber'];
-        
-
-        $birthday = DateTime::createFromFormat('Ymd', substr($ssn, 0, 8));
-        
-        $larpStartDate = DateTime::createFromFormat('Y-m-d', substr($larp->StartDate, 0, 10));
-        
-        
-        $interval = date_diff($birthday, $larpStartDate);
-        return $interval->format('%Y');
+         return getAge(substr($ssn, 0, 8), $larp->StartDate);
 
     }
     
@@ -61,13 +53,7 @@ class Statistics  extends Dbh{
         $ssn = $rows[0]['socialsecuritynumber'];
         
         
-        $birthday = DateTime::createFromFormat('Ymd', substr($ssn, 0, 8));
-        
-        $larpStartDate = DateTime::createFromFormat('Y-m-d', substr($larp->StartDate, 0, 10));
-        
-        
-        $interval = date_diff($birthday, $larpStartDate);
-        return $interval->format('%Y');
+        return getAge(substr($ssn, 0, 8), $larp->StartDate);
         
     }
     
