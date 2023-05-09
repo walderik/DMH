@@ -8,11 +8,9 @@ Gruppintrig och grupp-props på karaktärsblad
 Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 
-
-Reservlista: 
-* översiktssidan för deltagare
-* inte kunna anmäla igen
-* på adminsidan (se listan, plocka in deltagare från listan)
+Mottagare på brev
+Senast inloggad på user
+Antalet ord på intrigerna i listan med roller
 
 Intrigverktyg
 
@@ -25,7 +23,7 @@ byta user för en person (admin funktion)
 
 Behöver man kunna byta spelare på en roll?
 
-Antalet tecken / ord på intrigerna i listan med roller
+
 
 
 Tips jag hittade:

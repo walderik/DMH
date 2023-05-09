@@ -7,7 +7,8 @@ include 'navigation_subpage.php';
 
     <div class="content">   
         <h1>Reservlistan</h1>
-        Genom att klicka på "Gör till en anmälan" omvandlas deltagare på reservlistan till en vanlig anmälan som får hanteras i vanlig ordning med eventuella godkännanden.
+        Detta är listan med deltagare som har gjort en anmälan efter att lajvet är fullt. De har fått meddelande om att de står på reservplats.<br><br>
+        Genom att klicka på "Gör till en anmälan" omvandlas deltagare på reservlistan till en vanlig anmälan. Den får sedan hanteras i vanlig ordning med eventuella godkännanden.
      		<?php 
     		$persons = Person::getAllReserves($current_larp);
     		if (empty($persons)) {

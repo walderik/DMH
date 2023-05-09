@@ -36,5 +36,5 @@ $pdf->AddFont('Helvetica','');
 $pdf->SetSubject(utf8_decode($name));
 
 $pdf->new_report($current_larp, $name, $rows);
-
+$pdf->new_report($current_larp, "Gluten", $rows);
 $pdf->Output();
