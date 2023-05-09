@@ -151,7 +151,7 @@ include 'navigation_subpage.php';
   	$officialTypes = OfficialType::allActive($current_larp);
   	
   	foreach ($officialTypes as $officialType) {
-  	    $persons = Person::getAllWhoWantToBeOffical($current_larp);
+  	    $persons = Person::getAllWhoWantToBeOfficialsByType($officialType, $current_larp);
   	    echo "$officialType->Name: ".count($persons)." st<br>";
   	}
   	

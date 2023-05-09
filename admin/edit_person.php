@@ -61,7 +61,7 @@ include 'navigation_subpage.php';
 		    if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		    ?>
 			<tr><td valign="top" class="header">Ansvarig vuxen&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="GuardianInfo" placeholder="Ange namn eller personnummer på den som är ansvarig vuxen" 
+			<td><input type="text" id="GuardianInfo" name="GuardianInfo" placeholder="Ange namn eller personnummer på den som är ansvarig vuxen" 
 			value="<?php if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name;?>" size="100" maxlength="250"></td></tr>
 		    
 		    <?php 

@@ -179,7 +179,7 @@ class Person extends BaseModel{
                 $resultArray[] = $person;
             }
         }
-        if (count($resultArray) == 0) return null;
+        if (empty($resultArray) || count($resultArray) == 0) return null;
         return $resultArray[0];
             
     }
@@ -497,6 +497,16 @@ class Person extends BaseModel{
         $sql="SELECT * FROM regsys_person WHERE id IN ".
             "(SELECT PersonId from regsys_registration, regsys_officialtype_person ".
             "WHERE IsOfficial=1 and LARPId=? AND regsys_registration.Id = regsys_officialtype_person.RegistrationId ".
+            "AND OfficialTypeId = ?) ".
+            "ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $officialtype->Id));
+    }
+    
+    public static function getAllWhoWantToBeOfficialsByType(OfficialType $officialtype, LARP $larp) {
+        if (is_null($larp) or is_null($officialtype)) return Array();
+        $sql="SELECT * FROM regsys_person WHERE id IN ".
+            "(SELECT PersonId from regsys_registration, regsys_officialtype_person ".
+            "WHERE IsOfficial=0 and LARPId=? AND regsys_registration.Id = regsys_officialtype_person.RegistrationId ".
             "AND OfficialTypeId = ?) ".
             "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $officialtype->Id));

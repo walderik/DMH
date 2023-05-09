@@ -1,6 +1,8 @@
 <?php
 include_once '../header.php';
 
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $personId = $_POST['PersonId'];
 
@@ -25,12 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registration->update();
     
     $registration->deleteAllOfficialTypes();
-    $registration->saveAllOfficialTypes($_POST['OfficialTypeId']);
-    
-    if (isset($_POST['Referer']) && $_POST['Referer']!="") {
-        header('Location: ' . $_POST['Referer']);
-        exit;
+    if (isset($_POST['OfficialTypeId'])) {
+        $registration->saveAllOfficialTypes($_POST['OfficialTypeId']);
     }
+    
+
 
     //Hitta rätt Guardian
     if (isset($_POST['GuardianInfo'])) {
@@ -47,16 +48,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if (!empty($guardian)) {
             $registration->GuardianId = $guardian->Id;
+            if ($guardian->UserId != $current_user->Id) {
+                BerghemMailer::send_guardian_mail($guardian, $person, $current_larp);
+            }
+        }
+        else {
+            $registration->GuardianId = null;
         }
         $registration->update();
   
-        if ($guardian->UserId != $current_user->Id) {            
-            BerghemMailer::send_guardian_mail($guardian, $person, $current_larp);
-        }
         
         
         
     }
-        
+
+    if (isset($_POST['Referer']) && $_POST['Referer']!="") {
+        header('Location: ' . $_POST['Referer']);
+        exit;
+    }
 }
 header('Location: ../index.php');
