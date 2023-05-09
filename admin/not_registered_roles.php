@@ -2,14 +2,15 @@
 include_once 'header.php';
 
 include 'navigation_subpage.php';
+
 ?>
 
 
     <div class="content">   
         <h1>Karaktärer i kampanjen som inte är anmälda (än) i år</h1>
-        
-        
-        <br>Om man anmäler någon härifrån kommer de att välja det första alternativet på boende. Du får redigera det på personen. Och karaktären blir som ovan.</p>
+        <p>
+        Om man anmäler någon härifrån kommer de att välja "<?php echo HousingRequest::allActive($current_larp)[0]->Name ?>" som boende och 
+        "<?php echo TypeOfFood::allActive($current_larp)[0]->Name ?>" som mat. Du får redigera det på personen efteråt om det behövs.</p>
 		<br><br><strong>OBS! Det kan ta tid. Vänta ett par sekunder efter att ni har klickat!</strong>
      		<?php 
     		$roles = Role::getAllUnregisteredRoles($current_larp);
