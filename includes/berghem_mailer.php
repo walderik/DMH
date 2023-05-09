@@ -19,9 +19,12 @@ class BerghemMailer {
     # Normalt bör man inte anropa den här direkt utan newWithDefault
     public static function send(string $to_email, string $to_name, string $text, string $subject=null, ?array $attachments=[]) {
     
-        global $current_larp;
+        global $current_larp, $current_user;
         
-        
+        //Om test, skicka bara till inloggad användare
+        if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
+            $to_email = $current_user->Email;
+        }
             
         $from = static::$from;
         $myName = "Berghems vänner";
@@ -114,6 +117,7 @@ class BerghemMailer {
         }
         
         $mail->Body = utf8_decode($mailContent);
+        
         
         if (!$mail->send()) {
             echo 'Mailer Error: ' . $mail->ErrorInfo;
