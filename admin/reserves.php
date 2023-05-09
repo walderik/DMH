@@ -58,7 +58,7 @@ include 'navigation_subpage.php';
     		        echo "<td>" .  commaStringFromArrayObject($reserve_registration->getOfficialTypes()) . "</td>\n";
     		        
     		        echo "<td>";
-    		        echo "<form method='post' action='logic/give_make_into_registration.php'>";
+    		        echo "<form method='post' action='logic/make_into_registration.php'>";
     		        echo "<input type='hidden' id='Reserve_RegistrationId' name='Reserve_RegistrationId' value='$reserve_registration->Id'>";
     		        
     		        echo "<input type='submit' value='Gör till en anmälan'>";

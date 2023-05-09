@@ -157,7 +157,7 @@ class Reserve_Registration extends BaseModel{
     
     public function deleteAllOfficialTypes() {
         $stmt = $this->connect()->prepare("DELETE FROM ".
-            "regsys_officialtype_reserve WHERE RegistrationId = ?;");
+            "regsys_officialtype_reserve WHERE Reserve_RegistrationId = ?;");
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -228,10 +228,11 @@ class Reserve_Registration extends BaseModel{
             $larp_role->RoleId = $reserve_larp_role->RoleId;
             $larp_role->IsMainRole = $reserve_larp_role->IsMainRole;
             $larp_role->create();
-            //TODO skicka mail till gruppledaren för gruppena rollerna är med i.
         }
 
-       
+        //Skicka anmälan mail
+        BerghemMailer::send_registration_mail($registration);
+        
         //Ta bort allt kring reservationen
         $this->deleteAllOfficialTypes();
         Reserve_Registration::delete($this->Id);

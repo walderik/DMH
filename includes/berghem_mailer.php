@@ -181,7 +181,7 @@ class BerghemMailer {
         
         $campaign = $larp->getCampaign();
         
-        $text  = "Du har nu anmält att du ska vara med i lajvet $larp->Name<br>\n";
+        $text  = "Du är nu anmäld för att vara med i lajvet $larp->Name<br>\n";
         $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>.<br>\n";
         if (!$registration->isMember()) {
             $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";

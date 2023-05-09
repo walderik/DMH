@@ -92,7 +92,8 @@ class Reserve_LARP_Role extends BaseModel{
     
     
     public static function deleteByIds($larpId, $roleId) {
-        $stmt = $this->connect()->prepare("DELETE FROM ".
+        $connection = static::connectStatic();
+        $stmt = $connection->prepare("DELETE FROM ".
             "regsys_reserve_larp_role WHERE LARPId = ? AND RoleId = ?;");
         if (!$stmt->execute(array($larpId, $roleId))) {
             $stmt = null;
