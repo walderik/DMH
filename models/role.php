@@ -192,7 +192,13 @@ class Role extends BaseModel{
     
     public function isMain(LARP $larp) {
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
-        return $larp_role->IsMainRole;
+        if (!empty($larp_role)) return $larp_role->IsMainRole;
+ 
+        $reserve_larp_role = Reserve_LARP_Role::loadByIds($this->Id, $larp->Id);
+        if (!empty($reserve_larp_role)) return $reserve_larp_role->IsMainRole;
+        
+        return false;
+        
     }
     
     public function hasImage() {
@@ -235,6 +241,16 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
     }
    
+    # Hämta de karaktärer en person på reservlistan har anmält till ett lajv
+    public static function getReserveRegistredRolesForPerson(Person $person, LARP $larp) {
+        if (is_null($person) || is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_role, regsys_reserve_larp_role WHERE ".
+            "regsys_role.PersonId = ? AND ".
+            "regsys_role.Id=regsys_reserve_larp_role.RoleId AND ".
+            "regsys_reserve_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+    }
+    
     
     
     # Hämta huvudkaraktären för en person har anmält till ett lajv

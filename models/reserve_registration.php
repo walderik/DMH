@@ -228,8 +228,9 @@ class Reserve_Registration extends BaseModel{
             $larp_role->RoleId = $reserve_larp_role->RoleId;
             $larp_role->IsMainRole = $reserve_larp_role->IsMainRole;
             $larp_role->create();
+            //TODO skicka mail till gruppledaren för gruppena rollerna är med i.
         }
-        
+
        
         //Ta bort allt kring reservationen
         $this->deleteAllOfficialTypes();

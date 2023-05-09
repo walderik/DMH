@@ -30,7 +30,7 @@ include 'navigation_subpage.php';
 
     		        if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 
-    		            if (empty($registration->GuardianId)) {
+    		            if (empty($reserve_registration->GuardianId)) {
     		                echo showStatusIcon(false);
     		            }
     		                

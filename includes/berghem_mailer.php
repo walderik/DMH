@@ -213,9 +213,7 @@ class BerghemMailer {
         $person = $reserve_registration->getPerson();
         
         $larp = $reserve_registration->getLARP();
-        $roles = $person->getRolesAtLarp($larp);
-        
-        $campaign = $larp->getCampaign();
+        $roles = $person->getReserveRolesAtLarp($larp);
         
         $text  = "Lajvet $larp->Name är fullt, men du står nu på reservlistan.<br>\n";
         $text .= "De karaktärer du har anmält är:<br>\n";

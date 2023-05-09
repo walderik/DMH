@@ -54,9 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $guardianInfo = substr($guardianInfo, 0, 8) . "-" . substr($guardianInfo, 8);
                     }
                 }
-                
-                
-                
+ 
                 $guardian = Person::findGuardian($guardianInfo, $current_larp);
                 
                 if (!empty($guardian)) {
