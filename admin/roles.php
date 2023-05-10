@@ -56,8 +56,11 @@
     		        if ($role->isMysLajvare()) {
     		            echo "<td colspan=2>N/A</td>\n";
     		        } else {
-        		        echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";
-        		        echo "<td><a href='edit_intrigue.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		            $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+    		            echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp));
+    		            if (!empty($larp_role->Intrigue)) echo "<br>".str_word_count($larp_role->Intrigue)." ord";
+    		            echo "</td>\n";
+    		            echo "<td><a href='edit_intrigue.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        }
     		        echo "</tr>\n";
     		    }
@@ -109,7 +112,10 @@
     		        if ($role->isMysLajvare()) {
     		            echo "<td>N/A</td>\n";
     		        } else {
-    		            echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp)) . "</td>\n";
+    		            $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+    		            echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp));
+    		            if (!empty($larp_role->Intrigue)) echo "<br>".str_word_count($larp_role->Intrigue)." ord";
+    		            echo "</td>\n";
     		            echo "<td><a href='edit_intrigue.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        }
     		        echo "</tr>\n";

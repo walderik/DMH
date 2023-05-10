@@ -8,9 +8,8 @@ Gruppintrig och grupp-props på karaktärsblad
 Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 
-Mottagare på brev
+
 Senast inloggad på user
-Antalet ord på intrigerna i listan med roller
 
 Intrigverktyg
 
