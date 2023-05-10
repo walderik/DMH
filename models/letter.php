@@ -14,6 +14,7 @@ class Letter extends BaseModel{
     public  $LARPid;
     public  $Font;
     public  $UserId; 
+    public  $Recipient;
 
     
 
@@ -37,6 +38,7 @@ class Letter extends BaseModel{
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
         if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
+        if (isset($arr['Recipient'])) $this->Recipient = $arr['Recipient'];
         
     }
     
@@ -85,9 +87,9 @@ class Letter extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_letter SET WhenWhere=?, Greeting=?, EndingPhrase=?, Signature=?, Message=?, Font=?, OrganizerNotes=?, Approved=?, UserId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_letter SET WhenWhere=?, Greeting=?, EndingPhrase=?, Signature=?, Message=?, Font=?, OrganizerNotes=?, Approved=?, UserId=?, Recipient=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->Id))) {
+        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->Recipient, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -99,9 +101,9 @@ class Letter extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_letter (WhenWhere, Greeting, EndingPhrase, Signature, Message, Font, OrganizerNotes, Approved, UserId, LARPid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_letter (WhenWhere, Greeting, EndingPhrase, Signature, Message, Font, OrganizerNotes, Approved, UserId, LARPid, Recipient) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->LARPid))) {
+        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->LARPid, $this->Recipient))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

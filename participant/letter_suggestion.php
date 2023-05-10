@@ -61,6 +61,10 @@ include 'navigation.php';
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
 		<table>
 			<tr>
+				<td><label for=Recipient>Mottagare</label></td>
+				<td><input type="text" id="Recipient" name="Recipient" value="<?php echo $letter->Recipient; ?>" size="50" maxlength="50" required></td>
+			</tr>
+			<tr>
 				<td><label for="WhenWhere">Ort och datum</label></td>
 				<td><input type="text" id="WhenWhere" name="WhenWhere" value="<?php echo $letter->WhenWhere; ?>" size="50" maxlength="50" required></td>
 			</tr>
