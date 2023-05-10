@@ -9,7 +9,6 @@ Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 
 
-Senast inloggad på user
 
 Intrigverktyg
 

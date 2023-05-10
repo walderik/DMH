@@ -62,6 +62,8 @@ class LoginController {
         session_start();
         session_unset();
         
+        $user->LastLogin = date_format(new Datetime(),"Y-m-d H:i:s");
+        $user->update();
         
         $_SESSION['is_loggedin'] = true;
         $_SESSION['id'] = $user->Id;

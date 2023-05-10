@@ -16,6 +16,7 @@ class User extends BaseModel{
     public $ActivationCode;
     public $EmailChangeCode;
     public $Blocked = 0;
+    public $LastLogin = NULL;
     
 //     public static $tableName = 'user';
     public static $orderListBy = 'Name';
@@ -30,6 +31,7 @@ class User extends BaseModel{
         if (isset($post['ActivationCode'])) $user->ActivationCode = $post['ActivationCode'];
         if (isset($post['EmailChangeCode'])) $user->EmailChangeCode = $post['EmailChangeCode'];
         if (isset($post['Blocked'])) $user->Blocked = $post['Blocked'];
+        if (isset($post['LastLogin'])) $user->LastLogin = $post['LastLogin'];
         
         return $user;
     }
@@ -57,9 +59,9 @@ class User extends BaseModel{
     
     # Update an existing group in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_user SET Name=?, Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=?, Blocked=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_user SET Name=?, Email=?, Password=?, IsAdmin=?, ActivationCode=?, EmailChangeCode=?, Blocked=?, LastLogin=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked, $this->Id))) {
+        if (!$stmt->execute(array($this->Name, $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked, $this->LastLogin, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -71,9 +73,9 @@ class User extends BaseModel{
     # Create a new group in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_user (Name, Email, Password, IsAdmin, ActivationCode, EmailChangeCode, Blocked) VALUES (?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_user (Name, Email, Password, IsAdmin, ActivationCode, EmailChangeCode, Blocked, LastLogin) VALUES (?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Name, $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked))) {
+        if (!$stmt->execute(array($this->Name, $this->Email, $this->Password, $this->IsAdmin, $this->ActivationCode, $this->EmailChangeCode, $this->Blocked, $this->LastLogin))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
