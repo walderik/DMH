@@ -88,6 +88,16 @@ img {
 				<td><input type="text" id="StorageLocation" name="StorageLocation"
 					 value="<?php echo $prop->StorageLocation; ?>" size="100" maxlength="250" required></td>
 			</tr>
+			<tr>
+				<td><label for="Marking">Märkning</label></td>
+				<td><input type="text" id="Marking" name="Marking" value="<?php echo $prop->Marking; ?>" size="100" maxlength="250" ></td>
+
+			</tr>
+			<tr>
+				<td><label for="Properties">In-lajv egenskaper</label></td>
+				<td><input type="text" id="Properties" name="Properties" value="<?php echo $prop->Properties; ?>" size="100" maxlength="250" ></td>
+
+			</tr>
 		</table>
 
 		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">

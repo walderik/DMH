@@ -10,6 +10,8 @@ class Prop extends BaseModel{
     public $GroupId = null;
     public $RoleId = null;
     public $CampaignId;
+    public $Marking ="";
+    public $Properties ="";
     
     public static $orderListBy = 'Name';
     
@@ -30,7 +32,9 @@ class Prop extends BaseModel{
         if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
         if (isset($arr['RoleId'])) $this->RoleId = $arr['RoleId'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
-
+        if (isset($arr['Marking'])) $this->Marking = $arr['Marking'];
+        if (isset($arr['Properties'])) $this->Properties = $arr['Properties'];
+        
         if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
         if (isset($this->RoleId) && $this->RoleId=='null') $this->RoleId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
@@ -52,10 +56,10 @@ class Prop extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_prop SET Name=?, 
             Description=?, StorageLocation=?, ImageId=?, GroupId=?, RoleId=?,
-            CampaignId=? WHERE Id = ?;");
+            CampaignId=?, Marking=?, Properties=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Description, $this->StorageLocation, 
-            $this->ImageId, $this->GroupId, $this->RoleId, $this->CampaignId, $this->Id))) {
+            $this->ImageId, $this->GroupId, $this->RoleId, $this->CampaignId, $this->Marking, $this->Properties, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -67,10 +71,10 @@ class Prop extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_prop (Name, Description, 
-            StorageLocation, GroupId, RoleId, CampaignId) VALUES (?,?,?,?,?,?);");
+            StorageLocation, GroupId, RoleId, CampaignId, Marking, Properties) VALUES (?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Description, $this->StorageLocation, 
-            $this->GroupId, $this->RoleId, $this->CampaignId))) {
+            $this->GroupId, $this->RoleId, $this->CampaignId, $this->Marking, $this->Properties))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");

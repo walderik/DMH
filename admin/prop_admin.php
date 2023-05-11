@@ -48,13 +48,15 @@ include 'navigation_subpage.php';
        $prop_array = Prop::allByCampaign($current_larp);
         if (!empty($prop_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Innehavare</th><th>Bild</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Märkning</th><th>In-lajv<br>egenskaper</th><th>Innehavare</th><th>Bild</th><th></th><th></th></tr>\n";
             foreach ($prop_array as $prop) {
                 echo "<tr>\n";
                 echo "<td>" . $prop->Id . "</td>\n";
                 echo "<td>" . $prop->Name . "</td>\n";
                 echo "<td>" . $prop->Description . "</td>\n";
                 echo "<td>" . $prop->StorageLocation . "</td>\n";
+                echo "<td>" . $prop->Marking . "</td>\n";
+                echo "<td>" . $prop->Properties . "</td>\n";
                 echo "<td>" . $owner . "</td>\n";
 
                 if ($prop->hasImage()) {
