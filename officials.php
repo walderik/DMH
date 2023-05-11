@@ -148,7 +148,7 @@ function print_role($role) {
 		
 		foreach ($officialTypes as $officialType) {
 		    $persons = Person::getAllOfficialsByType($officialType, $larp);
-		    
+		    $temp=0;
 
 
 		    
