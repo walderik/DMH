@@ -28,6 +28,11 @@ else {
     $referer = "";
 }
 
+$roles = $person->getRolesAtLarp($current_larp);
+$userMayEdit = false;
+foreach($roles as $role) {
+    if ($role->userMayEdit($current_larp)) $userMayEdit = true;
+}
 
 include 'navigation_subpage.php';
 
@@ -36,6 +41,13 @@ include 'navigation_subpage.php';
 
 	<div class="content">
 		<h1><?php echo $person->Name;?></h1>
+		<?php 
+		if (!$registration->isApprovedCharacters() && !$userMayEdit) {
+	        echo "<form action='logic/approve_person.php' method='post'>";
+	        echo "<input type='hidden' id='RegistrationId' name='RegistrationId' value='$registration->Id'>";
+	        echo "<input type='submit' value='Godkänn karaktärerna'>";
+		}
+		?>
 		<form action="logic/edit_person_save.php" method="post">
     		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $person->Id; ?>">
     		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $registration->Id; ?>">
