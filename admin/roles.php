@@ -23,8 +23,9 @@
         		    "<th onclick='sortTable(3, \"$tableId\")'>Yrke</th>".
         		    "<th onclick='sortTable(4, \"$tableId\")'>Typ av lajvare</th>".
         		    "<th onclick='sortTable(5, \"$tableId\")'>Intrigtyper</th>".
-        		    "<th onclick='sortTable(6, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(7, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
+        		    "<th onclick='sortTable(6, \"$tableId\")'>Rikedom</th>".
+        		    "<th onclick='sortTable(7, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(8, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
     		        echo "<tr>\n";
@@ -38,15 +39,25 @@
     		        echo "</td>\n";
     		        echo "<td align='center'>".showStatusIcon($person->isApprovedCharacters($current_larp))."</td>\n";
     		        echo "<td>$role->Profession</td>\n";
-    		        echo "<td>";
-    		        $larpertype = $role->getLarperType();
-    		        if (!empty($larpertype)) echo $larpertype->Name;
-    		        echo "</td>\n";
-    		        echo "<td>";
-    		        echo commaStringFromArrayObject($role->getIntrigueTypes());
-    		        echo "</td>\n";
-    		        
-    		        
+    		        if ($role->isMysLajvare()) {
+    		            echo "<td></td>";
+    		            echo "<td></td>";
+    		            echo "<td></td>";
+    		        }
+    		        else {
+        		        echo "<td>";
+        		        $larpertype = $role->getLarperType();
+        		        if (!empty($larpertype)) echo $larpertype->Name;
+        		        echo "</td>\n";
+        		        echo "<td>";
+        		        echo commaStringFromArrayObject($role->getIntrigueTypes());
+        		        echo "</td>\n";
+        		        
+        		        $wealth = $role->getWealth();
+        		        echo "<td>";
+        		        if (!empty($wealth)) echo $wealth->Name;
+        		        echo "</td>\n";
+    		        }
    		        $group = $role->getGroup();
     		        if (is_null($group)) {
     		            echo "<td>&nbsp;</td>\n";
@@ -83,8 +94,9 @@
         		    "<th onclick='sortTable(3, \"$tableId\")'>Yrke</th>".
         		    "<th onclick='sortTable(4, \"$tableId\")'>Typ av lajvare</th>".
         		    "<th onclick='sortTable(5, \"$tableId\")'>Intrigtyper</th>".
-        		    "<th onclick='sortTable(6, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(7, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
+        		    "<th onclick='sortTable(6, \"$tableId\")'>Rikedom</th>".
+        		    "<th onclick='sortTable(7, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(8, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $role->Name . "</td>\n";
@@ -102,6 +114,8 @@
     		        echo "<td>";
     		        echo commaStringFromArrayObject($role->getIntrigueTypes());
     		        echo "</td>\n";
+
+    		        echo "<td>" . $role->getWealth()->Name . "</td>\n";
     		        
     		        $group = $role->getGroup();
     		        if (is_null($group)) {
