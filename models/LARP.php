@@ -14,6 +14,8 @@ class LARP extends BaseModel{
     public  $DisplayIntrigues = 0;
     public  $CampaignId;
     public  $RegistrationOpen = 0;
+    public  $PaymentReferencePrefix = "";
+    public  $NetDays = 0;
 
     
 //     public static $tableName = 'larp';
@@ -39,6 +41,8 @@ class LARP extends BaseModel{
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['RegistrationOpen'])) $this->RegistrationOpen = $arr['RegistrationOpen'];        
+        if (isset($arr['PaymentReferencePrefix'])) $this->PaymentReferencePrefix = $arr['PaymentReferencePrefix'];
+        if (isset($arr['NetDays'])) $this->NetDays = $arr['NetDays'];
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -48,11 +52,14 @@ class LARP extends BaseModel{
     
     # Update an existing larp in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_larp SET Name=?, TagLine=?, StartDate=?, EndDate=?, MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, DisplayIntrigues=?, CampaignId=?, RegistrationOpen=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp SET Name=?, TagLine=?, StartDate=?, EndDate=?, ".
+                 "MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, ".
+                 "DisplayIntrigues=?, CampaignId=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, $this->RegistrationOpen, $this->Id))) {
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, 
+            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -65,12 +72,14 @@ class LARP extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp (Name, TagLine, StartDate, EndDate, MaxParticipants, 
-            LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId, RegistrationOpen) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId, 
+            RegistrationOpen, PaymentReferencePrefix, NetDays) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, $this->RegistrationOpen))) {
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, 
+            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();

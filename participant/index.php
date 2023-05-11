@@ -118,7 +118,7 @@ $someOneHasSpotOnLarp = false;
                         if (!$person->hasPayed($current_larp)) {
 
                             $campaign = $current_larp->getCampaign();
-                            echo "</td><td>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>";
+                            echo "</td><td>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. Betalas senast ".$registration->paymentDueDate();
                         }
                         echo "</td></tr>\n";
  

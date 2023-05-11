@@ -8,6 +8,9 @@
     <div class="content">   
         <h1>Anmälda deltagare</h1>
         Genom att klicka på rubrikerna i tabellen kan du sortera tabellen. Klicka en gång till för att få omvänd ordning.
+        <br><br>
+        Om betalningskolumnen har två röds utropstecken har man gått över tiden för betalningen.
+        <br>
      		<?php 
     		$persons = Person::getAllRegistered($current_larp);
     		if (empty($persons)) {
@@ -47,7 +50,9 @@
     		        echo "<td align='center'>" . showStatusIcon($registration->isApprovedCharacters()) . "</td>\n";
     		        echo "<td align='center'>" . showStatusIcon($registration->isMember()) . "</td>\n";
     		        echo "<td>".$registration->PaymentReference .  "</td>\n";
-    		        echo "<td align='center'>" . showStatusIcon($registration->hasPayed()) . "</td>";
+    		        echo "<td align='center'>" . showStatusIcon($registration->hasPayed());
+    		        if (!$registration->hasPayed() && $registration->isPastPaymentDueDate()) echo " ".showStatusIcon(false);
+    		        "</td>";
     		        echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        
     		        echo "<td>";

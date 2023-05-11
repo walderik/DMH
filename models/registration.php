@@ -319,4 +319,27 @@ class Registration extends BaseModel{
         return $income;
         
     }
+    
+    public function createPaymentReference() {
+        $larp = LARP::loadById($this->LARPId);
+        return  $larp->PaymentReferencePrefix . $this->LARPId . $this->PersonId;;
+    }
+    
+    public function paymentDueDate() {
+        $larp = LARP::loadById($this->LARPId);
+
+        $date=date_create($this->RegisteredAt);
+        date_add($date,date_interval_create_from_date_string("$larp->NetDays days"));
+        return date_format($date,"Y-m-d");
+    }
+    
+    public function isPastPaymentDueDate() {
+        $larp = LARP::loadById($this->LARPId);
+        
+        $date1=date_create($this->RegisteredAt);
+        $date2=date_create();
+        $diff=date_diff($date1,$date2);
+        if ($diff->days > $larp->NetDays) return true;
+        return false;
+    }
 }

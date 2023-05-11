@@ -88,6 +88,16 @@ include_once 'header.php';
     				<td><input type="datetime-local" id="EndTimeLARPTime"
     					name="EndTimeLARPTime" value="<?php echo $larp->EndTimeLARPTime; ?>" size="50"></td>
     			</tr>
+    			<tr>
+    				<td><label for="PaymentReferencePrefix">Prefix för betalningsreferens</label></td>
+    				<td><input type="text" id="PaymentReferencePrefix"
+    					name="PaymentReferencePrefix" value="<?php echo $larp->PaymentReferencePrefix; ?>" size="15" maxlength="10" required></td>
+    			</tr>
+    			<tr>
+    				<td><label for=NetDays>Antal dagar för betalning</label></td>
+    				<td><input type="number" id="NetDays"
+    					name="NetDays" value="<?php echo $larp->NetDays; ?>" size="15" maxlength="10" required></td>
+    			</tr>
     		</table>
     
     		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
