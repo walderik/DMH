@@ -75,24 +75,16 @@ class Registration extends BaseModel{
     
     public static function countAllNonOfficials(LARP $larp) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LARPid = ? AND IsOfficial=0;";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($larp->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $stmt = null;
-        return $rows[0]['Num'];
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LARPid = ? AND IsOfficial=0 AND NotComing=0;";
+        return static::countQuery($sql, array($larp->Id));
     }
+ 
+    public static function countAllOfficials(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LARPid = ? AND IsOfficial=1 AND NotComing=0;";
+        return static::countQuery($sql, array($larp->Id));
+    }
+    
     
     # Update an existing registration in db
     public function update() {

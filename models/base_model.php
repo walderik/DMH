@@ -152,4 +152,29 @@ class BaseModel extends Dbh{
         if ($res[0]['Num'] == 0) return false;
         return true;   
     }
+    
+    
+    protected static function countQuery($sql, $var_array) {
+        //Måste märka fältet som räkna med 'Num'
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute($var_array)) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+            
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+        
+        return $res[0]['Num'];
+    }
+    
+    
 }
