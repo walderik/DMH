@@ -27,15 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-$owner = "";
-if (isset($prop->GroupId)) {
-    $group = Group::loadById($prop->GroupId);
-    $owner = $group->Name;
-}
-elseif (isset($prop->RoleId)) {
-    $role = Role::loadById($prop->RoleId);
-    $owner = $role->Name;
-}
+
 include 'navigation_subpage.php';
 ?>
 
@@ -50,6 +42,15 @@ include 'navigation_subpage.php';
             echo "<table class='data'>";
             echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Märkning</th><th>In-lajv<br>egenskaper</th><th>Innehavare</th><th>Bild</th><th></th><th></th></tr>\n";
             foreach ($prop_array as $prop) {
+                $owner = "";
+                if (isset($prop->GroupId)) {
+                    $group = Group::loadById($prop->GroupId);
+                    $owner = $group->Name;
+                }
+                elseif (isset($prop->RoleId)) {
+                    $role = Role::loadById($prop->RoleId);
+                    $owner = $role->Name;
+                }
                 echo "<tr>\n";
                 echo "<td>" . $prop->Id . "</td>\n";
                 echo "<td>" . $prop->Name . "</td>\n";
@@ -57,7 +58,7 @@ include 'navigation_subpage.php';
                 echo "<td>" . $prop->StorageLocation . "</td>\n";
                 echo "<td>" . $prop->Marking . "</td>\n";
                 echo "<td>" . $prop->Properties . "</td>\n";
-                echo "<td>" . $owner . "</td>\n";
+                echo "<td>" . $owner . "<a href='prop_owner_form.php?id=" . $prop->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
 
                 if ($prop->hasImage()) {
                     $image = Image::loadById($prop->ImageId);
