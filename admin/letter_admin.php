@@ -1,24 +1,35 @@
 <?php
 include_once 'header.php';
 
+global $short_text;
+
+$short_text = true;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (isset($_POST['long_text'])) {
+     $short_text = false;   
+    }
     
-    $operation = $_POST['operation'];
+    if (isset($_POST['operation'])) {
+        $operation = $_POST['operation'];
+
     
-    if ($operation == 'insert') {
-        $letter = Letter::newFromArray($_POST);
-        $letter->create();
-    } elseif ($operation == 'delete') {
-        Letter::delete($_POST['Id']);
-    } elseif ($operation == 'update') {
-        $letter=Letter::loadById($_POST['Id']);
-        $letter->setValuesByArray($_POST);
-        $letter->update();
+        if ($operation == 'insert') {
+            $letter = Letter::newFromArray($_POST);
+            $letter->create();
+        } elseif ($operation == 'delete') {
+            Letter::delete($_POST['Id']);
+        } elseif ($operation == 'update') {
+            $letter=Letter::loadById($_POST['Id']);
+            $letter->setValuesByArray($_POST);
+            $letter->update();
+        }
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    
+
     //     $operation = $_GET['operation'];
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
         Letter::delete($_GET['id']);
@@ -35,7 +46,19 @@ include 'navigation_subpage.php';
             <a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
         
             <a href="logic/all_letters_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a>  
-        
+		<form action="letter_admin.php" method="post">
+		<?php
+		if ($short_text) {
+		    echo "<input type='hidden' id='long_text' name='long_text' value='1'>";
+		    echo "<input id='submit_button' type='submit' value='Visa full text'>";
+		}
+		else {
+		    echo "<input id='submit_button' type='submit' value='Visa förkortad text'>";
+		}
+		?>
+		</form>
+			
+
         <?php
     
         $letter_array = Letter::allBySelectedLARP($current_larp);
@@ -49,7 +72,12 @@ include 'navigation_subpage.php';
                 echo "<td>" . $letter->Recipient . "</td>\n";
                 echo "<td>" . $letter->WhenWhere . "</td>\n";
                 echo "<td>" . $letter->Greeting . "</td>\n";
-                echo "<td>" . str_replace("\n", "<br>", $letter->Message) . "</td>\n";
+                if ($short_text) {
+                echo "<td>" . mb_strimwidth(str_replace("\n", "<br>", $letter->Message), 0, 100, "...") . "</td>\n";
+                }
+                else {
+                    echo "<td>" . str_replace("\n", "<br>", $letter->Message) . "</td>\n";
+                }
                 echo "<td>" . $letter->EndingPhrase . "</td>\n";
                 echo "<td>" . $letter->Signature . "</td>\n";
                 echo "<td>" . $letter->Font . "</td>\n";
