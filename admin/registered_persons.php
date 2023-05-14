@@ -9,7 +9,7 @@
         <h1>Anmälda deltagare</h1>
         Genom att klicka på rubrikerna i tabellen kan du sortera tabellen. Klicka en gång till för att få omvänd ordning.
         <br><br>
-        Om betalningskolumnen har två röds utropstecken har man gått över tiden för betalningen.
+        Om betalningskolumnen har två röda utropstecken har man gått över tiden för betalningen.
         <br>
      		<?php 
     		$persons = Person::getAllRegistered($current_larp);
@@ -30,48 +30,81 @@
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<tr>\n";
-    		        echo "<td>" . $person->Name . "</td>\n";
+    		        echo "<td>";
+    		        if ($registration->NotComing == 1) {
+    		            echo "<s>";
+    		        }
+    		        echo $person->Name;
+    		        if ($registration->NotComing == 1) {
+    		            echo "</s>";
+    		        }
+    		        echo "</td>\n";
     		        echo "<td>" . "<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
-    		        echo "<td>" . $person->Email . " ".contactEmailIcon($person->Name,$person->Email)."</td>\n";
-    		        echo "<td>" . $person->getAgeAtLarp($current_larp) . " år ";
-
-    		        if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-
-    		            if (empty($registration->GuardianId)) {
-    		                echo showStatusIcon(false);
-    		            }
-    		                
-
-		            }
+    		        echo "<td>";
+    		        if ($registration->NotComing == 1) {
+    		            echo "<s>";
+    		        }
+    		        
+    		        echo $person->Email;
+    		        if ($registration->NotComing == 1) {
+    		            echo "</s>";
+    		        }
+    		        
+    		        echo " ".contactEmailIcon($person->Name,$person->Email)."</td>\n";
     		        echo "</td>\n";
 
-    		        
-    		        echo "<td align='center'>" . showStatusIcon($registration->isApprovedCharacters()) . "</td>\n";
-    		        echo "<td align='center'>" . showStatusIcon($registration->isMember()) . "</td>\n";
-    		        echo "<td>".$registration->PaymentReference .  "</td>\n";
-    		        echo "<td align='center'>" . showStatusIcon($registration->hasPayed());
-    		        if (!$registration->hasPayed() && $registration->isPastPaymentDueDate()) echo " ".showStatusIcon(false);
-    		        "</td>";
-    		        echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
-    		        
-    		        echo "<td>";
-    		        if ($registration->SpotAtLARP == 1) {
-    		            echo showStatusIcon(true);
+    		        if ($registration->NotComing == 1) {
+    		            echo "<td></td>";
+    		            echo "<td></td>";
+    		            echo "<td></td>";
+    		            echo "<td></td>";
+    		            echo "<td align='center'>";
+    		            if ($registration->isToBeRefunded()) echo " ".showStatusIcon(false);
+    		            "</td>";
+    		            echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		            
+    		            echo "<td>";
+    		            echo "<td></td>";
+    		            echo "<td></td>";
     		        }
     		        else {
-        		        echo showStatusIcon(false);
-        		        echo "</td><td>";
-        		        if ($registration->allChecksPassed()) {
-            		        echo "<form method='post' action='logic/give_spot.php'>";
-            		        echo "<input type='hidden' id='RegistrationId' name='RegistrationId' value='$registration->Id'>";
-            		        
-            		        echo "<input type='submit' value='Ge plats'>";
-            		        echo "</form>";
-        		        }
-    		        }
-    		        echo "</td>";
+    		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år ";
     		            
+    		            if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    		                
+    		                if (empty($registration->GuardianId)) {
+    		                    echo showStatusIcon(false);
+    		                }
+    		                
+    		                
+    		            }
+    		            
+        		        echo "<td align='center'>" . showStatusIcon($registration->isApprovedCharacters()) . "</td>\n";
+        		        echo "<td align='center'>" . showStatusIcon($registration->isMember()) . "</td>\n";
+        		        echo "<td>".$registration->PaymentReference .  "</td>\n";
+        		        echo "<td align='center'>" . showStatusIcon($registration->hasPayed());
+        		        if (!$registration->hasPayed() && $registration->isPastPaymentDueDate()) echo " ".showStatusIcon(false);
+        		        "</td>";
+        		        echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+        		        
+        		        echo "<td>";
+        		        if ($registration->SpotAtLARP == 1) {
+        		            echo showStatusIcon(true);
+        		        }
+        		        else {
+            		        echo showStatusIcon(false);
+            		        echo "</td><td>";
+            		        if ($registration->allChecksPassed()) {
+                		        echo "<form method='post' action='logic/give_spot.php'>";
+                		        echo "<input type='hidden' id='RegistrationId' name='RegistrationId' value='$registration->Id'>";
+                		        
+                		        echo "<input type='submit' value='Ge plats'>";
+                		        echo "</form>";
+            		        }
+        		        }
+        		        echo "</td>";
+    		        }
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";

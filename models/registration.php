@@ -143,6 +143,15 @@ class Registration extends BaseModel{
         return false;
         
     }
+
+    public function isToBeRefunded() {
+        if ($this->ToBeRefunded > 0 && empty($this->RefundDate)) {
+            return true;
+        }
+        return false;
+        
+    }
+    
     
     public function isMember() {
         //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
