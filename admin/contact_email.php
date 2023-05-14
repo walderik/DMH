@@ -27,7 +27,7 @@ $campaign = $current_larp->getCampaign();
 
 $hej = $campaign->hej();
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

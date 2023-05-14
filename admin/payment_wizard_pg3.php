@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
     
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 
 ?>
 

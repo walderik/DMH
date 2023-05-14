@@ -34,7 +34,7 @@ $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
 
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 

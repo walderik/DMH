@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $registration = Registration::loadById($RegistrationId);
 $person = Person::loadById($registration->PersonId);
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 
 ?>
 

@@ -44,7 +44,7 @@ include_once 'header.php';
         echo $output;
     }
     
-    include 'navigation_subpage.php';
+    include 'navigation.php';
     ?>
     
 

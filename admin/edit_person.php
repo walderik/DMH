@@ -34,7 +34,7 @@ foreach($roles as $role) {
     if ($role->userMayEdit($current_larp)) $userMayEdit = true;
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 
 ?>
 

@@ -22,7 +22,7 @@ else {
     $referer = "";
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 

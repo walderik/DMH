@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $objectType = getObjectType($type);
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 
 ?>
     <div class="content">   

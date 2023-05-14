@@ -27,7 +27,7 @@ if (!isset($role) or !isset($role->ImageId)){
 
 $image = Image::loadById($role->ImageId);
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 	<div class="content">

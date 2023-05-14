@@ -25,7 +25,7 @@ $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 $group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 

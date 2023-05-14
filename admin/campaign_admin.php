@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $campaign = $current_larp->getCampaign();
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
     <div class="content">   

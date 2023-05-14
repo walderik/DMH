@@ -47,7 +47,7 @@ elseif (isset($prop->RoleId)) {
     $owner_set = true;
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
     
 <style>

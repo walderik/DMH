@@ -22,7 +22,7 @@ if (!$person->isRegistered($current_larp) && !$person->isReserve($current_larp))
 $registration = Registration::loadByIds($person->Id, $current_larp->Id);
 
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 
 ?>
 

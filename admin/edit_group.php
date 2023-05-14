@@ -46,7 +46,7 @@ function existsInArray($entry, $array) {
     return false;
 }
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 

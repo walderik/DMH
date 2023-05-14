@@ -30,7 +30,7 @@ else {
 }
 
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 

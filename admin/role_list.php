@@ -5,7 +5,7 @@ include_once 'header.php';
 
 $roles = $current_larp->getAllMainRoles();
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 

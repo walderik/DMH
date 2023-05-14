@@ -2,7 +2,7 @@
 
 include_once 'header.php';
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 

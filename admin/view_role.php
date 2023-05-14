@@ -29,7 +29,7 @@ if (isset($role->GroupId)) {
 
 $person = $role->getPerson();
 
-include 'navigation_subpage.php';
+include 'navigation.php';
 ?>
 
 

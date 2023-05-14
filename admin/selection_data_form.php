@@ -56,7 +56,7 @@ include_once '../includes/selection_data_control.php';
         echo $output;
     }
     
-    include 'navigation_subpage.php';
+    include 'navigation.php';
     ?>
 
     <div class="content"> 

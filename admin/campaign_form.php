@@ -1,9 +1,6 @@
 <?php
 include_once 'header.php';
 
-?>
-   
-    <?php
     $campaign = Campaign::newWithDefault();
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -45,7 +42,7 @@ include_once 'header.php';
         echo $output;
     }
     
-    include 'navigation_subpage.php';
+    include 'navigation.php';
     
     ?>
     <div class="content"> 
