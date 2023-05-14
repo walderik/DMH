@@ -73,19 +73,19 @@ img {
     		<table>
     			<tr>
     				<td><label for="Name">Namn</label></td>
-    				<td><input type="text" id="Name" name="Name" value="<?php echo $house->Name; ?>" required></td>
+    				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($house->Name); ?>" required></td>
     			</tr>
     			<tr>
     				<td><label for="NumberOfBeds">Antal sovplatser</label></td>
-    				<td><input type="text" id="NumberOfBeds" name="NumberOfBeds" value="<?php echo $house->NumberOfBeds; ?>" required></td>
+    				<td><input type="text" id="NumberOfBeds" name="NumberOfBeds" value="<?php echo htmlspecialchars($house->NumberOfBeds); ?>" required></td>
     			</tr>
     			<tr>
     				<td><label for="PositionInVillage">Plats i byn</label></td>
-    				<td><textarea id="PositionInVillage" name="PositionInVillage" rows="4" cols="121" maxlength="60000" required><?php echo $house->PositionInVillage; ?></textarea></td>
+    				<td><textarea id="PositionInVillage" name="PositionInVillage" rows="4" cols="121" maxlength="60000" required><?php echo htmlspecialchars($house->PositionInVillage); ?></textarea></td>
     			</tr>
     			<tr>
     				<td><label for="Description">Beskrivning</label></td>
-    				<td><textarea id="Description" name="Description" rows="4" cols="121" maxlength="60000" required><?php echo $house->Description; ?></textarea></td>
+    				<td><textarea id="Description" name="Description" rows="4" cols="121" maxlength="60000" required><?php echo htmlspecialchars($house->Description); ?></textarea></td>
     			</tr>
     		</table>
      		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">

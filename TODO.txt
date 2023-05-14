@@ -4,7 +4,6 @@ Props: Visa på karaktärsblad
 
 Gruppintrig och grupp-props på karaktärsblad
 
-
 Not coming: stryk i deltagarlista, stryk roller (på alla ställen)
 
 
