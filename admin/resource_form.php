@@ -56,31 +56,31 @@ include_once 'header.php';
 		<table>
 			<tr>
 				<td><label for="Name">Namn</label></td>
-				<td><input type="text" id="Name" name="Name" value="<?php echo $resource->Name; ?>" size="100" maxlength="250" required></td>
+				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($resource->Name); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="UnitSingular">Enhet singular</label></td>
 				<td><input type="text" id="UnitSingular" name="UnitSingular"
-					 value="<?php echo $resource->UnitSingular; ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($resource->UnitSingular); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="UnitPlural">Enhet plural</label></td>
 				<td><input type="text" id="UnitPlural" name="UnitPlural"
-					 value="<?php echo $resource->UnitPlural; ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($resource->UnitPlural); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="UnitSingular">Pris i Slow River</label></td>
 				<td><input type="text" id="PriceSlowRiver" name="PriceSlowRiver"
-					 value="<?php echo $resource->PriceSlowRiver; ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($resource->PriceSlowRiver); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="PriceJunkCity">Pris i Junk City</label></td>
 				<td><input type="text" id="PriceJunkCity" name="PriceJunkCity"
-					 value="<?php echo $resource->PriceJunkCity; ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($resource->PriceJunkCity); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 

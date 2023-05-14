@@ -66,7 +66,7 @@ include 'navigation_subpage.php';
     			<input type="radio" id="NotComing_no" name="NotComing" value="0" <?php if ($registration->NotComing == 0) echo 'checked="checked"'?>> 
     			<label for="NeedFireplace_no">Nej</label>
 			</td></tr>
-			<tr><td valign="top" class="header">Anledning till avbokning</td><td><input type="text" id="NotComingReason" name="NotComingReason" value="<?php echo $registration->NotComingReason; ?>"  size="100" maxlength="250"></td></tr>
+			<tr><td valign="top" class="header">Anledning till avbokning</td><td><input type="text" id="NotComingReason" name="NotComingReason" value="<?php echo htmlspecialchars($registration->NotComingReason); ?>"  size="100" maxlength="250"></td></tr>
 			
 			<tr><td valign="top" class="header">Återbetalning</td><td><input type="number" id="ToBeRefunded" name="ToBeRefunded" value="<?php echo $registration->ToBeRefunded; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
 			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><input type="date" id="RefundDate" name="RefundDate" value="<?php echo $registration->RefundDate; ?>"  size="15" maxlength="250"></td></tr>

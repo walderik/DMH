@@ -57,7 +57,7 @@ include_once 'header.php';
     		<table>
     			<tr>
     				<td><label for="Name">Namn</label></td>
-    				<td><input type="text" id="Name" name="Name" value="<?php echo $larp->Name; ?>" size="100" maxlength="250" required></td>
+    				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($larp->Name); ?>" size="100" maxlength="250" required></td>
     			</tr>
     			<tr>
     				<td><label for="StartDate">Startdatum</label></td>
@@ -91,7 +91,7 @@ include_once 'header.php';
     			<tr>
     				<td><label for="PaymentReferencePrefix">Prefix för betalningsreferens</label></td>
     				<td><input type="text" id="PaymentReferencePrefix"
-    					name="PaymentReferencePrefix" value="<?php echo $larp->PaymentReferencePrefix; ?>" size="15" maxlength="10" required></td>
+    					name="PaymentReferencePrefix" value="<?php echo htmlspecialchars($larp->PaymentReferencePrefix); ?>" size="15" maxlength="10" required></td>
     			</tr>
     			<tr>
     				<td><label for=NetDays>Antal dagar för betalning</label></td>

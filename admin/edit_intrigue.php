@@ -72,7 +72,7 @@ include 'navigation_subpage.php';
 		<form action="logic/edit_intrigue_save.php" method="post">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-		<textarea id="Intrigue" name="Intrigue" rows="20" cols="150" maxlength="60000"><?php    echo $larp_role->Intrigue; ?></textarea><br>
+		<textarea id="Intrigue" name="Intrigue" rows="20" cols="150" maxlength="60000"><?php    echo htmlspecialchars($larp_role->Intrigue); ?></textarea><br>
 		
 		<input type="submit" value="Spara">
 		</form>
@@ -83,7 +83,7 @@ include 'navigation_subpage.php';
     		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 
-		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="20" cols="150" maxlength="60000"><?php    echo $role->OrganizerNotes; ?></textarea><br>
+		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="20" cols="150" maxlength="60000"><?php    echo htmlspecialchars($role->OrganizerNotes); ?></textarea><br>
 		
 		<input type="submit" value="Spara">
 

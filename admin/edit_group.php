@@ -57,7 +57,7 @@ include 'navigation_subpage.php';
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
 			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required></td></tr>
+			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($group->Name); ?>" required></td></tr>
 
 			<tr><td valign="top" class="header">Gruppansvarig&nbsp;<font style="color:red">*</font></td>
 			<td><?php selectionByArray('Person', $persons_in_group, false, true, $group->PersonId);?></td></tr>
@@ -65,16 +65,16 @@ include 'navigation_subpage.php';
 
 
 			<tr><td valign="top" class="header">Beskrivning&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo $group->Description; ?></textarea></td></tr>
+			<td><textarea id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo htmlspecialchars($group->Description); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning för andra</td>
-			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000" required><?php echo $group->DescriptionForOthers; ?></textarea></td></tr>
+			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000" required><?php echo htmlspecialchars($group->DescriptionForOthers); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Vänner</td>
-			<td><textarea id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo $group->Friends; ?></textarea></td></tr>
+			<td><textarea id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Friends); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Fiender</td>
-			<td><textarea id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo $group->Enemies; ?></textarea></td></tr>
+			<td><textarea id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Enemies); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Rikedom&nbsp;<font style="color:red">*</font></td>
 			<td><?php Wealth::selectionDropdown($current_larp, false, true, $group->WealthId);?></td></tr>
@@ -94,16 +94,16 @@ include 'navigation_subpage.php';
 			<td><?php IntrigueType::selectionDropdown($current_larp, true, false, $larp_group->getSelectedIntrigueTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
-			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo $group->IntrigueIdeas; ?></textarea></td></tr>
+			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->IntrigueIdeas); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Kvarvarande intriger</td>
-			<td><textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="50" maxlength="60000"><?php echo $larp_group->RemainingIntrigues; ?></textarea></td></tr>
+			<td><textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($larp_group->RemainingIntrigues); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Annan information</td>
-			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50" maxlength="60000"><?php echo $group->OtherInformation; ?></textarea></td></tr>
+			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->OtherInformation); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Antal medlemmar&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="ApproximateNumberOfMembers" name="ApproximateNumberOfMembers" value="<?php echo $larp_group->ApproximateNumberOfMembers; ?>" required></td></tr>
+			<td><input type="text" id="ApproximateNumberOfMembers" name="ApproximateNumberOfMembers" value="<?php echo htmlspecialchars($larp_group->ApproximateNumberOfMembers); ?>" required></td></tr>
 
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown($current_larp, false,true, $larp_group->HousingRequestId);?></td></tr>

@@ -50,7 +50,7 @@ include 'navigation_subpage.php';
 		
 		<table>
  			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
- 			<td><input type="text" id="Name" name="Name" value="<?php echo $role->Name; ?>" size="100" maxlength="250" required></td></tr>
+ 			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($role->Name); ?>" size="100" maxlength="250" required></td></tr>
 			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $role->getPerson()->Name; ?></td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>
@@ -59,14 +59,14 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
 
 			<tr><td valign="top" class="header">Yrke&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="Profession" name="Profession" value="<?php echo $role->Profession; ?>"  size="100" maxlength="250" required></td></tr>
+			<td><input type="text" id="Profession" name="Profession" value="<?php echo htmlspecialchars($role->Profession); ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="15000" required><?php echo $role->Description; ?></textarea></td></tr>
+			<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="15000" required><?php echo htmlspecialchars($role->Description); ?></textarea></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för gruppen</td>
-			<td><textarea id="DescriptionForGroup" name="DescriptionForGroup" rows="4" cols="100" maxlength="15000"><?php echo $role->DescriptionForGroup; ?></textarea></td></tr>
+			<td><textarea id="DescriptionForGroup" name="DescriptionForGroup" rows="4" cols="100" maxlength="15000"><?php echo htmlspecialchars($role->DescriptionForGroup); ?></textarea></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för andra</td>
-			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="400"><?php echo $role->DescriptionForOthers; ?></textarea></td></tr>
+			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="400"><?php echo htmlspecialchars($role->DescriptionForOthers); ?></textarea></td></tr>
 
 
 			<tr><td valign="top" class="header">Myslajvare&nbsp;<font style="color:red">*</font></td>
@@ -80,46 +80,46 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Typ av lajvare&nbsp;<font style="color:red">*</font></td>
 			<td><?php LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId); ?></td></tr>
 			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td>
-			<td><input type="text" id="TypeOfLarperComment" value="<?php echo $role->TypeOfLarperComment; ?>" name="TypeOfLarperComment"  size="100" maxlength="250"></td></tr>
+			<td><input type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="250"></td></tr>
 
 
 
 
 			<tr><td valign="top" class="header">Tidigare lajv</td>
-			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo $role->PreviousLarps; ?></textarea></td></tr>
+			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo htmlspecialchars($role->PreviousLarps); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Varför befinner sig<br>karaktären i Slow River?&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo $role->ReasonForBeingInSlowRiver; ?></textarea></td></tr>
+			<td><textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Religion</td>
-			<td><input type="text" id="Religion" name="Religion" value="<?php echo $role->Religion; ?>"  size="100" maxlength="250"></td></tr>
+			<td><input type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="250"></td></tr>
 
 			<tr><td valign="top" class="header">Mörk hemlighet&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000" required><?php echo $role->DarkSecret; ?> </textarea></td></tr>
+			<td><textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($role->DarkSecret); ?> </textarea></td></tr>
 
 			<tr><td valign="top" class="header">Mörk hemlighet - intrig idéer&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo $role->DarkSecretIntrigueIdeas; ?>"  size="100" maxlength="250" required></td></tr>
+			<td><input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo htmlspecialchars($role->DarkSecretIntrigueIdeas); ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Intrigtyper</td>
 			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
-			<td><textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo $role->IntrigueSuggestions; ?></textarea></td></tr>
+			<td><textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->IntrigueSuggestions); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Saker karaktären inte vill spela på</td>
-			<td><input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $role->NotAcceptableIntrigues; ?>"  size="100" maxlength="250"></td></tr>
+			<td><input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo htmlspecialchars($role->NotAcceptableIntrigues); ?>"  size="100" maxlength="250"></td></tr>
 
 			<tr><td valign="top" class="header">Relationer med andra</td>
-			<td><textarea id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100" maxlength="60000"><?php echo $role->CharactersWithRelations; ?></textarea></td></tr>
+			<td><textarea id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->CharactersWithRelations); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Annan information</td>
-			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $role->OtherInformation; ?></textarea></td></tr>
+			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->OtherInformation); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Rikedom&nbsp;<font style="color:red">*</font></td>
 			<td><?php Wealth::selectionDropdown($current_larp, false,true, $role->WealthId); ?></td></tr>
 
 			<tr><td valign="top" class="header">Var är karaktären född?&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="Birthplace" name="Birthplace" value="<?php echo $role->Birthplace; ?>"  size="100" maxlength="250" required></td></tr>
+			<td><input type="text" id="Birthplace" name="Birthplace" value="<?php echo htmlspecialchars($role->Birthplace); ?>"  size="100" maxlength="250" required></td></tr>
 
 			<tr><td valign="top" class="header">Var bor karaktären?&nbsp;<font style="color:red">*</font></td>
 			<td><?php

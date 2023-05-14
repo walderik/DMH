@@ -56,34 +56,34 @@ include 'navigation_subpage.php';
 		<table>
 			<tr>
 				<td><label for="Recipient">Mottagare</label></td>
-				<td><input type="text" id="Recipient" name="Recipient" value="<?php echo $letter->Recipient; ?>" size="50" maxlength="50" required></td>
+				<td><input type="text" id="Recipient" name="Recipient" value="<?php echo htmlspecialchars($letter->Recipient); ?>" size="50" maxlength="50" required></td>
 			</tr>
 			<tr>
 				<td><label for="WhenWhere">Ort och datum</label></td>
-				<td><input type="text" id="WhenWhere" name="WhenWhere" value="<?php echo $letter->WhenWhere; ?>" size="50" maxlength="50" required></td>
+				<td><input type="text" id="WhenWhere" name="WhenWhere" value="<?php echo htmlspecialchars($letter->WhenWhere); ?>" size="50" maxlength="50" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="Greeting">Hälsningsfras</label></td>
-				<td><input type="text" id="Greeting" name="Greeting" value="<?php echo $letter->Greeting; ?>" size="50" maxlength="50" required></td>
+				<td><input type="text" id="Greeting" name="Greeting" value="<?php echo htmlspecialchars($letter->Greeting); ?>" size="50" maxlength="50" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="Message">Meddelande</label></td>
 				<td><textarea id="Message" name="Message" rows="4" cols="50" maxlength="2000"
-					 required><?php echo $letter->Message; ?></textarea></td>
+					 required><?php echo htmlspecialchars($letter->Message); ?></textarea></td>
 			</tr>
 			<tr>
 
 				<td><label for="EndingPhrase">Hälsning</label></td>
 				<td><input type="text" id="EndingPhrase" name="EndingPhrase"
-					 value="<?php echo $letter->EndingPhrase; ?>" size="50" maxlength="50" required></td>
+					 value="<?php echo htmlspecialchars($letter->EndingPhrase); ?>" size="50" maxlength="50" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="Signature">Underskrift</label></td>
 				<td><input type="text" id="Signature" name="Signature"
-					 value="<?php echo $letter->Signature; ?>" size="50" maxlength="50" required></td>
+					 value="<?php echo htmlspecialchars($letter->Signature); ?>" size="50" maxlength="50" required></td>
 			</tr>
 			<tr>
 
@@ -111,7 +111,7 @@ include 'navigation_subpage.php';
 
 				<td><label for="OrganizerNotes">Anteckningar om brevet</label></td>
 				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
-						cols="50"><?php echo $letter->OrganizerNotes; ?></textarea></td>
+						cols="50"><?php echo htmlspecialchars($letter->OrganizerNotes); ?></textarea></td>
 
 			</tr>
  

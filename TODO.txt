@@ -7,6 +7,8 @@ Gruppintrig och grupp-props på karaktärsblad
 Not coming: stryk i deltagarlista, stryk roller (på alla ställen)
 
 
+Visa grupp (huvudkaraktärer och sidokaraktärer för sig) Både deltagare och admin
+
 Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 

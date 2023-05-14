@@ -55,13 +55,13 @@ include_once 'header.php';
 		<table>
 			<tr>
 				<td><label for="Name">Namn</label></td>
-				<td><input type="text" id="Name" name="Name" value="<?php echo $titledeed->Name; ?>" size="100" maxlength="250" required></td>
+				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($titledeed->Name); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="Location">Plats</label></td>
 				<td><input type="text" id="Location" name="Location"
-					 value="<?php echo $titledeed->Location; ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($titledeed->Location); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 

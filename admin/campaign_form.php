@@ -56,12 +56,12 @@ include_once 'header.php';
     		<table>
     			<tr>
     				<td><label for="Name">Namn</label></td>
-    				<td><input type="text" id="Name" name="Name" value="<?php echo $campaign->Name; ?>" size="100" maxlength="250" required></td>
+    				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($campaign->Name); ?>" size="100" maxlength="250" required></td>
     			</tr>
     			<tr>
     				<td><label for="StartDate">Förkortning</label></td>
     				<td><input type="text" id="Abbreviation"
-    					name="Abbreviation" value="<?php echo $campaign->Abbreviation; ?>" size="50" required></td>
+    					name="Abbreviation" value="<?php echo htmlspecialchars($campaign->Abbreviation); ?>" size="50" required></td>
     			</tr>
     			<tr>
     				<td><label for="Icon">Ikon</label></td>
@@ -70,7 +70,7 @@ include_once 'header.php';
     			</tr>
     			<tr>
     				<td><label for="Homepage">Hemsida</label></td>
-    				<td><input type="text" id="Homepage" name="Homepage" value="<?php echo $campaign->Homepage; ?>" size="100" maxlength="250" required></td>
+    				<td><input type="text" id="Homepage" name="Homepage" value="<?php echo htmlspecialchars($campaign->Homepage); ?>" size="100" maxlength="250" required></td>
     			</tr>
     			<tr>
     				<td><label for="Email">Epost</label></td>
@@ -80,7 +80,7 @@ include_once 'header.php';
     			<tr>
     				<td><label for="Bankaccount">Bankkoto</label></td>
     				<td><input type="text" id="Bankaccount"
-    					name="Bankaccount" value="<?php echo $campaign->Bankaccount; ?>"  size="50" required></td>
+    					name="Bankaccount" value="<?php echo htmlspecialchars($campaign->Bankaccount); ?>"  size="50" required></td>
     			</tr>
     			<tr>
     				<td><label for="MinimumAge">Minsta ålder</label></td>

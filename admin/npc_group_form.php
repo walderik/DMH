@@ -59,12 +59,12 @@ include 'navigation_subpage.php';
 		
 		<table>
  			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
- 			<td><input type="text" id="Name" name="Name" value="<?php echo $npc_group->Name; ?>" size="100" maxlength="250" required></td></tr>
+ 			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($npc_group->Name); ?>" size="100" maxlength="250" required></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td>
- 			<td><input type="text" id="Description" name="Description" value="<?php echo $npc_group->Description; ?>" size="100" maxlength="250"></td></tr>
+ 			<td><input type="text" id="Description" name="Description" value="<?php echo htmlspecialchars($npc_group->Description); ?>" size="100" maxlength="250"></td></tr>
 
  			<tr><td valign="top" class="header">När ska gruppen spelas?<br>Om den ska spelas vid ett särskillt tillfälle.</td>
- 			<td><input type="text" id="Time" name="Time" value="<?php echo $npc_group->Time; ?>" size="100" maxlength="250"></td></tr>
+ 			<td><input type="text" id="Time" name="Time" value="<?php echo htmlspecialchars($npc_group->Time); ?>" size="100" maxlength="250"></td></tr>
 
 		</table>		
 			<input type="submit" value="Spara">

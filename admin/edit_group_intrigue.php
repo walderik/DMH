@@ -95,17 +95,17 @@ include 'navigation_subpage.php';
 		<form action="logic/edit_group_intrigue_save.php" method="post">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $current_group->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-		<textarea id="Intrigue" name="Intrigue" rows="20" cols="150" maxlength="60000"><?php    echo $larp_group->Intrigue; ?></textarea><br>
+		<textarea id="Intrigue" name="Intrigue" rows="20" cols="150" maxlength="60000"><?php    echo htmlspecialchars($larp_group->Intrigue); ?></textarea><br>
 		
 		<input type="submit" value="Spara">
 
 			</form>
 
-		<h2>Anteckningar (visas inte för deltagarna)</h2>
+		<h2>Anteckningar (Visas inte för deltagarna, men tänk på att en deltagare kan bli arrangör.)</h2>
 		<form action="logic/edit_group_intrigue_save.php" method="post">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $current_group->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="20" cols="150" maxlength="60000"><?php    echo $current_group->OrganizerNotes; ?></textarea><br>
+		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="20" cols="150" maxlength="60000"><?php    echo htmlspecialchars($current_group->OrganizerNotes); ?></textarea><br>
 		
 		<input type="submit" value="Spara">
 

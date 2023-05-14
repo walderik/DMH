@@ -73,29 +73,29 @@ img {
 		<table>
 			<tr>
 				<td><label for="Name">Namn</label></td>
-				<td><input type="text" id="Name" name="Name" value="<?php echo $prop->Name; ?>" size="100" maxlength="250" required></td>
+				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($prop->Name); ?>" size="100" maxlength="250" required></td>
 
 			</tr>
 			<tr>
 
 				<td><label for="Description">Beskrivning</label></td>
 				<td><input type="text" id="Description" name="Description"
-					 value="<?php echo $prop->Description; ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($prop->Description); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
 				<td><label for="StorageLocation">Lagerplats</label></td>
 				<td><input type="text" id="StorageLocation" name="StorageLocation"
-					 value="<?php echo $prop->StorageLocation; ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($prop->StorageLocation); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 				<td><label for="Marking">Märkning</label></td>
-				<td><input type="text" id="Marking" name="Marking" value="<?php echo $prop->Marking; ?>" size="100" maxlength="250" ></td>
+				<td><input type="text" id="Marking" name="Marking" value="<?php echo htmlspecialchars($prop->Marking); ?>" size="100" maxlength="250" ></td>
 
 			</tr>
 			<tr>
 				<td><label for="Properties">In-lajv egenskaper</label></td>
-				<td><input type="text" id="Properties" name="Properties" value="<?php echo $prop->Properties; ?>" size="100" maxlength="250" ></td>
+				<td><input type="text" id="Properties" name="Properties" value="<?php echo htmlspecialchars($prop->Properties); ?>" size="100" maxlength="250" ></td>
 
 			</tr>
 		</table>

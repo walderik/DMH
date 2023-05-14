@@ -59,7 +59,7 @@ include 'navigation_subpage.php';
 		
 		<table>
  			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
- 			<td><input type="text" id="Name" name="Name" value="<?php echo $npc->Name; ?>" size="100" maxlength="250" required></td></tr>
+ 			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($npc->Name); ?>" size="100" maxlength="250" required></td></tr>
 			<tr><td valign="top" class="header">Spelas av</td>
 			    <td><?php if ($npc->IsAssigned()) {
 			                 echo $npc->getPerson()->Name; 
@@ -70,10 +70,10 @@ include 'navigation_subpage.php';
 			<td><?php selectionByArray('NPCGroup', NPCGroup::getAllForLARP($current_larp), false, false, $npc->NPCGroupId); ?></td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning</td>
- 			<td><input type="text" id="Description" name="Description" value="<?php echo $npc->Description; ?>" size="100" maxlength="250"></td></tr>
+ 			<td><input type="text" id="Description" name="Description" value="<?php echo htmlspecialchars($npc->Description); ?>" size="100" maxlength="250"></td></tr>
 
  			<tr><td valign="top" class="header">När ska karaktären spelas?<br>Om den ska spelas vid ett särskillt tillfälle.</td>
- 			<td><input type="text" id="Time" name="Time" value="<?php echo $npc->Time; ?>" size="100" maxlength="250"></td></tr>
+ 			<td><input type="text" id="Time" name="Time" value="<?php echo htmlspecialchars($npc->Time); ?>" size="100" maxlength="250"></td></tr>
 
 		</table>		
 			<input type="submit" value="Spara">
