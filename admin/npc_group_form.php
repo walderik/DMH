@@ -51,7 +51,7 @@ include 'navigation_subpage.php';
 
 	<div class="content">
 
-		<h1><?php echo $npc_group->Name;?></h1>
+		<h1><?php echo $npc_group->Name;?> <a href="npc.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 		<form action="logic/npc_group_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $npc_group->Id; ?>">

@@ -29,7 +29,7 @@ include 'navigation_subpage.php';
 ?>
 
     <div class="content">   
-        <h1>Lajv</h1>
+        <h1>Lajv <a href="settings.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
             <a href="larp_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
         
         <?php

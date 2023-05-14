@@ -17,7 +17,7 @@ include 'navigation_subpage.php';
 ?>
 
     <div class="content">   
-        <h1>Inställningar för kampanjen <?php $campaign->Name?> <a href='campaign_form.php?operation=update&id=<?php echo $campaign->Id ?>'><i class='fa-solid fa-pen'></i></a></h1>
+        <h1>Inställningar för kampanjen <?php $campaign->Name?> <a href='campaign_form.php?operation=update&id=<?php echo $campaign->Id ?>'><i class='fa-solid fa-pen'></i></a> <a href="settings.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 
             <table id='larp'>
                <tr><td valign="top" class="header">Namn</td><td><?php echo $campaign->Name ?></td></tr>

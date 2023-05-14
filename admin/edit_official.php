@@ -22,7 +22,7 @@ include 'navigation_subpage.php';
 
 
 	<div class="content">
-		<h1><?php echo $person->Name;?></h1>
+		<h1><?php echo $person->Name;?> <a href="officials.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 		<form action="logic/edit_official_save.php" method="post">
     		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $registration->Id; ?>">
 		<table>

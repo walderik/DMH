@@ -49,7 +49,7 @@ include 'navigation_subpage.php';
 
 ?>
     <div class="content">   
-        <h1><?php echo getObjectName($type);?></h1>
+        <h1><?php echo getObjectName($type);?> <a href="settings.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
             <a href="selection_data_form.php?type=<?php echo $type;?>&operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>          
         <?php
         $data_array = call_user_func($objectType . '::all');
