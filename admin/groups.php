@@ -26,7 +26,12 @@
     		        echo "<a href='edit_group.php?id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        echo "<td>" . $group->getPerson()->Name . "</td>\n";
     		        echo "<td>" . $group->getWealth()->Name . "</td>\n";
-    		        echo "<td>" . showStatusIcon($group->hasIntrigue($current_larp)) . "</td>\n";
+    		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
+    		        echo "<td>" . showStatusIcon($larp_group->hasIntrigue());
+
+    		        if ($larp_group->hasIntrigue()) echo "<br>".str_word_count($larp_group->Intrigue)." ord";
+    		        
+    		        echo "</td>\n";
     		        echo "<td><a href='edit_group_intrigue.php?id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        
     		        echo "</tr>\n";

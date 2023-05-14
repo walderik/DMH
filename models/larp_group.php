@@ -146,4 +146,11 @@ class LARP_Group extends BaseModel{
     public function getIntrigueTypes(){
         return IntrigueType::getIntrigeTypesForLarpAndGroup($this->LARPId, $this->GroupId);
     }
+    
+    public function hasIntrigue() {
+        if (isset($this->Intrigue) && $this->Intrigue != "") return true;
+        return false;
+        
+    }
+    
 }

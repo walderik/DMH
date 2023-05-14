@@ -120,9 +120,7 @@ class Group extends BaseModel{
      
      public function hasIntrigue(LARP $larp) {
          $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
-         if (isset($larp_group->Intrigue) && $larp_group->Intrigue != "") return true;
-         return false;
-         
+         return $larp_group->hasIntrigue();
      }
      
 

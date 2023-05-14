@@ -15,13 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST['operation'])) {
         $operation = $_POST['operation'];
-        echo "<br>Operation: $operation<br>";
         if ($operation == "remove_owner") {
             $prop->RoleId = null;
             $prop->GroupId = null;
             $prop->update();
         } else if ($operation == "set_prop_owner_role") {
-            echo "Sätter ägare till ".$_POST['RoleId'];
             $prop->RoleId = $_POST['RoleId'];
             $prop->GroupId = null;
             $prop->update();

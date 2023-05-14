@@ -1,6 +1,6 @@
 
-Props: ändra ägare (grupp/roll)
-Visa på karaktärsblad
+
+Props: Visa på karaktärsblad
 
 Gruppintrig och grupp-props på karaktärsblad
 
