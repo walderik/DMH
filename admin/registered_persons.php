@@ -69,9 +69,7 @@
     		            "</td>";
     		            echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		            
-    		            echo "<td>";
-    		            echo "<td></td>";
-    		            echo "<td></td>";
+    		            echo "<td colspan='2'>Avbokad</td>";
     		        }
     		        else {
     		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år ";

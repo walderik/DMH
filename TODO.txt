@@ -4,7 +4,8 @@ Props: Visa på karaktärsblad
 
 Gruppintrig och grupp-props på karaktärsblad
 
-Not coming: stryk i deltagarlista, stryk roller (på alla ställen)
+Not coming: stryk roller (på alla ställen)
+Not coming: Visa för deltagaren
 
 
 Visa grupp (huvudkaraktärer och sidokaraktärer för sig) Både deltagare och admin
