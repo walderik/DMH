@@ -2,9 +2,6 @@
 include_once 'header.php';
 
 
-echo "<br><br><br><br>";
-print_r($_POST);
-
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     $prop = Prop::loadById($_GET['id']);
@@ -64,7 +61,7 @@ img {
 
 
     <div class="content"> 
-    <h1>Ändra ägare av rekvisita</h1>
+    <h1>Ändra ägare av rekvisita <a href="prop_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
     
    
         <?php 

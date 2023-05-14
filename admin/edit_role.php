@@ -54,7 +54,7 @@ include 'navigation_subpage.php';
 			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $role->getPerson()->Name; ?></td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>
-			<td><?php selectionByArray('Group', Group::getRegistered($current_larp), false, false, $role->GroupId); ?></td></tr>
+			<td><?php selectionByArray('Group', Group::getAllRegistered($current_larp), false, false, $role->GroupId); ?></td></tr>
 
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
 

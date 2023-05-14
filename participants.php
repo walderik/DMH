@@ -143,22 +143,21 @@ function print_role($role) {
 		<H1>Karaktärer i <?php  echo $larp->Name; ?></H1>
 
 		<?php 
-		$groups = Group::getRegistered($larp);
+		$groups = Group::getAllRegistered($larp);
 		foreach ($groups as $group) {
 		    $roles = Role::getAllMainRolesInGroup($group, $larp);
 
 		    
-		    echo "<h2>$group->Name</h2>\n";
-		    if ($group->DescriptionForOthers !="") {
-		        echo "<p>$group->DescriptionForOthers</p>\n";
-		    }
+            if (!(empty($roles) && count($roles)>0)) {
 
-
-            echo "<div class='container'>\n";
-            if ((empty($roles) or count($roles)==0)) {
-                echo "Inga anmälda i gruppen än.";
-            }
-            else {
+                echo "<h2>$group->Name</h2>\n";
+                if ($group->DescriptionForOthers !="") {
+                    echo "<p>$group->DescriptionForOthers</p>\n";
+                }
+                
+                
+                echo "<div class='container'>\n";
+                
                 echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
                 foreach ($roles as $role) {
                     print_role($role);

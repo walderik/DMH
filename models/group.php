@@ -54,14 +54,6 @@ class Group extends BaseModel{
         return $newOne;
     }
     
-    public static function getRegistered($larp) {
-
-        if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND Id IN ".
-            "(SELECT GroupId from regsys_larp_group where LARPId = ?);";
-        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
-    }
-    
     # Update an existing group in db
     public function update() {
        
@@ -133,13 +125,16 @@ class Group extends BaseModel{
          
      }
      
-     public static function getAllRegistered(LARP $larp) {
+
+     public static function getAllRegistered($larp) {
+         
          if (is_null($larp)) return Array();
-         $sql = "SELECT * FROM regsys_group WHERE Id IN ".
-            "(SELECT GroupId FROM regsys_larp_group WHERE larpId =?) ".
-            "ORDER BY ".static::$orderListBy.";";
+         $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND Id IN ".
+             "(SELECT GroupId from regsys_larp_group where LARPId = ?);";
          return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
+     
+     
      
      public static function getGroupsForPerson($personId) {
          $sql = "SELECT * FROM regsys_group WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";

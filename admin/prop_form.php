@@ -54,7 +54,7 @@ img {
 
 
     <div class="content"> 
-    <h1><?php echo default_value('action');?> rekvisita</h1>
+    <h1><?php echo default_value('action');?> rekvisita <a href="prop_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
     
    
 	<form action="prop_admin.php" method="post">
