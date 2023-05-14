@@ -151,6 +151,14 @@ class Registration extends BaseModel{
         return false;
         
     }
+
+    public function isNotComing() {
+        if ($this->NotComing == 1) {
+            return true;
+        }
+        return false;
+        
+    }
     
     
     public function isMember() {
@@ -204,6 +212,11 @@ class Registration extends BaseModel{
     public function getTypeOfFood() {
         if (is_null($this->TypeOfFoodId)) return null;
         return TypeOfFood::loadById($this->TypeOfFoodId);
+    }
+    
+    public function getHousingRequest() {
+        if (is_null($this->HousingRequestId)) return null;
+        return HousingRequest::loadById($this->HousingRequestId);
     }
     
     

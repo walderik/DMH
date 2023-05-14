@@ -126,19 +126,27 @@ include 'navigation.php';
         $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
         echo "<table>";
         foreach ($personsInHouse as $person) {
-            $group = $person->getMainRole($current_larp)->getGroup();   
+            $group = $person->getMainRole($current_larp)->getGroup(); 
+            $registration = $person->getRegistration($current_larp);
             echo "<tr><td>";
+            if ($registration->isNotComing()) {
+                echo "<s>";
+            }
             echo $person->Name;
             echo "</td><td>";
             if (!empty($group)) {
                 echo "($group->Name)";
             }
             echo "</td><td>";
-            echo HousingRequest::loadById($person->getRegistration($current_larp)->HousingRequestId)->Name;
+            echo $registration->getHousingRequest()->Name;
 	        echo "</td><td>";
             if (!empty($person->HousingComment)) {
                 echo $person->HousingComment;
             }
+            if ($registration->isNotComing()) {
+                echo "</s>";
+            }
+            
             echo "</td><td>";
             echo "<form method='post' action='logic/remove_housing.php'>";
             echo "<input type='hidden' name='id' value='$person->Id'>";

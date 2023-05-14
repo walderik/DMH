@@ -12,7 +12,7 @@
         Om betalningskolumnen har två röda utropstecken har man gått över tiden för betalningen.
         <br>
      		<?php 
-    		$persons = Person::getAllRegistered($current_larp);
+    		$persons = Person::getAllRegistered($current_larp, true);
     		if (empty($persons)) {
     		    echo "Inga anmälda deltagare";
     		} else {
@@ -39,8 +39,13 @@
     		            echo "</s>";
     		        }
     		        echo "</td>\n";
-    		        echo "<td>" . "<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
-    		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		        if ($registration->NotComing == 1) {
+    		            echo "<td></td>";
+    		        }
+    		        else {
+        		        echo "<td>" . "<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
+        		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		        }
     		        echo "<td>";
     		        if ($registration->NotComing == 1) {
     		            echo "<s>";

@@ -25,7 +25,7 @@
     <div class="content">   
         <h1>Lägg till <?php echo $purpose;?></h1>
      		<?php 
-    		$persons = Person::getAllRegistered($current_larp);
+    		$persons = Person::getAllRegistered($current_larp, false);
     		if (empty($persons)) {
     		    echo "Inga anmälda deltagare";
     		} else {

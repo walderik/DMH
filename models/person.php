@@ -69,7 +69,7 @@ class Person extends BaseModel{
     public static function getHouseCaretakers(LARP $larp) {
         if (!isset($larp)) return Array();
         $sql = "SELECT * FROM regsys_person WHERE Id IN ".
-            "(SELECT PersonId FROM regsys_registration WHERE LarpId=?) AND ".
+            "(SELECT PersonId FROM regsys_registration WHERE LarpId=? AND NotComing = 0) AND ".
             "HouseId Is NOT NULL ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
@@ -112,10 +112,12 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($userId));
     }
     
-    public static function getAllRegistered($larp) {
+    public static function getAllRegistered($larp, $evenNotComing) {
         if (is_null($larp)) return array();
+        $NotComingStr = "AND NotComing = 0";
+        if ($evenNotComing) $NotComingStr = "";
         $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
-        "regsys_registration WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        "regsys_registration WHERE LarpId = ? $NotComingStr) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
@@ -131,7 +133,7 @@ class Person extends BaseModel{
     public static function getAllRegisteredWithoutHousing($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
-            "regsys_registration WHERE LarpId = ? AND PersonId NOT IN ".
+            "regsys_registration WHERE LarpId = ?  AND NotComing = 0 AND PersonId NOT IN ".
             "(SELECT PersonId from regsys_housing WHERE LarpId=?)) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $larp->Id));
     }
@@ -143,6 +145,7 @@ class Person extends BaseModel{
         $sql = "SELECT * FROM regsys_person WHERE Id IN ".
             "(SELECT regsys_registration.PersonId FROM regsys_registration, regsys_group, regsys_role, regsys_larp_role WHERE ".
             "regsys_registration.PersonId = regsys_role.PersonId AND ".
+            "regsys_registration.NotComing = 0 AND ".
             "regsys_role.GroupId = ? AND ".
             "regsys_role.Id=regsys_larp_role.RoleId AND ".
             "regsys_larp_role.IsMainRole=1 AND ".
@@ -155,7 +158,7 @@ class Person extends BaseModel{
     public static function getAllInterestedNPC($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
-            "regsys_registration WHERE LarpId = ? AND NPCDesire <> '') ORDER BY ".static::$orderListBy.";";
+            "regsys_registration WHERE LarpId = ? AND NPCDesire <> '' AND NotComing = 0) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
@@ -163,7 +166,7 @@ class Person extends BaseModel{
     public static function getAllToApprove($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
-        "regsys_registration WHERE LarpId = ? AND ApprovedCharacters IS Null) ORDER BY ".static::$orderListBy.";";
+        "regsys_registration WHERE LarpId = ? AND ApprovedCharacters IS Null AND NotComing = 0) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
  
@@ -172,7 +175,7 @@ class Person extends BaseModel{
     public static function findGuardian($guardianInfo, $larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_person WHERE (Name=? OR SocialSecurityNumber = ?) AND Id IN ".
-            "(SELECT PersonId FROM regsys_registration WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
+            "(SELECT PersonId FROM regsys_registration WHERE LarpId = ? AND NotComing = 0) ORDER BY ".static::$orderListBy.";";
         $persons = static::getSeveralObjectsqQuery($sql, array($guardianInfo, $guardianInfo, $larp->Id));
         foreach ($persons as $person) {
             if ($person->getAgeAtLarp($larp) >= 18) {
@@ -188,7 +191,7 @@ class Person extends BaseModel{
     # Hämta anmälda deltagare i en grupp
     public static function getPersonsInGroupAtLarp($group, $larp) {
         if (is_null($group) || is_null($larp)) return Array();
-        
+        //TODO ta bort NotComing
         $sql="select * from regsys_person WHERE id IN ".
             "(SELECT DISTINCT regsys_role.PersonId ".
             "FROM regsys_role, regsys_larp_role WHERE ".
@@ -454,6 +457,7 @@ class Person extends BaseModel{
             "regsys_normalallergytype_person.PersonId AND ".
             "regsys_normalallergytype_person.NormalAllergyTypeId=? AND ".
             "regsys_registration.PersonId=regsys_normalallergytype_person.PersonId AND ".
+            "regsys_registration.NotComing = 0 AND ".
             "regsys_registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
         
         return static::getSeveralObjectsqQuery($sql, array($allergy->Id, $larp->Id));
@@ -461,6 +465,7 @@ class Person extends BaseModel{
     
     public static function getAllWithMultipleAllergies(LARP $larp) {
         if (is_null($larp)) return Array();
+        
         $sql="SELECT * FROM regsys_person WHERE id IN ".
             "(SELECT regsys_normalallergytype_person.PersonId FROM ".
             "regsys_normalallergytype_person, regsys_registration, ".
@@ -468,14 +473,16 @@ class Person extends BaseModel{
             "regsys_normalallergytype_person GROUP BY PersonId) AS Counted WHERE amount > 1 AND ".
             "Counted.PersonId = regsys_normalallergytype_person.PersonId AND ".
             "regsys_registration.PersonId = regsys_normalallergytype_person.PersonId AND ".
+            "regsys_registration.NotComing = 0 AND ".
             "regsys_registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
     public static function getAllWithoutAllergiesButWithComment(LARP $larp) {
         if (is_null($larp)) return Array();
+
         $sql="SELECT * FROM regsys_person WHERE id IN ".
-            "(SELECT PersonId from regsys_registration WHERE LarpId =? AND PersonId NOT IN ".
+            "(SELECT PersonId from regsys_registration WHERE LarpId =? AND NotComing = 0 AND PersonId NOT IN ".
             "(SELECT PersonId FROM regsys_normalallergytype_person)) AND FoodAllergiesOther !='' ".
             "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
@@ -486,7 +493,7 @@ class Person extends BaseModel{
     public static function getAllOfficials(LARP $larp) { 
         if (is_null($larp)) return Array();
         $sql="SELECT * FROM regsys_person WHERE id IN ".
-            "(SELECT PersonId FROM regsys_registration WHERE IsOfficial=1 and LARPId=?) ".
+            "(SELECT PersonId FROM regsys_registration WHERE IsOfficial=1 and LARPId=? AND NotComing = 0) ".
             "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
@@ -496,7 +503,7 @@ class Person extends BaseModel{
         if (is_null($larp) or is_null($officialtype)) return Array();
         $sql="SELECT * FROM regsys_person WHERE id IN ".
             "(SELECT PersonId from regsys_registration, regsys_officialtype_person ".
-            "WHERE IsOfficial=1 and LARPId=? AND regsys_registration.Id = regsys_officialtype_person.RegistrationId ".
+            "WHERE IsOfficial=1 and LARPId=? AND NotComing = 0 AND regsys_registration.Id = regsys_officialtype_person.RegistrationId ".
             "AND OfficialTypeId = ?) ".
             "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $officialtype->Id));
@@ -506,7 +513,7 @@ class Person extends BaseModel{
         if (is_null($larp) or is_null($officialtype)) return Array();
         $sql="SELECT * FROM regsys_person WHERE id IN ".
             "(SELECT PersonId from regsys_registration, regsys_officialtype_person ".
-            "WHERE IsOfficial=0 and LARPId=? AND regsys_registration.Id = regsys_officialtype_person.RegistrationId ".
+            "WHERE IsOfficial=0 and LARPId=? AND NotComing = 0 AND regsys_registration.Id = regsys_officialtype_person.RegistrationId ".
             "AND OfficialTypeId = ?) ".
             "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $officialtype->Id));
@@ -516,7 +523,7 @@ class Person extends BaseModel{
     public static function getAllWhoWantToBeOffical(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql="SELECT * FROM regsys_person WHERE id IN ".
-            "(SELECT PersonId FROM regsys_registration WHERE IsOfficial=0 and LARPId=? AND Id IN ".
+            "(SELECT PersonId FROM regsys_registration WHERE IsOfficial=0 and LARPId=? AND NotComing = 0 AND Id IN ".
             "(SELECT RegistrationId FROM regsys_officialtype_person)) ".
             "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
