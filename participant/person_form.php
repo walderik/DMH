@@ -69,12 +69,12 @@
 			
 			<div class="question">
 				<label for="Name">För och efternamn</label>&nbsp;<font style="color:red">*</font>
-				<br> <input class="input_field" type="text" id="Name" name="Name" value="<?php echo $person->Name; ?>" size="100" maxlength="50" required>
+				<br> <input class="input_field" type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($person->Name); ?>" size="100" maxlength="50" required>
 			</div>
 			<div class="question">
 				<label for="Email">E-post</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">E-post är det sättet arrangörerna skickar ut information till deltagare, dvs allmänna utskick, intrig och boendeinformation. Det är också det sättet vi kommer att kontakta dig om vi har några frågor kring din anmälan. Se till att det är en epost som du läser regelbundet.</div>
-				<input  class="input_field" type="Email" id="email" name="Email" value="<?php echo $person->Email; ?>"  size="100" maxlength="100" required>
+				<input  class="input_field" type="Email" id="email" name="Email" value="<?php echo htmlspecialchars($person->Email); ?>"  size="100" maxlength="100" required>
 			</div>
 			<div class="question">
 				<label for="SocialSecurityNumber">Personnummer</label>&nbsp;<font style="color:red">*</font><br> 
@@ -86,14 +86,14 @@
 			</div>
 			<div class="question">
 				<label for="PhoneNumber">Mobilnummer</label>
-				<br> <input class="input_field" type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo $person->PhoneNumber; ?>"  size="100" maxlength="100">
+				<br> <input class="input_field" type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo htmlspecialchars($person->PhoneNumber); ?>"  size="100" maxlength="100">
 			</div>
 			<div class="question">
 				<label for="EmergencyContact">Närmaste anhörig</label>&nbsp;<font style="color:red">*</font>
 				<br> 
 				<div class="explanation">Namn, funktion och mobilnummer till närmast anhöriga. Används enbart i nödfall, exempelvis vid olycka. T ex Greta, Mamma, 08-12345678. <br />
 				Det bör vara någon som inte är med på lajvet.</div>
-				<textarea class="input_field" id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" maxlength="60000" required><?php echo $person->EmergencyContact; ?></textarea>
+				<textarea class="input_field" id="EmergencyContact" name="EmergencyContact" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($person->EmergencyContact); ?></textarea>
 			</div>
 			
 			
@@ -116,7 +116,7 @@
 				<label for="NotAcceptableIntrigues">Vilken typ av intriger vill du absolut inte spela på?</label>
 				<br> 
 				<div class="explanation">Eftersom vi inte vill att någon ska må dåligt är det bra att veta vilka begränsningar du som person har vad det gäller intriger.</div>
-				<input class="input_field" type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo $person->NotAcceptableIntrigues; ?>" size="100" maxlength="200" >
+				<input class="input_field" type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo htmlspecialchars($person->NotAcceptableIntrigues); ?>" size="100" maxlength="200" >
 			</div>
 
 			<h2>Hälsa</h2>
@@ -132,21 +132,21 @@
 				<label for="FoodAllergiesOther">Har du matallergier eller annan specialkost? </label><br>
 				<div class="explanation">Om du har allergier eller specialkost som inte täcks av de två ovanstående frågorna vill vi att du skriver om det här.<br>
 				Om du inte har något, skriv inget.</div>
-				<textarea class="input_field" id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100" maxlength="60000"><?php echo $person->FoodAllergiesOther; ?></textarea>
+				<textarea class="input_field" id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->FoodAllergiesOther); ?></textarea>
 			</div>
 
 			<div class="question">
 				<label for="HousingComment">Boendehänsyn</label><br>
 				<div class="explanation">Har du några speciella saker vi behöver ta hänsyn till när vi planerar boendet?<br>
 				Om du inte har något, skriv inget.</div>
-				<input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo $person->HousingComment; ?>" size="100" maxlength="200" >
+				<input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo htmlspecialchars($person->HousingComment); ?>" size="100" maxlength="200" >
 			</div>
 
 			<div class="question">
 				<label for="HealthComment">Fysisk och mental hälsa</label><br>
 				<div class="explanation">Är det något som vore bra om våra sjukvårdare/trygghetsvärdar vet om dig för att lättare kunna göra ett bra jobb?<br>
 				Om du inte har något, skriv inget.</div>
-				<textarea class="input_field" id="HealthComment" name="HealthComment" rows="4" cols="100" maxlength="60000"><?php echo $person->HealthComment; ?></textarea>
+				<textarea class="input_field" id="HealthComment" name="HealthComment" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->HealthComment); ?></textarea>
 			</div>
 
 
@@ -155,7 +155,7 @@
 				<label for="OtherInformation">Övrig information</label><br>
 				<div class="explanation">Är det något annat kring din off-person arrangörerna bör veta? Tex bra kunskaper som sjukvårdare.<br><br>
 				Om du inte har något, skriv inget.</div>
-				<textarea class="input_field" id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo $person->OtherInformation; ?></textarea>
+				<textarea class="input_field" id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->OtherInformation); ?></textarea>
 			
 			 
 			</div>

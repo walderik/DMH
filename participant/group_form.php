@@ -92,12 +92,12 @@ include 'navigation.php';
 			
 			<div class="question">
 				<label for="Name">Gruppens namn</label>&nbsp;<font style="color:red">*</font><br> 
-				<input class="input_field" type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" maxlength="20" required>
+				<input class="input_field" type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($group->Name); ?>" maxlength="20" required>
 			</div>
 			
 			<div class="question">
     			<label for="Description">Beskrivning av gruppen</label>&nbsp;<font style="color:red">*</font><br>
-    			<textarea class="input_field" id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo $group->Description; ?></textarea>
+    			<textarea class="input_field" id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo htmlspecialchars($group->Description); ?></textarea>
 			
 			 
 			</div>
@@ -109,7 +109,7 @@ include 'navigation.php';
 					     att <a href="../participants.php?id=<?php echo $current_larp->Id;?>" target="_blank">synas för alla</a>. 
 					     </div>
     			
-    			<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000"><?php echo $group->DescriptionForOthers; ?></textarea>
+    			<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000"><?php echo htmlspecialchars($group->DescriptionForOthers); ?></textarea>
 			
 			 
 			</div>
@@ -118,12 +118,12 @@ include 'navigation.php';
 			<div class="question">
 				<label for="Friends">Vänner</label>
 				<div class="explanation">Beskriv vilka gruppen anser vara sina vänner. Det vara både grupper och  beskrivning av egenskaper hos dem som är vänner. Exempelvis: Cheriffen, bankrånare och telegrafarbetare</div>
-				<textarea class="input_field" id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo $group->Friends; ?></textarea>
+				<textarea class="input_field" id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Friends); ?></textarea>
 			</div>
 			<div class="question">
 				<label for="Enemies">Fiender</label>
 				<div class="explanation">Beskriv vilka gruppen anser vara sina fiender. Det vara både grupper och  beskrivning av egenskaper hos dem som är fiender. Exempelvis: Guldletare, Big Bengt och alla som gillar öl.</div>
-				<textarea class="input_field" id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo $group->Enemies; ?></textarea>
+				<textarea class="input_field" id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Enemies); ?></textarea>
 			</div>
 
 
@@ -157,14 +157,14 @@ include 'navigation.php';
 			<div class="explanation">
 			Har ni några grupprykten som ni vill ha hjälp med att sprida? <br>Denna del är inte synlig för medlemmarna i gruppen.
 			</div>
-			<textarea class="input_field" id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo $group->IntrigueIdeas; ?></textarea>
+			<textarea class="input_field" id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->IntrigueIdeas); ?></textarea>
 			
 			
 			</div>
 						
 			<div class="question">
 			<label for="OtherInformation">Något annat arrangörerna bör veta om er grupp?</label><br>
-			<textarea class="input_field" id="OtherInformation" name="OtherInformation" rows="4" cols="50" maxlength="60000"><?php echo $group->OtherInformation; ?></textarea>
+			<textarea class="input_field" id="OtherInformation" name="OtherInformation" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->OtherInformation); ?></textarea>
 			
 			 
 			</div>

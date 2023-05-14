@@ -118,7 +118,7 @@ include 'navigation.php';
             			    echo "<tr><td>\n";
             			    echo "<input type='checkbox' id='roleId$role->Id' name='roleId[]' value='$role->Id' checked='checked'>";
             			    echo "\n";
-            			    echo "<label for='roleId$role->Id'>$role->Name</label>\n";
+            			    echo "<label for='roleId$role->Id'>".htmlspecialchars($role->Name)."</label>\n";
             			    echo "</td><td>";
             			    echo "<input type='radio' id='mainRole$role->Id' name='IsMainRole' value='$role->Id' required>\n";
             			    echo "<label for='mainRole$role->Id'>Huvudkaraktär</label><br><br>\n";   			    
@@ -126,8 +126,8 @@ include 'navigation.php';
         			    }
         			    else {
         			        echo "<div class='role'>\n";
-        			        echo "<h3>$role->Name</h3>";
-        			        echo "Karaktären kan inte anmälas eftersom gruppen " . $role->getGroup()->Name . " inte är anmäld.";
+        			        echo "<h3>".htmlspecialchars($role->Name)."</h3>";
+        			        echo "Karaktären kan inte anmälas eftersom gruppen " . htmlspecialchars($role->getGroup()->Name) . " inte är anmäld.";
         			        echo "</div>";
         			    }
         			}		

@@ -28,7 +28,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
     //Om det bara finns en och man måste välja så väljs den.
     if (count($selectionDatas)==1 && $required){
         $first_key = array_key_first($selectionDatas);
-        echo $selectionDatas[$first_key]->Name . "<br>\n";
+        echo htmlspecialchars($selectionDatas[$first_key]->Name) . "<br>\n";
         echo "<input type='hidden' id='" .$name_in.$selectionDatas[$first_key]->Id . "' name='" . $name . "' value=" .  $selectionDatas[$first_key]->Id . ">";
         echo "</div>\n";
         return;
@@ -54,7 +54,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
         }
         
         echo "<input type='" . $type . "' id='" .$name_in.$selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "' " . $row_option . ">\n";
-        echo "<label for='" .$name_in.$selectionData->Id . "'>" .  $selectionData->Name . "</label><br>\n";
+        echo "<label for='" .$name_in.$selectionData->Id . "'>" .  htmlspecialchars($selectionData->Name) . "</label><br>\n";
     }
     echo "</div>\n";
 }
@@ -66,7 +66,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
 function selectionDropDownByArray(String $name, Array $selectionDatas, $selected=null) {
    echo "<select name='$name' id='$name'>\n";
     foreach ($selectionDatas as $selectionData) {
-     echo "   <option value='$selectionData->Id'>$selectionData->Name</option>\n";
+     echo "   <option value='$selectionData->Id'>".htmlspecialchars($selectionData->Name)."</option>\n";
     }
     echo "</select>\n";
     
@@ -77,7 +77,7 @@ function commaStringFromArrayObject($objectArray) {
     $output="";
     
     foreach($objectArray as $object) {
-        $output = $output . $object->Name . ", ";
+        $output = $output . htmlspecialchars($object->Name) . ", ";
     }
     if (strlen($output) > 2) {
         $output = substr($output, 0, -2);
