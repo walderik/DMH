@@ -73,7 +73,7 @@ $someOneHasSpotOnLarp = false;
     		        
     		        echo "<div class='person'>\n";
     		        
-    		        if ($person->isRegistered($current_larp) || $person->isReserve($current_larp)) {
+    		        if (($person->isRegistered($current_larp)) || $person->isReserve($current_larp)) {
     		            echo "<a href='view_person.php?id=" . $person->Id . "'><h3>$person->Name&nbsp;<i class='fa-solid fa-eye'></i></a></h3>\n";    		            
     		        }
     		        else {
@@ -92,12 +92,15 @@ $someOneHasSpotOnLarp = false;
     		            if ($person->isReserve($current_larp)) {
     		                echo "Reservlista";
     		            }
+    		            else if ($person->isNotComing($current_larp)) {
+    		                echo "Avbokad";
+    		            }
     		            else {
     		                echo showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id");
     		            }
     		            echo "</td></tr>\n";
     		        }
-                    if ($person->isRegistered($current_larp)) {
+    		        if ($person->isRegistered($current_larp) && !$person->isNotComing($current_larp)) {
                         $registration = $person->getRegistration($current_larp);
                         if ($registration->SpotAtLARP==1) $someOneHasSpotOnLarp = true;
                         

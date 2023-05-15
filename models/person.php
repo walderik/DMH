@@ -394,7 +394,13 @@ class Person extends BaseModel{
         return false;
     }
     
-    
+    public function isNotComing(LARP $larp) {
+        $registration = Registration::loadByIds($this->Id, $larp->Id);
+        if (isset($registration)) {
+            return $registration->isNotComing();
+        }
+        return false;
+    }
     
     public function isNeverRegistered() {
         $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE PersonId=?;";
