@@ -191,12 +191,15 @@ class Person extends BaseModel{
     # Hämta anmälda deltagare i en grupp
     public static function getPersonsInGroupAtLarp($group, $larp) {
         if (is_null($group) || is_null($larp)) return Array();
-        //TODO ta bort NotComing
+
         $sql="select * from regsys_person WHERE id IN ".
             "(SELECT DISTINCT regsys_role.PersonId ".
-            "FROM regsys_role, regsys_larp_role WHERE ".
+            "FROM regsys_role, regsys_larp_role, regsys_registration WHERE ".
             "regsys_role.GroupId = ? AND ".
             "regsys_role.Id=regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
+            "regsys_role.PersonId = regsys_registration.PersonId AND ".
+            "regsys_registration.NotComing = 0 AND ".
             "regsys_larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }

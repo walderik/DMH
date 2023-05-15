@@ -265,17 +265,6 @@ class Role extends BaseModel{
     }
     
     
-    # Hämta anmälda karaktärer i en grupp
-    public static function getRegisteredRolesInGroup($group, $larp) {
-        if (is_null($group) || is_null($larp)) return Array();
-        //ToDo NotComing
-        $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
-        "regsys_role.GroupId = ? AND ".
-        "regsys_role.Id=regsys_larp_role.RoleId AND ".
-        "regsys_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
-    }
-    
     public static function getAllRoles(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
@@ -300,6 +289,7 @@ class Role extends BaseModel{
             $sql = "SELECT * FROM regsys_role WHERE Id IN ".
                 "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
                 "regsys_larp_role.RoleId = regsys_role.Id AND ".
+                "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
                 "regsys_role.PersonId = regsys_registration.PersonId AND ".
                 "regsys_registration.NotComing = 0 AND ".
                 "regsys_larp_role.larpid=? AND ".
@@ -389,6 +379,7 @@ class Role extends BaseModel{
         else {
             $sql = "SELECT * FROM regsys_role WHERE Id IN ".
                 "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+                "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
                 "regsys_larp_role.RoleId = regsys_role.Id AND ".
                 "regsys_role.PersonId = regsys_registration.PersonId AND ".
                 "regsys_registration.NotComing = 0 AND ".
