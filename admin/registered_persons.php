@@ -31,15 +31,15 @@
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<tr>\n";
     		        echo "<td>";
-    		        if ($registration->NotComing == 1) {
+    		        if ($registration->isNotComing()) {
     		            echo "<s>";
     		        }
     		        echo $person->Name;
-    		        if ($registration->NotComing == 1) {
+    		        if ($registration->isNotComing()) {
     		            echo "</s>";
     		        }
     		        echo "</td>\n";
-    		        if ($registration->NotComing == 1) {
+    		        if ($registration->isNotComing()) {
     		            echo "<td></td>";
     		        }
     		        else {
@@ -47,19 +47,19 @@
         		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        }
     		        echo "<td>";
-    		        if ($registration->NotComing == 1) {
+    		        if ($registration->isNotComing()) {
     		            echo "<s>";
     		        }
     		        
     		        echo $person->Email;
-    		        if ($registration->NotComing == 1) {
+    		        if ($registration->isNotComing()) {
     		            echo "</s>";
     		        }
     		        
     		        echo " ".contactEmailIcon($person->Name,$person->Email)."</td>\n";
     		        echo "</td>\n";
 
-    		        if ($registration->NotComing == 1) {
+    		        if ($registration->isNotComing()) {
     		            echo "<td></td>";
     		            echo "<td></td>";
     		            echo "<td></td>";
