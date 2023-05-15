@@ -97,12 +97,12 @@ class LARP extends BaseModel{
         return Role::getAllRoles($this);
     }
     
-    public function getAllMainRoles() {
-        return Role::getAllMainRoles($this);
+    public function getAllMainRoles($includeNotComing) {
+        return Role::getAllMainRoles($this, $includeNotComing);
     }
     
-    public function getAllNotMainRoles() {
-        return Role::getAllNotMainRoles($this);
+    public function getAllNotMainRoles($includeNotComing) {
+        return Role::getAllNotMainRoles($this, $includeNotComing);
     }
     
     public function isPastLatestRegistrationDate() {

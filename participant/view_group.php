@@ -26,8 +26,9 @@ if (!$current_group->isRegistered($current_larp)) {
 
 $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 
-$group_members = Role::getRegisteredRolesInGroup($current_group, $current_larp);
 
+$main_characters_in_group = Role::getAllMainRolesInGroup($current_group, $current_larp);
+$non_main_characters_in_group = Role::getAllNonMainRolesInGroup($current_group, $current_larp);
 
 function print_role(Role $role, Group $group) {
     global $current_user, $current_larp;
@@ -103,15 +104,23 @@ include 'navigation.php';
 
 		
 		echo "<div class='container' style ='box-shadow: none; margin: 0px; padding: 0px;'>\n";
-		if ((empty($group_members) or count($group_members)==0)) {
+		if (empty($main_characters_in_group) && empty($non_main_characters_in_group)) {
 		    echo "Inga anmälda i gruppen än.";
 		}
 		else {
 		    echo "<ul class='image-gallery'>\n";
-		    foreach ($group_members as $role) {
+		    foreach ($main_characters_in_group as $role) {
 		        print_role($role, $current_group);
 		    }
 		    echo "</ul>\n";
+		    if (!empty($non_main_characters_in_group)) {
+    		    echo "<h3>Sidokaraktärer</h3>";
+    		    echo "<ul class='image-gallery'>\n";
+    		    foreach ($non_main_characters_in_group as $role) {
+    		        print_role($role, $current_group);
+    		    }
+    		    echo "</ul>\n";
+		    }
 		}
 		
 		echo "</DIV>\n";

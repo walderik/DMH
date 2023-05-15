@@ -77,11 +77,8 @@ function myFunction() {
             <a href="resource_admin.php">Resurser</a>
 	    </div>
 	  </div> 
-	  	<?php 
-	 if (isset($_SESSION['admin']) or AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
-	 ?>	
-	  <a href="../admin/" style="color: red"><i class="fa-solid fa-lock"></i>Arrangör</a>
-    <?php }?>
+      <a href="../participant/" style="color: #99bbff"><i class="fa-solid fa-unlock"></i>Deltagare</a>
+
 	<?php 
 	 if (isset($_SESSION['admin'])) {
 	 ?>	

@@ -25,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-$group_members = Role::getRegisteredRolesInGroup($group, $current_larp);
-
+$main_characters_in_group = Role::getAllMainRolesInGroup($group, $current_larp);
+$non_main_characters_in_group = Role::getAllNonMainRolesInGroup($group, $current_larp);
 
 
 if (isset($_SERVER['HTTP_REFERER'])) {
@@ -44,6 +44,28 @@ function existsInArray($entry, $array) {
         }
     }
     return false;
+}
+
+function print_role($group_member) {
+    global $current_larp;
+
+        
+    echo "<a href ='view_role.php?id=" . $group_member->Id ."'>" .
+        $group_member->Name . "</a> - " .
+        $group_member->Profession . " spelas av " .
+        "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>" .
+        $group_member->getPerson()->Name . "</a>";
+        
+        
+        if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+            echo ", ansvarig vuxen är ";
+            if (!empty($registration->GuardianId)) {
+                $group_member->getRegistration($current_larp)->getGuardian()->Name;
+            }
+            
+        }
+     echo "<br>";       
+   
 }
 
 include 'navigation.php';
@@ -130,32 +152,19 @@ include 'navigation.php';
 		
 		<h2>Anmälda medlemmar</h2>
 		<?php 
-
-		foreach($group_members as $group_member) {
-
-		    echo "<a href ='view_role.php?id=" . $group_member->Id ."'>" . 
-		    $group_member->Name . "</a> - " . 
-            $group_member->Profession . " spelas av " . 
-            "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>" .
-            $group_member->getPerson()->Name . "</a>";
-
-
-            if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-                echo ", ansvarig vuxen är ";
-                if (!empty($registration->GuardianId)) {
-                    $group_member->getRegistration($current_larp)->getGuardian()->Name;
-                }
-                
+		foreach($main_characters_in_group as $group_member) {
+		    print_role($group_member);
+		}
+		if (!empty($non_main_characters_in_group)) {
+		    echo "<h3>Sidokaraktärer</h3>";
+		    
+		    foreach($non_main_characters_in_group as $group_member) {
+		        print_role($group_member);
 		    }
+		}
+		
 
          ?>
-		         <a href="logic/remove_group_member.php?groupID=<?php echo $group->Id; ?>&roleID=<?php echo $group_member->Id; ?>" onclick="return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');"><i class="fa-solid fa-trash-can"></i></a>
-		<?php 
-		    
-
-            echo "<br>"; 
-		}
-		?>
 		<h2>Intrig</h2>
 
 	    <?php  echo $larp_group->Intrigue; ?>
