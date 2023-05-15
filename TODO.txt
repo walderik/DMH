@@ -1,14 +1,11 @@
-Möjlighet att porta deltagare + kommentar
+
 
 Props: Visa på karaktärsblad
 
 Gruppintrig och grupp-props på karaktärsblad
 
-Not coming: stryk roller (på alla ställen)
 Not coming: Visa för deltagaren
 
-
-Visa grupp (huvudkaraktärer och sidokaraktärer för sig) Både deltagare och admin
 
 Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
