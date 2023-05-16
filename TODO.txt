@@ -15,7 +15,8 @@ Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 
 
-Kunna sortera fälten i grupplistan
+Kunna sortera fälten i grupplistan. 
+Medlemarna listas i en tabell och det finns länk till att redigera en medlem från listan (snabbt sätt hitta karaktärer man vill skriva till något om)
 
 Lite mer mellanrum mellan varje fält i redigeringsformulären eftersom dom går ihop med varandra nu. Speciellt om ngn är död är otydligt.
 
