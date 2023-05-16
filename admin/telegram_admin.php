@@ -52,7 +52,15 @@ include 'navigation.php';
                 echo "<td>" . $telegram->Reciever . "</td>\n";
                 echo "<td>" . $telegram->RecieverCity . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
-                echo "<td>" . $telegram->getUser()->Name . "</td>\n";
+                echo "<td>";
+                $user = $telegram->getUser();
+                if ($user->isComing($current_larp)) {
+                    echo $user->Name;
+                }
+                else {
+                    echo "<s>$user->Name</s>";
+                }
+                echo "</td>\n";
                 echo "<td>" . showStatusIcon($telegram->Approved,  "logic/approve_telegram.php?id=$telegram->Id") . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->OrganizerNotes) . "</td>\n";
                 

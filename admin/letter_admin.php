@@ -81,7 +81,15 @@ include 'navigation.php';
                 echo "<td>" . $letter->EndingPhrase . "</td>\n";
                 echo "<td>" . $letter->Signature . "</td>\n";
                 echo "<td>" . $letter->Font . "</td>\n";
-                echo "<td>" . $letter->getUser()->Name . "</td>\n";
+                echo "<td>";
+                $user = $letter->getUser();
+                if ($user->isComing($current_larp)) {
+                    echo $user->Name;
+                }
+                else {
+                    echo "<s>$user->Name</s>";
+                }
+                echo "</td>\n";
                 echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $letter->OrganizerNotes) . "</td>\n";
                 

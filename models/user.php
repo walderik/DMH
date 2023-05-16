@@ -178,4 +178,16 @@ class User extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($campaign->Id));
         
     }
+    
+    public function isComing(Larp $larp) {
+        if (is_null($larp)) return null;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_person, regsys_registration WHERE ".
+            "regsys_person.UserId =? AND ".
+            "regsys_person.Id = regsys_registration.PersonId AND ".
+            "regsys_registration.SpotAtLARP = 1 AND ".
+            "regsys_registration.NotComing = 0 AND ".
+            "regsys_registration.LarpId=?;";
+        return static::existsQuery($sql, array($this->Id, $larp->Id));
+        
+    }
 }

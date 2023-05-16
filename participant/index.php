@@ -3,7 +3,7 @@ require 'header.php';
 include_once '../includes/error_handling.php';
 
 include "navigation.php";
-$someOneHasSpotOnLarp = false;
+
 ?>
 
 		<div class="content">
@@ -102,7 +102,6 @@ $someOneHasSpotOnLarp = false;
     		        }
     		        if ($person->isRegistered($current_larp) && !$person->isNotComing($current_larp)) {
                         $registration = $person->getRegistration($current_larp);
-                        if ($registration->SpotAtLARP==1) $someOneHasSpotOnLarp = true;
                         
                         if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
                             echo "<tr><td>Ansvarig vuxen</td><td>";
@@ -189,6 +188,7 @@ $someOneHasSpotOnLarp = false;
         		                else {
         		                    echo "<td><a href='upload_role_image.php?id=$role->Id'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
         		                }
+        		                $registration = $person->getRegistration($current_larp);
         		                if ($registration->SpotAtLARP==1) {
         		                    echo "<td><a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a></td>\n";
         		                }
@@ -245,7 +245,7 @@ $someOneHasSpotOnLarp = false;
     		</div>
 		</div>
 		<?php 
-		  if ($someOneHasSpotOnLarp) {
+		  if ($current_user->isComing($current_larp)) {
 		        echo "</div><div class='content'>\n";
 		        echo "<h2>Telegram</h2>\n";
 		        echo "<div>\n";
