@@ -12,17 +12,17 @@ Lagfarter sätta upp hur mycket resurser de producerar / behöver
 
 Ändra vlken karaktär som är huvudkaraktär
 Ta bort sidokaraktär
-=======
+
 
 Kunna sortera fälten i grupplistan. 
-Medlemarna listas i en tabell och det finns länk till att redigera en medlem från listan (snabbt sätt hitta karaktärer man vill skriva till något om)
+Medlemarna listas i en tabell och det finns länk till att redigera en medlem från listan 
+  (snabbt sätt hitta karaktärer man vill skriva till något om)
 
-Lite mer mellanrum mellan varje fält i redigeringsformulären eftersom dom går ihop med varandra nu. Speciellt om ngn är död är otydligt.
+Lite mer mellanrum mellan varje fält i redigeringsformulären eftersom dom går ihop med varandra nu. 
+  Speciellt om ngn är död är otydligt.
 
 Länk till gruppen i karaktärslistan så man snabbt får fram gruppen för en karaktär utan behöva klicka runt.
 
-
->>>>>>> 4b14ce9f73c654625ba372bfee51cb549fd4e5cb
 
 Intrigverktyg
 
