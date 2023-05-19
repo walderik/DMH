@@ -1,20 +1,17 @@
 Bygghelgs-anmälningar
 
-Visa roller snyggare på daltagarnas översikt
+Visa roller snyggare på deltagarnas översikt
 
 Props: Visa på karaktärsblad
 
 Gruppintrig och grupp-props på karaktärsblad
 
-Vad ska man göra med brev och telegram som har freslagits av någon som sedan är avbokad?
-
-Misstanke: när man tar in någon från reservlistan blir de avbokade
-
 
 Lagfarter tilldela ägare (roll)
 Lagfarter sätta upp hur mycket resurser de producerar / behöver	
 
-
+Ändra vlken karaktär som är huvudkaraktär
+Ta bort sidokaraktär
 
 Intrigverktyg
 
