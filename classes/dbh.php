@@ -2,10 +2,10 @@
 
 
 class Dbh {
-    public static $dbServername = "192.168.0.20";
-    public static $dbUsername = "root";
+    public static $dbServername = "";
+    public static $dbUsername = "";
     public static $dbPassword = "";
-    public static $dbName = "berghemsvanner_";
+    public static $dbName = "";
     
 //     public static $dbServername = "berghemsvanner.se.mysql.service.one.com";
 //     public static $dbUsername = "berghemsvanner_";
@@ -13,9 +13,25 @@ class Dbh {
 //     public static $dbName = "berghemsvanner_";
     
     
+    private static function setUpConnection() {
+        if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
+            self::$dbServername = "192.168.0.19";
+            self::$dbUsername = "root";
+            self::$dbPassword = "";
+            self::$dbName = "berghemsvanner_";
+        }
+        else {
+            self::$dbServername = "berghemsvanner.se.mysql.service.one.com";
+            self::$dbUsername = "berghemsvanner_";
+            self::$dbPassword = "Y2K0U1!";
+            self::$dbName = "berghemsvanner_";
+            
+        }
+    }
+    
     
     protected function connect() {
-
+        Dbh::setUpConnection();
         try {
             $dbh = new PDO('mysql:host='.self::$dbServername.';dbname='.self::$dbName, self::$dbUsername, self::$dbPassword);
             return $dbh;
@@ -28,6 +44,7 @@ class Dbh {
     }
     
     protected static function connectStatic() {
+        Dbh::setUpConnection();
         try {
 
             $dbh = new PDO('mysql:host='.self::$dbServername.';dbname='.self::$dbName, self::$dbUsername, self::$dbPassword);
