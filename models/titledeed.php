@@ -76,5 +76,63 @@ class Titledeed extends BaseModel{
     }
     
     
+    public function Produces() {
+        return Resource::TitleDeedProcuces($this);
+    }
+    
+    public function Requires() {
+        return Resource::TitleDeedRequires($this);
+    }
+    
+    
+    public function getSelectedProducesResourcesIds() {
+        $stmt = $this->connect()->prepare("SELECT ResourceId FROM  regsys_resource_titledeed_normally_produces WHERE TitleDeedId = ? ORDER BY ResourceId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['ResourceId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+
+    public function getSelectedRequiresResourcesIds() {
+        $stmt = $this->connect()->prepare("SELECT ResourceId FROM  regsys_resource_titledeed_normally_requires WHERE TitleDeedId = ? ORDER BY ResourceId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['ResourceId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    
     
 }

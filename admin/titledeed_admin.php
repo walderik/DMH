@@ -37,14 +37,23 @@ include 'navigation.php';
        $titledeed_array = Titledeed::allByCampaign($current_larp);
         if (!empty($titledeed_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Plats</th><th>Kan säljas</th><th>Handelsstation</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Plats</th><th>Kan säljas</th><th>Handelsstation</th><th>Producerar</th><th>Behöver</th><th>Ägare</th><th></th><th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
+                $owner = "";
+                if (isset($titledeed->RoleId)) {
+                    $role = Role::loadById($titledeed->RoleId);
+                    $owner = $role->Name;
+                }
+                
                 echo "<tr>\n";
                 echo "<td>" . $titledeed->Id . "</td>\n";
                 echo "<td>" . $titledeed->Name . "</td>\n";
                 echo "<td>" . $titledeed->Location . "</td>\n";
                 echo "<td>" . ja_nej($titledeed->Tradeable) . "</td>\n";
                 echo "<td>" . ja_nej($titledeed->IsTradingPost) . "</td>\n";
+                echo "<td>" . commaStringFromArrayObject($titledeed->Produces()) . "</td>\n";
+                echo "<td>" . commaStringFromArrayObject($titledeed->Requires()) . "</td>\n";
+                echo "<td>" . $owner . "</td>\n";
                 
                 echo "<td>" . "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='titledeed_admin.php?operation=delete&id=" . $titledeed->Id . "'><i class='fa-solid fa-trash'></i></td>\n";

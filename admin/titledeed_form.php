@@ -43,6 +43,9 @@ include_once 'header.php';
         echo $output;
     }
     
+    $resources = Resource::allNormalByCampaign($current_larp);
+    
+    
     include 'navigation.php';
     ?>
     
@@ -83,6 +86,18 @@ include_once 'header.php';
         			<input type="radio" id="IsTradingPost_no" name="IsTradingPost" value="0" <?php if ($titledeed->IsTradingPost == 0) echo 'checked="checked"'?>> 
         			<label for="IsTradingPost_no">Nej</label>
     			</td>
+			</tr>
+			<tr>
+
+				<td><label for="Produces">Producerar (normalt)</label></td>
+				<td><?php selectionByArray('Produces', $resources, true, false) ?>
+				</td>
+			</tr>
+			<tr>
+
+				<td><label for="Requires">Behöver (normalt)</label></td>
+				<td><?php selectionByArray('Requires', $resources, true, false) ?>
+				</td>
 			</tr>
  
 		</table>
