@@ -69,6 +69,18 @@ include 'navigation.php';
 		<h1><?php echo $current_group->Name;?>&nbsp;
 		<?php if ($current_group->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
 		<a href='edit_group.php?id=<?php echo $current_group->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
+        <?php if ($larp_group->UserMayEdit  == 1) {
+                echo "Gruppledaren får ändra karaktären " . showStatusIcon(false);
+                $editButton = "Ta bort tillåtelsen att ändra";
+            }
+            else {
+                
+                $editButton = "Tillåt grppledaren att ändra karaktären";
+            }
+                  
+                ?>
+            <form action="logic/toggle_user_may_edit_group.php" method="post"><input type="hidden" id="groupId" name="groupId" value="<?php echo $current_group->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
+		
 		<div>
 		<table>
 			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $current_group->getPerson()->Name;?></a></td></tr>

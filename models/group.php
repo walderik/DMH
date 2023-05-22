@@ -118,6 +118,11 @@ class Group extends BaseModel{
 
      }
      
+     public function userMayEdit(LARP $larp) {
+         return LARP_Group::userMayEdit($this->Id, $larp->Id);
+         
+     }
+     
      public function hasIntrigue(LARP $larp) {
          $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
          return $larp_group->hasIntrigue();

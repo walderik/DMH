@@ -81,7 +81,27 @@ class Resource extends BaseModel{
         $sql = "SELECT * FROM regsys_resource WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
+   
+    
+    public static function allNormalByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_resource WHERE CampaignId = ? AND IsRare=0 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
     
     
+    public static function TitleDeedProcuces(Titledeed $titledeed) {
+        if (is_null($titledeed)) return Array();
+        $sql = "SELECT * FROM regsys_resource WHERE Id IN (SELECT ResourceId FROM regsys_resource_titledeed_normally_produces WHERE TitleDeedId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));
+        
+    }
+    
+    public static function TitleDeedRequires(Titledeed $titledeed) {
+        if (is_null($titledeed)) return Array();
+        $sql = "SELECT * FROM regsys_resource WHERE Id IN (SELECT ResourceId FROM regsys_resource_titledeed_normally_requires WHERE TitleDeedId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));
+        
+    }
     
 }

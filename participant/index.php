@@ -142,7 +142,7 @@ include "navigation.php";
     		            echo "<br><b>Gruppansvarig för:</b><br>\n";
     		        }
     		        foreach ($groups as $group)  {
-    		            if ($group->isRegistered($current_larp)) {
+    		            if ($group->isRegistered($current_larp) && !$group->userMayEdit($current_larp)) {
     		                echo  "<a href='view_group.php?id=$group->Id'>$group->Name <i class='fa-solid fa-eye'></i></a>";
     		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		                

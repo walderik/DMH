@@ -17,7 +17,7 @@ class BerghemMailer {
     public static $from = 'info@berghemsvanner.se';
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
-    public static function send(string $to_email, string $to_name, string $text, string $subject=null, ?array $attachments=[]) {
+    public static function send(string $to_email, string $to_name, string $text, string $subject=null, ?array $attachments=[], ?string $cc="") {
     
         global $current_larp, $current_user;
         
@@ -45,11 +45,16 @@ class BerghemMailer {
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
         //Set who the message is to be sent from
-        $mail->setFrom($from, utf8_decode($myName));
+        $mail->setFrom($from, utf8_decode($myName),0);
         //Set an alternative reply-to address
         $mail->addReplyTo($from, utf8_decode($myName));
         //Set who the message is to be sent to
         $mail->addAddress($to_email, utf8_decode($to_name));
+        
+        //Set cc
+        if (!empty($cc)) {
+            $mail->addCC($cc);
+        }
 //         $mail->addAddress('mats.rappe@yahoo.se', utf8_decode($to_name));
         //Set the subject line
         $mail->Subject = utf8_decode($subject);

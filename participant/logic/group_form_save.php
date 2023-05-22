@@ -25,6 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         
         $group=Group::loadById($_POST['Id']);
+
+        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
+        if (!empty($larp_group) && $larp_group->UserMayEdit == 0) {
+            //Redan anmäld, utan tillåtelse att redigera
+            header('Location: ../index.php?error=');
+            exit;
+        }
         
         
         //Kolla om man är gruppledare annars får man inte ändra på gruppen
@@ -32,8 +39,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('Location: ../index.php');
             exit;
         }
+        
+        
         $group->setValuesByArray($_POST);
         $group->update();
+        if (!empty($larp_group)) {
+            $larp_group->UserMayEdit = 0;
+            $larp_group->update();
+        }
+        
         if (!strpos($_POST['action'], "anmälan")) {
             header('Location: ../index.php');
             exit;

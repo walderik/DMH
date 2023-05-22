@@ -25,8 +25,8 @@ $subject = "Meddelande till $name från $current_user->Name";
 $referer = (isset($_POST['referer'])) ? $_POST['referer'] : '../../index.php';
 $referer .= "?message=contact_email_sent";
 
-BerghemMailer::send($email, $name, $text, $subject);
-BerghemMailer::send($campaign->Email, $name, $text, "Kopia av ".$subject);
+BerghemMailer::send($email, $name, $text, $subject, array(), $campaign->Email);
+//BerghemMailer::send($campaign->Email, $name, $text, "Kopia av ".$subject);
 
 header('Location: ' . $referer);
 

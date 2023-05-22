@@ -20,11 +20,13 @@
     		        echo "<tr>\n";
     		        echo "<td>" . $group->Name;
     		        if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
+    		        if ($group->userMayEdit($current_larp)) echo "<br>Gruppledaren får ändra gruppen " . showStatusIcon(false);
     		        
     		        echo "</td>\n";
     		        echo "<td>" . "<a href='view_group.php?id=" . $group->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		        echo "<a href='edit_group.php?id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
-    		        echo "<td>" . $group->getPerson()->Name . "</td>\n";
+    		        $person = $group->getPerson();
+    		        echo "<td>" . $person->Name . " " . contactEmailIcon($person->Name,$person->Email) . "</td>\n";
     		        echo "<td>" . $group->getWealth()->Name . "</td>\n";
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     		        echo "<td>" . showStatusIcon($larp_group->hasIntrigue());

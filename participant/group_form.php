@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-if ($group->isRegistered($current_larp)) {
+if ($group->isRegistered($current_larp) && !$group->userMayEdit($current_larp)) {
     header('Location: view_group.php?id='.$group->Id);
     exit;
 }
@@ -171,7 +171,7 @@ include 'navigation.php';
 			
 
 			  <input type="submit" name="action" value="<?php default_value('action'); ?>">
-			  <?php if ($current_larp->RegistrationOpen == 1) { ?>
+			  <?php if ($current_larp->RegistrationOpen == 1 && !$group->isRegistered($current_larp)) { ?>
 			  <input type="submit" name="action" value="<?php default_value('action'); ?> och gå direkt till anmälan">
 			  <?php }?>
 		</form>
