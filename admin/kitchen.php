@@ -54,15 +54,16 @@ include 'navigation.php';
     
     //Hitta alla som inte har någon vald allergi, men som har en kommentar
     $persons = Person::getAllWithoutAllergiesButWithComment($current_larp);
-    echo "<h3>Special</h3><table class='data'>";
-    echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Övrigt</th><th>Vald mat</th></tr>";
-    foreach($persons as $person) {
-        $registration=$person->getRegistration($current_larp);
-        echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td>";
-        echo "<td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>" . $registration->getTypeOfFood()->Name . "</td></tr>";
+    if (!empty($persons) && count($persons) > 0) {
+        echo "<h3>Special</h3><table class='data'>";
+        echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Övrigt</th><th>Vald mat</th></tr>";
+        foreach($persons as $person) {
+            $registration=$person->getRegistration($current_larp);
+            echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td>";
+            echo "<td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>" . $registration->getTypeOfFood()->Name . "</td></tr>";
+        }
+        echo "</table>";
     }
-    echo "</table>";
-    
     
     ?>
 </div>

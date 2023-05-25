@@ -8,13 +8,13 @@ require_once $root . '/pdf/report_pdf.php';
 
 //If the user isnt admin it may not use this page
 if (!isset($_SESSION['admin'])) {
-    header('Location: ../../participant/index.php');
+    header('Location: ../../../participant/index.php');
     exit;
 }
 
 
 if ($_SERVER["REQUEST_METHOD"] != "GET") {
-    header('Location: ../../admin/index.php');
+    header('Location: ../../../admin/index.php');
     exit;
 }
 
