@@ -23,45 +23,47 @@ $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('Helvetica','');
 $pdf->SetSubject(utf8_decode($name));
 
-$allAllergies = NormalAllergyType::all();
-
-foreach($allAllergies as $allergy) {
-    $persons = Person::getAllWithSingleAllergy($allergy, $current_larp);
-    if (isset($persons) && count($persons) > 0) {
+if (NormalAllergyType::isInUse()){
+    $allAllergies = NormalAllergyType::all();
+    
+    foreach($allAllergies as $allergy) {
+        $persons = Person::getAllWithSingleAllergy($allergy, $current_larp);
+        if (isset($persons) && count($persons) > 0) {
+            $rows = array();
+            $rows[] = array('Namn','Epost','Övrigt','Vald Mat');
+    
+            foreach($persons as $person) {
+                $registration=$person->getRegistration($current_larp);
+                $rows[] = array($person->Name, $person->Email, 
+                                $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
+            }
+    
+            $pdf->new_report($current_larp, "Enbart $allergy->Name", $rows);
+        }
+    }
+    
+    //Multipla allergier
+    $persons = Person::getAllWithMultipleAllergies($current_larp);
+    if (!empty($persons) && count($persons) > 0) {
         $rows = array();
-        $rows[] = array('Namn','Epost','Telefon','Övrigt','Vald Mat');
-
+        $rows[] = array('Namn','Epost','Allergier','Övrigt','Vald Mat');
         foreach($persons as $person) {
             $registration=$person->getRegistration($current_larp);
-            $rows[] = array($person->Name, $person->Email, $person->PhoneNumber,
+            $rows[] = array($person->Name, $person->Email, commaStringFromArrayObject($person->getNormalAllergyTypes()),
                             $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
         }
-
-        $pdf->new_report($current_larp, "Enbart $allergy->Name", $rows);
+        $pdf->new_report($current_larp, "Multipla vanliga allergier", $rows);
     }
-}
-
-//Multipla allergier
-$persons = Person::getAllWithMultipleAllergies($current_larp);
-if (!empty($persons) && count($persons) > 0) {
-    $rows = array();
-    $rows[] = array('Namn','Epost','Telefon','Allergier','Övrigt','Vald Mat');
-    foreach($persons as $person) {
-        $registration=$person->getRegistration($current_larp);
-        $rows[] = array($person->Name, $person->Email, $person->PhoneNumber, commaStringFromArrayObject($person->getNormalAllergyTypes()),
-                        $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
-    }
-    $pdf->new_report($current_larp, "Multipla vanliga allergier", $rows);
 }
 
 //Hitta alla som inte har någon vald allergi, men som har en kommentar
 $persons = Person::getAllWithoutAllergiesButWithComment($current_larp);
 if (!empty($persons) && count($persons) > 0) {
     $rows = array();
-    $rows[] = array('Namn','Epost','Telefon','Övrigt','Vald Mat');
+    $rows[] = array('Namn','Epost','Övrigt','Vald Mat');
     foreach($persons as $person) {
         $registration=$person->getRegistration($current_larp);
-        $rows[] = array($person->Name, $person->Email, $person->PhoneNumber, 
+        $rows[] = array($person->Name, $person->Email, 
                         $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
     }
     $pdf->new_report($current_larp, "Special", $rows);

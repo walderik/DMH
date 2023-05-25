@@ -29,7 +29,8 @@ class Report_PDF extends FPDF {
     public $rows;
     public $num_cols;
     public $lefts = [];
-    public $cell_width;
+    public $default_cell_width;
+    public $cell_widths = [];
     public $current_col = 0;
     public $current_cell_height;
     public $text_max_length;
@@ -99,14 +100,49 @@ class Report_PDF extends FPDF {
         $this->text_max_length = 94 / $this->num_cols; #  (Empiriskt testat för vad som ser bra ut)
         
         $this->cell_height = static::$cell_y + (2*static::$Margin);
-        $this->cell_width = (static::$x_max - static::$x_min) / $this->num_cols - (2*static::$Margin);
+        $this->default_cell_width = (static::$x_max - static::$x_min) / $this->num_cols - (2*static::$Margin);
         
         $current_left = static::$x_min ;
-        $this->lefts[0] = $current_left;
+        $this->lefts[0] = $current_left; # Vänstraste vänstermarginalen
         
-        for ($i = 1; $i < $this->num_cols; $i++){
-            $this->lefts[$i] = $current_left + $this->cell_width + static::$Margin*2;
-            $current_left = $this->lefts[$i];
+        # Markera extra breda kolumner
+        $max_length = [];
+        foreach($this->rows as $row){
+            $col = 0;
+            foreach($row as $cell){
+                if (!isset($max_length[$col]))         $max_length[$col] = 0;
+                if (strlen($cell) > $max_length[$col]) $max_length[$col] = strlen($cell);
+                $col++;
+            }
+        }
+        
+        $with_part = [];
+        $avg_part = 0;
+        for ($col = 0; $col < $this->num_cols; $col++){
+            if ($max_length[$col] > $this->text_max_length) {
+                $with_part[$col] = 1.5;
+            } elseif ($max_length[$col] < 2) {
+                $with_part[$col] = 0.1;
+            } else {
+                $with_part[$col] = 1;
+            }
+            $avg_part += $with_part[$col];
+        }
+        $avg_part = $avg_part / $this->num_cols;
+        
+//         print_r($with_part);
+//         echo $avg_part;
+        
+        # Sätt alla kolumnbredder
+        for ($col = 0; $col < $this->num_cols; $col++){
+//             $this->cell_widths[$col] = $this->default_cell_width * ($with_part[$col] / $avg_part );
+            $this->cell_widths[$col] = $this->default_cell_width;
+        }
+        
+        # Beräkna vänster-marginaler
+        for ($col = 1; $col < $this->num_cols; $col++){
+            $this->lefts[$col] = $current_left + $this->cell_widths[$col] + static::$Margin*2;
+            $current_left = $this->lefts[$col];
         }
         
         $this->AddPage();
@@ -122,10 +158,6 @@ class Report_PDF extends FPDF {
             }
             $rubrik = false;
         }
-        
-//         $y += $this->current_cell_height;
-//         $this->bar();
-
 	}
 	
 	# Dynamiska småfält
@@ -136,9 +168,9 @@ class Report_PDF extends FPDF {
 	    $this->Line(static::$x_min, $y, static::$x_max, $y);
 	}
 	
-	private function mittlinje() {
+	private function mittlinje($col) {
 	    global $y;
-	    $x_pos = $this->lefts[$this->current_col];
+	    $x_pos = $this->lefts[$col]; # $this->current_col];
 	    $down = $y + $this->current_cell_height;
 	    $this->Line($x_pos, $y, $x_pos, $down);
 	}
@@ -168,15 +200,6 @@ class Report_PDF extends FPDF {
 	    # Temporärt bortkommenterat så vi tar den logiken senare
  	    if (strlen($text) > $this->text_max_length){
  	        $this->SetFont('Arial', $bold_char, static::$text_fontsize/$scaling);
-	        
-// 	        if (strlen($text)>210) {
-// 	            $this->SetFont('Arial','',static::$header_fontsize);
-// 	            $this->MultiCell($this->cell_width+5, static::$cell_y-2.1, $text, 0, 'L'); # Väldigt liten och tät text
-// 	        } else {
-// 	            $this->MultiCell($this->cell_width+5, static::$cell_y-1.5, $text, 0, 'L');
-// 	        }
-
-// 	        return;
  	    } else {
  	        $this->SetFont('Helvetica', $bold_char, static::$text_fontsize);
         }
@@ -188,9 +211,11 @@ class Report_PDF extends FPDF {
 	    
 	    # Skriv ut texten i cellen
 	    if (strlen($text) > ($this->text_max_length*$scaling-2)){
-	       $this->MultiCell($this->cell_width, static::$cell_y-1.5, $text, 0, 'L');
+// 	       $this->MultiCell($this->default_cell_width, static::$cell_y-1.5, $text, 0, 'L');
+	       $this->MultiCell($this->cell_widths[$this->current_col], static::$cell_y-1.5, $text, 0, 'L');
 	    } else {
-	       $this->Cell($this->cell_width, static::$cell_y, $text, 0, 0, 'L');
+// 	       $this->Cell($this->default_cell_width, static::$cell_y, $text, 0, 0, 'L');
+	       $this->Cell($this->cell_widths[$this->current_col], static::$cell_y, $text, 0, 0, 'L');
 	    }
 	    
 	    # Hantering om resultatet av cellen är för stort för att få plats.
@@ -201,17 +226,18 @@ class Report_PDF extends FPDF {
             # Efterjustera mittlinjen om det behövs
             
         }
-        
-        # Dra ett streck mellan kolumnerna om det behövs
-        if ($this->current_col > 0){
-            $this->mittlinje();
-        }
             
         # Räkna upp en cell i bredd
         $this->current_col += 1;
         
         if ($this->num_cols == $this->current_col) { 
             # Sista cellen i en rad
+            
+            # Dra alla mellanstrecken
+            for ($col = 0; $col < $this->num_cols; $col++) {
+                $this->mittlinje($col);
+            }
+            
             $this->current_col = 0;
             $y += $this->current_cell_height;
             $this->bar();
@@ -219,10 +245,9 @@ class Report_PDF extends FPDF {
                 $this->AddPage(); # Ny sidan om vi är längst ner
                 $y += 5;
             }
+            
             $this->current_cell_height = $this->cell_height;
         }
-
-	    
 	    
 	    return;
 	}
@@ -238,16 +263,16 @@ class Report_PDF extends FPDF {
 	    
 	    if (strlen($text)>3500){
 	        $this->SetFont('Helvetica','',static::$header_fontsize);
-	        $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y-2.5, $text, 0,'L'); # Mindre radavstånd
+	        $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y-2.5, $text, 0,'L'); # Mindre radavstånd
 	        return;
 	    }
 	    if (strlen($text)>2900){
 	        $this->SetFont('Helvetica','',static::$text_fontsize-1);
-	        $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L'); # Mindre radavstånd
+	        $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L'); # Mindre radavstånd
 	        return;
 	    }
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
-	    $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
+	    $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
 	}
 	
 	private function set_rest_of_page($header, $text) {
@@ -259,11 +284,11 @@ class Report_PDF extends FPDF {
 	    
 	    if (strlen($text)>1800){
 	        $this->SetFont('Helvetica','',static::$text_fontsize/1.5); # Hantering för riktigt långa texter
-	        $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y-1.3, $text, 0,'L');
+	        $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y-1.3, $text, 0,'L');
 	        return;
 	    }
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
-	    $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
+	    $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
 	}
 	
 	
