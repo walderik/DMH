@@ -103,6 +103,10 @@ include 'navigation.php';
 		            
     		            
     		        }
+    		        echo "<br>";
+    		        echo "<form action='change_main_role.php' method='post'>";
+    		        echo "<input type='hidden' id='PersonId' name='PersonId' value='$person->Id'>";
+    		        echo "<input type='submit' value='Ändra vilken som är huvudkaraktär'>";
     		        echo "</div>\n";
     		        
     		        ?>
