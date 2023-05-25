@@ -69,7 +69,7 @@ include 'navigation.php';
 <h2>Karaktärer</h2>
 	Antal huvudkaraktärer <?php echo count($current_larp->getAllMainRoles(false))?><br>
 	Antal huvudkaraktärer utan grupp <?php echo count(Role::getAllMainRolesWithoutGroup($current_larp))?><br>
-	Antal sidokaraktärer <?php echo count(Role::getAllNotMainRoles($current_larp))?><br>
+	Antal sidokaraktärer <?php echo count(Role::getAllNotMainRoles($current_larp, false))?><br>
 
 	
     	<h3>Rikedom</h3>
