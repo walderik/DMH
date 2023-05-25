@@ -4,14 +4,9 @@ global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
-if (!$current_larp->mayRegister()) {
-    header('Location: index.php');
-    exit;
-}
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $registration = Registration::loadByIds($_POST['PersonId'], $current_larp);
+    $registration = Registration::loadByIds($_POST['PersonId'], $current_larp->Id);
     //Hitta rätt Guardian
     if (isset($_POST['GuardianInfo'])) {
         $guardianInfo = $_POST['GuardianInfo'];
@@ -29,13 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (!empty($guardian)) {
             $registration->GuardianId = $guardian->Id;
-        }
-        $registration->update();
-        
-        
-        if ($guardian->UserId != $current_user->Id) {
+            $registration->update();
             
-            BerghemMailer::send_guardian_mail($guardian, $person, $current_larp);
+            
+            if ($guardian->UserId != $current_user->Id) {
+                $person=$registration->getPerson();
+                BerghemMailer::send_guardian_mail($guardian, $person, $current_larp);
+            }
         }
         
         
@@ -43,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 }
+header('Location: ../index.php');
 
 
 

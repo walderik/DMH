@@ -60,7 +60,7 @@ include 'navigation.php';
 
 	<div class="content">
 		<h1>Ange ansvarig vuxen för <?php echo $current_person->Name;?> till <?php echo $current_larp->Name;?></h1>
-		<form action="logic/person_registration_form_save.php" method="post">
+		<form action="logic/input_guardian_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="insert"> 
     		<input type="hidden" id="LARPId" name="LARPId" value="<?php echo $current_larp->Id ?>">
     		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $current_person->Id ?>">
