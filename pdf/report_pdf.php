@@ -136,9 +136,9 @@ class Report_PDF extends FPDF {
 	    $this->Line(static::$x_min, $y, static::$x_max, $y);
 	}
 	
-	private function mittlinje() {
+	private function mittlinje($col) {
 	    global $y;
-	    $x_pos = $this->lefts[$this->current_col];
+	    $x_pos = $this->lefts[$col]; # $this->current_col];
 	    $down = $y + $this->current_cell_height;
 	    $this->Line($x_pos, $y, $x_pos, $down);
 	}
@@ -168,15 +168,6 @@ class Report_PDF extends FPDF {
 	    # Temporärt bortkommenterat så vi tar den logiken senare
  	    if (strlen($text) > $this->text_max_length){
  	        $this->SetFont('Arial', $bold_char, static::$text_fontsize/$scaling);
-	        
-// 	        if (strlen($text)>210) {
-// 	            $this->SetFont('Arial','',static::$header_fontsize);
-// 	            $this->MultiCell($this->cell_width+5, static::$cell_y-2.1, $text, 0, 'L'); # Väldigt liten och tät text
-// 	        } else {
-// 	            $this->MultiCell($this->cell_width+5, static::$cell_y-1.5, $text, 0, 'L');
-// 	        }
-
-// 	        return;
  	    } else {
  	        $this->SetFont('Helvetica', $bold_char, static::$text_fontsize);
         }
@@ -201,17 +192,18 @@ class Report_PDF extends FPDF {
             # Efterjustera mittlinjen om det behövs
             
         }
-        
-        # Dra ett streck mellan kolumnerna om det behövs
-        if ($this->current_col > 0){
-            $this->mittlinje();
-        }
             
         # Räkna upp en cell i bredd
         $this->current_col += 1;
         
         if ($this->num_cols == $this->current_col) { 
             # Sista cellen i en rad
+            
+            # Dra alla mellanstrecken
+            for ($col = 0; $col < $this->num_cols; $col++) {
+                $this->mittlinje($col);
+            }
+            
             $this->current_col = 0;
             $y += $this->current_cell_height;
             $this->bar();
@@ -219,6 +211,7 @@ class Report_PDF extends FPDF {
                 $this->AddPage(); # Ny sidan om vi är längst ner
                 $y += 5;
             }
+            
             $this->current_cell_height = $this->cell_height;
         }
 
