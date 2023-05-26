@@ -93,6 +93,9 @@ class Report_PDF extends FPDF {
         
         $this->AliasNbPages();
         
+        $this->lefts = [];
+        $this->cell_widths = [];
+        
         $this->larp     = $larp;
         $this->name     = $name;
         $this->rows     = $rows;
@@ -103,8 +106,9 @@ class Report_PDF extends FPDF {
         $this->default_cell_width = (static::$x_max - static::$x_min) / $this->num_cols - (2*static::$Margin);
         
         $current_left = static::$x_min ;
-        $this->lefts[0] = $current_left; # Vänstraste vänstermarginalen
         
+        $this->lefts[0] = $current_left; # Vänstraste vänstermarginalen
+
         # Markera extra breda kolumner
         $max_length = [];
         foreach($this->rows as $row){
@@ -119,10 +123,18 @@ class Report_PDF extends FPDF {
         $with_part = [];
         $avg_part = 0;
         for ($col = 0; $col < $this->num_cols; $col++){
-            if ($max_length[$col] > $this->text_max_length) {
-                $with_part[$col] = 1.5;
-            } elseif ($max_length[$col] < 2) {
-                $with_part[$col] = 0.1;
+            if ($max_length[$col] > $this->text_max_length*3) {
+                $with_part[$col] = 2;
+            } elseif ($max_length[$col] > $this->text_max_length*2) {
+                $with_part[$col] = 1.6;
+            } elseif ($max_length[$col] > $this->text_max_length) {
+                $with_part[$col] = 1.3;
+            } elseif ($max_length[$col] < $this->text_max_length) {
+                $with_part[$col] = 0.05*$max_length[$col];
+//             } elseif ($max_length[$col] < 6) {
+//                 $with_part[$col] = 0.2;
+//             } elseif ($max_length[$col] < $this->text_max_length/2) {
+//                 $with_part[$col] = 0.6;
             } else {
                 $with_part[$col] = 1;
             }
@@ -130,20 +142,28 @@ class Report_PDF extends FPDF {
         }
         $avg_part = $avg_part / $this->num_cols;
         
+//         echo "<br>\n";
 //         print_r($with_part);
-//         echo $avg_part;
+//         echo "with_part --<br>\n";
+//         echo "AVG: $avg_part <br>\n";
         
         # Sätt alla kolumnbredder
         for ($col = 0; $col < $this->num_cols; $col++){
-//             $this->cell_widths[$col] = $this->default_cell_width * ($with_part[$col] / $avg_part );
-            $this->cell_widths[$col] = $this->default_cell_width;
+            $this->cell_widths[$col] = round($this->default_cell_width * ($with_part[$col] / $avg_part ));
+//             $this->cell_widths[$col] = $this->default_cell_width;
         }
+
+//         print_r($this->cell_widths);
+//         echo "Cell widths --<br>\n";
         
         # Beräkna vänster-marginaler
         for ($col = 1; $col < $this->num_cols; $col++){
-            $this->lefts[$col] = $current_left + $this->cell_widths[$col] + static::$Margin*2;
+            $this->lefts[$col] = $current_left + $this->cell_widths[$col-1] + static::$Margin*2;
             $current_left = $this->lefts[$col];
         }
+        
+//         print_r($this->lefts);
+//         echo "Lefts 2 --<br>\n";
         
         $this->AddPage();
         
@@ -187,6 +207,7 @@ class Report_PDF extends FPDF {
 	    if (empty($text)) $text = ' ';
 	    
 	    $text = trim(utf8_decode($text));
+// 	    $text = "$text - $this->current_col";
 	    
 	    # Max som får plats är per kolumnbredd = 94 / antalet kolumner:
 	    #  2 - 47 tecken

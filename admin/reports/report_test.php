@@ -36,5 +36,12 @@ $pdf->AddFont('Helvetica','');
 $pdf->SetSubject(utf8_decode($name));
 
 $pdf->new_report($current_larp, $name, $rows);
-$pdf->new_report($current_larp, "Gluten", $rows);
+
+$rows = array();
+$rows[] = array('NAMN', 'chk', 'MAIL', 'TELEFONNUMMER', 'Personnummret');
+foreach($persons as $person) {
+    $rows[] = array($person->Name, '', $person->Email, $person->PhoneNumber, $person->SocialSecurityNumber);
+}
+
+$pdf->new_report($current_larp, "Tom kolumn", $rows);
 $pdf->Output();
