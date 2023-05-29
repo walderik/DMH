@@ -91,7 +91,7 @@
         		        if (is_null($group)) {
         		            echo "<td>&nbsp;</td>\n";
         		        } else {
-        		            echo "<td>$group->Name</td>\n";
+        		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</></td>\n";
         		        }
         		        if ($role->isMysLajvare()) {
         		            echo "<td colspan=2>N/A</td>\n";
