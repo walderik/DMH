@@ -76,12 +76,89 @@ class Titledeed extends BaseModel{
     }
     
     
+    public function owners() {
+        return Role::getTitledeedOwners($this);
+    }
+ 
+    
+    public function deleteOwner($roleId) {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_titledeed_role WHERE RoleId = ? AND TitledeedId = ?;");
+        if (!$stmt->execute(array($roleId, $this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function addOwner($roleId) {
+
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_titledeed_role (RoleId, TitledeedId) VALUES (?,?);");
+        if (!$stmt->execute(array($roleId, $this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+ 
+        $stmt = null;
+        
+    }
+    
+    
     public function Produces() {
         return Resource::TitleDeedProcuces($this);
     }
     
     public function Requires() {
         return Resource::TitleDeedRequires($this);
+    }
+    
+    public function deleteAllProduces() {   
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_resource_titledeed_normally_produces WHERE TitleDeedId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+        
+     
+    public function deleteAllRequires() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_resource_titledeed_normally_requires WHERE TitleDeedId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function setProduces($resourceIds) {
+        foreach($resourceIds as $resourceId) {
+            $stmt = $this->connect()->prepare("INSERT INTO ".
+                "regsys_resource_titledeed_normally_produces (ResourceId, TitleDeedId) VALUES (?,?);");
+            if (!$stmt->execute(array($resourceId, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function setRequires($resourceIds) {
+        foreach($resourceIds as $resourceId) {
+            $stmt = $this->connect()->prepare("INSERT INTO ".
+                "regsys_resource_titledeed_normally_requires (ResourceId, TitleDeedId) VALUES (?,?);");
+            if (!$stmt->execute(array($resourceId, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
     }
     
     
