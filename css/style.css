@@ -12,6 +12,8 @@ body {
 
 td {
 	vertical-align: top;
+	padding: 10px;
+	margin: 0px;
 }
 
 
@@ -71,7 +73,7 @@ td {
 	background-color: #fff;
 }
 .content > p table td, .content > div table td {
-	padding: 5px;
+	padding: 10px;
 }
 
 .header {
