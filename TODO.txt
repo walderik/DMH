@@ -7,21 +7,20 @@ Props: Visa på karaktärsblad
 Gruppintrig och grupp-props på karaktärsblad
 
 
-Lagfarter tilldela ägare (roll)
-Lagfarter sätta upp hur mycket resurser de producerar / behöver	
+Lagfarter tilldela ägare (grupp)
 
-Ändra vlken karaktär som är huvudkaraktär
+
+Mat:
+DÖH, mat valbart. Pris beror på ålder
+KIR, mat ingår för alla deltagare
+DMH, mat ingår för alla deltagare
+Bygghelg, mat anges per måltid, gratis
+
 Ta bort sidokaraktär
 
 
-Kunna sortera fälten i grupplistan. 
 Medlemarna listas i en tabell och det finns länk till att redigera en medlem från listan 
   (snabbt sätt hitta karaktärer man vill skriva till något om)
-
-Lite mer mellanrum mellan varje fält i redigeringsformulären eftersom dom går ihop med varandra nu. 
-  Speciellt om ngn är död är otydligt.
-
-Länk till gruppen i karaktärslistan så man snabbt får fram gruppen för en karaktär utan behöva klicka runt.
 
 
 Intrigverktyg
