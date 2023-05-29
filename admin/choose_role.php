@@ -13,6 +13,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $purpose = "ägare av rekvisita";
         $url = "prop_owner_form.php";
     }
+    elseif ($operation == "add_titledeed_owner_role") {
+        
+        $purpose = "ägare av lagfart";
+        $url = "titledeed_admin.php";
+    }
+    
+    
 }
 
 if (isset($_SERVER['HTTP_REFERER'])) {
