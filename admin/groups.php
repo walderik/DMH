@@ -14,8 +14,13 @@
     		if (empty($groups)) {
     		    echo "Inga anmälda grupper";
     		} else {
-    		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th></th><th>Gruppledare</th><th>Rikedom</th><th colspan='2'>Intrig</th></tr>\n";
+    		    $tableId = "main_roles";
+    		    echo "<table id='$tableId' class='data'>";
+    		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
+        		    "<th>&nbsp; &nbsp; </th>".
+        		    "<th onclick='sortTable(2, \"$tableId\")'>Gruppledare</th>".
+        		    "<th onclick='sortTable(3, \"$tableId\")'>Rikedom</th>".
+        		    "<th onclick='sortTable(4, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($groups as $group)  {
     		        echo "<tr>\n";
     		        echo "<td>" . $group->Name;
@@ -46,5 +51,6 @@
          
 	</div>
 </body>
+<?php include_once '../javascript/table_sort.js';?>
 
 </html>
