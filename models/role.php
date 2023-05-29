@@ -390,6 +390,14 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getTitledeedOwners(Titledeed $titledeed) {
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_titledeed_role WHERE ".
+            "TitledeedId =?) ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));
+        
+    }
+    
     public function groupIsRegistered(Larp $larp) {
         if (!isset($this->GroupId)) return true;
         return $this->GetGroup()->isRegistered($larp);
