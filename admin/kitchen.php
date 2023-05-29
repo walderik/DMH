@@ -5,6 +5,8 @@ include 'navigation.php';
 
 <div class="content">
     <h1>Köket</h1>
+    <a href="reports/matlista.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a><br><br>  
+    
     Totalt är det <?php echo count(Registration::allBySelectedLARP($current_larp)); ?> anmälda deltagare.<br>
     <h2>Vald mat</h2>
     <?php 
