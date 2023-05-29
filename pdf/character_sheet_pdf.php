@@ -171,6 +171,7 @@ class CharacterSheet_PDF extends FPDF {
         if ($this->all) $this->draw_field('charactersWithRelations');
         if ($this->all) $this->draw_field('tidigareLajv');
        
+        if ($this->all) $this->draw_field('organizerNotes');
         
         # Fixa till om vi skapat ett udda antal fält
         if ($this->current_left == $left2) $this->draw_field('empty');
@@ -206,9 +207,14 @@ class CharacterSheet_PDF extends FPDF {
 	
 	function all_character_sheets(LARP $larp_in ) {
 	    $this->larp = $larp_in;
-	    $roles = $this->larp->getAllRoles();
+
+	    $roles = $this->larp->getAllMainRoles(false);
 	    foreach($roles as $role) {
  	        $this->new_character_sheet($role, $larp_in, true);
+	    }
+	    $roles = $this->larp->getAllNotMainRoles(false);
+	    foreach($roles as $role) {
+	        $this->new_character_sheet($role, $larp_in, true);
 	    }
 	}
 	
@@ -307,6 +313,13 @@ class CharacterSheet_PDF extends FPDF {
 	    return true;
 	}
 
+	
+	protected function OrganizerNotes($left) {
+	    if ($this->isMyslajvare) return false;
+	    $this->set_header($left, 'Anteckning');
+	    $this->set_text($left, $this->role->OrganizerNotes);
+	    return true;
+	}
 	
 	protected function lajvar_typ($left) {
 	    if (!LarperType::isInUse($this->larp)) return false;
