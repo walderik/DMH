@@ -75,7 +75,7 @@ include 'navigation.php';
             }
             else {
                 
-                $editButton = "Tillåt grppledaren att ändra karaktären";
+                $editButton = "Tillåt gruppledaren att ändra karaktären";
             }
                   
                 ?>
