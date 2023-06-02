@@ -10,6 +10,8 @@ Gruppintrig och grupp-props på karaktärsblad
 Lagfarter tilldela ägare (grupp)
 
 
+choose_role, filtrera på intrigtyper
+
 Mat:
 DÖH, mat valbart. Pris beror på ålder
 KIR, mat ingår för alla deltagare

@@ -41,6 +41,12 @@ include_once 'header.php';
 
         echo $output;
     }
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $referer = $_SERVER['HTTP_REFERER'];
+    }
+    else {
+        $referer = "";
+    }
     
     include 'navigation.php';
     ?>
@@ -60,6 +66,7 @@ img {
 	<form action="prop_admin.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
+    			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
         <?php 
             if ($prop->hasImage()) {
                 $image = Image::loadById($prop->ImageId);
@@ -80,13 +87,13 @@ img {
 
 				<td><label for="Description">Beskrivning</label></td>
 				<td><input type="text" id="Description" name="Description"
-					 value="<?php echo htmlspecialchars($prop->Description); ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($prop->Description); ?>" size="100" maxlength="250" ></td>
 			</tr>
 			<tr>
 
 				<td><label for="StorageLocation">Lagerplats</label></td>
 				<td><input type="text" id="StorageLocation" name="StorageLocation"
-					 value="<?php echo htmlspecialchars($prop->StorageLocation); ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($prop->StorageLocation); ?>" size="100" maxlength="250" ></td>
 			</tr>
 			<tr>
 				<td><label for="Marking">Märkning</label></td>

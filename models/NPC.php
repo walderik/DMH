@@ -87,6 +87,13 @@ class NPC extends BaseModel{
     }
     
     
+    public static function getAllForLarp(LARP $larp) {
+        if (empty($larp)) return Array();
+        $sql = "SELECT * FROM regsys_npc WHERE ".
+            "LarpId = ? ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
    
    
     public static function getAllAssignedByGroup(NPCGroup $group, LARP $larp) {
@@ -144,6 +151,12 @@ class NPC extends BaseModel{
         BerghemMailer::sendNPCMail($this);
   
     }
+    
+    public function hasImage() {
+        if (isset($this->ImageId)) return true;
+        return false;
+    }
+    
     
     public function getNPCGroup() {
         if ($this->IsInGroup()) {

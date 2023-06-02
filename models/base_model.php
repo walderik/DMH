@@ -166,7 +166,7 @@ class BaseModel extends Dbh{
         
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            return false;
+            return 0;
             
         }
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);

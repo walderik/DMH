@@ -23,6 +23,12 @@ include_once $root . '/models/house.php';
 include_once $root . '/models/housing.php';
 include_once $root . '/models/housing_request.php';
 include_once $root . '/models/image.php';
+include_once $root . '/models/intrigue.php';
+include_once $root . '/models/intrigue_actor.php';
+include_once $root . '/models/intrigue_prop.php';
+include_once $root . '/models/intrigue_npc.php';
+include_once $root . '/models/intrigue_letter.php';
+include_once $root . '/models/intrigue_telegram.php';
 include_once $root . '/models/intrigue_type.php';
 include_once $root . '/models/larp_group.php';
 include_once $root . '/models/larp_role.php';
@@ -48,4 +54,5 @@ include_once $root . '/models/user.php';
 include_once $root . '/models/wealth.php';
 
 include_once $root . '/models/LARP.php';
+
 

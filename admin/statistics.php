@@ -72,46 +72,106 @@ include 'navigation.php';
 	Antal sidokaraktärer <?php echo count(Role::getAllNotMainRoles($current_larp, false))?><br>
 
 	
-    	<h3>Rikedom</h3>
+	<br>
+	I nedanstående tabell finns huvudkaraktärer i första kolumnen och sidokaraktärer i andra. Myslajvare är inte medräknade.
+    	
+    	<table>
+    	<tr><th colspan="2"><h3>Rikedom</h3></th></tr>
+    	<tr>
+    	<td>
     <?php 
-    $count = Wealth::countByTypeOnRoles($current_larp);
+    $count = Wealth::countByTypeOnRoles($current_larp, true);
     foreach($count as $item) {
         echo $item['Name'].": ".$item['Num']." st<br>";
     }
     
     
     ?>
+    	</td>
+    	<td>
+    <?php 
+    $count = Wealth::countByTypeOnRoles($current_larp, false);
+    foreach($count as $item) {
+        echo $item['Name'].": ".$item['Num']." st<br>";
+    }
+    
+    
+    ?>
+    	</td>
+    	<tr><th colspan="2"><h3>Var karaktären bor</h3></th></tr>
+    	<tr>
+    	<td>
 
-    	<h3>Var karaktären bor</h3>
     <?php 
-    $count = PlaceOfResidence::countByTypeOnRoles($current_larp);
+    $count = PlaceOfResidence::countByTypeOnRoles($current_larp, true);
     foreach($count as $item) {
         echo $item['Name'].": ".$item['Num']." st<br>";
     }
     
     
     ?>
-    
-    	<h3>Typ av lajvare</h3>
+    	</td>
+    	<td>
     <?php 
-    $count = LarperType::countByTypeOnRoles($current_larp);
+    $count = PlaceOfResidence::countByTypeOnRoles($current_larp, false);
     foreach($count as $item) {
         echo $item['Name'].": ".$item['Num']." st<br>";
     }
     
     
     ?>
-     
-   	<h3>Intrigtyper</h3>
+    	</td>
+    	<tr><th colspan="2"><h3>Typ av lajvare</h3></th></tr>
+    	<tr>
+    	<td>
+
     <?php 
-    
-    $count = IntrigueType::countByTypeOnRoles($current_larp);
+    $count = LarperType::countByTypeOnRoles($current_larp, true);
     foreach($count as $item) {
         echo $item['Name'].": ".$item['Num']." st<br>";
     }
     
     
     ?>
+    	</td>
+    	<td>
+
+    <?php 
+    $count = LarperType::countByTypeOnRoles($current_larp, false);
+    foreach($count as $item) {
+        echo $item['Name'].": ".$item['Num']." st<br>";
+    }
+    
+    
+    ?>
+    	</td>
+    	<tr><th colspan="2"><h3>Intrigtyper</h3></th></tr>
+    	<tr>
+    	<td>
+
+    <?php 
+    
+    $count = IntrigueType::countByTypeOnRoles($current_larp, true);
+    foreach($count as $item) {
+        echo $item['Name'].": ".$item['Num']." st<br>";
+    }
+    
+    
+    ?>
+    	</td>
+    	<td>
+    <?php 
+    
+    $count = IntrigueType::countByTypeOnRoles($current_larp, false);
+    foreach($count as $item) {
+        echo $item['Name'].": ".$item['Num']." st<br>";
+    }
+    
+    
+    ?>
+    </td>
+    </tr>
+    </table>
      
     
     

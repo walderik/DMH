@@ -27,18 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $multiple=false;
 
-if ($operation == "set_prop_owner_group") {
-    $purpose = "Sätt ägare av rekvisita";
-    $url = "prop_owner_form.php";
-}
-elseif ($operation == "add_intrigue_actor_group") {  
-    $purpose = "Lägg till aktör i intrig";
+if ($operation == "add_intrigue_npc") {
+    $purpose = "Lägg till NPC till intrig";
     $url = "view_intrigue.php";
     $multiple=true;
-}
-elseif ($operation == "exhange_intrigue_actor_group") {
-    $purpose = "Byt aktör på intrig";
-    $url = "view_intrigue.php";
 }
 
 
@@ -64,10 +56,11 @@ include 'navigation.php';
 
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
+            <a href="npc_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
      		<?php 
-    		$groups = Group::getAllRegistered($current_larp);
-    		if (empty($groups)) {
-    		    echo "Inga anmälda grupper";
+     		$npcs = NPC::getAllForLarp($current_larp);
+     		if (empty($npcs)) {
+    		    echo "Inga registrerade NPCer";
     		} else {
     		    ?>
     		    <form action="<?php echo $url;?>" method="post">
@@ -80,13 +73,13 @@ include 'navigation.php';
     		    ?> 
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
     		    <table class='data'>
-    		    <tr><th>Namn</th></tr>
+    		    <tr><th>Namn</th><th>Grupp</th></tr>
     		    <?php 
-    		    foreach ($groups as $group)  {
+    		    foreach ($npcs as $npc)  {
     		        echo "<tr>\n";
-    		        echo "<td><input type='$type' id='Group$group->Id' name='GroupId$array' value='$group->Id'>";
+    		        echo "<td><input type='$type' id='NPC$npc->Id' name='NPCId$array' value='$npc->Id'>";
 
-    		        echo "<label for='Group$group->Id'>$group->Name</label></td>\n";
+    		        echo "<label for='NPC$npc->Id'>$npc->Name</label></td>\n";
 
     		        echo "</tr>\n";
     		    }

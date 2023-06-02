@@ -208,6 +208,7 @@
         
 	</div>
 </body>
-<?php include_once '../javascript/table_sort.js';?>
-
+<?php 
+include_once '../javascript/table_sort.js';
+?>
 </html>

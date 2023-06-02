@@ -27,18 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $multiple=false;
 
-if ($operation == "set_prop_owner_group") {
-    $purpose = "Sätt ägare av rekvisita";
-    $url = "prop_owner_form.php";
-}
-elseif ($operation == "add_intrigue_actor_group") {  
-    $purpose = "Lägg till aktör i intrig";
+if ($operation == "add_intrigue_prop") {
+    $purpose = "Lägg till rekvisita till intrig";
     $url = "view_intrigue.php";
     $multiple=true;
-}
-elseif ($operation == "exhange_intrigue_actor_group") {
-    $purpose = "Byt aktör på intrig";
-    $url = "view_intrigue.php";
 }
 
 
@@ -64,10 +56,11 @@ include 'navigation.php';
 
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
+            <a href="prop_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
      		<?php 
-    		$groups = Group::getAllRegistered($current_larp);
-    		if (empty($groups)) {
-    		    echo "Inga anmälda grupper";
+     		$props = Prop::allByCampaign($current_larp);
+    		if (empty($props)) {
+    		    echo "Ingen registrerad rekvisita";
     		} else {
     		    ?>
     		    <form action="<?php echo $url;?>" method="post">
@@ -82,11 +75,11 @@ include 'navigation.php';
     		    <table class='data'>
     		    <tr><th>Namn</th></tr>
     		    <?php 
-    		    foreach ($groups as $group)  {
+    		    foreach ($props as $prop)  {
     		        echo "<tr>\n";
-    		        echo "<td><input type='$type' id='Group$group->Id' name='GroupId$array' value='$group->Id'>";
+    		        echo "<td><input type='$type' id='Prop$prop->Id' name='PropId$array' value='$prop->Id'>";
 
-    		        echo "<label for='Group$group->Id'>$group->Name</label></td>\n";
+    		        echo "<label for='Prop$prop->Id'>$prop->Name</label></td>\n";
 
     		        echo "</tr>\n";
     		    }

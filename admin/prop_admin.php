@@ -4,7 +4,7 @@ include_once 'header.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+    
     $operation = $_POST['operation'];
      
     if ($operation == 'insert') {
@@ -17,6 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $prop->setValuesByArray($_POST);
         $prop->update();
     } 
+    
+    if (isset($_POST['Referer']) && str_contains($_POST['Referer'],'choose_prop.php')) {
+        header('Location: ' . $_POST['Referer']);
+        exit;  
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

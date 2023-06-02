@@ -66,6 +66,7 @@ function myFunction() {
             <a href="letter_admin.php">Brev</a>
             <a href="prop_admin.php">Rekvisita</a>
             <a href="npc.php">NPC'er</a>
+            <a href="intrigue_admin.php">Intriger</a>
 	    </div>
 	  </div> 
 	  <div class="dropdown">

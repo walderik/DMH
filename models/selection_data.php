@@ -155,9 +155,16 @@ class SelectionData extends BaseModel{
     
     }
     
-    public static function countByTypeOnRoles(LARP $larp) {
+    public static function countByTypeOnRoles(LARP $larp, $mainRole) {
         if (is_null($larp)) return Array();
         
+        
+        if ($mainRole) {
+            $mainStr = "regsys_larp_role.IsMainRole=1 AND ";
+        }
+        else {
+            $mainStr = "regsys_larp_role.IsMainRole=0 AND ";
+        }
         $type = strtolower(static::class)."Id";
         $type = static::class."Id";
         
@@ -165,6 +172,8 @@ class SelectionData extends BaseModel{
             "regsys_larp_role, regsys_role, regsys_".strtolower(static::class)." WHERE ".
             "larpId=? AND ".
             "RoleId = regsys_role.Id AND ".
+            "regsys_role.NoIntrigue = 0 AND ".
+            $mainStr . 
             "regsys_".strtolower(static::class).".Id=".$type." GROUP BY ".$type.";";
  
         $stmt = static::connectStatic()->prepare($sql);
