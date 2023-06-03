@@ -33,12 +33,12 @@ if ($operation == "set_prop_owner_group") {
 }
 elseif ($operation == "add_intrigue_actor_group") {  
     $purpose = "Lägg till aktör i intrig";
-    $url = "view_intrigue.php";
+    $url = "logic/view_intrigue_logic.php";
     $multiple=true;
 }
 elseif ($operation == "exhange_intrigue_actor_group") {
     $purpose = "Byt aktör på intrig";
-    $url = "view_intrigue.php";
+    $url = "logic/view_intrigue_logic.php";
 }
 
 

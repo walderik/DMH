@@ -77,9 +77,23 @@ class IntrigueActor extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
     }
 
+    public static function getGroupActorForIntrigue(Intrigue $intrigue, Group $group) {
+        $sql = "SELECT * FROM regsys_intrigueactor WHERE GroupId = ? AND IntrigueId = ? ORDER BY Id";
+        return static::getOneObjectQuery($sql, array($group->Id, $intrigue->Id));
+    }
+    
     public static function getAllRoleActorsForIntrigue(Intrigue $intrigue) {
         $sql = "SELECT * FROM regsys_intrigueactor WHERE RoleId IS NOT NULL AND IntrigueId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
+    }
+    
+    public static function getRoleActorForIntrigue(Intrigue $intrigue, Role $role) {
+        $sql = "SELECT * FROM regsys_intrigueactor WHERE RoleId = ? AND IntrigueId = ? ORDER BY Id";
+        return static::getOneObjectQuery($sql, array($role->Id, $intrigue->Id));
+    }
+    
+    public function getAllIntrigues() {
+        return Intrigue::getAllIntriguesForIntrigueActor($this);
     }
     
     

@@ -29,7 +29,7 @@ $multiple=false;
 
 if ($operation == "add_intrigue_message") {
     $purpose = "Lägg till meddelande till intrig";
-    $url = "view_intrigue.php";
+    $url = "logic/view_intrigue_logic.php";
     $multiple=true;
 }
 

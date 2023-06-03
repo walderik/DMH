@@ -29,7 +29,7 @@ $multiple=false;
 
 if ($operation == "add_intrigue_npc") {
     $purpose = "Lägg till NPC till intrig";
-    $url = "view_intrigue.php";
+    $url = "logic/view_intrigue_logic.php";
     $multiple=true;
 }
 
@@ -76,11 +76,16 @@ include 'navigation.php';
     		    <tr><th>Namn</th><th>Grupp</th></tr>
     		    <?php 
     		    foreach ($npcs as $npc)  {
+    		        $npcGroup = $npc->getNPCGroup();
     		        echo "<tr>\n";
     		        echo "<td><input type='$type' id='NPC$npc->Id' name='NPCId$array' value='$npc->Id'>";
 
     		        echo "<label for='NPC$npc->Id'>$npc->Name</label></td>\n";
-
+    		        echo "<td>";
+    		        if (!empty($npcGroup)) {
+    		            echo "$npcGroup->Name";
+    		        }
+    		        echo "</td>\n";
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";

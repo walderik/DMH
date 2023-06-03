@@ -166,9 +166,6 @@ class Intrigue extends BaseModel{
             $intrigue_actor = IntrigueActor::newWithDefault();
             $intrigue_actor->IntrigueId = $this->Id;
             $intrigue_actor->GroupId = $groupId;
-            echo "Intrigue actor: ";
-            print_r($intrigue_actor);
-            echo "<br><br>";
             $intrigue_actor->create();
         }
     }
@@ -296,5 +293,25 @@ class Intrigue extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
     }
     
+    public static function getAllIntriguesForIntrigueActor(IntrigueActor $intrigueActor) {
+        if (!empty($intrigueActor->GroupId)) {
+            return static::getAllIntriguesForGroup($intrigueActor->GroupId);
+        }
+        else {
+            return static::getAllIntriguesForRole($intrigueActor->RoleId);
+        }
+    }
+    
+    public static function getAllIntriguesForGroup($groupId) {
+            $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+                "SELECT IntrigueId FROM regsys_intrigueactor WHERE GroupId = ?) ORDER BY Id";
+            return static::getSeveralObjectsqQuery($sql, array($groupId));
+    }
+    
+    public static function getAllIntriguesForRole($roleId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigueactor WHERE RoleId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($roleId));
+    }
     
 }

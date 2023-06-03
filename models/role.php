@@ -176,8 +176,24 @@ class Role extends BaseModel{
     public function hasIntrigue(LARP $larp) {
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
         if (isset($larp_role->Intrigue) && $larp_role->Intrigue != "") return true;
+        $intrigues = Intrigue::getAllIntriguesForRole($this->Id);
+        if (!empty($intriges)) return true;
         return false;
         
+    }
+    
+    public function intrigueWords(LARP $larp) {
+        $wordCount = 0;
+        $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
+        if (isset($larp_role->Intrigue) && $larp_role->Intrigue != "") {
+            $wordCount += str_word_count($larp_role->Intrigue);
+        }
+        $intrigues = Intrigue::getAllIntriguesForRole($this->Id);
+        foreach ($intrigues as $intrigue) {
+            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this);
+            $wordCount += str_word_count($intrigueActor->IntrigueText);
+        }
+        return $wordCount;
     }
     
     public function getLarperType() {

@@ -1,81 +1,9 @@
 <?php
 include_once 'header.php';
 
-//print_r($_POST);
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    $operation = $_POST['operation'];
-    
-    if ($operation == 'insert') {
-        $intrigue = Intrigue::newFromArray($_POST);
-        $intrigue->create();
-    } elseif ($operation == 'update') {
-        $intrigue=Intrigue::loadById($_POST['Id']);
-        $intrigue->setValuesByArray($_POST);
-        $intrigue->deleteAllIntrigueTypes();
-        $intrigue->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
-        $intrigue->update();
-    } elseif ($operation == "add_intrigue_actor_role") {
-        $intrigue=Intrigue::loadById($_POST['Id']);
-        $intrigue->addRoleActors($_POST['RoleId']);
-    } elseif ($operation == "exhange_intrigue_actor_role") {
-        $intrigueActor=IntrigueActor::loadById($_POST['Id']);
-        $intrigue=$intrigueActor->getIntrigue();
-        $intrigueActor->RoleId = $_POST['RoleId'];
-        $intrigueActor->GroupId=null;
-        $intrigueActor->update();
-    } elseif ($operation == "exhange_intrigue_actor_group") {
-        $intrigueActor=IntrigueActor::loadById($_POST['Id']);
-        $intrigue=$intrigueActor->getIntrigue();
-        $intrigueActor->GroupId = $_POST['GroupId'];
-        $intrigueActor->RoleId=null;
-        $intrigueActor->update();
-        
-    } elseif ($operation == "add_intrigue_actor_group") {
-        $intrigue=Intrigue::loadById($_POST['Id']);
-        $intrigue->addGroupActors($_POST['GroupId']);
-    } elseif ($operation == "add_intrigue_prop") {
-        $intrigue=Intrigue::loadById($_POST['Id']);
-        $intrigue->addProps($_POST['PropId']);
-    } elseif ($operation == "add_intrigue_npc") {
-        $intrigue=Intrigue::loadById($_POST['Id']);
-        $intrigue->addNPCs($_POST['NPCId']);
-    } elseif ($operation == "add_intrigue_message") {
-        $intrigue=Intrigue::loadById($_POST['Id']);
-        if (isset($_POST['TelegramId'])) $intrigue->addTelegrams($_POST['TelegramId']);
-        if (isset($_POST['LetterId'])) $intrigue->addLetters($_POST['LetterId']);
-    } elseif ($operation == "update_intrigue_actor") {
-        $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
-        $intrigue=$intrigueActor->getIntrigue();
-        $intrigueActor->IntrigueText = $_POST['IntrigueText'];
-        $intrigueActor->Offinfo = $_POST['Offinfo'];
-        $intrigueActor->update();      
-    } else {
-        $intrigue=Intrigue::loadById($_POST['Id']);
-    }
-
-    
-    
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['Id'])) $intrigue=Intrigue::loadById($_GET['Id']);
-    $operation = "";
-    if (isset($_GET['operation']))
-        $operation = $_GET['operation'];
-    
-    if ($operation == "remove_intrigueactor") {
-        IntrigueActor::delete($_GET['IntrigueActorId']);
-    } elseif ($operation == "remove_prop") {
-        Intrigue_Prop::delete($_GET['IntriguePropId']);
-    } elseif ($operation == "remove_npc") {
-        Intrigue_NPC::delete($_GET['IntrigueNPCId']);
-    } elseif ($operation == "remove_letter") {
-        Intrigue_Letter::delete($_GET['IntrigueLetterId']);
-    } elseif ($operation == "remove_telegram") {
-        Intrigue_Telegram::delete($_GET['IntrigueTelegramId']);
-    }
 }
 
 function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
@@ -126,6 +54,7 @@ if (empty($intrigue)) {
     
 }
 
+$cols = 5;
 include 'navigation.php';
 ?>
 <style>
@@ -158,16 +87,23 @@ th, td {
 	    echo "<li style='display:table-cell; width:19%;'>";
 	    echo "<div class='name'><a href='../admin/view_group.php?id=$group->Id'>$group->Name</a></div>";
 	    echo "<div>Grupp</div>";
-	    echo "<div><a href=''>Intrig xx</a></div>";
+	    $actor_intrigues = $groupActor->getAllIntrigues();
+	    foreach ($actor_intrigues as $actor_intrigue) {
+	        if ($actor_intrigue->Id != $intrigue->Id) {
+	            echo "<div><a href='view_intrigue.php?Id=$actor_intrigue->Id'>Intrig: $actor_intrigue->Number. $actor_intrigue->Name</a></div>";
+	        }
+	    }
 	    echo "<div align='right'>";
 	    echo "<a href='choose_group.php?operation=exhange_intrigue_actor_group&Id=$groupActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut'></i></a> ";
-	    echo "<a href='view_intrigue.php?operation=remove_intrigueactor&IntrigueActorId=$groupActor->Id&Id=$intrigue->Id'";
-	    if (!empty($groupActor->IntrigueText)) echo " onclick=:\'return confirm('Det finns en skriven intrigtext. Vill du ta bort gruppen i alla fall?')\' ";
-        echo "><i class='fa-solid fa-xmark' title='Ta bort grupp'></i></a>";
+	    echo "<a ";
+	    if (!empty($groupActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort gruppen i alla fall?\')" ';
+	    echo " href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$groupActor->Id&Id=$intrigue->Id'";
+        
+	    echo "><i class='fa-solid fa-xmark' title='Ta bort grupp'></i></a>";
 	    echo "</div>";
 	    echo "</li>";
 	    $temp++;
-	    if($temp==5)
+	    if($temp==$cols)
 	    {
 	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 	        $temp=0;
@@ -188,8 +124,12 @@ th, td {
 	    if (!empty($role_group)) {
 	        echo "<div>$role_group->Name</div>";
 	    }
-	    echo "<div><a href=''>Intrig xx</a></div>";
-
+	    $actor_intrigues = $roleActor->getAllIntrigues();
+	    foreach ($actor_intrigues as $actor_intrigue) {
+	        if ($actor_intrigue->Id != $intrigue->Id) {
+	           echo "<div><a href='view_intrigue.php?Id=$actor_intrigue->Id'>Intrig: $actor_intrigue->Number. $actor_intrigue->Name</a></div>";
+	        }
+	    }
 	    if ($role->hasImage()) {
 	        $image = Image::loadById($role->ImageId);
 	        if (!is_null($image)) {
@@ -199,13 +139,13 @@ th, td {
 	    }
 	    echo "<div align='right'>";
 	    echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut'></i></a> ";
-	    echo "<a href='view_intrigue.php?operation=remove_intrigueactor&IntrigueActorId=$roleActor->Id&Id=$intrigue->Id'";
-	    if (!empty($roleActor->IntrigueText)) echo " onclick=:\'return confirm('Det finns en skriven intrigtext. Vill du ta bort karaktären i alla fall?')\' ";
+	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$roleActor->Id&Id=$intrigue->Id'";
+	    if (!empty($roleActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort karaktären i alla fall?\')" ';
 	    echo "><i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
 	    echo "</div>";
 	    echo "</li>";
 	    $temp++;
-	    if($temp==5)
+	    if($temp==$cols)
 	    {
 	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 	        $temp=0;
@@ -233,12 +173,12 @@ th, td {
 	        echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
 	    }
 	    echo "<div align='right'>";
-	    echo "<a href='view_intrigue.php?operation=remove_prop&IntriguePropId=$intrigue_prop->Id&Id=$intrigue->Id'>";
+	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_prop&IntriguePropId=$intrigue_prop->Id&Id=$intrigue->Id'>";
 	    echo "<i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
 	    echo "</div>";
 	    echo "</li>\n";
 	    $temp++;
-	    if($temp==5)
+	    if($temp==$cols)
 	    {
 	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 	        $temp=0;
@@ -276,12 +216,12 @@ th, td {
 	        echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
 	    }
 	    echo "<div align='right'>";
-	    echo "<a href='view_intrigue.php?operation=remove_npc&IntrigueNPCId=$intrigue_npc->Id&Id=$intrigue->Id'>";
+	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_npc&IntrigueNPCId=$intrigue_npc->Id&Id=$intrigue->Id'>";
 	    echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
 	    echo "</div>";
 	    echo "</li>\n";
 	    $temp++;
-	    if($temp==5)
+	    if($temp==$cols)
 	    {
 	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 	        $temp=0;
@@ -298,14 +238,14 @@ $intrigue_letters = $intrigue->getAllLetters();
 foreach ($intrigue_letters as $intrigue_letter) {
     $letter=$intrigue_letter->getLetter();
     echo "Från: $letter->Signature, Till: $letter->Recipient, ".mb_strimwidth(str_replace('\n', '<br>', $letter->Message), 0, 50, '...');
-    echo "<a href='view_intrigue.php?operation=remove_letter&IntrigueLetterId=$intrigue_letter->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
+    echo "<a href='logic/view_intrigue_logic.php?operation=remove_letter&IntrigueLetterId=$intrigue_letter->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
     echo "<br>"; 
 }
 $intrigue_telegrams = $intrigue->getAllTelegrams();
 foreach ($intrigue_telegrams as $intrigue_telegram) {
     $telegram=$intrigue_telegram->getTelegram();
     echo "$telegram->Deliverytime, Från: $telegram->Sender, Till: $telegram->Reciever, ".mb_strimwidth(str_replace('\n', '<br>', $telegram->Message), 0, 50, '...');
-    echo "<a href='view_intrigue.php?operation=remove_telegram&IntrigueTelegramId=$intrigue_telegram->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
+    echo "<a href='logic/view_intrigue_logic.php?operation=remove_telegram&IntrigueTelegramId=$intrigue_telegram->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
     echo "<br>";
 }
 
