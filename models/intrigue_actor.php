@@ -7,7 +7,7 @@ class IntrigueActor extends BaseModel{
     public $RoleId;
     public $GroupId;
     public $IntrigueText;
-    public $Offinfo;
+    public $OffInfo;
     
     public static $orderListBy = 'Id';
     
@@ -23,7 +23,7 @@ class IntrigueActor extends BaseModel{
         if (isset($arr['RoleId'])) $this->RoleId = $arr['RoleId'];
         if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
         if (isset($arr['IntrigueText'])) $this->IntrigueText = $arr['IntrigueText'];
-        if (isset($arr['Offinfo'])) $this->Offinfo = $arr['Offinfo'];
+        if (isset($arr['OffInfo'])) $this->OffInfo = $arr['OffInfo'];
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -33,9 +33,8 @@ class IntrigueActor extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor SET IntrigueId=?, RoleId=?, GroupId=?, IntrigueText=?, Offinfo=? WHERE Id = ?");
-        
-        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->IntrigueText, $this->Offinfo, $this->Id))) {
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor SET IntrigueId=?, RoleId=?, GroupId=?, IntrigueText=?, OffInfo=? WHERE Id = ?");
+        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->IntrigueText, $this->OffInfo, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -47,9 +46,9 @@ class IntrigueActor extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, IntrigueText, Offinfo) VALUES (?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, IntrigueText, OffInfo) VALUES (?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->IntrigueText, $this->Offinfo))) {
+        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->IntrigueText, $this->OffInfo))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

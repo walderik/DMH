@@ -57,7 +57,7 @@ include 'navigation.php';
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
         	<h2>Brev</h2>
-            <a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt brev</a>  
     		    <form action="<?php echo $url;?>" method="post">
     		    <input type="hidden" id="operation" name="operation" value="<?php echo $operation;?>">
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
@@ -92,7 +92,7 @@ include 'navigation.php';
     		?>
 			
 			<h2>Telegram</h2>
-     		<a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>
+     		<a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt telegram</a>
      		<?php 
      		$telegrams = Telegram::allBySelectedLARP($current_larp);
      		if (empty($telegrams)) {

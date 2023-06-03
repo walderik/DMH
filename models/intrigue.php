@@ -246,6 +246,25 @@ class Intrigue extends BaseModel{
             $intrigue_telegram->create();
         }
     }
+
+    public function addIntrigueRelations($intrigueIds) {
+        //TODO inte klart här (finns inget i databasen än
+        //Ta reda på vilka som inte redan är kopplade till intrigen
+        $exisitingIds = array();
+        $intrigues = $this->getAllIntrigueRelations();
+        foreach ($intrigues as $intrigue) {
+            $exisitingIds[] = $intrigues->TelegramId;
+        }
+        
+        $newIntrigueIds = array_diff($intrigueIds,$exisitingIds);
+        //Koppla rekvisitan till intrigen
+        foreach ($newIntrigueIds as $telegramId) {
+            $intrigue_telegram = Intrigue_Telegram::newWithDefault();
+            $intrigue_telegram->IntrigueId = $this->Id;
+            $intrigue_telegram->TelegramId = $telegramId;
+            $intrigue_telegram->create();
+        }
+    }
     
     public function getAllGroupActors() {
         return IntrigueActor::getAllGroupActorsForIntrigue($this);
@@ -270,5 +289,12 @@ class Intrigue extends BaseModel{
     public function getAllTelegrams() {
         return Intrigue_Telegram::getAllTelegramsForIntrigue($this);
     }
+
+    public function getAllIntrigueRelations() {
+        //TODO inte klart här
+        $sql = "SELECT * FROM regsys_intrigue_relation WHERE IntrigueId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
+    }
+    
     
 }

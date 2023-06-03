@@ -56,7 +56,7 @@ include 'navigation.php';
 
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
-            <a href="prop_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="prop_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa ny rekvisita</a>  
      		<?php 
      		$props = Prop::allByCampaign($current_larp);
     		if (empty($props)) {

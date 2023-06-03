@@ -56,7 +56,7 @@ include 'navigation.php';
 
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
-            <a href="npc_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="npc_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa ny NPC</a>  
      		<?php 
      		$npcs = NPC::getAllForLarp($current_larp);
      		if (empty($npcs)) {
