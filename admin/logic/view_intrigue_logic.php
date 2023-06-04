@@ -66,20 +66,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['Id'])) $intrigue=Intrigue::loadById($_GET['Id']);
     $operation = "";
-    if (isset($_GET['operation']))
-        $operation = $_GET['operation'];
+    if (isset($_GET['operation'])) $operation = $_GET['operation'];
         
-        if ($operation == "remove_intrigueactor") {
-            IntrigueActor::delete($_GET['IntrigueActorId']);
-        } elseif ($operation == "remove_prop") {
-            Intrigue_Prop::delete($_GET['IntriguePropId']);
-        } elseif ($operation == "remove_npc") {
-            Intrigue_NPC::delete($_GET['IntrigueNPCId']);
-        } elseif ($operation == "remove_letter") {
-            Intrigue_Letter::delete($_GET['IntrigueLetterId']);
-        } elseif ($operation == "remove_telegram") {
-            Intrigue_Telegram::delete($_GET['IntrigueTelegramId']);
-        }
+    if ($operation == "remove_intrigueactor") {
+        IntrigueActor::delete($_GET['IntrigueActorId']);
+    } elseif ($operation == "remove_prop") {
+        Intrigue_Prop::delete($_GET['IntriguePropId']);
+    } elseif ($operation == "remove_npc") {
+        Intrigue_NPC::delete($_GET['IntrigueNPCId']);
+    } elseif ($operation == "remove_letter") {
+        Intrigue_Letter::delete($_GET['IntrigueLetterId']);
+    } elseif ($operation == "remove_telegram") {
+        Intrigue_Telegram::delete($_GET['IntrigueTelegramId']);        
+    } elseif ($operation == "remove_letter_checkin") {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->removeLetter($_GET['LetterId']);
+    } elseif ($operation == "remove_telegram_checkin") {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->removeTelegram($_GET['TelegramId']);
+    } elseif ($operation == "remove_prop_checkin") {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->removeProp($_GET['PropId']);
+    }
 }
 
 header("location: ../view_intrigue.php?Id=$intrigue->Id");

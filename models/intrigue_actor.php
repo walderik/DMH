@@ -198,4 +198,16 @@ class IntrigueActor extends BaseModel{
          return array();
      }
      
+     public function removeProp($propId) {
+         $checkin_prop=IntrigueActor_CheckinProp::loadByIds($propId, $this->Id);
+         IntrigueActor_CheckinProp::delete($checkin_prop->Id);
+     }
+
+     public function removeLetter($letterId) {
+         //TODO Gör innehåll
+     }
+
+     public function removeTelegram($telegramId) {
+         //TODO Gör innehåll
+     }
 }

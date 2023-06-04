@@ -65,5 +65,13 @@ class IntrigueActor_CheckinProp extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
     }
     
-    
+    public static function loadByIds($propId, $intrigueActorId) {
+        $sql = "SELECT regsys_intrigueactor_checkinprop.* FROM regsys_intrigueactor_checkinprop, regsys_intrigue_prop, regsys_intrigueactor WHERE ".
+            "regsys_intrigueactor.Id = ?  AND ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_checkinprop.IntrigueActorId AND ".
+            "regsys_intrigue_prop.Id = regsys_intrigueactor_checkinprop.IntriguePropId AND ".
+            "regsys_intrigue_prop.PropId = ? AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue_prop.IntrigueId";
+        return static::getOneObjectQuery($sql, array($intrigueActorId, $propId));
+    }
 }
