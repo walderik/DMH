@@ -104,7 +104,8 @@ class Group extends BaseModel{
          $campaign = $larp->getCampaign();
          if (!$campaign->is_dmh()) return false;
          if ($this->WealthId > 2) return true;
-         $intrigtyper = commaStringFromArrayObject($this->getIntrigueTypes());
+         $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
+         $intrigtyper = commaStringFromArrayObject($larp_group->getIntrigueTypes());
          return (str_contains($intrigtyper, 'Handel'));
          # Hantering för de som har gamla lagfarter
      }
