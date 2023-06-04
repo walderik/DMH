@@ -315,6 +315,22 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getAllMainRolesNoMyslajvare(LARP $larp) {
+        if (is_null($larp)) return Array();
+
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_larp_role.RoleId = regsys_role.Id AND ".
+            "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
+            "regsys_role.PersonId = regsys_registration.PersonId AND ".
+            "regsys_registration.NotComing = 0 AND ".
+            "regsys_larp_role.larpid=? AND ".
+            "regsys_role.NoIntrigue = 0 AND ".
+            "IsMainRole=1) ".
+            "ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
     public static function getAllUnregisteredRoles(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id NOT IN ".
@@ -385,12 +401,28 @@ class Role extends BaseModel{
     }
     
     
+    public static function getAllNotMainRolesNoMyslavare(LARP $larp) {
+        if (is_null($larp)) return Array();
+
+            $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+                "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+                "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
+                "regsys_larp_role.RoleId = regsys_role.Id AND ".
+                "regsys_role.PersonId = regsys_registration.PersonId AND ".
+                "regsys_registration.NotComing = 0 AND ".
+                "regsys_larp_role.larpid=? AND ".
+                "regsys_role.NoIntrigue = 0 AND ".
+                "IsMainRole=0) ".
+                "ORDER BY GroupId, Name;";  
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
     public static function getAllNotMainRoles(LARP $larp, $includeNotComing) {
         if (is_null($larp)) return Array();
         if ($includeNotComing) {
             $sql = "SELECT * FROM regsys_role WHERE Id IN ".
                 "(SELECT RoleId FROM regsys_larp_role WHERE ".
-            "larpId =? AND IsMainRole=0) ORDER BY GroupId;";
+                "larpId =? AND IsMainRole=0) ORDER BY GroupId;";
         }
         else {
             $sql = "SELECT * FROM regsys_role WHERE Id IN ".
@@ -401,7 +433,7 @@ class Role extends BaseModel{
                 "regsys_registration.NotComing = 0 AND ".
                 "regsys_larp_role.larpid=? AND ".
                 "IsMainRole=0) ".
-                "ORDER BY GroupId, Name;";  
+                "ORDER BY GroupId, Name;";
         }
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }

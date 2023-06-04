@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigue->update();
     } elseif ($operation == "add_intrigue_actor_role") {
         $intrigue=Intrigue::loadById($_POST['Id']);
-        $intrigue->addRoleActors($_POST['RoleId']);
+        if (isset($_POST['RoleId'])) $intrigue->addRoleActors($_POST['RoleId']);
     } elseif ($operation == "exhange_intrigue_actor_role") {
         $intrigueActor=IntrigueActor::loadById($_POST['Id']);
         $intrigue=$intrigueActor->getIntrigue();
@@ -29,17 +29,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigue=$intrigueActor->getIntrigue();
         $intrigueActor->GroupId = $_POST['GroupId'];
         $intrigueActor->RoleId=null;
-        $intrigueActor->update();
-        
+        $intrigueActor->update();      
     } elseif ($operation == "add_intrigue_actor_group") {
         $intrigue=Intrigue::loadById($_POST['Id']);
-        $intrigue->addGroupActors($_POST['GroupId']);
+        if (isset($_POST['GroupId'])) $intrigue->addGroupActors($_POST['GroupId']);
     } elseif ($operation == "add_intrigue_prop") {
         $intrigue=Intrigue::loadById($_POST['Id']);
-        $intrigue->addProps($_POST['PropId']);
+        if (isset($_POST['PropId'])) $intrigue->addProps($_POST['PropId']);
     } elseif ($operation == "add_intrigue_npc") {
         $intrigue=Intrigue::loadById($_POST['Id']);
-        $intrigue->addNPCs($_POST['NPCId']);
+        if (isset($_POST['NPCId'])) $intrigue->addNPCs($_POST['NPCId']);
     } elseif ($operation == "add_intrigue_message") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_POST['TelegramId'])) $intrigue->addTelegrams($_POST['TelegramId']);

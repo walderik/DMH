@@ -12,7 +12,11 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     
     echo "<tr><td width='10%'>Intrigtext</td><td>".htmlspecialchars($intrgueActor->IntrigueText)."</td></tr>";
     echo "<tr><td>Off-info</td><td>".htmlspecialchars($intrgueActor->OffInfo)."</td></tr>";
-    echo "<tr><td>Ska ha vid incheck</td><td></td></tr>";
+    echo "<tr><td>Ska ha vid incheck</td>";
+    echo "<td>";
+    echo "<a href='choose_intrigue_checkin.php?operation=add_intrigue_checkin&Id=<?php echo $intrigue->Id?>'><i class='fa-solid fa-plus' title='Lägg till'></i></a>";
+    
+    echo "</td></tr>";
     echo "<tr><td>Rekvisita aktören känner till</td><td></td></tr>";
     echo "<tr><td>Karaktärer aktören känner till</td><td></td></tr>";
     echo "</table>";
@@ -94,7 +98,7 @@ th, td {
 	        }
 	    }
 	    echo "<div align='right'>";
-	    echo "<a href='choose_group.php?operation=exhange_intrigue_actor_group&Id=$groupActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut'></i></a> ";
+	    echo "<a href='choose_group.php?operation=exhange_intrigue_actor_group&Id=$groupActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut grupp som får intrigen'></i></a> ";
 	    echo "<a ";
 	    if (!empty($groupActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort gruppen i alla fall?\')" ';
 	    echo " href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$groupActor->Id&Id=$intrigue->Id'";
@@ -111,7 +115,7 @@ th, td {
 	}
 	?>
 </ul>	
-<a href="choose_role.php?operation=add_intrigue_actor_role&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till karaktär"></i></a>
+<a href="choose_role.php?operation=add_intrigue_actor_role&Id=<?php echo $intrigue->Id?>&intrigueTypeFilter=1"><i class='fa-solid fa-plus' title="Lägg till karaktär"></i></a>
 <ul class='image-gallery' style='display:table; border-spacing:5px;'>
 	<?php 
 	$roleActors = $intrigue->getAllRoleActors();
@@ -138,7 +142,7 @@ th, td {
 	        }
 	    }
 	    echo "<div align='right'>";
-	    echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut'></i></a> ";
+	    echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut karaktär som får intrigen'></i></a> ";
 	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$roleActor->Id&Id=$intrigue->Id'";
 	    if (!empty($roleActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort karaktären i alla fall?\')" ';
 	    echo "><i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
