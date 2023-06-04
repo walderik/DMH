@@ -65,5 +65,15 @@ class IntrigueActor_CheckinLetter extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
     }
     
+    public static function loadByIds($letterId, $intrigueActorId) {
+        $sql = "SELECT regsys_intrigueactor_checkinletter.* FROM regsys_intrigueactor_checkinletter, regsys_intrigue_letter, regsys_intrigueactor WHERE ".
+            "regsys_intrigueactor.Id = ?  AND ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_checkinletter.IntrigueActorId AND ".
+            "regsys_intrigue_letter.Id = regsys_intrigueactor_checkinletter.IntrigueLetterId AND ".
+            "regsys_intrigue_letter.LetterId = ? AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue_letter.IntrigueId";
+        return static::getOneObjectQuery($sql, array($intrigueActorId, $letterId));
+    }
+    
     
 }

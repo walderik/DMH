@@ -204,10 +204,12 @@ class IntrigueActor extends BaseModel{
      }
 
      public function removeLetter($letterId) {
-         //TODO Gör innehåll
+         $checkin_letter=IntrigueActor_CheckinLetter::loadByIds($letterId, $this->Id);
+         IntrigueActor_CheckinLetter::delete($checkin_letter->Id);
      }
 
      public function removeTelegram($telegramId) {
-         //TODO Gör innehåll
+         $checkin_telegram=IntrigueActor_CheckinTelegram::loadByIds($telegramId, $this->Id);
+         IntrigueActor_CheckinTelegram::delete($checkin_telegram->Id);
      }
 }
