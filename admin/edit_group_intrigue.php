@@ -99,6 +99,23 @@ include 'navigation.php';
 		?>
 		
 		<h2>Intrig</h2>
+		<?php 
+		$intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id);
+		if (!empty($intrigues)) {
+		    echo "<table class='data'>";
+		    echo "<tr><th>Intrig</th><th>Intrigtext</th></tr>";
+	        foreach ($intrigues as $intrigue) {
+	           echo "<tr>";
+	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a></td>";
+	           $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $current_group);
+	           echo "<td>$intrigueActor->IntrigueText</td>";
+	           echo "</tr>";
+	       }
+	       echo "</table>";
+	       echo "<br>";
+		}
+	    ?>
+		
 		<form action="logic/edit_group_intrigue_save.php" method="post">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $current_group->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">

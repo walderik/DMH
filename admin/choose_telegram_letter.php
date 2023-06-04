@@ -29,7 +29,7 @@ $multiple=false;
 
 if ($operation == "add_intrigue_message") {
     $purpose = "Lägg till meddelande till intrig";
-    $url = "view_intrigue.php";
+    $url = "logic/view_intrigue_logic.php";
     $multiple=true;
 }
 
@@ -57,7 +57,7 @@ include 'navigation.php';
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
         	<h2>Brev</h2>
-            <a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt brev</a>  
     		    <form action="<?php echo $url;?>" method="post">
     		    <input type="hidden" id="operation" name="operation" value="<?php echo $operation;?>">
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
@@ -87,12 +87,12 @@ include 'navigation.php';
     		    }
     		    echo "</table>";
     		    echo "<br>";
-    		    echo "<input type='submit' value='$purpose'></form>";
+    		    echo "<input type='submit' value='$purpose'>";
     		}
     		?>
 			
 			<h2>Telegram</h2>
-     		<a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>
+     		<a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt telegram</a>
      		<?php 
      		$telegrams = Telegram::allBySelectedLARP($current_larp);
      		if (empty($telegrams)) {
@@ -107,7 +107,7 @@ include 'navigation.php';
     		        echo "<td><input type='$type' id='Telegram$telegram->Id' name='TelegramId$array' value='$telegram->Id'>";
 
     		        echo "<td>$telegram->Deliverytime</td>\n";
-    		        echo "<td>$telegram->Recipient</td>\n";
+    		        echo "<td>$telegram->Reciever</td>\n";
     		        echo "<td>$telegram->Message</td>\n";
     		        echo "<td>" . showStatusIcon($telegram->Approved) . "</td>\n";
     		        

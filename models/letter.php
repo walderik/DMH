@@ -116,5 +116,14 @@ class Letter extends BaseModel{
         return User::loadById($this->UserId);
     }
     
+    public static function getAllCheckinLettersForIntrigueActor(IntrigueActor $intrigueActor) {
+        $sql = "SELECT * FROM regsys_letter WHERE Id IN (".
+            "SELECT LetterId FROM regsys_intrigueactor_checkinletter, regsys_intrigue_letter WHERE ".
+            "regsys_intrigue_letter.Id = regsys_intrigueactor_checkinletter.IntrigueLetterId AND ".
+            "regsys_intrigueactor_checkinletter.IntrigueActorId = ?)  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
+    }
+    
+    
     
 }

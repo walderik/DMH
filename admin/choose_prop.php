@@ -29,7 +29,7 @@ $multiple=false;
 
 if ($operation == "add_intrigue_prop") {
     $purpose = "Lägg till rekvisita till intrig";
-    $url = "view_intrigue.php";
+    $url = "logic/view_intrigue_logic.php";
     $multiple=true;
 }
 
@@ -56,7 +56,7 @@ include 'navigation.php';
 
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
-            <a href="prop_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="prop_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa ny rekvisita</a>  
      		<?php 
      		$props = Prop::allByCampaign($current_larp);
     		if (empty($props)) {

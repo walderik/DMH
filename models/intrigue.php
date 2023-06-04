@@ -166,9 +166,6 @@ class Intrigue extends BaseModel{
             $intrigue_actor = IntrigueActor::newWithDefault();
             $intrigue_actor->IntrigueId = $this->Id;
             $intrigue_actor->GroupId = $groupId;
-            echo "Intrigue actor: ";
-            print_r($intrigue_actor);
-            echo "<br><br>";
             $intrigue_actor->create();
         }
     }
@@ -246,6 +243,25 @@ class Intrigue extends BaseModel{
             $intrigue_telegram->create();
         }
     }
+
+    public function addIntrigueRelations($intrigueIds) {
+        //TODO inte klart här (finns inget i databasen än
+        //Ta reda på vilka som inte redan är kopplade till intrigen
+        $exisitingIds = array();
+        $intrigues = $this->getAllIntrigueRelations();
+        foreach ($intrigues as $intrigue) {
+            $exisitingIds[] = $intrigues->TelegramId;
+        }
+        
+        $newIntrigueIds = array_diff($intrigueIds,$exisitingIds);
+        //Koppla rekvisitan till intrigen
+        foreach ($newIntrigueIds as $telegramId) {
+            $intrigue_telegram = Intrigue_Telegram::newWithDefault();
+            $intrigue_telegram->IntrigueId = $this->Id;
+            $intrigue_telegram->TelegramId = $telegramId;
+            $intrigue_telegram->create();
+        }
+    }
     
     public function getAllGroupActors() {
         return IntrigueActor::getAllGroupActorsForIntrigue($this);
@@ -269,6 +285,33 @@ class Intrigue extends BaseModel{
     
     public function getAllTelegrams() {
         return Intrigue_Telegram::getAllTelegramsForIntrigue($this);
+    }
+
+    public function getAllIntrigueRelations() {
+        //TODO inte klart här
+        $sql = "SELECT * FROM regsys_intrigue_relation WHERE IntrigueId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
+    }
+    
+    public static function getAllIntriguesForIntrigueActor(IntrigueActor $intrigueActor) {
+        if (!empty($intrigueActor->GroupId)) {
+            return static::getAllIntriguesForGroup($intrigueActor->GroupId);
+        }
+        else {
+            return static::getAllIntriguesForRole($intrigueActor->RoleId);
+        }
+    }
+    
+    public static function getAllIntriguesForGroup($groupId) {
+            $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+                "SELECT IntrigueId FROM regsys_intrigueactor WHERE GroupId = ?) ORDER BY Id";
+            return static::getSeveralObjectsqQuery($sql, array($groupId));
+    }
+    
+    public static function getAllIntriguesForRole($roleId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigueactor WHERE RoleId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($roleId));
     }
     
 }

@@ -109,5 +109,13 @@ class Telegram extends BaseModel{
         return User::loadById($this->UserId);
     }
     
+    public static function getAllCheckinTelegramsForIntrigueActor(IntrigueActor $intrigueActor) {
+        $sql = "SELECT * FROM regsys_telegram WHERE Id IN (".
+            "SELECT TelegramId FROM regsys_intrigueactor_checkintelegram, regsys_intrigue_telegram WHERE ".
+            "regsys_intrigue_telegram.Id = regsys_intrigueactor_checkintelegram.IntrigueTelegramId AND ".
+            "regsys_intrigueactor_checkintelegram.IntrigueActorId = ?)  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
+    }
+    
     
 }

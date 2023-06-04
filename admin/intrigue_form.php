@@ -57,7 +57,7 @@ include 'navigation.php';
 
     <div class="content"> 
     <h1><?php echo default_value('action');?> intrig <a href="<?php echo $referer; ?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-	<form action="view_intrigue.php" method="post">
+	<form action="logic/view_intrigue_logic.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
 		<table>
@@ -93,7 +93,7 @@ include 'navigation.php';
 			<tr>
 
 				<td><label for="Notes">Anteckningar</label></td>
-			<td><textarea id="Notes" name="Notes" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($intrigue->Notes); ?></textarea></td></tr>
+			<td><textarea id="Notes" name="Notes" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigue->Notes); ?></textarea></td></tr>
 			</tr>
 		</table>
 

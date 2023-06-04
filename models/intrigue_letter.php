@@ -56,6 +56,10 @@ class Intrigue_Letter extends BaseModel{
         return Intrigue::loadById($this->IntrigueId);
     }
     
+    public function getLetter() {
+        return Letter::loadById($this->LetterId);
+    }
+    
     public static function delete($id)
     {
         //TODO ta bort alla länkar
