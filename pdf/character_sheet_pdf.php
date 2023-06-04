@@ -84,12 +84,17 @@ class CharacterSheet_PDF extends FPDF {
         
         $persn = $this->person;        
         $this->set_header($left, 'Spelare');
-        $age = (empty($this->person)) ? '?' : $persn->getAgeAtLarp($this->larp);
-        $namn = "$persn->Name ($age)";
-        if (!empty($persn)) $this->set_text($left, $namn);
         
-
+        if (empty($persn)) {
+            $namn = 'Okänd (?)';
+        } else {
+            $age = $persn->getAgeAtLarp($this->larp);
+            $namn = "$persn->Name ($age)";
+        }
+        $this->set_text($left, $namn);
         
+        $this->mittlinje();
+   
         $this->SetXY($left2, $y);
         $this->SetFont('Helvetica','',static::$header_fontsize);
         $type = ($this->role->isMain($this->larp)) ? 'Huvudkaraktär' : 'Sidokaraktär';
@@ -101,10 +106,8 @@ class CharacterSheet_PDF extends FPDF {
          
         $this->Cell($this->cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
         
-        $this->mittlinje();
-        
         $font_size = (strlen($this->role->Name)>20) ? 14 : 24;
-        $this->SetXY($left2, $y + static::$Margin);
+        $this->SetXY($left2, $y + static::$Margin + 1);
         $this->SetFont('Helvetica','B', $font_size); # Extra stora bokstäver på karaktärens namn
        
         $this->Cell($this->cell_width, static::$cell_y, utf8_decode($this->role->Name),0,0,'L');
