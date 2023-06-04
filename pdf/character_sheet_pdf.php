@@ -113,12 +113,8 @@ class CharacterSheet_PDF extends FPDF {
     
     function beskrivning() {
         global $y;
-        $text = $this->role->Description; #.' '.strlen($role->Description);
-//         if (($y > (static::$y_max/2)-static::$Margin) || (strlen($text)>2600)) {
-//             $this->set_full_page('Beskrivning', $text);
-//         } else {
-            $this->set_rest_of_page('Beskrivning', $text);
-//         }
+        $text = $this->role->Description;
+        $this->set_rest_of_page('Beskrivning', $text);
         return true;
     }
     
