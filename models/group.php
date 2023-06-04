@@ -93,18 +93,29 @@ class Group extends BaseModel{
 
         $this->Id = $connection->lastInsertId();
         $stmt = null;
-    }
+     }
     
-    public function getWealth() {
+     public function getWealth() {
         if (is_null($this->WealthId)) return null;
         return Wealth::loadById($this->WealthId);
-    }
+     }
     
-    public function getPlaceOfResidence() {
+     public function is_trading(LARP $larp) {
+         $campaign = $larp->getCampaign();
+         if (!$campaign->is_dmh()) return false;
+         if ($this->WealthId > 2) return true;
+         $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
+         $intrigtyper = commaStringFromArrayObject($larp_group->getIntrigueTypes());
+         return (str_contains($intrigtyper, 'Handel'));
+         # Hantering för de som har gamla lagfarter
+     }
+     
+     public function getPlaceOfResidence() {
         if (is_null($this->PlaceOfResidenceId)) return null;
         return PlaceOfResidence::loadById($this->PlaceOfResidenceId);
-    }
+     }
     
+     # Ansvarig för gruppen
      public function getPerson() {
          return Person::loadById($this->PersonId);
      }

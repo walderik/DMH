@@ -9,7 +9,7 @@ require_once $root . '/includes/fpdf185/fpdf.php';
 require_once $root . '/includes/all_includes.php';
 
 
-class CharacterSheet_PDF extends FPDF {
+class Group_PDF extends FPDF {
     
     public static $Margin = 5;
     
@@ -24,9 +24,10 @@ class CharacterSheet_PDF extends FPDF {
     public static $text_fontsize = 12;
     public static $text_max_length = 50;
     
-    public $role;
+    public $group;
     public $person;
-    public $isMyslajvare;
+    public $larp_group;
+
     public $larp;
     public $all;
     public $current_left;
@@ -52,10 +53,10 @@ class CharacterSheet_PDF extends FPDF {
         $this->SetXY($mitten-15, 3);
         $this->SetFont('Helvetica','',static::$text_fontsize/1.1);
         $this->SetFillColor(255,255,255);
-        if ($this->all) {
-            $txt = $this->role->Name;
+         if ($this->all) {
+            $txt = $this->group->Name;
         } else {
-            $txt = 'Karaktärsblad';
+            $txt = 'Grupp';
         }
         $this->MultiCell(30, 4, utf8_decode($txt), 0, 'C', true);
         
@@ -82,52 +83,47 @@ class CharacterSheet_PDF extends FPDF {
     function names($left, $left2) {
         global $y, $mitten;
         
-        $persn = $this->person;        
-        $this->set_header($left, 'Spelare');
-        
-        if (empty($persn)) {
-            $namn = 'Okänd (?)';
-        } else {
-            $age = $persn->getAgeAtLarp($this->larp);
-            $namn = "$persn->Name ($age)";
-        }
-        $this->set_text($left, $namn);
-        
-        $this->mittlinje();
-   
         $this->SetXY($left2, $y);
         $this->SetFont('Helvetica','',static::$header_fontsize);
-        $type = ($this->role->isMain($this->larp)) ? 'Huvudkaraktär' : 'Sidokaraktär';
         
-        if ($this->role->IsDead) {
-            $type = 'Avliden';
+        if ($this->group->IsDead) {
             $this->cross_over();
         }
-         
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
         
-        $font_size = (strlen($this->role->Name)>20) ? 14 : 24;
-        $this->SetXY($left2, $y + static::$Margin + 1);
-        $this->SetFont('Helvetica','B', $font_size); # Extra stora bokstäver på karaktärens namn
-       
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode($this->role->Name),0,0,'L');
+        $font_size = (strlen($this->group->Name)>20) ? 14 : 24;
+        $this->SetXY($left, $y + static::$Margin);
+        $this->SetFont('Helvetica','B', $font_size); # Extra stora bokstäver på Gruppens namn
+        
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode($this->group->Name),0,0,'L');
+        
+        $this->mittlinje();
+        
+        $persn = $this->person;        
+        $this->set_header($left2, 'Ansvarig');
+        if (!empty($persn)) {
+            $this->set_text($left2, utf8_decode($persn->Name));
+        }
+        
     }
 
     
     function beskrivning() {
         global $y;
-        $text = $this->role->Description;
+        $text = $this->group->Description;
         $this->set_rest_of_page('Beskrivning', $text);
         return true;
     }
     
-    function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_in=false) {
+    function new_group_sheet(Group $group_in, LARP $larp_in, bool $all_in=false) {
         global $x, $y, $left, $left2, $mitten;
         
-        $this->role = $role_in;
-        $this->person = $this->role->getPerson();
-        $this->isMyslajvare = $this->role->isMysLajvare();
+        $this->group = $group_in;
+        $this->person = $this->group->getPerson();
+
         $this->larp = $larp_in;
+        
+        $this->larp_group = LARP_Group::loadByIds($this->group->Id, $this->larp->Id);
+        
         $this->all = $all_in;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $this->current_cell_height = $this->cell_y_space;
@@ -148,42 +144,38 @@ class CharacterSheet_PDF extends FPDF {
         $y += $this->cell_y_space;
         
         $this->bar();
+        $this->draw_row('medlemmar');
         
-        # Uppräkning av ett antal fält som kan finnas eller inte
-        $this->draw_field('epost');
-        $this->draw_field('group');
-        $this->draw_field('erfarenhet');
-        $this->draw_field('yrke');
-        $this->draw_field('lajvar_typ');
+        $this->draw_field('friends');
+        $this->draw_field('enemies');
+        
         $this->draw_field('rikedom');
-        if ($this->all) $this->draw_field('intrigtyper');
-        $this->draw_field('birth_place');
-        if ($this->all) $this->draw_field('intrigsuggestions');
         $this->draw_field('bor');
-        if ($this->all) $this->draw_field('notOkIntrigues');
-        $this->draw_field('reason_for_being_in_here');
         
-        if ($this->all) $this->draw_field('darkSecret');
-        $this->draw_field('religion');
-        if ($this->all) $this->draw_field('darkSecretSuggestion');
+        $this->draw_field('want_intrigue');
+        $this->draw_field('intrigtyper');
         
-        if ($this->all) $this->draw_field('charactersWithRelations');
-        if ($this->all) $this->draw_field('tidigareLajv');
-       
-        if ($this->all) $this->draw_field('organizerNotes');
+        if ($this->all) $this->draw_field('intrigue_ideas');
+        if ($this->all) $this->draw_field('remaining_intrigues');
         
-        # Fixa till om vi skapat ett udda antal fält
+        $this->draw_field('other_info');
+        
         if ($this->current_left == $left2) $this->draw_field('empty');
+        
+        if ($this->all) $this->draw_row('organizerNotes');
         
         $this->beskrivning();
         
-        
+    return;    
 
-        $previous_larps = $this->role->getPreviousLarps();
+     
+        # Det nedan löser vi med tiden. Just nu et jag inte hur det är tänkt fungera
+
+        $previous_larps = $this->group->getPreviousLarps();
         if (isset($previous_larps) && count($previous_larps) > 0) {
             
             foreach ($previous_larps as $prevoius_larp) {
-                $previous_larp_role = LARP_Role::loadByIds($this->role->Id, $prevoius_larp->Id);
+                $previous_larp_group = LARP_Role::loadByIds($this->group->Id, $prevoius_larp->Id);
                 $this->AddPage();
                 $this->title($left, "Historik $prevoius_larp->Name");
 
@@ -195,7 +187,7 @@ class CharacterSheet_PDF extends FPDF {
                 
                
                 $text = (isset($prevoius_larp_role->WhatHappened) && $prevoius_larp_role->WhatHappened != "") ? $prevoius_larp_role->WhatHappened : "Inget att rapportera";
-                $this->set_rest_of_page("Vad hände för ".$this->role->Name."?", $text);
+                $this->set_rest_of_page("Vad hände för ".$this->group->Name."?", $text);
                 $y = $this->GetX();
                 $this->bar();
                 $text = (isset($prevoius_larp_role->WhatHappendToOthers) && $prevoius_larp_role->WhatHappendToOthers != "") ? $prevoius_larp_role->WhatHappendToOthers : "Inget att rapportera";
@@ -204,170 +196,117 @@ class CharacterSheet_PDF extends FPDF {
         }
 	}
 	
-	function all_character_sheets(LARP $larp_in ) {
+	function all_group_sheets(LARP $larp_in ) {
 	    $this->larp = $larp_in;
 
-	    $roles = $this->larp->getAllMainRoles(false);
-	    foreach($roles as $role) {
- 	        $this->new_character_sheet($role, $larp_in, true);
-	    }
-	    $roles = $this->larp->getAllNotMainRoles(false);
-	    foreach($roles as $role) {
-	        $this->new_character_sheet($role, $larp_in, true);
+	    $groups = Group::getAllRegistered($this->larp);
+	    foreach($groups as $group) {
+	        $this->new_group_sheet($group, $larp_in, true);
 	    }
 	}
+
+	# Dynamiska rader
+	protected function medlemmar() {
+	    global $left;
+	    $this->set_header($left, 'Medlemmar');
+	    
+	    $namnen = array();
+	    $roles = Role::getAllMainRolesInGroup($this->group, $this->larp);
+	    if (empty($roles)) return true;
+	    foreach ($roles as $role) {
+	        $namnen[] = $role->Name;
+	    }
+	    $txt = join(", ", $namnen);
+	    
+	    $this->set_row($txt);
+	    return true;
+	}
+	
+	
+	protected function OrganizerNotes() {
+	    global $left;
+	    $this->set_header($left, 'Anteckning');
+	    $this->set_row($this->group->OrganizerNotes);
+	    return true;
+	}
+	
 	
 	# Dynamiska småfält
-	
 	protected function empty($left) {
 	    $this->set_text($left, '');
 	    return true;
 	}
 	
-	protected function yrke($left) {
-	    $this->set_header($left, 'Yrke');
-	    $this->set_text($left, $this->role->Profession);
+	protected function friends($left) {
+	    $this->set_header($left, 'Vänner');
+	    $this->set_text($left, $this->group->Friends);
 	    return true;
 	}
 	
-	protected function epost($left) {
-	    $this->set_header($left, 'Epost');
-	    if (empty($this->person)) return true;
-	    $this->set_text($left, $this->person->Email);
+	protected function enemies($left) {
+	    $this->set_header($left, 'Fiender');
+	    $this->set_text($left, $this->group->Enemies);
 	    return true;
 	}
+
 	
-	protected function erfarenhet($left) {
-	    //TODO vet inte om detta ska vara valbart på lajvet
-	    //if (!Experience::isInUse($this->larp)) return false;
-	    
-	    $this->set_header($left, 'Erfarenhet');
-	    if (empty($this->person)) return true;
-	    $this->set_text($left, $this->person->getExperience()->Name);
-	    return true;
-	}
 	
 	protected function rikedom($left) {
 	    if (!Wealth::isInUse($this->larp)) return false;
 	    
-	    if ($this->isMyslajvare) return false;
-	    
 	    $this->set_header($left, 'Rikedom');
-	    $text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
-	    $this->set_text($left, $this->role->getWealth()->Name . $text);
+	    $text = ($this->group->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
+	    $this->set_text($left, $this->group->getWealth()->Name . $text);
+	    return true;
+	}
+	
+	protected function want_intrigue($left) { 
+	    $this->set_header($left, 'Will gärna ha intrig');
+	    
+	    $text = $this->larp_group->WantIntrigue ? 'Ja' : 'Nej';
+
+	    $this->set_text($left, $text);
 	    return true;
 	}
 	
 	protected function intrigtyper($left) {
 	    if (!IntrigueType::isInUse($this->larp)) return false;
-	    
-	    if ($this->isMyslajvare) return false;
+
 	    $this->set_header($left, 'Intrigtyper');
 
-	    $text = commaStringFromArrayObject($this->role->getIntrigueTypes());
+	    $text = commaStringFromArrayObject($this->larp_group->getIntrigueTypes());
 	    $this->set_text($left, $text);
 	    return true;
 	}
 	
-	protected function intrigsuggestions($left) {  
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Intrigförslag');
-
-	    $this->set_text($left, $this->role->IntrigueSuggestions);
+	protected function intrigue_ideas($left) {
+	    $this->set_header($left, 'Intrigéer');
+	    
+	    $this->set_text($left, $this->group->IntrigueIdeas);
 	    return true;
 	}
 	
-	protected function notOkIntrigues($left) {
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Inget spel på');
-	    $this->set_text($left, $this->role->NotAcceptableIntrigues);
-	    return true;
-	}
-	
-	protected function darkSecret($left) {
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Mörk hemlighet');
-	    $this->set_text($left, $this->role->DarkSecret);
-	    return true;
-	}
-	
-	protected function darkSecretSuggestion($left) {
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Spel på Mörk hemlighet');
-	    $this->set_text($left, $this->role->DarkSecretIntrigueIdeas);
-	    return true;
-	}
-	
-	protected function charactersWithRelations($left) {
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Viktigare personer');
-	    $this->set_text($left, $this->role->CharactersWithRelations);
-	    return true;
-	}
-	
-	protected function tidigareLajv($left){
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Tidigare lajv');
-	    $this->set_text($left, $this->role->PreviousLarps);
+	protected function remaining_intrigues($left) {
+	    $this->set_header($left, 'Kvarvarande intriger');
+	    
+	    $this->set_text($left, $this->larp_group->RemainingIntrigues);
 	    return true;
 	}
 
-	
-	protected function OrganizerNotes($left) {
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Anteckning');
-	    $this->set_text($left, $this->role->OrganizerNotes);
+	protected function other_info($left) {
+	    $this->set_header($left, 'Annat');    
+	    $this->set_text($left, $this->group->OtherInformation);
 	    return true;
 	}
-	
-	protected function lajvar_typ($left) {
-	    if (!LarperType::isInUse($this->larp)) return false;
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Lajvartyp');
-	    if (empty($this->person)) return true;
-	    $mertext = (empty(trim($this->role->TypeOfLarperComment))) ? '' : " (".trim($this->role->TypeOfLarperComment).")";
-	    $text = $this->role->getLarperType()->Name.$mertext;
-	    $this->set_text($left, $text );
-	    return true;
-	}
-	
-	protected function group($left) {
-	    $this->set_header($left, 'Grupp');
-	    $group = $this->role->getGroup();
-	    if (empty($group)) return true;
-	    $this->set_text($left, $group->Name);
-	    return true;
-	}
-	
-	protected function birth_place($left) {
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Född');
-	    $this->set_text($left, $this->role->Birthplace);
-	    return true;
-	}
+
 	
 	protected function bor($left) {
-	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Bor');
-	    $this->set_text($left, $this->role->getPlaceOfResidence()->Name);
+	    $this->set_text($left, $this->group->getPlaceOfResidence()->Name);
 	    return true;
 	}
-	
-	protected function religion($left) {
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Religion');
-	    $this->set_text($left, $this->role->Religion);
-	    return true;
-	}
-	
-	protected function reason_for_being_in_here($left) {
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Orsak för att vistas här');
-	    $this->set_text($left, $this->role->ReasonForBeingInSlowRiver);
-	    return true;
-	}
-	
-	
+
+
 	# Rita en ruta
 	# Håll reda på om nästa ruta är till höger eller vänster
 	private function draw_field($func) {
@@ -393,6 +332,34 @@ class CharacterSheet_PDF extends FPDF {
 	            $this->bar();
 	            $this->current_cell_height = $this->cell_y_space;
 	        }
+	    }
+	}
+	
+	# Rita en rad
+	private function draw_row($func) {
+	    global $y, $left;
+	    $to_execute = '$draw_ok = $this->'.$func.'();';
+	    eval($to_execute);
+	    if ($draw_ok) {
+
+	        # Hantering om resultatet av cellen är för stort för att få plats.
+	        $current_y = $this->GetY();
+	        if ($current_y > $y + $this->current_cell_height) {
+	            $new_height = $current_y-$y;
+	            $this->current_cell_height = $new_height;
+	        }
+	        
+// 	        # Räkna upp en cell i bredd
+// 	        if ($this->current_left == $left) {
+// 	            $this->current_left = $left2;
+// 	        } else {
+	            # Vi har just ritat den högra rutan
+// 	            $this->mittlinje();
+// 	            $this->current_left = $left;
+	            $y += $this->current_cell_height;
+	            $this->bar();
+	            $this->current_cell_height = $this->cell_y_space;
+// 	        }
 	    }
 	}
 	
@@ -457,6 +424,34 @@ class CharacterSheet_PDF extends FPDF {
 	    # Normal utskrift
 	    $this->set_text_start($venster);
 	    $this->Cell($this->cell_width, static::$cell_y, $text, 0, 0, 'L');
+	    
+	    return;
+	}
+	
+	# Gemensam funktion för all logik för att skriva ut en hel rad
+	private function set_row($text) {
+	    global $left, $y;
+	    
+	    if (empty($text)) return;
+	    
+	    $text = trim(utf8_decode($text));
+	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
+	    if (strlen($text) > (static::$text_max_length*2)){
+	        $this->SetXY($left, $y + static::$Margin);
+	        $this->SetFont('Arial','',static::$text_fontsize/1.5);
+	        
+// 	        if (strlen($text)>210) {
+// 	            $this->SetFont('Arial','',static::$header_fontsize);
+// 	            $this->MultiCell((2*$this->cell_width)+5, static::$cell_y-2.1, $text, 0, 'L'); # Väldigt liten och tät text
+// 	        } else {
+	            $this->MultiCell((2*$this->cell_width)+5, static::$cell_y-1, $text, 0, 'L');
+// 	        }
+	        
+	        return;
+	    }
+	    # Normal utskrift
+	    $this->set_text_start($left);
+	    $this->Cell((2*$this->cell_width), static::$cell_y, $text, 0, 0, 'L');
 	    
 	    return;
 	}
