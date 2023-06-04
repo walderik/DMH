@@ -49,6 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigueActor->IntrigueText = $_POST['IntrigueText'];
         $intrigueActor->Offinfo = $_POST['Offinfo'];
         $intrigueActor->update();
+    } elseif ($operation == "choose_intrigue_checkin") {
+        $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        if (isset($_POST['Intrigue_PropId'])) $intrigueActor->addCheckinProps($_POST['Intrigue_PropId']);
+        if (isset($_POST['Intrigue_LetterId'])) $intrigueActor->addCheckinLetters($_POST['Intrigue_LetterId']);
+        if (isset($_POST['Intrigue_TelegramId'])) $intrigueActor->addCheckinTelegrams($_POST['Intrigue_TelegramId']);
     } else {
         $intrigue=Intrigue::loadById($_POST['Id']);
     }

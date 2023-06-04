@@ -102,6 +102,100 @@ class IntrigueActor extends BaseModel{
         //TODO ta bort alla länkar
         parent::delete($id);
      }
-    
-    
+ 
+     
+     public function addCheckinLetters($intrigue_letterIds) {
+         //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_letters = $this->getAllCheckinLetters();
+         foreach ($intrigue_letters as $intrigue_letter) {
+             $exisitingIds[] = $intrigue_letter->IntrigueLetterId;
+         }
+         
+         $newLetterIds = array_diff($intrigue_letterIds,$exisitingIds);
+         //Koppla brevet till aktören
+         foreach ($newLetterIds as $intrigue_letterId) {
+             $intrigueactor_checkinletter = IntrigueActor_CheckinLetter::newWithDefault();
+             $intrigueactor_checkinletter->IntrigueActorId = $this->Id;
+             $intrigueactor_checkinletter->IntrigueLetterId = $intrigue_letterId;
+             $intrigueactor_checkinletter->create();
+         }
+     }
+     
+     public function addCheckinTelegrams($intrigue_telegramIds) {
+          //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_telegrams = $this->getAllCheckinTelegrams();
+         foreach ($intrigue_telegrams as $intrigue_telegram) {
+             $exisitingIds[] = $intrigue_telegram->IntrigueTelegramId;
+         }
+         $newTelegramIds = array_diff($intrigue_telegramIds,$exisitingIds);
+
+         //Koppla telegrammet till aktören
+         foreach ($newTelegramIds as $intrigue_telegramId) {
+             $intrigueactor_checkintelegram = IntrigueActor_CheckinTelegram::newWithDefault();
+             $intrigueactor_checkintelegram->IntrigueActorId = $this->Id;
+             $intrigueactor_checkintelegram->IntrigueTelegramId = $intrigue_telegramId;
+             $intrigueactor_checkintelegram->create();
+         }
+     }
+     
+     public function addCheckinProps($intrigue_propIds) {
+         //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_props = $this->getAllCheckinProps();
+         foreach ($intrigue_props as $intrigue_prop) {
+             $exisitingIds[] = $intrigue_prop->IntriguePropId;
+         }
+         
+         $newPropIds = array_diff($intrigue_propIds,$exisitingIds);
+         //Koppla rekvisitan till aktören
+         foreach ($newPropIds as $intrigue_propId) {
+             $intrigueactor_checkinprop = IntrigueActor_CheckinProp::newWithDefault();
+             $intrigueactor_checkinprop->IntrigueActorId = $this->Id;
+             $intrigueactor_checkinprop->IntriguePropId = $intrigue_propId;
+             $intrigueactor_checkinprop->create();
+         }
+     }
+     
+     public function getAllCheckinLetters() {
+         return IntrigueActor_CheckinLetter::getAllCheckinLettersForIntrigueActor($this);
+     }
+     
+     public function getAllCheckinTelegrams() {
+         return IntrigueActor_CheckinTelegram::getAllCheckinTelegramsForIntrigueActor($this);
+     }
+     
+     public function getAllCheckinProps() {
+         return IntrigueActor_CheckinProp::getAllCheckinPropsForIntrigueActor($this);
+     }
+     
+     public function getAllPropsForCheckin() {
+         return Prop::getAllCheckinPropsForIntrigueActor($this);
+     }
+
+     public function getAllLettersForCheckin() {
+         return Letter::getAllCheckinLettersForIntrigueActor($this);
+     }
+     
+     public function getAllTelegramsForCheckin() {
+         return Telegram::getAllCheckinTelegramsForIntrigueActor($this);
+     }
+     
+     
+     public function getAllKnownProps() {
+         //TODO gör anrop
+         return array();
+     }
+
+     public function getAllKnownActors() {
+         //TODO gör anrop
+         return array();
+     }
+     
+     public function getAllKnownNPCs() {
+         //TODO gör anrop
+         return array();
+     }
+     
 }

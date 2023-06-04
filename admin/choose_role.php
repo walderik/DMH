@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['intrigueTypeFilter'])) {
         $intrigue = Intrigue::loadById($id);
         $intrigueTypes = $intrigue->getSelectedIntrigueTypeIds();
-        $hidden = true;
     }
     
 }
@@ -29,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['intrigueTypeFilter'])) {
         $intrigue = Intrigue::loadById($id);
         $intrigueTypes = $intrigue->getSelectedIntrigueTypeIds();
-        $hidden=true;
     }
     
 }
@@ -123,14 +121,14 @@ include_once '../javascript/table_sort.js';
     		          "<th onclick='sortTable(4, \"$tableId\");'>Grupp</th></tr>";
  
     		    foreach ($mainroles as $role)  {
-    		        $match = false;
+    		        $show = true;
     		        if (!empty($intrigueTypes)) {
     		            $role_intrigueTypeIds = $role->getSelectedIntrigueTypeIds();
-    		            if (!empty(array_intersect($intrigueTypes, $role_intrigueTypeIds))) {
-    		                $match = true;
+    		            if (empty(array_intersect($intrigueTypes, $role_intrigueTypeIds))) {
+    		                $show = false;
     		            }
     		        }
-    		        if ($match) echo "<tr>\n";
+    		        if ($show) echo "<tr>\n";
     		        else echo "<tr class='show_hide hidden'>\n";
     		        echo "<td><input id ='Role$role->Id' type='$type' name='RoleId$array' value='$role->Id'></td>";
     		        echo "<td>$role->Name</td>\n";
@@ -163,14 +161,14 @@ include_once '../javascript/table_sort.js';
     		          "<th onclick='sortTable(4, \"$tableId\");'>Grupp</th></tr>";
     		    
     		foreach ($nonmainroles as $role)  {
-    		    $match = false;
+    		    $show = true;
     		    if (!empty($intrigueTypes)) {
     		        $role_intrigueTypeIds = $role->getSelectedIntrigueTypeIds();
-    		        if (!empty(array_intersect($intrigueTypes, $role_intrigueTypeIds))) {
-    		            $match = true;
+    		        if (empty(array_intersect($intrigueTypes, $role_intrigueTypeIds))) {
+    		            $show = false;
     		        }
     		    }
-    		    if ($match) echo "<tr>\n";
+    		    if ($show) echo "<tr>\n";
     		    else echo "<tr class='show_hide hidden'>\n";
     		    echo "<td><input id ='Role$role->Id' type='$type' name='RoleId$array' value='$role->Id'></td>";
     		    echo "<td>$role->Name</td>\n";

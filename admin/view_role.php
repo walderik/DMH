@@ -119,7 +119,7 @@ include 'navigation.php';
 		</table>		
 		</div>
 		
-		<h2>Intrig</h2>
+		<h2>Intrig <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php 
 		$intrigues = Intrigue::getAllIntriguesForRole($role->Id);

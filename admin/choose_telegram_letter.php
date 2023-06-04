@@ -87,12 +87,12 @@ include 'navigation.php';
     		    }
     		    echo "</table>";
     		    echo "<br>";
-    		    echo "<input type='submit' value='$purpose'></form>";
+    		    echo "<input type='submit' value='$purpose'>";
     		}
     		?>
 			
 			<h2>Telegram</h2>
-     		<a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt telegram</a>
+     		<a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt telegram</a>
      		<?php 
      		$telegrams = Telegram::allBySelectedLARP($current_larp);
      		if (empty($telegrams)) {
@@ -107,7 +107,7 @@ include 'navigation.php';
     		        echo "<td><input type='$type' id='Telegram$telegram->Id' name='TelegramId$array' value='$telegram->Id'>";
 
     		        echo "<td>$telegram->Deliverytime</td>\n";
-    		        echo "<td>$telegram->Recipient</td>\n";
+    		        echo "<td>$telegram->Reciever</td>\n";
     		        echo "<td>$telegram->Message</td>\n";
     		        echo "<td>" . showStatusIcon($telegram->Approved) . "</td>\n";
     		        

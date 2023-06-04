@@ -116,7 +116,7 @@ include 'navigation.php';
 		    }
 		}
 		?>
-		<h2>Intrig</h2>
+		<h2>Intrig <a href='edit_group_intrigue.php?id=<?php echo $current_group->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php 
 		$intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id);

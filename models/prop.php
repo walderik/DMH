@@ -96,7 +96,13 @@ class Prop extends BaseModel{
         return false;
     }
     
-    
+    public static function getAllCheckinPropsForIntrigueActor(IntrigueActor $intrigueActor) {
+        $sql = "SELECT * FROM regsys_prop WHERE Id IN (".
+            "SELECT PropId FROM regsys_intrigueactor_checkinprop, regsys_intrigue_prop WHERE ".
+            "regsys_intrigue_prop.Id = regsys_intrigueactor_checkinprop.IntriguePropId AND ".
+            "regsys_intrigueactor_checkinprop.IntrigueActorId = ?)  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
+    }
     
 }
 

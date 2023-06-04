@@ -12,6 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (isset($_POST['Id'])) {
         $id = $_POST['Id'];
     }
+    if (isset($_POST['intrigueTypeFilter'])) {
+        $intrigue = Intrigue::loadById($id);
+        $intrigueTypes = $intrigue->getSelectedIntrigueTypeIds();
+    }
     
 }
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -21,6 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $id = $_GET['id'];
     } elseif (isset($_GET['Id'])) {
         $id = $_GET['Id'];
+    }
+    if (isset($_GET['intrigueTypeFilter'])) {
+        $intrigue = Intrigue::loadById($id);
+        $intrigueTypes = $intrigue->getSelectedIntrigueTypeIds();
     }
     
 }
@@ -60,7 +68,11 @@ else {
 
 include 'navigation.php';
 ?>
+<?php 
 
+include_once '../javascript/show_hide_rows.js';
+include_once '../javascript/table_sort.js';
+?>
 
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
@@ -69,6 +81,13 @@ include 'navigation.php';
     		if (empty($groups)) {
     		    echo "Inga anmälda grupper";
     		} else {
+    		    ?>
+    		    <?php 
+    		    if (!empty($intrigueTypes)) {
+    		        echo "Grupper filtrerade på intrigtyper ". commaStringFromArrayObject($intrigue->getIntrigueTypes())."<br>";
+    		        echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
+    		        echo "<br><br>";
+    		    }
     		    ?>
     		    <form action="<?php echo $url;?>" method="post">
     		    <input type="hidden" id="operation" name="operation" value="<?php echo $operation;?>">
@@ -80,14 +99,24 @@ include 'navigation.php';
     		    ?> 
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
     		    <table class='data'>
-    		    <tr><th>Namn</th></tr>
+    		    <tr><th>Namn</th><th>Intrigtyper</th></tr>
     		    <?php 
     		    foreach ($groups as $group)  {
-    		        echo "<tr>\n";
+    		        $show = true;
+    		        $larp_group=LARP_Group::loadByIds($group->Id, $current_larp->Id);
+    		        if (!empty($intrigueTypes)) {
+    		            $group_intrigueTypeIds = $larp_group->getSelectedIntrigueTypeIds();
+    		            if (empty(array_intersect($intrigueTypes, $group_intrigueTypeIds))) {
+    		                $show = false;
+    		            }
+    		        }
+    		        if ($show) echo "<tr>\n";
+    		        else echo "<tr class='show_hide hidden'>\n";
     		        echo "<td><input type='$type' id='Group$group->Id' name='GroupId$array' value='$group->Id'>";
 
     		        echo "<label for='Group$group->Id'>$group->Name</label></td>\n";
-
+    		        echo "<td>".commaStringFromArrayObject($larp_group->getIntrigueTypes())."</td>";
+    		        
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";
