@@ -1,6 +1,7 @@
 <?php
 include_once '../header.php';
 
+//print_r($_GET);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -55,6 +56,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['Intrigue_PropId'])) $intrigueActor->addCheckinProps($_POST['Intrigue_PropId']);
         if (isset($_POST['Intrigue_LetterId'])) $intrigueActor->addCheckinLetters($_POST['Intrigue_LetterId']);
         if (isset($_POST['Intrigue_TelegramId'])) $intrigueActor->addCheckinTelegrams($_POST['Intrigue_TelegramId']);
+    } elseif ($operation == "choose_intrigue_knownprops") {
+        $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        if (isset($_POST['Intrigue_PropId'])) $intrigueActor->addKnownProps($_POST['Intrigue_PropId']);
+    } elseif ($operation == "choose_intrigue_knownactors") {
+        $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        if (isset($_POST['KnownIntrigueActorId'])) $intrigueActor->addKnownActors($_POST['KnownIntrigueActorId']);
+        if (isset($_POST['Intrigue_NPCId'])) $intrigueActor->addKnownNPCs($_POST['Intrigue_NPCId']);
     } else {
         $intrigue=Intrigue::loadById($_POST['Id']);
     }
@@ -89,7 +99,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } elseif ($operation == "remove_prop_checkin") {
         $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
-        $intrigueActor->removeProp($_GET['PropId']);
+        $intrigueActor->removePropCheckin($_GET['PropId']);
+    } elseif ($operation == "remove_prop_known") {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->removeKnownProp($_GET['PropId']);
+    } elseif ($operation == "remove_intrigueactor_knownRole") {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->removeKnownRole($_GET['RoleId']);        
+    } elseif ($operation == "remove_intrigueactor_knownGroup") {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->removeKnownGroup($_GET['GroupId']);
+    } elseif ( ($operation == "remove_npc_intrigueactor")) {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->removeKnownNPC($_GET['NPCId']);
     }
 }
 

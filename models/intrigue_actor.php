@@ -158,6 +158,62 @@ class IntrigueActor extends BaseModel{
          }
      }
      
+     public function addKnownProps($intrigue_propIds) {
+         //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_props = $this->getAllKnownProps();
+         foreach ($intrigue_props as $intrigue_prop) {
+             $exisitingIds[] = $intrigue_prop->IntriguePropId;
+         }
+         
+         $newPropIds = array_diff($intrigue_propIds,$exisitingIds);
+         //Koppla rekvisitan till aktören
+         foreach ($newPropIds as $intrigue_propId) {
+             $intrigueactor_knownprop = IntrigueActor_KnownProp::newWithDefault();
+             $intrigueactor_knownprop->IntrigueActorId = $this->Id;
+             $intrigueactor_knownprop->IntriguePropId = $intrigue_propId;
+             $intrigueactor_knownprop->create();
+         }
+     }
+     
+     public function addKnownActors($intrigue_actorIds) {
+         //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_actors = $this->getAllKnownActors();
+         foreach ($intrigue_actors as $intrigue_actor) {
+             $exisitingIds[] = $intrigue_actor->KnownIntrigueActorId;
+         }
+         
+         $newKnownActorIds = array_diff($intrigue_actorIds,$exisitingIds);
+         //Koppla till aktören
+         foreach ($newKnownActorIds as $intrigue_actorId) {
+             if ($intrigue_actorId != $this->Id) {
+                 $intrigueactor_knownactor = IntrigueActor_KnownActor::newWithDefault();
+                 $intrigueactor_knownactor->IntrigueActorId = $this->Id;
+                 $intrigueactor_knownactor->KnownIntrigueActorId = $intrigue_actorId;
+                 $intrigueactor_knownactor->create();
+             }
+         }
+     }
+     
+     public function addKnownNPCs($intrigue_NPCIds) {
+         //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_npcs = $this->getAllKnownNPCs();
+         foreach ($intrigue_npcs as $intrigue_npc) {
+             $exisitingIds[] = $intrigue_npc->IntrigueNPCId;
+         }
+         
+         $newKnownNPCIds = array_diff($intrigue_NPCIds,$exisitingIds);
+         //Koppla till aktören
+         foreach ($newKnownNPCIds as $intrigue_NPCId) {
+             $intrigueactor_knownnpc = IntrigueActor_KnownNPC::newWithDefault();
+             $intrigueactor_knownnpc->IntrigueActorId = $this->Id;
+             $intrigueactor_knownnpc->IntrigueNPCId = $intrigue_NPCId;
+             $intrigueactor_knownnpc->create();            
+         }
+     }
+     
      public function getAllCheckinLetters() {
          return IntrigueActor_CheckinLetter::getAllCheckinLettersForIntrigueActor($this);
      }
@@ -174,6 +230,10 @@ class IntrigueActor extends BaseModel{
          return Prop::getAllCheckinPropsForIntrigueActor($this);
      }
 
+     public function getAllPropsThatAreKnown() {
+         return Prop::getAllKnownPropsForIntrigueActor($this);
+     }
+     
      public function getAllLettersForCheckin() {
          return Letter::getAllCheckinLettersForIntrigueActor($this);
      }
@@ -184,25 +244,42 @@ class IntrigueActor extends BaseModel{
      
      
      public function getAllKnownProps() {
-         //TODO gör anrop
-         return array();
+         return IntrigueActor_KnownProp::getAllKnowninPropsForIntrigueActor($this);
      }
 
      public function getAllKnownActors() {
-         //TODO gör anrop
-         return array();
+         return IntrigueActor_KnownActor::getAllKnownIntrigueActorsForIntrigueActor($this);
      }
      
      public function getAllKnownNPCs() {
-         //TODO gör anrop
-         return array();
+         return IntrigueActor_KnownNPC::getAllKnownNPCsForIntrigueActor($this);
      }
      
-     public function removeProp($propId) {
+     public function removePropCheckin($propId) {
          $checkin_prop=IntrigueActor_CheckinProp::loadByIds($propId, $this->Id);
          IntrigueActor_CheckinProp::delete($checkin_prop->Id);
      }
 
+     public function removeKnownProp($propId) {
+         $known_prop=IntrigueActor_KnownProp::loadByIds($propId, $this->Id);
+         IntrigueActor_KnownProp::delete($known_prop->Id);
+     }
+     
+     public function removeKnownRole($roleId) {
+         $known_actor=IntrigueActor_KnownActor::loadByIds($roleId, $this->Id, true);
+         IntrigueActor_KnownActor::delete($known_actor->Id);
+     }
+     
+     public function removeKnownNPC($npcId) {
+         $known_npc=IntrigueActor_KnownNPC::loadByIds($npcId, $this->Id);
+         IntrigueActor_KnownNPC::delete($known_npc->Id);
+     }
+     
+     public function removeKnowGroup($groupId) {
+         $known_actor=IntrigueActor_KnownActor::loadByIds($groupId, $this->Id, false);
+         IntrigueActor_KnownActor::delete($known_actor->Id);
+     }
+     
      public function removeLetter($letterId) {
          $checkin_letter=IntrigueActor_CheckinLetter::loadByIds($letterId, $this->Id);
          IntrigueActor_CheckinLetter::delete($checkin_letter->Id);

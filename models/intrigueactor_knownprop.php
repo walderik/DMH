@@ -1,6 +1,6 @@
 <?php
 
-class IntrigueActor_CheckinProp extends BaseModel{
+class IntrigueActor_KnownProp extends BaseModel{
     
     public $Id;
     public $IntrigueActorId;
@@ -27,7 +27,7 @@ class IntrigueActor_CheckinProp extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor_checkinprop SET IntrigueActorId=?, IntriguePropId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor_knownprop SET IntrigueActorId=?, IntriguePropId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->IntrigueActorId, $this->IntriguePropId, $this->Id))) {
             $stmt = null;
@@ -41,7 +41,7 @@ class IntrigueActor_CheckinProp extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor_checkinprop (IntrigueActorId, IntriguePropId) VALUES (?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor_knownprop (IntrigueActorId, IntriguePropId) VALUES (?,?)");
         
         if (!$stmt->execute(array($this->IntrigueActorId, $this->IntriguePropId))) {
             $stmt = null;
@@ -60,20 +60,18 @@ class IntrigueActor_CheckinProp extends BaseModel{
         return Intrigue_Letter::loadById($this->IntriguePropId);
     }
     
-    public static function getAllCheckinPropsForIntrigueActor(IntrigueActor $intrigueActor) {
-        $sql = "SELECT * FROM regsys_intrigueactor_checkinprop WHERE IntrigueActorId = ? ORDER BY Id";
+    public static function getAllKnowninPropsForIntrigueActor(IntrigueActor $intrigueActor) {
+        $sql = "SELECT * FROM regsys_intrigueactor_knownprop WHERE IntrigueActorId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
     }
     
     public static function loadByIds($propId, $intrigueActorId) {
-        $sql = "SELECT regsys_intrigueactor_checkinprop.* FROM regsys_intrigueactor_checkinprop, regsys_intrigue_prop, regsys_intrigueactor WHERE ".
+        $sql = "SELECT regsys_intrigueactor_knownprop.* FROM regsys_intrigueactor_knownprop, regsys_intrigue_prop, regsys_intrigueactor WHERE ".
             "regsys_intrigueactor.Id = ?  AND ".
-            "regsys_intrigueactor.Id = regsys_intrigueactor_checkinprop.IntrigueActorId AND ".
-            "regsys_intrigue_prop.Id = regsys_intrigueactor_checkinprop.IntriguePropId AND ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_knownprop.IntrigueActorId AND ".
+            "regsys_intrigue_prop.Id = regsys_intrigueactor_knownprop.IntriguePropId AND ".
             "regsys_intrigue_prop.PropId = ? AND ".
             "regsys_intrigueactor.IntrigueId = regsys_intrigue_prop.IntrigueId";
         return static::getOneObjectQuery($sql, array($intrigueActorId, $propId));
     }
-
-
 }

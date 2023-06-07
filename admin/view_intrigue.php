@@ -17,7 +17,7 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo "<td>";
     echo "<a href='choose_intrigue_checkin.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>";
     $checkinProps = $intrgueActor->getAllPropsForCheckin();
-    printAllProps($checkinProps, $intrgueActor);
+    printAllProps($checkinProps, $intrgueActor, true);
     $checkinLetters = $intrgueActor->getAllLettersForCheckin();
     printAllLetters($checkinLetters, $intrgueActor);
     $checkinTelegrams = $intrgueActor->getAllTelegramsForCheckin();
@@ -26,8 +26,8 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo "</td></tr>";
     echo "<tr><td>Rekvisita aktören känner till</td><td>";
     echo "<a href='choose_intrigue_props.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>";
-    $knownProps = $intrgueActor->getAllKnownProps();
-    printAllProps($knownProps, $intrgueActor);
+    $knownProps = $intrgueActor->getAllPropsThatAreKnown();
+    printAllProps($knownProps, $intrgueActor, false);
     echo "</td></tr>";
     echo "<tr><td>Karaktärer aktören känner till</td><td>";
     echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>";
@@ -42,8 +42,14 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
 
 
 
-function printAllProps($props, $intrigueActor) {
+function printAllProps($props, $intrigueActor, $isCheckin) {
     global $cols;
+    if ($isCheckin){
+        $remove_operation = "remove_prop_checkin";
+    }
+    else {
+        $remove_operation = "remove_prop_known";
+    }
     echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
     $temp=0;
     foreach ($props as $prop) {
@@ -54,8 +60,8 @@ function printAllProps($props, $intrigueActor) {
             echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
         }
         echo "<div align='right'>";
-        echo "<a href='logic/view_intrigue_logic.php?operation=remove_prop_checkin&PropId=$prop->Id&IntrigueActorId=$intrigueActor->Id'>";
-        echo "<i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
+        echo "<a href='logic/view_intrigue_logic.php?operation=$remove_operation&PropId=$prop->Id&IntrigueActorId=$intrigueActor->Id'>";
+        echo "<i class='fa-solid fa-xmark' title='Ta bort från rekvisita'></i></a>";
         echo "</div>";
         echo "</li>\n";
         $temp++;
@@ -73,7 +79,7 @@ function printAllProps($props, $intrigueActor) {
 function printAllLetters($letters, $intrigueActor) {
     foreach($letters as $letter) {
         echo "Från: $letter->Signature, Till: $letter->Recipient, ".mb_strimwidth(str_replace('\n', '<br>', $letter->Message), 0, 50, '...');
-        echo "<a href='logic/view_intrigue_logic.php?operation=remove_letter_checkin&LetterId=$letter->Id&IntrigueActorId=$intrigueActor->Id'><i class='fa-solid fa-xmark' title='Ta bort incheck'></i></a>";
+        echo "<a href='logic/view_intrigue_logic.php?operation=remove_letter_checkin&LetterId=$letter->Id&IntrigueActorId=$intrigueActor->Id'><i class='fa-solid fa-xmark' title='Ta bort från incheck'></i></a>";
         echo "<br>";
     }
     
@@ -89,17 +95,21 @@ function printAllTelegrams($telegrams, $intrigueActor) {
     
 }
 
-function printKnownActor(IntrigueActor $intrigueActor) {
-    if (!empty($intrigueActor->GroupId)) {
-        $group=$intrigueActor->getGroup();
+function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor) {
+    if (!empty($knownIntrigueActor->GroupId)) {
+        $group=$knownIntrigueActor->getGroup();
         echo "<li style='display:table-cell; width:19%;'>";
         echo "<div class='name'>$group->Name</div>";
         echo "<div>Grupp</div>";
         echo "</div>";
+        echo "<div align='right'>";
+        echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor_knownGroup&GroupId=$group->Id&IntrigueActorId=$intrigueActor->Id'";
+        echo "<i class='fa-solid fa-xmark' title='Ta bort grupp'></i></a>";
+        echo "</div>";
         echo "</li>";
         
     } else {
-        $role = $intrigueActor->getRole();
+        $role = $knownIntrigueActor->getRole();
         echo "<li style='display:table-cell; width:19%;'>";
         echo "<div class='name'>$role->Name</div>";
         $role_group = $role->getGroup();
@@ -114,23 +124,68 @@ function printKnownActor(IntrigueActor $intrigueActor) {
                 echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
             }
         }
-        echo "</li>";
+        echo "<div align='right'>";
+        echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor_knownRole&RoleId=$role->Id&IntrigueActorId=$intrigueActor->Id'>";
+        echo "<i class='fa-solid fa-xmark' title='Ta bort från rekvisita'></i></a>";
+        echo "</div>";
     }
 }
 
-function printAllKnownActors($intrigue_actors, $intrigueActor) {
-    foreach($intrigue_actors as $intrigue_actor) {
-        printKnownActor($intrigue_actor);
+function printAllKnownActors($known_actors, $intrigue_actor) {
+    global $cols;
+    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+    $temp=0;
+    foreach($known_actors as $known_actor) {
+        $ka = $known_actor->getKnownIntrigueActor();
+        printKnownActor($ka, $intrigue_actor);
+        $temp++;
+        if($temp==$cols)
+        {
+            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+            $temp=0;
+        }
     }
+    echo "</ul>";
 }
 
 
-function printAllKnownNPCs($intrigue_npcs, $intrigueActor) {
-    foreach($intrigue_npcs as $intrigue_npc) {
-        $npc=$intrigue_npc->getNPC();
-        //TODO gör snyggare
-        echo "$npc->Name<br>";
+function printAllKnownNPCs($known_npcs, $intrigueActor) {
+    global $cols;
+    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+    $temp=0;
+    foreach($known_npcs as $known_npc) {
+        $npc=$known_npc->getIntrigueNPC()->getNPC();
+        echo "<li style='display:table-cell; width:19%;'>\n";
+        echo "<div class='name'>$npc->Name</div>\n";
+        $npc_group = $npc->getNPCGroup();
+        if (!empty($npc_group)) {
+            echo "<div>$npc_group->Name</div>";
+        }
+        if ($npc->IsAssigned()) {
+            $person = $npc->getPerson();
+            echo "<div>Spelas av $person->Name</div>";
+        } else {
+            echo "Spelas inte";
+        }
+        
+        
+        if ($npc->hasImage()) {
+            $image = Image::loadById($npc->ImageId);
+            echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+        }
+        echo "<div align='right'>";
+        echo "<a href='logic/view_intrigue_logic.php?operation=remove_npc_intrigueactor&NPCId=$npc->Id&IntrigueActorId=$intrigueActor->Id'>";
+        echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
+        echo "</div>";
+        echo "</li>\n";
+        $temp++;
+        if($temp==$cols)
+        {
+            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+            $temp=0;
+        }
     }
+    echo "</ul>";
 }
 
 
