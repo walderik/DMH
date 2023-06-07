@@ -26,8 +26,8 @@ include 'navigation.php';
 				<td><textarea id="IntrigueText" name="IntrigueText" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->IntrigueText); ?></textarea></td>
 			</tr>
 			<tr>
-				<td><label for="Offinfo">Off-info</label></td>
-				<td><textarea id="Offinfo" name="Offinfo" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->OffInfo); ?></textarea></td>
+				<td><label for="OffInfo">Off-info</label></td>
+				<td><textarea id="OffInfo" name="OffInfo" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->OffInfo); ?></textarea></td>
 			</tr>
 		</table>
 

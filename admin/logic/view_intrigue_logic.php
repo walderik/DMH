@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         $intrigue->setValuesByArray($_POST);
         $intrigue->deleteAllIntrigueTypes();
-        $intrigue->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+        if (isset($_POST['IntrigueTypeId'])) $intrigue->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         $intrigue->update();
     } elseif ($operation == "add_intrigue_actor_role") {
         $intrigue=Intrigue::loadById($_POST['Id']);
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
         $intrigueActor->IntrigueText = $_POST['IntrigueText'];
-        $intrigueActor->Offinfo = $_POST['Offinfo'];
+        $intrigueActor->OffInfo = $_POST['OffInfo'];
         $intrigueActor->update();
     } elseif ($operation == "choose_intrigue_checkin") {
         $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);

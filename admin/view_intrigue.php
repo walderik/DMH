@@ -103,8 +103,8 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor) {
         echo "<div>Grupp</div>";
         echo "</div>";
         echo "<div align='right'>";
-        echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor_knownGroup&GroupId=$group->Id&IntrigueActorId=$intrigueActor->Id'";
-        echo "<i class='fa-solid fa-xmark' title='Ta bort grupp'></i></a>";
+        echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor_knownGroup&GroupId=$group->Id&IntrigueActorId=$intrigueActor->Id'>";
+        echo "<i class='fa-solid fa-xmark' title='Ta bort från rekvisita'></i></a>";
         echo "</div>";
         echo "</li>";
         

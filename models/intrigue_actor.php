@@ -24,7 +24,7 @@ class IntrigueActor extends BaseModel{
         if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
         if (isset($arr['IntrigueText'])) $this->IntrigueText = $arr['IntrigueText'];
         if (isset($arr['OffInfo'])) $this->OffInfo = $arr['OffInfo'];
-    }
+     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
@@ -99,6 +99,28 @@ class IntrigueActor extends BaseModel{
     
     public static function delete($id)
     {
+        $intrigueActor = static::loadById($id);
+        $checkin_letters = $intrigueActor->getAllCheckinLetters();
+        foreach ($checkin_letters as $checkin_letter) IntrigueActor_CheckinLetter::delete($checkin_letter->Id);
+
+        $checkin_telegrams = $intrigueActor->getAllCheckinTelegrams();
+        foreach ($checkin_telegrams as $checkin_telegram) IntrigueActor_CheckinTelegram::delete($checkin_telegram->Id);
+
+        $checkin_props = $intrigueActor->getAllCheckinProps();
+        foreach ($checkin_props as $checkin_prop) IntrigueActor_CheckinProp::delete($checkin_prop->Id);
+        
+        $known_actors = $intrigueActor->getAllKnownActors();
+        foreach ($known_actors as $known_actor) IntrigueActor_KnownActor::delete($known_actor->Id);
+        
+        $known_npcs = $intrigueActor->getAllKnownNPCs();
+        foreach ($known_npcs as $known_npc) IntrigueActor_KnownNPC::delete($known_npc->Id);
+        
+        $known_props = $intrigueActor->getAllKnownProps();
+        foreach ($known_props as $known_prop) IntrigueActor_KnownProp::delete($known_prop->Id);
+        
+        //Ta bort så att ingen känner till den här aktören
+        
+        
         //TODO ta bort alla länkar
         parent::delete($id);
      }
@@ -275,7 +297,7 @@ class IntrigueActor extends BaseModel{
          IntrigueActor_KnownNPC::delete($known_npc->Id);
      }
      
-     public function removeKnowGroup($groupId) {
+     public function removeKnownGroup($groupId) {
          $known_actor=IntrigueActor_KnownActor::loadByIds($groupId, $this->Id, false);
          IntrigueActor_KnownActor::delete($known_actor->Id);
      }
