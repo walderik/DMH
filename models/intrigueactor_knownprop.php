@@ -57,7 +57,7 @@ class IntrigueActor_KnownProp extends BaseModel{
     }
     
     public function getIntrigueProp() {
-        return Intrigue_Letter::loadById($this->IntriguePropId);
+        return Intrigue_Prop::loadById($this->IntriguePropId);
     }
     
     public static function getAllKnowninPropsForIntrigueActor(IntrigueActor $intrigueActor) {

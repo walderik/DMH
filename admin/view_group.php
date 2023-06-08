@@ -118,7 +118,12 @@ include 'navigation.php';
 		?>
 		<h2>Intrig <a href='edit_group_intrigue.php?id=<?php echo $current_group->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
+		<?php echo $larp_group->Intrigue; ?>
 		<?php 
+
+		$known_actors = array();
+		$known_npcs = array();
+		$known_props = array();
 		$intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id);
 		if (!empty($intrigues)) {
 		    echo "<table class='data'>";
@@ -129,12 +134,94 @@ include 'navigation.php';
 	           $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $current_group);
 	           echo "<td>$intrigueActor->IntrigueText</td>";
 	           echo "</tr>";
-	       }
+	           $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
+	           $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
+	           $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+	        }
 	       echo "</table>";
 	       echo "<br>";
 		}
-	    ?>
-		<?php echo $larp_group->Intrigue; ?>
+		
+		echo "<h3>Känner till</h3>";
+		echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		$temp=0;
+		$cols=5;
+		foreach ($known_actors as $known_actor) {
+		    $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
+		    
+		    if (!empty($knownIntrigueActor->GroupId)) {
+		        $group=$knownIntrigueActor->getGroup();
+		        echo "<li style='display:table-cell; width:19%;'>";
+		        echo "<div class='name'>$group->Name</div>";
+		        echo "<div>Grupp</div>";
+		        echo "</li>";
+		        
+		    } else {
+		        $role = $knownIntrigueActor->getRole();
+		        echo "<li style='display:table-cell; width:19%;'>";
+		        echo "<div class='name'>$role->Name</div>";
+		        $role_group = $role->getGroup();
+		        if (!empty($role_group)) {
+		            echo "<div>$role_group->Name</div>";
+		        }
+		        
+		        if ($role->hasImage()) {
+		            $image = Image::loadById($role->ImageId);
+		            if (!is_null($image)) {
+		                
+		                echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+		            }
+		        }
+		        echo "</li>";
+		        
+		    }
+		    $temp++;
+		    if($temp==$cols)
+		    {
+		        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		        $temp=0;
+		    }
+		}
+		foreach ($known_npcs as $known_npc) {
+		    $npc=$known_npc->getIntrigueNPC()->getNPC();
+		    echo "<li style='display:table-cell; width:19%;'>\n";
+		    echo "<div class='name'>$npc->Name</div>\n";
+		    $npc_group = $npc->getNPCGroup();
+		    if (!empty($npc_group)) {
+		        echo "<div>$npc_group->Name</div>";
+		    }
+		    if ($npc->hasImage()) {
+		        $image = Image::loadById($npc->ImageId);
+		        echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+		    }
+		    echo "</li>\n";
+		    $temp++;
+		    if($temp==$cols)
+		    {
+		        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		        $temp=0;
+		    }
+		}
+		foreach ($known_props as $known_prop) {
+		    $prop = $known_prop->getIntrigueProp()->getProp();
+		    echo "<li style='display:table-cell; width:19%;'>\n";
+		    echo "<div class='name'>$prop->Name</div>\n";
+		    if ($prop->hasImage()) {
+		        $image = Image::loadById($prop->ImageId);
+		        echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+		    }
+		    echo "</li>\n";
+		    $temp++;
+		    if($temp==$cols)
+		    {
+		        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		        $temp=0;
+		    }
+		}
+		echo "</ul>";
+
+        ?>
+		
 		</div>
 		<h2>Anteckningar (visas inte för deltagarna)</h2>
 		<div>
