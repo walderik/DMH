@@ -63,7 +63,10 @@ class Intrigue_Telegram extends BaseModel{
     
     public static function delete($id)
     {
-        //TODO ta bort alla länkar
+        $intrigueTelegram = static::loadById($id);
+        $checkin_telegrams = $intrigueTelegram->getAllCheckinTelegrams();
+        foreach ($checkin_telegrams as $checkin_telegram) IntrigueActor_CheckinTelegram::delete($checkin_telegram->Id);
+        
         parent::delete($id);
     }
     
@@ -71,5 +74,10 @@ class Intrigue_Telegram extends BaseModel{
         $sql = "SELECT * FROM regsys_intrigue_telegram WHERE IntrigueId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
     }
+    
+    public function getAllCheckinTelegrams() {
+        return IntrigueActor_CheckinTelegram::getAllCheckinTelegramsForIntrigueTelegram($this);
+    }
+    
     
 }

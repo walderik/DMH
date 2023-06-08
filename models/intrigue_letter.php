@@ -62,7 +62,10 @@ class Intrigue_Letter extends BaseModel{
     
     public static function delete($id)
     {
-        //TODO ta bort alla länkar
+        $intrigueLetter = static::loadById($id);
+        $checkin_letters = $intrigueLetter->getAllCheckinLetters();
+        foreach ($checkin_letters as $checkin_letter) IntrigueActor_CheckinLetter::delete($checkin_letter->Id);
+        
         parent::delete($id);
     }
     
@@ -71,5 +74,8 @@ class Intrigue_Letter extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
     }
     
+    public function getAllCheckinLetters() {
+        return IntrigueActor_CheckinLetter::getAllCheckinLettersForIntrigueLetter($this);
+    }
     
 }

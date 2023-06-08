@@ -119,9 +119,9 @@ class IntrigueActor extends BaseModel{
         foreach ($known_props as $known_prop) IntrigueActor_KnownProp::delete($known_prop->Id);
         
         //Ta bort så att ingen känner till den här aktören
+        $known_actors = $intrigueActor->getAllWhoKnowsActor();
+        foreach ($known_actors as $known_actor) IntrigueActor_KnownActor::delete($known_actor->Id);
         
-        
-        //TODO ta bort alla länkar
         parent::delete($id);
      }
  
@@ -271,6 +271,10 @@ class IntrigueActor extends BaseModel{
 
      public function getAllKnownActors() {
          return IntrigueActor_KnownActor::getAllKnownIntrigueActorsForIntrigueActor($this);
+     }
+     
+     public function getAllWhoKnowsActor() {
+         return IntrigueActor_KnownActor::getAllWhoKnowsIntrigueActor($this);
      }
      
      public function getAllKnownNPCs() {

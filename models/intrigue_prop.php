@@ -62,13 +62,27 @@ class Intrigue_Prop extends BaseModel{
     
     public static function delete($id)
     {
-        //TODO ta bort alla länkar
+        $intrigueProp = static::loadById($id);
+        $checkin_props = $intrigueProp->getAllCheckinProps();
+        foreach ($checkin_props as $checkin_prop) IntrigueActor_CheckinProp::delete($checkin_prop->Id);
+        
+        $known_props = $intrigueProp->getAllKnownProps();
+        foreach ($known_props as $known_prop) IntrigueActor_KnownProp::delete($known_prop->Id);
+
         parent::delete($id);
     }
     
     public static function getAllPropsForIntrigue(Intrigue $intrigue) {
         $sql = "SELECT * FROM regsys_intrigue_prop WHERE IntrigueId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
+    }
+    
+    public function getAllCheckinProps() {
+        return IntrigueActor_CheckinProp::getAllCheckinPropsForIntrigueProp($this);
+    }
+    
+    public function getAllKnownProps() {
+        return IntrigueActor_KnownProp::getAllKnownPropsForIntrigueProp($this);
     }
     
     

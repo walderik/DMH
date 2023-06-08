@@ -65,6 +65,11 @@ class IntrigueActor_KnownActor extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
     }
     
+    public static function getAllWhoKnowsIntrigueActor(IntrigueActor $intrigueActor) {
+        $sql = "SELECT * FROM regsys_intrigueactor_knownactor WHERE KnownIntrigueActorId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
+    }
+    
     public static function loadByIds($actorId, $intrigueActorId, $isRoleActor) {
         if ($isRoleActor) {
         $sql = "SELECT regsys_intrigueactor_knownactor.* FROM regsys_intrigueactor_knownactor, regsys_intrigueactor as ka, regsys_intrigueactor WHERE ".
