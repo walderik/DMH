@@ -93,7 +93,7 @@ include 'navigation.php';
 			<tr>
 
 				<td><label for="Notes">Anteckningar</label></td>
-			<td><textarea id="Notes" name="Notes" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigue->Notes); ?></textarea></td></tr>
+			<td><textarea id="Notes" name="Notes" rows="15" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigue->Notes); ?></textarea></td></tr>
 			</tr>
 		</table>
 
