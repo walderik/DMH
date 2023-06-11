@@ -26,9 +26,17 @@ Medlemarna listas i en tabell och det finns länk till att redigera en medlem fr
 
 Visa tydligare om en karaktär är en Myslajvare. Se Kate Reynolds - https://www.berghemsvanner.se/regsys/admin/view_role.php?id=152
 
-När man som SL redigerar en myslajvare är vissa fält krävande som inte är det när man reggar karaktären försa gången.
+BUGG: När man som SL redigerar en myslajvare är vissa fält krävande som inte är det när man reggar karaktären försa gången.
 https://www.berghemsvanner.se/regsys/admin/edit_role.php?id=152
 
+BUGG: När man redigerar en intrig faller intrigtypen bort (eller inte. Nu tycks det funka)
+https://www.berghemsvanner.se/regsys/admin/intrigue_form.php?operation=update&id=1
+BUGG: Anteckningarna på intriger får inte ny rad när man matat in det. (nl2br?)
+Warning: Meddelande på sidorna 
+https://www.berghemsvanner.se/regsys/admin/choose_group.php?operation=add_intrigue_actor_group&Id=1&intrigueTypeFilter=1
+https://www.berghemsvanner.se/regsys/admin/choose_role.php?operation=add_intrigue_actor_role&Id=1&intrigueTypeFilter=1
+Filtret funkar inte för karaktärer:
+https://www.berghemsvanner.se/regsys/admin/choose_role.php?operation=add_intrigue_actor_role&Id=1&intrigueTypeFilter=1
 
 Intrigverktyg
 
