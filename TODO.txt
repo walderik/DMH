@@ -29,7 +29,7 @@ Visa tydligare om en karaktär är en Myslajvare. Se Kate Reynolds - https://www
 BUGG: När man som SL redigerar en myslajvare är vissa fält krävande som inte är det när man reggar karaktären försa gången.
 https://www.berghemsvanner.se/regsys/admin/edit_role.php?id=152
 
-BUGG: När man redigerar en intrig faller intrigtypen bort (eller inte. Nu tycks det funka)
+BUGG: När man redigerar en intrig faller intrigtypen bort (eller inte. Nu tycks det funka) tROLIGTVIS NÄR MAN SKAPAR DEN.
 https://www.berghemsvanner.se/regsys/admin/intrigue_form.php?operation=update&id=1
 BUGG: Anteckningarna på intriger får inte ny rad när man matat in det. (nl2br?)
 Warning: Meddelande på sidorna 
