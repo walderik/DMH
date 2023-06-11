@@ -2,9 +2,9 @@ Bygghelgs-anmälningar
 
 Visa roller snyggare på deltagarnas översikt
 
-Props: Visa på karaktärsblad
-
-Gruppintrig och grupp-props på karaktärsblad
+Karaktärsblad:
+* Visa Props
+* Visa Gruppintrig och grupp-props
 
 
 Lagfarter tilldela ägare (grupp)
@@ -24,6 +24,11 @@ Ta bort sidokaraktär
 Medlemarna listas i en tabell och det finns länk till att redigera en medlem från listan 
   (snabbt sätt hitta karaktärer man vill skriva till något om)
 
+Visa tydligare om en karaktär är en Myslajvare. Se Kate Reynolds - https://www.berghemsvanner.se/regsys/admin/view_role.php?id=152
+
+När man som SL redigerar en myslajvare är vissa fält krävande som inte är det när man reggar karaktären försa gången.
+https://www.berghemsvanner.se/regsys/admin/edit_role.php?id=152
+
 
 Intrigverktyg
 
@@ -41,4 +46,3 @@ Behöver man kunna byta spelare på en roll?
 
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role
-Det går att skriva variabler direkt i en sträng om man använder dubbelfnuttar (") - "Hej $name!";
