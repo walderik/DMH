@@ -394,8 +394,8 @@ foreach ($intrigue_telegrams as $intrigue_telegram) {
 ?>
 </td></tr>
 <tr><td>Länkade intriger</td><td>
-<a href="choose_intrigue.php?operation=add_intrigue_link&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till länk till annan intrig"></i></a>
-
+<!--  <a href="choose_intrigue.php?operation=add_intrigue_link&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till länk till annan intrig"></i></a>
+ -->
 </td></tr>
 
 </table>
