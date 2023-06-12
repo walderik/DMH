@@ -118,7 +118,9 @@ include_once '../javascript/table_sort.js';
     		          "<th onclick='sortTable(1, \"$tableId\");'>Namn</th>".
     		          "<th onclick='sortTable(2, \"$tableId\");'>Yrke</th>".
     		          "<th onclick='sortTable(3, \"$tableId\");'>Intrigtyper</th>".
-    		          "<th onclick='sortTable(4, \"$tableId\");'>Grupp</th></tr>";
+    		          "<th onclick='sortTable(4, \"$tableId\");'>Grupp</th>".
+    		          "<th onclick='sortTable(5, \"$tableId\");'>Spelas av</th>".
+    		          "</tr>";
  
     		    foreach ($mainroles as $role)  {
     		        $show = true;
@@ -140,7 +142,8 @@ include_once '../javascript/table_sort.js';
     		        } else {
     		            echo "<td>$group->Name</td>\n";
     		        }
-
+                    $person = $role->getPerson();
+                    echo "<td>$person->Name</td>";
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";
@@ -158,7 +161,9 @@ include_once '../javascript/table_sort.js';
     		          "<th onclick='sortTable(1, \"$tableId\");'>Namn</th>".
     		          "<th onclick='sortTable(2, \"$tableId\");'>Yrke</th>".
     		          "<th onclick='sortTable(3, \"$tableId\");'>Intrigtyper</th>".
-    		          "<th onclick='sortTable(4, \"$tableId\");'>Grupp</th></tr>";
+    		          "<th onclick='sortTable(4, \"$tableId\");'>Grupp</th>".
+    		          "<th onclick='sortTable(5, \"$tableId\");'>Spelas av</th>".
+    		          "</tr>";
     		    
     		foreach ($nonmainroles as $role)  {
     		    $show = true;
@@ -180,6 +185,8 @@ include_once '../javascript/table_sort.js';
     		    } else {
     		        echo "<td>$group->Name</td>\n";
     		    }
+    		    $person = $role->getPerson();
+    		    echo "<td>$person->Name</td>";
     		    
     		    echo "</tr>\n";
     		}
