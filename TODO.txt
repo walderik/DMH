@@ -26,7 +26,6 @@ Länkade intriger
 Medlemarna listas i en tabell och det finns länk till att redigera en medlem från listan 
   (snabbt sätt hitta karaktärer man vill skriva till något om)
 
-när man skall "Lägg till aktör i intrig" i intrigesystemet, då skulle jag på listan av deltgagare villja ha off-namn efter in-namn
 lägg till funktionen att ha gruppbild på sin grupp
 
 Intrigverktyg
