@@ -6,6 +6,7 @@ require_once 'PHPMailer/src/SMTP.php';
 
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require_once $root . '/pdf/character_sheet_pdf.php';
+require_once $root . '/pdf/group_sheet_pdf.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -270,7 +271,21 @@ class BerghemMailer {
             $pdf->AddFont('Helvetica','');
             $pdf->SetSubject(utf8_decode($role->Name));
             $pdf->new_character_sheet($role, $larp);
-            $sheets[$role->Name] = $pdf->Output('S');
+            $sheets[utf8_decode($role->Name)] = $pdf->Output('S');
+            
+            $group = $role->getGroup();
+            if (!empty($group)) {
+                $pdf = new Group_PDF();
+                $title = 'Gruppblad '.$group->Name ;
+                $pdf->SetTitle(utf8_decode($title));
+                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetCreator('Omnes Mundos');
+                $pdf->AddFont('Helvetica','');
+                $subject = $group->Name;
+                $pdf->SetSubject(utf8_decode($subject));
+                $pdf->new_group_sheet($group, $larp);
+                $sheets[utf8_decode($group->Name)] = $pdf->Output('S');
+            }
         }
         
         static::send($mail, $person->Name, $text, "Godkända karaktärer till ".$larp->Name, $sheets);
@@ -301,7 +316,21 @@ class BerghemMailer {
             $pdf->AddFont('Helvetica','');
             $pdf->SetSubject(utf8_decode($role->Name));
             $pdf->new_character_sheet($role, $larp);
-            $sheets[$role->Name] = $pdf->Output('S');
+            $sheets[utf8_decode($role->Name)] = $pdf->Output('S');
+            
+            $group = $role->getGroup();
+            if (!empty($group)) {
+                $pdf = new Group_PDF();
+                $title = 'Gruppblad '.$group->Name ;
+                $pdf->SetTitle(utf8_decode($title));
+                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetCreator('Omnes Mundos');
+                $pdf->AddFont('Helvetica','');
+                $subject = $group->Name;
+                $pdf->SetSubject(utf8_decode($subject));
+                $pdf->new_group_sheet($group, $larp);
+                $sheets[utf8_decode($group->Name)] = $pdf->Output('S');
+            }
         }
         
         static::send($mail, $person->Name, $text, "Plats på ".$larp->Name, $sheets);        
