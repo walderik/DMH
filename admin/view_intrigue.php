@@ -213,7 +213,7 @@ th, td {
 <tr><td>Aktuell</td><td><?php echo ja_nej($intrigue->Active); ?></td></tr>
 <tr><td>Huvudintrig</td><td><?php echo ja_nej($intrigue->MainIntrigue); ?></td></tr>
 <tr><td>Intrigtyp</td><td><?php echo commaStringFromArrayObject($intrigue->getIntriguetypes())?></td></tr>
-<tr><td>Anteckningar</td><td><?php  echo $intrigue->Notes ?></td></tr>
+<tr><td>Anteckningar</td><td><?php  echo nl2br($intrigue->Notes); ?></td></tr>
 <tr><td>Aktörer<br>(Grupper och karaktärer som är inblandade i intrigen)</td>
 <td>
 

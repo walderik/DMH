@@ -1,7 +1,7 @@
 <?php
 include_once '../header.php';
 
-//print_r($_GET);
+//print_r($_POST);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -10,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $intrigue = Intrigue::newFromArray($_POST);
         $intrigue->create();
+        if (isset($_POST['IntrigueTypeId'])) $intrigue->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
     } elseif ($operation == 'update') {
         $intrigue=Intrigue::loadById($_POST['Id']);
         $intrigue->setValuesByArray($_POST);
