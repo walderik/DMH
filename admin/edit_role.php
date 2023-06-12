@@ -78,7 +78,7 @@ include 'navigation.php';
 			</td></tr>
 
 			<tr><td valign="top" class="header">Typ av lajvare&nbsp;<font style="color:red">*</font></td>
-			<td><?php LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId); ?></td></tr>
+			<td><?php LarperType::selectionDropdown($current_larp, false, false, $role->LarperTypeId); ?></td></tr>
 			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td>
 			<td><input type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="250"></td></tr>
 
@@ -89,16 +89,16 @@ include 'navigation.php';
 			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo htmlspecialchars($role->PreviousLarps); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Varför befinner sig<br>karaktären i Slow River?&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea></td></tr>
+			<td><textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Religion</td>
 			<td><input type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="250"></td></tr>
 
 			<tr><td valign="top" class="header">Mörk hemlighet&nbsp;<font style="color:red">*</font></td>
-			<td><textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($role->DarkSecret); ?> </textarea></td></tr>
+			<td><textarea id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->DarkSecret); ?> </textarea></td></tr>
 
 			<tr><td valign="top" class="header">Mörk hemlighet - intrig idéer&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo htmlspecialchars($role->DarkSecretIntrigueIdeas); ?>"  size="100" maxlength="250" required></td></tr>
+			<td><input type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo htmlspecialchars($role->DarkSecretIntrigueIdeas); ?>"  size="100" maxlength="250"></td></tr>
 
 			<tr><td valign="top" class="header">Intrigtyper</td>
 			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
@@ -116,14 +116,14 @@ include 'navigation.php';
 			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->OtherInformation); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Rikedom&nbsp;<font style="color:red">*</font></td>
-			<td><?php Wealth::selectionDropdown($current_larp, false,true, $role->WealthId); ?></td></tr>
+			<td><?php Wealth::selectionDropdown($current_larp, false,false, $role->WealthId); ?></td></tr>
 
 			<tr><td valign="top" class="header">Var är karaktären född?&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="Birthplace" name="Birthplace" value="<?php echo htmlspecialchars($role->Birthplace); ?>"  size="100" maxlength="250" required></td></tr>
+			<td><input type="text" id="Birthplace" name="Birthplace" value="<?php echo htmlspecialchars($role->Birthplace); ?>"  size="100" maxlength="250"></td></tr>
 
 			<tr><td valign="top" class="header">Var bor karaktären?&nbsp;<font style="color:red">*</font></td>
 			<td><?php
-			PlaceOfResidence::selectionDropdown($current_larp, false, true, $role->PlaceOfResidenceId);
+			PlaceOfResidence::selectionDropdown($current_larp, false, false, $role->PlaceOfResidenceId);
             ?></td></tr>
             
            
