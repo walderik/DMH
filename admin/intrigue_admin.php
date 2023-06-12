@@ -31,7 +31,7 @@ include 'navigation.php';
        $intrigue_array = Intrigue::allByLARP($current_larp);
        if (!empty($intrigue_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th></th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
                 echo "<tr>\n";
                 echo "<td>" . $intrigue->Number . "</td>\n";
@@ -42,7 +42,7 @@ include 'navigation.php';
 
                 
                 echo "<td>" . "<a href='view_intrigue.php?Id=" . $intrigue->Id . "'><i class='fa-solid fa-eye'></i></td>\n";
-                echo "<td>" . "<a href='intrigue_admin.php?operation=delete&id=" . $intrigue->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                //echo "<td>" . "<a href='intrigue_admin.php?operation=delete&id=" . $intrigue->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";

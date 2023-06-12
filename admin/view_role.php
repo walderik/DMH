@@ -138,13 +138,24 @@ include 'navigation.php';
 		    echo "<tr><th>Intrig</th><th>Intrigtext</th></tr>";
 	        foreach ($intrigues as $intrigue) {
 	           echo "<tr>";
-	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a></td>";
+	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a>";
+	           if ($intrigue->Active == 0) echo " (inte aktuell)";
+	           echo "</td>";
 	           $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
-	           echo "<td>$intrigueActor->IntrigueText</td>";
-	           echo "</tr>";
-	           $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors()); 
-	           $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
-	           $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+	           echo "<td>";
+	           if ($intrigue->Active == 0) {
+	               echo "<s>$intrigueActor->IntrigueText</s>";
+	               echo "</td>";
+	               echo "</tr>";
+	           }
+	           else {
+	               echo "$intrigueActor->IntrigueText";	           
+    	           echo "</td>";
+    	           echo "</tr>";
+    	           $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors()); 
+    	           $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
+    	           $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+	           }
 	        }
 	       echo "</table>";
 	       echo "<h3>Känner till</h3>";
