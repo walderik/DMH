@@ -38,7 +38,8 @@ include 'navigation.php';
 		<?php if ($role->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
 		
 		<a href='edit_role.php?id=<?php echo $role->Id;?>'>
-		<i class='fa-solid fa-pen'></i></a></h1>
+		<i class='fa-solid fa-pen'></i></a>
+		</h1>
 				<?php 
 		if ($person->isApprovedCharacters($current_larp)) {
 		  echo "<strong>Godkänd</strong>";
@@ -61,6 +62,11 @@ include 'navigation.php';
             <form action="logic/toggle_user_may_edit_role.php" method="post"><input type="hidden" id="roleId" name="roleId" value="<?php echo $role->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
 		<div>
 		<table>
+				<?php 
+				if ($role->isMysLajvare()) {
+				    echo "<tr><td></td><td><strong>Myslajvare</strong></td></tr>";
+				}?>
+		
 			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $person->Name; ?></a></td>
 		<?php 
 		if ($role->hasImage()) {
@@ -132,13 +138,24 @@ include 'navigation.php';
 		    echo "<tr><th>Intrig</th><th>Intrigtext</th></tr>";
 	        foreach ($intrigues as $intrigue) {
 	           echo "<tr>";
-	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a></td>";
+	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a>";
+	           if ($intrigue->Active == 0) echo " (inte aktuell)";
+	           echo "</td>";
 	           $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
-	           echo "<td>$intrigueActor->IntrigueText</td>";
-	           echo "</tr>";
-	           $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors()); 
-	           $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
-	           $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+	           echo "<td>";
+	           if ($intrigue->Active == 0) {
+	               echo "<s>$intrigueActor->IntrigueText</s>";
+	               echo "</td>";
+	               echo "</tr>";
+	           }
+	           else {
+	               echo "$intrigueActor->IntrigueText";	           
+    	           echo "</td>";
+    	           echo "</tr>";
+    	           $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors()); 
+    	           $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
+    	           $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+	           }
 	        }
 	       echo "</table>";
 	       echo "<h3>Känner till</h3>";

@@ -66,7 +66,7 @@ include 'navigation.php';
 				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($intrigue->Name); ?>" size="50" maxlength="250" required></td>
 			</tr>
 			<tr>
-				<td><label for="Active">Aktuell</label></td>
+				<td><label for="Active">Aktuell</label><br>(Kommer att visas för deltagarna när intrigerna släpps. Intriger går inte att radera, bara att sättas till inte aktuell.)</td>
 				<td>
 					<input type="radio" id="Active_yes" name="Active" value="1" <?php if ($intrigue->Active == 1) echo 'checked="checked"'?>> 
         			<label for="Active_yes">Ja</label><br> 

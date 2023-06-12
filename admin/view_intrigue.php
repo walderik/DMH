@@ -213,7 +213,7 @@ th, td {
 <tr><td>Aktuell</td><td><?php echo ja_nej($intrigue->Active); ?></td></tr>
 <tr><td>Huvudintrig</td><td><?php echo ja_nej($intrigue->MainIntrigue); ?></td></tr>
 <tr><td>Intrigtyp</td><td><?php echo commaStringFromArrayObject($intrigue->getIntriguetypes())?></td></tr>
-<tr><td>Anteckningar</td><td><?php  echo $intrigue->Notes ?></td></tr>
+<tr><td>Anteckningar</td><td><?php  echo nl2br($intrigue->Notes); ?></td></tr>
 <tr><td>Aktörer<br>(Grupper och karaktärer som är inblandade i intrigen)</td>
 <td>
 
@@ -394,8 +394,8 @@ foreach ($intrigue_telegrams as $intrigue_telegram) {
 ?>
 </td></tr>
 <tr><td>Länkade intriger</td><td>
-<a href="choose_intrigue.php?operation=add_intrigue_link&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till länk till annan intrig"></i></a>
-
+<!--  <a href="choose_intrigue.php?operation=add_intrigue_link&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till länk till annan intrig"></i></a>
+ -->
 </td></tr>
 
 </table>
