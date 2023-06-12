@@ -24,15 +24,6 @@ Ta bort sidokaraktär
 Medlemarna listas i en tabell och det finns länk till att redigera en medlem från listan 
   (snabbt sätt hitta karaktärer man vill skriva till något om)
 
-Visa tydligare om en karaktär är en Myslajvare. Se Kate Reynolds - https://www.berghemsvanner.se/regsys/admin/view_role.php?id=152
-
-BUGG: Anteckningarna på intriger får inte ny rad när man matat in det. (nl2br?)
-Warning: Meddelande på sidorna 
-https://www.berghemsvanner.se/regsys/admin/choose_group.php?operation=add_intrigue_actor_group&Id=1&intrigueTypeFilter=1
-https://www.berghemsvanner.se/regsys/admin/choose_role.php?operation=add_intrigue_actor_role&Id=1&intrigueTypeFilter=1
-Filtret funkar inte för karaktärer:
-https://www.berghemsvanner.se/regsys/admin/choose_role.php?operation=add_intrigue_actor_role&Id=1&intrigueTypeFilter=1
-
 när man skall "Lägg till aktör i intrig" i intrigesystemet, då skulle jag på listan av deltgagare villja ha off-namn efter in-namn
 lägg till funktionen att ha gruppbild på sin grupp
 
