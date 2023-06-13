@@ -16,6 +16,7 @@ class Group extends BaseModel{
     public $CampaignId;
     public $IsDead = 0;
     public $OrganizerNotes;
+    public $ImageId;
     
 //     public static $tableName = 'group';
     public static $orderListBy = 'Name';
@@ -41,7 +42,9 @@ class Group extends BaseModel{
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['IsDead'])) $this->IsDead = $arr['IsDead'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
+        if (isset($arr['ImageId'])) $this->ImaageId = $arr['ImageId'];
         
+        if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         
     }
     
@@ -59,11 +62,11 @@ class Group extends BaseModel{
        
         $stmt = $this->connect()->prepare("UPDATE regsys_group SET Name=?, Friends=?, Enemies=?,
                                                                   Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?,
-                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=?, IsDead=?, OrganizerNotes=? WHERE Id = ?");
+                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
             $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, 
-            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->Id))) {
+            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -79,12 +82,12 @@ class Group extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_group (Name,  
                          Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
-                         WealthId, PlaceOfResidenceId, PersonId, CampaignId, IsDead, OrganizerNotes) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?);");
+                         WealthId, PlaceOfResidenceId, PersonId, CampaignId, IsDead, OrganizerNotes, ImageId) 
+                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
-            $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId, $this->IsDead, $this->OrganizerNotes))) {
+            $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -100,6 +103,12 @@ class Group extends BaseModel{
         return Wealth::loadById($this->WealthId);
      }
     
+     public function hasImage() {
+         if (isset($this->ImageId)) return true;
+         return false;
+     }
+     
+     
      public function is_trading(LARP $larp) {
          $campaign = $larp->getCampaign();
          if (!$campaign->is_dmh()) return false;

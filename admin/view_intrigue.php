@@ -234,6 +234,13 @@ th, td {
 	            echo "<div><a href='view_intrigue.php?Id=$actor_intrigue->Id'>Intrig: $actor_intrigue->Number. $actor_intrigue->Name</a></div>";
 	        }
 	    }
+	    if ($group->hasImage()) {
+	        $image = Image::loadById($group->ImageId);
+	        if (!is_null($image)) {
+	            
+	            echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+	        }
+	    }
 	    echo "<div align='right'>";
 	    echo "<a href='choose_group.php?operation=exhange_intrigue_actor_group&Id=$groupActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut grupp som får intrigen'></i></a> ";
 	    echo "<a ";
