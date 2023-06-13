@@ -10,7 +10,7 @@ class Statistics  extends Dbh{
     public static function oldest(Larp $larp) {
         $sql = "SELECT socialsecuritynumber FROM regsys_person, regsys_registration WHERE ".
         "regsys_person.Id = regsys_registration.PersonId AND ".
-        "LarpId=? ORDER BY socialsecuritynumber ASC";
+        "LarpId=? AND NotComing=0 ORDER BY socialsecuritynumber ASC";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
@@ -34,7 +34,7 @@ class Statistics  extends Dbh{
     public static function youngest(Larp $larp) {
         $sql = "SELECT socialsecuritynumber FROM regsys_person, regsys_registration WHERE ".
             "regsys_person.Id = regsys_registration.PersonId AND ".
-            "LarpId=? ORDER BY socialsecuritynumber DESC";
+            "LarpId=? AND NotComing=0 ORDER BY socialsecuritynumber DESC";
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute(array($larp->Id))) {
@@ -58,17 +58,27 @@ class Statistics  extends Dbh{
     }
     
     public static function countHasPayed(LARP $larp) {
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND AmountToPay <= AmountPayed;";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND NotComing=0 AND AmountToPay <= AmountPayed;";
         return static::countQuery($sql, array($larp->Id));
     }
     
     public static function countHasSpot(LARP $larp) {
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND SpotAtLARP=1;";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND NotComing=0 AND SpotAtLARP=1;";
+        return static::countQuery($sql, array($larp->Id));
+    }
+    
+    public static function countParticipantHasSpot(LARP $larp) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND IsOfficial=0 AND NotComing=0 AND SpotAtLARP=1;";
+        return static::countQuery($sql, array($larp->Id));
+    }
+    
+    public static function countOfficialHasSpot(LARP $larp) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND IsOfficial=1 AND NotComing=0 AND SpotAtLARP=1;";
         return static::countQuery($sql, array($larp->Id));
     }
     
     public static function countIsMember(LARP $larp) {
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND IsMember=1;";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LarpId =? AND NotComing=0 AND IsMember=1;";
         return static::countQuery($sql, array($larp->Id));
     }
     

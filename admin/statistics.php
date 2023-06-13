@@ -22,15 +22,18 @@ include 'navigation.php';
 
 <div class="content">
 	<h1>Statistik</h1>
-	<h2>Deltagare</h2>
-		Just nu är det <?php echo count(Registration::allBySelectedLARP($current_larp)); ?> anmälda deltagare.<br> 
-		Max antal deltagare är <?php echo $current_larp->MaxParticipants ?>.<br>
+	<h2>Personer på lajvet</h2>
+		Just nu är det <?php echo Registration::countAllNonOfficials($current_larp); ?> anmälda deltagare och <?php echo Registration::countAllOfficials($current_larp); ?> funktionärer.<br> 
+		Max antal deltagare är <?php echo $current_larp->MaxParticipants ?>.<br><br>
+		Nedanstående statisktik räknar både deltagare och funktionärer.<br><br>
 		Den yngsta kommer att vara <?php echo Statistics::youngest($current_larp)?> år.<br>
 		Den äldsta kommer att vara <?php echo Statistics::oldest($current_larp)?> år.<br>
 		<br>
         Antal som har betalat: <?php echo Statistics::countHasPayed($current_larp) ?> st<br>
         Antal som är medlemmar: <?php echo Statistics::countIsMember($current_larp)?> st<br>
         Antal som är helt klara: <?php echo Statistics::countHasSpot($current_larp)?> st <br>
+Det är <?php echo Statistics::countParticipantHasSpot($current_larp)?> helt klara deltagare och <?php echo Statistics::countOfficialHasSpot($current_larp)?> helt klara funktionärer.
+
 
 
 		<h3>Typ av mat</h3>
