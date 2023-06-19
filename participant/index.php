@@ -157,6 +157,14 @@ include "navigation.php";
     		                 
     		            }
     		            echo " Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "<br>\n";
+    		            if ($group->hasImage()) {
+    		                
+    		                $image = Image::loadById($group->ImageId);
+    		                echo "<td><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/> <a href='logic/delete_role_image.php?id=$role->Id'>Ta bort bild</a></td>\n";
+    		            }
+    		            else {
+    		                echo "<td><a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
+    		            }
     		        }
     		       
     		        
@@ -186,7 +194,7 @@ include "navigation.php";
         		                    echo "<td><a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></a> <a href='logic/delete_role_image.php?id=$role->Id'>Ta bort bild</a></td>\n";
         		                }
         		                else {
-        		                    echo "<td><a href='upload_role_image.php?id=$role->Id'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
+        		                    echo "<td><a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
         		                }
         		                $registration = $person->getRegistration($current_larp);
         		                if ($registration->SpotAtLARP==1) {
