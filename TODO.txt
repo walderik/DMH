@@ -41,6 +41,8 @@ Behöver man kunna byta spelare på en roll?
 
 
 
+Hur fixa MySQL:
+§. GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;
 
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role
