@@ -38,7 +38,9 @@ include 'navigation.php';
 ?>
 
 	<div class="content">
-		<h1><?php echo $role->Name;?></h1>
+		<h1><?php echo $role->Name;?>
+		<a href='character_sheet.php?id=<?php echo $role->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för <?php echo $role->Name;?>'></i></a>
+		</h1>
 		<div>
 		<table>
 			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $person->Name; ?></td>

@@ -176,39 +176,47 @@ include "navigation.php";
         		            $role_group = $role->getGroup();
         		            $role_group_name = " (Inte med i någon grupp)";
         		            if (isset($role_group) && $role->isRegistered($current_larp)) {
-        		                $role_group_name = " - <a href='view_group.php?id=$role_group->Id'>$role_group->Name <i class='fa-solid fa-eye' title='Titta på $role_group->Name'></i></a>";
+        		                $role_group_name = "<a href='view_group.php?id=$role_group->Id'>$role_group->Name <i class='fa-solid fa-eye' title='Titta på $role_group->Name'></i></a> ".
+            		                "<a href='group_sheet.php?id=" . $role_group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $role_group->Name'></i></a>\n";
         		            }
         		            elseif (isset($role_group)) {
-        		                $role_group_name = " - $role_group->Name";
+        		                $role_group_name = "$role_group->Name";
         		            }
         		            echo "<tr><td style='font-weight: normal; padding-right: 0px;'>";
 
         		            if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
-        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name <i class='fa-solid fa-eye' title='Titta på rollen'></i></a>";
+        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name <i class='fa-solid fa-eye' title='Titta på rollen'></i></a> ";
         		                if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
         		                
-        		                echo " - $role->Profession $role_group_name</td>";
+        		               
         		                if ($role->hasImage()) {
         		                    
         		                    $image = Image::loadById($role->ImageId);
-        		                    echo "<td><a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></a> <a href='logic/delete_image.php?id=$role->Id&type=role'>Ta bort bild</a></td>\n";
+        		                    echo "<a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></a> <a href='logic/delete_image.php?id=$role->Id&type=role'>Ta bort bild</a> \n";
         		                }
         		                else {
-        		                    echo "<td><a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
+        		                    echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
         		                }
+        		                
         		                $registration = $person->getRegistration($current_larp);
         		                if ($registration->SpotAtLARP==1) {
-        		                    echo "<td><a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a></td>\n";
+        		                    echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
         		                }
+        		                
+        		                echo "</td>\n";
+        		                
+        		                echo "<td>$role_group_name";
+        		                
         		                if ($current_larp->isEnded()) {
-        		                    echo "<td><a href='larp_report_form.php?id=$role->Id'>Vad hände?</a></td>\n";
+        		                    echo "<td><a href='larp_report_form.php?id=$role->Id'>Vad hände?</a>";
         		                }
+        		                echo "</td>\n";
         		            }
         		            else {
         		                echo "<a href='role_form.php?operation=update&id=$role->Id'>$role->Name <i class='fa-solid fa-pen'></i></a>";
         		                if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
         		                
-        		                echo "- $role->Profession $role_group_name";
+        		                echo "$role_group_name";
             		            if($role->isNeverRegistered()) {
             		                echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
             		            }

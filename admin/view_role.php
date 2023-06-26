@@ -38,7 +38,8 @@ include 'navigation.php';
 		<?php if ($role->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
 		
 		<a href='edit_role.php?id=<?php echo $role->Id;?>'>
-		<i class='fa-solid fa-pen'></i></a>
+		<i class='fa-solid fa-pen'></i></a> 
+		<a href='character_sheet.php?id=<?php echo $role->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för <?php echo $role->Name;?>'></i></a>
 		</h1>
 				<?php 
 		if ($person->isApprovedCharacters($current_larp)) {

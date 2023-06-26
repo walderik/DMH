@@ -7,7 +7,8 @@
 
     <div class="content">   
         <h1>Grupper</h1>
-            <a href="create_group.php"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="create_group.php"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>
+            <a href='group_sheet.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Allt om alla grupper som en stor PDF (tar tid att generera)'></i> Allt om alla</a>
 
      		<?php 
     		$groups = Group::getAllRegistered($current_larp);
@@ -29,7 +30,9 @@
     		        
     		        echo "</td>\n";
     		        echo "<td>" . "<a href='view_group.php?id=" . $group->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
-    		        echo "<a href='edit_group.php?id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		        echo "<a href='edit_group.php?id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
+    		        echo "<a href='group_sheet.php?id=" . $group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $group->Name'></i></a>\n";
+    		        echo "</td>\n";
     		        $person = $group->getPerson();
     		        echo "<td>" . $person->Name . " " . contactEmailIcon($person->Name,$person->Email) . "</td>\n";
     		        echo "<td>" . $group->getWealth()->Name . "</td>\n";

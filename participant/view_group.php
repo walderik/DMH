@@ -75,7 +75,9 @@ include 'navigation.php';
 
 
 	<div class="content">
-		<h1><?php echo $current_group->Name;?></h1>
+		<h1><?php echo $current_group->Name;?> 
+		<a href='group_sheet.php?id=<?php echo $current_group->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad'></i></a>
+		</h1>
 		<div>
 		<table>
 			<tr><td valign="top" class="header">Gruppansvarig</td><td><?php echo Person::loadById($current_group->PersonId)->Name;?></td>
