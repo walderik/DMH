@@ -15,7 +15,7 @@ include "navigation.php";
         	      echo '<div class="message">'.$message_message.'</div>';
         	  }
         	  
-            if ($current_larp->isFull()) {
+            if ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
 
                 echo "<div><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b>";
                 echo "</div>";
@@ -160,7 +160,7 @@ include "navigation.php";
     		            if ($group->hasImage()) {
     		                
     		                $image = Image::loadById($group->ImageId);
-    		                echo "<td><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/> <a href='logic/delete_role_image.php?id=$role->Id'>Ta bort bild</a></td>\n";
+    		                echo "<td><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/> <a href='logic/delete_image.php?id=$group->Id&type=group'>Ta bort bild</a></td>\n";
     		            }
     		            else {
     		                echo "<td><a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
@@ -191,7 +191,7 @@ include "navigation.php";
         		                if ($role->hasImage()) {
         		                    
         		                    $image = Image::loadById($role->ImageId);
-        		                    echo "<td><a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></a> <a href='logic/delete_role_image.php?id=$role->Id'>Ta bort bild</a></td>\n";
+        		                    echo "<td><a href='show_role_image.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></a> <a href='logic/delete_image.php?id=$role->Id&type=role'>Ta bort bild</a></td>\n";
         		                }
         		                else {
         		                    echo "<td><a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";

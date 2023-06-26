@@ -42,7 +42,7 @@ class Group extends BaseModel{
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['IsDead'])) $this->IsDead = $arr['IsDead'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
-        if (isset($arr['ImageId'])) $this->ImaageId = $arr['ImageId'];
+        if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         
