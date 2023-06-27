@@ -41,8 +41,10 @@ include "navigation.php";
 			Just nu är det <?php echo Registration::countAllNonOfficials($current_larp); ?> anmälda deltagare och <?php echo Registration::countAllOfficials($current_larp); ?> funktionärer.<br> 
         <?php 
 
-            if ($current_larp->isFull()) {
-                echo "<br>Lajvet är fullt nu.";
+            if ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
+                echo "<br>Lajvet är fullt nu.".
+                "<br>Just nu är det ". Reserve_Registration::count($current_larp) . " st på reservlistan.";
+                
             }
             
             ?>

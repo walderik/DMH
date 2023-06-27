@@ -46,10 +46,16 @@ class Reserve_Registration extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function count(LARP $larp) {
+        if (is_null($larp)) return 0;
+        $sql = "SELECT COUNT(*) as Num FROM regsys_reserve_registration WHERE LARPid = ?";
+        return static::countQuery($sql, array($larp->Id));
+    }
+    
+    
     public static function isInUse(LARP $larp) {
         if (is_null($larp)) return false;
-        $sql = "SELECT COUNT(*) as Num FROM regsys_reserve_registration WHERE LARPid = ?";
-        $count = static::countQuery($sql, array($larp->Id));
+        $count = static::count($larp);
         if ($count == 0) return false;
         return true;
     }
