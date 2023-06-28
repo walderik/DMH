@@ -9,9 +9,6 @@ Karaktärsblad:
 
 Lagfarter tilldela ägare (grupp)
 
-
-choose_role, filtrera på intrigtyper
-
 Mat:
 DÖH, mat valbart. Pris beror på ålder
 KIR, mat ingår för alla deltagare
@@ -20,15 +17,13 @@ Bygghelg, mat anges per måltid, gratis
 
 Ta bort sidokaraktär
 
-
-Länkade intriger
-
 Medlemarna listas i en tabell och det finns länk till att redigera en medlem från listan 
   (snabbt sätt hitta karaktärer man vill skriva till något om)
 
-lägg till funktionen att ha gruppbild på sin grupp
+Ge tillstånd att visa spelarens namn vid karaktärspresentationen
 
-Intrigverktyg
+
+Länkar mellan intriger
 
 Visa på hus vilka som anmält sig som husägare på resp hus.
 
