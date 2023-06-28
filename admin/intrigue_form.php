@@ -88,14 +88,25 @@ include 'navigation.php';
 			<tr>
 
 				<td><label for="Message">Intrigtyper</label></td>
-			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $intrigue->getSelectedIntrigueTypeIds());?></td></tr>
+			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $intrigue->getSelectedIntrigueTypeIds());?></td>
 			</tr>
 			<tr>
 
 				<td><label for="Notes">Anteckningar</label></td>
-			<td><textarea id="Notes" name="Notes" rows="15" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigue->Notes); ?></textarea></td></tr>
+			<td><textarea id="Notes" name="Notes" rows="15" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigue->Notes); ?></textarea></td>
+			</tr>
+			<tr>
+
+				<td><label for="Notes">Ansvarig arrangör</label></td>
+			<td><?php 
+			     $campaign = $current_larp->getCampaign();
+			     $organizers = User::getAllWithAccessToCampaign($campaign);
+			     selectionByArray('ResponsibleUser', $organizers, false, true, $intrigue->ResponsibleUserId) ?></td>
 			</tr>
 		</table>
+
+
+				
 
 		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
 	</form>

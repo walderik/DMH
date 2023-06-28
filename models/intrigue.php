@@ -9,6 +9,7 @@ class Intrigue extends BaseModel{
     public $MainIntrigue = 0;
     public $Notes;
     public $LarpId;
+    public $ResponsibleUserId;
     
     public static $orderListBy = 'Number';
     
@@ -26,6 +27,7 @@ class Intrigue extends BaseModel{
         if (isset($arr['MainIntrigue'])) $this->MainIntrigue = $arr['MainIntrigue'];
         if (isset($arr['Notes'])) $this->Notes = $arr['Notes'];
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
+        if (isset($arr['ResponsibleUserId'])) $this->ResponsibleUserId = $arr['ResponsibleUserId'];
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -39,9 +41,9 @@ class Intrigue extends BaseModel{
     
     # Update an existing intrigue in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Active=?, MainIntrigue=?, Notes=?, LarpId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Active=?, MainIntrigue=?, Notes=?, LarpId=?, ResponsibleUserId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->Notes, $this->LarpId, $this->Id))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->Notes, $this->LarpId, $this->ResponsibleUserId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -56,9 +58,9 @@ class Intrigue extends BaseModel{
         
         $connection = $this->connect();
         
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, Notes, LarpId) VALUES (?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, Notes, LarpId, ResponsibleUserId) VALUES (?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->Notes, $this->LarpId))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->Notes, $this->LarpId, $his->ResponsibleUserId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -77,6 +79,10 @@ class Intrigue extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_intrigue WHERE LarpId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    public function getResponsibleUser() {
+        return User::loadById($this->ResponsibleUserId);
     }
     
     public function getSelectedIntrigueTypeIds() {
