@@ -31,7 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } elseif ($operation == 'add_titledeed_owner_role') {
         $titledeed = Titledeed::loadById($_POST['id']);
-        $titledeed->addOwner($_POST['RoleId']);       
+        if (isset($_POST['RoleId'])) $titledeed->addRoleOwners($_POST['RoleId']);
+      
     }
 }
 
@@ -91,7 +92,7 @@ include 'navigation.php';
                 echo "<form action='choose_role.php' method='post'>";
                 echo "<input type='hidden' id='operation' name='operation' value='add_titledeed_owner_role'>";
                 echo "<input type='hidden' id='id' name='id' value='$titledeed->Id'>";
-                echo "<input id='submit_button' type='submit' value='Lägg till en karaktär som ägare'>";
+                echo "<input id='submit_button' type='submit' value='Lägg karaktär(er) som ägare'>";
                 echo "</form>";
 
                 

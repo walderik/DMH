@@ -2,20 +2,37 @@
 include_once 'header.php';
 
 include 'navigation.php';
+
+include_once '../javascript/show_hide_rows.js';
+
 ?>
 
     <div class="content">
         <h1>Intriger</h1>
             <a href="intrigue_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
-        
+       
        <?php
-
+       echo "<br>";
+       echo "<br>";
+       echo "Intriger filtrerade på ansvarig.<br>";
+       echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
+       echo "<br>";
+       echo "<br>";
+       
        $intrigue_array = Intrigue::allByLARP($current_larp);
        if (!empty($intrigue_array)) {
             echo "<table class='data'>";
+            
+            
             echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th><th></th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
-                echo "<tr>\n";
+                $show = true;
+                if ($current_user->Id != $intrigue->ResponsibleUserId) {
+                    $show = false;
+                }
+                if ($show) echo "<tr>\n";
+                else echo "<tr class='show_hide hidden'>\n";
+                
                 echo "<td>" . $intrigue->Number . "</td>\n";
                 echo "<td>" . $intrigue->Name . "</td>\n";
                 echo "<td>" . ja_nej($intrigue->Active) . "</td>\n";

@@ -91,17 +91,19 @@ class Titledeed extends BaseModel{
         $stmt = null;
     }
     
-    public function addOwner($roleId) {
-
-        $stmt = $this->connect()->prepare("INSERT INTO ".
-            "regsys_titledeed_role (RoleId, TitledeedId) VALUES (?,?);");
-        if (!$stmt->execute(array($roleId, $this->Id))) {
+    public function addRoleOwners($rolesIds) {
+        foreach ($rolesIds as $roleId) {
+            $stmt = $this->connect()->prepare("INSERT INTO ".
+                "regsys_titledeed_role (RoleId, TitledeedId) VALUES (?,?);");
+            if (!$stmt->execute(array($roleId, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
             $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
         }
- 
-        $stmt = null;
+        
         
     }
     

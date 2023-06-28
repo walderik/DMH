@@ -44,7 +44,7 @@ if ($operation == "set_prop_owner_role") {
 elseif ($operation == "add_titledeed_owner_role") {
     $purpose = "Sätt som ägare av lagfart";
     $url = "titledeed_admin.php";
-    //TODO gör den här multplie=true och se till att titledeed_admin.php kan hantera det
+    $multiple=true;
 }
 elseif ($operation == "add_intrigue_actor_role") {
     $purpose = "Lägg till aktör i intrig";
