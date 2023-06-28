@@ -62,14 +62,22 @@ class Intrigue_NPC extends BaseModel{
     
     public static function delete($id)
     {
-        //TODO ta bort alla länkar
+        $intrigueNPC = static::loadById($id);
+        $known_npcs = $intrigueNPC->getAllKnownNPCs();
+        foreach ($known_npcs as $known_npc) IntrigueActor_KnownNPC::delete($known_npc->Id);
+        
         parent::delete($id);
-    }
+     }
     
     public static function getAllNPCsForIntrigue(Intrigue $intrigue) {
         $sql = "SELECT * FROM regsys_intrigue_npc WHERE IntrigueId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
     }
+    
+    public function getAllKnownNPCs() {
+        return IntrigueActor_KnownNPC::getAllKnownNPCsForIntrigueNPC($this);
+    }
+    
     
     
 }

@@ -65,6 +65,12 @@ class IntrigueActor_KnownNPC extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
     }
     
+    public static function getAllKnownNPCsForIntrigueNPC(Intrigue_NPC $intrigue_npc) {
+        $sql = "SELECT * FROM regsys_intrigueactor_knownnpc WHERE IntrigueNPCId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($intrigue_npc->Id));
+    }
+    
+    
     public static function loadByIds($npcId, $intrigueActorId) {
         $sql = "SELECT regsys_intrigueactor_knownnpc.* FROM regsys_intrigueactor_knownnpc, regsys_intrigue_npc, regsys_intrigueactor WHERE ".
             "regsys_intrigueactor.Id = ?  AND ".
