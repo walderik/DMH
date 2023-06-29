@@ -36,6 +36,7 @@ Behöver man kunna byta spelare på en roll? JA
 
 Helt nya funktioner:
 Möjligheten mata in kvitton och spara bilder för bokföring. VIKTIGT
+Handel - mata in resurser per lagfat, skriva ut lagfarter, resurslappar mm
 Att göra-listor per lajv och för Admin
 
 Länk att titta på personen från Funktionärslistan.
