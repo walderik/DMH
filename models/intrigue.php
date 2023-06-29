@@ -60,7 +60,7 @@ class Intrigue extends BaseModel{
         
         $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, Notes, LarpId, ResponsibleUserId) VALUES (?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->Notes, $this->LarpId, $his->ResponsibleUserId))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->Notes, $this->LarpId, $this->ResponsibleUserId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
