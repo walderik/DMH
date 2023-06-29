@@ -100,6 +100,14 @@
         		            $intrigueWords = $role->intrigueWords($current_larp);
         		            
         		            if (!empty($intrigueWords)) echo "<br>$intrigueWords ord";
+        		            $intrigues = Intrigue::getAllIntriguesForRole($role->Id);
+        		            echo "<br>";
+        		            foreach ($intrigues as $intrigue) {
+        		                echo "<a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a>";
+	                            if ($intrigue->Active == 0) echo " (inte aktuell)";
+	                            echo "<br>";
+        		            }
+        		            
         		            echo "</td>\n";
         		            echo "<td><a href='edit_intrigue.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
         		        }
@@ -112,7 +120,7 @@
 
         
                 <h2>Övriga karaktärer</h2>
-                <p>Antal ord på intrig visas inte för nedanstående karaktärer.</p>
+                <p>Antal ord på intrig och vilka intriger de är med i visas inte för nedanstående karaktärer.</p>
      		<?php 
      		$roles = $current_larp->getAllNotMainRoles(true);
     		if (empty($roles)) {
