@@ -34,6 +34,11 @@ byta user för en person (admin funktion)
 
 Behöver man kunna byta spelare på en roll?
 
+Länk att titta på personen från Funktionärslistan.
+
+Intrig-röd-plutten funkar inte med nya intrigsystemet på roll-listan
+https://www.berghemsvanner.se/regsys/admin/roles.php
+
 
 
 Hur fixa MySQL:
