@@ -32,7 +32,9 @@ Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anm
 
 byta user för en person (admin funktion)
 
-Behöver man kunna byta spelare på en roll?
+Behöver man kunna byta spelare på en roll? JA
+
+Att göra-listor per lajv och för Admin
 
 Länk att titta på personen från Funktionärslistan.
 
