@@ -35,7 +35,7 @@ byta user för en person (admin funktion)
 Behöver man kunna byta spelare på en roll? JA
 
 Helt nya funktioner:
-Möjligheten mata in kvitton och spara bilder för bokföring.
+Möjligheten mata in kvitton och spara bilder för bokföring. VIKTIGT
 Att göra-listor per lajv och för Admin
 
 Länk att titta på personen från Funktionärslistan.
