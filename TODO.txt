@@ -43,7 +43,10 @@ Länk att titta på personen från Funktionärslistan.
 Intrig-röd-plutten funkar inte med nya intrigsystemet på roll-listan
 https://www.berghemsvanner.se/regsys/admin/roles.php
 
-
+Reserver ska inte synas på funktionärslistan
+Lägg till Stina på lajvet
+Ta bort antal på reservlistan från deltagare
+Roller: korta ner intriger till bara nummer
 
 Hur fixa MySQL:
 §. GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;
