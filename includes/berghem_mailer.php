@@ -66,13 +66,7 @@ class BerghemMailer {
         $mail->AltBody = utf8_decode($text);
         //Attach an image file
         // $mail->addAttachment('images/phpmailer_mini.png');
-        //send the message, check for errors
-        
-//         foreach ($arr as $key => $value) {
-//             // $arr[3] will be updated with each value from $arr...
-//             echo "{$key} => {$value} ";
-//             print_r($arr);
-//         }
+
         if (!is_null($attachments) && !empty($attachments)) {
             foreach ($attachments as $name => $attachment) {
                 if (is_null($name) || is_numeric($name)) {
@@ -124,6 +118,8 @@ class BerghemMailer {
         
         $mail->Body = utf8_decode($mailContent);
         
+//         $email = Email::normalCreate($to_email, $subject, $text); # Något är skumt
+        
         
         if (!$mail->send()) {
             echo 'Mailer Error: ' . $mail->ErrorInfo;
@@ -143,8 +139,6 @@ class BerghemMailer {
         
         
         static::send($guardian->Email, $guardian->Name, $text, "Ansvarig vuxen för $minor->Name på $larp->Name");
-        
-        
     }
     
     

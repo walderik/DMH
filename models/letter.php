@@ -21,9 +21,9 @@ class Letter extends BaseModel{
     public static $orderListBy = 'WhenWhere';
     
     public static function newFromArray($post) {
-        $telegram = static::newWithDefault();
-        $telegram->setValuesByArray($post);
-        return $telegram;
+        $letter = static::newWithDefault();
+        $letter->setValuesByArray($post);
+        return $letter;
     }
     
     public function setValuesByArray($arr) {
