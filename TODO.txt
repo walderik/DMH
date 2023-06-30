@@ -23,6 +23,8 @@ Medlemarna listas i en tabell och det finns länk till att redigera en medlem fr
 Ge tillstånd att visa spelarens namn vid karaktärspresentationen
 
 Visa intrig för grupper (deltagare)
+Visa kända NPC-grupper för deltagare
+Visa "ska ha vid incheck" på roller och grupper
 Fixa så att ska ha vid incheck syns på roller och grupper både för deltagare och admin
 "Släppa intriger" - Kräver att massmail fungerar
 
