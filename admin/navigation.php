@@ -40,7 +40,7 @@ function myFunction() {
 
 	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
 	  <div class="dropdown">
-	    <button class="dropbtn">Administration 
+	    <button class="dropbtn">Praktiskt 
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
@@ -55,7 +55,7 @@ function myFunction() {
 	    </div>
 	  </div> 
 	  <div class="dropdown">
-	    <button class="dropbtn">Intriger 
+	    <button class="dropbtn">Spel 
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
