@@ -20,6 +20,8 @@ if (!$role->isRegistered($current_larp)) {
     exit;
 }
 
+$isReserve = Reserve_LARP_Role::isReserve($role->Id, $current_larp->Id);
+
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 
 
@@ -50,17 +52,20 @@ include 'navigation.php';
 		}
 		?>
 		
-            <?php if ($larp_role->UserMayEdit  == 1) {
-                echo "Deltagaren får ändra karaktären " . showStatusIcon(false);
-                $editButton = "Ta bort tillåtelsen att ändra";
-            }
-            else {
-                
-                $editButton = "Tillåt deltagaren att ändra karaktären";
-            }
-                  
+            <?php 
+            if (!$isReserve) {
+                if ($larp_role->UserMayEdit  == 1) {
+                    echo "Deltagaren får ändra karaktären " . showStatusIcon(false);
+                    $editButton = "Ta bort tillåtelsen att ändra";
+                }
+                else {
+                    
+                    $editButton = "Tillåt deltagaren att ändra karaktären";
+                }
+            
                 ?>
             <form action="logic/toggle_user_may_edit_role.php" method="post"><input type="hidden" id="roleId" name="roleId" value="<?php echo $role->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
+            <?php }?>
 		<div>
 		<table>
 				<?php 
@@ -83,7 +88,11 @@ include 'navigation.php';
 		<?php if (isset($group)) {?>
 			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a></td></tr>
 		<?php }?>
+		
+		<?php if (!$isReserve) {?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
+		<?php }?>
+
 			<tr><td valign="top" class="header">Yrke</td><td><?php echo $role->Profession;?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br($role->Description);?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för gruppen</td><td><?php echo nl2br($role->DescriptionForGroup);?></td></tr>
@@ -126,6 +135,9 @@ include 'navigation.php';
 		</table>		
 		</div>
 		
+		<?php 
+
+		if (!$isReserve) {?>
 		<h2>Intrig <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php    echo $larp_role->Intrigue; ?>
@@ -237,6 +249,7 @@ include 'navigation.php';
 	       }
 	       echo "</ul>";
 		}
+			}
 	    ?>
 		</div>
 		<h2>Anteckningar (visas inte för deltagaren)</h2>

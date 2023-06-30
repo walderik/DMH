@@ -45,7 +45,8 @@ include 'navigation.php';
     		        foreach ($reserve_roles as $reserve_role) {
     		            $role = Role::loadById($reserve_role->RoleId);
     		            $group = $role->getGroup();
-    		            echo "$role->Name";
+    		            echo "<a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>\n";
+
     		            if ($reserve_role->IsMainRole == 0) {
     		                echo " (Sidokaraktär)";
     		            }
