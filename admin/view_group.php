@@ -144,22 +144,22 @@ include 'navigation.php';
 	        foreach ($intrigues as $intrigue) {
 	           echo "<tr>";
 	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a>";
-	           if ($intrigue->Active == 0) echo " (inte aktuell)";
+	           if (!$intrigue->isActive()) echo " (inte aktuell)";
 	           echo "</td>";
 	           $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $current_group);
 	           echo "<td>";
-	           if ($intrigue->Active == 0) {
-	               echo "<s>$intrigueActor->IntrigueText</s>";
-	               echo "</td>";
-	               echo "</tr>";
-	           }
-	           else {
+	           if ($intrigue->isActive()) {
 	               echo "$intrigueActor->IntrigueText";
 	               echo "</td>";
 	               echo "</tr>";
 	               $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
 	               $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
 	               $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+	           }
+	           else {
+	               echo "<s>$intrigueActor->IntrigueText</s>";
+	               echo "</td>";
+	               echo "</tr>";
 	           }
 	        }
 	        echo "</table>";

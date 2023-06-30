@@ -35,7 +35,7 @@ include_once '../javascript/show_hide_rows.js';
                 
                 echo "<td>" . $intrigue->Number . "</td>\n";
                 echo "<td>" . $intrigue->Name . "</td>\n";
-                echo "<td>" . ja_nej($intrigue->Active) . "</td>\n";
+                echo "<td>" . ja_nej($intrigue->isActive()) . "</td>\n";
                 echo "<td>" . ja_nej($intrigue->MainIntrigue) . "</td>\n";
                 echo "<td>" . commaStringFromArrayObject($intrigue->getIntriguetypes()) . "</td>\n";
                 $responsibleUser = $intrigue->getResponsibleUser();

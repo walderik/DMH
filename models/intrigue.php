@@ -114,6 +114,11 @@ class Intrigue extends BaseModel{
     }
     
     
+    public function isActive() {
+        if ($this->Active == 0) return false;
+        return true;
+    }
+    
     public function saveAllIntrigueTypes($idArr) {
         if (!isset($idArr)) {
             return;
@@ -330,16 +335,16 @@ class Intrigue extends BaseModel{
         }
     }
     
-    public static function getAllIntriguesForGroup($groupId) {
+    public static function getAllIntriguesForGroup($groupId, $larpId) {
             $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
-                "SELECT IntrigueId FROM regsys_intrigueactor WHERE GroupId = ?) ORDER BY Id";
-            return static::getSeveralObjectsqQuery($sql, array($groupId));
+                "SELECT IntrigueId FROM regsys_intrigueactor WHERE GroupId = ? AND LarpId = ?) ORDER BY Id";
+            return static::getSeveralObjectsqQuery($sql, array($groupId, $larpId));
     }
     
-    public static function getAllIntriguesForRole($roleId) {
+    public static function getAllIntriguesForRole($roleId, $larpId) {
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
-            "SELECT IntrigueId FROM regsys_intrigueactor WHERE RoleId = ?) ORDER BY Id";
-        return static::getSeveralObjectsqQuery($sql, array($roleId));
+            "SELECT IntrigueId FROM regsys_intrigueactor WHERE RoleId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($roleId, $larpId));
     }
     
 }

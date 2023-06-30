@@ -100,12 +100,14 @@
         		            $intrigueWords = $role->intrigueWords($current_larp);
         		            
         		            if (!empty($intrigueWords)) echo "<br>$intrigueWords ord";
-        		            $intrigues = Intrigue::getAllIntriguesForRole($role->Id);
+        		            $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
         		            echo "<br>";
+        		            if (!empty($intrigues)) echo "Intrig: ";
         		            foreach ($intrigues as $intrigue) {
-        		                echo "<a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a>";
-	                            if ($intrigue->Active == 0) echo " (inte aktuell)";
-	                            echo "<br>";
+        		                echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+        		                if ($intrigue->isActive()) echo $intrigue->Number;
+        		                else echo "<s>$intrigue->Number</s>";
+        		                echo "</a>";
         		            }
         		            
         		            echo "</td>\n";

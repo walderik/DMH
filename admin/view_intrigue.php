@@ -235,7 +235,7 @@ th, td {
 <table width='100%'>
 <tr><td width='10%'>Nummer</td><td><?php echo $intrigue->Number ?></td></tr>
 <tr><td>Intrignamn</td><td><?php echo $intrigue->Name ?></td></tr>
-<tr><td>Aktuell</td><td><?php echo ja_nej($intrigue->Active); ?></td></tr>
+<tr><td>Aktuell</td><td><?php echo ja_nej($intrigue->isActive()); ?></td></tr>
 <tr><td>Huvudintrig</td><td><?php echo ja_nej($intrigue->MainIntrigue); ?></td></tr>
 <tr><td>Intrigtyp</td><td><?php echo commaStringFromArrayObject($intrigue->getIntriguetypes())?></td></tr>
 <tr><td>Ansvarig</td><td>

@@ -40,10 +40,19 @@
     		        echo "<td>" . showStatusIcon($larp_group->hasIntrigue());
 
     		        if ($larp_group->hasIntrigue()) echo "<br>".str_word_count($larp_group->Intrigue)." ord";
+    		        $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
+    		        echo "<br>";
+    		        if (!empty($intrigues)) echo "Intrig: ";
+    		        foreach ($intrigues as $intrigue) {
+    		            echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+    		            if ($intrigue->isActive()) echo $intrigue->Number;
+    		            else echo "<s>$intrigue->Number</s>";
+    		            echo "</a>";
+    		        }
     		        
     		        echo "</td>\n";
-    		        echo "<td><a href='edit_group_intrigue.php?id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
-    		        
+    		        echo "<td><a href='edit_group_intrigue.php?id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
+    		        echo "</td>";
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";
