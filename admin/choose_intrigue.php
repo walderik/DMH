@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $multiple=false;
 
-if ($operation == "add_intrigue_intrigue") {
+if ($operation == "add_intrigue_relation") {
     $purpose = "Lägg till relation till annan intrig";
     $url = "logic/view_intrigue_logic.php";
     $multiple=true;
@@ -70,14 +70,14 @@ include 'navigation.php';
 		    ?> 
 			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		    <table class='data'>
-		    <tr><th>Nummber</th><th>Namn</th></tr>
+		    <tr><th>Nummer</th><th>Namn</th></tr>
 		    <?php 
 		    foreach ($intrigues as $intrigue)  {
 		        echo "<tr>\n";
-		        echo "<td><input type='$type' id='Intrigue$intrigue->Id' name='IntrigueId$array' value='$intrigue->Id'></td>";
+		        echo "<td><input type='$type' id='Intrigue$intrigue->Id' name='IntrigueId$array' value='$intrigue->Id'>";
 
-		        echo "<td>$intrigue->Number</label></td>\n";
-		        echo "<td>$intrigue->Name</label></td>\n";
+		        echo "$intrigue->Number</td>\n";
+		        echo "<td>$intrigue->Name</td>\n";
 
 		        echo "</tr>\n";
 		    }

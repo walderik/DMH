@@ -441,14 +441,14 @@ $intrigue_letters = $intrigue->getAllLetters();
 foreach ($intrigue_letters as $intrigue_letter) {
     $letter=$intrigue_letter->getLetter();
     echo "Från: $letter->Signature, Till: $letter->Recipient, ".mb_strimwidth(str_replace('\n', '<br>', $letter->Message), 0, 50, '...');
-    echo "<a href='logic/view_intrigue_logic.php?operation=remove_letter&IntrigueLetterId=$intrigue_letter->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
+    echo "<a href='logic/view_intrigue_logic.php?operation=remove_letter&IntrigueLetterId=$intrigue_letter->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort brev'></i></a>";
     echo "<br>"; 
 }
 $intrigue_telegrams = $intrigue->getAllTelegrams();
 foreach ($intrigue_telegrams as $intrigue_telegram) {
     $telegram=$intrigue_telegram->getTelegram();
     echo "$telegram->Deliverytime, Från: $telegram->Sender, Till: $telegram->Reciever, ".mb_strimwidth(str_replace('\n', '<br>', $telegram->Message), 0, 50, '...');
-    echo "<a href='logic/view_intrigue_logic.php?operation=remove_telegram&IntrigueTelegramId=$intrigue_telegram->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
+    echo "<a href='logic/view_intrigue_logic.php?operation=remove_telegram&IntrigueTelegramId=$intrigue_telegram->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort telegram'></i></a>";
     echo "<br>";
 }
 
@@ -456,8 +456,17 @@ foreach ($intrigue_telegrams as $intrigue_telegram) {
 ?>
 </td></tr>
 <tr><td>Länkade intriger</td><td>
-<!--  <a href="choose_intrigue.php?operation=add_intrigue_link&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till länk till annan intrig"></i></a>
- -->
+  <a href="choose_intrigue.php?operation=add_intrigue_relation&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till länk till annan intrig"></i></a>
+  <br>
+<?php 
+$intrigue_relations = $intrigue->getAllIntrigueRelations();
+foreach ($intrigue_relations as $intrigue_relation) {
+    echo "<a href='view_intrigue.php?Id=$intrigue_relation->Id'>Intrig: $intrigue_relation->Number. $intrigue_relation->Name</a>";
+    if (!$intrigue_relation->isActive()) echo " (inte aktuell)";
+    echo " <a href='logic/view_intrigue_logic.php?operation=remove_intrigue_relation&IntrigueRelationId=$intrigue_relation->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort relation'></i></a>";
+    echo "<br>";
+}
+?>
 </td></tr>
 
 </table>
