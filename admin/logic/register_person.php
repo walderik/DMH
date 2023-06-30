@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $age = $person->getAgeAtLarp($current_larp);
     $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age, $current_larp);
         
-    $registration->PaymentReference = $registration->LARPId . $registration->PersonId;
+    $registration->PaymentReference = $registration->createPaymentReference();
 
     $now = new Datetime();
     $registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
