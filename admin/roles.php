@@ -20,7 +20,7 @@
     		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
         		    "<th>&nbsp; &nbsp; </th>".
         		    "<th onclick='sortTable(2, \"$tableId\")'>Godkänd</th>".
-        		    "<th onclick='sortTable(3, \"$tableId\")'>Yrke</th>".
+        		    "<th onclick='sortTable(3, \"$tableId\")' width='10%'>Yrke</th>".
         		    "<th onclick='sortTable(4, \"$tableId\")'>Typ av lajvare</th>".
         		    "<th onclick='sortTable(5, \"$tableId\")'>Intrigtyper</th>".
         		    "<th onclick='sortTable(6, \"$tableId\")'>Rikedom</th>".
