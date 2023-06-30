@@ -45,16 +45,25 @@ function default_value($field) {
     echo $output;
 }
 
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = $_SERVER['HTTP_REFERER'];
+}
+else {
+    $referer = "";
+}
+
+
 include 'navigation.php';
 
 ?>
 
 	<div class="content">
 
-		<h1><?php echo $npc_group->Name;?> <a href="npc.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+		<h1><?php default_value("action");?> NPC-Grupp</h1>
 		<form action="logic/npc_group_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $npc_group->Id; ?>">
+    		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 
 		
 		<table>

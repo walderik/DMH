@@ -15,5 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     
     
-    header('Location: ../npc.php');
+    $referer = (isset($_POST['Referer'])) ? $_POST['Referer'] : '../npc.php';
+    header('Location: ' . $referer);
 }
