@@ -46,6 +46,7 @@ include 'navigation.php';
 	        echo "<form action='logic/approve_person.php' method='post'>";
 	        echo "<input type='hidden' id='RegistrationId' name='RegistrationId' value='$registration->Id'>";
 	        echo "<input type='submit' value='Godkänn karaktärerna'>";
+	        echo "</form>";
 		}
 		?>
 		<form action="logic/edit_person_save.php" method="post">
