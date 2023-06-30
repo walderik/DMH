@@ -33,6 +33,8 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>";
     $knownActors = $intrgueActor->getAllKnownActors();
     printAllKnownActors($knownActors, $intrgueActor);
+    $knownNPCGroups = $intrgueActor->getAllKnownNPCGroups();
+    printAllKnownNPCGroups($knownNPCGroups, $intrgueActor);
     $knownNPCs = $intrgueActor->getAllKnownNPCs();
     printAllKnownNPCs($knownNPCs, $intrgueActor);
     echo "</td></tr>";
@@ -188,6 +190,29 @@ function printAllKnownNPCs($known_npcs, $intrigueActor) {
     echo "</ul>";
 }
 
+function printAllKnownNPCGroups($known_npcgroups, $intrigueActor) {
+    global $cols;
+    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+    $temp=0;
+    foreach($known_npcgroups as $known_npcgroup) {
+        $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
+        echo "<li style='display:table-cell; width:19%;'>\n";
+        echo "<div class='name'>$npcgroup->Name</div>\n";
+        echo "<div>NPC-grupp</div>";
+        echo "<div align='right'>";
+        echo "<a href='logic/view_intrigue_logic.php?operation=remove_npcgroup_intrigueactor&NPCGroupId=$npcgroup->Id&IntrigueActorId=$intrigueActor->Id'>";
+        echo "<i class='fa-solid fa-xmark' title='Ta bort NPC-grupp'></i></a>";
+        echo "</div>";
+        echo "</li>\n";
+        $temp++;
+        if($temp==$cols)
+        {
+            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+            $temp=0;
+        }
+    }
+    echo "</ul>";
+}
 
 if (empty($intrigue)) {
     header('Location: intrigue_admin.php');
@@ -343,6 +368,31 @@ th, td {
 </td></tr>
 <tr><td>NPC</td>
 <td>
+<a href="choose_npcgroup.php?operation=add_intrigue_npcgroup&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till NPC-grupp"></i></a>
+<ul class='image-gallery' style='display:table; border-spacing:5px;'>
+	<?php 
+	$intrigue_npcgroups = $intrigue->getAllNPCGroups();
+	$temp=0;
+	foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
+	    $npcgroup = $intrigue_npcgroup->getNPCGroup();
+	    echo "<li style='display:table-cell; width:19%;'>\n";
+	    echo "<div class='name'>$npcgroup->Name</div>\n";
+	    echo "<div>NPC-grupp</div>";
+	    echo "<div align='right'>";
+	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_npcgroup&IntrigueNPCGroupId=$intrigue_npcgroup->Id&Id=$intrigue->Id'>";
+	    echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
+	    echo "</div>";
+	    echo "</li>\n";
+	    $temp++;
+	    if($temp==$cols)
+	    {
+	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+	        $temp=0;
+	    }
+	}
+    ?>
+   </ul>
+
 <a href="choose_npc.php?operation=add_intrigue_npc&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till NPC"></i></a>
 <ul class='image-gallery' style='display:table; border-spacing:5px;'>
 	<?php 
@@ -381,7 +431,7 @@ th, td {
 	    }
 	}
     ?>
-
+    </ul>
 </td></tr>
 <tr><td>Telegram & Brev</td><td>
 <a href="choose_telegram_letter.php?operation=add_intrigue_message&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till telegram och brev"></i></a>

@@ -218,6 +218,24 @@ class IntrigueActor extends BaseModel{
          }
      }
      
+     public function addKnownNPCGroups($intrigue_NPCGroupIds) {
+         //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_npcgroups = $this->getAllKnownNPCGroups();
+         foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
+             $exisitingIds[] = $intrigue_npcgroup->IntrigueNPCGroupId;
+         }
+         
+         $newKnownNPCGroupIds = array_diff($intrigue_NPCGroupIds,$exisitingIds);
+         //Koppla till aktören
+         foreach ($newKnownNPCGroupIds as $newKnownNPCGroupId) {
+             $intrigueactor_knownnpcgroup = IntrigueActor_KnownNPCGroup::newWithDefault();
+             $intrigueactor_knownnpcgroup->IntrigueActorId = $this->Id;
+             $intrigueactor_knownnpcgroup->IntrigueNPCGroupId = $newKnownNPCGroupId;
+             $intrigueactor_knownnpcgroup->create();            
+         }
+     }
+     
      public function addKnownNPCs($intrigue_NPCIds) {
          //Ta reda på vilka som inte redan är kopplade till aktören
          $exisitingIds = array();
@@ -232,7 +250,7 @@ class IntrigueActor extends BaseModel{
              $intrigueactor_knownnpc = IntrigueActor_KnownNPC::newWithDefault();
              $intrigueactor_knownnpc->IntrigueActorId = $this->Id;
              $intrigueactor_knownnpc->IntrigueNPCId = $intrigue_NPCId;
-             $intrigueactor_knownnpc->create();            
+             $intrigueactor_knownnpc->create();
          }
      }
      
@@ -277,6 +295,10 @@ class IntrigueActor extends BaseModel{
          return IntrigueActor_KnownActor::getAllWhoKnowsIntrigueActor($this);
      }
      
+     public function getAllKnownNPCGroups() {
+         return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForIntrigueActor($this);
+     }
+     
      public function getAllKnownNPCs() {
          return IntrigueActor_KnownNPC::getAllKnownNPCsForIntrigueActor($this);
      }
@@ -294,6 +316,11 @@ class IntrigueActor extends BaseModel{
      public function removeKnownRole($roleId) {
          $known_actor=IntrigueActor_KnownActor::loadByIds($roleId, $this->Id, true);
          IntrigueActor_KnownActor::delete($known_actor->Id);
+     }
+     
+     public function removeKnownNPCGroup($npcgroupId) {
+         $known_npcgroup=IntrigueActor_KnownNPCGroup::loadByIds($npcgroupId, $this->Id);
+         IntrigueActor_KnownNPCGroup::delete($known_npcgroup->Id);
      }
      
      public function removeKnownNPC($npcId) {

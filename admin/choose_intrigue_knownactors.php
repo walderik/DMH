@@ -75,6 +75,31 @@ include 'navigation.php';
 			<input type="submit" value="Lägg till">
 			
 			
+        <h2>NPC-grupper</h2>
+     		<?php 
+     		$intrigue_npcgroup_actors = $intrigue->getAllNPCGroups();
+     		if (empty($intrigue_npcgroup_actors)) {
+     		    echo "Inga registrerade NPC-grupper";
+     		} else {
+     		    ?>
+    		    <table class='data'>
+    		    <tr><th>Namn</th></tr>
+    		    <?php 
+    		    foreach ($intrigue_npcgroup_actors as $intrigue_npcgroup_actor)  {
+    		        $npcgroup=$intrigue_npcgroup_actor->getNPCGroup();
+    		        echo "<tr>\n";
+    		        echo "<td><input type='checkbox' id='Intrigue_NPCGroup$npcgroup->Id' name='Intrigue_NPCGroupId[]' value='$intrigue_npcgroup_actor->Id'>";
+
+    		        echo "<label for='Intrigue_NPCGroup$npcgroup->Id'>$npcgroup->Name</label></td>\n";
+
+    		        echo "</tr>\n";
+    		    }
+    		    echo "</table>";
+    		}
+    		?>
+    		<br>
+			<input type="submit" value="Lägg till">
+			
         <h2>NPC</h2>
      		<?php 
      		$intrigue_npcs = $intrigue->getAllNPCs();

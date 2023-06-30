@@ -213,6 +213,24 @@ class Intrigue extends BaseModel{
         }
     }
  
+    public function addNPCGroups($NPCGroupIds) {
+        //Ta reda på vilka som inte redan är kopplade till intrigen
+        $exisitingIds = array();
+        $intrigue_npcgroups = $this->getAllNPCGroups();
+        foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
+            $exisitingIds[] = $intrigue_npcgroup->NPCGroupId;
+        }
+        
+        $newNPCGroupIds = array_diff($NPCGroupIds,$exisitingIds);
+        //Koppla rekvisitan till intrigen
+        foreach ($newNPCGroupIds as $NPCGroupId) {
+            $intrigue_npcgroup = Intrigue_NPCGroup::newWithDefault();
+            $intrigue_npcgroup->IntrigueId = $this->Id;
+            $intrigue_npcgroup->NPCGroupId = $NPCGroupId;
+            $intrigue_npcgroup->create();
+        }
+    }
+    
     
     public function addLetters($letterIds) {
         //Ta reda på vilka som inte redan är kopplade till intrigen
@@ -285,6 +303,10 @@ class Intrigue extends BaseModel{
         return Intrigue_NPC::getAllNPCsForIntrigue($this);
     }
 
+    public function getAllNPCGroups() {
+        return Intrigue_NPCGroup::getAllNPCGroupsForIntrigue($this);
+    }
+    
     public function getAllLetters() {
         return Intrigue_Letter::getAllLettersForIntrigue($this);
     }
