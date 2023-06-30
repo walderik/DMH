@@ -91,8 +91,10 @@ class Email extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $now = date_format(new Datetime(),"Y-m-d H:i:s");
-        print_r($this);
-        $stmt =  $connection->prepare("INSERT INTO regsys_email (LarpId, From, To, CC, Subject, Text, CreatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)");
+//         print_r($this);
+//         echo "<br>\n";
+        
+        $stmt =  $connection->prepare("INSERT INTO regsys_email (LarpId, `From`, `To`, CC, Subject, Text, CreatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->LarpId, $this->From, $this->To, $this->CC, $this->Subject, $this->Text, $now))) {
             $stmt = null;
