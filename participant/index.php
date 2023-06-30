@@ -17,8 +17,7 @@ include "navigation.php";
         	  
             if ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
 
-                echo "<div><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b>".
-                "<br>Just nu är det ". Reserve_Registration::count($current_larp) . " st på reservlistan.";
+                echo "<div><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b>";
                 echo "</div>";
             }
             elseif ($current_larp->isPastLatestRegistrationDate()) {
