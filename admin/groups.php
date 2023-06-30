@@ -48,6 +48,7 @@
     		            if ($intrigue->isActive()) echo $intrigue->Number;
     		            else echo "<s>$intrigue->Number</s>";
     		            echo "</a>";
+    		            echo " ";
     		        }
     		        
     		        echo "</td>\n";
