@@ -48,6 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_POST['TelegramId'])) $intrigue->addTelegrams($_POST['TelegramId']);
         if (isset($_POST['LetterId'])) $intrigue->addLetters($_POST['LetterId']);
+    } elseif ($operation == "add_intrigue_relation") {
+        $intrigue=Intrigue::loadById($_POST['Id']);
+        if (isset($_POST['IntrigueId'])) $intrigue->addIntrigueRelations($_POST['IntrigueId']);
     } elseif ($operation == "update_intrigue_actor") {
         $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
@@ -95,6 +98,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         Intrigue_Letter::delete($_GET['IntrigueLetterId']);
     } elseif ($operation == "remove_telegram") {
         Intrigue_Telegram::delete($_GET['IntrigueTelegramId']);        
+    } elseif ($operation == "remove_intrigue_relation") {
+        Intrigue::removeRelation($_GET['IntrigueRelationId'], $_GET['Id']);
     } elseif ($operation == "remove_letter_checkin") {
         $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();

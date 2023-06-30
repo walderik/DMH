@@ -145,7 +145,7 @@ include 'navigation.php';
 		$known_actors = array();
 		$known_npcs = array();
 		$known_props = array();
-		$intrigues = Intrigue::getAllIntriguesForRole($role->Id);
+		$intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
 		if (!empty($intrigues)) {
 		    echo "<table class='data'>";
 		    echo "<tr><th>Intrig</th><th>Intrigtext</th></tr>";

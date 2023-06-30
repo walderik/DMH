@@ -274,23 +274,90 @@ class Intrigue extends BaseModel{
     }
 
     public function addIntrigueRelations($intrigueIds) {
-        //TODO inte klart här (finns inget i databasen än
         //Ta reda på vilka som inte redan är kopplade till intrigen
         $exisitingIds = array();
         $intrigues = $this->getAllIntrigueRelations();
         foreach ($intrigues as $intrigue) {
-            $exisitingIds[] = $intrigues->TelegramId;
+            $exisitingIds[] = $intrigue->Id;
         }
         
         $newIntrigueIds = array_diff($intrigueIds,$exisitingIds);
-        //Koppla rekvisitan till intrigen
-        foreach ($newIntrigueIds as $telegramId) {
-            $intrigue_telegram = Intrigue_Telegram::newWithDefault();
-            $intrigue_telegram->IntrigueId = $this->Id;
-            $intrigue_telegram->TelegramId = $telegramId;
-            $intrigue_telegram->create();
+        //Skapa relation mellan intrigerna
+        foreach ($newIntrigueIds as $intrigueId) {
+            $this->createNewIntrigueRelation($this->Id, $intrigueId);
         }
     }
+    
+    private function createNewIntrigueRelation($intrigueId1, $intrgueId2) {
+        if ($intrigueId1 == $intrgueId2) return;
+        $connection = $this->connect();
+        $stmt = $connection->prepare("INSERT INTO regsys_relationship () VALUES();");
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $relationId = $connection->lastInsertId();
+        
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_intrigue_relationship (RelationshipId, IntrigueId) VALUES (?,?);");
+        if (!$stmt->execute(array($relationId, $intrigueId1))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_intrigue_relationship (RelationshipId, IntrigueId) VALUES (?,?);");
+        if (!$stmt->execute(array($relationId, $intrgueId2))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+        
+    }
+    
+    public static function removeRelation($intrigueId1, $intrigueId2) {
+        $connection = static::connectStatic();
+        
+        //Hitta id för relationen
+        $stmt = $connection->prepare("SELECT regsys_relationship.Id FROM regsys_relationship, regsys_intrigue_relationship r1, regsys_intrigue_relationship r2 WHERE ".
+            "regsys_relationship.Id = r1.RelationshipId AND ".
+            "regsys_relationship.Id = r2.RelationshipId AND ".
+            "r1.IntrigueId = ? AND ".
+            "r2.IntrigueId = ?;");
+        
+        if (!$stmt->execute(array($intrigueId1, $intrigueId2))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return null;
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $rows[0];
+        $relationshipId = $row['Id'];
+        
+        $stmt = $connection->prepare("DELETE FROM regsys_intrigue_relationship WHERE RelationshipId = ?");
+        if (!$stmt->execute(array($relationshipId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = $connection->prepare("DELETE FROM regsys_relationship WHERE Id = ?");
+        if (!$stmt->execute(array($relationshipId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+    }
+    
     
     public function getAllGroupActors() {
         return IntrigueActor::getAllGroupActorsForIntrigue($this);
@@ -321,17 +388,22 @@ class Intrigue extends BaseModel{
     }
 
     public function getAllIntrigueRelations() {
-        //TODO inte klart här
-        $sql = "SELECT * FROM regsys_intrigue_relation WHERE IntrigueId = ? ORDER BY Id";
-        return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
+        $sql = "SELECT regsys_intrigue.* FROM regsys_intrigue, regsys_intrigue_relationship r1, regsys_intrigue_relationship r2 WHERE ".
+            "r1.IntrigueId = ? AND ".
+            "r1.RelationshipId = r2.RelationshipId AND ".
+            "r1.IntrigueId <> r2.IntrigueId AND ". 
+            "r2.IntrigueId = regsys_intrigue.Id ".
+            "ORDER BY regsys_intrigue.Number";
+        
+        return static::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
     public static function getAllIntriguesForIntrigueActor(IntrigueActor $intrigueActor) {
         if (!empty($intrigueActor->GroupId)) {
-            return static::getAllIntriguesForGroup($intrigueActor->GroupId);
+            return static::getAllIntriguesForGroup($intrigueActor->GroupId, $intrigueActor->getIntrigue()->LarpId);
         }
         else {
-            return static::getAllIntriguesForRole($intrigueActor->RoleId);
+            return static::getAllIntriguesForRole($intrigueActor->RoleId, $intrigueActor->getIntrigue()->LarpId);
         }
     }
     
