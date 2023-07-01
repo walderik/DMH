@@ -145,6 +145,9 @@ include 'navigation.php';
 		$known_actors = array();
 		$known_npcs = array();
 		$known_props = array();
+		$checkin_letters = array();
+		$checkin_telegrams = array();
+		$checkin_props = array();
 		$intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
 		if (!empty($intrigues)) {
 		    echo "<table class='data'>";
@@ -166,6 +169,9 @@ include 'navigation.php';
 	               $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
 	               $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
 	               $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+	               $checkin_letters = array_merge($checkin_letters, $intrigueActor->getAllCheckinLetters());
+	               $checkin_telegrams = array_merge($checkin_telegrams, $intrigueActor->getAllCheckinTelegrams());
+	               $checkin_props = array_merge($checkin_props, $intrigueActor->getAllCheckinProps());
 	           }
 	           else {
 	               echo "<s>$intrigueActor->IntrigueText</s>";
@@ -251,6 +257,45 @@ include 'navigation.php';
                }
 	       }
 	       echo "</ul>";
+	       
+	       
+	       
+	       if (!empty($checkin_letters) || !empty($checkin_telegrams) || !empty($checkin_props)) {
+	           echo "<h3>Ska ha vid incheckning</h3>";
+	           foreach ($checkin_letters as $checkin_letter) {
+	               $letter = $checkin_letter->getIntrigueLetter()->getLetter();
+	               echo "Brev från: $letter->Signature till: $letter->Recipient, ".mb_strimwidth(str_replace('\n', '<br>', $letter->Message), 0, 50, '...');
+	               echo "<br>";
+	           }
+	           foreach ($checkin_telegrams as $checkin_telegram) {
+	               $telegram=$checkin_telegram->getIntrigueTelegram()->getTelegram();
+	               echo "Telegram från: $telegram->Sender till: $telegram->Reciever, ".mb_strimwidth(str_replace('\n', '<br>', $telegram->Message), 0, 50, '...');
+	               echo "<br>";
+	           }
+	           echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+	           $temp=0;
+	           $cols=5;
+	           foreach ($checkin_props as $checkin_prop) {
+	               $prop=$checkin_prop->getIntrigueProp()->getProp();
+	               echo "<li style='display:table-cell; width:19%;'>\n";
+	               echo "<div class='name'>$prop->Name</div>\n";
+	               if ($prop->hasImage()) {
+	                   $image = Image::loadById($prop->ImageId);
+	                   echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+	               }
+	               echo "</li>\n";
+	               $temp++;
+	               if($temp==$cols)
+	               {
+	                   echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+	                   $temp=0;
+	               }
+	           }
+	           echo "</ul>";
+	       }
+	       
+	       
+	       
 		}
 			}
 	    ?>
