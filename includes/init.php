@@ -9,9 +9,6 @@ global $current_user, $current_larp, $root;
 
 include_once $root . '/includes/all_includes.php';
 
-
-
-
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['is_loggedin'])) {
     header('Location: ../index.php');
@@ -37,4 +34,17 @@ if (isset($_SESSION['larp'])) {
     $current_larp = LARP::loadById($_SESSION['larp']);
 }
 
+# Körs efter att current_user och current_larp är satt, så blir det bäst.
+if (!handleEmailQueue()) {
+//     echo "<h1>Failing sending Email</h1>"; # Vad gör vi nu? Skicka felnotering till admin?
+}
 
+
+function handleEmailQueue() {
+    $current_queue = Email::allUnsent();
+    if (empty($current_queue)) return;
+    if (!Email::okToSendNow()) return;
+//     echo "Send an email";
+    $to_send = array_pop($current_queue); # Hämta äldsta mailet i kön
+    return $to_send->sendNow();
+}

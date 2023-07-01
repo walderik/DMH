@@ -8,3 +8,7 @@ function getAge($date, $at_date) {
 function startsWithNumber($string) {
     return strlen($string) > 0 && ctype_digit(substr($string, 0, 1));
 }
+
+function displayEmailQueue() {
+    
+}

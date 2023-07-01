@@ -41,12 +41,15 @@ class BerghemMailer {
             }
         }
         
-        if (is_null($subject)) $subject = "Meddelande från $myName";
+//         if (is_null($subject)) $subject = "Meddelande från $myName";
+        
+        $email = Email::normalCreate($to_email, $to_name, $subject, $text);
         
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
         //Set who the message is to be sent from
         $mail->setFrom($from, utf8_decode($myName),0);
+//         $mail->setFrom($from, utf8_decode($myName)); # Tror faktiskt det ska vara så här
         //Set an alternative reply-to address
         $mail->addReplyTo($from, utf8_decode($myName));
         //Set who the message is to be sent to
@@ -118,17 +121,15 @@ class BerghemMailer {
         
         $mail->Body = utf8_decode($mailContent);
         
-//         $email = Email::normalCreate($to_email, $subject, $text); # Något är skumt
-        
         
         if (!$mail->send()) {
             echo 'Mailer Error: ' . $mail->ErrorInfo;
             return false;
         } 
-//         echo 'Message sent!';
+
         return true;
             
-    } // End contruct
+    }
     
     
     public static function send_guardian_mail(Person $guardian, Person $minor, LARP $larp) {
