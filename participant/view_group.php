@@ -143,13 +143,178 @@ include 'navigation.php';
 
 		<h2>Intrig</h2>
 		<div>
-			<?php if ($current_larp->DisplayIntrigues == 1) {
-			    echo $larp_group->Intrigue;    
+
+			<?php 
+			if ($current_larp->DisplayIntrigues == 0) {
+			    echo "<p>".nl2br($larp_group->Intrigue) ."</p>"; 
+			    
+			    
+			    $known_actors = array();
+			    $known_npcs = array();
+			    $known_npcgroups = array();
+			    $known_props = array();
+			    $checkin_letters = array();
+			    $checkin_telegrams = array();
+			    $checkin_props = array();
+			    $intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id, $current_larp->Id);
+			    $intrigue_numbers = array();
+		        foreach ($intrigues as $intrigue) {
+		            if ($intrigue->isActive()) {
+		                $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $current_group);
+		                echo "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+		                if (!empty($intrigueActor->OffInfo)) {
+		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
+		                }
+		                
+		                $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
+		                $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
+		                $known_npcgroups = array_merge($known_npcgroups, $intrigueActor->getAllKnownNPCGroups());
+		                $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+		                $checkin_letters = array_merge($checkin_letters, $intrigueActor->getAllCheckinLetters());
+		                $checkin_telegrams = array_merge($checkin_telegrams, $intrigueActor->getAllCheckinTelegrams());
+		                $checkin_props = array_merge($checkin_props, $intrigueActor->getAllCheckinProps());
+		                $intrigue_numbers[] = $intrigue->Number;
+		            }
+		        }
+		        if (!empty($intrigue_numbers)) {
+		            echo "<p>Intrignummer " . implode(', ', $intrigue_numbers).". De kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet.</p>";
+                }
+		        if (!empty($known_actors) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
+			        echo "<h3>Känner till</h3>";
+			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+			        $temp=0;
+			        $cols=5;
+			        foreach ($known_actors as $known_actor) {
+			            $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
+			            
+			            if (!empty($knownIntrigueActor->GroupId)) {
+			                $group=$knownIntrigueActor->getGroup();
+			                echo "<li style='display:table-cell; width:19%;'>";
+			                echo "<div class='name'>$group->Name</div>";
+			                echo "<div>Grupp</div>";
+			                echo "</li>";
+			                
+			            } else {
+			                $role = $knownIntrigueActor->getRole();
+			                echo "<li style='display:table-cell; width:19%;'>";
+			                echo "<div class='name'>$role->Name</div>";
+			                $role_group = $role->getGroup();
+			                if (!empty($role_group)) {
+			                    echo "<div>$role_group->Name</div>";
+			                }
+			                
+			                if ($role->hasImage()) {
+			                    $image = Image::loadById($role->ImageId);
+			                    if (!is_null($image)) {
+			                        
+			                        echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+			                    }
+			                }
+			                echo "</li>";
+			                
+			            }
+			            $temp++;
+			            if($temp==$cols)
+			            {
+			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+			                $temp=0;
+			            }
+			        }
+			        foreach ($known_npcgroups as $known_npcgroup) {
+			            $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
+			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            echo "<div class='name'>$npcgroup->Name</div>\n";
+			            echo "<div>NPC-grupp</div>";
+			            echo "</li>\n";
+			            $temp++;
+			            if($temp==$cols)
+			            {
+			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+			                $temp=0;
+			            }
+			        }
+			        foreach ($known_npcs as $known_npc) {
+			            $npc=$known_npc->getIntrigueNPC()->getNPC();
+			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            echo "<div class='name'>$npc->Name</div>\n";
+			            $npc_group = $npc->getNPCGroup();
+			            if (!empty($npc_group)) {
+			                echo "<div>$npc_group->Name</div>";
+			            }
+			            if ($npc->hasImage()) {
+			                $image = Image::loadById($npc->ImageId);
+			                echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+			            }
+			            echo "</li>\n";
+			            $temp++;
+			            if($temp==$cols)
+			            {
+			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+			                $temp=0;
+			            }
+			        }
+			        foreach ($known_props as $known_prop) {
+			            $prop = $known_prop->getIntrigueProp()->getProp();
+			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            echo "<div class='name'>$prop->Name</div>\n";
+			            if ($prop->hasImage()) {
+			                $image = Image::loadById($prop->ImageId);
+			                echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+			            }
+			            echo "</li>\n";
+			            $temp++;
+			            if($temp==$cols)
+			            {
+			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+			                $temp=0;
+			            }
+			        }
+			        echo "</ul>";
+		        }
+
+		        if (!empty($checkin_letters) || !empty($checkin_telegrams) || !empty($checkin_props)) {
+		            echo "<h3>Ska ha vid incheckning</h3>";
+		            foreach ($checkin_letters as $checkin_letter) {
+		                $letter = $checkin_letter->getIntrigueLetter()->getLetter();
+		                echo "Brev från: $letter->Signature till: $letter->Recipient<br>";
+		            }
+		            foreach ($checkin_telegrams as $checkin_telegram) {
+		                $telegram=$checkin_telegram->getIntrigueTelegram()->getTelegram();
+		                echo "Telegram från: $telegram->Sender till: $telegram->Reciever<br>";
+		            }
+		            echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		            $temp=0;
+		            $cols=5;
+		            foreach ($checkin_props as $checkin_prop) {
+		                $prop=$checkin_prop->getIntrigueProp()->getProp();
+		                echo "<li style='display:table-cell; width:19%;'>\n";
+		                echo "<div class='name'>$prop->Name</div>\n";
+		                if ($prop->hasImage()) {
+		                    $image = Image::loadById($prop->ImageId);
+		                    echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+		                }
+		                echo "</li>\n";
+		                $temp++;
+		                if($temp==$cols)
+		                {
+		                    echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		                    $temp=0;
+		                }
+		            }
+		            echo "</ul>";
+		        }
+		        
 			}
+
 			else {
 			    echo "Intrigerna är inte klara än.";
 			}
 			?>
+			
+			
+			
+			
+			
 		</div>
 
 	</div>
