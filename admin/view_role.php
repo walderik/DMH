@@ -158,6 +158,9 @@ include 'navigation.php';
 	           echo "<td>";
 	           if ($intrigue->isActive()) {
 	               echo "$intrigueActor->IntrigueText";
+	               if (!empty($intrigueActor->OffInfo)) {
+	                   echo "<br><br><strong>Off-information:</strong><br>$intrigueActor->OffInfo";
+	               }
 	               echo "</td>";
 	               echo "</tr>";
 	               $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());

@@ -8,14 +8,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
-    echo "<h2>Intrig för $name <a href='actor_intrigue_form.php?IntrigueActorId=$intrgueActor->Id&name=$name'><i class='fa-solid fa-pen'></i></a></h2>";
-    echo "<table width='100%''>";
+    echo "<h2>Intrig för $name <a href='actor_intrigue_form.php?IntrigueActorId=$intrgueActor->Id&name=$name'><i class='fa-solid fa-pen'></i></a></h2>\n";
+    echo "<table width='100%''>\n";
     
-    echo "<tr><td width='10%'>Intrigtext</td><td>".htmlspecialchars($intrgueActor->IntrigueText)."</td></tr>";
-    echo "<tr><td>Off-info</td><td>".htmlspecialchars($intrgueActor->OffInfo)."</td></tr>";
-    echo "<tr><td>Ska ha vid incheck</td>";
+    echo "<tr><td width='10%'>Intrigtext</td><td>".htmlspecialchars(nl2br($intrgueActor->IntrigueText))."</td></tr>\n";
+    echo "<tr><td>Off-info</td><td>".htmlspecialchars(nl2br($intrgueActor->OffInfo))."</td></tr>\n";
+    echo "<tr><td>Ska ha vid incheck</td>\n";
     echo "<td>";
-    echo "<a href='choose_intrigue_checkin.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>";
+    echo "<a href='choose_intrigue_checkin.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $checkinProps = $intrgueActor->getAllPropsForCheckin();
     printAllProps($checkinProps, $intrgueActor, true);
     $checkinLetters = $intrgueActor->getAllLettersForCheckin();
@@ -23,22 +23,22 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     $checkinTelegrams = $intrgueActor->getAllTelegramsForCheckin();
     printAllTelegrams($checkinTelegrams, $intrgueActor);
     
-    echo "</td></tr>";
-    echo "<tr><td>Rekvisita aktören känner till</td><td>";
-    echo "<a href='choose_intrigue_props.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>";
+    echo "</td></tr>\n";
+    echo "<tr><td>Rekvisita aktören känner till</td><td>\n";
+    echo "<a href='choose_intrigue_props.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownProps = $intrgueActor->getAllPropsThatAreKnown();
     printAllProps($knownProps, $intrgueActor, false);
-    echo "</td></tr>";
-    echo "<tr><td>Karaktärer aktören känner till</td><td>";
-    echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>";
+    echo "</td></tr>\n";
+    echo "<tr><td>Karaktärer aktören känner till</td><td>\n";
+    echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownActors = $intrgueActor->getAllKnownActors();
     printAllKnownActors($knownActors, $intrgueActor);
     $knownNPCGroups = $intrgueActor->getAllKnownNPCGroups();
     printAllKnownNPCGroups($knownNPCGroups, $intrgueActor);
     $knownNPCs = $intrgueActor->getAllKnownNPCs();
     printAllKnownNPCs($knownNPCs, $intrgueActor);
-    echo "</td></tr>";
-    echo "</table>";
+    echo "</td></tr>\n";
+    echo "</table>\n";
     
 }
 
@@ -55,11 +55,12 @@ function printAllProps($props, $intrigueActor, $isCheckin) {
     echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
     $temp=0;
     foreach ($props as $prop) {
+        echo "\n";
         echo "<li style='display:table-cell; width:19%;'>\n";
         echo "<div class='name'>$prop->Name</div>\n";
         if ($prop->hasImage()) {
             $image = Image::loadById($prop->ImageId);
-            echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+            echo "<img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
         }
         echo "<div align='right'>";
         echo "<a href='logic/view_intrigue_logic.php?operation=$remove_operation&PropId=$prop->Id&IntrigueActorId=$intrigueActor->Id'>";

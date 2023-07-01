@@ -57,7 +57,7 @@ class IntrigueActor_CheckinProp extends BaseModel{
     }
     
     public function getIntrigueProp() {
-        return Intrigue_Letter::loadById($this->IntriguePropId);
+        return Intrigue_Prop::loadById($this->IntriguePropId);
     }
     
     public static function getAllCheckinPropsForIntrigueActor(IntrigueActor $intrigueActor) {
