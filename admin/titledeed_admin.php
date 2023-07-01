@@ -68,6 +68,9 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Lagfarter</h1>
+        <p>Ikoner:<br>
+        <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
+        <i class='fa-solid fa-house'></i> - Handelsstation</p>
             <a href="titledeed_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
         
        <?php
@@ -76,20 +79,18 @@ include 'navigation.php';
        $currency = $current_larp->getCampaign()->Currency;
         if (!empty($titledeed_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Plats</th><th>Kan säljas</th><th>Handelsstation</th><th>Producerar<br>normalt</th><th>Behöver<br>normalt</th><th>Detta lajv</th><th>Resultat<br>utifrån pris i Slow River</th><th>Ägare</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Namn</th><th>Plats</th><th>Ägare</th><th>Normalt<br>Producerar/Behöver</th><th>Nu<br>Producerar/Behöver</th><th>Resultat<br>utifrån pris i Slow River</th><th></th><th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
                 echo "<tr>\n";
-                echo "<td>" . $titledeed->Id . "</td>\n";
-                echo "<td>" . $titledeed->Name . "</td>\n";
+                echo "<td>" . $titledeed->Name;
+                if ($titledeed->Tradeable == 0) {
+                    echo " <i class='fa-solid fa-money-bill-wave'></i>";
+                }
+                if ($titledeed->IsTradingPost == 1) {
+                    echo " <i class='fa-solid fa-house'></i>";
+                }
+                "</td>\n";
                 echo "<td>" . $titledeed->Location . "</td>\n";
-                echo "<td>" . ja_nej($titledeed->Tradeable) . "</td>\n";
-                echo "<td>" . ja_nej($titledeed->IsTradingPost) . "</td>\n";
-                echo "<td>" . commaStringFromArrayObject($titledeed->Produces()) . "</td>\n";
-                echo "<td>" . commaStringFromArrayObject($titledeed->Requires()) . "</td>\n";
-                echo "<td>";
-                echo "<a href='resource_titledeed_form.php?Id=$titledeed->Id'><i class='fa-solid fa-pen' title='Ändra'></i></a><br>";
-                echo "</td>";
-                echo "<td>".$titledeed->calculateResult($current_larp)." $currency</td>";
                 echo "<td>";
                 echo "<a href='choose_group.php?operation=add_titledeed_owner_group&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i></a><br>";
                 $owner_groups = $titledeed->getGroupOwners();
@@ -108,6 +109,14 @@ include 'navigation.php';
                 }
                 
                 echo "</td>\n";
+                echo "<td>";
+                echo "Producerar: ". commaStringFromArrayObject($titledeed->Produces()) . "<br><br>\n";
+                echo "Behöver: " . commaStringFromArrayObject($titledeed->Requires())."\n";
+                echo "</td>\n";
+                echo "<td>";
+                echo "<a href='resource_titledeed_form.php?Id=$titledeed->Id'><i class='fa-solid fa-pen' title='Ändra'></i></a><br>";
+                echo "</td>";
+                echo "<td>".$titledeed->calculateResult($current_larp)." $currency</td>";
                 
                 echo "<td>" . "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='titledeed_admin.php?operation=delete&id=" . $titledeed->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
