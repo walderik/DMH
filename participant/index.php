@@ -199,7 +199,7 @@ include "navigation.php";
         		                }
         		                
         		                $registration = $person->getRegistration($current_larp);
-        		                if ($registration->SpotAtLARP==1) {
+        		                if (!empty($registration) && $registration->SpotAtLARP==1) {
         		                    echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
         		                }
         		                
