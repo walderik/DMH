@@ -144,6 +144,7 @@ include 'navigation.php';
 		<?php
 		$known_actors = array();
 		$known_npcs = array();
+		$known_npcgroups = array();
 		$known_props = array();
 		$checkin_letters = array();
 		$checkin_telegrams = array();
@@ -169,6 +170,7 @@ include 'navigation.php';
 	               $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
 	               $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
 	               $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+	               $known_npcgroups = array_merge($known_npcgroups, $intrigueActor->getAllKnownNPCGroups());
 	               $checkin_letters = array_merge($checkin_letters, $intrigueActor->getAllCheckinLetters());
 	               $checkin_telegrams = array_merge($checkin_telegrams, $intrigueActor->getAllCheckinTelegrams());
 	               $checkin_props = array_merge($checkin_props, $intrigueActor->getAllCheckinProps());
@@ -213,6 +215,19 @@ include 'navigation.php';
 	               echo "</li>";
 	               
 	           }
+	           $temp++;
+	           if($temp==$cols)
+	           {
+	               echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+	               $temp=0;
+	           }
+	       }
+	       foreach ($known_npcgroups as $known_npcgroup) {
+	           $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
+	           echo "<li style='display:table-cell; width:19%;'>\n";
+	           echo "<div class='name'>$npcgroup->Name</div>\n";
+	           echo "<div>NPC-grupp</div>";
+	           echo "</li>\n";
 	           $temp++;
 	           if($temp==$cols)
 	           {
