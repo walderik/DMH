@@ -8,6 +8,10 @@ class Titledeed extends BaseModel{
     public $Tradeable = 1;
     public $IsTradingPost = 0;
     public $CampaignId;
+    public $Money = 0;
+    public $OrganizerNotes;
+    public $PublicNotes;
+    public $SpecialUpgradeRequirements;
     
     
     public static $orderListBy = 'Name';
@@ -43,9 +47,11 @@ class Titledeed extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_titledeed SET Name=?, Location=?, Tradeable=?, IsTradingPost=?,
-                                                              CampaignId=? WHERE Id = ?;");
+                  CampaignId=?, Money=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, $this->CampaignId, $this->Id))) {
+        if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
+            $this->CampaignId, $this->Money, $this->OrganizerNotes, $this->PublicNotes, 
+            $this->SpecialUpgradeRequirements, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -56,9 +62,12 @@ class Titledeed extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_titledeed (Name, Location, Tradeable, IsTradingPost, CampaignId) VALUES (?,?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_titledeed (Name, Location, Tradeable, IsTradingPost, 
+            CampaignId, Money, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements) VALUES (?,?,?,?,?, ?,?,?,?);");
         
-        if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, $this->CampaignId))) {
+        if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
+            $this->CampaignId, $this->Money, $this->OrganizerNotes, $this->PublicNotes,
+            $this->SpecialUpgradeRequirements))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -251,6 +260,14 @@ class Titledeed extends BaseModel{
         return $resultArray;
     }
     
-    
+    function calculateResult(LARP $larp) {
+        $resource_titledeeds = Resource_Titledeed::allForTitledeed($this);
+        $res = 0;
+        foreach ($resource_titledeeds as $resource_titledeed) {
+            $resource = $resource_titledeed->getResource();
+            $res = $res + $resource->PriceSlowRiver * $resource_titledeed->Quantity;
+        }
+        return $res;
+    }
     
 }

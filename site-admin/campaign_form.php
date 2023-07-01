@@ -92,6 +92,11 @@ include_once 'header.php';
     				<td><input type="number" id="MinimumAgeWithoutGuardian"
     					name="MinimumAgeWithoutGuardian" value="<?php echo $campaign->MinimumAgeWithoutGuardian; ?>" size="50" required></td>
     			</tr>
+    			<tr>
+    				<td><label for="Currency">Lajv-valuta</label></td>
+    				<td><input type="text" id="Currency"
+    					name="Currency" value="<?php echo $campaign->Currency; ?>" size="50"></td>
+    			</tr>
     		</table>
     
     		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
