@@ -33,6 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $titledeed = Titledeed::loadById($_POST['id']);
         if (isset($_POST['RoleId'])) $titledeed->addRoleOwners($_POST['RoleId']);
       
+    } elseif ($operation == 'add_titledeed_owner_group') {
+        $titledeed = Titledeed::loadById($_POST['id']);
+        if (isset($_POST['GroupId'])) $titledeed->addGroupOwners($_POST['GroupId']);
+        
     }
 }
 
@@ -43,11 +47,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         if ($operation == 'delete') {
             Titledeed::delete($_GET['id']);
         }
-        elseif ($operation == 'delete_owner') {
+        elseif ($operation == 'delete_owner_role') {
             $titledeeId=$_GET['titledeeId'];
             $roleId=$_GET['roleId'];
             $titledeed = Titledeed::loadById($titledeeId);
-            $titledeed->deleteOwner($roleId);
+            $titledeed->deleteRoleOwner($roleId);
+        }
+        elseif ($operation == 'delete_owner_group') {
+            $titledeeId=$_GET['titledeeId'];
+            $groupId=$_GET['groupId'];
+            $titledeed = Titledeed::loadById($titledeeId);
+            $titledeed->deleteGroupOwner($groupId);
         }
     }
  
@@ -83,18 +93,21 @@ include 'navigation.php';
                 echo "<td>" . commaStringFromArrayObject($titledeed->Requires()) . "</td>\n";
                 echo "<td>";
                 
-                $owner_roles = $titledeed->owners();
-                foreach ($owner_roles as $owner_role) {
-                    echo "$owner_role->Name <a href='titledeed_admin.php?operation=delete_owner&titledeeId=$titledeed->Id&roleId=$owner_role->Id'><i class='fa-solid fa-trash'></i></a><br>";
+                echo "<a href='choose_group.php?operation=add_titledeed_owner_group&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i></a><br>";
+                $owner_groups = $titledeed->getGroupOwners();
+                foreach ($owner_groups as $owner_group) {
+                    echo "<a href='../admin/view_group.php?id=$owner_group->Id'>$owner_group->Name</a> <a href='titledeed_admin.php?operation=delete_owner_group&titledeeId=$titledeed->Id&groupId=$owner_group->Id'><i class='fa-solid fa-trash'></i></a><br>";
                     
                 }
                 
-                echo "<form action='choose_role.php' method='post'>";
-                echo "<input type='hidden' id='operation' name='operation' value='add_titledeed_owner_role'>";
-                echo "<input type='hidden' id='id' name='id' value='$titledeed->Id'>";
-                echo "<input id='submit_button' type='submit' value='Lägg karaktär(er) som ägare'>";
-                echo "</form>";
-
+                echo "<a href='choose_role.php?operation=add_titledeed_owner_role&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i></a><br>";
+                
+                
+                $owner_roles = $titledeed->getRoleOwners();
+                foreach ($owner_roles as $owner_role) {
+                    echo "<a href='../admin/view_role.php?id=$owner_role->Id'>$owner_role->Name <a href='titledeed_admin.php?operation=delete_owner_role&titledeeId=$titledeed->Id&roleId=$owner_role->Id'><i class='fa-solid fa-trash'></i></a><br>";
+                    
+                }
                 
                 echo "</td>\n";
                 

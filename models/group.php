@@ -190,6 +190,13 @@ class Group extends BaseModel{
          
      }
      
+     public static function getTitledeedOwners(Titledeed $titledeed) {
+         $sql = "SELECT * FROM regsys_group WHERE Id IN ".
+             "(SELECT GroupId FROM regsys_titledeed_group WHERE ".
+             "TitledeedId =?) ORDER BY Name;";
+         return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));
+         
+     }
      
     
 }

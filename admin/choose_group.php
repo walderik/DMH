@@ -39,6 +39,11 @@ if ($operation == "set_prop_owner_group") {
     $purpose = "Sätt ägare av rekvisita";
     $url = "prop_owner_form.php";
 }
+elseif ($operation == "add_titledeed_owner_group") {
+    $purpose = "Sätt som ägare av lagfart";
+    $url = "titledeed_admin.php";
+    $multiple=true;
+}
 elseif ($operation == "add_intrigue_actor_group") {  
     $purpose = "Lägg till aktör i intrig";
     $url = "logic/view_intrigue_logic.php";

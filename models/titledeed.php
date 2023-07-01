@@ -76,12 +76,16 @@ class Titledeed extends BaseModel{
     }
     
     
-    public function owners() {
+    public function getRoleOwners() {
         return Role::getTitledeedOwners($this);
     }
  
+    public function getGroupOwners() {
+        return Group::getTitledeedOwners($this);
+    }
     
-    public function deleteOwner($roleId) {
+    
+    public function deleteRoleOwner($roleId) {
         $stmt = $this->connect()->prepare("DELETE FROM regsys_titledeed_role WHERE RoleId = ? AND TitledeedId = ?;");
         if (!$stmt->execute(array($roleId, $this->Id))) {
             $stmt = null;
@@ -90,9 +94,27 @@ class Titledeed extends BaseModel{
         }
         $stmt = null;
     }
+ 
+    public function deleteGroupOwner($groupId) {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_titledeed_group WHERE GroupId = ? AND TitledeedId = ?;");
+        if (!$stmt->execute(array($groupId, $this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
     
-    public function addRoleOwners($rolesIds) {
-        foreach ($rolesIds as $roleId) {
+    public function addRoleOwners($roleIds) {
+        //Ta reda på vilka som inte redan är kopplade till lagfarten
+        $exisitingRoleIds = array();
+        $role_owners = $this->getRoleOwners();
+        foreach ($role_owners as $role_owner) {
+            $exisitingRoleIds[] = $role_owner->Id;
+        }
+        
+        $newRoleIds = array_diff($roleIds,$exisitingRoleIds);
+        foreach ($newRoleIds as $roleId) {
             $stmt = $this->connect()->prepare("INSERT INTO ".
                 "regsys_titledeed_role (RoleId, TitledeedId) VALUES (?,?);");
             if (!$stmt->execute(array($roleId, $this->Id))) {
@@ -100,13 +122,30 @@ class Titledeed extends BaseModel{
                 header("location: ../participant/index.php?error=stmtfailed");
                 exit();
             }
-            
             $stmt = null;
         }
-        
-        
     }
     
+    public function addGroupOwners($groupIds) {
+        //Ta reda på vilka som inte redan är kopplade till lagfarten
+        $exisitingGroupIds = array();
+        $group_owners = $this->getGroupOwners();
+        foreach ($group_owners as $group_owner) {
+            $exisitingGroupIds[] = $group_owner->Id;
+        }
+        
+        $newGroupIds = array_diff($groupIds,$exisitingGroupIds);
+        foreach ($newGroupIds as $groupId) {
+            $stmt = $this->connect()->prepare("INSERT INTO ".
+                "regsys_titledeed_group (GroupId, TitledeedId) VALUES (?,?);");
+            if (!$stmt->execute(array($groupId, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            $stmt = null;
+        }
+    }
     
     public function Produces() {
         return Resource::TitleDeedProcuces($this);
