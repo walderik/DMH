@@ -43,7 +43,7 @@ class BerghemMailer {
         
 //         if (is_null($subject)) $subject = "Meddelande från $myName";
         
-        $email = Email::normalCreate($to_email, $to_name, $subject, $text);
+//         $email = Email::normalCreate($to_email, $to_name, $subject, $text);
         
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
