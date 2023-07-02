@@ -11,17 +11,21 @@ include_once 'header.php';
     
     $resources = Resource::allNormalByCampaign($current_larp);
     
-    $all_resources = Resource::allByCampaign($current_larp);
+    $rare_resources = Resource::allRareByCampaign($current_larp);
+    
     $normally_produces_resourceIds = $titledeed->getSelectedProducesResourcesIds();
     $normally_requires_resourceIds = $titledeed->getSelectedRequiresResourcesIds();
+    $currency = $current_larp->getCampaign()->Currency;
+    
     include 'navigation.php';
     ?>
     
 
     <div class="content"> 
-    <h1>Redigera resurser för <?php echo $titledeed->Name ?> på <?php echo $current_larp->Name?></h1>
+    <h1>Redigera resurser för <?php echo $titledeed->Name ?></h1>
     <p>En lagfart kan antingen producera eller behöva en resurs. 
     Om man skriver in att den både producerar och behöver kommer skillnaden att räknas ut.</p>
+    <p>Priserna som visas är de som gäller i Slow River.</p>
 	<form action="logic/resource_titledeed_form.php" method="post">
 		<input type="hidden" id="Id" name="Id" value="<?php echo $titledeed->Id ?>">
 		<table>
@@ -29,6 +33,12 @@ include_once 'header.php';
 				<td>Producerar</td>
 				<td>
 				<?php 
+				$money = 0;
+				if ($titledeed->Money > 0) $money = abs($titledeed->Money);
+				echo "<input type ='number' value = '$money' size='5' min='0' style='direction: rtl;'> ";
+				echo $currency;
+				echo "<br>";
+				
 				foreach ($resources as $resource) {
 				    $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
 				    $quantity = 0;
@@ -38,6 +48,7 @@ include_once 'header.php';
 				        echo "<span style='color:green;font-weight: bold;'>$resource->Name</span>";
 				    }
 				    else echo $resource->Name;
+				    echo " ($resource->PriceSlowRiver $currency / st)";
 				    echo "<br>"; 
 				}
 				
@@ -46,10 +57,21 @@ include_once 'header.php';
 				</td>
 			</tr>
 			<tr>
+				<td>Producerar<br>ovanliga resurser</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
 
-				<td>Behöver</td>
+				<td>Behöver<br>för<br>normalt underhåll</td>
 				<td>
 				<?php 
+				$money = 0;
+				if ($titledeed->Money < 0) $money = abs($titledeed->Money);
+				echo "<input type ='number' value = '$money' size='5' min='0' style='direction: rtl;'> ";
+				echo $currency;
+				echo "<br>";
+				
 				foreach ($resources as $resource) {
 				    $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id,);
 				    $quantity = 0;
@@ -59,6 +81,7 @@ include_once 'header.php';
 				        echo "<span style='color:green;font-weight: bold;'>$resource->Name</span>";
 				    }
 				    else echo $resource->Name;
+				    echo " ($resource->PriceSlowRiver $currency / st)";
 				    echo "<br>";
 				}
 				
@@ -68,20 +91,32 @@ include_once 'header.php';
 			</tr>
 			<tr>
 
-				<td>Behöver<br>för<br>uppgradering</td>
+				<td>Behöver<br>för uppgradering</td>
     			<td>
 				<?php 
-				foreach ($all_resources as $resource) {
+				foreach ($resources as $resource) {
 				    $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id, $current_larp->Id);
 				    $quantity = 0;
 				    if (!empty($resource_titledeed)) $quantity = abs($resource_titledeed->QuantityForUpggrade);
-				    echo "<input type ='number' value = '$quantity' size='5' min='0' style='direction: rtl;'> $resource->Name<br>";
+				    echo "<input type ='number' value = '$quantity' size='5' min='0' style='direction: rtl;'> ";
+				    echo $resource->Name;
+				    echo " ($resource->PriceSlowRiver $currency / st)";
+				    echo "<br>";
 				}
 				
 				
 				?>
 
     			</td>
+			</tr>
+			<tr>
+				<td>Behöver<br>för uppgradering<br>ovanliga resurser</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="SpecialUpgradeRequirements">Speciella krav för uppgradering<br>Dvs krav som inte är i handelsystemet<br>utan något i spel, tex kontrakt</label></td>
+				<td><textarea id="SpecialUpgradeRequirements" name="SpecialUpgradeRequirements" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($titledeed->SpecialUpgradeRequirements)); ?></textarea></td>
 			</tr>
 		</table>
 

@@ -89,6 +89,12 @@ class Resource extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
+    public static function allRareByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_resource WHERE CampaignId = ? AND IsRare=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
     
     public static function TitleDeedProcuces(Titledeed $titledeed) {
         if (is_null($titledeed)) return Array();

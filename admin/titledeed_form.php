@@ -99,6 +99,14 @@ include_once 'header.php';
 				<td><?php selectionByArray('Requires', $resources, true, false) ?>
 				</td>
 			</tr>
+			<tr>
+				<td><label for="PublicNotes">Anteckingar om lagfarten<br>som visas på lagfarten</label></td>
+				<td><textarea id="PublicNotes" name="PublicNotes" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($titledeed->PublicNotes)); ?></textarea></td>
+			</tr>
+			<tr>
+				<td><label for="OrganizerNotes">Anteckningar om lagfarten<br>för arrangörer</label></td>
+				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($titledeed->OrganizerNotes)); ?></textarea></td>
+			</tr>
  
 		</table>
 
