@@ -79,7 +79,7 @@ include 'navigation.php';
 			<td><?php selectionByArray('NPCGroup', NPCGroup::getAllForLARP($current_larp), false, false, $npc->NPCGroupId); ?></td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning</td>
- 			<td><textarea id="Description" Description="text" rows="3" cols="121" maxlength="60000"><?php echo htmlspecialchars($npc->Description); ?></textarea></td></tr>
+ 			<td><textarea id="Description" name="Description" rows="3" cols="121" maxlength="60000"><?php echo htmlspecialchars(nl2br($npc->Description)); ?></textarea></td></tr>
 
  			<tr><td valign="top" class="header">När ska karaktären spelas?<br>Om den ska spelas vid ett särskillt tillfälle.</td>
  			<td><input type="text" id="Time" name="Time" value="<?php echo htmlspecialchars($npc->Time); ?>" size="100" maxlength="250"></td></tr>
