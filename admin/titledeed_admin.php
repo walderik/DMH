@@ -78,8 +78,15 @@ include 'navigation.php';
        $titledeed_array = Titledeed::allByCampaign($current_larp);
        $currency = $current_larp->getCampaign()->Currency;
         if (!empty($titledeed_array)) {
-            echo "<table class='data'>";
-            echo "<tr><th>Namn</th><th>Plats</th><th>Ägare</th><th>Normalt<br>Producerar/Behöver</th><th>Nu<br>Producerar/Behöver</th><th>Resultat<br>utifrån pris i Slow River</th><th></th><th></th></tr>\n";
+            $tableId = "titledeeds";
+            echo "<table id='$tableId' class='data'>";
+            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
+                "<th onclick='sortTable(1, \"$tableId\")'>Plats</th>".
+                "<th onclick='sortTable(2, \"$tableId\")'>Ägare</th>".
+                "<th onclick='sortTable(1, \"$tableId\")'>Normalt<br>Producerar/Behöver</th>".
+                "<th onclick='sortTable(2, \"$tableId\")'>Nu<br>Producerar/Behöver</th>".
+                "<th onclick='sortTable(1, \"$tableId\")'>Resultat<br>utifrån pris i Slow River</th>".
+                "<th></th><th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
                 echo "<tr>\n";
                 echo "<td>" . $titledeed->Name;
@@ -131,5 +138,7 @@ include 'navigation.php';
     </div>
 	
 </body>
-
+<?php 
+include_once '../javascript/table_sort.js';
+?>
 </html>

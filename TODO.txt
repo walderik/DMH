@@ -6,9 +6,6 @@ Karaktärsblad:
 * Visa Props
 * Visa Gruppintrig och grupp-props
 
-
-Lagfarter tilldela ägare (grupp)
-
 Mat:
 DÖH, mat valbart. Pris beror på ålder
 KIR, mat ingår för alla deltagare
@@ -31,6 +28,19 @@ Visa på hus vilka som anmält sig som husägare på resp hus.
 
 Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anmäld till, men som inte har varit så ska man sättas till icke-godkänd
 
+Sökfunktion på roller och grupper (ex Hitta alla som kommer från slow river)
+
+Fritext på lagfarter, anteckning för arr och anteckning för deltagare
+
+Handelssystemet:
+  Främst så vore det från min/annan arr som vill ha överblick på det toppenbra om det syns om personen 
+  är del av handelssystemet, samt någon form av översikt på typ av verksamhet etc. 
+  Samt om det går: Vad verksamheten skapar för resurser.
+Handel - mata in resurser per lagfart, 
+		Se översikt ekonomi per lagfart
+		Översikt ekonomi per roll?
+		Antal resuser  +-
+		skriva ut lagfarter, resurslappar mm
 
 byta user för en person (admin funktion)
 
@@ -38,7 +48,6 @@ Behöver man kunna byta spelare på en roll? JA
 
 Helt nya funktioner:
 Möjligheten mata in kvitton och spara bilder för bokföring. VIKTIGT
-Handel - mata in resurser per lagfat, skriva ut lagfarter, resurslappar mm
 Att göra-listor per lajv och för Admin
 
 
