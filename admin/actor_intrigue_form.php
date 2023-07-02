@@ -23,11 +23,11 @@ include 'navigation.php';
 		<table>
 			<tr>
 				<td><label for="IntrigueText">Intrigtext</label></td>
-				<td><textarea id="IntrigueText" name="IntrigueText" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->IntrigueText); ?></textarea></td>
+				<td><textarea id="IntrigueText" name="IntrigueText" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($intrigueActor->IntrigueText)); ?></textarea></td>
 			</tr>
 			<tr>
 				<td><label for="OffInfo">Off-info</label></td>
-				<td><textarea id="OffInfo" name="OffInfo" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->OffInfo); ?></textarea></td>
+				<td><textarea id="OffInfo" name="OffInfo" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($intrigueActor->OffInfo)); ?></textarea></td>
 			</tr>
 		</table>
 
