@@ -18,6 +18,7 @@ include_once $root . '/models/access_control.php';
 include_once $root . '/models/campaign.php';
 include_once $root . '/models/selection_data.php';
 include_once $root . '/models/email.php';
+include_once $root . '/models/attachment.php';
 include_once $root . '/models/experience.php';
 include_once $root . '/models/group.php';
 include_once $root . '/models/house.php';

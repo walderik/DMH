@@ -35,7 +35,7 @@ class Email extends BaseModel{
         if (isset($arr['Subject'])) $this->Subject = $arr['Subject'];
         if (isset($arr['Text'])) $this->Text = $arr['Text'];
         if (isset($arr['SentAt'])) $this->SentAt = $arr['SentAt'];
-        if (isset($arr['$ErrorMessage'])) $this->$ErrorMessage = $arr['$ErrorMessage'];
+        if (isset($arr['$ErrorMessage'])) $this->ErrorMessage = $arr['$ErrorMessage'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];  
     }
     
@@ -62,13 +62,34 @@ class Email extends BaseModel{
         return $email;
     }
     
-    public static function normalCreate($To, $ToName, $Subject, $Text) {
+    # Normala sättet att skapa ett mail som kommer skickas vid ett senare tillfälle.
+    # Attachments skall vara en array med namnen på filerna som nyckel.
+    # Just nu tillåter vi bara pdf:er som bilagor.
+    public static function normalCreate($To, $ToName, $Subject, $Text, $attachments) {
         $email = self::newWithDefault();
         $email->To = $To;
         $email->ToName = $ToName;
         $email->Subject = $Subject;
         $email->Text = $Text; 
+        if (!is_null($attachments) && !empty($attachments)) $email->SentAt = date_format(new Datetime(),"Y-m-d H:i:s"); # Förhindra att det skickas innan bilagorna sparats färdigt.
         $email->create();
+        
+        if (!is_null($attachments) && !empty($attachments)) {
+            foreach ($attachments as $filename => $attachment) {
+                if (is_null($filename) || is_numeric($filename)) {
+                    if (is_null($email->larp())) {
+                        $filename = utf8_decode("Berghemsvänner");
+                    } else {
+                        $filename = utf8_decode($current_larp->Name);
+                    }
+                }
+                if (!str_ends_with($filename,'.pdf')) $filename = $filename.'.pdf';
+                
+                Attachment::normalCreate($email, $filename, $attachment);
+            }
+            $email->SentAt = null;
+            $email->update();
+        }
     }
     
     public static function allBySelectedLARP(Larp $larp) {
@@ -125,6 +146,10 @@ class Email extends BaseModel{
         if (empty($this->ToName)) return "Stranger";
         return str_replace( array( '\'', '"', ',' , ';', '<', '>' ), ' ', $this->ToName);
 //         return $this->ToName;
+    }
+    
+    public function attachments() {
+        return Attachment::allByEmail($this);
     }
     
     # Update an existing object in db
@@ -235,21 +260,13 @@ class Email extends BaseModel{
         //Attach an image file
         // $mail->addAttachment('images/phpmailer_mini.png');
         
-//         if (!is_null($attachments) && !empty($attachments)) {
-//             foreach ($attachments as $name => $attachment) {
-//                 if (is_null($name) || is_numeric($name)) {
-//                     if (is_null($current_larp)) {
-//                         $name = utf8_decode("Berghemsvänner");
-//                     } else {
-//                         $name = utf8_decode($current_larp->Name);
-//                     }
-//                 }
-//                 if (!str_ends_with($name,'.pdf')) {
-//                     $name = $name.'.pdf';
-//                 }
-//                 $mail->AddStringAttachment($attachment, $name, 'base64', 'application/pdf');
-//             }
-//         }
+        $attachments = $this->attachments();
+        
+        if (!is_null($attachments) && !empty($attachments)) {
+            foreach ($attachments as $attachment) {
+                $mail->AddStringAttachment($attachment->Attachement, $attachment->Filename, 'base64', 'application/pdf');
+            }
+        }
         
         
         $mail->isHTML(true);
