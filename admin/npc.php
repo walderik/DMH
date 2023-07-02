@@ -28,6 +28,7 @@ div.npc {
 
             <div>
             <h2>Alla tilldelade NPC'er</h2>
+            <p>För att deltagaren ska kunna se en NPC som de har fått tilldelad måste man "Skicka NPC" till dem. Då får deltagaren ett mail om det och NPC'n går att se på deltagarens översiktssida. Det går att skicka en hel grupp på en gång.</p>
             <?php 
             $persons=Person::getAllInterestedNPC($current_larp);
             
@@ -47,7 +48,7 @@ div.npc {
                     }
                     else {
                         echo "<form action='logic/release_npc_group.php' method='post'><input type='hidden' name='id' value='$npc_group->Id'>\n";
-                        echo "<input type ='submit' value='Skicka npc'er till deltagarna'>\n";
+                        echo "<input type ='submit' value='Skicka NPC:er till deltagarna'>\n";
                         echo "</form>\n";
                     }
                 }
@@ -67,7 +68,7 @@ div.npc {
                     
                     if ($npc_group->IsReleased() && !$npc->IsReleased()) {
                         echo "<form action='logic/release_npc.php' method='post'><input type='hidden' name='id' value='$npc->Id'>\n";
-                        echo "<input type ='submit' value='Skicka npc till deltagaren'>\n";
+                        echo "<input type ='submit' value='Skicka NPC:n till deltagaren'>\n";
                         echo "</form>\n";
                     }
                     
@@ -96,7 +97,7 @@ div.npc {
                 }
                 else {
                     echo "<form action='logic/release_npc.php' method='post'><input type='hidden' name='id' value='$npc->Id'>\n";
-                    echo "<input type ='submit' value='Skicka npc till deltagaren'>\n";
+                    echo "<input type ='submit' value='Skicka NPC:n till deltagaren'>\n";
                     echo "</form>\n";
                 }
                 
