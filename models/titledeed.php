@@ -9,6 +9,7 @@ class Titledeed extends BaseModel{
     public $IsTradingPost = 0;
     public $CampaignId;
     public $Money = 0;
+    public $MoneyForUpgrade = 0;
     public $OrganizerNotes;
     public $PublicNotes;
     public $SpecialUpgradeRequirements;
@@ -32,6 +33,7 @@ class Titledeed extends BaseModel{
         if (isset($arr['IsTradingPost'])) $this->IsTradingPost = $arr['IsTradingPost'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['Money'])) $this->Money = $arr['Money'];
+        if (isset($arr['MoneyForUpgrade'])) $this->MoneyForUpgrade = $arr['MoneyForUpgrade'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['PublicNotes'])) $this->PublicNotes = $arr['PublicNotes'];
         if (isset($arr['SpecialUpgradeRequirements'])) $this->SpecialUpgradeRequirements = $arr['SpecialUpgradeRequirements'];
@@ -51,10 +53,10 @@ class Titledeed extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_titledeed SET Name=?, Location=?, Tradeable=?, IsTradingPost=?,
-                  CampaignId=?, Money=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=? WHERE Id = ?;");
+                  CampaignId=?, Money=?, MoneyForUpgrade=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
-            $this->CampaignId, $this->Money, $this->OrganizerNotes, $this->PublicNotes, 
+            $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes, 
             $this->SpecialUpgradeRequirements, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -67,10 +69,10 @@ class Titledeed extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_titledeed (Name, Location, Tradeable, IsTradingPost, 
-            CampaignId, Money, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements) VALUES (?,?,?,?,?, ?,?,?,?);");
+            CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements) VALUES (?,?,?,?,?,?, ?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
-            $this->CampaignId, $this->Money, $this->OrganizerNotes, $this->PublicNotes,
+            $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes,
             $this->SpecialUpgradeRequirements))) {
                 $this->connect()->rollBack();
                 $stmt = null;
