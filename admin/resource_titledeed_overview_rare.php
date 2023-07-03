@@ -53,7 +53,6 @@ th, td {
 		foreach ($resources as $key => $resource) {
 		    echo "<th style='text-align:right'>$sums[$key]</th>\n";
 		}
-		echo "<td></td>";
 		echo "</tr>\n";
 		?>
 		    
