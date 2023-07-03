@@ -26,7 +26,7 @@ if (!$role->isRegistered($current_larp)) {
 }
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
-
+if (empty($larp_role)) $larp_role = Reserve_LARP_Role::loadByIds($role->Id, $current_larp->Id);
 
 if (isset($role->GroupId)) {
     $group=Group::loadById($role->GroupId);

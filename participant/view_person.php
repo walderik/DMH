@@ -25,7 +25,11 @@ if (!$current_person->isRegistered($current_larp) && !$current_person->isReserve
 }
 
 $registration = Registration::loadByIds($current_person->Id, $current_larp->Id);
-
+$isReserve = false;
+if (empty($registration)) {
+    $registration = Reserve_Registration::loadByIds($current_person->Id, $current_larp->Id);
+    $isReserve = true;
+}
 
 include 'navigation.php';
 ?>
@@ -65,7 +69,9 @@ include 'navigation.php';
 
 
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo nl2br($current_person->OtherInformation);?></td></tr>
-			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($registration->isMember())?></td></tr>
+			<?php if (!$isReserve) { ?>
+			<tr><td valign="top" class="header">Medlem</td><td>
+			<?php echo ja_nej($registration->isMember()) ?></td></tr>
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
 			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->ApprovedCharacters)) { echo $registration->ApprovedCharacters; } else { echo "Nej"; }?></td></tr>
 			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
@@ -81,7 +87,9 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Avbokad</td><td><?php echo ja_nej($registration->NotComing);?></td></tr>
 			<tr><td valign="top" class="header">Återbetalning</td><td><?php echo $registration->ToBeRefunded;?></td></tr>
 			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><?php echo $registration->RefundDate;?></td></tr>
-			<?php  }?>
+			<?php  }
+		    }
+		    ?>
 		</table>		
 
 		</div>
