@@ -31,6 +31,10 @@ class Titledeed extends BaseModel{
         if (isset($arr['Tradeable'])) $this->Tradeable = $arr['Tradeable'];
         if (isset($arr['IsTradingPost'])) $this->IsTradingPost = $arr['IsTradingPost'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+        if (isset($arr['Money'])) $this->Money = $arr['Money'];
+        if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
+        if (isset($arr['PublicNotes'])) $this->PublicNotes = $arr['PublicNotes'];
+        if (isset($arr['SpecialUpgradeRequirements'])) $this->SpecialUpgradeRequirements = $arr['SpecialUpgradeRequirements'];
         
     }
     

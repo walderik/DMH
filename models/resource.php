@@ -11,7 +11,7 @@ class Resource extends BaseModel{
     public $IsRare = 0;
     public $CampaignId;
     
-    public static $orderListBy = 'Name';
+    public static $orderListBy = 'IsRare, Name';
     
     
     public static function newFromArray($post){
@@ -45,6 +45,10 @@ class Resource extends BaseModel{
     
     # Update an existing object in db
     public function update() {
+        if ($this->IsRare == 1) {
+            $this->PriceJunkCity = 0;
+            $this->PriceSlowRiver = 0;
+        }
         $stmt = $this->connect()->prepare("UPDATE regsys_resource SET Name=?, 
             UnitSingular=?, UnitPlural=?, PriceSlowRiver=?, PriceJunkCity=?, IsRare=?,
             CampaignId=? WHERE Id = ?;");
@@ -60,6 +64,10 @@ class Resource extends BaseModel{
     
     # Create a new object in db
     public function create() {
+        if ($this->IsRare == 1) {
+            $this->PriceJunkCity = 0;
+            $this->PriceSlowRiver = 0;
+        }
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_resource (Name, UnitSingular, 
             UnitPlural, PriceSlowRiver, PriceJunkCity, IsRare, CampaignId) VALUES (?,?,?,?,?,?,?);");
