@@ -269,7 +269,7 @@ class Titledeed extends BaseModel{
         $res = 0;
         foreach ($resource_titledeeds as $resource_titledeed) {
             $resource = $resource_titledeed->getResource();
-            $res = $res + $resource->PriceSlowRiver * $resource_titledeed->Quantity;
+            $res = $res + $resource->Price * $resource_titledeed->Quantity;
         }
         return $res;
     }

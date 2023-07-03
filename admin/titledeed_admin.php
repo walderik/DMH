@@ -85,7 +85,7 @@ include 'navigation.php';
                 "<th onclick='sortTable(2, \"$tableId\")'>Ägare</th>".
                 "<th onclick='sortTable(1, \"$tableId\")'>Normalt<br>Producerar/Behöver</th>".
                 "<th onclick='sortTable(2, \"$tableId\")'>Nu<br>Producerar/Behöver</th>".
-                "<th onclick='sortTable(1, \"$tableId\")'>Resultat<br>utifrån pris i Slow River</th>".
+                "<th onclick='sortTable(1, \"$tableId\")'>Resultat</th>".
                 "<th></th><th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
                 echo "<tr>\n";

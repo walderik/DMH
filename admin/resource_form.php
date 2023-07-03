@@ -73,15 +73,9 @@ include_once 'header.php';
 			</tr>
 			<tr>
 
-				<td><label for="UnitSingular">Pris i Slow River</label></td>
-				<td><input type="text" id="PriceSlowRiver" name="PriceSlowRiver"
-					 value="<?php echo htmlspecialchars($resource->PriceSlowRiver); ?>" size="100" maxlength="250" required></td>
-			</tr>
-			<tr>
-
-				<td><label for="PriceJunkCity">Pris i Junk City</label></td>
-				<td><input type="text" id="PriceJunkCity" name="PriceJunkCity"
-					 value="<?php echo htmlspecialchars($resource->PriceJunkCity); ?>" size="100" maxlength="250" required></td>
+				<td><label for="UnitSingular">Pris</label></td>
+				<td><input type="text" id="Price" name="Price"
+					 value="<?php echo htmlspecialchars($resource->Price); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 

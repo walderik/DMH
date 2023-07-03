@@ -20,12 +20,16 @@ include_once 'header.php';
     include 'navigation.php';
     ?>
     
-
+<style>
+input[type="number"] {
+  width: 75px;
+  text-align: right;
+}
+</style>
     <div class="content"> 
     <h1>Redigera resurser för <?php echo $titledeed->Name ?></h1>
     <p>En lagfart kan antingen producera eller behöva en resurs. 
     Om man skriver in att den både producerar och behöver kommer skillnaden att räknas ut.</p>
-    <p>Priserna som visas är de som gäller i Slow River.</p>
 	<form action="logic/resource_titledeed_form_save.php" method="post">
 		<input type="hidden" id="Id" name="Id" value="<?php echo $titledeed->Id ?>">
 		<table>
@@ -35,7 +39,7 @@ include_once 'header.php';
 				<?php 
 				$money = 0;
 				if ($titledeed->Money > 0) $money = abs($titledeed->Money);
-				echo "<input type='number' name='Produces_Money' value = '$money' size='5' min='0' style='direction: rtl;'> ";
+				echo "<input type='number' name='Produces_Money' value = '$money' min='0'> ";
 				echo $currency;
 				echo "<br>";
 				
@@ -43,12 +47,12 @@ include_once 'header.php';
 				    $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
 				    $quantity = 0;
 				    if (!empty($resource_titledeed) && $resource_titledeed->Quantity > 0) $quantity = abs($resource_titledeed->Quantity);
-				    echo "<input type ='number' name='Produces_$resource->Id' value = '$quantity' size='3' min='0' style='direction: rtl;'> ";
+				    echo "<input type ='number' name='Produces_$resource->Id' value = '$quantity' min='0'> ";
 				    if (in_array($resource->Id, $normally_produces_resourceIds)) {
 				        echo "<span style='color:green;font-weight: bold;'>$resource->Name</span>";
 				    }
 				    else echo $resource->Name;
-				    echo " ($resource->PriceSlowRiver $currency / st)";
+				    echo " ($resource->Price $currency / st)";
 				    echo "<br>"; 
 				}
 				
@@ -68,7 +72,7 @@ include_once 'header.php';
 				<?php 
 				$money = 0;
 				if ($titledeed->Money < 0) $money = abs($titledeed->Money);
-				echo "<input type ='number' name='Requires_Money' value = '$money' size='5' min='0' style='direction: rtl;'> ";
+				echo "<input type ='number' name='Requires_Money' value = '$money' min='0'> ";
 				echo $currency;
 				echo "<br>";
 				
@@ -76,12 +80,12 @@ include_once 'header.php';
 				    $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id,);
 				    $quantity = 0;
 				    if (!empty($resource_titledeed) && $resource_titledeed->Quantity < 0) $quantity = abs($resource_titledeed->Quantity);
-				    echo "<input type ='number' name='Requires_$resource->Id' value = '$quantity' size='5' min='0' style='direction: rtl;'> ";
+				    echo "<input type ='number' name='Requires_$resource->Id' value = '$quantity' min='0'> ";
 				    if (in_array($resource->Id, $normally_requires_resourceIds)) {
 				        echo "<span style='color:green;font-weight: bold;'>$resource->Name</span>";
 				    }
 				    else echo $resource->Name;
-				    echo " ($resource->PriceSlowRiver $currency / st)";
+				    echo " ($resource->Price $currency / st)";
 				    echo "<br>";
 				}
 				
@@ -98,9 +102,9 @@ include_once 'header.php';
 				    $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id, $current_larp->Id);
 				    $quantity = 0;
 				    if (!empty($resource_titledeed)) $quantity = abs($resource_titledeed->QuantityForUpgrade);
-				    echo "<input type ='number' name='Upgrade_Required_$resource->Id' value = '$quantity' size='5' min='0' style='direction: rtl;'> ";
+				    echo "<input type ='number' name='Upgrade_Required_$resource->Id' value = '$quantity' min='0'> ";
 				    echo $resource->Name;
-				    echo " ($resource->PriceSlowRiver $currency / st)";
+				    echo " ($resource->Price $currency / st)";
 				    echo "<br>";
 				}
 				

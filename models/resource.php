@@ -6,8 +6,7 @@ class Resource extends BaseModel{
     public $Name;
     public $UnitSingular;
     public $UnitPlural;
-    public $PriceSlowRiver = 0;
-    public $PriceJunkCity = 0;
+    public $Price = 0;
     public $IsRare = 0;
     public $CampaignId;
     
@@ -26,8 +25,7 @@ class Resource extends BaseModel{
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
         if (isset($arr['UnitSingular'])) $this->UnitSingular = $arr['UnitSingular'];
         if (isset($arr['UnitPlural'])) $this->UnitPlural = $arr['UnitPlural'];
-        if (isset($arr['PriceSlowRiver'])) $this->PriceSlowRiver = $arr['PriceSlowRiver'];
-        if (isset($arr['PriceJunkCity'])) $this->PriceJunkCity = $arr['PriceJunkCity'];
+        if (isset($arr['Price'])) $this->Price = $arr['Price'];
         if (isset($arr['IsRare'])) $this->IsRare = $arr['IsRare']; 
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         
@@ -46,15 +44,14 @@ class Resource extends BaseModel{
     # Update an existing object in db
     public function update() {
         if ($this->IsRare == 1) {
-            $this->PriceJunkCity = 0;
-            $this->PriceSlowRiver = 0;
+            $this->Price = 0;
         }
         $stmt = $this->connect()->prepare("UPDATE regsys_resource SET Name=?, 
-            UnitSingular=?, UnitPlural=?, PriceSlowRiver=?, PriceJunkCity=?, IsRare=?,
+            UnitSingular=?, UnitPlural=?, Price=?, IsRare=?,
             CampaignId=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->UnitSingular, $this->UnitPlural, 
-            $this->PriceSlowRiver, $this->PriceJunkCity, $this->IsRare, $this->CampaignId, $this->Id))) {
+            $this->Price, $this->IsRare, $this->CampaignId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -65,15 +62,14 @@ class Resource extends BaseModel{
     # Create a new object in db
     public function create() {
         if ($this->IsRare == 1) {
-            $this->PriceJunkCity = 0;
-            $this->PriceSlowRiver = 0;
+            $this->Price = 0;
         }
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_resource (Name, UnitSingular, 
-            UnitPlural, PriceSlowRiver, PriceJunkCity, IsRare, CampaignId) VALUES (?,?,?,?,?,?,?);");
+            UnitPlural, Price, IsRare, CampaignId) VALUES (?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->UnitSingular, $this->UnitPlural, 
-            $this->PriceSlowRiver, $this->PriceJunkCity, $this->IsRare, $this->CampaignId))) {
+            $this->Price, $this->IsRare, $this->CampaignId))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");

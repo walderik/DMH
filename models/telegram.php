@@ -5,9 +5,9 @@ class Telegram extends BaseModel{
     public  $Id;
     public  $Deliverytime;
     public  $Sender;
-    public  $SenderCity = 'Junk City';
+    public  $SenderCity;
     public  $Reciever;
-    public  $RecieverCity = 'Slow River';
+    public  $RecieverCity;
     public  $Message;
     public  $OrganizerNotes;
     public  $Approved = 0;
