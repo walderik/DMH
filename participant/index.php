@@ -131,7 +131,7 @@ include "navigation.php";
                             echo "</td></tr>\n";
                         }
 
-                        echo "<tr><td>Säker plats på lajvet</td><td>".showStatusIcon(($registration->SpotAtLARP==1))."</a></td></tr>";
+                        echo "<tr><td>Säker plats på lajvet</td><td>".showStatusIcon(($registration->hasSpotAtLarp()))."</a></td></tr>";
                        
                     }
                     echo "</table>";

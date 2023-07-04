@@ -189,6 +189,11 @@ class Registration extends BaseModel{
         return false;
         
     }
+    
+    public function hasSpotAtLarp() {
+        if ($this->SpotAtLARP == 1) return true;
+        return false;
+    }
  
     public static function loadByIds($personId, $larpId)
     {

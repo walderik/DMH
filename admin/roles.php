@@ -19,7 +19,7 @@
     		    echo "<table id='$tableId' class='data'>";
     		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
         		    "<th>&nbsp; &nbsp; </th>".
-        		    "<th onclick='sortTable(2, \"$tableId\")'>Godkänd</th>".
+        		    "<th onclick='sortTable(2, \"$tableId\")'>Plats<br>på lajvet</th>".
         		    "<th onclick='sortTable(3, \"$tableId\")' width='10%'>Yrke</th>".
         		    "<th onclick='sortTable(4, \"$tableId\")'>Typ av lajvare</th>".
         		    "<th onclick='sortTable(5, \"$tableId\")'>Intrigtyper</th>".
@@ -66,7 +66,7 @@
         		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>\n";
         		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
         		        echo "</td>\n";
-        		        echo "<td align='center'>".showStatusIcon($person->isApprovedCharacters($current_larp))."</td>\n";
+        		        echo "<td align='center'>".showStatusIcon($registration->hasSpotAtLarp())."</td>\n";
         		        echo "<td>$role->Profession</td>\n";
         		        if ($role->isMysLajvare()) {
         		            echo "<td></td>";
@@ -133,7 +133,7 @@
     		    echo "<table id='$tableId' class='data'>";
     		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
         		    "<th>&nbsp; &nbsp; </th>".
-        		    "<th onclick='sortTable(2, \"$tableId\")'>Godkänd</th>".
+        		    "<th onclick='sortTable(2, \"$tableId\")'>Plats<br>på lajvet</th>".
         		    "<th onclick='sortTable(3, \"$tableId\")'>Yrke</th>".
         		    "<th onclick='sortTable(4, \"$tableId\")'>Typ av lajvare</th>".
         		    "<th onclick='sortTable(5, \"$tableId\")'>Intrigtyper</th>".
@@ -177,7 +177,7 @@
         		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>\n";
         		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
         		        echo "</td>\n";
-        		        echo "<td align='center'>".showStatusIcon($person->isApprovedCharacters($current_larp))."</td>\n";
+        		        echo "<td align='center'>".showStatusIcon($registration->hasSpotAtLarp())."</td>\n";
         		        
         		        echo "<td>" . $role->Profession . "</td>\n";
         		        if ($role->isMysLajvare()) {

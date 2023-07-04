@@ -92,7 +92,7 @@
         		        echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
         		        
         		        echo "<td>";
-        		        if ($registration->SpotAtLARP == 1) {
+        		        if ($registration->hasSpotAtLarp()) {
         		            echo showStatusIcon(true);
         		        }
         		        else {
