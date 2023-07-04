@@ -19,11 +19,9 @@ $name = (isset($_POST['name'])) ? $_POST['name'] : 'Stranger';
 $referer = (isset($_POST['referer'])) ? $_POST['referer'] : '../../index.php';
 $referer .= "?message=contact_email_sent";
 
-BerghemMailer::sendContact($_POST['email'], $name, "Meddelande till $name från $current_user->Name", nl2br($_POST['text']));
+BerghemMailer::sendContactMailToSomeone($_POST['email'], $name, "Meddelande till $name från $current_user->Name", nl2br($_POST['text']));
+// BerghemMailer::sendContactMailToAll($current_larp, nl2br($_POST['text']));
 
-// BerghemMailer::send($email, $name, $text, $subject, array(), $campaign->Email);
-//BerghemMailer::send($campaign->Email, $name, $text, "Kopia av ".$subject);
 
 header('Location: ' . $referer);
 
-// header('Location: ../../index.php');
