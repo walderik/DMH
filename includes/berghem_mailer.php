@@ -260,6 +260,31 @@ class BerghemMailer {
         
     }
     
+    # Skicka mail till någon
+    public static function sendContactMailToSomeone(String $email, String $name, String $subject, String $text) {
+        BerghemMailer::send($email, $name, $text, $subject);
+    }
+    
+    # Skicka mail till alla deltagare
+    public static function sendContactMailToAll(LARP $larp, String $text, $onlyHasSpotAtLarp=true) {
+        $name = "Deltagare på $larp->Name";
+        $campaign = $larp->getCampaign();
+        $subject = "Meddelande från $campaign->Name";
+        
+        # https://www.w3schools.com/php/func_array_chunk.asp
+        $receiver_email = array();
+        $persons = Person::getAllRegistered($larp, false);
+        foreach($persons as $person) {
+            $registration = $person->getRegistration($larp);
+            if (empty($registration)) continue;
+            if ($onlyHasSpotAtLarp && !$registration->hasSpotAtLarp()) continue;
+            $receiver_email[] = $person->Email;
+        }
+        if (empty($receiver_email)) return;
+        foreach( array_chunk($receiver_email,15) as $email_to) {
+            BerghemMailer::send(serialize($email_to), $name, $text, $subject);
+        }
+    }
     
 }
 
