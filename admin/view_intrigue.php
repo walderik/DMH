@@ -463,6 +463,14 @@ foreach ($intrigue_letters as $intrigue_letter) {
     echo "<a href='letter_form.php?operation=update&id=$letter->Id'><i class='fa-solid fa-pen'></i></a>";
     echo " ";
     echo "<a href='logic/view_intrigue_logic.php?operation=remove_letter&IntrigueLetterId=$intrigue_letter->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort brev'></i></a>";
+
+    $letter_intrigues = $intrigue_letter->getAllIntrigues();
+    foreach ($letter_intrigues as $letter_intrigue) {
+        if ($letter_intrigue->Id != $intrigue->Id) {
+            echo "<br>&nbsp;&nbsp;&nbsp;<a href='view_intrigue.php?Id=$letter_intrigue->Id'>Intrig: $letter_intrigue->Number. $letter_intrigue->Name</a>";
+        }
+    }
+    
     echo "<br>"; 
 }
 $intrigue_telegrams = $intrigue->getAllTelegrams();
@@ -472,6 +480,12 @@ foreach ($intrigue_telegrams as $intrigue_telegram) {
     echo "<a href='telegram_form.php?operation=update&id=$telegram->Id'><i class='fa-solid fa-pen'></i></a>";
     echo " ";
     echo "<a href='logic/view_intrigue_logic.php?operation=remove_telegram&IntrigueTelegramId=$intrigue_telegram->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort telegram'></i></a>";
+    $telegram_intrigues = $intrigue_telegram->getAllIntrigues();
+    foreach ($telegram_intrigues as $telegram_intrigue) {
+        if ($telegram_intrigue->Id != $intrigue->Id) {
+            echo "<br>&nbsp;&nbsp;&nbsp;<a href='view_intrigue.php?Id=$telegram_intrigue->Id'>Intrig: $telegram_intrigue->Number. $telegram_intrigue->Name</a>";
+        }
+    }
     echo "<br>";
 }
 

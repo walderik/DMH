@@ -60,6 +60,10 @@ class Intrigue_Letter extends BaseModel{
         return Letter::loadById($this->LetterId);
     }
     
+    public function getAllIntrigues() {
+        return Intrigue::getAllIntriguesForIntrigueLetter($this);
+    }
+    
     public static function delete($id)
     {
         $intrigueLetter = static::loadById($id);

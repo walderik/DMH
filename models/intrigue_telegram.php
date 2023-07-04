@@ -60,6 +60,11 @@ class Intrigue_Telegram extends BaseModel{
     public function getTelegram() {
         return Telegram::loadById($this->TelegramId);
     }
+
+    public function getAllIntrigues() {
+        return Intrigue::getAllIntriguesForIntrigueTelegram($this);
+    }
+    
     
     public static function delete($id)
     {

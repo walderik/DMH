@@ -420,6 +420,14 @@ class Intrigue extends BaseModel{
         return static::getAllIntriguesForNPC($intrigueNPC->NPCId, $intrigueNPC->getIntrigue()->LarpId);
     }
     
+    public static function getAllIntriguesForIntrigueLetter(Intrigue_Letter $intrigueLetter) {
+        return static::getAllIntriguesForLetter($intrigueLetter->LetterId, $intrigueLetter->getIntrigue()->LarpId);
+    }
+    
+    public static function getAllIntriguesForIntrigueTelegram(Intrigue_Telegram $intrigueTelegram) {
+        return static::getAllIntriguesForTelegram($intrigueTelegram->TelegramId, $intrigueTelegram->getIntrigue()->LarpId);
+    }
+    
     public static function getAllIntriguesForGroup($groupId, $larpId) {
             $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
                 "SELECT IntrigueId FROM regsys_intrigueactor WHERE GroupId = ? AND LarpId = ?) ORDER BY Id";
@@ -448,5 +456,17 @@ class Intrigue extends BaseModel{
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
             "SELECT IntrigueId FROM regsys_intrigue_npc WHERE NPCId = ? AND LarpId = ?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($npcId, $larpId));
+    }
+
+    public static function getAllIntriguesForLetter($letterId, $larpId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigue_letter WHERE LetterId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($letterId, $larpId));
+    }
+
+    public static function getAllIntriguesForTelegram($telegramId, $larpId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigue_telegram WHERE TelegramId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($telegramId, $larpId));
     }
 }
