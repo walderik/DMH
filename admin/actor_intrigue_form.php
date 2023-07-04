@@ -26,7 +26,7 @@ include 'navigation.php';
 				<td><textarea id="IntrigueText" name="IntrigueText" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($intrigueActor->IntrigueText)); ?></textarea></td>
 			</tr>
 			<tr>
-				<td><label for="OffInfo">Off-info</label></td>
+				<td><label for="OffInfo">Off-info<br>till deltagaren</label></td>
 				<td><textarea id="OffInfo" name="OffInfo" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($intrigueActor->OffInfo)); ?></textarea></td>
 			</tr>
 		</table>

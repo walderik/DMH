@@ -12,7 +12,7 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo "<table width='100%''>\n";
     
     echo "<tr><td width='10%'>Intrigtext</td><td>".htmlspecialchars(nl2br($intrgueActor->IntrigueText))."</td></tr>\n";
-    echo "<tr><td>Off-info</td><td>".htmlspecialchars(nl2br($intrgueActor->OffInfo))."</td></tr>\n";
+    echo "<tr><td>Off-info<br>till deltagaren</td><td>".htmlspecialchars(nl2br($intrgueActor->OffInfo))."</td></tr>\n";
     echo "<tr><td>Ska ha vid incheck</td>\n";
     echo "<td>";
     echo "<a href='choose_intrigue_checkin.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
