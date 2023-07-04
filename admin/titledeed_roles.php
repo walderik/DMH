@@ -9,7 +9,7 @@
         <h1>Karaktärer med handel</h1>
         <p>Sidokaraktärer markeras med en * efter namnet</p>
      		<?php 
-     		$roles = $current_larp->getAllRoles();
+     		$roles = Role::getAllInCampaign($current_larp->CampaignId);
     		if (empty($roles)) {
     		    echo "Inga anmälda karaktärer";
     		} else {
@@ -22,7 +22,6 @@
         		    "<th onclick='sortTable(4, \"$tableId\")'>Lagfarter</th>".
                     "</tr>\n";
     		    foreach ($roles as $role)  {
-    		        //TODO reda ut logiken
     		        //Man vill se alla roller som kommer på lajvet och har handel och 
     		        //alla roller som äger lagfart oavsett om de kommer eller inte
     		        $titledeeds = Titledeed::getAllForRole($role);

@@ -279,6 +279,13 @@ class Role extends BaseModel{
             "regsys_larp_role.LarpId=?;";
         return static::getOneObjectQuery($sql, array($person->Id, $larp->Id));
     }
+
+    public static function getAllInCampaign($campaignId) {
+        $sql = "SELECT * FROM regsys_role WHERE CampaignId=? ".
+            "ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($campaignId));
+    }
+    
     
     
     public static function getAllRoles(LARP $larp) {

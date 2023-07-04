@@ -114,6 +114,11 @@ class Group extends BaseModel{
          if (!$campaign->is_dmh()) return false;
          if ($this->WealthId > 2) return true;
          $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
+         
+         //Äger lagfart
+         $titledeeds = Titledeed::getAllForGroup($this);
+         if (!empty($titledeeds)) return true;
+         
          $intrigtyper = commaStringFromArrayObject($larp_group->getIntrigueTypes());
          return (str_contains($intrigtyper, 'Handel'));
          # Hantering för de som har gamla lagfarter
@@ -155,6 +160,12 @@ class Group extends BaseModel{
          $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND Id IN ".
              "(SELECT GroupId from regsys_larp_group where LARPId = ?);";
          return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+     }
+     
+     public static function getAllInCampaign($campaignId) {
+         $sql = "SELECT * FROM regsys_group WHERE CampaignId=? ".
+             "ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($campaignId));
      }
      
      

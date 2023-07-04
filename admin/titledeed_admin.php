@@ -34,7 +34,8 @@ include 'navigation.php';
         <p>
         <a href="resource_titledeed_overview_normal.php">Översikt - normala resurser</a><br>
         <a href="resource_titledeed_overview_rare.php">Översikt - ovanliga resurser</a><br>
-        <a href="titledeed_roles.php">Karaktärer med handel</a>
+        <a href="titledeed_roles.php">Karaktärer med handel</a><br>
+        <a href="titledeed_groups.php">Grupper med handel</a>
         </p>
         <p>Ikoner:<br>
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
