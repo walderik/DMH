@@ -31,8 +31,11 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Lagfarter</h1>
-        <p><a href="resource_titledeed_overview_normal.php">Översikt - normala resurser</a><br>
-        <a href="resource_titledeed_overview_rare.php">Översikt - ovanliga resurser</a></p>
+        <p>
+        <a href="resource_titledeed_overview_normal.php">Översikt - normala resurser</a><br>
+        <a href="resource_titledeed_overview_rare.php">Översikt - ovanliga resurser</a><br>
+        <a href="titledeed_roles.php">Karaktärer med handel</a>
+        </p>
         <p>Ikoner:<br>
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
         <i class='fa-solid fa-house'></i> - Handelsstation</p>
