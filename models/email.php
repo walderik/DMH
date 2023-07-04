@@ -8,7 +8,7 @@ class Email extends BaseModel{
     public  $SenderUserId;
     public  $LarpId;
     public  $From;
-    public  $To;
+    public  $To; # Skall vara endera EN epostadress som en sträng eller en serialised array av epost-strängar. https://www.w3schools.com/php/func_var_serialize.asp
     public  $ToName;
     public  $CC;
     public  $Subject;
@@ -243,19 +243,21 @@ class Email extends BaseModel{
         //Set an alternative reply-to address
         $mail->addReplyTo($this->From, utf8_decode($this->myName()));
         //Set who the message is to be sent to
-        $mail->addAddress($this->To, utf8_decode($this->receiverName()));
         
-        //Set cc
+        if (!($to_array = @unserialize($this->To))) {
+            $mail->addAddress($this->To, utf8_decode($this->receiverName()));
+        } elseif (!empty($to_array)) {
+            foreach($to_array as $to) {
+//                 echo "<h1>TO = $to</h1>";
+                $mail->addAddress($to, utf8_decode($this->receiverName()));
+            }
+        }
+
         if (!empty($this->CC)) {
             $mail->addCC($this->CC);
         }
-        //         $mail->addAddress('mats.rappe@yahoo.se', utf8_decode($to_name));
-        //Set the subject line
+
         $mail->Subject = utf8_decode($this->Subject);
-        //Read an HTML message body from an external file, convert referenced images to embedded,
-        //convert HTML into a basic plain-text alternative body
-        // $mail->msgHTML(file_get_contents('contents.html'), __DIR__);
-        //Replace the plain text body with one created manually
         $mail->AltBody = utf8_decode($this->Text);
         //Attach an image file
         // $mail->addAttachment('images/phpmailer_mini.png');

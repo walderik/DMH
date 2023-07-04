@@ -21,112 +21,15 @@ class BerghemMailer {
     # Attachments skall vara en array med namnen på filerna som nyckel.
     public static function send(string $to_email, string $to_name, string $text, string $subject=null, ?array $attachments=[], ?string $cc="") {
     
-        global $current_larp, $current_user;
+        global $current_user;
         
         //Om test, skicka bara till inloggad användare
         if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
             $to_email = $current_user->Email;
         }
-            
-//         $from = static::$from;
-//         $myName = "Berghems vänner";
-//         $hej = "Hej";
-            
-        
-//         if (!is_null($current_larp)) {
-//             $campaign = $current_larp->getCampaign();
-//             if (!is_null($campaign)) {
-//                 $from = $campaign->Email;
-//                 $myName = $campaign->Name;
-//                 $hej = $campaign->hej();
-//             }
-//         }
-        
-//         if (is_null($subject)) $subject = "Meddelande från $myName";
+
         
         $email = Email::normalCreate($to_email, $to_name, $subject, $text, $attachments);
-        
-//         //Create a new PHPMailer instance
-//         $mail = new PHPMailer();
-//         //Set who the message is to be sent from
-//         $mail->setFrom($from, utf8_decode($myName),0);
-// //         $mail->setFrom($from, utf8_decode($myName)); # Tror faktiskt det ska vara så här
-//         //Set an alternative reply-to address
-//         $mail->addReplyTo($from, utf8_decode($myName));
-//         //Set who the message is to be sent to
-//         $mail->addAddress($to_email, utf8_decode($to_name));
-        
-//         //Set cc
-//         if (!empty($cc)) {
-//             $mail->addCC($cc);
-//         }
-// //         $mail->addAddress('mats.rappe@yahoo.se', utf8_decode($to_name));
-//         //Set the subject line
-//         $mail->Subject = utf8_decode($subject);
-//         //Read an HTML message body from an external file, convert referenced images to embedded,
-//         //convert HTML into a basic plain-text alternative body
-//         // $mail->msgHTML(file_get_contents('contents.html'), __DIR__);
-//         //Replace the plain text body with one created manually
-//         $mail->AltBody = utf8_decode($text);
-//         //Attach an image file
-//         // $mail->addAttachment('images/phpmailer_mini.png');
-
-//         if (!is_null($attachments) && !empty($attachments)) {
-//             foreach ($attachments as $name => $attachment) {
-//                 if (is_null($name) || is_numeric($name)) {
-//                     if (is_null($current_larp)) {
-//                         $name = utf8_decode("Berghemsvänner");
-//                     } else {
-//                         $name = utf8_decode($current_larp->Name);
-//                     }
-//                 }
-//                 if (!str_ends_with($name,'.pdf')) {
-//                     $name = $name.'.pdf';
-//                 }
-//                 $mail->AddStringAttachment($attachment, $name, 'base64', 'application/pdf');
-//             }
-//         }
-
-        
-//         $mail->isHTML(true);
-        
-//         if (is_null($current_larp)) {
-//             $mailContent = "<!DOCTYPE html>
-//             <html>
-//             <head>
-//                 <meta charset='utf-8'>
-//                 <title>Brev från Berghems vänner</title>
-//         	</head>
-//         	<body class='loggedin'>
-//                 $hej $to_name!<br />
-//                 <p>$text</p>
-                
-//                 <br />
-//                 <p>Med vänliga hälsningar<br /><br /><b>Administratörerna</b></p>
-//             </body>";
-//         } else {        
-//             $mailContent = "<!DOCTYPE html>
-//             <html>
-//             <head>
-//                 <meta charset='utf-8'>
-//                 <title>$current_larp->Name</title>
-//         	</head>
-//         	<body class='loggedin'>
-//                 $hej $to_name!<br />
-//                 <p>$text</p>
-            
-//                 <br />
-//                 <p>Med vänliga hälsningar<br /><br /><b>Arrangörerna av $current_larp->Name</b></p>
-//             </body>";
-//         }
-        
-//         $mail->Body = utf8_decode($mailContent);
-        
-        
-// //         if (!$mail->send()) {
-// //             echo 'Mailer Error: ' . $mail->ErrorInfo;
-// //             return false;
-// //         } 
 
         return true;
             
