@@ -260,6 +260,12 @@ class BerghemMailer {
         
     }
     
+    # Skicka mail till någon
+    public static function sendContact($email, $name, $subject, $text) {        
+        BerghemMailer::send($email, $name, $text, $subject, array(), $campaign->Email);
+    }
+    
+    
     
 }
 
