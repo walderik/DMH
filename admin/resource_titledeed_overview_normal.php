@@ -54,7 +54,7 @@ th, td {
 		            $sums[$key] = $sums[$key] + $resource_titledeed->Quantity;
 		        }
 		    }
-		    echo "<td style='text-align:right'>".$titledeed->calculateResult($current_larp)." $currency</td>\n";
+		    echo "<td style='text-align:right'>".$titledeed->calculateResult()." $currency</td>\n";
 		    echo "</tr>\n";
 		}
 		

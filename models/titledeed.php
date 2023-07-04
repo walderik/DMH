@@ -266,14 +266,27 @@ class Titledeed extends BaseModel{
         return $resultArray;
     }
     
-    function calculateResult(LARP $larp) {
+    function calculateResult() {
         $resource_titledeeds = Resource_Titledeed::allForTitledeed($this);
-        $res = 0;
+        $res = $this->Money;
         foreach ($resource_titledeeds as $resource_titledeed) {
             $resource = $resource_titledeed->getResource();
             $res = $res + $resource->Price * $resource_titledeed->Quantity;
         }
         return $res;
+    }
+    
+    public static function getAllForRole(Role $role) {
+        $sql = "SELECT * FROM regsys_titledeed WHERE Id IN (".
+            "SELECT TitledeedId FROM regsys_titledeed_role WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($role->Id));
+    }
+    
+
+    public static function getAllForGroup(Group $group) {
+        $sql = "SELECT * FROM regsys_titledeed WHERE Id IN (".
+            "SELECT TitledeedId FROM regsys_titledeed_group WHERE GroupId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id));
     }
     
 }

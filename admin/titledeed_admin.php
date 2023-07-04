@@ -87,7 +87,7 @@ include 'navigation.php';
                 echo "<td>";
                 echo "<a href='resource_titledeed_form.php?Id=$titledeed->Id'><i class='fa-solid fa-pen' title='Ändra'></i></a><br>";
                 echo "</td>";
-                echo "<td>".$titledeed->calculateResult($current_larp)." $currency</td>";
+                echo "<td>".$titledeed->calculateResult()." $currency</td>";
                 
                 echo "<td>" . "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='titledeed_admin.php?operation=delete&id=" . $titledeed->Id . "'><i class='fa-solid fa-trash'></i></td>\n";

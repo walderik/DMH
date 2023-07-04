@@ -95,7 +95,7 @@ input[type="number"] {
 			</tr>
 			<tr>
 			<td>Resultat<br>Överskott här innebär att ägarna får<br>kontanter att använda under lajvet.</td>
-			<td id="result"><?php echo $titledeed->calculateResult($current_larp)." $currency" ?>
+			<td id="result"><?php echo $titledeed->calculateResult()." $currency" ?>
 			</tr>
 		<tr><td colspan="2"><h2>Uppgradering</h2></td>
 			<tr>
