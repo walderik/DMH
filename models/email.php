@@ -229,11 +229,6 @@ class Email extends BaseModel{
     public function sendNow() {        
         global $current_larp, $current_user;
      
-        //Om test, skicka bara till inloggad användare
-        if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
-            $this->To = $current_user->Email;
-        }
-        
         
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
