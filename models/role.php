@@ -481,9 +481,13 @@ class Role extends BaseModel{
         if (!$campaign->is_dmh()) return false;
         if ($this->isMysLajvare()) return false;
         if ($this->WealthId > 2) return true;
+        
+        //Äger lagfart
+        $titledeeds = Titledeed::getAllForRole($this);
+        if (!empty($titledeeds)) return true;
+        
         $intrigtyper = commaStringFromArrayObject($this->getIntrigueTypes());
         return (str_contains($intrigtyper, 'Handel'));
-        # Hantering för de som har gamla lagfarter
     }
     
     public function lastLarp() {
