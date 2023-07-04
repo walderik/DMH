@@ -2,27 +2,11 @@
 include_once 'header.php';
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $operation = $_POST['operation'];
-     
-    if ($operation == 'insert') {
-        $resource = Resource::newFromArray($_POST);
-        $resource->create();
-    } elseif ($operation == 'delete') {
-        Titledeed::delete($_POST['Id']);
-    } elseif ($operation == 'update') {
-        $resource=Resource::loadById($_POST['Id']);
-        $resource->setValuesByArray($_POST);
-        $resource->update();
-    } 
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
-//     $operation = $_GET['operation'];
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
-        Resource::delete($_GET['id']);
+        Resource::delete($_GET['Id']);
     }
 }
 
@@ -49,8 +33,8 @@ include 'navigation.php';
                 echo "<td>" . ja_nej($resource->IsRare) . "</td>\n";
 
                 
-                echo "<td>" . "<a href='resource_form.php?operation=update&id=" . $resource->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='resource_admin.php?operation=delete&id=" . $resource->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>" . "<a href='resource_form.php?operation=update&Id=" . $resource->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                echo "<td>" . "<a href='resource_admin.php?operation=delete&Id=" . $resource->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";

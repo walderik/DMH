@@ -41,7 +41,7 @@ if ($operation == "set_prop_owner_group") {
 }
 elseif ($operation == "add_titledeed_owner_group") {
     $purpose = "Sätt som ägare av lagfart";
-    $url = "titledeed_admin.php";
+    $url = "logic/titledeed_form_save.php";
     $multiple=true;
 }
 elseif ($operation == "add_intrigue_actor_group") {  

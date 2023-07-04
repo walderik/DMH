@@ -43,6 +43,14 @@ include_once 'header.php';
         echo $output;
     }
     
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $referer = $_SERVER['HTTP_REFERER'];
+    }
+    else {
+        $referer = "";
+    }
+    $referer = (isset($referer)) ? $referer : '../titledeed_admin.php';
+    
     $resources = Resource::allNormalByCampaign($current_larp);
     
     
@@ -51,10 +59,11 @@ include_once 'header.php';
     
 
     <div class="content"> 
-    <h1><?php echo default_value('action');?> lagfart <a href="titledeed_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-	<form action="titledeed_admin.php" method="post">
+    <h1><?php echo default_value('action');?> lagfart <a href="<?php echo $referer?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+	<form action="logic/titledeed_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
+		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
 			<tr>
 				<td><label for="Name">Namn</label></td>

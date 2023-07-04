@@ -11,7 +11,7 @@ include_once 'header.php';
         }
         if ($operation == 'new') {
         } elseif ($operation == 'update') {
-            $resource = Resource::loadById($_GET['id']);            
+            $resource = Resource::loadById($_GET['Id']);            
         } else {
         }
     }
@@ -43,17 +43,27 @@ include_once 'header.php';
         echo $output;
     }
     
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $referer = $_SERVER['HTTP_REFERER'];
+    }
+    else {
+        $referer = "";
+    }
+    $referer = (isset($referer)) ? $referer : '../resource_admin.php';
+    
+    
     include 'navigation.php';
     
     ?>
     
 
     <div class="content"> 
-    <h1><?php echo default_value('action');?> resurs <a href="resource_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1><?php echo default_value('action');?> resurs <a href="<?php echo $referer?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 	<p>Ovanliga resurser har inget fast pris utan det beror på vilken köpare man hittar. Därför sätts deras priser alltid till 0.</p>
-	<form action="resource_admin.php" method="post">
+	<form action="logic/resource_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
+		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
 			<tr>
 				<td><label for="Name">Namn</label></td>

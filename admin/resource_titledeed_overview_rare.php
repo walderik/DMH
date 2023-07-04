@@ -13,6 +13,9 @@ include 'navigation.php';
 th, td {
   border-style:solid;
   border-color: #d4d4d4;
+  padding: 10px;
+  margin: 0px;
+  
 }
 </style>
     <div class="content">
@@ -28,7 +31,7 @@ th, td {
     		<th></th>
     	<?php 
     	foreach ($resources as $key => $resource) {
-    	    echo "<th>$resource->Name</th>\n";
+    	    echo "<th><a href='resource_form.php?operation=update&Id=$resource->Id'>$resource->Name</a></th>\n";
     	    $sums[$key]=0;
     	}
     	?>
@@ -37,7 +40,7 @@ th, td {
 		<?php 
 		
 		foreach ($titledeeds as $titledeed) {
-		    echo "<tr><th style='text-align:left'>$titledeed->Name</th>";
+		    echo "<tr><th style='text-align:left'><a href='resource_titledeed_form.php?Id=$titledeed->Id'>$titledeed->Name</a></th>";
 		    foreach ($resources as $key => $resource) {
 		        $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
 		        if (empty($resource_titledeed)) echo "<td style='text-align:right'>0</td>\n";

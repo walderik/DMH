@@ -43,7 +43,7 @@ if ($operation == "set_prop_owner_role") {
 }
 elseif ($operation == "add_titledeed_owner_role") {
     $purpose = "Sätt som ägare av lagfart";
-    $url = "titledeed_admin.php";
+    $url = "logic/titledeed_form_save.php";
     $multiple=true;
 }
 elseif ($operation == "add_intrigue_actor_role") {
