@@ -56,6 +56,11 @@ class Intrigue_NPCGroup extends BaseModel{
         return Intrigue::loadById($this->IntrigueId);
     }
     
+    
+    public function getAllIntrigues() {
+        return Intrigue::getAllIntriguesForIntrigueNPCGroup($this);
+    }
+    
     public function getNPCGroup() {
         return NPCGroup::loadById($this->NPCGroupId);
     }

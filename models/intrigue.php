@@ -412,6 +412,14 @@ class Intrigue extends BaseModel{
         return static::getAllIntriguesForProp($intrigueProp->PropId, $intrigueProp->getIntrigue()->LarpId);
     }
     
+    public static function getAllIntriguesForIntrigueNPCGroup(Intrigue_NPCGroup $intrigueNPCGroup) {
+        return static::getAllIntriguesForNPCGroup($intrigueNPCGroup->NPCGroupId, $intrigueNPCGroup->getIntrigue()->LarpId);
+    }
+    
+    public static function getAllIntriguesForIntrigueNPC(Intrigue_NPC $intrigueNPC) {
+        return static::getAllIntriguesForNPC($intrigueNPC->NPCId, $intrigueNPC->getIntrigue()->LarpId);
+    }
+    
     public static function getAllIntriguesForGroup($groupId, $larpId) {
             $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
                 "SELECT IntrigueId FROM regsys_intrigueactor WHERE GroupId = ? AND LarpId = ?) ORDER BY Id";
@@ -429,5 +437,16 @@ class Intrigue extends BaseModel{
             "SELECT IntrigueId FROM regsys_intrigue_prop WHERE PropId = ? AND LarpId = ?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($propId, $larpId));
     }
+
+    public static function getAllIntriguesForNPCGroup($npcGroupId, $larpId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigue_npcgroup WHERE NPCGroupId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($npcGroupId, $larpId));
+    }
     
+    public static function getAllIntriguesForNPC($npcId, $larpId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigue_npc WHERE NPCId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($npcId, $larpId));
+    }
 }

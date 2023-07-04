@@ -56,6 +56,10 @@ class Intrigue_NPC extends BaseModel{
         return Intrigue::loadById($this->IntrigueId);
     }
     
+    public function getAllIntrigues() {
+        return Intrigue::getAllIntriguesForIntrigueNPC($this);
+    }
+    
     public function getNPC() {
         return NPC::loadById($this->NPCId);
     }

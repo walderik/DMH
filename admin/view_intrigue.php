@@ -347,10 +347,10 @@ th, td {
 	    $prop = $intrigue_prop->getProp();
 	    echo "<li style='display:table-cell; width:19%;'>\n";
 	    echo "<div class='name'><a href='prop_form.php?operation=update&id=$prop->Id'>$prop->Name</a></div>\n";
-	    $actor_intrigues = $intrigue_prop->getAllIntrigues();
-	    foreach ($actor_intrigues as $actor_intrigue) {
-	        if ($actor_intrigue->Id != $intrigue->Id) {
-	            echo "<div><a href='view_intrigue.php?Id=$actor_intrigue->Id'>Intrig: $actor_intrigue->Number. $actor_intrigue->Name</a></div>";
+	    $prop_intrigues = $intrigue_prop->getAllIntrigues();
+	    foreach ($prop_intrigues as $prop_intrigue) {
+	        if ($prop_intrigue->Id != $intrigue->Id) {
+	            echo "<div><a href='view_intrigue.php?Id=$prop_intrigue->Id'>Intrig: $prop_intrigue->Number. $prop_intrigue->Name</a></div>";
 	        }
 	    }
 	    if ($prop->hasImage()) {
@@ -383,8 +383,14 @@ th, td {
 	foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
 	    $npcgroup = $intrigue_npcgroup->getNPCGroup();
 	    echo "<li style='display:table-cell; width:19%;'>\n";
-	    echo "<div class='name'>$npcgroup->Name</div>\n";
+	    echo "<div class='name'><a href='npc_group_form.php?operation=update&id=$npcgroup->Id'>$npcgroup->Name</a></div>\n";
 	    echo "<div>NPC-grupp</div>";
+	    $npcgroup_intrigues = $intrigue_npcgroup->getAllIntrigues();
+	    foreach ($npcgroup_intrigues as $npcgroup_intrigue) {
+	        if ($npcgroup_intrigue->Id != $intrigue->Id) {
+	            echo "<div><a href='view_intrigue.php?Id=$npcgroup_intrigue->Id'>Intrig: $npcgroup_intrigue->Number. $npcgroup_intrigue->Name</a></div>";
+	        }
+	    }
 	    echo "<div align='right'>";
 	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_npcgroup&IntrigueNPCGroupId=$intrigue_npcgroup->Id&Id=$intrigue->Id'>";
 	    echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
@@ -408,7 +414,7 @@ th, td {
 	foreach ($intrigue_npcs as $intrigue_npc) {
 	    $npc = $intrigue_npc->getNPC();
 	    echo "<li style='display:table-cell; width:19%;'>\n";
-	    echo "<div class='name'>$npc->Name</div>\n";
+	    echo "<div class='name'><a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a></div>\n";
 	    $npc_group = $npc->getNPCGroup();
 	    if (!empty($npc_group)) {
 	        echo "<div>$npc_group->Name</div>";
@@ -418,6 +424,12 @@ th, td {
 	        echo "<div>Spelas av $person->Name</div>"; 
 	    } else {
 	        echo "Spelas inte";
+	    }
+	    $npc_intrigues = $intrigue_npc->getAllIntrigues();
+	    foreach ($npc_intrigues as $npc_intrigue) {
+	        if ($npc_intrigue->Id != $intrigue->Id) {
+	            echo "<div><a href='view_intrigue.php?Id=$npc_intrigue->Id'>Intrig: $npc_intrigue->Number. $npc_intrigue->Name</a></div>";
+	        }
 	    }
 	    
 	    
