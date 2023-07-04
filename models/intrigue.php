@@ -406,6 +406,11 @@ class Intrigue extends BaseModel{
             return static::getAllIntriguesForRole($intrigueActor->RoleId, $intrigueActor->getIntrigue()->LarpId);
         }
     }
+
+    
+    public static function getAllIntriguesForIntrigueProp(Intrigue_Prop $intrigueProp) {
+        return static::getAllIntriguesForProp($intrigueProp->PropId, $intrigueProp->getIntrigue()->LarpId);
+    }
     
     public static function getAllIntriguesForGroup($groupId, $larpId) {
             $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
@@ -417,6 +422,12 @@ class Intrigue extends BaseModel{
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
             "SELECT IntrigueId FROM regsys_intrigueactor WHERE RoleId = ? AND LarpId = ?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($roleId, $larpId));
+    }
+
+    public static function getAllIntriguesForProp($propId, $larpId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigue_prop WHERE PropId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($propId, $larpId));
     }
     
 }

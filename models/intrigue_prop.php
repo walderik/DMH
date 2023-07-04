@@ -56,6 +56,13 @@ class Intrigue_Prop extends BaseModel{
         return Intrigue::loadById($this->IntrigueId);
     }
     
+    public function getAllIntrigues() {
+        return Intrigue::getAllIntriguesForIntrigueProp($this);
+    }
+    
+    
+    
+    
     public function getProp() {
         return Prop::loadById($this->PropId);
     }

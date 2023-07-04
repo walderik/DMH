@@ -346,10 +346,16 @@ th, td {
 	foreach ($intrigue_props as $intrigue_prop) {
 	    $prop = $intrigue_prop->getProp();
 	    echo "<li style='display:table-cell; width:19%;'>\n";
-	    echo "<div class='name'>$prop->Name</div>\n";
+	    echo "<div class='name'><a href='prop_form.php?operation=update&id=$prop->Id'>$prop->Name</a></div>\n";
+	    $actor_intrigues = $intrigue_prop->getAllIntrigues();
+	    foreach ($actor_intrigues as $actor_intrigue) {
+	        if ($actor_intrigue->Id != $intrigue->Id) {
+	            echo "<div><a href='view_intrigue.php?Id=$actor_intrigue->Id'>Intrig: $actor_intrigue->Number. $actor_intrigue->Name</a></div>";
+	        }
+	    }
 	    if ($prop->hasImage()) {
 	        $image = Image::loadById($prop->ImageId);
-	        echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+	        echo "<img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
 	    }
 	    echo "<div align='right'>";
 	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_prop&IntriguePropId=$intrigue_prop->Id&Id=$intrigue->Id'>";

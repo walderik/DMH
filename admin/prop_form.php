@@ -63,7 +63,7 @@ img {
     <h1><?php echo default_value('action');?> rekvisita <a href="prop_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
     
    
-	<form action="prop_admin.php" method="post">
+	<form action="logic/prop_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
