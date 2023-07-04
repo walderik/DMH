@@ -460,6 +460,8 @@ $intrigue_letters = $intrigue->getAllLetters();
 foreach ($intrigue_letters as $intrigue_letter) {
     $letter=$intrigue_letter->getLetter();
     echo "Från: $letter->Signature, Till: $letter->Recipient, ".mb_strimwidth(str_replace('\n', '<br>', $letter->Message), 0, 50, '...');
+    echo "<a href='letter_form.php?operation=update&id=$letter->Id'><i class='fa-solid fa-pen'></i></a>";
+    echo " ";
     echo "<a href='logic/view_intrigue_logic.php?operation=remove_letter&IntrigueLetterId=$intrigue_letter->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort brev'></i></a>";
     echo "<br>"; 
 }
@@ -467,6 +469,8 @@ $intrigue_telegrams = $intrigue->getAllTelegrams();
 foreach ($intrigue_telegrams as $intrigue_telegram) {
     $telegram=$intrigue_telegram->getTelegram();
     echo "$telegram->Deliverytime, Från: $telegram->Sender, Till: $telegram->Reciever, ".mb_strimwidth(str_replace('\n', '<br>', $telegram->Message), 0, 50, '...');
+    echo "<a href='telegram_form.php?operation=update&id=$telegram->Id'><i class='fa-solid fa-pen'></i></a>";
+    echo " ";
     echo "<a href='logic/view_intrigue_logic.php?operation=remove_telegram&IntrigueTelegramId=$intrigue_telegram->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort telegram'></i></a>";
     echo "<br>";
 }

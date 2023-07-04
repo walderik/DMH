@@ -44,15 +44,25 @@ function default_value($field) {
     echo $output;
 }
 
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = $_SERVER['HTTP_REFERER'];
+}
+else {
+    $referer = "";
+}
+$referer = (isset($referer)) ? $referer : '../letter_admin.php';
+
+
 include 'navigation.php';
 ?>
     
 
     <div class="content"> 
-    <h1><?php echo default_value('action');?> brev <a href="letter_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1><?php echo default_value('action');?> brev <a href="<?php echo $referer?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 	<form action="letter_admin.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
+		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
 			<tr>
 				<td><label for="Recipient">Mottagare</label></td>

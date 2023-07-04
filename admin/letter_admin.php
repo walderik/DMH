@@ -26,6 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $letter->update();
         }
     }
+    if (isset($_POST['Referer'])) header('Location: ' . $_POST['Referer']);
+    
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
