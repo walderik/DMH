@@ -10,15 +10,18 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
+$name = 'Stranger';
+if (isset($_GET['name'])) $name = $_GET['name'];
+
 if (isset($_GET['email'])) {
     $email = $_GET['email'];
+} elseif (isset($_GET['all'])) {
+    $email = 'ALLADELTAGARE';
+    $name = '';
 } else {
     header('Location: index.php?error=no_email');
     exit;
 }
-
-$name = 'Stranger';
-if (isset($_GET['name'])) $name = $_GET['name'];
 
 $referer = '';
 if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
@@ -32,8 +35,16 @@ include 'navigation.php';
 
 	<div class="content">
 		
-		<h1>Skicka ett mail till <?php echo $email; ?> <?php if ($name!='') echo "($name)"; ?></h1>
-		<p>En kopia av mailet kommer skickas till <?php echo $current_larp->getCampaign()->Email ?>.<br /></p>
+		<?php 
+		if (!isset($_GET['all'])) {
+		  echo "<h1>Skicka ett mail till $email";
+          if ($name != '') echo "($name)";
+    	  echo "</h1>\n";
+		} else {
+		    echo "<h1>Skicka ett utskick till alla deltagarna.</h1>\n";
+		    echo "Det kommer ta några minter att skicka till alla.<br>Det går iväg som mest 60 mail i minuten.<br>\n";
+		}
+    	?>
 		<form action="logic/send_contact_email.php" method="post">
     		<input type="hidden" id="email" name="email" value="<?php echo $email; ?>">
     		<input type="hidden" id="name" name="name" value="<?php echo $name; ?>">
