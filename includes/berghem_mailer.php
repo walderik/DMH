@@ -19,13 +19,19 @@ class BerghemMailer {
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
     # Attachments skall vara en array med namnen på filerna som nyckel.
-    public static function send(string $to_email, string $to_name, string $text, string $subject=null, ?array $attachments=[], ?string $cc="") {
+    # to_email kan vara en sträng med en epostadress eller en array av sådana strängar
+    public static function send($to_email, string $to_name, string $text, string $subject=null, ?array $attachments=[], ?string $cc="") {
     
         global $current_user;
         
         //Om test, skicka bara till inloggad användare
-        if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
-            $to_email = $current_user->Email;
+//         if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
+//             $to_email = $current_user->Email;
+//         }
+//         print_r($to_email);
+        
+        if (is_array($to_email)) {
+            $to_email = serialize($to_email);
         }
 
         
@@ -281,8 +287,8 @@ class BerghemMailer {
             $receiver_email[] = $person->Email;
         }
         if (empty($receiver_email)) return;
-        foreach( array_chunk($receiver_email,15) as $email_to) {
-            BerghemMailer::send(serialize($email_to), $name, $text, $subject);
+        foreach( array_chunk($receiver_email,15) as $emails_to) {
+            BerghemMailer::send($emails_to, $name, $text, $subject);
         }
     }
     
