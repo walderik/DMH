@@ -26,6 +26,7 @@ th, td {
         }
         else {
         ?>
+        <p>Om man ändrar siffrorna sparas det direkt.</p>
         <table>
     	<tr>
     		<th></th>
