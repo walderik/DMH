@@ -267,7 +267,7 @@ class BerghemMailer {
     
     # Skicka mail till alla deltagare
     public static function sendContactMailToAll(LARP $larp, String $text, $onlyHasSpotAtLarp=true) {
-        $name = "Deltagare på $larp->Name";
+        $name = "";
         $campaign = $larp->getCampaign();
         $subject = "Meddelande från $campaign->Name";
         
