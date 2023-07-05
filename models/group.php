@@ -121,7 +121,6 @@ class Group extends BaseModel{
          
          $intrigtyper = commaStringFromArrayObject($larp_group->getIntrigueTypes());
          return (str_contains($intrigtyper, 'Handel'));
-         # Hantering för de som har gamla lagfarter
      }
      
      public function getPlaceOfResidence() {
