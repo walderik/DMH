@@ -65,8 +65,11 @@ function updateResult() {
 		<input type="hidden" id="Id" name="Id" value="<?php echo $titledeed->Id ?>">
 		<input type="hidden" id="Currency" value="<?php echo $currency ?>">
 		<table>
-		<tr><td colspan="2"><h2>Normal drift</h2><p>En lagfart kan antingen producera eller behöva en resurs. 
-    Om man skriver in att den både producerar och behöver kommer skillnaden att räknas ut.</p></td>
+		<tr><td colspan="2"><h2>Normal drift</h2>
+		<p>En lagfart kan antingen producera eller behöva en resurs. 
+    Om man skriver in att den både producerar och behöver kommer skillnaden att räknas ut.</p>
+    	<p>Resultatet räknas om när man ändrar siffrorna, men för att spara behöver man klicka på "Uppdatera".</p>
+    	</td>
 			<tr>
 				<td>Producerar</td>
 				<td>
