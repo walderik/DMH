@@ -104,9 +104,11 @@ function showStatusIcon($value, ?string $fix_url = NULL) {
 }
 
 function contactEmailIcon($name,$email) {
-    return "<a href='contact_email.php?email=$email&name=$name'><i class='fa-solid fa-envelope-open-text'></i></a>";
+    return "<a href='contact_email.php?email=$email&name=$name' title='Skicka mail till $name'><i class='fa-solid fa-envelope-open-text'></i></a>";
 }
-
+function contactAllEmailIcon(){
+    return "<a href='contact_email.php?all=JADU' title='Skicka ett utskick till alla deltagare i lajvet'><i class='fa-solid fa-envelope-open-text'></i></a>";
+}
 
 
 # En HTML-selector för fonter

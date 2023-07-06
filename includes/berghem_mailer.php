@@ -25,17 +25,13 @@ class BerghemMailer {
         global $current_user;
         
         //Om test, skicka bara till inloggad användare
-//         if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
-//             $to_email = $current_user->Email;
-//         }
-//         print_r($to_email);
-        
-        if (is_array($to_email)) {
+        if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
+            $to_email = $current_user->Email;
+        } elseif (is_array($to_email)) {
             $to_email = serialize($to_email);
         }
 
-        
-        $email = Email::normalCreate($to_email, $to_name, $subject, $text, $attachments);
+        Email::normalCreate($to_email, $to_name, $subject, $text, $attachments);
 
         return true;
             
