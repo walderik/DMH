@@ -34,7 +34,6 @@ include 'navigation.php';
 			<tr><td>Skickat av</td><td><?php echo $user->Name ?></td></tr>
 			<tr><td>Till</td><td><?php echo "$email->ToName ($email->To)"; ?></td></tr>
 			<tr><td>Ämne</td><td><?php echo $email->Subject ?></td></tr>
-			<tr><td>Skickat av</td><td><?php echo $user->Name ?></td></tr>
 			<tr><td>När</td><td><?php echo $email->SentAt ?></td></tr>
 			<?php 
 			if (!empty($email->ErrorMessage)) {
@@ -44,7 +43,7 @@ include 'navigation.php';
 			?>
 			<tr><td colspan = '2' style='font-weight: normal'>
 			<h2>Meddelande</h2>
-			<?php echo nl2br($email->Text); ?>
+			<?php echo $email->mailContent(); ?>
 			</td>
 			</tr>
 			<?php if (!empty($attachements)) {?>

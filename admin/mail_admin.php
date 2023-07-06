@@ -19,7 +19,7 @@ include 'navigation.php';
         "</tr>\n";
     	
     	$emails = Email::allBySelectedLARP($current_larp);
-    	foreach ($emails as $email) {
+    	foreach (array_reverse($emails) as $email) {
     	    $user = User::loadById($email->SenderUserId);
     	    echo "<tr>";
     	    echo "<td>$email->ToName ($email->To)</td>";
@@ -35,3 +35,6 @@ include 'navigation.php';
     	
     	?>
 	</table>
+	<?php 
+include_once '../javascript/table_sort.js';
+?>

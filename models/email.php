@@ -34,6 +34,7 @@ class Email extends BaseModel{
         if (isset($arr['CC'])) $this->CC = $arr['CC'];
         if (isset($arr['Subject'])) $this->Subject = $arr['Subject'];
         if (isset($arr['Text'])) $this->Text = $arr['Text'];
+        if (isset($arr['CreatedAt'])) $this->CreatedAt = $arr['CreatedAt'];
         if (isset($arr['SentAt'])) $this->SentAt = $arr['SentAt'];
         if (isset($arr['$ErrorMessage'])) $this->ErrorMessage = $arr['$ErrorMessage'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];  
