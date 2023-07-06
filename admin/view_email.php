@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 $email = Email::loadById($emailId); 
-
+$attachements = $email->attachments();
 
 if ($current_larp->Id != $email->LarpId) {
     header('Location: index.php'); //Emailet är inte för detta lajvet
@@ -43,10 +43,23 @@ include 'navigation.php';
 			}
 			?>
 			<tr><td colspan = '2' style='font-weight: normal'>
-			<hr>
+			<h2>Meddelande</h2>
 			<?php echo nl2br($email->Text); ?>
 			</td>
 			</tr>
+			<?php if (!empty($attachements)) {?>
+			<tr>
+			<tr><td colspan = '2' style='font-weight: normal'>
+			<h2>Bilagor</h2>
+			
+			<?php 
+			foreach ($attachements as $attachement) {
+			    echo "$attachement->Filename<br>";
+			}
+			?>
+			</td>
+			</tr>
+			<?php } ?>
 		</table>		
 		</div>
 
