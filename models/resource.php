@@ -100,14 +100,14 @@ class Resource extends BaseModel{
     }
     
     
-    public static function TitleDeedProcuces(Titledeed $titledeed) {
+    public static function TitleDeedProcucesNormally(Titledeed $titledeed) {
         if (is_null($titledeed)) return Array();
         $sql = "SELECT * FROM regsys_resource WHERE Id IN (SELECT ResourceId FROM regsys_resource_titledeed_normally_produces WHERE TitleDeedId = ?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));
         
     }
     
-    public static function TitleDeedRequires(Titledeed $titledeed) {
+    public static function TitleDeedRequiresNormally(Titledeed $titledeed) {
         if (is_null($titledeed)) return Array();
         $sql = "SELECT * FROM regsys_resource WHERE Id IN (SELECT ResourceId FROM regsys_resource_titledeed_normally_requires WHERE TitleDeedId = ?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));

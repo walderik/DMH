@@ -79,4 +79,19 @@ class Resource_Titledeed extends BaseModel{
         return static::getOneObjectQuery($sql, array($resourceId, $titledeedId));
     }
     
+    
+    public static function TitleDeedProcuces(Titledeed $titledeed) {
+        if (is_null($titledeed)) return Array();
+        $sql = "SELECT * FROM regsys_resource_titledeed WHERE TitledeedId = ? AND Quantity > 0 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));
+        
+    }
+    
+    public static function TitleDeedRequires(Titledeed $titledeed) {
+        if (is_null($titledeed)) return Array();
+        $sql = "SELECT * FROM regsys_resource_titledeed WHERE TitledeedId = ? AND Quantity < 0 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));
+        
+    }
+    
 }

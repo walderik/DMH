@@ -162,12 +162,49 @@ class Titledeed extends BaseModel{
         }
     }
     
+    public function ProducesNormally() {
+        return Resource::TitleDeedProcucesNormally($this);
+    }
+    
+    public function RequiresNormally() {
+        return Resource::TitleDeedRequiresNormally($this);
+    }
+    
+    public function ProducesString() {
+        $resource_titledeeds=$this->Produces();
+        $resStringArr = array();
+        foreach ($resource_titledeeds as $resource_titledeed) {
+            $resource = $resource_titledeed->getResource();
+            if ($resource_titledeed->Quantity == 1) {
+                $resStringArr[] = "1 $resource->UnitSingular";
+            } else {
+                $resStringArr[] = "$resource_titledeed->Quantity $resource->UnitPlural";      
+            }
+        }
+        return implode(', ',$resStringArr);
+    }
+    
+    public function RequiresString() {
+        $resource_titledeeds=$this->Requires();
+        $resStringArr = array();
+        foreach ($resource_titledeeds as $resource_titledeed) {
+            $resource = $resource_titledeed->getResource();
+            $quantity = abs($resource_titledeed->Quantity);
+            if ($quantity == 1) {
+                $resStringArr[] = "1 $resource->UnitSingular";
+            } else {
+                $resStringArr[] = "$quantity $resource->UnitPlural";
+            }
+        }
+        return implode(', ',$resStringArr);
+    }
+    
     public function Produces() {
-        return Resource::TitleDeedProcuces($this);
+        return Resource_Titledeed::TitleDeedProcuces($this);
     }
     
     public function Requires() {
-        return Resource::TitleDeedRequires($this);
+        return Resource_Titledeed::TitleDeedRequires($this);
     }
     
     public function deleteAllProduces() {   

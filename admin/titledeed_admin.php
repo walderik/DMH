@@ -86,11 +86,19 @@ include 'navigation.php';
                 
                 echo "</td>\n";
                 echo "<td>";
-                echo "Producerar: ". commaStringFromArrayObject($titledeed->Produces()) . "<br><br>\n";
-                echo "Behöver: " . commaStringFromArrayObject($titledeed->Requires())."\n";
+                $produces_normally = $titledeed->ProducesNormally();
+                if (!empty($produces_normally)) echo "Producerar: ". commaStringFromArrayObject($produces_normally) . "<br>\n";
+                $requires_normally = $titledeed->RequiresNormally();
+                if (!empty($requires_normally)) echo "Behöver: " . commaStringFromArrayObject($requires_normally)."\n";
                 echo "</td>\n";
                 echo "<td>";
                 echo "<a href='resource_titledeed_form.php?Id=$titledeed->Id'><i class='fa-solid fa-pen' title='Ändra'></i></a><br>";
+                echo "Producerar: ";
+                echo $titledeed->ProducesString()."<br>";
+                
+                echo "Behöver: ";
+                echo $titledeed->RequiresString();
+                echo "</td>\n";
                 echo "</td>";
                 echo "<td>".$titledeed->calculateResult()." $currency</td>";
                 
