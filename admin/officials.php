@@ -5,6 +5,17 @@ include 'navigation.php';
 
 <div class="content">
     <h1>Funktionärer</h1>
+    <?php
+        $offical_types = OfficialType::allActive($current_larp);
+        if (!empty($offical_types)) {
+            foreach ($offical_types as $offical_type) {
+                $ikon = contactAllOfficalTypeEmailIcon($offical_type);
+                echo "$offical_type->Name $ikon &nbsp; &nbsp;";
+            }
+            echo "<br>\n";
+            echo "<br>\n";
+        }
+    ?>
     <?php 
     $persons = Person::getAllOfficials($current_larp);
     echo "<table class='data'><tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Typ av funktionär</th><th></th></tr>";

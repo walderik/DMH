@@ -41,6 +41,7 @@ if (!handleEmailQueue()) {
 
 
 function handleEmailQueue() {
+//     return;
     $current_queue = Email::allUnsent();
     if (empty($current_queue)) return;
     if (!Email::okToSendNow()) return;

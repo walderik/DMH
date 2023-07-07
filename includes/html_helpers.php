@@ -107,7 +107,11 @@ function contactEmailIcon($name,$email) {
     return "<a href='contact_email.php?email=$email&name=$name' title='Skicka mail till $name'><i class='fa-solid fa-envelope-open-text'></i></a>";
 }
 function contactAllEmailIcon(){
-    return "<a href='contact_email.php?all=JADU' title='Skicka ett utskick till alla deltagare i lajvet'><i class='fa-solid fa-envelope-open-text'></i></a>";
+    $param = date_format(new Datetime(),"suv");
+    return "<a href='contact_email.php?all=$param' title='Skicka ett utskick till alla deltagare i lajvet'><i class='fa-solid fa-envelope-open-text'></i></a>";
+}
+function contactAllOfficalTypeEmailIcon(OfficialType $official_type){
+    return "<a href='contact_email.php?official_type_id=$official_type->Id' title='Skicka ett utskick till funktionärer som tar $official_type->Name'><i class='fa-solid fa-envelope-open-text'></i></a>";
 }
 
 

@@ -26,9 +26,17 @@ class BerghemMailer {
         
         //Om test, skicka bara till inloggad användare
         if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
+            # Fixa så inga mail går iväg om man utvecklar
+            
             $to_email = $current_user->Email;
+            
         } elseif (is_array($to_email)) {
-            $to_email = serialize($to_email);
+            
+            # Om man skickar in en array av epostadresser skapar vi ett mail per 15 adresser.
+            foreach( array_chunk($to_email,15) as $emails_to) {
+                Email::normalCreate(serialize($emails_to), $to_name, $subject, $text, $attachments);
+            }
+            return true;
         }
 
         Email::normalCreate($to_email, $to_name, $subject, $text, $attachments);
@@ -139,7 +147,7 @@ class BerghemMailer {
             $text .= "<br>\n";
         }
         
-        static::send($person->Email, $person->Name, $text, "Bekräftan av anmälan till $larp->Name");
+        static::send($person->Email, $person->Name, $text, "Bekräftan av reservanmälan till $larp->Name");
     }
     
     
@@ -258,8 +266,6 @@ class BerghemMailer {
         
         
         static::send($mail, $person->Name, $text, "NPC på ".$larp->Name);
-        
-        
     }
     
     # Skicka mail till någon
@@ -269,23 +275,42 @@ class BerghemMailer {
     
     # Skicka mail till alla deltagare
     public static function sendContactMailToAll(LARP $larp, String $text, $onlyHasSpotAtLarp=true) {
-        $name = "";
         $campaign = $larp->getCampaign();
         $subject = "Meddelande från $campaign->Name";
         
         # https://www.w3schools.com/php/func_array_chunk.asp
-        $receiver_email = array();
+        $receiver_emails = array();
         $persons = Person::getAllRegistered($larp, false);
         foreach($persons as $person) {
             $registration = $person->getRegistration($larp);
             if (empty($registration)) continue;
             if ($onlyHasSpotAtLarp && !$registration->hasSpotAtLarp()) continue;
-            $receiver_email[] = $person->Email;
+            $receiver_emails[] = $person->Email;
         }
-        if (empty($receiver_email)) return;
-        foreach( array_chunk($receiver_email,15) as $emails_to) {
-            BerghemMailer::send($emails_to, $name, $text, $subject);
+        if (empty($receiver_emails)) return;
+        
+         BerghemMailer::send($receiver_emails, '', $text, $subject);
+    }
+    
+    # Skicka mail till alla deltagare
+    public static function sendContactMailToAllOfficals(LARP $larp, OfficialType $officialType, String $text) {
+        
+        global $current_user;
+       
+        $subject = "Meddelande till alla $officialType->Name från $current_user->Name";
+        
+        # https://www.w3schools.com/php/func_array_chunk.asp
+        $receiver_emails = array();
+        $persons = Person::getAllOfficialsByType($officialType, $larp);
+        foreach($persons as $person) {
+            $registration = $person->getRegistration($larp);
+            if (empty($registration)) continue;
+            if (!$registration->hasSpotAtLarp()) continue;
+            $receiver_emails[] = $person->Email;
         }
+        if (empty($receiver_emails)) return;
+
+        BerghemMailer::send($receiver_emails, $officialType->Name, $text, $subject);
     }
     
 }

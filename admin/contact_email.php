@@ -15,6 +15,14 @@ if (isset($_GET['name'])) $name = $_GET['name'];
 
 if (isset($_GET['email'])) {
     $email = $_GET['email'];
+} elseif (isset($_GET['official_type_id'])) {
+    $official_type = OfficialType::loadById($_GET['official_type_id']);
+    if(!isset($official_type)) {
+        header('Location: index.php?error=no_email');
+        exit;
+    }
+    $email = 'OFFICIALTYPE';
+    $name = '';
 } elseif (isset($_GET['all'])) {
     $email = 'ALLADELTAGARE';
     $name = '';
@@ -36,17 +44,22 @@ include 'navigation.php';
 	<div class="content">
 		
 		<?php 
-		if (!isset($_GET['all'])) {
-		  echo "<h1>Skicka ett mail till $email";
-          if ($name != '') echo "($name)";
-    	  echo "</h1>\n";
-		} else {
+		
+		if(isset($official_type)) {
+		    echo "<h1>Skicka ett utskick till alla funktionärer som tar $official_type->Name.</h1>\n";
+		    echo "Det kommer ta några minuter att skicka till alla.<br>Som mest skickas 60 mail i minuten.<br>\n";
+		} elseif (!isset($_GET['all'])) {
 		    echo "<h1>Skicka ett utskick till alla deltagarna.</h1>\n";
-		    echo "Det kommer ta några minter att skicka till alla.<br>Det går iväg som mest 60 mail i minuten.<br>\n";
+		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest 60 mail i minuten.<br>\n";
+		} else {
+		  echo "<h1>Skicka ett mail till $email";
+          if ($name != '') echo " ($name)";
 		}
+        echo "</h1>\n";
     	?>
 		<form action="logic/send_contact_email.php" method="post">
     		<input type="hidden" id="email" name="email" value="<?php echo $email; ?>">
+    		<?php if (isset($official_type)) echo "<input type='hidden' id='official_type' name='official_type' value='$official_type->Id'>"; ?>
     		<input type="hidden" id="name" name="name" value="<?php echo $name; ?>">
     		<input type="hidden" id="referer" name="referer" value="<?php echo $referer; ?>">
     		
