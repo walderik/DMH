@@ -4,20 +4,32 @@ include 'navigation.php';
 ?>
 
 <div class="content">
-    <h1>Funktionärer</h1>
-    <?php
+ 	<?php 
+ 	$header = 'Funktionärer';
+ 	if (isset($_GET['id'])) {
+        $official_type = OfficialType::loadById($_GET['id']);
+        if (isset($official_type)) {
+            $persons = Person::getAllOfficialsByType($official_type, $current_larp);
+            $header = $official_type->Name;
+        }
+ 	} else {
+ 	    $persons = Person::getAllOfficials($current_larp);
+ 	}?>
+    <?php 
+        echo "<h1>$header</h1>"; 
+        echo "<a href='officials.php'>Alla funktionärer</a> &nbsp; &nbsp";
         $offical_types = OfficialType::allActive($current_larp);
         if (!empty($offical_types)) {
             foreach ($offical_types as $offical_type) {
                 $ikon = contactAllOfficalTypeEmailIcon($offical_type);
-                echo "$offical_type->Name $ikon &nbsp; &nbsp;";
+                echo "<a href='officials.php?id=$offical_type->Id'>$offical_type->Name</a> $ikon &nbsp; &nbsp;";
             }
             echo "<br>\n";
             echo "<br>\n";
         }
     ?>
     <?php 
-    $persons = Person::getAllOfficials($current_larp);
+
     echo "<table class='data'><tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Typ av funktionär</th><th></th></tr>";
     foreach($persons as $person) {
         $registration = $person->getRegistration($current_larp);
