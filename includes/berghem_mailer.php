@@ -274,7 +274,7 @@ class BerghemMailer {
     
     # Skicka mail till någon
     public static function sendContactMailToSomeone(String $email, String $name, String $subject, String $text) {
-        BerghemMailer::send($email, $name, $text, $subject);
+        BerghemMailer::send($email, $name, $text, $subject, BerghemMailer::findAttachment());
     }
     
     # Skicka mail till alla deltagare
@@ -292,8 +292,7 @@ class BerghemMailer {
             $receiver_emails[] = $person->Email;
         }
         if (empty($receiver_emails)) return;
-        
-         BerghemMailer::send($receiver_emails, '', $text, $subject);
+        BerghemMailer::send($receiver_emails, '', $text, $subject, BerghemMailer::findAttachment());
     }
     
     public static function sendContactMailToAllGroupLeaders(LARP $larp, String $text) {
@@ -319,7 +318,7 @@ class BerghemMailer {
         }
         if (empty($receiver_emails)) return;
         
-        BerghemMailer::send($receiver_emails, 'Gruppledare', $text, $subject);
+        BerghemMailer::send($receiver_emails, 'Gruppledare', $text, $subject, BerghemMailer::findAttachment());
     }
     
     # Skicka mail till alla deltagare
@@ -336,7 +335,31 @@ class BerghemMailer {
         }
         if (empty($receiver_emails)) return;
 
-        BerghemMailer::send($receiver_emails, $officialType->Name, $text, $subject);
+        BerghemMailer::send($receiver_emails, $officialType->Name, $text, $subject, BerghemMailer::findAttachment());
+    }
+    
+    # Plocka fram standardbilagorna
+    public static function findAttachment() {        
+        if(!isset($_FILES['bilaga'])) return array();
+        if ($_FILES["bilaga"]["size"] > 5242880) return array();
+        
+        $file_tmp  = $_FILES['bilaga']['tmp_name'];
+        if(empty($file_tmp)) return array();
+        $fileSize = filesize($file_tmp);
+        if ($fileSize > 5242880) return array();
+        
+//         $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+//         $filetype = finfo_file($fileinfo, $file_tmp);
+//         if ($file_type != "application/pdf") return array();
+//         if(!str_ends_with($file_tmp, 'pdf') && !str_ends_with($file_tmp, 'PDF') && !str_ends_with($file_tmp, 'Pdf') && !str_ends_with($file_tmp, 'PdF')) return array();
+        
+        $file_name = $_FILES['bilaga']['name'];
+        
+        $the_file = file_get_contents($file_tmp);
+        
+        $attachments = array();
+        $attachments[$file_name] = $the_file;
+        return $attachments;
     }
     
 }

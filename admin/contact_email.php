@@ -63,7 +63,7 @@ include 'navigation.php';
 		}
         echo "</h1>\n";
     	?>
-		<form action="logic/send_contact_email.php" method="post">
+		<form action="logic/send_contact_email.php" method="post" enctype="multipart/form-data">
     		<input type="hidden" id="email" name="email" value="<?php echo $email; ?>">
     		<?php if (isset($official_type)) echo "<input type='hidden' id='official_type' name='official_type' value='$official_type->Id'>"; ?>
     		<input type="hidden" id="name" name="name" value="<?php echo $name; ?>">
@@ -75,8 +75,11 @@ include 'navigation.php';
 			Med vänliga hälsningar<br /><br />
 			<b>Arrangörerna av <?php echo $current_larp->Name; ?></b><br>
 
+			<br><hr><br>
+			Ladda upp en pdf som bilaga om du vill. Max storlek 5 MB och bara pdf:er.<br><br>
+			<input type="file" name="bilaga" id="bilaga"><br>
 	
-    		<br />
+    		<br><hr><br>
     		<input type="submit" value="Skicka">
 		</form>
 

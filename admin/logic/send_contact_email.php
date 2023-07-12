@@ -19,6 +19,13 @@ $name = (isset($_POST['name'])) ? $_POST['name'] : 'Stranger';
 $referer = (isset($_POST['referer'])) ? $_POST['referer'] : '../../index.php';
 $referer .= "?message=contact_email_sent";
 
+// print_r($_POST);
+// echo "<br>";
+// print_r($_FILES);
+// echo "<br>";
+// print_r($_FILES['bilaga']);
+// echo "<br>";
+
 if ($_POST['email'] == 'ALLADELTAGARE') {
     BerghemMailer::sendContactMailToAll($current_larp, nl2br($_POST['text']));
 } elseif ($_POST['email'] == 'ALLAGRUPPLEDARE') {
