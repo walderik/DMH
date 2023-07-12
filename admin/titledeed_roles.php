@@ -50,7 +50,10 @@
         		        echo "<td>";
         		        
         		        foreach ($titledeeds as $titledeed) {
-        		            echo "$titledeed->Name<br>";
+        		            $numberOfOwners = $titledeed->numberOfOwners();
+        		            echo "$titledeed->Name";
+                            if ($numberOfOwners > 1) echo " 1 / $numberOfOwners";
+                            echo "<br>";
         		        }
         		        echo "</td>";
         		        echo "</tr>\n";

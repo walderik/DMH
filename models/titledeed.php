@@ -99,6 +99,9 @@ class Titledeed extends BaseModel{
         return Group::getTitledeedOwners($this);
     }
     
+    public function numberOfOwners() {
+        return count($this->getRoleOwners()) + count($this->getGroupOwners());
+    }
     
     public function deleteRoleOwner($roleId) {
         $stmt = $this->connect()->prepare("DELETE FROM regsys_titledeed_role WHERE RoleId = ? AND TitledeedId = ?;");
