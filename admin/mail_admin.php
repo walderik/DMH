@@ -20,8 +20,15 @@ include 'navigation.php';
     	$emails = Email::allBySelectedLARP($current_larp);
     	foreach (array_reverse($emails) as $email) {
     	    $user = User::loadById($email->SenderUserId);
+    	    
+    	    if (!($to_array = @unserialize($email->To))) {
+    	        $to = $email->To;
+    	    } elseif (!empty($to_array)) {
+    	        $to = implode(", ", $to_array);
+    	    }
+    	    
     	    echo "<tr>";
-    	    echo "<td>$email->ToName ($email->To)</td>";
+    	    echo "<td>$email->ToName ($to)</td>";
     	    echo "<td>$email->Subject</td>";
     	    echo "<td>$user->Name</td>";
     	    echo "<td>$email->SentAt</td>";
