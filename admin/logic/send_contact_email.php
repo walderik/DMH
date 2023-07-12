@@ -21,6 +21,8 @@ $referer .= "?message=contact_email_sent";
 
 if ($_POST['email'] == 'ALLADELTAGARE') {
     BerghemMailer::sendContactMailToAll($current_larp, nl2br($_POST['text']));
+} elseif ($_POST['email'] == 'ALLAGRUPPLEDARE') {
+    BerghemMailer::sendContactMailToAllGroupLeaders($current_larp, nl2br($_POST['text']));
 } elseif ($_POST['email'] == 'OFFICIALTYPE') {
     $official_type = OfficialType::loadById($_POST['official_type']);
     if (isset($official_type)) BerghemMailer::sendContactMailToAllOfficals($current_larp, $official_type, nl2br($_POST['text']));

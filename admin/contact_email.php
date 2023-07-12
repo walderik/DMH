@@ -23,6 +23,9 @@ if (isset($_GET['email'])) {
     }
     $email = 'OFFICIALTYPE';
     $name = '';
+} elseif (isset($_GET['allagruppledare'])) {
+    $email = 'ALLAGRUPPLEDARE';
+    $name = '';
 } elseif (isset($_GET['all'])) {
     $email = 'ALLADELTAGARE';
     $name = '';
@@ -48,7 +51,10 @@ include 'navigation.php';
 		if(isset($official_type)) {
 		    echo "<h1>Skicka ett utskick till alla funktionärer som tar $official_type->Name.</h1>\n";
 		    echo "Det kommer ta några minuter att skicka till alla.<br>Som mest skickas 60 mail i minuten.<br>\n";
-		} elseif (!isset($_GET['all'])) {
+		} elseif (isset($_GET['allgruppledare'])) {
+		    echo "<h1>Skicka ett utskick till alla gruppledarna.</h1>\n";
+		    echo "Det kommer ta några minuter att skicka till alla.<br>Vi skickar som mest 60 mail per minut.<br>\n";
+		} elseif (isset($_GET['all'])) {
 		    echo "<h1>Skicka ett utskick till alla deltagarna.</h1>\n";
 		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest 60 mail i minuten.<br>\n";
 		} else {

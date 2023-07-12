@@ -9,7 +9,7 @@
         <h1>Anmälda deltagare <?php echo contactAllEmailIcon() ?></h1>
         Genom att klicka på rubrikerna i tabellen kan du sortera tabellen. Klicka en gång till för att få omvänd ordning.
         <br><br>
-        Om betalningskolumnen har två röda utropstecken har man gått över tiden för betalningen.
+        Om betalningskolumnen har två röda utropstecken har man gått över tiden för betalningen.<br>
         <br>
      		<?php 
     		$persons = Person::getAllRegistered($current_larp, true);
