@@ -48,6 +48,7 @@ class Email extends BaseModel{
         $email = new self();
         
         if (!is_null($current_user)) $email->SenderUserId = $current_user->Id;
+        
 
         $email->From = 'info@berghemsvanner.se';
         

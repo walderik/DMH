@@ -27,8 +27,12 @@ class BerghemMailer {
         //Om test, skicka bara till inloggad användare
         if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
             # Fixa så inga mail går iväg om man utvecklar
-            
-            $to_email = $current_user->Email;
+            if (isset($current_user)) {
+                $to_email = $current_user->Email;
+            } else {
+                $to_email = "karin@tellen.se";
+            }
+           
             
         } elseif (is_array($to_email)) {
             
