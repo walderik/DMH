@@ -23,6 +23,9 @@ if (isset($_GET['email'])) {
     }
     $email = 'OFFICIALTYPE';
     $name = '';
+} elseif (isset($_GET['allagruppledare'])) {
+    $email = 'ALLAGRUPPLEDARE';
+    $name = '';
 } elseif (isset($_GET['all'])) {
     $email = 'ALLADELTAGARE';
     $name = '';
@@ -48,7 +51,10 @@ include 'navigation.php';
 		if(isset($official_type)) {
 		    echo "<h1>Skicka ett utskick till alla funktionärer som tar $official_type->Name.</h1>\n";
 		    echo "Det kommer ta några minuter att skicka till alla.<br>Som mest skickas 60 mail i minuten.<br>\n";
-		} elseif (!isset($_GET['all'])) {
+		} elseif (isset($_GET['allgruppledare'])) {
+		    echo "<h1>Skicka ett utskick till alla gruppledarna.</h1>\n";
+		    echo "Det kommer ta några minuter att skicka till alla.<br>Vi skickar som mest 60 mail per minut.<br>\n";
+		} elseif (isset($_GET['all'])) {
 		    echo "<h1>Skicka ett utskick till alla deltagarna.</h1>\n";
 		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest 60 mail i minuten.<br>\n";
 		} else {
@@ -57,7 +63,7 @@ include 'navigation.php';
 		}
         echo "</h1>\n";
     	?>
-		<form action="logic/send_contact_email.php" method="post">
+		<form action="logic/send_contact_email.php" method="post" enctype="multipart/form-data">
     		<input type="hidden" id="email" name="email" value="<?php echo $email; ?>">
     		<?php if (isset($official_type)) echo "<input type='hidden' id='official_type' name='official_type' value='$official_type->Id'>"; ?>
     		<input type="hidden" id="name" name="name" value="<?php echo $name; ?>">
@@ -69,8 +75,11 @@ include 'navigation.php';
 			Med vänliga hälsningar<br /><br />
 			<b>Arrangörerna av <?php echo $current_larp->Name; ?></b><br>
 
+			<br><hr><br>
+			Ladda upp en pdf som bilaga om du vill. Max storlek 5 MB och bara pdf:er.<br><br>
+			<input type="file" name="bilaga" id="bilaga"><br>
 	
-    		<br />
+    		<br><hr><br>
     		<input type="submit" value="Skicka">
 		</form>
 

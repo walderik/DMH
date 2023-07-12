@@ -110,6 +110,10 @@ function contactAllEmailIcon(){
     $param = date_format(new Datetime(),"suv");
     return "<a href='contact_email.php?all=$param' title='Skicka ett utskick till alla deltagare i lajvet'><i class='fa-solid fa-envelope-open-text'></i></a>";
 }
+function contactAllGroupLeadersEmailIcon($txt){
+    $param = date_format(new Datetime(),"suv");
+    return "<a href='contact_email.php?allagruppledare=$param' title='Skicka ett utskick till alla gruppledare i lajvet'><i class='fa-solid fa-envelope-open-text'></i>$txt</a>";
+}
 function contactAllOfficalTypeEmailIcon(OfficialType $official_type){
     return "<a href='contact_email.php?official_type_id=$official_type->Id' title='Skicka ett utskick till funktionärer som tar $official_type->Name'><i class='fa-solid fa-envelope-open-text'></i></a>";
 }
