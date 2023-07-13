@@ -9,7 +9,7 @@ include 'navigation.php';
     <?php 
 	    $tableId = "mail";
         echo "<table id='$tableId' class='data'>";
-        echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Till</th>".
+        echo "<tr><th onclick='sortTable(0, \"$tableId\");' width='30%'>Till</th>".
 	    "<th onclick='sortTable(1, \"$tableId\")'>Ämne</th>".
 	    "<th onclick='sortTable(2, \"$tableId\")'></th>".
 	    "<th onclick='sortTable(3, \"$tableId\")'>Skickat av</th>".
@@ -30,7 +30,7 @@ include 'navigation.php';
     	    
     	    echo "<tr>";
     	    echo "<td>$email->ToName ($to)</td>";
-    	    echo "<td>$email->Subject</td>";
+    	    echo "<td><a href='view_email.php?id=$email->Id'>$email->Subject</a></td>";
     	    
     	    $attachements = $email->attachments();
     	    echo "<td>";
