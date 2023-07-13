@@ -1,4 +1,9 @@
 <?php 
+global $root, $current_user, $current_larp;
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+
+
+require_once $root . '/pdf/telegram_pdf.php';
 include_once '../header.php';
 
 $arrayOfTelegrams = Telegram::allApprovedBySelectedLARP($current_larp);

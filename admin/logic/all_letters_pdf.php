@@ -1,5 +1,9 @@
 <?php 
+global $root, $current_user, $current_larp;
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+
 include_once '../header.php';
+require_once $root . '/pdf/letter_pdf.php';
 
 $arrayOfLetters = Letter::allApprovedBySelectedLARP($current_larp);
 $pdf = new Letter_PDF();
