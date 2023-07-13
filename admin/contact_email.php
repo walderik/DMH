@@ -51,7 +51,7 @@ include 'navigation.php';
 		if(isset($official_type)) {
 		    echo "<h1>Skicka ett utskick till alla funktionärer som tar $official_type->Name.</h1>\n";
 		    echo "Det kommer ta några minuter att skicka till alla.<br>Som mest skickas 60 mail i minuten.<br>\n";
-		} elseif (isset($_GET['allgruppledare'])) {
+		} elseif (isset($_GET['allagruppledare'])) {
 		    echo "<h1>Skicka ett utskick till alla gruppledarna.</h1>\n";
 		    echo "Det kommer ta några minuter att skicka till alla.<br>Vi skickar som mest 60 mail per minut.<br>\n";
 		} elseif (isset($_GET['all'])) {

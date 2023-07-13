@@ -352,8 +352,17 @@ class BerghemMailer {
 //         $filetype = finfo_file($fileinfo, $file_tmp);
 //         if ($file_type != "application/pdf") return array();
 //         if(!str_ends_with($file_tmp, 'pdf') && !str_ends_with($file_tmp, 'PDF') && !str_ends_with($file_tmp, 'Pdf') && !str_ends_with($file_tmp, 'PdF')) return array();
-        
+        $allowed = array("pdf" => "application/pdf");
+        $filetype = $_FILES["bilaga"]["type"];
         $file_name = $_FILES['bilaga']['name'];
+        
+        // Validate file extension
+        $ext = pathinfo($file_name, PATHINFO_EXTENSION);
+        if(!array_key_exists($ext, $allowed)) return array();
+        // Validate type of the file
+        if(!in_array($filetype, $allowed)) return array();
+        
+        
         
         $the_file = file_get_contents($file_tmp);
         
