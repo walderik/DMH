@@ -5,11 +5,12 @@
 ?>
 
 
+
     <div class="content">   
         <h1>Pengar till karaktärer vid början av lajvet</h1>
-        <h2>Huvudkaraktärer</h2>
-        <p>Börja med att köra vår <a href="role_money_wizard_pg1.php">"wizard" <i class="fa-solid fa-wand-sparkles"></i></a> för att sätta upp pengar utifrån rikedomsnivå och resultat från tidigare lajv.<br>
+        <p>Du kan sätta <a href="role_money_setup.php">pengarna på många karaktärer samtidigt</a> utifrån rikedomsnivå och resultat från tidigare lajv.<br>
         Sedan kan man justera sifforna indivuduellt där det behövs.</p>
+        <h2>Huvudkaraktärer</h2>
         
      		<?php 
      		$roles = $current_larp->getAllMainRoles(false);
@@ -33,8 +34,6 @@
     		        echo "<a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
     		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        echo "</td>\n";
-    		        echo "<td nowrap>" . "<i class='fa-solid fa-eye' title='Se karaktären'></i></a>\n";
-    		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
     		        if ($role->isMysLajvare()) {
     		            echo "<td>N/A</td>";
@@ -52,7 +51,7 @@
     		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</></td>\n";
     		        }
     		        
-    		        echo "<td>$larp_role->StartingMoney</td>";
+    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this)'></td>";
     		        
     		        echo "</tr>\n";
     		    }
@@ -82,8 +81,6 @@
     		        echo "<a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
     		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        echo "</td>\n";
-    		        echo "<td nowrap>" . "<i class='fa-solid fa-eye' title='Se karaktären'></i></a>\n";
-    		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
     		        if ($role->isMysLajvare()) {
     		            echo "<td>N/A</td>";
@@ -101,7 +98,7 @@
     		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</></td>\n";
     		        }
     		        
-    		        echo "<td>$larp_role->StartingMoney</td>";
+    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this)'></td>";
     		        
     		        echo "</tr>\n";
     		    
@@ -114,5 +111,8 @@
 </body>
 <?php 
 include_once '../javascript/table_sort.js';
+include_once '../javascript/setmoney_ajax.js';
 ?>
+
+
 </html>
