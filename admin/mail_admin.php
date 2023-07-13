@@ -11,7 +11,8 @@ include 'navigation.php';
         echo "<table id='$tableId' class='data'>";
         echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Till</th>".
 	    "<th onclick='sortTable(1, \"$tableId\")'>Ämne</th>".
-	    "<th onclick='sortTable(2, \"$tableId\")'>Skickat av</th>".
+	    "<th onclick='sortTable(2, \"$tableId\")'></th>".
+	    "<th onclick='sortTable(3, \"$tableId\")'>Skickat av</th>".
 	    "<th onclick='sortTable(4, \"$tableId\")'>Skickat</th>".
 	    "<th onclick='sortTable(5, \"$tableId\")'>Fel</th>".
         "<th></th>".
@@ -30,6 +31,11 @@ include 'navigation.php';
     	    echo "<tr>";
     	    echo "<td>$email->ToName ($to)</td>";
     	    echo "<td>$email->Subject</td>";
+    	    
+    	    $attachements = $email->attachments();
+    	    echo "<td>";
+    	    if (!empty($attachements)) echo "<i class='fa-solid fa-paperclip'></i>";
+            echo "</td>";
     	    echo "<td>$user->Name</td>";
     	    echo "<td>$email->SentAt</td>";
     	    echo "<td>";
