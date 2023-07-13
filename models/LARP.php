@@ -196,5 +196,11 @@ class LARP extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($campaignId));
         
     }
+
+    public static function getPreviousLarpsInCampaign(LARP $larp) {
+        $sql = "SELECT * FROM regsys_larp WHERE CampaignId = ? AND StartDate < ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $larp->StartDate));
         
+    }
+    
 }
