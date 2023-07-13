@@ -5,6 +5,7 @@ $titledeeds = Titledeed::allByCampaign($current_larp);
 $resources = Resource::allRareByCampaign($current_larp);
 
 $sums = array();
+$numberOfCards = array();
 $currency = $current_larp->getCampaign()->Currency;
 
 include 'navigation.php';
@@ -33,6 +34,7 @@ th, td {
     	foreach ($resources as $key => $resource) {
     	    echo "<th><a href='resource_form.php?operation=update&Id=$resource->Id'>$resource->Name</a></th>\n";
     	    $sums[$key]=0;
+    	    $numberOfCards[$key] = 0;
     	}
     	?>
 		</tr>
@@ -47,6 +49,9 @@ th, td {
 		        else {
 		            echo "<td style='text-align:right'>$resource_titledeed->Quantity</td>\n";
 		            $sums[$key] = $sums[$key] + $resource_titledeed->Quantity;
+		            if ($resource_titledeed->Quantity > 0) {
+		                $numberOfCards[$key] = $numberOfCards[$key] + $resource_titledeed->Quantity;
+		            }
 		        }
 		    }
 		    echo "</tr>\n";
@@ -55,6 +60,10 @@ th, td {
 		echo "<tr><th style='text-align:left'>Summa</th>\n";
 		foreach ($resources as $key => $resource) {
 		    echo "<th style='text-align:right'>$sums[$key]</th>\n";
+		}
+		echo "<tr><th style='text-align:left'>Antal kort</th>\n";
+		foreach ($resources as $key => $resource) {
+		    echo "<th style='text-align:right'>$numberOfCards[$key]</th>\n";
 		}
 		echo "</tr>\n";
 		?>
