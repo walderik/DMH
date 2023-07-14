@@ -91,6 +91,7 @@ include 'navigation.php';
                 echo "</td>\n";
                 echo "<td>";
                 echo "<a href='resource_titledeed_form.php?Id=$titledeed->Id'><i class='fa-solid fa-pen' title='Ändra'></i></a><br>";
+                
                 echo "Producerar: ";
                 echo $titledeed->ProducesString()."<br>";
                 

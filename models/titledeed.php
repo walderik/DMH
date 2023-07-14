@@ -170,6 +170,10 @@ class Titledeed extends BaseModel{
         }
     }
     
+    public function getCampaign() {
+        return Campaign::loadById($this->CampaignId);
+    }
+    
     public function ProducesNormally() {
         return Resource::TitleDeedProcucesNormally($this);
     }
@@ -179,8 +183,9 @@ class Titledeed extends BaseModel{
     }
     
     public function ProducesString() {
-        $resource_titledeeds=$this->Produces();
+        $resource_titledeeds = $this->Produces();
         $resStringArr = array();
+        if ($this->Money > 0) $resStringArr[] = abs($this->Money) . " " . $this->getCampaign()->Currency;
         foreach ($resource_titledeeds as $resource_titledeed) {
             $resource = $resource_titledeed->getResource();
             if ($resource_titledeed->Quantity == 1) {
@@ -193,8 +198,9 @@ class Titledeed extends BaseModel{
     }
     
     public function RequiresString() {
-        $resource_titledeeds=$this->Requires();
+        $resource_titledeeds = $this->Requires();
         $resStringArr = array();
+        if ($this->Money < 0) $resStringArr[] = abs($this->Money) . " " . $this->getCampaign()->Currency;
         foreach ($resource_titledeeds as $resource_titledeed) {
             $resource = $resource_titledeed->getResource();
             $quantity = abs($resource_titledeed->Quantity);
