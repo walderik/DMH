@@ -40,8 +40,10 @@ include 'navigation.php';
         </p>
         <p>Ikoner:<br>
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
-        <i class='fa-solid fa-house'></i> - Handelsstation</p>
-            <a href="titledeed_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+        <i class='fa-solid fa-house'></i> - Handelsstation
+        </p>
+        <a href="titledeed_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a> &nbsp;
+        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a> 
        <?php
     
        $titledeed_array = Titledeed::allByCampaign($current_larp);

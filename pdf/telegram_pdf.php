@@ -35,10 +35,11 @@ class TELEGRAM_PDF extends FPDF {
 		$this->MultiCell(0,8,utf8_decode($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
     }
     
-    function nytt_telegram($telegram)
+    function nytt_telegram(Telegram $telegram)
     {
         $sender = $telegram->Sender.', '.$telegram->SenderCity;
         $reciever = $telegram->Reciever.', '.$telegram->RecieverCity;
+//         $this->AddPage('L','A5');
         $this->AddPage();
         $deliverytime = $telegram->Deliverytime;
         if (is_string($deliverytime)) {
