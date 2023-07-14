@@ -60,15 +60,18 @@ include 'navigation.php';
                 "<th></th><th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
                 echo "<tr>\n";
-                echo "<td>" . $titledeed->Name;
+                echo "<td>$titledeed->Name";
                 if ($titledeed->Tradeable == 0) {
                     echo " <i class='fa-solid fa-money-bill-wave'></i>";
                 }
                 if ($titledeed->IsTradingPost == 1) {
                     echo " <i class='fa-solid fa-house'></i>";
                 }
-                "</td>\n";
-                echo "<td>" . $titledeed->Location . "</td>\n";
+                echo "<br><br><small>";
+                if (!empty($titledeed->Type)) echo "$titledeed->Type ";
+                if (!empty($titledeed->Size)) echo "($titledeed->Size)";
+                "</small></td>\n";
+                echo "<td>$titledeed->Location</td>\n";
                 echo "<td>";
                 echo "<a href='choose_group.php?operation=add_titledeed_owner_group&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i></a><br>";
                 $owner_groups = $titledeed->getGroupOwners();
