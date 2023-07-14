@@ -8,13 +8,13 @@ include_once '../header.php';
 
 $arrayOfTitledeeds = Titledeed::allByCampaign($current_larp);
 $pdf = new TITLEDEED_PDF();
-$pdf->SetTitle('Ägarbevis');
+$pdf->SetTitle(utf8_decode('Ägarbevisen'));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('SpecialElite','');
-$pdf->SetSubject('Alla ägarbevis');
+$pdf->SetSubject(utf8_decode('Alla ägarbevis'));
 foreach ($arrayOfTitledeeds as $titledeed)  {
-    $pdf->new_titledeed($titledeed);
+    $pdf->new_titledeed($titledeed, $current_larp);
 }
 
 $pdf->Output();
