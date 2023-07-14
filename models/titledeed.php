@@ -13,6 +13,8 @@ class Titledeed extends BaseModel{
     public $OrganizerNotes;
     public $PublicNotes;
     public $SpecialUpgradeRequirements;
+    public $Type;
+    public $Size;
     
     
     public static $orderListBy = 'Name';
@@ -37,6 +39,8 @@ class Titledeed extends BaseModel{
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['PublicNotes'])) $this->PublicNotes = $arr['PublicNotes'];
         if (isset($arr['SpecialUpgradeRequirements'])) $this->SpecialUpgradeRequirements = $arr['SpecialUpgradeRequirements'];
+        if (isset($arr['Type'])) $this->Type = $arr['Type'];
+        if (isset($arr['Size'])) $this->Size = $arr['Size'];
         
     }
     
@@ -53,11 +57,12 @@ class Titledeed extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_titledeed SET Name=?, Location=?, Tradeable=?, IsTradingPost=?,
-                  CampaignId=?, Money=?, MoneyForUpgrade=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=? WHERE Id = ?;");
+                  CampaignId=?, Money=?, MoneyForUpgrade=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=?, 
+                  `Type`=?, Size=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
             $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes, 
-            $this->SpecialUpgradeRequirements, $this->Id))) {
+            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -69,11 +74,11 @@ class Titledeed extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_titledeed (Name, Location, Tradeable, IsTradingPost, 
-            CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements) VALUES (?,?,?,?,?,?, ?,?,?,?);");
+            CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements, `Type`, Size) VALUES (?,?,?,?,?,?, ?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
             $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes,
-            $this->SpecialUpgradeRequirements))) {
+            $this->SpecialUpgradeRequirements, $this->Type, $this->Size))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
