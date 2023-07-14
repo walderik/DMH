@@ -68,15 +68,7 @@ function myFunction() {
             <a href="prop_admin.php">Rekvisita</a>
             <a href="npc.php">NPC'er</a>
             <a href="intrigue_admin.php">Intriger</a>
-	    </div>
-	  </div> 
-	  <div class="dropdown">
-	    <button class="dropbtn">Handel 
-	      <i class="fa fa-caret-down"></i>
-	    </button>
-	    <div class="dropdown-content">
-            <a href="titledeed_admin.php">Lagfarter</a>
-            <a href="resource_admin.php">Resurser</a>
+            <a href="commerce.php">Handel</a>
 	    </div>
 	  </div> 
       <a href="../participant/" style="color: #99bbff"><i class="fa-solid fa-unlock"></i>Deltagare</a>

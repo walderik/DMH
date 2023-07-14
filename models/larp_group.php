@@ -11,7 +11,10 @@ class LARP_Group extends BaseModel{
     public $NeedFireplace = 0;
     public $RemainingIntrigues;
     public $UserMayEdit = 0;
-
+    public $StartingMoney;
+    public $EndingMoney;
+    public $Result;
+    
     public static $orderListBy = 'GroupId';
     
     public static function newFromArray($post){
@@ -31,6 +34,9 @@ class LARP_Group extends BaseModel{
         if (isset($arr['ApproximateNumberOfMembers'])) $this->ApproximateNumberOfMembers = $arr['ApproximateNumberOfMembers'];
         if (isset($arr['RemainingIntrigues'])) $this->RemainingIntrigues = $arr['RemainingIntrigues'];          
         if (isset($arr['UserMayEdit'])) $this->UserMayEdit = $arr['UserMayEdit'];
+        if (isset($arr['StartingMoney'])) $this->StartingMoney = $arr['StartingMoney'];
+        if (isset($arr['EndingMoney'])) $this->EndingMoney = $arr['EndingMoney'];
+        if (isset($arr['Result'])) $this->Result = $arr['Result'];
         
     }
     
@@ -70,9 +76,9 @@ class LARP_Group extends BaseModel{
         
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_larp_group SET WantIntrigue=?, Intrigue=?, HousingRequestId=?, RemainingIntrigues=? , ApproximateNumberOfMembers=?, NeedFireplace=?, UserMayEdit=? WHERE GroupId=? AND LARPId=?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp_group SET WantIntrigue=?, Intrigue=?, HousingRequestId=?, RemainingIntrigues=? , ApproximateNumberOfMembers=?, NeedFireplace=?, UserMayEdit=?, StartingMoney=?, EndingMoney=?, Result=? WHERE GroupId=? AND LARPId=?;");
         
-        if (!$stmt->execute(array($this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, $this->GroupId, $this->LARPId))) {
+        if (!$stmt->execute(array($this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, $this->StartingMoney, $this->EndingMoney, $this->Result, $this->GroupId, $this->LARPId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -83,9 +89,13 @@ class LARP_Group extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_larp_group (GroupId, LARPId, WantIntrigue, Intrigue, HousingRequestId, RemainingIntrigues, ApproximateNumberOfMembers, NeedFireplace, UserMayEdit) VALUES (?,?,?,?,?, ?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_larp_group (GroupId, LARPId, WantIntrigue, Intrigue, 
+            HousingRequestId, RemainingIntrigues, ApproximateNumberOfMembers, NeedFireplace, UserMayEdit, 
+            StartingMoney, EndingMoney, Result) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?);");
         
-        if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit))) {
+        if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, 
+                    $this->HousingRequestId, $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, 
+                    $this->StartingMoney, $this->EndingMoney, $this->Result))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");

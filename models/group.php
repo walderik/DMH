@@ -157,7 +157,7 @@ class Group extends BaseModel{
          
          if (is_null($larp)) return Array();
          $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND Id IN ".
-             "(SELECT GroupId from regsys_larp_group where LARPId = ?);";
+             "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
      
