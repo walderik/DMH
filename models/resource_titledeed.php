@@ -93,5 +93,12 @@ class Resource_Titledeed extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));
         
     }
+
+    public static function TitleDeedRequiresForUpgrade(Titledeed $titledeed) {
+        if (is_null($titledeed)) return Array();
+        $sql = "SELECT * FROM regsys_resource_titledeed WHERE TitledeedId = ? AND QuantityForUpgrade > 0 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($titledeed->Id));
+        
+    }
     
 }

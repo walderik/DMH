@@ -213,12 +213,32 @@ class Titledeed extends BaseModel{
         return implode(', ',$resStringArr);
     }
     
+    public function RequiresForUpgradeString() {
+        $resource_titledeeds = $this->RequiresForUpgrade();
+        $resStringArr = array();
+        foreach ($resource_titledeeds as $resource_titledeed) {
+            $resource = $resource_titledeed->getResource();
+            $quantity = abs($resource_titledeed->QuantityForUpgrade);
+            if ($quantity == 1) {
+                $resStringArr[] = "1 $resource->UnitSingular";
+            } else {
+                $resStringArr[] = "$quantity $resource->UnitPlural";
+            }
+        }
+        if (!empty($this->SpecialUpgradeRequirements)) $resStringArr[] = $this->SpecialUpgradeRequirements;
+        return implode(', ',$resStringArr);
+    }
+    
     public function Produces() {
         return Resource_Titledeed::TitleDeedProcuces($this);
     }
     
     public function Requires() {
         return Resource_Titledeed::TitleDeedRequires($this);
+    }
+    
+    public function RequiresForUpgrade() {
+        return Resource_Titledeed::TitleDeedRequiresForUpgrade($this);
     }
     
     public function deleteAllProduces() {   

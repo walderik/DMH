@@ -97,6 +97,9 @@ include 'navigation.php';
                 
                 echo "Behöver: ";
                 echo $titledeed->RequiresString();
+                echo "<br>";
+                echo "För uppgradering: ";
+                echo $titledeed->RequiresForUpgradeString();
                 echo "</td>\n";
                 echo "</td>";
                 echo "<td>".$titledeed->calculateResult()." $currency</td>";

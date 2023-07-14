@@ -114,4 +114,28 @@ class Resource extends BaseModel{
         
     }
     
+    public function countNumberOfCards(LARP $larp) {
+        if (is_null($larp)) return 0;
+        $sql = "SELECT Sum(regsys_resource_titledeed.Quantity) as Num FROM regsys_resource_titledeed, regsys_titledeed WHERE ".
+            "regsys_resource_titledeed.ResourceId = ? AND ".
+            "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
+            "regsys_titledeed.CampaignId = ? AND ".
+            "regsys_resource_titledeed.Quantity > 0 ";
+        $count = static::countQuery($sql, array($this->Id, $larp->CampaignId));
+        if (isset($count)) return $count;
+        return 0;
+    }
+    
+    public function countBalance(LARP $larp) {
+        if (is_null($larp)) return 0;
+        $sql = "SELECT Sum(regsys_resource_titledeed.Quantity) as Num FROM regsys_resource_titledeed, regsys_titledeed WHERE ".
+            "regsys_resource_titledeed.ResourceId = ? AND ".
+            "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
+            "regsys_titledeed.CampaignId = ?";
+        $count = static::countQuery($sql, array($this->Id, $larp->CampaignId));
+        if (isset($count)) return $count;
+        return 0;
+        
+    }
+    
 }
