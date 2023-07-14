@@ -5,6 +5,15 @@ th {
 
 </style>
 <script>
+function getText(element) {
+
+	if (element.innerHTML.startsWith("<a ")) {
+		let position = element.innerHTML.search(">");
+		return element.innerHTML.substr(position).toLowerCase();
+	}
+	return element.innerHTML.toLowerCase()
+}
+
 function sortTable(n, tableid) {
 
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
@@ -30,13 +39,13 @@ function sortTable(n, tableid) {
       /* Check if the two rows should switch place,
       based on the direction, asc or desc: */
       if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        if (getText(x) > getText(y)) {
           // If so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;
         }
       } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        if (getText(x) < getText(y)) {
           // If so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;
