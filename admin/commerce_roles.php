@@ -7,6 +7,7 @@
 
     <div class="content">   
         <h1>Karaktärer med handel</h1>
+        <p>Alla karaktärer som har rikedom 3 eller högre eller som äger en lagfart visas här. Det gäller alla karaktärer i kampanjen, även de som inte kommer på ett visst lajv.</p>
         <p>Sidokaraktärer markeras med en * efter namnet</p>
      		<?php 
      		$roles = Role::getAllInCampaign($current_larp->CampaignId);

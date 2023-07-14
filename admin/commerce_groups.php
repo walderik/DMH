@@ -7,6 +7,8 @@
 
     <div class="content">   
         <h1>Grupper med handel</h1>
+                <p>Alla grupper som har rikedom 3 eller högre eller som äger en lagfart visas här. Det gäller alla grupper i kampanjen, även de som inte kommer på ett visst lajv.</p>
+        
      		<?php 
      		$groups = Group::getAllInCampaign($current_larp->CampaignId);
      		if (empty($groups)) {
