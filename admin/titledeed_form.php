@@ -71,11 +71,11 @@ include_once 'header.php';
 			</tr>
 			<tr>
 				<td><label for="Type">Typ</label> <small>(vad är det för något)</small></td>
-				<td><input type="text" id="Type" name="Type" value="<?php echo htmlspecialchars($titledeed->Type); ?>" size="100" maxlength="250" required></td>
+				<td><input type="text" id="Type" name="Type" value="<?php echo htmlspecialchars($titledeed->Type); ?>" size="100" maxlength="250"></td>
 			</tr>
 			<tr>
 				<td><label for="Size">Storlek</label></td>
-				<td><input type="text" id="Size" name="Size" value="<?php echo htmlspecialchars($titledeed->Size); ?>" size="100" maxlength="250" required></td>
+				<td><input type="text" id="Size" name="Size" value="<?php echo htmlspecialchars($titledeed->Size); ?>" size="100" maxlength="250"></td>
 			</tr>
 			<tr>
 
