@@ -65,6 +65,7 @@ include 'navigation.php';
                 if (!empty($titledeed->Size)) echo "($titledeed->Size)";
                 "</small></td>\n";
                 echo "<td>$titledeed->Location</td>\n";
+                
                 echo "<td>";
                 echo "<a href='choose_group.php?operation=add_titledeed_owner_group&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i></a><br>";
                 $owner_groups = $titledeed->getGroupOwners();
@@ -75,14 +76,13 @@ include 'navigation.php';
                 
                 echo "<a href='choose_role.php?operation=add_titledeed_owner_role&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i></a><br>";
                 
-                
                 $owner_roles = $titledeed->getRoleOwners();
                 foreach ($owner_roles as $owner_role) {
                     echo "<a href='../admin/view_role.php?id=$owner_role->Id'>$owner_role->Name <a href='titledeed_admin.php?operation=delete_owner_role&titledeeId=$titledeed->Id&roleId=$owner_role->Id'><i class='fa-solid fa-trash'></i></a><br>";
                     
                 }
-                
                 echo "</td>\n";
+                
                 echo "<td>";
                 $produces_normally = $titledeed->ProducesNormally();
                 if (!empty($produces_normally)) echo "Producerar: ". commaStringFromArrayObject($produces_normally) . "<br>\n";
