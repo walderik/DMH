@@ -31,16 +31,9 @@ Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anm
 Sökfunktion på roller och grupper (ex Hitta alla som kommer från slow river)
 
 Handelssystemet:
-  Främst så vore det från min/annan arr som vill ha överblick på det toppenbra om det syns om personen 
-  är del av handelssystemet, samt någon form av översikt på typ av verksamhet etc. 
-  Samt om det går: Vad verksamheten skapar för resurser.
-Handel - mata in resurser per lagfart, 
-		Se översikt ekonomi per lagfart
-		Översikt ekonomi per roll
-		Antal resuser  +-
-		skriva ut lagfarter, resurslappar mm
-Fritext på lagfarter, anteckning för arr och anteckning för deltagare
-Pengar till alla karaktärer
+  skriva ut lagfarter, resurslappar mm
+  skriva in resultat
+  justera pengar smidigt i översikt av normala resurser
 
 Göra klart husfördelningen
 
