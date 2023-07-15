@@ -20,20 +20,20 @@ class TITLEDEED_PDF extends FPDF {
         
         $left = 11;
         $y = 0;
-        $left2 = $left + 40;
+        $left2 = $left + 30;
         
         $txt_font = ($titledeed->Tradeable) ? 'SpecialElite' : 'Helvetica';
         
         if ($titledeed->Tradeable) {
-            $this->SetFont('DancingScript','',80);
-            $y += 4;
+            $this->SetFont('Smokum','',80);
+            $y += 7;
         } else {
             $this->SetFont('Helvetica','',50);
         }
         
         $y += 13;
         $this->SetXY($left, $y);
-        $txt = $titledeed->Tradeable ? 'Ägarbevis' : 'Ägarinformation';
+        $txt = $titledeed->Tradeable ? 'ÄGARBEVIS' : 'Ägarinformation';
         $this->Cell(0,10,utf8_decode($txt),0,1,'C');
         if (!$titledeed->Tradeable) {
             $this->SetXY($left, $y);
@@ -111,7 +111,7 @@ class TITLEDEED_PDF extends FPDF {
         
         $y += 14;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('För förbättring'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,utf8_decode('Förbättring'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
         $this->Cell(80,10,utf8_decode($titledeed->RequiresForUpgradeString()),0,1);
     }
@@ -119,7 +119,7 @@ class TITLEDEED_PDF extends FPDF {
     function new_titledeed(Titledeed $titledeed, LARP $larp)
     {
         $campaigne = $larp->getCampaign();
-        $this->AddFont('DancingScript','');
+        $this->AddFont('Smokum','');
 //         $this->AddPage('L','A5',270);
         $this->AddPage('L','A5',0);
 //         $this->AddPage();
