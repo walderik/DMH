@@ -39,8 +39,14 @@ include 'navigation.php';
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
         <i class='fa-solid fa-house'></i> - Handelsstation
         </p>
+        <p>
         <a href="titledeed_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a> &nbsp;
-        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till lagfarterna som pdf</a> 
+        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till lagfarterna</a> &nbsp; 
+        <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till lagfarterna</a> 
+        <br><br>
+        <a href="resource_titledeed_overview_normal.php">Översikt - normala resurser</a> &nbsp; 
+        <a href="resource_titledeed_overview_rare.php">Översikt - ovanliga resurser</a>
+        </p>
        <?php
     
        $titledeed_array = Titledeed::allByCampaign($current_larp);
