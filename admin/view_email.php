@@ -47,17 +47,17 @@ include 'navigation.php';
 			</td>
 			</tr>
 			<?php if (!empty($attachements)) {?>
-			<tr>
-			<tr><td colspan = '2' style='font-weight: normal'>
-			<h2>Bilagor</h2>
-			
-			<?php 
-			foreach ($attachements as $attachement) {
-			    echo "$attachement->Filename<br>";
-			}
-			?>
-			</td>
-			</tr>
+    			<tr>
+    			<tr><td colspan = '2' style='font-weight: normal'>
+    			<h2>Bilagor</h2>
+    			
+    			<?php 
+    			foreach ($attachements as $attachment) {
+    			    echo "<a href='view_email_attachment.php?id=$attachment->Id' target='_blank'>$attachment->Filename</a><br>";
+    			}
+    			?>
+    			</td>
+    			</tr>
 			<?php } ?>
 		</table>		
 		</div>
