@@ -361,4 +361,33 @@ class Titledeed extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($group->Id));
     }
     
+    public function mayRemove() {
+        //Finns det roller som ägare
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_titledeed_role WHERE TitledeedId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+
+        //Finns det grupper som ägare
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_titledeed_group WHERE TitledeedId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        //Finns det normal produktion
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_resource_titledeed_normally_produces WHERE TitledeedId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        //Finns det normala behov
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_resource_titledeed_normally_requires WHERE TitledeedId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        //Finns det produktion/behov
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_resource_titledeed WHERE TitledeedId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        //Finns det resultat från tidigare år
+        //TODO ska det här kravet vara med? Man kanske vill ta bort lagfarter som gått i konkurs eller på annat sätt fursvunnit ur spel.
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_titledeedresult WHERE TitledeedId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        return true; 
+    }
+    
 }
