@@ -106,47 +106,13 @@ class KITCHEN_PDF extends FPDF {
 
             }
         }
-        
-        /*
-        
-        //Multipla allergier
-        $persons = Person::getAllWithMultipleAllergies($current_larp);
-        if (isset($persons) && count($persons) > 0) {
-            $headline = "Multipla vanliga allergier";
-            $header = array('Namn', 'Allergier', 'Övrigt', 'Vald mat');
-                    $columnWidth = Array (35, 90, 40);
-            $data = Array();
-            
-            foreach($persons as $person) {
-                $registration=$person->getRegistration($current_larp);
-                $data[] = Array($person->Name, commaStringFromArrayObject($person->getNormalAllergyTypes()), $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
-            }
-            $this->FancyTable($headline, $header, $data, $columnWidth);
-        }
-               */
-
-        /*
-        //Hitta alla som inte har någon vald allergi, men som har en kommentar
-        $persons = Person::getAllWithoutAllergiesButWithComment($current_larp);
-        if (isset($persons) && count($persons) > 0) {
-            $headline = "Special";
-            $header = array('Namn', 'Övrigt', 'Vald mat');
-            $columnWidth = Array (35, 90, 40);
-            $data = Array();
-            foreach($persons as $person) {
-                $registration=$person->getRegistration($current_larp);
-                $data[] = Array($person->Name, $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
-            }
-            $this->FancyTable($headline, $header, $data, $columnWidth);
-        }
-*/
     }
 
 }
 $pdf = new KITCHEN_PDF();
-$pdf->SetTitle('For koket');
-$pdf->SetAuthor('Dod mans hand');
-$pdf->SetCreator('Dod mans hand');
+$pdf->SetTitle(utf8_decode('För koket'));
+$pdf->SetAuthor(utf8_decode($current_larp->Name));
+$pdf->SetCreator(utf8_decode($current_larp->Name));
 $pdf->AddFont('Helvetica','');
 $pdf->SetFont('Arial','',12);
 $pdf->addPage('L');

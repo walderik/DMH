@@ -13,8 +13,6 @@ $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('SpecialElite','');
 $pdf->SetSubject(utf8_decode('Alla ägarbevis'));
-foreach ($arrayOfTitledeeds as $titledeed)  {
-    $pdf->new_titledeed($titledeed, $current_larp);
-}
+$pdf->all_titledeeds($arrayOfTitledeeds, $current_larp);
 
 $pdf->Output();
