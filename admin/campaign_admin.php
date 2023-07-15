@@ -28,11 +28,12 @@ include 'navigation.php';
                <tr><td valign="top" class="header">Bankkonto</td><td><?php echo $campaign->Bankaccount ?></td></tr>
                <tr><td valign="top" class="header">Minsta ålder</td><td><?php echo $campaign->MinimumAge ?></td></tr>
                <tr><td valign="top" class="header">Minsta ålder utan ansvarig vuxen</td><td><?php echo $campaign->MinimumAgeWithoutGuardian ?></td></tr>
+               <tr><td valign="top" class="header">Lajv-valuta</td><td><?php echo $campaign->Currency ?></td></tr> 
             </table>
 			<br>
 
 				<?php 
-                echo "<strong>Arrangörsgrupp:</strong><br>";
+                echo "<strong>Arrangörsbehörighet:</strong><br>";
                 $organizers = User::getAllWithAccessToCampaign($campaign);
                 if (count($organizers) == 0) echo "Ingen utsedd än<br>";
                 foreach ($organizers as $organizer) {

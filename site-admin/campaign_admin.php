@@ -65,7 +65,7 @@ include "navigation.php";
                 
                 echo "<tr>";
                 echo "<td colspan='10'>";
-                echo "Arrangörsgrupp:<br>";
+                echo "Arrangörsbehörighet:<br>";
                 $organizers = User::getAllWithAccessToCampaign($campaign);
                 if (count($organizers) == 0) echo "Ingen utsedd än<br>";
                 foreach ($organizers as $organizer) {
