@@ -361,6 +361,23 @@ class Titledeed extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($group->Id));
     }
     
+    public static function delete($titledeedId) {
+        //Ta bort tidigare resultat
+        //TODO ska göras snyggare när vi får till sparning av resultat
+        $sql = "DELETE FROM regsys_titledeedresult WHERE TitledeedId=?";
+        $connection = static::connectStatic();
+        $stmt = $connection->prepare($sql);
+        if (!$stmt->execute(array($titledeedId))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+                
+        parent::delete($id);
+        
+    }
+    
     public function mayRemove() {
         //Finns det roller som ägare
         $sql = "SELECT COUNT(*) AS Num FROM regsys_titledeed_role WHERE TitledeedId=?";
@@ -380,11 +397,6 @@ class Titledeed extends BaseModel{
         
         //Finns det produktion/behov
         $sql = "SELECT COUNT(*) AS Num FROM regsys_resource_titledeed WHERE TitledeedId=?";
-        if (static::existsQuery($sql, array($this->Id))) return false;
-        
-        //Finns det resultat från tidigare år
-        //TODO ska det här kravet vara med? Man kanske vill ta bort lagfarter som gått i konkurs eller på annat sätt fursvunnit ur spel.
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_titledeedresult WHERE TitledeedId=?";
         if (static::existsQuery($sql, array($this->Id))) return false;
         
         return true; 
