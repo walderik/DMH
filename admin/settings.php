@@ -17,7 +17,7 @@ include 'navigation.php';
 
         </p>
         
-	    <h2>Basdata</h2>
+	    <h2>Basdata för kampanjen</h2>
 	    	<p>
 			    <a href="selection_data_admin.php?type=larpertypes">Typ av lajvare</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger</a>	<br>		    			 					    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål</a>	<br>		    			
