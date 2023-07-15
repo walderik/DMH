@@ -216,6 +216,7 @@ class Titledeed extends BaseModel{
     public function RequiresForUpgradeString() {
         $resource_titledeeds = $this->RequiresForUpgrade();
         $resStringArr = array();
+        if ($this->MoneyForUpgrade > 0) $resStringArr[] = $this->MoneyForUpgrade . " " . $this->getCampaign()->Currency;
         foreach ($resource_titledeeds as $resource_titledeed) {
             $resource = $resource_titledeed->getResource();
             $quantity = abs($resource_titledeed->QuantityForUpgrade);

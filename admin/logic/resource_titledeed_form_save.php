@@ -6,6 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $titledeed->Money = $_POST['Produces_Money'] - $_POST['Requires_Money'];
     $titledeed->MoneyForUpgrade = $_POST['MoneyForUpgrade'];
+    $titledeed->SpecialUpgradeRequirements = $_POST['SpecialUpgradeRequirements'];
     $titledeed->update();
     
     $resources = Resource::allNormalByCampaign($current_larp);
