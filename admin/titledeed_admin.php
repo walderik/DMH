@@ -50,10 +50,10 @@ include 'navigation.php';
                 "<th onclick='sortTable(1, \"$tableId\")'>Normalt<br>Producerar/Behöver</th>".
                 "<th onclick='sortTable(2, \"$tableId\")'>Nu<br>Producerar/Behöver</th>".
                 "<th onclick='sortTable(1, \"$tableId\")'>Resultat</th>".
-                "<th></th><th></th></tr>\n";
+                "<th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
                 echo "<tr>\n";
-                echo "<td>$titledeed->Name";
+                echo "<td><a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
                 if ($titledeed->Tradeable == 0) {
                     echo " <i class='fa-solid fa-money-bill-wave'></i>";
                 }
@@ -104,7 +104,6 @@ include 'navigation.php';
                 echo "</td>";
                 echo "<td>".$titledeed->calculateResult()." $currency</td>";
                 
-                echo "<td>" . "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='titledeed_admin.php?operation=delete&id=" . $titledeed->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }

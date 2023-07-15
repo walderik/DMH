@@ -17,6 +17,14 @@ include_once 'header.php';
     $normally_requires_resourceIds = $titledeed->getSelectedRequiresResourcesIds();
     $currency = $current_larp->getCampaign()->Currency;
     
+    
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $referer = $_SERVER['HTTP_REFERER'];
+    }
+    else {
+        $referer = "";
+    }
+    
     include 'navigation.php';
     ?>
     
@@ -64,6 +72,7 @@ function updateResult() {
 	<form action="logic/resource_titledeed_form_save.php" method="post">
 		<input type="hidden" id="Id" name="Id" value="<?php echo $titledeed->Id ?>">
 		<input type="hidden" id="Currency" value="<?php echo $currency ?>">
+		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
 		<tr><td colspan="2"><h2>Normal drift</h2>
 		<p>En lagfart kan antingen producera eller behöva en resurs. 

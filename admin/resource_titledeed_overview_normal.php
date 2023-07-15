@@ -19,6 +19,7 @@ th, td {
 </style>
     <div class="content">
         <h1>Lagfarter - normala resurser - översikt</h1>
+		<input type="hidden" id="Currency" value="<?php echo $currency ?>">
         <?php if (empty($resources) || empty($titledeeds)) {
             echo "Översikten kräver att det finns både resurder och lagfarter.";
             
@@ -47,29 +48,26 @@ th, td {
 		    $money_sum = $money_sum + $titledeed->Money;
 		    foreach ($resources as $key => $resource) {
 		        $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
-		        if (empty($resource_titledeed)) {
-		            echo "<td style='text-align:right'>0</td>\n";
-		        }
-		        else {
-		            echo "<td style='text-align:right'>";
-		            echo "<input type='number' id='$resource_titledeed->Id' value='$resource_titledeed->Quantity' onchange='recalculate(this)'>";
-		            echo "</td>\n";
-		        }
+		        $quantity = 0;
+		        if (!empty($resource_titledeed)) $quantity = $resource_titledeed->Quantity;
+	            echo "<td style='text-align:right'>";
+	            echo "<input type='number' id='$resource->Id:$titledeed->Id' value='$quantity' onchange='recalculate(this)'>";
+	            echo "</td>\n";
 		    }
-		    echo "<td style='text-align:right'>".$titledeed->calculateResult()." $currency</td>\n";
+		    echo "<td style='text-align:right' id='Result_$titledeed->Id'>".$titledeed->calculateResult()." $currency</td>\n";
 		    echo "</tr>\n";
 		}
 		
 		echo "<tr><th style='text-align:left'>Balans</th>\n";
 		echo "<th style='text-align:right'>$money_sum</th>\n";
 		foreach ($resources as $resource) {
-		    echo "<th style='text-align:right'>".$resource->countBalance($current_larp)."</th>\n";
+		    echo "<th style='text-align:right' id='Balance_$resource->Id'>".$resource->countBalance($current_larp)."</th>\n";
 		}
 		echo "<td></td>";
 		echo "<tr><th style='text-align:left'>Antal kort</th>\n";
 		echo "<th></th>\n";
 		foreach ($resources as $resource) {
-		    echo "<th style='text-align:right'>".$resource->countNumberOfCards($current_larp)."</th>\n";
+		    echo "<th style='text-align:right' id='Cards_$resource->Id' >".$resource->countNumberOfCards($current_larp)."</th>\n";
 		}
 		echo "<td></td>";
 		echo "</tr>\n";
@@ -82,5 +80,6 @@ th, td {
     </body>
 <?php 
 include_once '../javascript/table_sort.js';
+include_once '../javascript/setresource_ajax.js';
 ?>
 </html>

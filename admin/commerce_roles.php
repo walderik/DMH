@@ -2,6 +2,8 @@
  include_once 'header.php';
  
  include 'navigation.php';
+ 
+ $currency = $current_larp->getCampaign()->Currency;
 ?>
 
 
@@ -21,7 +23,8 @@
         		    "<th onclick='sortTable(2, \"$tableId\")'>Rikedom</th>".
         		    "<th onclick='sortTable(3, \"$tableId\")'>Grupp</th>".
         		    "<th onclick='sortTable(4, \"$tableId\")'>Lagfarter</th>".
-                    "</tr>\n";
+        		    "<th onclick='sortTable(5, \"$tableId\")'>Pengar ($currency)</th>".
+        		    "</tr>\n";
     		    foreach ($roles as $role)  {
     		        //Man vill se alla roller som kommer på lajvet och har handel och 
     		        //alla roller som äger lagfart oavsett om de kommer eller inte
@@ -52,10 +55,13 @@
         		        
         		        foreach ($titledeeds as $titledeed) {
         		            $numberOfOwners = $titledeed->numberOfOwners();
-        		            echo "$titledeed->Name";
-                            if ($numberOfOwners > 1) echo " 1 / $numberOfOwners";
+        		            echo "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
+                            if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
+                            echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
                             echo "<br>";
         		        }
+                        echo "</td>";
+        		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this)'></td>";
         		        echo "</td>";
         		        echo "</tr>\n";
     		        }
@@ -68,5 +74,7 @@
  </body>
 <?php 
 include_once '../javascript/table_sort.js';
+include_once '../javascript/setmoney_ajax.js';
 ?>
+
 </html>
