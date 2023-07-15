@@ -22,8 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $titledeed = Titledeed::loadById($titledeeId);
             $titledeed->deleteGroupOwner($groupId);
         }
+        header('Location: titledeed_admin.php');
+        exit;
     }
- 
+    
 }
 
 include 'navigation.php';
@@ -31,6 +33,8 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Lagfarter</h1>
+        <p>Lagfarter går bara att ta bort om det inte finns några ägare eller instälningar för produktion/behov. 
+        Detta för att man inte ska råka ta bort lagfarter som är i spel av misstag.</p>
         <p>Ikoner:<br>
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
         <i class='fa-solid fa-house'></i> - Handelsstation
@@ -104,7 +108,10 @@ include 'navigation.php';
                 echo "</td>";
                 echo "<td>".$titledeed->calculateResult()." $currency</td>";
                 
-                echo "<td>" . "<a href='titledeed_admin.php?operation=delete&id=" . $titledeed->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>";
+                if ($titledeed->mayRemove())
+                    echo "<a href='titledeed_admin.php?operation=delete&id=" . $titledeed->Id . "'><i class='fa-solid fa-trash'></i>";
+                echo "</td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
