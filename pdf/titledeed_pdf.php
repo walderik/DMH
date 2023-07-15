@@ -20,16 +20,18 @@ class TITLEDEED_PDF extends FPDF {
         
         $left = 11;
         $y = 0;
-        $left2 = $left + 35;
+        $left2 = $left + 40;
         
         $txt_font = ($titledeed->Tradeable) ? 'SpecialElite' : 'Helvetica';
         
-        $y += 11;
         if ($titledeed->Tradeable) {
-            $this->SetFont('DancingScript','',45);
+            $this->SetFont('DancingScript','',80);
+            $y += 4;
         } else {
-            $this->SetFont('Helvetica','',40);
+            $this->SetFont('Helvetica','',50);
         }
+        
+        $y += 13;
         $this->SetXY($left, $y);
         $txt = $titledeed->Tradeable ? 'Ägarbevis' : 'Ägarinformation';
         $this->Cell(0,10,utf8_decode($txt),0,1,'C');
@@ -39,13 +41,13 @@ class TITLEDEED_PDF extends FPDF {
             $this->SetXY($left, $y);
             $this->SetFont('Helvetica','',10); 
             $this->Cell(0,10,utf8_decode('(Kan inte säljas)'),0,1,'C');
-            $y += 2;
+            $y -= 10;
         }
         
         $this->SetFont($txt_font,'',20);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
 		# För mer fonter använder du http://www.fpdf.org/makefont/
 
-        $y += 13;
+        $y += 25;
         $this->SetXY($left, $y);
 		$this->Cell(80,10,utf8_decode('Namn'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
 		$this->SetXY($left2, $y);
@@ -66,16 +68,16 @@ class TITLEDEED_PDF extends FPDF {
 		if (!empty($titledeed->Size)) $txt .= "($titledeed->Size)";
         if (!empty($titledeed->Size)) {
             $y += 7;
-    		$this->SetXY($left, $y);
-    		$this->Cell(80,10,utf8_decode('Typ'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+//     		$this->SetXY($left, $y);
+//     		$this->Cell(80,10,utf8_decode('Typ'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
     		$this->SetXY($left2, $y);
     		$this->Cell(80,10,utf8_decode($txt),0,1);
         }
         
         if (!empty($titledeed->PublicNotes)) {
             $y += 7;
-            $this->SetXY($left, $y);
-            $this->Cell(80,10,utf8_decode('Beskrivning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+//             $this->SetXY($left, $y);
+//             $this->Cell(80,10,utf8_decode('Beskrivning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
             $this->SetXY($left2, $y);
             $this->Cell(80,10,utf8_decode($titledeed->PublicNotes),0,1);
             
@@ -106,6 +108,12 @@ class TITLEDEED_PDF extends FPDF {
         $this->Cell(80,10,utf8_decode('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
         $this->Cell(80,10,utf8_decode($titledeed->RequiresString()),0,1);
+        
+        $y += 14;
+        $this->SetXY($left, $y);
+        $this->Cell(80,10,utf8_decode('För förbättring'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left2, $y);
+        $this->Cell(80,10,utf8_decode($titledeed->RequiresForUpgradeString()),0,1);
     }
     
     function new_titledeed(Titledeed $titledeed, LARP $larp)
