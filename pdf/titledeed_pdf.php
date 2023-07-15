@@ -125,6 +125,16 @@ class TITLEDEED_PDF extends FPDF {
 //         $this->AddPage();
         $this->SetText($titledeed, $campaigne);
 	}
+	
+	function all_titledeeds(Array $titledeeds, LARP $larp)
+	{
+	    $campaigne = $larp->getCampaign();
+	    $this->AddFont('Smokum','');
+	    //         $this->AddPage('L','A5',270);
+	    $this->AddPage('L','A5',0);
+	    //         $this->AddPage();
+	    $this->SetText($titledeed, $campaigne);
+	}
 }
 
 // Money = 0;

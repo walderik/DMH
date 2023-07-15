@@ -8,11 +8,11 @@ include_once '../header.php';
 
 $arrayOfTitledeeds = Telegram::allApprovedBySelectedLARP($current_larp);
 $pdf = new TELEGRAM_PDF();
-$pdf->SetTitle('Telegram');
+$pdf->SetTitle(utf8_decode('Telegram'));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator('Omnes Mundos');
+$pdf->SetCreator(utf8_decode('Omnes Mundos'));
 $pdf->AddFont('SpecialElite','');
-$pdf->SetSubject('Telegram');
+$pdf->SetSubject(utf8_decode('Telegram'));
 foreach ($arrayOfTitledeeds as $telegram)  {
     $pdf->nytt_telegram($telegram);
 }
