@@ -59,6 +59,12 @@
                             if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
                             echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
                             echo "<br>";
+                            $produces_normally = $titledeed->ProducesNormally();
+                            if (!empty($produces_normally)) echo "Producerar: ". commaStringFromArrayObject($produces_normally) . "<br>\n";
+                            $requires_normally = $titledeed->RequiresNormally();
+                            if (!empty($requires_normally)) echo "Behöver: " . commaStringFromArrayObject($requires_normally)."<br>\n";
+                            echo "<br>";
+                            
         		        }
                         echo "</td>";
         		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this)'></td>";
