@@ -16,11 +16,14 @@ class TITLEDEED_PDF extends FPDF {
 //         $this->Image($root . '/images/telegram.png',null,null,200);
     }
     
-    function SetText(Titledeed $titledeed, Campaign $campaigne) {
+    function SetText(Titledeed $titledeed, Campaign $campaign, bool $odd) {
         
         $left = 11;
-        $y = 0;
+        $page_height = $this->GetPageHeight();
+        $y = $odd ? 0 : ($page_height/2);
         $left2 = $left + 30;
+        
+        if ($odd) $this->Line(0, ($page_height/2), $this->GetPageWidth(), ($page_height/2));
         
         $txt_font = ($titledeed->Tradeable) ? 'SpecialElite' : 'Helvetica';
         
@@ -116,6 +119,8 @@ class TITLEDEED_PDF extends FPDF {
         $this->Cell(80,10,utf8_decode($titledeed->RequiresForUpgradeString()),0,1);
     }
     
+    
+    
     function new_titledeed(Titledeed $titledeed, LARP $larp)
     {
         $campaigne = $larp->getCampaign();
@@ -123,17 +128,24 @@ class TITLEDEED_PDF extends FPDF {
 //         $this->AddPage('L','A5',270);
         $this->AddPage('L','A5',0);
 //         $this->AddPage();
-        $this->SetText($titledeed, $campaigne);
+        $this->SetText($titledeed, $campaigne, true);
 	}
 	
 	function all_titledeeds(Array $titledeeds, LARP $larp)
 	{
-	    $campaigne = $larp->getCampaign();
+	    $campaign = $larp->getCampaign();
 	    $this->AddFont('Smokum','');
 	    //         $this->AddPage('L','A5',270);
-	    $this->AddPage('L','A5',0);
-	    //         $this->AddPage();
-	    $this->SetText($titledeed, $campaigne);
+	    $odd = true;
+	    foreach ($titledeeds as $titledeed) {
+	        if ($odd) {
+	            $this->AddPage();
+	            $odd = false;
+	        } else {
+	            $odd = true;
+	        }
+	    $this->SetText($titledeed, $campaign, !$odd);
+	    }
 	}
 }
 
