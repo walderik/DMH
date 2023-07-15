@@ -68,4 +68,5 @@ if (!empty($persons) && count($persons) > 0) {
     }
     $pdf->new_report($current_larp, "Special", $rows);
 }
+
 $pdf->Output();
