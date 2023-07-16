@@ -12,6 +12,8 @@ class RESOURCE_PDF extends FPDF {
     
     public $margin = 10;
     public $title;
+    public $handfonts = ['cherish','dancingscript','daniel','dawningofanewday','ekologiehand','homemadeapple','mynerve',
+                         'reeniebeanie','simplyglamorous','splash','sueellenfrancisco','zeyada'];
     
     function Header()
     {
@@ -52,8 +54,6 @@ class RESOURCE_PDF extends FPDF {
         }
         if ($check_total <= 0) return;
         
-        $left = 11;
-        
         $this->title = $titledeed->Name;
         $this->AddPage();
 
@@ -70,7 +70,6 @@ class RESOURCE_PDF extends FPDF {
         
         
         # Rita rutor
-        $this->SetFont('Arial','B',14);
         $x_nr = 0;
         $y_nr = 0;
         $this->Line($this->margin, $this->margin+($rut_height), $width-$this->margin, $this->margin+($rut_height)); # Första Horisontell linje under
@@ -83,8 +82,42 @@ class RESOURCE_PDF extends FPDF {
             
             for ($i = 0; $i < $resource_titledeed->Quantity; $i++){
                 
-                $this->SetXY(11 + ($x_nr * $rut_width), 15 + ($y_nr * $rut_height));
-                $this->Cell(0,10,utf8_decode("$resource->Name"),0,1,'L');
+                # Rubriken
+                $this->SetFont('specialelite','',12);
+                $this->SetXY( 3+$this->margin+($x_nr * $rut_width), $this->margin+($y_nr * $rut_height));
+                $this->Cell($rut_width,10,utf8_decode(ucfirst("Kvitto för")),0,1,'L');
+                
+                # Resursnamnet
+
+                $font = $this->handfonts[array_rand($this->handfonts, 1)];
+
+//                 if ($font=='homemadeapple') $size = 38;
+//                 elseif ($font=='cherish')   $size = 38;
+//                 else $size = 38; 
+                $size = 38;
+                $txt = "$resource->UnitSingular ";
+                
+                
+//                 if (strlen($txt) > 12) $size -= 2;
+//                 elseif (strlen($txt)< 5) $size += 8;
+                
+                # En bit kos för att säkerställa att inget hamnar utanför kanten på rutan
+                $this->SetFont($font,'',$size);
+                $slen = $this->GetStringWidth($txt,0);
+                while ($slen > ($rut_width-3)) {
+                    $size -= 1;
+                    $this->SetFont($font,'',$size);
+                    $slen = $this->GetStringWidth($txt,0);
+                }
+                
+                $this->SetXY($this->margin+($x_nr * $rut_width), 4+($rut_height/2) + ($y_nr * $rut_height));
+                $this->Cell($rut_width,10,utf8_decode(ucfirst($txt)),0,1,'C');
+                
+                # Undertext
+                $this->SetFont('specialelite','',12);
+                $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-3) + ($y_nr * $rut_height));
+                $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+                
                 
                 $x_nr += 1;
                 
@@ -113,7 +146,10 @@ class RESOURCE_PDF extends FPDF {
     function all_resources(Array $titledeeds, LARP $larp)
 	{
 	    $campaign = $larp->getCampaign();
+	    $this->SetAutoPageBreak(true , 1.5);
 	    $this->AddFont('Smokum','');
+	    $this->AddFont('specialelite','');
+	    foreach ($this->handfonts as $font) $this->AddFont($font,'');
 	    //         $this->AddPage('L','A5',270);
 	    foreach ($titledeeds as $titledeed) {
     	    $this->SetText($titledeed, $campaign);
