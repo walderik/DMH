@@ -62,7 +62,7 @@ include 'navigation.php';
             echo "</table>";
         }
         else {
-            echo "<p>Inga registrarade ännu</p>";
+            echo "<p>Inga registrerade ännu</p>";
         }
         ?>
     </div>
