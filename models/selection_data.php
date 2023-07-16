@@ -14,6 +14,10 @@ class SelectionData extends BaseModel{
     
     # Används den här tabellen
     public static function isInUse(LARP $larp) {
+        
+        static $in_use;
+        if (!is_null($in_use)) return $in_use;
+        
         $stmt = static::connectStatic()->prepare("SELECT * FROM regsys_".strtolower(static::class)." WHERE active = 1 AND CampaignId = ? ORDER BY SortOrder LIMIT 1;");
         
         if (!$stmt->execute(array($larp->CampaignId))) {
@@ -23,11 +27,19 @@ class SelectionData extends BaseModel{
         }
         
         if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return false;
+            $in_use = false;
+        } else {
+            $in_use = true;
         }
         $stmt = null;
-        return true;
+        return $in_use;
+    }
+    
+    public static function loadById($id) {
+        static $cache = array();
+        if (isset($cache[$id])) return $cache[$id];
+        $cache[$id] = parent::loadById($id);
+        return $cache[$id];
     }
     
     public static function newFromArray($post) {
