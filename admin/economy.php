@@ -42,12 +42,12 @@ include 'navigation.php';
        $bookkeepings = Bookkeeping::allByLARP($current_larp);
        $sum = 0;
        echo "<table id='bookkeeping' class='data'>";
-       echo "<tr><th>Nummer</th><th>Datum</th><th>Rubrik</th><th>Konto</th><th>Summa</th></tr>\n";
+       echo "<tr><th>Verifikation<br>nummer</th><th>Datum</th><th>Rubrik</th><th>Konto</th><th>Summa</th></tr>\n";
        foreach ($bookkeepings as $bookkeeping) {
            echo "<tr>\n";
            echo "<td>" . $bookkeeping->Number . "</td>\n";
            echo "<td>" . $bookkeeping->Date . "</td>\n";
-           echo "<td>" . $bookkeeping->Headline . "</td>\n";
+           echo "<td><a href='economy_view_bookkeeping.php?id=$bookkeeping->Id'>" . $bookkeeping->Headline . "</a></td>\n";
            echo "<td>" . $bookkeeping->getBookkeepingAccount()->Name . "</td>"; 
            echo "<td class='amount'>" . $bookkeeping->Amount . "</td>\n";
            $sum += $bookkeeping->Amount;
