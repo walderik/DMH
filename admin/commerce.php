@@ -21,8 +21,8 @@ include 'navigation.php';
         <a href="groups_money.php">Pengar till grupper i början på lajvet</a><br>
         <br>
         <br>
-        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till lagfarterna som pdf</a><br>
-        <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till lagfarterna</a> 
+        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till lagfarterna</a><br>
+        <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till lagfarterna som kvitton</a> 
         </p>
 
 </body>
