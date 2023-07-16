@@ -335,17 +335,32 @@ class Registration extends BaseModel{
     }
     
     public static function totalIncomeToday(LARP $larp) {
+        return static::totalFeesPayed($larp) - static::totalFeesReturned($larp);
+    }
+
+    
+    public static function totalFeesPayed(LARP $larp) {
         $registrationArr = static::allBySelectedLARP($larp);
         $income = 0;
         foreach($registrationArr as $registration) {
             $income = $income + $registration ->AmountPayed;
+        }
+        return $income;
+        
+    }
+    
+    public static function totalFeesReturned(LARP $larp) {
+        $registrationArr = static::allBySelectedLARP($larp);
+        $income = 0;
+        foreach($registrationArr as $registration) {
             if (isset($registration->ToBeRefunded) && isset($registration->RefundDate)) {
-                $income = $income - $registration->ToBeRefunded;
+                $income = $income + $registration->ToBeRefunded;
             }
         }
         return $income;
         
     }
+    
     
     public function createPaymentReference() {
         $larp = LARP::loadById($this->LARPId);
