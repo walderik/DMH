@@ -33,7 +33,6 @@ Sökfunktion på roller och grupper (ex Hitta alla som kommer från slow river)
 Handelssystemet:
   skriva ut lagfarter, resurslappar mm
   skriva in resultat
-  justera pengar smidigt i översikt av normala resurser
 
 Göra klart husfördelningen
 
