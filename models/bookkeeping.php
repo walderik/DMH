@@ -8,7 +8,7 @@ class Bookkeeping extends BaseModel{
     public  $Number;
     public  $LarpId;
     public  $Headline;
-    public  $BookeepingAccountId;
+    public  $BookkeepingAccountId;
     public  $Text;
     public  $Who;
     public  $UserId;
@@ -19,16 +19,16 @@ class Bookkeeping extends BaseModel{
     public static $orderListBy = 'Number';
     
     public static function newFromArray($post){
-        $campaign = static::newWithDefault();
-        $campaign->setValuesByArray($post);
-        return $campaign;
+        $obj = static::newWithDefault();
+        $obj->setValuesByArray($post);
+        return $obj;
     }
     
     public function setValuesByArray($arr) {
         if (isset($arr['Number'])) $this->Number = $arr['Number'];
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
         if (isset($arr['Headline'])) $this->Headline = $arr['Headline'];
-        if (isset($arr['BookeepingAccountId'])) $this->BookeepingAccountId = $arr['BookeepingAccountId'];
+        if (isset($arr['BookkeepingAccountId'])) $this->BookkeepingAccountId = $arr['BookkeepingAccountId'];
         if (isset($arr['Text'])) $this->Text = $arr['Text'];
         if (isset($arr['Who'])) $this->Who = $arr['Who'];
         if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
@@ -44,7 +44,10 @@ class Bookkeeping extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        global $current_larp;
+        $obj = new self();
+        $obj->LarpId = $current_larp->Id;
+        return $obj;
     }
     
     
@@ -55,10 +58,10 @@ class Bookkeeping extends BaseModel{
         if (empty($max_number)) $max_number = 0;
         $this->Number = $max_number + 1;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_bookkeeping (Number, LarpId, Headline, BookeepingAccountId, 
+        $stmt = $connection->prepare("INSERT INTO regsys_bookkeeping (Number, LarpId, Headline, BookkeepingAccountId, 
         Text, Who, UserId, Amount, Date, ImageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->Number, $this->LarpId, $this->Headline, $this->BookeepingAccountId,
+        if (!$stmt->execute(array($this->Number, $this->LarpId, $this->Headline, $this->BookkeepingAccountId,
             $this->Text, $this->Who, $this->UserId, $this->Amount, $this->Date, $this->ImageId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -67,6 +70,11 @@ class Bookkeeping extends BaseModel{
             
             $this->Id = $connection->lastInsertId();
             $stmt = null;
+    }
+    
+    
+    public function getBookkeepingAccount() {
+        return Bookkeeping_Account::loadById($this->BookkeepingAccountId);
     }
     
     public static function allByLARP(Larp $larp) {

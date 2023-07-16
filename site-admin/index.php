@@ -14,8 +14,6 @@ include "navigation.php";
 		    <p>	    			
     		    <a href="selection_data_general_admin.php?type=normalallergytypes">Vanliga allergier</a>	<br>
     		    <a href="selection_data_general_admin.php?type=experiences">Erfarenhet som lajvare</a>	<br>
-    		    <br>
-    		    <a href="bookkeeping_account_admin.php">Konteringskonton</a>	<br>
 		    </p>
 		</div>
 	</body>

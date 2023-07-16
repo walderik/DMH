@@ -19,8 +19,12 @@ include 'navigation.php';
         
 	    <h2>Basdata för kampanjen</h2>
 	    	<p>
+			    <a href="bookkeeping_account_admin.php">Bokföringskonton</a>	<br>
+			    <br>		    			
+
 			    <a href="selection_data_admin.php?type=larpertypes">Typ av lajvare</a>	<br>		    			
-			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger</a>	<br>		    			 					    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål</a>	<br>		    			
+			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger</a>	<br>		    			 					    
+			    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=wealth">Rikedom</a><br>
 			    <a href="selection_data_admin.php?type=placeofresidence">Var karaktärer / grupper bor</a><br>
 		    			

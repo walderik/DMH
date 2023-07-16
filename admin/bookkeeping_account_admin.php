@@ -39,16 +39,17 @@ include "navigation.php";
         
         <?php
         
-        $account_array = Bookkeeping_Account::all();
+        $account_array = Bookkeeping_Account::getAll($current_larp);
         $resultCheck = count($account_array);
         if ($resultCheck > 0) {
             echo "<table id='accounts' class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Nummer</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Valbar</th><th></th><th></th></tr>\n";
             foreach ($account_array as $account) {
                 echo "<tr>\n";
                 echo "<td>" . $account->Id . "</td>\n";
                 echo "<td>" . $account->Name . "</td>\n";
-                echo "<td>" . $account->Number . "</td>\n";
+                echo "<td>" . $account->Description . "</td>\n";
+                echo "<td>" . ja_nej($account->Active) . "</td>\n";
                 
                 
                 echo "<td>" . "<a href='bookkeeping_account_form.php?operation=update&id=" . $account->Id . "'><i class='fa-solid fa-pen'></i></td>\n";

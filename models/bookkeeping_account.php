@@ -6,19 +6,34 @@ class Bookkeeping_Account extends BaseModel{
     
     public  $Id;
     public  $Name;
-    public  $Number;
+    public  $Description;
+    public  $Active = 1;
+    public  $CampaignId;
     
-    public static $orderListBy = 'Number';
+    public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
-        $campaign = static::newWithDefault();
-        $campaign->setValuesByArray($post);
-        return $campaign;
+        $obj = static::newWithDefault();
+        $obj->setValuesByArray($post);
+        return $obj;
     }
     
     public function setValuesByArray($arr) {
+        if (isset($arr['Active'])) {
+            if ($arr['Active'] == "on" || $arr['Active'] == 1) {
+                $this->Active = 1;
+            }
+            else {
+                $this->Active = 0;
+            }
+        }
+        else {
+            $this->Active = 0;
+        }
+        
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
-        if (isset($arr['Number'])) $this->Number = $arr['Number'];
+        if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         
@@ -28,13 +43,16 @@ class Bookkeeping_Account extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        global $current_larp;
+        $obj = new self();
+        $obj->CampaignId = $current_larp->CampaignId;
+        return $obj;
     }
     
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_bookkeeping_account SET Name=?, Number=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_bookkeeping_account SET Name=?, Description=?, Active=?, CampaignId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->Number, $this->Id))) {
+        if (!$stmt->execute(array($this->Name, $this->Description, $this->Active, $this->CampaignId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -47,9 +65,9 @@ class Bookkeeping_Account extends BaseModel{
     # Create a new in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_bookkeeping_account (Name, Number) VALUES (?, ?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_bookkeeping_account (Name, Description, Active, CampaignId) VALUES (?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->Name, $this->Number))) {
+        if (!$stmt->execute(array($this->Name, $this->Description, $this->Active, $this->CampaignId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -60,10 +78,20 @@ class Bookkeeping_Account extends BaseModel{
     }
     
     public function inUse() {
-        $sql = "SELECT Count(*) AS Num FROM regsys_bookkeeping WHERE BookeepingAccountId=?";
+        $sql = "SELECT Count(*) AS Num FROM regsys_bookkeeping WHERE BookkeepingAccountId=?";
         $count = static::countQuery($sql, array($this->Id));
         if ($count > 0) return true;
         return false;
+    }
+    
+    public static function getAll(LARP $larp) {
+        $sql = "SELECT * FROM regsys_bookkeeping_account WHERE CampaignId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    public static function allActive(LARP $larp) {
+        $sql = "SELECT * FROM regsys_bookkeeping_account WHERE active = 1 AND CampaignId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
 }

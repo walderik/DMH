@@ -64,10 +64,17 @@ img {
     				<td><label for="Name">Namn</label></td>
     				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($account->Name); ?>" required></td>
     			</tr>
-    			<tr>
-    				<td><label for="Number">Nummer</label></td>
-    				<td><input type="text" id="Number" name="Number" value="<?php echo htmlspecialchars($account->Number); ?>" required></td>
-    			</tr>
+			<tr>
+
+				<td><label for="Description">Beskrivning</label></td>
+				<td><textarea id="Description" name=Description rows="4"
+						cols="50" maxlength="60000"><?php echo htmlspecialchars($account->Description); ?></textarea></td>
+			</tr>
+			<tr>
+
+				<td><label for="Active">Valbar</label></td>
+				<td><input type="checkbox" id="Active" name="Active" <?php if ($account->Active == 1) {echo "checked";} ?> ></td>
+			</tr>
     		</table>
      		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
     	</form>
