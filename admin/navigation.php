@@ -46,7 +46,6 @@ function myFunction() {
 	    <div class="dropdown-content">
 	      	<a href="settings.php">Inställningar</a>
 	      	<a href="mail_admin.php">E-post</a>
-            <a href="statistics.php">Statistik</a>
             <a href="registered_persons.php">Deltagare</a>
             <a href="persons_to_approve.php">Godkänna</a>
             <a href="kitchen.php">Köket</a>
@@ -54,6 +53,7 @@ function myFunction() {
             <a href="housing.php">Boende</a>
             <a href="reserves.php">Reservlista</a>
             <a href="economy.php">Kassabok</a>
+            <a href="statistics.php">Statistik</a>
 	    </div>
 	  </div> 
 	  <div class="dropdown">
