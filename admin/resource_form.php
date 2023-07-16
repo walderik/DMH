@@ -66,18 +66,18 @@ include_once 'header.php';
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
 			<tr>
-				<td><label for="Name">Namn</label></td>
+				<td><label for="Name">Namn</label><br>i systemet</td>
 				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($resource->Name); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
-				<td><label for="UnitSingular">Enhet singular</label></td>
+				<td><label for="UnitSingular">Enhet singular</label><br>för spelare</td>
 				<td><input type="text" id="UnitSingular" name="UnitSingular"
 					 value="<?php echo htmlspecialchars($resource->UnitSingular); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
 
-				<td><label for="UnitPlural">Enhet plural</label></td>
+				<td><label for="UnitPlural">Enhet plural</label><br>för spelare</td>
 				<td><input type="text" id="UnitPlural" name="UnitPlural"
 					 value="<?php echo htmlspecialchars($resource->UnitPlural); ?>" size="100" maxlength="250" required></td>
 			</tr>
@@ -89,7 +89,7 @@ include_once 'header.php';
 			</tr>
 			<tr>
 
-				<td><label for="IsRare">Ovanlig</label></td>
+				<td><label for="IsRare">Ovanlig</label><br>används vid förbättring<br>av lagfart</td>
     			<td>
     				<input type="radio" id="IsRare_yes" name="IsRare" value="1" <?php if ($resource->IsRare == 1) echo 'checked="checked"'?>> 
         			<label for="IsRare_yes">Ja</label><br> 
