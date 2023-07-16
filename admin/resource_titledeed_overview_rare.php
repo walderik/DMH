@@ -18,7 +18,7 @@ th, td {
 }
 </style>
     <div class="content">
-        <h1>Lagfarter - ovanliga resurser - översikt</h1>
+        <h1>Resursfördelning - ovanliga resurser <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till handel"></i></a></h1>
 		<input type="hidden" id="Currency" value="<?php echo $currency ?>">
         <?php if (empty($resources) || empty($titledeeds)) {
             echo "Översikten kräver att det finns både resurser och lagfarter.";

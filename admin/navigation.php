@@ -53,6 +53,7 @@ function myFunction() {
             <a href="officials.php">Funktionärer</a>
             <a href="housing.php">Boende</a>
             <a href="reserves.php">Reservlista</a>
+            <a href="economy.php">Kassabok</a>
 	    </div>
 	  </div> 
 	  <div class="dropdown">

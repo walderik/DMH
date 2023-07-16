@@ -14,7 +14,7 @@ include 'navigation.php';
 ?>
 
     <div class="content">
-        <h1>Resurser</h1>
+        <h1>Resurser <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till handel"></i></a></h1>
             <a href="resource_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
         
        <?php
