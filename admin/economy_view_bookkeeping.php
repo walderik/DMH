@@ -30,7 +30,7 @@ else $type = "utgift";
 
 
     <div class="content"> 
-    <h1>Se <?php echo $type?><a href="economy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1>Se <?php echo $type?> <a href="economy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
     
    
 		<table>
