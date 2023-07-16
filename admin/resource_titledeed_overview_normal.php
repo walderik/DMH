@@ -4,7 +4,6 @@ include_once 'header.php';
 $titledeeds = Titledeed::allByCampaign($current_larp);
 $resources = Resource::allNormalByCampaign($current_larp);
 
-$money_sum = 0;
 $currency = $current_larp->getCampaign()->Currency;
 
 include 'navigation.php';
@@ -44,8 +43,11 @@ th, td {
 		
 		foreach ($titledeeds as $titledeed) {
 		    echo "<tr><th style='text-align:left'><a href='resource_titledeed_form.php?Id=$titledeed->Id'>$titledeed->Name</a></th>";
-		    echo "<th style='text-align:left'>$titledeed->Money</th>\n";
-		    $money_sum = $money_sum + $titledeed->Money;
+		    echo "<th style='text-align:left'>";
+		    echo "<input type='number' id='$titledeed->Id' value='$titledeed->Money' onchange='recalculateMoney(this)'>";
+		    echo "</th>\n";
+		    
+		    
 		    foreach ($resources as $key => $resource) {
 		        $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
 		        $quantity = 0;
@@ -59,7 +61,7 @@ th, td {
 		}
 		
 		echo "<tr><th style='text-align:left'>Balans</th>\n";
-		echo "<th style='text-align:right'>$money_sum</th>\n";
+		echo "<th style='text-align:right' id='Money_sum'>".$titledeed->moneySum($current_larp)."</th>\n";
 		foreach ($resources as $resource) {
 		    echo "<th style='text-align:right' id='Balance_$resource->Id'>".$resource->countBalance($current_larp)."</th>\n";
 		}

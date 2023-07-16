@@ -338,7 +338,7 @@ class Titledeed extends BaseModel{
         return $resultArray;
     }
     
-    function calculateResult() {
+    public function calculateResult() {
         $resource_titledeeds = Resource_Titledeed::allForTitledeed($this);
         $res = $this->Money;
         foreach ($resource_titledeeds as $resource_titledeed) {
@@ -347,6 +347,18 @@ class Titledeed extends BaseModel{
         }
         return $res;
     }
+    
+    public function moneySum(LARP $larp) {
+        
+        if (is_null($larp)) return 0;
+        $sql = "SELECT Sum(regsys_titledeed.Money) as Num FROM regsys_titledeed WHERE ".
+            "regsys_titledeed.CampaignId = ?";
+        $count = static::countQuery($sql, array($larp->CampaignId));
+        if (isset($count)) return $count;
+        return 0;
+        
+    }
+        
     
     public static function getAllForRole(Role $role) {
         $sql = "SELECT * FROM regsys_titledeed WHERE Id IN (".
