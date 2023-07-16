@@ -29,6 +29,7 @@ if (isset($_GET['id'])) {
 
 $pdf = new CharacterSheet_PDF();
 $title = (empty($role)) ? 'Alla Karaktärer' : ('Karaktärsblad '.$role->Name) ;
+
 $pdf->SetTitle(utf8_decode($title));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundos');
@@ -39,7 +40,8 @@ $pdf->SetSubject(utf8_decode($subject));
 if (empty($role)) {
     $pdf->all_character_sheets($current_larp);
 } else {
-    $pdf->new_character_sheet($role, $current_larp);
+    $all_info = (isset($_GET['all_info'])) ? true : false;
+    $pdf->new_character_sheet($role, $current_larp, $all_info);
 }
 
 $pdf->Output();

@@ -41,9 +41,12 @@ include 'navigation.php';
 		
 		<a href='edit_role.php?id=<?php echo $role->Id;?>'>
 		<i class='fa-solid fa-pen'></i></a> 
-		<a href='character_sheet.php?id=<?php echo $role->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för <?php echo $role->Name;?>'></i></a>
 		</h1>
-				<?php 
+		<a href='character_sheet.php?id=<?php echo $role->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för <?php echo $role->Name;?>'></i>Karaktärsblad för <?php echo $role->Name;?></a> &nbsp; 
+		<a href='character_sheet.php?id=<?php echo $role->Id;?>&all_info=<?php echo date_format(new Datetime(),"suv") ?>' target='_blank'>
+		<i class='fa-solid fa-file-pdf' title='All info om <?php echo $role->Name;?>'></i>All info om <?php echo $role->Name;?></a>
+		<br><br>
+		<?php 
 		if ($person->isApprovedCharacters($current_larp)) {
 		  echo "<strong>Godkänd</strong>";
 		}

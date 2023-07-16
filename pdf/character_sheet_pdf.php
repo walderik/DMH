@@ -121,16 +121,19 @@ class CharacterSheet_PDF extends FPDF {
         return true;
     }
     
-    function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_in=false) {
-        global $x, $y, $left, $left2, $mitten;
+    function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false) {
+        global $current_user, $x, $y, $left, $left2, $mitten;
         
         $this->role = $role_in;
         $this->person = $this->role->getPerson();
         $this->isMyslajvare = $this->role->isMysLajvare();
         $this->larp = $larp_in;
-        $this->all = $all_in;
+        $this->all = $all_information;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $this->current_cell_height = $this->cell_y_space;
+        
+        # Säkerställer att bara arrngörer någonsin kan få se all info om en karaktär
+        if ($this->all && !(AccessControl::hasAccessCampaign($current_user->Id, $larp_in->CampaignId))) $this->all = false;
         
         $left = static::$x_min + static::$Margin;
         $x = $left;
