@@ -44,12 +44,12 @@ background-color: lightcoral;
         <p>Om man ändrar siffrorna sparas det direkt.</p>
         <table>
     	<tr>
-    		<th></th>
     		
     	<?php
+    	echo "<th>Namn<br>$currency/st</th>";
     	echo "<th>$currency</th>\n";
     	foreach ($resources as $key => $resource) {
-    	    echo "<th><a href='resource_form.php?operation=update&Id=$resource->Id'>$resource->Name</a></th>\n";
+    	    echo "<th><a href='resource_form.php?operation=update&Id=$resource->Id'>$resource->Name</a><br>$resource->Price</th>\n";
     	}
     	?>
     	<th>Resultat</th>
