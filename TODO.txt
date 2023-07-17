@@ -30,9 +30,9 @@ Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anm
 
 Sökfunktion på roller och grupper (ex Hitta alla som kommer från slow river)
 
-Handelssystemet:
-  skriva ut lagfarter, resurslappar mm
-  skriva in resultat
+Handelssystemet - skriva in resultat
+
+Kassabok - PDF med alla verifikationer
 
 Göra klart husfördelningen
 
@@ -41,7 +41,6 @@ byta user för en person (admin funktion)
 Behöver man kunna byta spelare på en roll? JA
 
 Helt nya funktioner:
-Möjligheten mata in kvitton och spara bilder för bokföring. VIKTIGT
 Att göra-listor per lajv och för Admin
 
 
