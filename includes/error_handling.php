@@ -136,6 +136,12 @@ function getErrorText($code) {
         case "no_text":
             $output = "Ingen text angiven.";
             break;
+        case "image_format":
+            $output = "Fel format på filen. Var vänlig välj en fil med ett av de godkända formaten (jpg, gif, png).";
+            break;
+        case "image_size":
+            $output = "Filen är för stor. Minska ner den i ett bildhanteringsprogram.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }

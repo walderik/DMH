@@ -50,6 +50,18 @@ class Bookkeeping extends BaseModel{
         return $obj;
     }
     
+    public function update() {
+        $stmt = $this->connect()->prepare("UPDATE regsys_bookkeeping SET ImageId=? WHERE Id = ?");
+        
+        if (!$stmt->execute(array($this->ImageId, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
+    }
+    
     
     # Create a new in db
     public function create() {
@@ -83,5 +95,9 @@ class Bookkeeping extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
-   
+    public function hasImage() {
+        if (isset($this->ImageId)) return true;
+        return false;
+    }
+    
 }

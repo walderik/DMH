@@ -1,5 +1,6 @@
 <?php
 include_once 'header.php';
+include_once '../includes/error_handling.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
@@ -14,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST['id']) && isset($_POST['type'])) {
-        $type = $_GET['type'];
-        $id = $_GET['id'];
+        $type = $_POST['type'];
+        $id = $_POST['id'];
 
     }
 }
@@ -45,13 +46,18 @@ if (isset($_FILES["upload"])) {
         $id = Image::saveImage();
         $object->ImageId = $id;
         $object->update();
-
+        
         if (isset($_POST['Referer']) && $_POST['Referer']!="") {
             header('Location: ' . $_POST['Referer']);
             exit;
         }
         header('Location: index.php?message=image_uploaded');
         exit;
+    }
+    else {
+        $error_code = $error;
+        $error_message = getErrorText($error_code);
+        
     }
 }
 
@@ -70,9 +76,12 @@ include 'navigation.php';
 
 	<div class="content">
 		<h1>Ladda upp bild för <?php echo $object->Name;?> <a href="<?php echo $referer; ?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-        	  <?php if (isset($error) && strlen($error)>0) {
-        	      echo '<div class="error">'.$error.'</div>';
-        	  }?>
+	  <?php if (isset($error_message) && strlen($error_message)>0) {
+	      echo '<div class="error">'.$error_message.'</div>';
+	  }?>
+	  <?php if (isset($message_message) && strlen($message_message)>0) {
+	      echo '<div class="message">'.$message_message.'</div>';
+	  }?>
 
     	<form method="post" enctype="multipart/form-data">
         	<input type="hidden" id="id" name="id" value="<?php echo $object->Id; ?>">

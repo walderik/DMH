@@ -22,14 +22,14 @@ class Image extends BaseModel{
         
         // Validate file extension
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        if(!array_key_exists($ext, $allowed)) return "Fel format på filen. Var vänlig välj en fil med ett av de godkända formaten.";
+        if(!array_key_exists($ext, $allowed)) return "image_format";
         
         // Validate type of the file
-        if(!in_array($filetype, $allowed)) "Fel format på filen. Var vänlig välj en fil med ett av de godkända formaten.";
+        if(!in_array($filetype, $allowed)) return "image_format";
         
         // Validate file size - 0,5MB maximum
         $maxsize = 0.5 * 1024 * 1024;
-        if($filesize > $maxsize) return "Filen är för stor. Minska ner den i ett bildhanteringsprogram.";
+        if($filesize > $maxsize) return "image_size";
         
         
     }

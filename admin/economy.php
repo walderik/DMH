@@ -3,7 +3,7 @@ include_once 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    
+
     if (isset($_POST['operation'])) {
         $operation = $_POST['operation'];
         
@@ -13,12 +13,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } elseif ($operation == 'add_expense') {
             $bookkeeping = Bookkeeping::newFromArray($_POST);
             $bookkeeping->Amount = 0 - $_POST['Amount'];
+            
+            $error = Image::maySave();
+            if (!isset($error)) {
+                $id = Image::saveImage();
+                $bookkeeping->ImageId = $id;
+            }
             $bookkeeping->create();
+            
         }
     }
-    header('Location: ' . 'economy.php');
+    if (isset($error)) header("Location: economy.php?error=$error");
+    else header('Location: ' . 'economy.php');
+    exit;
     
 }
+
+include_once '../includes/error_handling.php';
 
 
 include 'navigation.php';
@@ -33,12 +44,16 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Kassabok</h1>
+	  <?php if (isset($error_message) && strlen($error_message)>0) {
+	      echo '<div class="error">'.$error_message.'<br>Du kan ladda upp kvittot i efterhand genom att klicka på utgiften du just lade in i listan nedan.</div>';
+	  }
+	  ?>
         <p>Lägg in alla inkomster och utgifter som lajvet har. Deltagaravgifter kommer med automatiskt. 
         När lajvet är klart behöver du bara generera pdf och skicka till kassören för att bokföringen ska vara avklarad.</p>
         <p>
         <a href="economy_add_income.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a>
-        <a href="economy_add_expence.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a>
-        <a href="logic/economy__pdf.php"><i class="fa-solid fa-file-pdf"></i> Generera pdf</a><br>
+        <a href="economy_add_expense.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a>
+        <!--  <a href="logic/economy__pdf.php"><i class="fa-solid fa-file-pdf"></i> Generera pdf</a><br>-->
         </p>
 	<?php 
        $bookkeepings = Bookkeeping::allByLARP($current_larp);
