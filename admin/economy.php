@@ -51,13 +51,13 @@ include 'navigation.php';
 	  }
 	  ?>
         <p>Lägg in alla inkomster och utgifter som lajvet har. Deltagaravgifter kommer med automatiskt. 
-        När lajvet är klart behöver du bara generera pdf och skicka till kassören för att bokföringen ska vara avklarad.<br><br>
+        När lajvet är klart behöver du bara generera rapporten och skicka till kassören för att bokföringen ska vara avklarad.<br><br>
         En varning betyder att det saknas ett kvitto på en utgift.<br><br>
         Konton läggs upp under <a href="settings.php">inställningar</a></p>
         <p>
         <a href="economy_add_income.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a>
         <a href="economy_add_expense.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a>
-        <!--  <a href="logic/economy__pdf.php"><i class="fa-solid fa-file-pdf"></i> Generera pdf</a><br>-->
+        <a href="reports/economy.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Generera rapport till kassör</a><br>
         </p>
 	<?php 
        $bookkeepings = Bookkeeping::allByLARP($current_larp);
