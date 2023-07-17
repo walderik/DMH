@@ -14,10 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $bookkeeping = Bookkeeping::newFromArray($_POST);
             $bookkeeping->Amount = 0 - $_POST['Amount'];
             
-            $error = Image::maySave();
-            if (!isset($error)) {
-                $id = Image::saveImage();
-                $bookkeeping->ImageId = $id;
+            if (!empty($_FILES["upload"]["name"])) {
+                $error = Image::maySave();
+                if (!isset($error)) {
+                    $id = Image::saveImage();
+                    $bookkeeping->ImageId = $id;
+                }
             }
             $bookkeeping->create();
             
@@ -49,7 +51,8 @@ include 'navigation.php';
 	  }
 	  ?>
         <p>Lägg in alla inkomster och utgifter som lajvet har. Deltagaravgifter kommer med automatiskt. 
-        När lajvet är klart behöver du bara generera pdf och skicka till kassören för att bokföringen ska vara avklarad.</p>
+        När lajvet är klart behöver du bara generera pdf och skicka till kassören för att bokföringen ska vara avklarad.<br>
+        En varning betyder att det saknas ett kvitto på en utgift.</p>
         <p>
         <a href="economy_add_income.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a>
         <a href="economy_add_expense.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a>
@@ -64,7 +67,11 @@ include 'navigation.php';
            echo "<tr>\n";
            echo "<td>" . $bookkeeping->Number . "</td>\n";
            echo "<td>" . $bookkeeping->Date . "</td>\n";
-           echo "<td><a href='economy_view_bookkeeping.php?id=$bookkeeping->Id'>" . $bookkeeping->Headline . "</a></td>\n";
+           echo "<td><a href='economy_view_bookkeeping.php?id=$bookkeeping->Id'>" . $bookkeeping->Headline;
+           if ($bookkeeping->Amount < 0 && !$bookkeeping->hasImage()) {
+               echo " " . showStatusIcon(false);
+           }
+           echo "</a></td>\n";
            echo "<td>" . $bookkeeping->getBookkeepingAccount()->Name . "</td>"; 
            echo "<td class='amount'>" . $bookkeeping->Amount . "</td>\n";
            $sum += $bookkeeping->Amount;

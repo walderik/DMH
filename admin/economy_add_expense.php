@@ -52,7 +52,7 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 			</tr>
 			<tr>
 				<td><label for="upload">Kvitto</label></td>
-				<td><input type="file" name="upload" required></td>
+				<td><input type="file" name="upload"></td>
 			</tr>
 		</table>
           	<br><br>
