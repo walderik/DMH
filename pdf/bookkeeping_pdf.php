@@ -110,15 +110,6 @@ class Bookkeeping_PDF extends PDF_MemImage {
         $this->SetXY($left2, $y);
         $this->Cell(80,10,utf8_decode($bookkeeping->Who),0,1);
         
-        if (!empty($bookkeeping->Text)) {
-            $y += 7;
-            $this->SetXY($left, $y);
-            $this->Cell(80,10,utf8_decode('Beskrivning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
-            $this->SetXY($left2, $y);
-            $this->Cell(80,10,utf8_decode($bookkeeping->Text),0,1);
-            
-        }
-          
         $y += 7;
         $this->SetXY($left, $y);
         $this->Cell(80,10,utf8_decode('Konto'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
@@ -137,6 +128,16 @@ class Bookkeeping_PDF extends PDF_MemImage {
         $this->SetXY($left2, $y);
         $this->Cell(80,10,utf8_decode($bookkeeping->Date),0,1);        
 
+        if (!empty($bookkeeping->Text)) {
+            $y += 7;
+            $this->SetXY($left, $y);
+            $this->Cell(80,10,utf8_decode('Beskrivning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+            $this->SetXY($left2, $y+2.1);
+            $this->MultiCell($mitten-$left2, 5.5, utf8_decode($bookkeeping->Text));
+            
+        }
+        
+        
         $y=0;
         $this->AddPage();
         
