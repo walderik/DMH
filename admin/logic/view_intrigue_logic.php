@@ -135,4 +135,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+if (isset($_POST['Referer']) && $_POST['Referer']!="") {
+    header('Location: ' . $_POST['Referer']);
+    exit;
+}
+
 header("location: ../view_intrigue.php?Id=$intrigue->Id");

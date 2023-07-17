@@ -155,7 +155,7 @@ include 'navigation.php';
 		$intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
 		if (!empty($intrigues)) {
 		    echo "<table class='data'>";
-		    echo "<tr><th>Intrig</th><th>Intrigtext</th></tr>";
+		    echo "<tr><th>Intrig</th><th>Intrigtext</th><th></th></tr>";
 	        foreach ($intrigues as $intrigue) {
 	           echo "<tr>";
 	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a>";
@@ -164,11 +164,12 @@ include 'navigation.php';
 	           $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
 	           echo "<td>";
 	           if ($intrigue->isActive()) {
-	               echo "$intrigueActor->IntrigueText";
+	               echo nl2br(htmlspecialchars($intrigueActor->IntrigueText));
 	               if (!empty($intrigueActor->OffInfo)) {
-	                   echo "<br><br><strong>Off-information:</strong><br>$intrigueActor->OffInfo";
+	                   echo "<br><br><strong>Off-information:</strong><br>".nl2br(htmlspecialchars($intrigueActor->OffInfo));
 	               }
 	               echo "</td>";
+	               echo "<td><a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$role->Name'><i class='fa-solid fa-pen'></i></a></td>";
 	               echo "</tr>";
 	               $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
 	               $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());

@@ -9,6 +9,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 }
 
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = $_SERVER['HTTP_REFERER'];
+}
+else {
+    $referer = "";
+}
 
 include 'navigation.php';
 ?>
@@ -20,14 +26,15 @@ include 'navigation.php';
 		<input type="hidden" id="operation" name="operation" value="update_intrigue_actor"> 
 		<input type="hidden" id="Id" name="Id" value="<?php echo $intrigueActor->IntrigueId ?>">
 		<input type="hidden" id="IntrigueActorId" name="IntrigueActorId" value="<?php echo $intrigueActor->Id ?>">
+		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
 			<tr>
 				<td><label for="IntrigueText">Intrigtext</label></td>
-				<td><textarea id="IntrigueText" name="IntrigueText" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($intrigueActor->IntrigueText)); ?></textarea></td>
+				<td><textarea id="IntrigueText" name="IntrigueText" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->IntrigueText); ?></textarea></td>
 			</tr>
 			<tr>
 				<td><label for="OffInfo">Off-info<br>till deltagaren</label></td>
-				<td><textarea id="OffInfo" name="OffInfo" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($intrigueActor->OffInfo)); ?></textarea></td>
+				<td><textarea id="OffInfo" name="OffInfo" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->OffInfo); ?></textarea></td>
 			</tr>
 		</table>
 

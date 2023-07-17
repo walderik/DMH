@@ -101,7 +101,7 @@ include 'navigation.php';
 			<tr>
 
 				<td>Beskrivning</td>
-				<td><?php echo htmlspecialchars(nl2br($bookkeeping->Text))?></td>
+				<td><?php echo nl2br(htmlspecialchars($bookkeeping->Text))?></td>
 			</tr>
 			<tr>
 

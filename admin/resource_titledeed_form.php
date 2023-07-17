@@ -176,7 +176,7 @@ function updateResult() {
 			</tr>
 			<tr>
 				<td><label for="SpecialUpgradeRequirements">Speciella krav<br>Dvs krav som inte är i handelsystemet<br>utan något i spel, tex kontrakt</label></td>
-				<td><textarea id="SpecialUpgradeRequirements" name="SpecialUpgradeRequirements" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars(nl2br($titledeed->SpecialUpgradeRequirements)); ?></textarea></td>
+				<td><textarea id="SpecialUpgradeRequirements" name="SpecialUpgradeRequirements" rows="4" cols="100" maxlength="60000" ><?php echo nl2br(htmlspecialchars($titledeed->SpecialUpgradeRequirements)); ?></textarea></td>
 			</tr>
 		</table>
 

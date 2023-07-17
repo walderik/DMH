@@ -11,8 +11,8 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo "<h2>Intrig för $name <a href='actor_intrigue_form.php?IntrigueActorId=$intrgueActor->Id&name=$name'><i class='fa-solid fa-pen'></i></a></h2>\n";
     echo "<table width='100%''>\n";
     
-    echo "<tr><td width='10%'>Intrigtext</td><td>".htmlspecialchars(nl2br($intrgueActor->IntrigueText))."</td></tr>\n";
-    echo "<tr><td>Off-info<br>till deltagaren</td><td>".htmlspecialchars(nl2br($intrgueActor->OffInfo))."</td></tr>\n";
+    echo "<tr><td width='10%'>Intrigtext</td><td>".nl2br(htmlspecialchars($intrgueActor->IntrigueText))."</td></tr>\n";
+    echo "<tr><td>Off-info<br>till deltagaren</td><td>".nl2br(htmlspecialchars($intrgueActor->OffInfo))."</td></tr>\n";
     echo "<tr><td>Ska ha vid incheck</td>\n";
     echo "<td>";
     echo "<a href='choose_intrigue_checkin.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
