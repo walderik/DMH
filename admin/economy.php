@@ -58,6 +58,7 @@ include 'navigation.php';
         <a href="economy_add_income.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a>
         <a href="economy_add_expense.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a>
         <a href="reports/economy.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Generera rapport till kassör</a><br>
+        <a href="logic/all_bookkeeping_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Alla verifikationer till kassör</a><br>
         </p>
 	<?php 
        $bookkeepings = Bookkeeping::allByLARP($current_larp);
