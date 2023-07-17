@@ -51,8 +51,9 @@ include 'navigation.php';
 	  }
 	  ?>
         <p>Lägg in alla inkomster och utgifter som lajvet har. Deltagaravgifter kommer med automatiskt. 
-        När lajvet är klart behöver du bara generera pdf och skicka till kassören för att bokföringen ska vara avklarad.<br>
-        En varning betyder att det saknas ett kvitto på en utgift.</p>
+        När lajvet är klart behöver du bara generera pdf och skicka till kassören för att bokföringen ska vara avklarad.<br><br>
+        En varning betyder att det saknas ett kvitto på en utgift.<br><br>
+        Konton läggs upp under <a href="settings.php">inställningar</a></p>
         <p>
         <a href="economy_add_income.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a>
         <a href="economy_add_expense.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a>

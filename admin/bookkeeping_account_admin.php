@@ -34,7 +34,7 @@ include "navigation.php";
 ?>
 
     <div class="content">   
-        <h1>Konteringskonton</h1>
+        <h1>Bokföringskonton</h1>
             <a href="bookkeeping_account_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
         
         <?php
