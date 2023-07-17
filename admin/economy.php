@@ -72,7 +72,7 @@ include 'navigation.php';
            if ($bookkeeping->Amount < 0 && !$bookkeeping->hasImage()) {
                echo " " . showStatusIcon(false);
            } elseif ($bookkeeping->Amount > 0) {
-               echo " <a href='economy_receipt_pdf.php?id=$bookkeeping->Id'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i>";
+               echo " <a href='economy_receipt_pdf.php?id=$bookkeeping->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i>";
            }
            echo "</a></td>\n";
            echo "<td>" . $bookkeeping->getBookkeepingAccount()->Name . "</td>"; 
