@@ -1,5 +1,9 @@
 Bygghelgs-anmälningar
 
+Albin och Per vill verkligen ha en Tidslinjen.
+
+
+
 Visa roller snyggare på deltagarnas översikt
 
 Karaktärsblad:
@@ -42,6 +46,7 @@ Behöver man kunna byta spelare på en roll? JA
 
 Helt nya funktioner:
 Att göra-listor per lajv och för Admin
+OFF-annonser för exmepelvis skjuts.
 
 
 Visa alla mail som har skapats, visa status, möjlighet att ta bort
