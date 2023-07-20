@@ -505,6 +505,19 @@ foreach ($intrigue_relations as $intrigue_relation) {
 }
 ?>
 </td></tr>
+<tr><td>Händelser</td><td>
+  <a href="timeline_form.php?operation=insert&IntrigueId=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Skapa händelse under lajvet"></i></a>
+  <br>
+<?php 
+$timeline_array = $intrigue->getTimeline();
+foreach ($timeline_array as $timeline) {
+    echo substr($timeline->When,0,16)." $timeline->Description";
+    echo " <a href='timeline_form.php?operation=update&id=$timeline->Id'><i class='fa-solid fa-pen'></i></a>";
+    echo " <a href='timeline_admin.php?operation=delete&id=$timeline->Id&gotoreferer='true'><i class='fa-solid fa-trash'></i></a>";
+    echo "<br>";
+}
+?>
+</td></tr>
 
 </table>
 

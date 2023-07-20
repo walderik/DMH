@@ -73,6 +73,13 @@ class Timeline extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getAllForIntrigue(Intrigue $intrigue) {
+        $sql = "SELECT * FROM regsys_timeline WHERE IntrigueId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
+    }
+    
+    
+    
     public function getIntrigue() {
         return Intrigue::loadById($this->IntrigueId);
     }

@@ -15,6 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $timeline = Timeline::loadById($_GET['id']);
     } else {
     }
+    if (isset($_GET['IntrigueId'])) {
+        $timeline->IntrigueId = $_GET['IntrigueId'];
+    }
 }
 
 function default_value($field) {

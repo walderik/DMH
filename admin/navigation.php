@@ -65,7 +65,7 @@ function myFunction() {
             <a href="roles.php">Karaktärer</a>
             <a href="intrigue_admin.php">Intriger</a>
             <a href="commerce.php">Handel</a>
-            <a href="timeline_admin.php">Händelser</a>
+            <a href="timeline_admin.php">Körschema</a>
 
             <a href="telegram_admin.php">Telegram</a>
             <a href="letter_admin.php">Brev</a>

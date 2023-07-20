@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
         Timeline::delete($_GET['id']);
-        if (isset($_GET['Referer'])) header('Location: ' . $_GET['Referer']);
+        if (isset($_GET['gotoreferer'])) header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }
 $timeline_array = Timeline::getAll($current_larp);
@@ -50,7 +50,7 @@ include 'navigation.php';
 
 
     <div class="content">
-        <h1>Händelser under lajvet</h1>
+        <h1>Körschema</h1>
             <a href="timeline_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
         
         <?php //TODO generera pdf ?>
@@ -94,7 +94,8 @@ include 'navigation.php';
                         echo "$intrigue->Number. $intrigue->Name"; 
                         echo "</a>";
                     }
-                    echo " <a href='timeline_form.php?operation=update&id=" . $timeline->Id . "'><i class='fa-solid fa-pen'></i>";
+                    echo " <a href='timeline_form.php?operation=update&id=" . $timeline->Id . "'><i class='fa-solid fa-pen'></i></a>";
+                    echo " <a href='timeline_admin.php?operation=delete&id=" . $timeline->Id . "'><i class='fa-solid fa-trash'></i></a>";
                     echo "<br>";
                 }
                 

@@ -469,4 +469,8 @@ class Intrigue extends BaseModel{
             "SELECT IntrigueId FROM regsys_intrigue_telegram WHERE TelegramId = ? AND LarpId = ?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($telegramId, $larpId));
     }
+    
+    public function getTimeline() {
+        return Timeline::getAllForIntrigue($this);
+    }
 }
