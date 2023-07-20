@@ -61,6 +61,7 @@ include_once $root . '/models/resource.php';
 include_once $root . '/models/resource_titledeed.php';
 include_once $root . '/models/role.php';
 include_once $root . '/models/telegram.php';
+include_once $root . '/models/timeline.php';
 include_once $root . '/models/titledeed.php';
 include_once $root . '/models/type_of_food.php';
 include_once $root . '/models/user.php';

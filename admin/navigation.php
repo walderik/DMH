@@ -63,13 +63,14 @@ function myFunction() {
 	    <div class="dropdown-content">
             <a href="groups.php">Grupper</a>
             <a href="roles.php">Karaktärer</a>
+            <a href="intrigue_admin.php">Intriger</a>
+            <a href="commerce.php">Handel</a>
+            <a href="timeline_admin.php">Händelser</a>
 
             <a href="telegram_admin.php">Telegram</a>
             <a href="letter_admin.php">Brev</a>
             <a href="prop_admin.php">Rekvisita</a>
             <a href="npc.php">NPC'er</a>
-            <a href="intrigue_admin.php">Intriger</a>
-            <a href="commerce.php">Handel</a>
 	    </div>
 	  </div> 
       <a href="../participant/" style="color: #99bbff"><i class="fa-solid fa-unlock"></i>Deltagare</a>
