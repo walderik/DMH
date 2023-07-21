@@ -65,9 +65,9 @@
     		            echo "<td></td>";
     		            echo "<td></td>";
     		            echo "<td align='center'>";
-    		            if ($registration->isToBeRefunded()) echo " ".showStatusIcon(false);
+    		            if ($registration->isToBeRefunded()) echo showStatusIcon(false);
     		            "</td>";
-    		            echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+    		            echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-money-check-dollar'></i></a></td>\n";
     		            
     		            echo "<td colspan='2'>Avbokad</td>";
     		        }
@@ -89,7 +89,7 @@
         		        echo "<td align='center'>" . showStatusIcon($registration->hasPayed());
         		        if (!$registration->hasPayed() && $registration->isPastPaymentDueDate()) echo " ".showStatusIcon(false);
         		        "</td>";
-        		        echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
+        		        echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-money-check-dollar'></i></a></td>\n";
         		        
         		        echo "<td>";
         		        if ($registration->hasSpotAtLarp()) {

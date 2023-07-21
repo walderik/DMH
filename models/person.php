@@ -129,6 +129,14 @@ class Person extends BaseModel{
     }
     
     
+    public static function getAllToBeRefunded($larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
+            "regsys_registration WHERE LarpId = ? AND IsToBeRefunded=1) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
     
     public static function getAllRegisteredWithoutHousing($larp) {
         if (is_null($larp)) return array();

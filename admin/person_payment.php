@@ -62,13 +62,20 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Avbokad</td>
 			<td>
     			<input type="radio" id="NotComing_yes" name="NotComing" value="1" <?php if ($registration->NotComing == 1) echo 'checked="checked"'?>> 
-    			<label for="NeedFireplace_yes">Ja</label><br> 
+    			<label for="NotComing_yes">Ja</label><br> 
     			<input type="radio" id="NotComing_no" name="NotComing" value="0" <?php if ($registration->NotComing == 0) echo 'checked="checked"'?>> 
-    			<label for="NeedFireplace_no">Nej</label>
+    			<label for="NotComing_no">Nej</label>
 			</td></tr>
 			<tr><td valign="top" class="header">Anledning till avbokning</td><td><input type="text" id="NotComingReason" name="NotComingReason" value="<?php echo htmlspecialchars($registration->NotComingReason); ?>"  size="100" maxlength="250"></td></tr>
 			
-			<tr><td valign="top" class="header">Återbetalning</td><td><input type="number" id="ToBeRefunded" name="ToBeRefunded" value="<?php echo $registration->ToBeRefunded; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
+			<tr><td valign="top" class="header">Ska ha återbetalning</td>
+			<td>
+    			<input type="radio" id="IsToBeRefunded_yes" name="IsToBeRefunded" value="1" <?php if ($registration->IsToBeRefunded == 1) echo 'checked="checked"'?>> 
+    			<label for="IsToBeRefunded_yes">Ja</label><br> 
+    			<input type="radio" id="IsToBeRefunded_no" name="IsToBeRefunded" value="0" <?php if ($registration->IsToBeRefunded == 0) echo 'checked="checked"'?>> 
+    			<label for="IsToBeRefunded_no">Nej</label>
+			</td></tr>
+			<tr><td valign="top" class="header">Belopp återbetalat</td><td><input type="number" id="RefundAmount" name="RefundAmount" value="<?php echo $registration->RefundAmount; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
 			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><input type="date" id="RefundDate" name="RefundDate" value="<?php echo $registration->RefundDate; ?>"  size="15" maxlength="250"></td></tr>
 
 		</table>		

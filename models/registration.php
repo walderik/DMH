@@ -16,7 +16,8 @@ class Registration extends BaseModel{
     public $IsMember; 
     public $MembershipCheckedAt;
     public $NotComing = 0;
-    public $ToBeRefunded = 0;
+    public $IsToBeRefunded = 0;
+    public $RefundAmount = 0;
     public $RefundDate; 
     public $IsOfficial = 0;
     public $NPCDesire;
@@ -49,7 +50,8 @@ class Registration extends BaseModel{
         if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
         if (isset($arr['MembershipCheckedAt'])) $this->MembershipCheckedAt = $arr['MembershipCheckedAt'];
         if (isset($arr['NotComing'])) $this->NotComing = $arr['NotComing'];
-        if (isset($arr['ToBeRefunded'])) $this->ToBeRefunded = $arr['ToBeRefunded'];
+        if (isset($arr['IsToBeRefunded'])) $this->IsToBeRefunded = $arr['IsToBeRefunded'];
+        if (isset($arr['RefundAmount'])) $this->RefundAmount = $arr['RefundAmount'];
         if (isset($arr['RefundDate'])) $this->RefundDate = $arr['RefundDate'];
         if (isset($arr['IsOfficial'])) $this->IsOfficial = $arr['IsOfficial'];
         if (isset($arr['NPCDesire'])) $this->NPCDesire = $arr['NPCDesire'];
@@ -90,13 +92,13 @@ class Registration extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?, ApprovedCharacters=?, 
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
-                Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, ToBeRefunded=?,
+                Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, NotComingReason=?,
                 SpotAtLARP=?, TypeOfFoodId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, 
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
-            $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded, 
+            $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, 
             $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->Id))) {
             $stmt = null;
@@ -114,11 +116,11 @@ class Registration extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, ApprovedCharacters, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
-            MembershipCheckedAt, NotComing, ToBeRefunded, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            MembershipCheckedAt, NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, 
+            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
-            $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->ToBeRefunded,
+            $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason,
             $this->SpotAtLARP, $this->TypeOfFoodId))) {
             $stmt = null;
@@ -144,8 +146,8 @@ class Registration extends BaseModel{
         
     }
 
-    public function isToBeRefunded() {
-        if ($this->ToBeRefunded > 0 && empty($this->RefundDate)) {
+    public function isRefundAmount() {
+        if ($this->RefundAmount > 0 && empty($this->RefundDate)) {
             return true;
         }
         return false;
@@ -154,6 +156,14 @@ class Registration extends BaseModel{
 
     public function isNotComing() {
         if ($this->NotComing == 1) {
+            return true;
+        }
+        return false;
+        
+    }
+    
+    public function isToBeRefunded() {
+        if ($this->IsToBeRefunded == 1) {
             return true;
         }
         return false;
@@ -323,12 +333,13 @@ class Registration extends BaseModel{
     }
     
     public static function totalIncomeToBe(LARP $larp) {
+        //Ett försök att gissa på hur inkomstern kommer att bli.
         $registrationArr = static::allBySelectedLARP($larp);
         $income = 0;
         foreach($registrationArr as $registration) {
-            $income = $income + $registration ->AmountToPay;
-            if (isset($registration->ToBeRefunded)) {
-                $income = $income - $registration->ToBeRefunded;
+            if (!$registration->isToBeRefunded()) $income = $income + $registration ->AmountToPay;
+            if (isset($registration->RefundAmount)) {
+                $income = $income - $registration->RefundAmount;
             }
         }
         return $income;
@@ -353,8 +364,8 @@ class Registration extends BaseModel{
         $registrationArr = static::allBySelectedLARP($larp);
         $income = 0;
         foreach($registrationArr as $registration) {
-            if (isset($registration->ToBeRefunded) && isset($registration->RefundDate)) {
-                $income = $income + $registration->ToBeRefunded;
+            if (isset($registration->RefundAmount) && isset($registration->RefundDate)) {
+                $income = $income + $registration->RefundAmount;
             }
         }
         return $income;

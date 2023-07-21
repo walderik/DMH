@@ -17,7 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  
         $registration->NotComing = $_POST['NotComing'];
         $registration->NotComingReason = $_POST['NotComingReason'];
-        $registration->ToBeRefunded = $_POST['ToBeRefunded'];
+        $registration->IsToBeRefunded = $_POST['IsToBeRefunded'];
+        $registration->RefundAmount = $_POST['RefundAmount'];
         
         $refundDate = $_POST['RefundDate'];
         if (isset ($refundDate) && $refundDate != "") {
