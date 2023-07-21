@@ -47,6 +47,19 @@ include 'navigation.php';
 		    }
 		    ?>
 
+		    <?php 
+		    $minors = $person->getGuardianFor($current_larp);
+		    if (!empty($minors)) {
+    			echo "<tr><td valign='top' class='header'>Ansvarig för</td><td>";
+    			$minor_str_arr = array();
+    			foreach ($minors as $minor) {
+    			     $minor_str_arr[] = "<a href='view_person.php?id=".$minor->Id."'>".$minor->Name."</a>";
+    			}
+    			echo implode(", ", $minor_str_arr);
+    			echo "</td></tr>";
+		    }
+		    ?>
+
 
 			<tr><td valign="top" class="header">Erfarenhet</td><td><?php echo Experience::loadById($person->ExperienceId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td><td><?php echo $person->NotAcceptableIntrigues;?></td></tr>

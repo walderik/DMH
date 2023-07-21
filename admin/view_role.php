@@ -143,7 +143,7 @@ include 'navigation.php';
 		if (!$isReserve) {?>
 		<h2>Intrig <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
-		<?php    echo $larp_role->Intrigue; ?>
+		<?php    echo nl2br(htmlspecialchars($larp_role->Intrigue)); ?>
 		<?php
 		$known_actors = array();
 		$known_npcs = array();
@@ -319,9 +319,9 @@ include 'navigation.php';
 			}
 	    ?>
 		</div>
-		<h2>Anteckningar (visas inte för deltagaren)</h2>
+		<h2>Anteckningar (visas inte för deltagaren) <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
-		<?php    echo $role->OrganizerNotes; ?>
+		<?php    echo nl2br(htmlspecialchars($role->OrganizerNotes)); ?>
 		</div>
 		<?php 
 		$previous_larps = $role->getPreviousLarps();
@@ -336,11 +336,11 @@ include 'navigation.php';
 		        echo nl2br($previous_larp_role->Intrigue);
 		        echo "<br><strong>Vad hände för $role->Name?</strong><br>";
 		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
-		            echo $previous_larp_role->WhatHappened;
+		            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappened));
 		            else echo "Inget rapporterat";
 	            echo "<br><strong>Vad hände för andra?</strong><br>";
 	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
-	                echo $previous_larp_role->WhatHappendToOthers;
+	                echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
 	                else echo "Inget rapporterat";
 	            echo "</div>";
 		                

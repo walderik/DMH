@@ -2,7 +2,6 @@ Bygghelgs-anmälningar
 
 
 Från möte 20/7
-* Albin och Per vill verkligen ha en Tidslinjen.
 * Ryktesspridare !
 
 
@@ -39,8 +38,6 @@ Sökfunktion på roller och grupper (ex Hitta alla som kommer från slow river)
 
 Handelssystemet - skriva in resultat
 
-Kassabok - PDF med alla verifikationer
-
 Göra klart husfördelningen
 
 byta user för en person (admin funktion)
@@ -50,7 +47,6 @@ Behöver man kunna byta spelare på en roll? JA
 Helt nya funktioner:
 Att göra-listor per lajv och för Admin
 OFF-annonser för exmepelvis skjuts.
-
 
 Visa alla mail som har skapats, visa status, möjlighet att ta bort
 

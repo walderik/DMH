@@ -163,6 +163,12 @@ class Person extends BaseModel{
     
     
     
+    public function getGuardianFor(LARP $larp) {
+        $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
+            "regsys_registration WHERE LarpId = ? AND GuardianId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $this->Id));
+    }
+    
     public static function getAllInterestedNPC($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
