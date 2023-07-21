@@ -100,23 +100,37 @@ include 'navigation.php';
     		        echo "<div>\n";
     		        echo "<strong>Karaktärer:</strong><br>\n";
     		        $roles = $person->getRolesAtLarp($current_larp);
+    		        echo "<table>";
+    		        
     		        foreach($roles as $role) {
-
+                        echo "<tr>";
+                        echo "<td>";
+                        if ($role->hasImage()) {
+                            
+                            $image = Image::loadById($role->ImageId);
+                            echo " <img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+                        }
+                        echo "</td>";
+                        
+		                echo "<td><a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
+		                echo " <a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>";
+                        echo "</td>";
+		                echo "<td>$role->Profession</td>";
+		                echo "<td>";
 		                $role_group = $role->getGroup();
-		                $role_group_name = "";
 		                if (isset($role_group)) {
-		                    $role_group_name = " - $role_group->Name";
+		                    echo "<a href = 'view_group.php?id=$role_group->Id'>$role_group->Name</a>";
 		                }
-		                echo $role->Name . " - " . $role->Profession . " " . $role_group_name;
-    		            if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
+		                echo "</td>";
+		                echo "<td>";
+		                $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+		                if ($larp_role->IsMainRole != 1) {
     		              echo " Sidokaraktär";
     		            }
-    		            echo "&nbsp;<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
-    		            echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a><br>\n";
-		            
-    		            
+    		            echo "</td>";
+     		            echo "</tr>";
     		        }
-    		        echo "<br>";
+    		        echo "</table>";
     		        echo "<form action='change_main_role.php' method='post'>";
     		        echo "<input type='hidden' id='PersonId' name='PersonId' value='$person->Id'>";
     		        echo "<input type='submit' value='Ändra vilken som är huvudkaraktär'>";

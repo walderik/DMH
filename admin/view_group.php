@@ -27,38 +27,44 @@ $main_characters_in_group = Role::getAllMainRolesInGroup($current_group, $curren
 $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($current_group, $current_larp);
 
 
-function print_role($group_member, $group) {
+function print_role($role, $group) {
     global $current_larp;
-    
-    echo "<a href ='view_role.php?id=" . $group_member->Id ."'>" .
-        $group_member->Name . "</a>";
-        if ($group_member->hasImage()) {
-            
-            $image = Image::loadById($group_member->ImageId);
-            echo " <img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
-            
-        }
+    echo "<tr>";
+    echo "<td>";
+    if ($role->hasImage()) {
         
-        echo "- " .
-            $group_member->Profession . ". Spelas av " .
-            "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>" .
-            $group_member->getPerson()->Name . "</a>";
-            
-            
-            if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-                echo ", ansvarig vuxen är ";
-                $registration = Registration::loadByIds($group_member->PersonId, $current_larp->Id);
-                if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name; else echo showStatusIcon(false);
-                
-            }
-            
-            
-            echo "</td></tr>";
-            echo " <a href='logic/remove_group_member.php?groupID=$group->Id&roleID=$group_member->Id".
-                "onclick='return confirm(\"Är du säker på att du vill ta bort karaktären från gruppen?\");'><i class='fa-solid fa-trash-can'></i></a>";
-            
-            echo "<br>";
-            
+        $image = Image::loadById($role->ImageId);
+        echo " <img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+    }
+    echo "</td>";
+    
+    echo "<td><a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
+    echo "</td>";
+    echo "<td>";
+    echo " <a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Ändra'></i></a>";
+    echo " <a href='logic/remove_group_member.php?groupID=$group->Id&roleID=$role->Id".
+        "onclick='return confirm(\"Är du säker på att du vill ta bort karaktären från gruppen?\");'><i class='fa-solid fa-trash-can' title='Ta bort ur gruppen'></i></a>";
+    echo "</td>";
+    echo "<td>$role->Profession</td>";
+
+    $person = $role->getPerson();
+    echo "<td><a href ='view_person.php?id=$person->Id'>$person->Name</a></td>";
+        
+    
+    echo "<td>";
+    if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+        echo "Ansvarig vuxen är ";
+        $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
+        if (!empty($registration->GuardianId)) { 
+            $guardian = $registration->getGuardian();   
+            echo "<a href ='view_person.php?id=$guardian->Id'>$guardian->Name</a>"; 
+        } else echo showStatusIcon(false);
+        
+    }
+    
+    echo "</td>";
+
+    echo "</tr>";
 }
 
 include 'navigation.php';
@@ -118,15 +124,19 @@ include 'navigation.php';
 		<h2>Anmälda medlemmar</h2>
 		<?php 
 
+		echo "<table>";
 		foreach($main_characters_in_group as $group_member) {
 		    print_role($group_member, $current_group);
 		}
+		echo "</table>";
 		if (!empty($non_main_characters_in_group)) {
 		    echo "<h3>Sidokaraktärer</h3>";
 		    
+		    echo "<table>";
 		    foreach($non_main_characters_in_group as $group_member) {
 		        print_role($group_member, $current_group);
 		    }
+		    echo "</table>";
 		}
 		?>
 		<h2>Intrig <a href='edit_group_intrigue.php?id=<?php echo $current_group->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
