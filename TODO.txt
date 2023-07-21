@@ -4,10 +4,6 @@ Bygghelgs-anmälningar
 Från möte 20/7
 * Ryktesspridare !
 
-
-
-Visa roller snyggare på deltagarnas översikt
-
 Karaktärsblad:
 * Visa Props
 * Visa Gruppintrig och grupp-props
