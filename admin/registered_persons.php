@@ -33,17 +33,21 @@
     		        echo "<td>";
     		        if ($registration->isNotComing()) {
     		            echo "<s>";
+    		        } else {
+    		            echo "<a href='view_person.php?id=$person->Id'>";
     		        }
     		        echo $person->Name;
     		        if ($registration->isNotComing()) {
     		            echo "</s>";
+    		        } else {
+    		            echo "</a>";
     		        }
     		        echo "</td>\n";
     		        if ($registration->isNotComing()) {
     		            echo "<td></td>";
     		        }
     		        else {
-        		        echo "<td>" . "<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
+        		        echo "<td>";
         		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        }
     		        echo "<td>";

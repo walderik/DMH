@@ -24,8 +24,7 @@ include 'navigation.php';
     		        echo "<form action='logic/approve_person.php' method='post'>";
     		        echo "<input type='hidden' id='RegistrationId' name='RegistrationId' value='$registration->Id'>";
 
-    		        echo $person->Name.", ".$person->getAgeAtLarp($current_larp)." år ";
-    		        echo "<a href='view_person.php?id=$person->Id'><i class='fa-solid fa-eye'></i></a> \n";
+    		        echo "<a href='view_person.php?id=$person->Id'>$person->Name</a>, ".$person->getAgeAtLarp($current_larp)." år ";
     		        echo "<a href='edit_person.php?id=$person->Id'><i class='fa-solid fa-pen'></i></a> \n";    		        
     		        echo "<br>\n";
     		        
@@ -42,11 +41,10 @@ include 'navigation.php';
 		                if (isset($role_group)) {
 		                    $role_group_name = " - $role_group->Name";
 		                }
-		                echo $role->Name . " - " . $role->Profession . " " . $role_group_name;
+		                echo "<a href='view_role.php?id=" . $role->Id . "'>$role->Name</a> - $role->Profession $role_group_name";
     		            if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
     		              echo " Sidokaraktär";
     		            }
-    		            echo "&nbsp;<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
     		            echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
     		            echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
 		            

@@ -20,8 +20,7 @@ Bygghelg, mat anges per måltid, gratis
 
 Ta bort sidokaraktär
 
-Medlemarna listas i en tabell och det finns länk till att redigera en medlem från listan 
-  (snabbt sätt hitta karaktärer man vill skriva till något om)
+Ladda upp bilder på NPC'er både från admin och deltagare
 
 Ge tillstånd att visa spelarens namn vid karaktärspresentationen
 

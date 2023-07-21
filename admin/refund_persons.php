@@ -15,10 +15,9 @@
     		    $tableId = "participants";
     		    echo "<table id='$tableId' class='data'>";
     		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-    		      "<th></th>".
-    		      "<th onclick='sortTable(2, \"$tableId\")'>Epost</th>".
-    		      "<th onclick='sortTable(3, \"$tableId\")'>Betalat</th>".
-    		      "<th onclick='sortTable(5, \"$tableId\")' >Betalning</th>".
+    		      "<th onclick='sortTable(1, \"$tableId\")'>Epost</th>".
+    		      "<th onclick='sortTable(2, \"$tableId\")'>Betalat</th>".
+    		      "<th onclick='sortTable(3, \"$tableId\")' >Betalning</th>".
     		      "</tr>\n";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
@@ -26,18 +25,16 @@
     		        echo "<td>";
     		        if ($registration->isNotComing()) {
     		            echo "<s>";
+    		        } else {
+    		            echo "<a href='view_person.php?id=" . $person->Id . "'>";
     		        }
     		        echo $person->Name;
     		        if ($registration->isNotComing()) {
     		            echo "</s>";
+    		        } else {
+    		            echo "</a>";
     		        }
     		        echo "</td>\n";
-    		        if ($registration->isNotComing()) {
-    		            echo "<td></td>";
-    		        }
-    		        else {
-        		        echo "<td>" . "<a href='view_person.php?id=" . $person->Id . "'><i class='fa-solid fa-eye'></i></a>\n";
-    		        }
     		        echo "<td>";
     		        if ($registration->isNotComing()) {
     		            echo "<s>";

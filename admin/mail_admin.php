@@ -15,7 +15,6 @@ include 'navigation.php';
 	    "<th onclick='sortTable(3, \"$tableId\")'>Skickat av</th>".
 	    "<th onclick='sortTable(4, \"$tableId\")'>Skickat</th>".
 	    "<th onclick='sortTable(5, \"$tableId\")'>Fel</th>".
-        "<th></th>".
         "</tr>\n";
     	
     	$emails = Email::allBySelectedLARP($current_larp);
@@ -43,7 +42,6 @@ include 'navigation.php';
     	        echo showStatusIcon(false);
     	    }
     	    echo "</td>";
-    	    echo "<td><a href='view_email.php?id=$email->Id'><i class='fa-solid fa-eye'></i></a>\n";
     	    //echo " <a href='mail_admin.php?operation=delete&id=" . $email->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
     	    echo "</tr>";
     	}  	

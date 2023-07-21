@@ -58,11 +58,11 @@
     		            }
     		        }
     		        else {
-        		        echo $role->Name;
+        		        echo "<a href='view_role.php?id=$role->Id'>$role->Name</a>";
         		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		        if ($role->userMayEdit($current_larp)) echo "<br>Deltagaren får ändra karaktären " . showStatusIcon(false);
         		        echo "</td>\n";
-        		        echo "<td nowrap>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye' title='Se karaktären'></i></a>\n";
+        		        echo "<td nowrap>";
         		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>\n";
         		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
         		        echo "</td>\n";
@@ -172,8 +172,8 @@
     		        }
     		        else {
         		            
-        		        echo "<td>" . $role->Name . "</td>\n";
-        		        echo "<td>" . "<a href='view_role.php?id=" . $role->Id . "'><i class='fa-solid fa-eye' title='Se karaktären'></i></a>\n";
+        		        echo "<td><a href='view_role.php?id=$role->Id'>$role->Name</td>\n";
+        		        echo "<td>";
         		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>\n";
         		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>\n";
         		        echo "</td>\n";

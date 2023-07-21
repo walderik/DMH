@@ -24,7 +24,7 @@ include_once '../javascript/show_hide_rows.js';
             echo "<table class='data'>";
             
             
-            echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th><th></th></tr>\n";
+            echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
                 $show = true;
                 if ($current_user->Id != $intrigue->ResponsibleUserId) {
@@ -34,15 +34,13 @@ include_once '../javascript/show_hide_rows.js';
                 else echo "<tr class='show_hide hidden'>\n";
                 
                 echo "<td>" . $intrigue->Number . "</td>\n";
-                echo "<td>" . $intrigue->Name . "</td>\n";
+                echo "<td><a href='view_intrigue.php?Id=" . $intrigue->Id . "'>$intrigue->Name</a></td>\n";
                 echo "<td>" . ja_nej($intrigue->isActive()) . "</td>\n";
                 echo "<td>" . ja_nej($intrigue->MainIntrigue) . "</td>\n";
                 echo "<td>" . commaStringFromArrayObject($intrigue->getIntriguetypes()) . "</td>\n";
                 $responsibleUser = $intrigue->getResponsibleUser();
                 echo "<td>$responsibleUser->Name</td>";
                 
-                echo "<td>" . "<a href='view_intrigue.php?Id=" . $intrigue->Id . "'><i class='fa-solid fa-eye'></i></td>\n";
-                //echo "<td>" . "<a href='intrigue_admin.php?operation=delete&id=" . $intrigue->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
