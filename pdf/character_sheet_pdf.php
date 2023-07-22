@@ -382,7 +382,7 @@ class CharacterSheet_PDF extends FPDF {
 	        $current_y = $this->GetY();
 	        if ($current_y > $y + $this->current_cell_height) {
  	            $new_height = $current_y-$y;
- 	            $this->current_cell_height = $new_height;
+ 	            $this->current_cell_height = $new_height+2;
 	        }
 	        
 	        # Räkna upp en cell i bredd
@@ -416,23 +416,18 @@ class CharacterSheet_PDF extends FPDF {
 	    $this->Line($this->current_left, $y+static::$Margin*1.5, ($this->current_left+$mitten-(3*static::$Margin)), $y+static::$Margin*1.5);
 	}
 	
-	# Gemensamt sätt beräkna var rubriken i ett fält ska ligga
-	private function set_header_start($venster) {
-	    global $y;
-	    $this->SetXY($venster, $y);
-	    $this->SetFont('Helvetica','',static::$header_fontsize);
-	}
-	
-	# Gemensamt sätt beräkna var texten i ett fält ska ligga
-	private function set_text_start($venster) {
-	    global $y;
-	    $this->SetXY($venster, $y + static::$Margin + 1);
-	    $this->SetFont('Helvetica','',static::$text_fontsize);
-	}
+// 	# Gemensamt sätt beräkna var rubriken i ett fält ska ligga
+// 	private function set_header_start($venster) {
+// 	    global $y;
+// 	    $this->SetXY($venster, $y);
+// 	    $this->SetFont('Helvetica','',static::$header_fontsize);
+// 	}
 	
 	# Gemensam funktion för all logik för att skriva ut ett rubriken
 	private function set_header($venster, $text) {
-	    $this->set_header_start($venster);
+	    global $y;
+	    $this->SetXY($venster, $y);
+	    $this->SetFont('Helvetica','',static::$header_fontsize);
 	    $this->Cell($this->cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
 	}
 	
@@ -443,22 +438,21 @@ class CharacterSheet_PDF extends FPDF {
 	    if (empty($text)) return;
 	    
 	    $text = trim(utf8_decode($text));
+	    
+	    $this->SetXY($venster, $y + static::$Margin + 1);
+	    $this->SetFont('Helvetica','',static::$text_fontsize);
+	    
 	    # Specialbehandling för väldigt långa strängar där vi inte förväntar oss det
-	    if (strlen($text)>static::$text_max_length){
-	        $this->SetXY($venster, $y + static::$Margin-1);
-	        $this->SetFont('Arial','',static::$text_fontsize/1.5);
-	        
-	        if (strlen($text)>210) {
-	            $this->SetFont('Arial','',static::$header_fontsize);
-	            $this->MultiCell($this->cell_width+5, static::$cell_y-2.1, $text, 0, 'L'); # Väldigt liten och tät text
-	        } else {
-	            $this->MultiCell($this->cell_width+5, static::$cell_y-1.5, $text, 0, 'L');
-	        }
+	    
+	    
+	    if (strlen($text) > static::$text_max_length){
+	        $this->SetXY($venster, $y + static::$Margin);
+	        $this->SetFont('Arial','',static::$text_fontsize/1.25);
+	        $this->MultiCell($this->cell_width+5, static::$cell_y-1, $text, 0, 'L');
 
 	        return;
 	    }
-	    # Normal utskrift
-	    $this->set_text_start($venster);
+	    
 	    $this->Cell($this->cell_width, static::$cell_y, $text, 0, 0, 'L');
 	    
 	    return;
