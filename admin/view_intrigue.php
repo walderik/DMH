@@ -8,7 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
-    echo "<h2>Intrig för $name <a href='actor_intrigue_form.php?IntrigueActorId=$intrgueActor->Id&name=$name'><i class='fa-solid fa-pen'></i></a></h2>\n";
+    echo "<h2>Intrig för ";
+    if (!empty($intrgueActor->RoleId)) echo "<a href='view_role.php?id=$intrgueActor->RoleId'>";
+    elseif (!empty($intrgueActor->GroupId)) echo "<a href='view_group.php?id=$intrgueActor->GroupId'>";
+    echo "$name</a> <a href='actor_intrigue_form.php?IntrigueActorId=$intrgueActor->Id&name=$name'><i class='fa-solid fa-pen'></i></a></h2>\n";
     echo "<table width='100%''>\n";
     
     echo "<tr><td width='10%'>Intrigtext</td><td>".nl2br(htmlspecialchars($intrgueActor->IntrigueText))."</td></tr>\n";
