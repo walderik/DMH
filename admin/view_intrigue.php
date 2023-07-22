@@ -521,6 +521,19 @@ foreach ($timeline_array as $timeline) {
 }
 ?>
 </td></tr>
+<tr><td>Rykten</td><td>
+  <a href="rumour_form.php?operation=insert&IntrigueId=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Skapa rykte under lajvet"></i></a>
+  <br>
+<?php 
+$rumour_array = $intrigue->getRumours();
+foreach ($rumour_array as $rumour) {
+    echo $rumour->Text;
+    echo " <a href='rumour_form.php?operation=update&id=$rumour->Id'><i class='fa-solid fa-pen'></i></a>";
+    echo " <a href='rumour_admin.php?operation=delete&id=$rumour->Id&gotoreferer='true'><i class='fa-solid fa-trash'></i></a>";
+    echo "<br>";
+}
+?>
+</td></tr>
 
 </table>
 

@@ -1,5 +1,8 @@
 Bygghelgs-anmälningar
 
+Intrgier, vid filtrering ta även bort inaktiva
+Intriger, generell text som går till alla i intrigen
+Ryten, vanliga sidan för choose_role och choose_group
 
 Från möte 20/7
 * Ryktesspridare !

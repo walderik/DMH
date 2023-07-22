@@ -7,14 +7,15 @@ class Rumour extends BaseModel{
     public  $Approved = 0;
     public  $LARPid;
     public  $UserId;
+    public  $IntrigueId;
     
 //     public static $tableName = 'telegrams';
     public static $orderListBy = 'Id';
     
     public static function newFromArray($post) {
-        $telegram = static::newWithDefault();
-        $telegram->setValuesByArray($post);
-        return $telegram;
+        $obj = static::newWithDefault();
+        $obj->setValuesByArray($post);
+        return $obj;
     }
      
     public function setValuesByArray($arr) {
@@ -23,6 +24,9 @@ class Rumour extends BaseModel{
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
         if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
+        if (isset($arr['IntrigueId'])) $this->IntrigueId = $arr['IntrigueId'];
+        
+        if (isset($this->IntrigueId) && $this->IntrigueId=='null') $this->IntrigueId = null;
         
     }
     
@@ -62,14 +66,18 @@ class Rumour extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getAllForIntrigue(Intrigue $intrigue) {
+        $sql = "SELECT * FROM regsys_rumour WHERE IntrigueId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
+    }
     
     
     
     # Update an existing telegram in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_rumour SET Text=?, Approved=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_rumour SET Text=?, Approved=?, IntrigueId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Text, $this->Approved, $this->Id))) {
+        if (!$stmt->execute(array($this->Text, $this->Approved, $this->IntrigueId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -81,9 +89,9 @@ class Rumour extends BaseModel{
     # Create a new telegram in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_rumour (Text, Approved, UserId, LARPid) VALUES (?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_rumour (Text, Approved, UserId, LARPid, IntrigueId) VALUES (?,?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->Text, $this->Approved, $this->UserId, $this->LARPid))) {
+        if (!$stmt->execute(array($this->Text, $this->Approved, $this->UserId, $this->LARPid,$this->IntrigueId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

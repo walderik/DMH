@@ -473,4 +473,9 @@ class Intrigue extends BaseModel{
     public function getTimeline() {
         return Timeline::getAllForIntrigue($this);
     }
+    
+    public function getRumours() {
+        return Rumour::getAllForIntrigue($this);
+    }
+    
 }

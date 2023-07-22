@@ -16,6 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $rumour = Rumour::loadById($_GET['id']);
     } else {
     }
+    if (isset($_GET['IntrigueId'])) {
+        $rumour->IntrigueId = $_GET['IntrigueId'];
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,6 +69,7 @@ if (isset($_POST['Referer'])) {
     $referer = "rumour_admin.php";
 }
 
+$intrigue_array = Intrigue::allByLARP($current_larp);
 
 include 'navigation.php';
 ?>
@@ -93,6 +97,12 @@ include 'navigation.php';
     			<input form='main' type="radio" id="Approved_no" name="Approved" value="0" <?php if ($rumour->Approved == 0) echo 'checked="checked"'?>> 
     			<label for="Approved_no">Nej</label>
 				</td>
+			</tr>
+			<tr>
+
+				<td><label for="IntrigueId">Kopplad intrig</label></td>
+				
+				<td><?php  selectionDropDownByArray("IntrigueId", $intrigue_array, false, $rumour->IntrigueId);?></td>
 			</tr>
 			<tr>
 
