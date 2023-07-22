@@ -129,7 +129,7 @@ include 'navigation.php';
 		                $checkin_letters = array_merge($checkin_letters, $intrigueActor->getAllCheckinLetters());
 		                $checkin_telegrams = array_merge($checkin_telegrams, $intrigueActor->getAllCheckinTelegrams());
 		                $checkin_props = array_merge($checkin_props, $intrigueActor->getAllCheckinProps());
-		                $intrigue_numbers[] = $intrigue->Number;
+		                if (!empty($intrigueActor->IntrigueText)) $intrigue_numbers[] = $intrigue->Number;
 		            }
 		        }
 		        if (!empty($intrigue_numbers)) {
