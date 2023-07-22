@@ -9,7 +9,7 @@ class Rumour extends BaseModel{
     public  $UserId;
     
 //     public static $tableName = 'telegrams';
-    public static $orderListBy = 'Deliverytime';
+    public static $orderListBy = 'Id';
     
     public static function newFromArray($post) {
         $telegram = static::newWithDefault();
@@ -96,5 +96,40 @@ class Rumour extends BaseModel{
         return User::loadById($this->UserId);
     }
     
+    public function getConcerns() {
+        return Rumour_concerns::getAllForRumour($this);
+    }
+    
+    public function getKnows() {
+        return Rumour_knows::getAllForRumour($this);
+    }
+    
+    public function addConcernedGroup($groupId) {
+        $concerned = Rumour_concerns::newWithDefault();
+        $concerned->GroupId = $groupId;
+        $concerned->RumourId = $this->Id;
+        $concerned->create();
+    }
+
+    public function addConcernedRole($roleId) {
+        $concerned = Rumour_concerns::newWithDefault();
+        $concerned->RoleId = $roleId;
+        $concerned->RumourId = $this->Id;
+        $concerned->create();
+    }
+    
+    public function addKnowsGroup($groupId) {
+        $knows = Rumour_knows::newWithDefault();
+        $knows->GroupId = $groupId;
+        $knows->RumourId = $this->Id;
+        $knows->create();
+    }
+    
+    public function addKnowsRole($roleId) {
+        $knows = Rumour_knows::newWithDefault();
+        $knows->RoleId = $roleId;
+        $knows->RumourId = $this->Id;
+        $knows->create();
+    }
     
 }

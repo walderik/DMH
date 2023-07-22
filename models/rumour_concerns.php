@@ -1,6 +1,6 @@
 <?php
 
-class Rumour_knows extends BaseModel{
+class Rumour_concerns extends BaseModel{
     
     public $Id;
     public $RumourId;
@@ -30,7 +30,7 @@ class Rumour_knows extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_rumour_knows (RumourId, RoleId, GroupId) VALUES (?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_rumour_concerns (RumourId, RoleId, GroupId) VALUES (?,?,?)");
         
         if (!$stmt->execute(array($this->RumourId, $this->RoleId, $this->GroupId))) {
             $stmt = null;
@@ -56,13 +56,19 @@ class Rumour_knows extends BaseModel{
     public function getViewLink() {
         if (!empty($this->RoleId)) {
             $role = Role::loadById($this->RoleId);
-            return "<a href='view_role.php?id=$role->Id'>";
+            return "<a href='view_role.php?id=$role->Id'>$role->Name</a>";
         } elseif (!empty($this->GroupId)) {
             $group = Group::loadById($this->GroupId);
-            return "<a href='view_group.php?id=$group->Id'>";
+            return "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
         }
         return "";
     }
     
+    public static function getAllForRumour(Rumour $rumour) {
+        if (is_null($rumour)) return Array();
+        $sql = "SELECT * FROM regsys_rumour_concerns WHERE RumourId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($rumour->Id));
+        
+    }
     
 }
