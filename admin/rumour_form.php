@@ -160,7 +160,6 @@ include 'navigation.php';
 					    echo "<input form='delete_concern_$concern->Id' type='hidden' id='concernId' name='concernId' value='$concern->Id'>";
 					    echo "<button form='delete_concern_$concern->Id' class='invisible' type='submit'><i class='fa-solid fa-trash' title='Ta bort från rykte'></i></button>";
 					    echo "</form>";
-					    echo "<br>";
 					}
 					?>
 				</td>
@@ -200,7 +199,6 @@ include 'navigation.php';
 					    echo "<input form='delete_knows_$knows->Id' type='hidden' id='knowsId' name='knowsId' value='$knows->Id'>";
 					    echo "<button form='delete_knows_$knows->Id' class='invisible' type='submit'><i class='fa-solid fa-trash' title='Ta bort från rykte'></i></button>";
 					    echo "</form>";
-					    echo "<br>";
 					}
 					?>
 				</td>
