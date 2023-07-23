@@ -4,6 +4,7 @@ class Rumour extends BaseModel{
     
     public  $Id;
     public  $Text;
+    public  $Notes = ""; 
     public  $Approved = 0;
     public  $LARPid;
     public  $UserId;
@@ -20,6 +21,7 @@ class Rumour extends BaseModel{
      
     public function setValuesByArray($arr) {
         if (isset($arr['Text'])) $this->Text = $arr['Text'];
+        if (isset($arr['Notes'])) $this->Notes = $arr['Notes'];
         if (isset($arr['Approved'])) $this->Approved = $arr['Approved'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
@@ -103,9 +105,9 @@ class Rumour extends BaseModel{
     
     # Update an existing telegram in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_rumour SET Text=?, Approved=?, IntrigueId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_rumour SET Text=?, Notes=?, Approved=?, IntrigueId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Text, $this->Approved, $this->IntrigueId, $this->Id))) {
+        if (!$stmt->execute(array($this->Text, $this->Notes, $this->Approved, $this->IntrigueId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -117,15 +119,19 @@ class Rumour extends BaseModel{
     # Create a new telegram in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_rumour (Text, Approved, UserId, LARPid, IntrigueId) VALUES (?,?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_rumour (Text, Notes, Approved, UserId, LARPid, IntrigueId) VALUES (?,?,?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->Text, $this->Approved, $this->UserId, $this->LARPid,$this->IntrigueId))) {
+        if (!$stmt->execute(array($this->Text, $this->Notes, $this->Approved, $this->UserId, $this->LARPid,$this->IntrigueId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
        }
        $this->Id = $connection->lastInsertId();
        $stmt = null;
+    }
+    
+    public function isApproved() {
+        return $this->Approved == 1;
     }
     
     public function getUser() {

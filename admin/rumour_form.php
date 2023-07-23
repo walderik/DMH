@@ -105,6 +105,12 @@ include 'navigation.php';
 			</tr>
 			<tr>
 
+				<td><label for="Notes">Anteckningar<br>(om ryktet inte är godkänt kan<br>deltagaren som skapade ryktet<br>se anteckningarna)</label></td>
+				<td><textarea form='main' id="Notes" name="Notes" rows="4" cols="100" maxlength="2000"
+					 required><?php echo htmlspecialchars($rumour->Notes); ?></textarea></td>
+			</tr>
+			<tr>
+
 				<td><label for="Approved">Godkänt</label></td>
 				<td>
 				<input form='main' type="radio" id="Approved_yes" name="Approved" value="1" <?php if ($rumour->Approved == 1) echo 'checked="checked"'?>> 

@@ -270,7 +270,7 @@ include "navigation.php";
 		        echo "<div>\n";
 		        $telegram_array = $current_user->getTelegramsAtLarp($current_larp);
 		        if(isset($telegram_array) && count($telegram_array) > 0) {
-		            echo "<b>Telegram av $current_user->Name:</b><br>\n";
+		            echo "<b>Telegram skapade av $current_user->Name:</b><br>\n";
 		            echo "<table class='data' id='telegrams' align='left'>";
 		            echo "<tr align='left'><th>Leveranstid</th><th>Avsändare</th><th>Mottagare</th>";
 		            echo "<th>Meddelande</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
@@ -297,7 +297,7 @@ include "navigation.php";
 		        echo "<div>\n";
 		        $letter_array = $current_user->getLettersAtLarp($current_larp);
 		        if(isset($letter_array) && count($letter_array) > 0) {
-		            echo "<b>Brev av $current_user->Name:</b><br>\n";
+		            echo "<b>Brev skapade av $current_user->Name:</b><br>\n";
 		            echo "<table class='data' id='letters' align='left'>";
 		            echo "<tr align='left'><th>Ort och datum</th><th>Hälsningsfras</th>";
 		            echo "<th>Meddelande</th><th>Hälsning</th><th>Underskrift</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
@@ -319,7 +319,33 @@ include "navigation.php";
 		        echo "<p><a href='letter_suggestion.php'><b>Skapa ett brev</b></i></a>\n";
 		        echo "</div></div>";
 		        
-		    } 
-		    ?>
+		        
+		        
+    		    echo "</div><div class='content'>\n";
+    		    echo "<h2>Rykten</h2>\n";
+    		    echo "<div>\n";
+    		    $rumour_array = $current_user->getRumoursAtLarp($current_larp);
+    		    if(isset($rumour_array) && count($rumour_array) > 0) {
+    		        echo "<b>Rykten skapade av $current_user->Name:</b><br>\n";
+    		        echo "<table class='data' id='letters' align='left'>";
+    		        echo "<tr align='left'><th>Text</th><th>Ok</th><th>Ändra</th>";
+    		        echo "</tr>\n";
+    		        foreach ($rumour_array as $rumour) {
+    		            echo "<tr>\n";
+    		            echo "<td style='font-weight:normal'>$rumour->Text</td>\n";
+    		            echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
+    		            echo "<td align='center'>";
+    		            if (!$rumour->isApproved()) echo "<a href='rumour_suggestion.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></a>";
+                        echo "</td>\n";
+    		            echo "</tr>\n";
+    		        }
+    		        echo "</table></p>\n";
+    		        
+    		    }
+    		    echo "<p><a href='rumour_suggestion.php'><b>Skapa ett rykte</b></i></a>\n";
+    		    echo "</div></div>";
+    		    
+    }
+    ?>
 	</body>
 </html>
