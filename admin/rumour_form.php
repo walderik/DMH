@@ -168,14 +168,14 @@ include 'navigation.php';
 					    echo "<input form='knows_group' type='hidden' id='id' name='id' value='$rumour->Id'>";
 					    echo "<input form='knows_group' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
 					    echo "<input form='knows_group' type='hidden' id='operation' name='operation' value='add_knows_group'>";
-					    echo "<button form='knows_group' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till grupp(er) som känner till ryktet'></i></button>";
+					    echo "<button form='knows_group' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till grupp(er) som känner till ryktet'></i><i class='fa-solid fa-users' title='Lägg till grupp(er) som känner till ryktet'></i></button>";
 					    echo "<br>";
 					    
 					    echo "<form id='knows_role' action='choose_role.php' method='post'></form>";
 					    echo "<input form='knows_role' type='hidden' id='id' name='id' value='$rumour->Id'>";
 					    echo "<input form='knows_role' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
 					    echo "<input form='knows_role' type='hidden' id='operation' name='operation' value='add_knows_role'>";
-					    echo "<button form='knows_role' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) som känner till ryktet'></i></button>";
+					    echo "<button form='knows_role' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) som känner till ryktet'></i><i class='fa-solid fa-user' title='Lägg till karaktär(er) som känner till ryktet'></i></button>";
 					    
 					    
 					} else {

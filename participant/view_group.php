@@ -303,6 +303,12 @@ include 'navigation.php';
 		            }
 		            echo "</ul>";
 		        }
+		        echo "<h2>Rykten</h2>";
+		        $rumours = Rumour::allKnownByGroup($current_larp, $current_group);
+		        foreach($rumours as $rumour) {
+		            echo $rumour->Text;
+		            echo "<br>";
+		        }
 		        
 			}
 

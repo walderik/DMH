@@ -194,23 +194,23 @@ include 'navigation.php';
 	           $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
 	           
 	           if (!empty($knownIntrigueActor->GroupId)) {
-	               $group=$knownIntrigueActor->getGroup();
+	               $groupActor=$knownIntrigueActor->getGroup();
 	               echo "<li style='display:table-cell; width:19%;'>";
-	               echo "<div class='name'>$group->Name</div>";
+	               echo "<div class='name'>$groupActor->Name</div>";
 	               echo "<div>Grupp</div>";
 	               echo "</li>";
 	               
 	           } else {
-	               $role = $knownIntrigueActor->getRole();
+	               $roleActor = $knownIntrigueActor->getRole();
 	               echo "<li style='display:table-cell; width:19%;'>";
-	               echo "<div class='name'>$role->Name</div>";
-	               $role_group = $role->getGroup();
+	               echo "<div class='name'>$roleActor->Name</div>";
+	               $role_group = $roleActor->getGroup();
 	               if (!empty($role_group)) {
 	                   echo "<div>$role_group->Name</div>";
 	               }
 	               
-	               if ($role->hasImage()) {
-	                   $image = Image::loadById($role->ImageId);
+	               if ($roleActor->hasImage()) {
+	                   $image = Image::loadById($roleActor->ImageId);
 	                   if (!is_null($image)) {
 	                       
 	                       echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
