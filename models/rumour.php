@@ -71,6 +71,34 @@ class Rumour extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
     }
     
+    public static function allKnownByRole(Larp $larp, Role $role) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_rumour WHERE LARPid = ? AND Id IN (".
+            "SELECT RumourId FROM regsys_rumour_knows WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
+    }
+    
+    public static function allConcernedByRole(Larp $larp, Role $role) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_rumour WHERE LARPid = ? AND Id IN (".
+            "SELECT RumourId FROM regsys_rumour_concerns WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
+    }
+    
+    public static function allKnownByGroup(Larp $larp, Group $group) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_rumour WHERE LARPid = ? AND Id IN (".
+            "SELECT RumourId FROM regsys_rumour_knows WHERE GroupId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
+    }
+    
+    public static function allConcernedByGroup(Larp $larp, Group $group) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_rumour WHERE LARPid = ? AND Id IN (".
+            "SELECT RumourId FROM regsys_rumour_concerns WHERE GroupId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
+    }
+    
     
     
     # Update an existing telegram in db

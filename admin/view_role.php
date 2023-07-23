@@ -319,6 +319,25 @@ include 'navigation.php';
 			}
 	    ?>
 		</div>
+		<h2>Rykten</h2>
+		<div>
+		<h3>Rykten som <?php echo $role->Name ?> känner till</h3>
+		<?php 
+		$rumours = Rumour::allKnownByRole($current_larp, $role);
+		foreach($rumours as $rumour) {
+		    echo "$rumour->Text <a href='rumour_form.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></a><br>";
+		}
+		?>	
+		
+		<h3>Rykten som handlar om <?php echo $role->Name ?></h3>
+		<?php 
+		$rumours = Rumour::allConcernedByRole($current_larp, $role);
+		foreach($rumours as $rumour) {
+		    echo "$rumour->Text <a href='rumour_form.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></a><br>";
+		}
+		?>
+		
+		</div>
 		<h2>Anteckningar (visas inte för deltagaren) <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php    echo nl2br(htmlspecialchars($role->OrganizerNotes)); ?>

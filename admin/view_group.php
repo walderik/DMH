@@ -154,7 +154,7 @@ include 'navigation.php';
 		$intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id, $current_larp->Id);
 		if (!empty($intrigues)) {
 		    echo "<table class='data'>";
-		    echo "<tr><th>Intrig</th><th>Intrigtext</th></tr>";
+		    echo "<tr><th>Intrig</th><th>Intrigtext</th><th></th></tr>";
 	        foreach ($intrigues as $intrigue) {
 	           echo "<tr>";
 	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a>";
@@ -168,6 +168,7 @@ include 'navigation.php';
 	                   echo "<br><br><strong>Off-information:</strong><br>$intrigueActor->OffInfo";
 	               }
 	               echo "</td>";
+	               echo "<td><a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$role->Name'><i class='fa-solid fa-pen'></i></a></td>";
 	               echo "</tr>";
 	               $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
 	               $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
@@ -314,6 +315,25 @@ include 'navigation.php';
 		
 		
         ?>
+		
+		</div>
+		<h2>Rykten</h2>
+		<div>
+		<h3>Rykten som <?php echo $current_group->Name ?> känner till</h3>
+		<?php 
+		$rumours = Rumour::allKnownByGroup($current_larp, $current_group);
+		foreach($rumours as $rumour) {
+		    echo "$rumour->Text <a href='rumour_form.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></a><br>";
+		}
+		?>	
+		
+		<h3>Rykten som handlar om <?php echo $current_group->Name ?></h3>
+		<?php 
+		$rumours = Rumour::allConcernedByGroup($current_larp, $current_group);
+		foreach($rumours as $rumour) {
+		    echo "$rumour->Text <a href='rumour_form.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></a><br>";
+		}
+		?>
 		
 		</div>
 		<h2>Anteckningar (visas inte för deltagarna)</h2>
