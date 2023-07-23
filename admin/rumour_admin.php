@@ -44,9 +44,9 @@ include 'navigation.php';
     <div class="content">
         <h1>Rykten</h1>
         <p>Rykten skapade av arrangörer blir automatiskt godkända. Rykten skapade av deltagare behöver godkännas av arrangörer innan de kan spridas.</p> 
-            <a href="rumour_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
         
 		<form action="rumour_admin.php" method="post">
+            <a href="rumour_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
 		<?php
 		if ($short_text) {
 		    echo "<input type='hidden' id='long_text' name='long_text' value='1'>";
@@ -57,14 +57,14 @@ include 'navigation.php';
 		}
 		?>
 		</form>
-			
+		<br>	
 
         <?php
     
         $rumour_array = Rumour::allBySelectedLARP($current_larp);
         if (!empty($rumour_array)) {
             echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Text</th><th></th><th>Skapare</th><th>Ok</th><th>Gäller</th><th></th></tr>\n";
+            echo "<tr><th>Text</th><th></th><th>Skapare</th><th>Gäller</th><th>Kopplad<br>till intrig</th><th>Ok</th><th></th></tr>\n";
             foreach ($rumour_array as $rumour) {
                 echo "<tr>\n";
                 if ($short_text) {
@@ -83,7 +83,6 @@ include 'navigation.php';
                     echo "<s>$user->Name</s>";
                 }
                 echo "</td>\n";
-                echo "<td>" . showStatusIcon($rumour->Approved) . "</td>\n";
                 echo "<td>";
                 $concerns_array = $rumour->getConcerns();
                 $concers_str_arr = array();
@@ -92,7 +91,14 @@ include 'navigation.php';
                 }
                 echo implode(", ", $concers_str_arr);
                 echo "</td>";
+                echo "<td>";
+                if (isset($rumour->IntrigueId)) {
+                    $intrigue = $rumour->getIntrigue();
+                    echo "<a href='view_intrigue.php?Id=$intrigue->Id'>$intrigue->Number. $intrigue->Name</a>";
+                }
+                echo "</td>";
                 
+                echo "<td>" . showStatusIcon($rumour->Approved) . "</td>\n";
                 echo "<td>" . "<a href='rumour_admin.php?operation=delete&id=" . $rumour->Id . "'><i class='fa-solid fa-trash' title='Ta bort rykte'></i></td>\n";
                 echo "</tr>\n";
             }

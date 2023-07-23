@@ -104,6 +104,10 @@ class Rumour extends BaseModel{
         return User::loadById($this->UserId);
     }
     
+    public function getIntrigue() {
+        return Intrigue::loadById($this->IntrigueId);
+    }
+    
     public function getConcerns() {
         return Rumour_concerns::getAllForRumour($this);
     }
@@ -112,32 +116,74 @@ class Rumour extends BaseModel{
         return Rumour_knows::getAllForRumour($this);
     }
     
-    public function addConcernedGroup($groupId) {
-        $concerned = Rumour_concerns::newWithDefault();
-        $concerned->GroupId = $groupId;
-        $concerned->RumourId = $this->Id;
-        $concerned->create();
-    }
-
-    public function addConcernedRole($roleId) {
-        $concerned = Rumour_concerns::newWithDefault();
-        $concerned->RoleId = $roleId;
-        $concerned->RumourId = $this->Id;
-        $concerned->create();
+    
+    public function addGroupConcerns($groupIds) {
+        //Ta reda på vilka som inte redan är kopplade till ryktet
+        $exisitingGroupIds = array();
+        $concernsArr = $this->getConcerns();
+        foreach ($concernsArr as $concerns) {
+            if (isset($concerns->GroupId)) $exisitingGroupIds[] = $concerns->GroupId;
+        }
+        
+        $newGroupIds = array_diff($groupIds,$exisitingGroupIds);
+        foreach ($newGroupIds as $groupId) {
+            $concerned = Rumour_concerns::newWithDefault();
+            $concerned->GroupId = $groupId;
+            $concerned->RumourId = $this->Id;
+            $concerned->create();
+        }
     }
     
-    public function addKnowsGroup($groupId) {
-        $knows = Rumour_knows::newWithDefault();
-        $knows->GroupId = $groupId;
-        $knows->RumourId = $this->Id;
-        $knows->create();
+    public function addRoleConcerns($roleIds) {
+        //Ta reda på vilka som inte redan är kopplade till ryktet
+        $exisitingRoleIds = array();
+        $concernsArr = $this->getConcerns();
+        foreach ($concernsArr as $concerns) {
+            if (isset($concerns->RoleId)) $exisitingRoleIds[] = $concerns->RoleId;
+        }
+        
+        $newRoleIds = array_diff($roleIds,$exisitingRoleIds);
+        foreach ($newRoleIds as $roleId) {
+            $concerned = Rumour_concerns::newWithDefault();
+            $concerned->RoleId = $roleId;
+            $concerned->RumourId = $this->Id;
+            $concerned->create();
+        }
     }
     
-    public function addKnowsRole($roleId) {
-        $knows = Rumour_knows::newWithDefault();
-        $knows->RoleId = $roleId;
-        $knows->RumourId = $this->Id;
-        $knows->create();
+    public function addGroupKnows($groupIds) {
+        //Ta reda på vilka som inte redan är kopplade till ryktet
+        $exisitingGroupIds = array();
+        $knowsArr = $this->getKnows();
+        foreach ($knowsArr as $knows) {
+            if (isset($knows->GroupId)) $exisitingGroupIds[] = $knows->GroupId;
+        }
+        
+        $newGroupIds = array_diff($groupIds,$exisitingGroupIds);
+        foreach ($newGroupIds as $groupId) {
+            $knows = Rumour_knows::newWithDefault();
+            $knows->GroupId = $groupId;
+            $knows->RumourId = $this->Id;
+            $knows->create();
+        }
     }
+    
+    public function addRoleKnows($roleIds) {
+        //Ta reda på vilka som inte redan är kopplade till ryktet
+        $exisitingRoleIds = array();
+        $knowsArr = $this->getKnows();
+        foreach ($knowsArr as $knows) {
+            if (isset($knows->RoleId)) $exisitingRoleIds[] = $knows->RoleId;
+        }
+        
+        $newRoleIds = array_diff($roleIds,$exisitingRoleIds);
+        foreach ($newRoleIds as $roleId) {
+            $knows = Rumour_knows::newWithDefault();
+            $knows->RoleId = $roleId;
+            $knows->RumourId = $this->Id;
+            $knows->create();
+        }
+    }
+    
     
 }

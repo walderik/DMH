@@ -70,6 +70,7 @@ function myFunction() {
 
             <a href="telegram_admin.php">Telegram</a>
             <a href="letter_admin.php">Brev</a>
+            <a href="rumour_admin.php">Rykten</a>
             <a href="prop_admin.php">Rekvisita</a>
             <a href="npc.php">NPC'er</a>
 	    </div>

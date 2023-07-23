@@ -63,7 +63,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
 
 
 # En selector där man kan välja i en array
-function selectionDropDownByArray(String $name, Array $selectionDatas, $required=true, $selected=null) {
+function selectionDropDownByArray(String $name, Array $selectionDatas, $required=true, $selected=null, ?String $formIdentifier="") {
     // lägg till tomt val om det inte är required
     if (!$required){
         $empty_object = clone $selectionDatas[0];
@@ -72,7 +72,7 @@ function selectionDropDownByArray(String $name, Array $selectionDatas, $required
         array_unshift($selectionDatas , $empty_object);
     }
     
-   echo "<select name='$name' id='$name'>\n";
+   echo "<select $formIdentifier name='$name' id='$name'>\n";
     foreach ($selectionDatas as $selectionData) {
         $row_option = '';
         if (!empty($selected) && $selectionData->Id == $selected)

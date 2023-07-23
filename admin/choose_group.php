@@ -3,7 +3,6 @@ include_once 'header.php';
 
 global $purpose;
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
@@ -52,6 +51,14 @@ elseif ($operation == "add_intrigue_actor_group") {
 elseif ($operation == "exhange_intrigue_actor_group") {
     $purpose = "Byt aktör på intrig";
     $url = "logic/view_intrigue_logic.php";
+} elseif ($operation == "add_concerns_group") {
+    $purpose = "Lägg till grupp(er) som ryktet handlar om";
+    $url = "rumour_form.php";
+    $multiple=true;
+} elseif ($operation == "add_knows_group") {
+    $purpose = "Lägg till grupp(er) som känner till ryktet";
+    $url = "rumour_form.php";
+    $multiple=true;
 }
 
 
@@ -101,6 +108,11 @@ include_once '../javascript/table_sort.js';
     		        echo "<input type='hidden' id='id' name='id' value='$id'>";
     		        echo "<input type='hidden' id='Id' name='Id' value='$id'>";
     		    }    
+    		    if (isset($_POST['2ndReferer'])) {
+    		        echo "<input type='hidden' id='2ndReferer' name='2ndReferer' value='".$_POST['2ndReferer']."'>";
+    		    }
+    		    
+    		    
     		    ?> 
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
     		    <table class='data'>
