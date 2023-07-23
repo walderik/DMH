@@ -77,14 +77,14 @@ include 'navigation.php';
                 echo "<td>$titledeed->Location</td>\n";
                 
                 echo "<td>";
-                echo "<a href='choose_group.php?operation=add_titledeed_owner_group&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i></a><br>";
+                echo "<a href='choose_group.php?operation=add_titledeed_owner_group&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i><i class='fa-solid fa-users' title='Lägg till grupp'></i></a><br>";
                 $owner_groups = $titledeed->getGroupOwners();
                 foreach ($owner_groups as $owner_group) {
                     echo "<a href='../admin/view_group.php?id=$owner_group->Id'>$owner_group->Name</a> <a href='titledeed_admin.php?operation=delete_owner_group&titledeeId=$titledeed->Id&groupId=$owner_group->Id'><i class='fa-solid fa-trash'></i></a><br>";
                     
                 }
                 
-                echo "<a href='choose_role.php?operation=add_titledeed_owner_role&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i></a><br>";
+                echo "<a href='choose_role.php?operation=add_titledeed_owner_role&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till karaktär'></i><i class='fa-solid fa-user' title='Lägg till karaktär'></i></a><br>";
                 
                 $owner_roles = $titledeed->getRoleOwners();
                 foreach ($owner_roles as $owner_role) {
