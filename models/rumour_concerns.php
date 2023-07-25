@@ -71,4 +71,15 @@ class Rumour_concerns extends BaseModel{
         
     }
     
+    public function getGroup() {
+        if (empty($this->GroupId)) return null;
+        return Group::loadById($this->GroupId);
+    }
+ 
+    public function getRole() {
+        if (empty($this->RoleId)) return null;
+        return Role::loadById($this->RoleId);
+    }
+    
+    
 }

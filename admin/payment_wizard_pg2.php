@@ -43,7 +43,7 @@ function updateFromDate(num) {
 </script>
 
     <div class="content">
-        <h1>Uppsättning av deltagaravgifter - sida 2 av NN</h1>
+        <h1>Uppsättning av deltagaravgifter - sida 2 av 3</h1>
         <p>Den här guiden kommer att hjälpa dig att enkelt sätta upp 
         deltagaravgifterna för lajvet så att de täcker in alla relavanta datum och åldrar.<br><br>
         <?php 

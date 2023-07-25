@@ -68,6 +68,16 @@ class Rumour extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function allApprovedUnknownBySelectedLARP(Larp $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT regsys_rumour.* FROM regsys_rumour WHERE LARPid = ? AND Approved=1 AND ".
+            "Id NOT IN (Select RumourId FROM regsys_rumour_knows) ".
+            "ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
+    
     public static function getAllForIntrigue(Intrigue $intrigue) {
         $sql = "SELECT * FROM regsys_rumour WHERE IntrigueId=? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
@@ -145,6 +155,22 @@ class Rumour extends BaseModel{
     public function getConcerns() {
         return Rumour_concerns::getAllForRumour($this);
     }
+    
+    public function getAllConcernedGroups() {
+        $groups = Array();
+        $concernsArr = $this->getConcerns();
+        foreach ($concernsArr as $concerns) {
+           if (isset($concerns->GroupId)) $groups[] = $concerns->getGroup(); 
+           else {
+               $role = $concerns->getRole();
+               $group = $role->getGroup();
+               if (!empty($group)) $groups[] = $group;
+           }
+        }
+        return $groups;
+    }
+    
+    
     
     public function getKnows() {
         return Rumour_knows::getAllForRumour($this);

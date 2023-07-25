@@ -166,9 +166,7 @@ class Group extends BaseModel{
              "ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($campaignId));
      }
-     
-     
-     
+          
      public static function getGroupsForPerson($personId) {
          $sql = "SELECT * FROM regsys_group WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($personId));
