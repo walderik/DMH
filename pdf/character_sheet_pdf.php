@@ -1,15 +1,18 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
+# För avgöra om intriger skall skrivas ut:
+# $larp->isIntriguesReleased()
+
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require_once $root . '/includes/fpdf185/fpdf.php';
-
+require_once $root . '/includes/fpdf185/script/mem_image.php';
 require_once $root . '/includes/all_includes.php';
 
 
-class CharacterSheet_PDF extends FPDF {
+class CharacterSheet_PDF extends PDF_MemImage {
     
     public static $Margin = 5;
     
@@ -25,6 +28,7 @@ class CharacterSheet_PDF extends FPDF {
     public static $text_max_length = 50;
     
     public $role;
+    public $isReserve;
     public $person;
     public $isMyslajvare;
     public $larp;
@@ -97,11 +101,13 @@ class CharacterSheet_PDF extends FPDF {
    
         $this->SetXY($left2, $y);
         $this->SetFont('Helvetica','',static::$header_fontsize);
-        $type = ($this->role->isMain($this->larp)) ? 'Huvudkaraktär' : 'Sidokaraktär';
-        
-        if ($this->role->IsDead) {
+        if ($this->isReserve) {
+            $type = 'RESERV';
+        } if ($this->role->IsDead) {
             $type = 'Avliden';
             $this->cross_over();
+        } else {
+            $type = ($this->role->isMain($this->larp)) ? 'Huvudkaraktär' : 'Sidokaraktär';
         }
          
         $this->Cell($this->cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
@@ -121,6 +127,121 @@ class CharacterSheet_PDF extends FPDF {
         return true;
     }
     
+    function intrigues() {
+        global $y, $left, $left2;
+        
+        $space = 3;
+        
+        # Kolla först att det finns intriger och att någon har en intrigtext
+        $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $this->larp->Id);
+        if (empty($intrigues)) return true;
+        
+        $tomma_intriger = true;
+        foreach ($intrigues as $intrigue) {
+            if (!$intrigue->isActive()) continue;
+            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);   
+            if (!empty($intrigueActor->IntrigueText)) $tomma_intriger = false;
+        }
+        if ($tomma_intriger) return true;
+        
+        
+        $this->AddPage();
+        $this->SetXY($left, $y);
+        $this->SetFont('Helvetica','B',static::$text_fontsize);
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Intriger'),0,0,'L');
+        $y = $this->GetY()+$space*3;
+        $this->SetXY($left, $y);
+        
+        $this->SetFont('Arial','',static::$text_fontsize);
+        
+        //point to end of the array
+        end($intrigues);
+        //fetch key of the last element of the array.
+        $lastElementKey = key($intrigues);
+        
+        $known_actors = array();
+        $known_npcs = array();
+        $known_npcgroups = array();
+        $known_props = array();
+        
+        foreach ($intrigues as $key => $intrigue) {
+            if (!$intrigue->isActive()) continue;
+            
+            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
+            if (empty($intrigueActor)) continue;
+
+            $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
+            $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
+            $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+            $known_npcgroups = array_merge($known_npcgroups, $intrigueActor->getAllKnownNPCGroups());
+            
+            if (!empty($intrigueActor->IntrigueText)) {
+                $text = "($intrigue->Number) " . trim(utf8_decode($intrigueActor->IntrigueText));
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+            }
+            
+            if (!empty($intrigueActor->OffInfo)) {
+                $text = trim(utf8_decode("OFF_INFORMATION: " . $intrigueActor->OffInfo));
+                if (empty($intrigueActor->IntrigueText)) $text = "($intrigue->Number) " . $text;
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+            }
+            
+            if($key != $lastElementKey) {
+                $this->bar();
+                $y = $this->GetY()+$space*2;
+                $this->SetXY($left, $y);
+            }
+        }
+        
+        # Dom man känner till från intrigerna
+        if (!empty($known_actors)) {
+            $this->bar();
+            $y = $this->GetY()+$space*2;
+            $this->SetXY($left, $y);
+            
+            $this->SetXY($left, $y);
+            $this->SetFont('Helvetica','B',static::$text_fontsize);
+            $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Känner till'),0,0,'L');
+            $y = $this->GetY()+$space*3;
+            $this->SetXY($left, $y);
+            $this->SetFont('Helvetica','',static::$text_fontsize);
+            foreach ($known_actors as $known_actor) {
+                # TODO skriv ut dom en per kolumn. Hur bred?
+                $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
+                if (!empty($knownIntrigueActor->GroupId)) {
+                    $groupActor=$knownIntrigueActor->getGroup();
+                    $this->MultiCell(0, static::$cell_y-1, $groupActor->Name, 0, 'L');
+                    $y = $this->GetY() + $space;
+                    $this->SetXY($left, $y);
+                } else {
+                    $role = $knownIntrigueActor->getRole();
+                    if ($role->hasImage()) {
+                        $image = Image::loadById($role->ImageId);
+                        $this->MemImage($image->file_data, $left, $y, 20);
+                    }
+                    $this->SetXY($left + 25, $y);
+                    $text = $role->Name;
+                    $role_group = $role->getGroup();
+                    if (!empty($role_group)) $text .= " ($role_group->Name)";
+                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                    $y = $this->GetY() + $space;
+                    if ($role->hasImage()) $y += 25;
+                    $this->SetXY($left, $y);
+                    
+                    
+                    
+                }
+            }
+        }
+     
+
+        return true;
+    }
+    
     function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false) {
         global $current_user, $x, $y, $left, $left2, $mitten;
         
@@ -131,6 +252,8 @@ class CharacterSheet_PDF extends FPDF {
         $this->all = $all_information;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $this->current_cell_height = $this->cell_y_space;
+        
+        $this->isReserve = Reserve_LARP_Role::isReserve($this->role->Id, $this->larp->Id);
         
         # Säkerställer att bara arrngörer någonsin kan få se all info om en karaktär
         if ($this->all && !(AccessControl::hasAccessCampaign($current_user->Id, $larp_in->CampaignId))) $this->all = false;
@@ -179,9 +302,8 @@ class CharacterSheet_PDF extends FPDF {
         if ($this->current_left == $left2) $this->draw_field('empty');
         
         $this->beskrivning();
-        
-        
 
+        # Att fixa när vi väl har tidigare lajv
         $previous_larps = $this->role->getPreviousLarps();
         if (isset($previous_larps) && count($previous_larps) > 0) {
             
@@ -204,6 +326,10 @@ class CharacterSheet_PDF extends FPDF {
                 $text = (isset($prevoius_larp_role->WhatHappendToOthers) && $prevoius_larp_role->WhatHappendToOthers != "") ? $prevoius_larp_role->WhatHappendToOthers : "Inget att rapportera";
                 $this->set_rest_of_page("Vad hände för andra?", $text);
             }
+        }
+        
+        if (!$this->isReserve && ($this->larp->isIntriguesReleased() || $this->all)) {
+            $this->intrigues();
         }
 	}
 	
