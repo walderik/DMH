@@ -1,11 +1,10 @@
 Bygghelgs-anmälningar
 
-Intrgier, vid filtrering ta även bort inaktiva
+Intriger, vid filtrering ta även bort inaktiva
 Intriger, generell text som går till alla i intrigen
-Ryten, vanliga sidan för choose_role och choose_group
+Inntriger - kanske rollernas texter borde gå mata in direkt med Ajax.
+Rykten, Länk från karaktärer så man kan sprida rykten om en karaktär. Kanske går att lösa med hidden-fält eller temporär-rykte?
 
-Från möte 20/7
-* Ryktesspridare !
 
 Karaktärsblad:
 * Visa Props
