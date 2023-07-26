@@ -124,6 +124,11 @@ class LARP extends BaseModel{
         else return false;
     }
     
+    # Har intrigerna släppts för det här lajvet
+    public function isIntriguesReleased() {
+        return $this->DisplayIntrigues == 1;
+    }
+    
     public function mayRegister() {
         if ($this->isPastLatestRegistrationDate()) return false;
         //if ($this->isFull()) return false;
