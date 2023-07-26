@@ -66,21 +66,8 @@ class Bookkeeping_PDF extends PDF_MemImage {
         $this->SetFont($txt_font,'',16);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
 
         $y += 3;
-        $imageURL="";
         if ($bookkeeping->hasImage()) {
             $image = Image::loadById($bookkeeping->ImageId);
-            switch($image->file_mime) {
-                case "image/jpg":
-                case "image/jpeg":
-                    $filetype = "JPG";
-                    break;
-                case "image/gif":
-                    $filetype = "GIF";
-                    break;
-                case "image/png":
-                    $filetype = "PNG";
-                    break;
-            }
             $this->MemImage($image->file_data, $mitten, $y);
         }
         
