@@ -107,7 +107,7 @@ include 'navigation.php';
 
 				<td><label for="Notes">Anteckningar<br>(om ryktet inte är godkänt kan<br>deltagaren som skapade ryktet<br>se anteckningarna)</label></td>
 				<td><textarea form='main' id="Notes" name="Notes" rows="4" cols="100" maxlength="2000"
-					 required><?php echo htmlspecialchars($rumour->Notes); ?></textarea></td>
+					 ><?php echo htmlspecialchars($rumour->Notes); ?></textarea></td>
 			</tr>
 			<tr>
 
@@ -167,7 +167,7 @@ include 'navigation.php';
 				<tr>
 				<td><label for="Text">Vem/vilka vet<br>om ryktet?</label></td>
 				<td>
-					
+					//TODO slumpmässig fördelning av ryktet
 					<?php if ($operation=='update') {
 					    echo "<form id='knows_group' action='choose_group.php' method='post'></form>";
 					    echo "<input form='knows_group' type='hidden' id='id' name='id' value='$rumour->Id'>";

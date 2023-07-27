@@ -74,7 +74,7 @@ include 'navigation.php';
 
 				<td><label for="Notes">Anteckningar<br>(Beskriv vad som är sant<br>och inte i ryktet.)</label></td>
 				<td><textarea form='main' id="Notes" name="Notes" rows="4" cols="100" maxlength="2000"
-					 required><?php echo htmlspecialchars($rumour->Notes); ?></textarea></td>
+					 ><?php echo htmlspecialchars($rumour->Notes); ?></textarea></td>
 			</tr>
  
 		</table>
