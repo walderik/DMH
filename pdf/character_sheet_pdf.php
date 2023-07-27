@@ -201,39 +201,53 @@ class CharacterSheet_PDF extends PDF_MemImage {
         if (!empty($known_actors)) {
             $this->bar();
             $y = $this->GetY()+$space*2;
-            $this->SetXY($left, $y);
             
-            $this->SetXY($left, $y);
+            $this->current_left = $left;
+            $this->SetXY($this->current_left, $y);
             $this->SetFont('Helvetica','B',static::$text_fontsize);
             $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Känner till'),0,0,'L');
-            $y = $this->GetY()+$space*3;
-            $this->SetXY($left, $y);
+            $y = $this->GetY() + $space*3;
+            $this->SetXY($this->current_left, $y);
             $this->SetFont('Helvetica','',static::$text_fontsize);
             foreach ($known_actors as $known_actor) {
                 # TODO skriv ut dom en per kolumn. Hur bred?
                 $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
+                $image_used = false;
+                $rowImageHeight = 0;
                 if (!empty($knownIntrigueActor->GroupId)) {
                     $groupActor=$knownIntrigueActor->getGroup();
                     $this->MultiCell(0, static::$cell_y-1, $groupActor->Name, 0, 'L');
-                    $y = $this->GetY() + $space;
-                    $this->SetXY($left, $y);
+                    $this->SetXY($this->current_left, $y);
                 } else {
                     $role = $knownIntrigueActor->getRole();
+                    $realHeight = 0;
                     if ($role->hasImage()) {
                         $image = Image::loadById($role->ImageId);
-                        $this->MemImage($image->file_data, $left, $y, 20);
+                        
+                        $v = 'img'.md5($image->file_data);
+                        $GLOBALS[$v] = $image->file_data;
+                        list($width, $height) =  getimagesize('var://'.$v);
+                        
+                        $realHeight = ($height / $width) * 23;
+                        if ($realHeight > $rowImageHeight) $rowImageHeight = $realHeight; 
+                        $this->MemImage($image->file_data, $this->current_left, $y, 23);
+                        $image_used = true;
                     }
-                    $this->SetXY($left + 25, $y);
+                    $this->SetXY($this->current_left + 25, $y);
                     $text = $role->Name;
                     $role_group = $role->getGroup();
-                    if (!empty($role_group)) $text .= " ($role_group->Name)";
+                    if (!empty($role_group)) $text .= "\n\r($role_group->Name)";
                     $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                    $this->SetXY($this->current_left, $y);
+                }
+                # Räkna upp en cell i bredd
+                if ($this->current_left == $left) {
+                    $this->current_left = $left2;
+                } else {
+                    # Vi har just ritat den högra rutan
+                    $this->current_left = $left;
                     $y = $this->GetY() + $space;
-                    if ($role->hasImage()) $y += 25;
-                    $this->SetXY($left, $y);
-                    
-                    
-                    
+                    if ($image_used) $y += $rowImageHeight;
                 }
             }
         }
@@ -541,13 +555,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    global $y, $mitten;
 	    $this->Line($this->current_left, $y+static::$Margin*1.5, ($this->current_left+$mitten-(3*static::$Margin)), $y+static::$Margin*1.5);
 	}
-	
-// 	# Gemensamt sätt beräkna var rubriken i ett fält ska ligga
-// 	private function set_header_start($venster) {
-// 	    global $y;
-// 	    $this->SetXY($venster, $y);
-// 	    $this->SetFont('Helvetica','',static::$header_fontsize);
-// 	}
 	
 	# Gemensam funktion för all logik för att skriva ut ett rubriken
 	private function set_header($venster, $text) {
