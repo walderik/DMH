@@ -62,6 +62,10 @@ class PDF_MemImage extends FPDF
     {
         parent::__construct($orientation, $unit, $size);
         // Register var stream protocol
+        $existed = in_array("var", stream_get_wrappers());
+        if ($existed) {
+            stream_wrapper_unregister("var");
+        }
         stream_wrapper_register('var', 'VariableStream');
     }
     
