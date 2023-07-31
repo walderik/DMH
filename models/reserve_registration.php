@@ -214,7 +214,8 @@ class Reserve_Registration extends BaseModel{
         $registration = Registration::newWithDefault();
         $registration->LARPId = $this->LARPId;
         $registration->PersonId = $this->PersonId;
-        $registration->RegisteredAt = $this->RegisteredAt;
+        $now = new Datetime();
+        $registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
         $registration->NPCDesire = $this->NPCDesire;
         $registration->HousingRequestId = $this->HousingRequestId;
         $registration->GuardianId = $this->GuardianId;
