@@ -241,10 +241,10 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($personId, $campaignId));
     }
     
-    public static function getAllRolesForPerson($personId) {
+    public static function getAllRolesForPerson($personId, $campaignId) {
         if (is_null($personId)) return Array();
-        $sql = "SELECT * FROM regsys_role WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($personId));
+        $sql = "SELECT * FROM regsys_role WHERE PersonId = ? AND CampaignId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($personId, $campaignId));
     }
     
     public static function getAliveRolesForPerson($personId) {
