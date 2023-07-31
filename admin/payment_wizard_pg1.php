@@ -36,7 +36,7 @@ include 'navigation.php';
 			</div>
 			<div class="question">
 				<label for="number_of_time_intervals">Antal tidsintervaller</label>&nbsp;<font style="color:red">*</font>
-				<br> <input type="number" id="number_of_time_intervals" name="number_of_time_intervals" value="1" required>
+				<br> <input type="number" id="number_of_time_intervals" name="number_of_time_intervals" min="1" value="1" required>
 			</div>
         
         <h2>Åldrar</h2>
