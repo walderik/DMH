@@ -363,8 +363,12 @@ class Person extends BaseModel{
         return $resultArray;
     }
 
-    public function getRoles() {
-        return Role::getRolesForPerson($this->Id);
+    public function getAllRoles() {
+        return Role::getAllRolesForPerson($this->Id);
+    }
+    
+    public function getRoles(Larp $larp) {
+        return Role::getRolesForPerson($this->Id, $larp->CampaignId);
     }
     
     public function getAliveRoles() {
@@ -384,8 +388,12 @@ class Person extends BaseModel{
     }
     
     
-    public function getGroups() {
-        return Group::getGroupsForPerson($this->Id);
+    public function getAllGroups() {
+        return Group::getAllGroupsForPerson($this->Id);
+    }
+    
+    public function getGroups(Larp $larp) {
+        return Group::getGroupsForPerson($this->Id, $larp->Id);
     }
     
     public function getAgeAtLarp(LARP $larp) {

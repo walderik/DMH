@@ -27,8 +27,8 @@ if ($person->UserId != $current_user->Id) {
     exit;
 }
 
-$roles = $person->getRoles();
-$groups = $person->getGroups();
+$roles = $person->getAllRoles();
+$groups = $person->getAllGroups();
 
 //Kolla om personen har karaktärer 
 if (isset($roles) && count($roles) > 0) {

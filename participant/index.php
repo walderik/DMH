@@ -67,8 +67,8 @@ include "navigation.php";
     		    echo "<a href='person_form.php'>Registrera en deltagare.</a>";
     		} else {
     		    foreach ($persons as $person)  {
-    		        $roles = $person->getRoles();
-    		        $groups = $person->getGroups();
+    		        $roles = $person->getRoles($current_larp);
+    		        $groups = $person->getGroups($current_larp);
     		        
     		        echo "<div class='person'>\n";
     		        

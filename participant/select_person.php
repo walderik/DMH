@@ -25,7 +25,7 @@ include 'navigation.php';
 		    $i = 0;
 		    $possible_persons = Array();
 		    foreach ($current_persons as $person) {
-    	       if (empty($person->getRoles())) {
+    	       if (empty($person->getRoles($current_larp))) {
     	           echo "<br><b>$person->Name</b> saknar en karaktär och kan inte anmälas ännu.<br><br>\n";   	           
                 }
                 else {

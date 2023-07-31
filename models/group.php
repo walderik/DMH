@@ -167,9 +167,14 @@ class Group extends BaseModel{
          return static::getSeveralObjectsqQuery($sql, array($campaignId));
      }
           
-     public static function getGroupsForPerson($personId) {
+     public static function getAllGroupsForPerson($personId) {
          $sql = "SELECT * FROM regsys_group WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($personId));
+     }
+     
+     public static function getGroupsForPerson($personId, $campaignId) {
+         $sql = "SELECT * FROM regsys_group WHERE PersonId = ? AND CampaignId = ? ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($personId, $campaignId));
      }
      
      public function isNeverRegistered() {         

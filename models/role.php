@@ -235,7 +235,13 @@ class Role extends BaseModel{
     }
     
     
-    public static function getRolesForPerson($personId) {
+    public static function getRolesForPerson($personId, $campaignId) {
+        if (is_null($personId)) return Array();
+        $sql = "SELECT * FROM regsys_role WHERE PersonId = ? AND CampaignId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($personId, $campaignId));
+    }
+    
+    public static function getAllRolesForPerson($personId) {
         if (is_null($personId)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($personId));
