@@ -27,7 +27,7 @@ function myFunction() {
     <div id="left">
     	<a href="#home" target="_blank" style="padding: 11px 5px 11px 5px;" class="always_show">
     	<img src="../images/bv.ico" width="30" height="30"/></a>
-    	<a href="choose_larp.php" id="larp_name" class="logo always_show">Omnes Mundos</a>
+    	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show">Omnes Mundos</a>
     </div>
     <div id="right">
 
