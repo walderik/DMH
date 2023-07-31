@@ -52,7 +52,7 @@ include 'navigation.php';
         <h1><?php echo getObjectName($type);?> <a href="settings.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
             <a href="selection_data_form.php?type=<?php echo $type;?>&operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>          
         <?php
-        $data_array = call_user_func($objectType . '::all');
+        $data_array = call_user_func($objectType . '::allForLarp', $current_larp);
         if (count($data_array) > 0) {
             echo "<table class='data'>";
             echo "<tr><th>Id</th><th>Namn</th><th>Beskrivning</th><th>Valbar</th><th>Sortering</th><th></th></tr>\n";

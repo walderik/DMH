@@ -87,6 +87,11 @@ class SelectionData extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
+    public static function allForLarp(LARP $larp) {
+        $sql = "SELECT * FROM regsys_".strtolower(static::class)." WHERE CampaignId=? ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_".strtolower(static::class)." SET SortOrder=?, Active=?, Description=?, Name=? WHERE id = ?");
