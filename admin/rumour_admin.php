@@ -18,6 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($operation == 'insert') {
             $rumour = Rumour::newFromArray($_POST);
             $rumour->create();
+            if (isset($_POST['RoleId'])) {
+                $rumour->addRoleConcerns(array($_POST['RoleId']));
+            }
         } elseif ($operation == 'delete') {
             Rumour::delete($_POST['Id']);
         } elseif ($operation == 'update') {

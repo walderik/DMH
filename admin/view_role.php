@@ -329,7 +329,7 @@ include 'navigation.php';
 		}
 		?>	
 		
-		<h3>Rykten som handlar om <?php echo $role->Name ?></h3>
+		<h3>Rykten som handlar om <?php echo $role->Name ?> <a href='rumour_form.php?operation=new&RoleId=<?php echo $role->Id ?>'><i class='fa-solid fa-plus' title='Skapa rykte om <?php echo $role->Name ?>'></i></a></h3>
 		<?php 
 		$rumours = Rumour::allConcernedByRole($current_larp, $role);
 		foreach($rumours as $rumour) {

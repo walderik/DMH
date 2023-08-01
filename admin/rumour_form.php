@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     if ($operation == 'new') {
         if (isset($_GET['IntrigueId'])) $rumour->IntrigueId = $_GET['IntrigueId'];
+        if (isset($_GET['RoleId'])) $roleId = $_GET['RoleId'];
     } elseif ($operation == 'update') {
         $rumour = Rumour::loadById($_GET['id']);
     }
@@ -144,6 +145,10 @@ include 'navigation.php';
 					    echo "<input form='concerns_role' type='hidden' id='operation' name='operation' value='add_concerns_role'>";
 					    echo "<button form='concerns_role' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) ryktet handlar om'></i><i class='fa-solid fa-user' title='Lägg till karaktär(er) ryktet handlar om'></i></button>";
 					    
+					} elseif (isset($roleId)) {
+					    $role = Role::loadById($roleId);
+					    echo "<input form='main' type='hidden' id='RoleId' name='RoleId' value='$roleId'>";					    
+					    echo $role->Name;
 					} else {
 					  echo "<strong>När ryktet är skapat, lägga in vilka det handlar om.</strong>";
 					}?>
@@ -167,8 +172,8 @@ include 'navigation.php';
 				<tr>
 				<td><label for="Text">Vem/vilka vet<br>om ryktet?</label></td>
 				<td>
-					//TODO slumpmässig fördelning av ryktet
 					<?php if ($operation=='update') {
+					    //TODO slumpmässig fördelning av ryktet
 					    echo "<form id='knows_group' action='choose_group.php' method='post'></form>";
 					    echo "<input form='knows_group' type='hidden' id='id' name='id' value='$rumour->Id'>";
 					    echo "<input form='knows_group' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
