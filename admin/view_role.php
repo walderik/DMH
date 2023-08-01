@@ -76,7 +76,12 @@ include 'navigation.php';
 				    echo "<tr><td></td><td><strong>Myslajvare</strong></td></tr>";
 				}?>
 		
-			<tr><td valign="top" class="header">Spelas av</td><td><a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $person->Name; ?></a></td>
+			<tr>
+    			<td valign="top" class="header">Spelas av</td>
+    			<td>
+    			<a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $person->Name; ?></a>&nbsp;
+    			(<?php echo $person->getAgeAtLarp($current_larp) ?> år)
+			</td>
 		<?php 
 		if ($role->hasImage()) {
 		    
