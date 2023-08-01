@@ -49,7 +49,7 @@ Visa alla mail som har skapats, visa status, möjlighet att ta bort
 
 
 Hur fixa MySQL:
-§. GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;
 
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role
