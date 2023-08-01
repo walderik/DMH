@@ -16,6 +16,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['PlaceOfResidenceId'])) $placeofresidenceArr = $_POST['PlaceOfResidenceId'];
     if (isset($_POST['IntrigueTypeId'])) $intriguetypeArr = $_POST['IntrigueTypeId'];
     
+    $age0_6 = false;
+    $age7_15 = false;
+    $age16_ = false;
+    if (isset($_POST['age0-6'])) $age0_6 = true;
+    if (isset($_POST['age7-15'])) $age7_15 = true;
+    if (isset($_POST['age16-'])) $age16_ = true;
+    
 } else {
     header('Location: ../rumour_admin.php');
     exit;
@@ -86,6 +93,11 @@ foreach ($rumourIdArr as $rumourId) {
                 if (empty(array_intersect($intriguetypeArr, $role->getSelectedIntrigueTypeIds()))) continue;
                 
             }
+            $person = $role->getPerson();
+            $age = $person->getAgeAtLarp($current_larp);
+            if (($age <= 6) && !$age0_6) continue;
+            if (($age >= 7) && ($age <= 15) && !$age7_15) continue;
+            if (($age >= 16) && !$age16_) continue;
             
             //Rollen matchar kriterierna
             if (rand(1,100) <= $percent) {

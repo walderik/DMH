@@ -68,6 +68,16 @@ include 'navigation.php';
 				<input type="number" id="percent" name="percent" value="5" style='text-align:right' required> %
 			</div>
         
+           <h2>Vilken ålder ska spelaren ha som får ryktet?</h2>
+			<div class="question">
+                <input type="checkbox" id="age0-6" name="age0-6" value="age0-6">
+                <label for="age0-6"> 0 - 6 år</label><br>
+                <input type="checkbox" id="age7-15" name="age7-15" value="age7-15">
+                <label for="age7-15"> 7 - 15 år</label><br>
+                <input type="checkbox" id="age16-" name="age16-" value="age16-">
+                <label for="age16-"> 16 år och uppåt</label><br>
+			</div>
+        
         
         	<input type="submit" value="Slumpa ut">
         </form>
