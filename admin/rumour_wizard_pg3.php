@@ -72,9 +72,9 @@ include 'navigation.php';
 			<div class="question">
                 <input type="checkbox" id="age0-6" name="age0-6" value="age0-6">
                 <label for="age0-6"> 0 - 6 år</label><br>
-                <input type="checkbox" id="age7-15" name="age7-15" value="age7-15">
+                <input type="checkbox" id="age7-15" name="age7-15" value="age7-15" checked>
                 <label for="age7-15"> 7 - 15 år</label><br>
-                <input type="checkbox" id="age16-" name="age16-" value="age16-">
+                <input type="checkbox" id="age16-" name="age16-" value="age16-" checked>
                 <label for="age16-"> 16 år och uppåt</label><br>
 			</div>
         
