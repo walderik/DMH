@@ -168,7 +168,7 @@ include 'navigation.php';
 	                   echo "<br><br><strong>Off-information:</strong><br>$intrigueActor->OffInfo";
 	               }
 	               echo "</td>";
-	               echo "<td><a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$role->Name'><i class='fa-solid fa-pen'></i></a></td>";
+	               echo "<td><a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$current_group->Name'><i class='fa-solid fa-pen'></i></a></td>";
 	               echo "</tr>";
 	               $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
 	               $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
