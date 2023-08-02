@@ -142,7 +142,7 @@ include 'navigation.php';
 			</div>
 			<div class="question">
 			<label for="PlaceOfResidence">Var bor gruppen?</label>&nbsp;<font style="color:red">*</font>
-			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om gruppen tillfälligt är i Slow River så vill vi veta var gruppen har sitt hem.<br><?php PlaceOfResidence::helpBox($current_larp); ?></div>
+			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om gruppen tillfälligt är på platsen så vill vi veta var gruppen har sitt hem.<br><?php PlaceOfResidence::helpBox($current_larp); ?></div>
 			
 			
             <?php

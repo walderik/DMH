@@ -20,12 +20,13 @@
     		    echo "Inga anmälda karaktärer";
     		} else {
     		    $tableId = "main_roles";
+    		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-        		    "<th onclick='sortTable(1, \"$tableId\")' width='10%'>Yrke</th>".
-        		    "<th onclick='sortTable(2, \"$tableId\")'>Rikedom</th>".
-        		    "<th onclick='sortTable(3, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(4, \"$tableId\")'>Pengar ($currency)</th>".
+    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")' width='10%'>Yrke</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>";
     		    foreach ($roles as $role)  {
     		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
@@ -35,14 +36,16 @@
     		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
-    		        if ($role->isMysLajvare()) {
-    		            echo "<td>N/A</td>";
-    		        }
-    		        else {
-        		        $wealth = $role->getWealth();
-        		        echo "<td>";
-        		        if (!empty($wealth)) echo $wealth->Name;
-        		        echo "</td>\n";
+    		        if (Wealth::isInUse($current_larp)) {
+        		        if ($role->isMysLajvare()) {
+        		            echo "<td>N/A</td>";
+        		        }
+        		        else {
+            		        $wealth = $role->getWealth();
+            		        echo "<td>";
+            		        if (!empty($wealth)) echo $wealth->Name;
+            		        echo "</td>\n";
+        		        }
     		        }
    		           $group = $role->getGroup();
     		        if (is_null($group)) {
@@ -67,12 +70,13 @@
     		    echo "Inga anmälda karaktärer";
     		} else {
     		    $tableId = "other_roles";
+    		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-        		    "<th onclick='sortTable(1, \"$tableId\")' width='10%'>Yrke</th>".
-        		    "<th onclick='sortTable(2, \"$tableId\")'>Rikedom</th>".
-        		    "<th onclick='sortTable(3, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(4, \"$tableId\")'>Pengar ($currency)</th>".
+    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")' width='10%'>Yrke</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>";
     		    foreach ($roles as $role)  {
     		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
@@ -82,14 +86,16 @@
     		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
-    		        if ($role->isMysLajvare()) {
-    		            echo "<td>N/A</td>";
-    		        }
-    		        else {
-    		            $wealth = $role->getWealth();
-    		            echo "<td>";
-    		            if (!empty($wealth)) echo $wealth->Name;
-    		            echo "</td>\n";
+    		        if (Wealth::isInUse($current_larp)) {
+        		        if ($role->isMysLajvare()) {
+        		            echo "<td>N/A</td>";
+        		        }
+        		        else {
+        		            $wealth = $role->getWealth();
+        		            echo "<td>";
+        		            if (!empty($wealth)) echo $wealth->Name;
+        		            echo "</td>\n";
+        		        }
     		        }
     		        $group = $role->getGroup();
     		        if (is_null($group)) {

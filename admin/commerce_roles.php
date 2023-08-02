@@ -9,7 +9,7 @@
 
     <div class="content">   
         <h1>Karaktärer med handel</h1>
-        <p>Alla karaktärer som har rikedom 3 eller högre eller som äger en lagfart visas här. Det gäller alla karaktärer i kampanjen, även de som inte kommer på ett visst lajv.</p>
+        <p>Alla karaktärer som har <?php if (Wealth::isInUse($current_larp)) echo "rikedom 3 eller högre eller"?> som äger en lagfart visas här. Det gäller alla karaktärer i kampanjen, även de som inte kommer på ett visst lajv.</p>
         <p>Sidokaraktärer markeras med en * efter namnet</p>
      		<?php 
      		$roles = Role::getAllInCampaign($current_larp->CampaignId);
@@ -17,13 +17,14 @@
     		    echo "Inga anmälda karaktärer";
     		} else {
     		    $tableId = "main_roles";
+    		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-        		    "<th onclick='sortTable(1, \"$tableId\")'>Kommer<br>på lajvet</th>".
-        		    "<th onclick='sortTable(2, \"$tableId\")'>Rikedom</th>".
-        		    "<th onclick='sortTable(3, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(4, \"$tableId\")'>Lagfarter</th>".
-        		    "<th onclick='sortTable(5, \"$tableId\")'>Pengar ($currency)</th>".
+    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Kommer<br>på lajvet</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Lagfarter</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>\n";
     		    foreach ($roles as $role)  {
     		        //Man vill se alla roller som kommer på lajvet och har handel och 
@@ -42,10 +43,13 @@
     		            if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		        echo "</td>\n";
         		        echo "<td align='center'>".showStatusIcon($isComing)."</td>\n";
-        		        $wealth = $role->getWealth();
-        		        echo "<td>";
-        		        if (!empty($wealth)) echo $wealth->Name;
-       		           $group = $role->getGroup();
+        		        if (Wealth::isInUse($current_larp)) {
+            		        $wealth = $role->getWealth();
+            		        echo "<td>";
+            		        if (!empty($wealth)) echo $wealth->Name;
+            		        echo "</td>";
+        		        }
+       		            $group = $role->getGroup();
         		        if (is_null($group)) {
         		            echo "<td>&nbsp;</td>\n";
         		        } else {

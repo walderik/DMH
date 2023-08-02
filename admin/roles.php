@@ -16,16 +16,18 @@
     		    echo "Inga anmälda karaktärer";
     		} else {
     		    $tableId = "main_roles";
+    		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-        		    "<th>&nbsp; &nbsp; </th>".
-        		    "<th onclick='sortTable(2, \"$tableId\")'>Plats<br>på lajvet</th>".
-        		    "<th onclick='sortTable(3, \"$tableId\")' width='10%'>Yrke</th>".
-        		    "<th onclick='sortTable(4, \"$tableId\")'>Typ av lajvare</th>".
-        		    "<th onclick='sortTable(5, \"$tableId\")'>Intrigtyper</th>".
-        		    "<th onclick='sortTable(6, \"$tableId\")'>Rikedom</th>".
-        		    "<th onclick='sortTable(7, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(8, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
+    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+        		    "<th>&nbsp; &nbsp; </th>";
+    		    $colnum++;
+    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Plats<br>på lajvet</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")' width='10%'>Yrke</th>";
+    		    if (LarperType::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Typ av lajvare</th>";    		    
+    		    if (IntrigueType::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Intrigtyper</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
     		        $registration=$person->getRegistration($current_larp);
@@ -50,9 +52,9 @@
     		                echo "<td></td>";
     		                echo "<td></td>";
     		                echo "<td></td>";
-    		                echo "<td></td>";
-    		                echo "<td></td>";
-    		                echo "<td></td>";
+    		                if (LarperType::isInUse($current_larp)) echo "<td></td>";
+    		                if (IntrigueType::isInUse($current_larp)) echo "<td></td>";
+    		                if (Wealth::isInUse($current_larp)) echo "<td></td>";
     		                echo "<td></td>";
     		                echo "<td></td>";
     		            }
@@ -69,23 +71,28 @@
         		        echo "<td align='center'>".showStatusIcon($registration->hasSpotAtLarp())."</td>\n";
         		        echo "<td>$role->Profession</td>\n";
         		        if ($role->isMysLajvare()) {
-        		            echo "<td></td>";
-        		            echo "<td></td>";
-        		            echo "<td></td>";
+        		            if (LarperType::isInUse($current_larp)) echo "<td></td>";
+        		            if (IntrigueType::isInUse($current_larp)) echo "<td></td>";
+        		            if (Wealth::isInUse($current_larp)) echo "<td></td>";
         		        }
         		        else {
-            		        echo "<td>";
-            		        $larpertype = $role->getLarperType();
-            		        if (!empty($larpertype)) echo $larpertype->Name;
-            		        echo "</td>\n";
-            		        echo "<td>";
-            		        echo commaStringFromArrayObject($role->getIntrigueTypes());
-            		        echo "</td>\n";
-            		        
-            		        $wealth = $role->getWealth();
-            		        echo "<td>";
-            		        if (!empty($wealth)) echo $wealth->Name;
-            		        echo "</td>\n";
+        		            if (LarperType::isInUse($current_larp))  {
+                		        echo "<td>";
+                		        $larpertype = $role->getLarperType();
+                		        if (!empty($larpertype)) echo $larpertype->Name;
+                		        echo "</td>\n";
+        		            }
+        		            if (IntrigueType::isInUse($current_larp)) {
+                		        echo "<td>";
+                		        echo commaStringFromArrayObject($role->getIntrigueTypes());
+                		        echo "</td>\n";
+        		            }
+        		            if (Wealth::isInUse($current_larp)) {
+                		        $wealth = $role->getWealth();
+                		        echo "<td>";
+                		        if (!empty($wealth)) echo $wealth->Name;
+                		        echo "</td>\n";
+        		            }
         		        }
        		           $group = $role->getGroup();
         		        if (is_null($group)) {
@@ -130,16 +137,18 @@
     		    echo "Inga anmälda karaktärer";
     		} else {
     		    $tableId = "other_roles";
+    		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-        		    "<th>&nbsp; &nbsp; </th>".
-        		    "<th onclick='sortTable(2, \"$tableId\")'>Plats<br>på lajvet</th>".
-        		    "<th onclick='sortTable(3, \"$tableId\")'>Yrke</th>".
-        		    "<th onclick='sortTable(4, \"$tableId\")'>Typ av lajvare</th>".
-        		    "<th onclick='sortTable(5, \"$tableId\")'>Intrigtyper</th>".
-        		    "<th onclick='sortTable(6, \"$tableId\")'>Rikedom</th>".
-        		    "<th onclick='sortTable(7, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(8, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
+    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+        		    "<th>&nbsp; &nbsp; </th>";
+    		    $colnum++;
+    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Plats<br>på lajvet</th>".
+    		    "<th onclick='sortTable($colnum++, \"$tableId\")' width='10%'>Yrke</th>";
+    		    if (LarperType::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Typ av lajvare</th>";
+    		    if (IntrigueType::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Intrigtyper</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
     		        $registration=$person->getRegistration($current_larp);
@@ -163,9 +172,9 @@
     		                echo "<td></td>";
     		                echo "<td></td>";
     		                echo "<td></td>";
-    		                echo "<td></td>";
-    		                echo "<td></td>";
-    		                echo "<td></td>";
+    		                if (LarperType::isInUse($current_larp)) echo "<td></td>";
+    		                if (IntrigueType::isInUse($current_larp)) echo "<td></td>";
+    		                if (Wealth::isInUse($current_larp)) echo "<td></td>";
     		                echo "<td></td>";
     		                echo "<td></td>";
     		            }
@@ -181,21 +190,29 @@
         		        
         		        echo "<td>" . $role->Profession . "</td>\n";
         		        if ($role->isMysLajvare()) {
-        		            echo "<td></td>";
-        		            echo "<td></td>";
-        		            echo "<td></td>";
+        		            if (LarperType::isInUse($current_larp)) echo "<td></td>";
+        		            if (IntrigueType::isInUse($current_larp)) echo "<td></td>";
+        		            if (Wealth::isInUse($current_larp)) echo "<td></td>";
         		        }
         		        else {
             		            
-            		        echo "<td>";
-            		        $larpertype = $role->getLarperType();
-            		        if (!empty($larpertype)) echo $larpertype->Name;
-            		        echo "</td>\n";
-            		        echo "<td>";
-            		        echo commaStringFromArrayObject($role->getIntrigueTypes());
-            		        echo "</td>\n";
-        
-            		        echo "<td>" . $role->getWealth()->Name . "</td>\n";
+        		            if (LarperType::isInUse($current_larp))  {
+        		                echo "<td>";
+        		                $larpertype = $role->getLarperType();
+        		                if (!empty($larpertype)) echo $larpertype->Name;
+        		                echo "</td>\n";
+        		            }
+        		            if (IntrigueType::isInUse($current_larp)) {
+        		                echo "<td>";
+        		                echo commaStringFromArrayObject($role->getIntrigueTypes());
+        		                echo "</td>\n";
+        		            }
+        		            if (Wealth::isInUse($current_larp)) {
+        		                $wealth = $role->getWealth();
+        		                echo "<td>";
+        		                if (!empty($wealth)) echo $wealth->Name;
+        		                echo "</td>\n";
+        		            }
         		        }
         		        $group = $role->getGroup();
         		        if (is_null($group)) {

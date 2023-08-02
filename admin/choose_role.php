@@ -123,15 +123,18 @@ include_once '../javascript/table_sort.js';
         		<h2>Huvudkaraktärer</h2>
     		    <?php
     		    $tableId = "main_roles";
+    		    $colnum = 1;
     		    echo "<table id='$tableId' class='data'>";
     		    echo "<tr>".
     		          "<th></th>".
-    		          "<th onclick='sortTable(1, \"$tableId\");'>Namn</th>".
-    		          "<th onclick='sortTable(2, \"$tableId\");'>Yrke</th>".
-    		          "<th onclick='sortTable(3, \"$tableId\");'>Intrigtyper</th>".
-    		          "<th onclick='sortTable(4, \"$tableId\");'>Grupp</th>".
-    		          "<th onclick='sortTable(5, \"$tableId\");'>Spelas av</th>".
-    		          "</tr>";
+    		          "<th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+    		          "<th onclick='sortTable($colnum++, \"$tableId\");'>Yrke</th>";
+    		    if (IntrigueType::isInUse($current_larp)) {   		    
+    		          echo "<th onclick='sortTable($colnum++, \"$tableId\");'>Intrigtyper</th>";
+    		    }
+    	          echo "<th onclick='sortTable($colnum++, \"$tableId\");'>Grupp</th>".
+    	          "<th onclick='sortTable($colnum++, \"$tableId\");'>Spelas av</th>".
+    	          "</tr>";
  
     		    foreach ($mainroles as $role)  {
     		        $show = true;
@@ -146,7 +149,9 @@ include_once '../javascript/table_sort.js';
     		        echo "<td><input id ='Role$role->Id' type='$type' name='RoleId$array' value='$role->Id'></td>";
     		        echo "<td>$role->Name</td>\n";
     		        echo "<td>" . $role->Profession . "</td>\n";
-    		        echo "<td>".commaStringFromArrayObject($role->getIntrigueTypes())."</td>";
+    		        if (IntrigueType::isInUse($current_larp)) {
+    		          echo "<td>".commaStringFromArrayObject($role->getIntrigueTypes())."</td>";
+    		        }
     		        $group = $role->getGroup();
     		        if (is_null($group)) {
     		            echo "<td>&nbsp;</td>\n";
@@ -166,15 +171,18 @@ include_once '../javascript/table_sort.js';
     		<h2>Sidokaraktärer</h2>
     		    <?php
     		    $tableId = "other_roles";
+    		    $colnum = 1;
     		    echo "<table id='$tableId' class='data'>";
     		    echo "<tr>".
-        		      "<th></th>".
-    		          "<th onclick='sortTable(1, \"$tableId\");'>Namn</th>".
-    		          "<th onclick='sortTable(2, \"$tableId\");'>Yrke</th>".
-    		          "<th onclick='sortTable(3, \"$tableId\");'>Intrigtyper</th>".
-    		          "<th onclick='sortTable(4, \"$tableId\");'>Grupp</th>".
-    		          "<th onclick='sortTable(5, \"$tableId\");'>Spelas av</th>".
-    		          "</tr>";
+        		    "<th></th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\");'>Yrke</th>";
+    		    if (IntrigueType::isInUse($current_larp)) {
+    		        echo "<th onclick='sortTable($colnum++, \"$tableId\");'>Intrigtyper</th>";
+    		    }
+    		    echo "<th onclick='sortTable($colnum++, \"$tableId\");'>Grupp</th>".
+        		    "<th onclick='sortTable($colnum++, \"$tableId\");'>Spelas av</th>".
+        		    "</tr>";
     		    
     		foreach ($nonmainroles as $role)  {
     		    $show = true;
@@ -189,7 +197,9 @@ include_once '../javascript/table_sort.js';
     		    echo "<td><input id ='Role$role->Id' type='$type' name='RoleId$array' value='$role->Id'></td>";
     		    echo "<td>$role->Name</td>\n";
     		    echo "<td>" . $role->Profession . "</td>\n";
-    		    echo "<td>".commaStringFromArrayObject($role->getIntrigueTypes())."</td>";
+    		    if (IntrigueType::isInUse($current_larp)) { 		        
+    		      echo "<td>".commaStringFromArrayObject($role->getIntrigueTypes())."</td>";
+    		    }
     		    $group = $role->getGroup();
     		    if (is_null($group)) {
     		        echo "<td>&nbsp;</td>\n";

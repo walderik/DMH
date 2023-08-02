@@ -45,18 +45,19 @@ $larps_in_campaign=LARP::getPreviousLarpsInCampaign($current_larp);
 				<label for="which_roles_effect_notset">De som inte har något värde satt</label><br>
 			</div>
         	
-        <h2>Pengar utifrån rikedomsnivå</h2>
-        <p>Så här mycket pengar ska en karaktär få utifrån hur rik den är.<br>Sätt 0 på pengar per rikedomsnivå om du inte vill att rikedomsnivå ska påverka hur mycket pengar de får.</p>
-        	<?php 
-        	$wealths = Wealth::allActive($current_larp);
-        	foreach ($wealths as $wealth) {
-        	    echo "<div class='question'>";
-        	    echo "<label for='wealth_$wealth->Id'>$wealth->Name</label>&nbsp;<font style='color:red'>*</font>";
-        	    echo "<br>";
-        	    echo "<input type='number' id='wealth_$wealth->Id' name='wealth_$wealth->Id' value='0' min='0' required> $currency";
-        	    echo "</div>";
-        	}
-        	
+        <?php if (Wealth::isInUse($current_larp)) { ?>
+            <h2>Pengar utifrån rikedomsnivå</h2>
+            <p>Så här mycket pengar ska en karaktär få utifrån hur rik den är.<br>Sätt 0 på pengar per rikedomsnivå om du inte vill att rikedomsnivå ska påverka hur mycket pengar de får.</p>
+            	<?php 
+            	$wealths = Wealth::allActive($current_larp);
+            	foreach ($wealths as $wealth) {
+            	    echo "<div class='question'>";
+            	    echo "<label for='wealth_$wealth->Id'>$wealth->Name</label>&nbsp;<font style='color:red'>*</font>";
+            	    echo "<br>";
+            	    echo "<input type='number' id='wealth_$wealth->Id' name='wealth_$wealth->Id' value='0' min='0' required> $currency";
+            	    echo "</div>";
+            	}
+            }
         	
         	?>
         <h2>Pengar från tidigare lajv</h2>

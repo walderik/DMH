@@ -9,13 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $which_roles=$_POST['which_roles'];
     $which_roles_effect=$_POST['which_roles_effect'];
     
-    $wealths = Wealth::allActive($current_larp);
-    $wealth_values = array();
-    foreach ($wealths as $wealth) {
-        $key = "wealth_".$wealth->Id;
-        $wealth_values[$wealth->Id] = $_POST[$key];
+    if (Wealth::isInUse($current_larp)) {
+        $wealths = Wealth::allActive($current_larp);
+        $wealth_values = array();
+        foreach ($wealths as $wealth) {
+            $key = "wealth_".$wealth->Id;
+            $wealth_values[$wealth->Id] = $_POST[$key];
+        }
     }
-    
     if (isset($_POST['larp'])) $larpId = $_POST['larp'];
     $percent_min=$_POST['percent_min'];
     $percent_max=$_POST['percent_max'];
@@ -43,7 +44,9 @@ foreach ($roles as $role) {
     }
     
     $sum = 0;
-    if (isset($role->WealthId)) $sum += $wealth_values[$role->WealthId];
+    if (Wealth::isInUse($current_larp))  {
+        if (isset($role->WealthId)) $sum += $wealth_values[$role->WealthId];
+    }
     
     if (isset($larpId)) {
         $old_larp_role = LARP_Role::loadByIds($role->Id, $larpId);
