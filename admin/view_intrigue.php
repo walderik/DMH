@@ -14,7 +14,10 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo "$name</a> <a href='actor_intrigue_form.php?IntrigueActorId=$intrgueActor->Id&name=$name'><i class='fa-solid fa-pen'></i></a></h2>\n";
     echo "<table width='100%''>\n";
     
-    echo "<tr><td width='10%'>Intrigtext</td><td>".nl2br(htmlspecialchars($intrgueActor->IntrigueText))."</td></tr>\n";
+    echo "<tr><td width='10%'>Intrigtext</td><td>";
+    echo "<textarea id='IntrigueText:$intrgueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
+        htmlspecialchars($intrgueActor->IntrigueText)."</textarea>";
+    echo "</td></tr>\n";
     echo "<tr><td>Off-info<br>till deltagaren</td><td>".nl2br(htmlspecialchars($intrgueActor->OffInfo))."</td></tr>\n";
     echo "<tr><td>Ska ha vid incheck</td>\n";
     echo "<td>";
@@ -553,4 +556,7 @@ foreach ($roleActors as $roleActor) {
 
 
 ?>
-        
+<?php 
+
+include_once '../javascript/saveIntrigueText_ajax.js';
+?>        

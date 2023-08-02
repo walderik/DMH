@@ -21,7 +21,7 @@ include 'navigation.php';
     
 
     <div class="content"> 
-    <h1>Intrig för <?php echo $name?> <a href="view_intrigue?Id=<?php echo $intrigueActor->IntrigueId?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1>Intrig för <?php echo $name?> <a href="view_intrigue.php?Id=<?php echo $intrigueActor->IntrigueId?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 	<form action="logic/view_intrigue_logic.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="update_intrigue_actor"> 
 		<input type="hidden" id="Id" name="Id" value="<?php echo $intrigueActor->IntrigueId ?>">
