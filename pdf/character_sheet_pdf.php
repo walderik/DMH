@@ -39,7 +39,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
     public $cell_width;
     
     function Header() {
-        global $root, $y, $mitten;
+        global $root, $y, $mitten, $rowImageHeight, $lovest_y;
         $this->SetLineWidth(0.6);
         $this->Line(static::$x_min, static::$y_min, static::$x_max, static::$y_min);
         $this->Line(static::$x_min, static::$y_min, static::$x_min, static::$y_max);
@@ -66,6 +66,8 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->SetXY($mitten-15,  static::$y_min + 2*static::$Margin);
         $y = $this->GetY();
+        $rowImageHeight = 0;
+        $lovest_y = $y;
     }
     
     # Skriv ut lajvnamnet högst upp.
@@ -132,9 +134,10 @@ class CharacterSheet_PDF extends PDF_MemImage {
     }
     
     function intrigues() {
-        global $y, $left, $left2;
+        global $y, $left, $left2, $rowImageHeight, $lovest_y;
         
         $space = 3;
+        $image_width = 25;
         
         # Kolla först att det finns intriger och att någon har en intrigtext
         $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $this->larp->Id);
@@ -202,7 +205,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         }
         
         # Dom man känner till från intrigerna
-        if (!empty($known_actors) && !empty($known_npcgroups)) {
+        if (!empty($known_actors) && !empty($known_npcgroups && !empty($known_npcs)  && !empty($known_props))) {
             $this->bar();
             $y = $this->GetY()+$space*2;
             
@@ -214,77 +217,79 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $y = $this->GetY() + $space*3;
             $this->SetXY($this->current_left, $y);
             $this->SetFont('Helvetica','',static::$text_fontsize);
-            $image_used = false;
             $rowImageHeight = 0;
             $lovest_y = $y;
             foreach ($known_actors as $known_actor) {
-                
-                # TODO skriv ut dom en per kolumn. Hur bred?
+                $image = null;
                 $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
                 
                 if (!empty($knownIntrigueActor->GroupId)) {
                     $groupActor=$knownIntrigueActor->getGroup();
-                    $text = $groupActor->Name;
-                    $text = trim(utf8_decode($text));
-                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                } else {
-                    $role = $knownIntrigueActor->getRole();
-                    $realHeight = 0;
-                    if ($role->hasImage()) {
-                        $image = Image::loadById($role->ImageId);
-                        
-                        $v = 'img'.md5($image->file_data);
-                        $GLOBALS[$v] = $image->file_data;
-                        list($width, $height) =  getimagesize('var://'.$v);
-                        
-                        $realHeight = ($height / $width) * 23;
-                        if ($realHeight > $rowImageHeight) $rowImageHeight = $realHeight; 
-                        $this->MemImage($image->file_data, $this->current_left, $y, 23);
-                        $image_used = true;
-                        $this->SetXY($this->current_left + 25, $y);
-                    } else {
-                        $this->SetXY($this->current_left, $y);
-                    }
-                    $text = $role->Name;
-                    $role_group = $role->getGroup();
-                    if (!empty($role_group)) $text .= "\n\r($role_group->Name)";
-                    $text = trim(utf8_decode($text));
-                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                    if (!empty($role_group)) $lovest_y = $this->GetY() + $space;
+                    $this->print_know_stuff($groupActor->Name, $image);
+                    continue;
                 }
-                # Räkna upp en cell i bredd
-                if ($this->current_left == $left) {
-                    $this->current_left = $left2;
-                } else {
-                    # Vi har just ritat den högra rutan
-                    $this->current_left = $left;
-                    $y = $this->GetY() + $space;
-                    if ($image_used) $y += $rowImageHeight;
-                    if ($lovest_y > $y) $y = $lovest_y;
-                    $rowImageHeight = 0;
-                }
-                $this->SetXY($this->current_left, $y);
+                
+                $role = $knownIntrigueActor->getRole();
+                if ($role->hasImage()) $image = Image::loadById($role->ImageId);
+                $text = $role->Name; #, $y, $lovest_y, $realHeight, ".$this->GetPageHeight();
+                $role_group = $role->getGroup();
+                if (!empty($role_group)) $text .= "\n\r($role_group->Name)";
+                $this->print_know_stuff($text, $image);
             }
-//             foreach ($known_npcgroups as $known_npcgroup) {
-//                 $npcgroup = $known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-//                 $text = "$npcgroup->Name (NPC-grupp)";
-//                 $text = trim(utf8_decode($text));
-//                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-//                 $this->SetXY($this->current_left, $y);
-//                 # Räkna upp en cell i bredd
-//                 if ($this->current_left == $left) {
-//                     $this->current_left = $left2;
-//                 } else {
-//                     # Vi har just ritat den högra rutan
-//                     $this->current_left = $left;
-//                     $y = $this->GetY() + $space;
-//                     if ($image_used) $y += $rowImageHeight;
-//                 }
-//             }
+            foreach ($known_npcgroups as $known_npcgroup) {
+                $image = null;
+                $npcgroup = $known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
+                $this->print_know_stuff("$npcgroup->Name - NPC-grupp", $image);
+            }
+            foreach ($known_npcs as $known_npc) {
+                $image = null;
+                $npc = $known_npc->getIntrigueNPC()->getNPC();
+                $text = "$npc->Name - NPC";
+                $npc_group = $npc->getNPCGroup();
+                if (!empty($npc_group)) $text .="\n\r($npc_group->Name)";
+                if ($npc->hasImage()) $image = Image::loadById($npc->ImageId);
+                $this->print_know_stuff($text, $image);
+            }
         }
      
 
         return true;
+    }
+    
+    function print_know_stuff($text, $image){
+        global $y, $left, $left2, $rowImageHeight, $lovest_y;
+        $space = 3;
+        $image_width = 25;
+        $realHeight = 0;
+        
+        if (isset($image)) {
+            $v = 'img'.md5($image->file_data);
+            $GLOBALS[$v] = $image->file_data;
+            list($width, $new_y) =  getimagesize('var://'.$v);
+            
+            $realHeight = round(($new_y / $width) * $image_width);
+            if ($realHeight > $rowImageHeight) $rowImageHeight = $realHeight;
+            $this->MemImage($image->file_data, $this->current_left, $y, $image_width);
+            $this->SetXY($this->current_left + 25, $y); # Skjut texten till höger
+        }
+        
+        $this->MultiCell(0, static::$cell_y-1, trim(utf8_decode($text)), 0, 'L');
+        $new_y = $this->GetY() + $space;
+        if ($new_y > $lovest_y) $lovest_y = $new_y;
+        
+        # Räkna upp en cell i bredd
+        if ($this->current_left == $left) {
+            $this->current_left = $left2;
+        } else {
+            # Vi har just ritat den högra rutan
+            $this->current_left = $left;
+            $y = $this->GetY() + $space;
+            if ($lovest_y > $y) $y = $lovest_y;
+             $y += $rowImageHeight;
+            $rowImageHeight = 0;
+            $lovest_y = $y;
+        }
+        $this->SetXY($this->current_left, $y);
     }
     
     function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false) {
