@@ -36,7 +36,7 @@ include 'navigation.php';
         echo "<tr><td>";
         echo "<a href ='view_person.php?id=$person->Id'>$person->Name</a>";
         echo "</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td><td>$person->PhoneNumber</td><td>";
-        if (OfficialType::isInUse($current_larp)) commaStringFromArrayObject($registration->getOfficialTypes());
+        if (OfficialType::isInUse($current_larp)) echo commaStringFromArrayObject($registration->getOfficialTypes());
         echo "&nbsp;<a href='edit_official.php?id=$registration->Id'><i class='fa-solid fa-pen'></i></a>".
         "&nbsp;<a href='person_payment.php?id=$person->Id'><i class='fa-solid fa-money-check-dollar'></i></a></td><td>";
         ?>
