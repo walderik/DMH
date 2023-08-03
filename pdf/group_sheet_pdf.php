@@ -274,7 +274,7 @@ class Group_PDF extends FPDF {
 
 	    $this->set_header($left, 'Intrigtyper');
 
-	    $text = commaStringFromArrayObject($this->larp_group->getIntrigueTypes());
+	    $text = commaStringFromArrayObject($this->group->getIntrigueTypes());
 	    $this->set_text($left, $text);
 	    return true;
 	}

@@ -62,17 +62,6 @@ include 'navigation.php';
     			<label for="WantIntrigue_no">Nej</label>
     		</div>
 			<div class="question">
-    			<label for="IntrigueType">Intrigtyper</label>
-    			<div class="explanation">Vilken typ av intriger vill gruppen helst ha?  <br>
-    			    <?php IntrigueType::helpBox($current_larp); ?></div>
-                <?php
-    
-                IntrigueType::selectionDropdown($current_larp, true, false);
-                
-                ?>
-            </div>
-
-			<div class="question">
     			<label for="RemainingIntrigues">Kvarvarande intriger</label>
     			<div class="explanation">Har gruppen någon pågående/oavslutad intrig sedan tidigare? </div>
 				<textarea class="input_field" id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="100" maxlength="60000"></textarea>

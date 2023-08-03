@@ -88,11 +88,11 @@ class User extends BaseModel{
         return Person::getPersonsForUser($this->Id);
     }
 
-    public function getUnregisteredAliveGroupsForUser($larp) {
+    public function getUnregisteredAliveGroupsForUser(LARP $larp) {
         $persons = Person::getPersonsForUser($this->Id);
         $unregistered_groups = Array();
         foreach ($persons as $person) {
-            $groups = Group::getGroupsForPerson($person->Id);
+            $groups = Group::getGroupsForPerson($person->Id, $larp->CampaignId);
             foreach ($groups as $group) {
                 if (!$group->isRegistered($larp) && $group->IsDead==0) {
                     array_push($unregistered_groups,$group);

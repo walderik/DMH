@@ -106,59 +106,6 @@ class LARP_Group extends BaseModel{
     }
     
 
-    public function saveAllIntrigueTypes($post) {
-        if (!isset($post['IntrigueTypeId'])) {
-            return;
-        }
-        foreach($post['IntrigueTypeId'] as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_larp_group (IntrigueTypeId, LARP_GroupGroupId, LARP_GroupLARPId) VALUES (?,?, ?);");
-            if (!$stmt->execute(array($Id, $this->GroupId, $this->LARPId))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-        }
-        $stmt = null;
-    }
-    
-    public function deleteAllIntrigueTypes() {
-        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_larp_group WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ?;");
-        if (!$stmt->execute(array($this->GroupId, $this->LARPId))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        $stmt = null;
-    }
-
-    public function getSelectedIntrigueTypeIds() {
-       $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM regsys_intriguetype_larp_group WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ? ORDER BY IntrigueTypeId;");
-        
-        if (!$stmt->execute(array($this->GroupId, $this->LARPId))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = $row['IntrigueTypeId'];
-        }
-        $stmt = null;
-        
-        return $resultArray;
-    }
-    
-    public function getIntrigueTypes(){
-        return IntrigueType::getIntrigeTypesForLarpAndGroup($this->LARPId, $this->GroupId);
-    }
-    
     public function hasIntrigue() {
         if (isset($this->Intrigue) && $this->Intrigue != "") return true;
         return false;

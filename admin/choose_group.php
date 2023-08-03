@@ -133,7 +133,7 @@ include_once '../javascript/table_sort.js';
 
     		        echo "<label for='Group$group->Id'>$group->Name</label></td>\n";
     		        echo "<td>".ja_nej($larp_group->WantIntrigue)."</td>\n";
-    		        echo "<td>".commaStringFromArrayObject($larp_group->getIntrigueTypes())."</td>";
+    		        echo "<td>".commaStringFromArrayObject($group->getIntrigueTypes())."</td>";
     		        
     		        echo "</tr>\n";
     		    }

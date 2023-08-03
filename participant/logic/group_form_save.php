@@ -12,6 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $group = Group::newFromArray($_POST);
         $group->create();
+        $group->deleteAllIntrigueTypes();
+        $group->saveAllIntrigueTypes($_POST);
+        
         if (!strpos($_POST['action'], "anmälan")) {
             header('Location: ../index.php');
             exit;
@@ -43,6 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $group->setValuesByArray($_POST);
         $group->update();
+        $group->deleteAllIntrigueTypes();
+        $group->saveAllIntrigueTypes($_POST);
+        
         if (!empty($larp_group)) {
             $larp_group->UserMayEdit = 0;
             $larp_group->update();

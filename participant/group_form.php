@@ -151,11 +151,23 @@ include 'navigation.php';
 
 			</div>
 			
+			<div class="question">
+    			<label for="IntrigueType">Intrigtyper</label>
+    			<div class="explanation">Vilken typ av intriger vill gruppen helst ha?  <br>
+    			    <?php IntrigueType::helpBox($current_larp); ?></div>
+                <?php
+    
+                IntrigueType::selectionDropdown($current_larp, true, false, $group->getSelectedIntrigueTypeIds());
+                
+                ?>
+            </div>
+
+			
 					
 			<div class="question">
 			<label for="IntrigueIdeas">Intrigidéer</label>
 			<div class="explanation">
-			Har ni några grupprykten som ni vill ha hjälp med att sprida? <br>Denna del är inte synlig för medlemmarna i gruppen.
+			Har ni några idée för intriger som skulle passa gruppen? <br>Denna del är inte synlig för medlemmarna i gruppen.
 			</div>
 			<textarea class="input_field" id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->IntrigueIdeas); ?></textarea>
 			

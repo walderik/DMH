@@ -19,13 +19,13 @@ class IntrigueType extends SelectionData{
         return static::getSeveralObjectsqQuery($sql, array($intrigueId));
     }
     
-    public static function getIntrigeTypesForLarpAndGroup($larpId, $groupId) {
+    public static function getIntrigeTypesForGroup($groupId) {
         if (is_null($larpId) || is_null($groupId)) return array();
         
         $sql = "SELECT * from regsys_intriguetype WHERE Id IN ".
-            "(SELECT IntrigueTypeId FROM regsys_intriguetype_larp_group ".
-            "WHERE LARP_GroupGroupId = ? AND LARP_GroupLARPId = ?) ORDER BY SortOrder;";
-        return static::getSeveralObjectsqQuery($sql, array($groupId, $larpId));
+            "(SELECT IntrigueTypeId FROM regsys_intriguetype_group ".
+            "WHERE GroupId = ?) ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($groupId));
     }
     
     
@@ -80,11 +80,10 @@ class IntrigueType extends SelectionData{
         $type = static::class."Id";
         
         $sql = "select count(regsys_larp_group.GroupId) AS Num, regsys_intriguetype.Name AS Name FROM ".
-            "regsys_larp_group, regsys_intriguetype_larp_group, regsys_intriguetype WHERE ".
+            "regsys_larp_group, regsys_intriguetype_group, regsys_intriguetype WHERE ".
             "regsys_larp_group.larpId=? AND ".
-            "regsys_larp_group.LarpId=regsys_intriguetype_larp_group.LARP_GroupLARPId AND ".
-            "regsys_larp_group.GroupId = regsys_intriguetype_larp_group.LARP_GroupGroupId AND ".
-            "regsys_intriguetype.Id=regsys_intriguetype_larp_group.IntrigueTypeId GROUP BY IntrigueTypeId";
+            "regsys_larp_group.GroupId = regsys_intriguetype_group.GroupId AND ".
+            "regsys_intriguetype.Id=regsys_intriguetype_group.IntrigueTypeId GROUP BY IntrigueTypeId";
         
         $stmt = static::connectStatic()->prepare($sql);
         
