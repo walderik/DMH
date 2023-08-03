@@ -18,10 +18,11 @@
     		    echo "Inga anmälda grupper";
     		} else {
     		    $tableId = "main";
+    		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-        		    "<th onclick='sortTable(1, \"$tableId\")'>Rikedom</th>".
-        		    "<th onclick='sortTable(2, \"$tableId\")'>Pengar ($currency)</th>".
+    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>";
+    		    if (Wealth::isInUse($current_larp))  echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>";
     		    foreach ($groups as $group)  {
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
@@ -29,11 +30,12 @@
     		        echo "<td>";
     		        echo "<a href='view_group.php?id=" . $group->Id . "'>$group->Name</a>";
     		        echo "</td>\n";
-    		        $wealth = $group->getWealth();
-    		        echo "<td>";
-    		        if (!empty($wealth)) echo $wealth->Name;
-    		        echo "</td>\n";
-    		        
+    		        if (Wealth::isInUse($current_larp)) {
+        		        $wealth = $group->getWealth();
+        		        echo "<td>";
+        		        if (!empty($wealth)) echo $wealth->Name;
+        		        echo "</td>\n";
+    		        }
     		        echo "<td><input type='number' id='$group->Id' value='$larp_group->StartingMoney' onchange='setMoneyGroup(this)'></td>";
     		        
     		        echo "</tr>\n";

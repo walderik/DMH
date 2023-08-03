@@ -116,7 +116,9 @@ include_once '../javascript/table_sort.js';
     		    ?> 
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
     		    <table class='data'>
-    		    <tr><th>Namn</th><th>Vill ha<br>intrig</th><th>Intrigtyper</th></tr>
+    		    <tr><th>Namn</th><th>Vill ha<br>intrig</th>
+    		    <?php if (IntrigueType::isInUse($current_larp)) echo "<th>Intrigtyper</th>"; ?>
+    		    </tr>
     		    <?php 
     		    foreach ($groups as $group)  {
     		        $show = true;
@@ -133,7 +135,7 @@ include_once '../javascript/table_sort.js';
 
     		        echo "<label for='Group$group->Id'>$group->Name</label></td>\n";
     		        echo "<td>".ja_nej($larp_group->WantIntrigue)."</td>\n";
-    		        echo "<td>".commaStringFromArrayObject($group->getIntrigueTypes())."</td>";
+    		        if (IntrigueType::isInUse($current_larp)) echo "<td>".commaStringFromArrayObject($group->getIntrigueTypes())."</td>";
     		        
     		        echo "</tr>\n";
     		    }
