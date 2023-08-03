@@ -250,6 +250,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 if ($npc->hasImage()) $image = Image::loadById($npc->ImageId);
                 $this->print_know_stuff($text, $image);
             }
+            foreach ($known_props as $known_prop) {
+                $image = null;
+                $prop = $known_prop->getIntrigueProp()->getProp();
+                if ($prop->hasImage()) $image = Image::loadById($prop->ImageId);
+                $this->print_know_stuff($prop->Name, $image);
+            }
         }
      
 
