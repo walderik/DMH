@@ -110,11 +110,11 @@ include 'navigation.php';
 			<?php if (Wealth::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Rikedom</td><td><?php echo $current_group->getWealth()->Name;?></td></tr>
 			<?php } ?>
-			<?php if (PlaceOfResidence::isInUse($current_larp))?>
+			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Var bor gruppen?</td><td><?php echo $current_group->getPlaceOfResidence()->Name;?></td></tr>
 			<?php } ?>
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
-			<?php if (IntrigueType::isInUse($current_larp))?>
+			<?php if (IntrigueType::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($current_group->getIntrigueTypes());?></td></tr>
 			<?php } ?>
 			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
