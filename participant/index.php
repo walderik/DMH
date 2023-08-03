@@ -333,7 +333,7 @@ include "navigation.php";
     		        foreach ($rumour_array as $rumour) {
     		            echo "<tr>\n";
     		            echo "<td style='font-weight:normal'>$rumour->Text</td>\n";
-    		            echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
+    		            echo "<td>" . showStatusIcon($rumour->Approved) . "</td>\n";
     		            echo "<td align='center'>";
     		            if (!$rumour->isApproved()) echo "<a href='rumour_suggestion.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></a>";
                         echo "</td>\n";
