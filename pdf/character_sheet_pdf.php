@@ -61,15 +61,19 @@ class CharacterSheet_PDF extends PDF_MemImage {
         } else {
             $txt = 'Karaktärsblad';
         }
+
         $this->MultiCell(30, 4, utf8_decode($txt), 0, 'C', true);
         
-        $y = static::$y_min + static::$Margin;
+        $this->SetXY($mitten-15,  static::$y_min + 2*static::$Margin);
+        $y = $this->GetY();
     }
     
     # Skriv ut lajvnamnet högst upp.
-    function title($left, $text) {
+    function title($left) {
         global $y;
 
+        $text =  $this->larp->Name;
+        
         $font_size = (850 / strlen(utf8_decode($text)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
@@ -190,7 +194,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $this->SetXY($left, $y);
             }
             
-            if($key != $lastElementKey) {
+            if($key != $lastElementKey && !empty($intrigueActor->IntrigueText)) {
                 $this->bar();
                 $y = $this->GetY()+$space*2;
                 $this->SetXY($left, $y);
@@ -198,7 +202,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         }
         
         # Dom man känner till från intrigerna
-        if (!empty($known_actors)) {
+        if (!empty($known_actors) && !empty($known_npcgroups)) {
             $this->bar();
             $y = $this->GetY()+$space*2;
             
@@ -206,18 +210,23 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $this->SetXY($this->current_left, $y);
             $this->SetFont('Helvetica','B',static::$text_fontsize);
             $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Känner till'),0,0,'L');
+            
             $y = $this->GetY() + $space*3;
             $this->SetXY($this->current_left, $y);
             $this->SetFont('Helvetica','',static::$text_fontsize);
+            $image_used = false;
+            $rowImageHeight = 0;
+            $lovest_y = $y;
             foreach ($known_actors as $known_actor) {
+                
                 # TODO skriv ut dom en per kolumn. Hur bred?
                 $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
-                $image_used = false;
-                $rowImageHeight = 0;
+                
                 if (!empty($knownIntrigueActor->GroupId)) {
                     $groupActor=$knownIntrigueActor->getGroup();
-                    $this->MultiCell(0, static::$cell_y-1, $groupActor->Name, 0, 'L');
-                    $this->SetXY($this->current_left, $y);
+                    $text = $groupActor->Name;
+                    $text = trim(utf8_decode($text));
+                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 } else {
                     $role = $knownIntrigueActor->getRole();
                     $realHeight = 0;
@@ -232,13 +241,16 @@ class CharacterSheet_PDF extends PDF_MemImage {
                         if ($realHeight > $rowImageHeight) $rowImageHeight = $realHeight; 
                         $this->MemImage($image->file_data, $this->current_left, $y, 23);
                         $image_used = true;
+                        $this->SetXY($this->current_left + 25, $y);
+                    } else {
+                        $this->SetXY($this->current_left, $y);
                     }
-                    $this->SetXY($this->current_left + 25, $y);
                     $text = $role->Name;
                     $role_group = $role->getGroup();
                     if (!empty($role_group)) $text .= "\n\r($role_group->Name)";
+                    $text = trim(utf8_decode($text));
                     $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                    $this->SetXY($this->current_left, $y);
+                    if (!empty($role_group)) $lovest_y = $this->GetY() + $space;
                 }
                 # Räkna upp en cell i bredd
                 if ($this->current_left == $left) {
@@ -248,8 +260,27 @@ class CharacterSheet_PDF extends PDF_MemImage {
                     $this->current_left = $left;
                     $y = $this->GetY() + $space;
                     if ($image_used) $y += $rowImageHeight;
+                    if ($lovest_y > $y) $y = $lovest_y;
+                    $rowImageHeight = 0;
                 }
+                $this->SetXY($this->current_left, $y);
             }
+//             foreach ($known_npcgroups as $known_npcgroup) {
+//                 $npcgroup = $known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
+//                 $text = "$npcgroup->Name (NPC-grupp)";
+//                 $text = trim(utf8_decode($text));
+//                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+//                 $this->SetXY($this->current_left, $y);
+//                 # Räkna upp en cell i bredd
+//                 if ($this->current_left == $left) {
+//                     $this->current_left = $left2;
+//                 } else {
+//                     # Vi har just ritat den högra rutan
+//                     $this->current_left = $left;
+//                     $y = $this->GetY() + $space;
+//                     if ($image_used) $y += $rowImageHeight;
+//                 }
+//             }
         }
      
 
@@ -282,7 +313,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->AddPage();
         
-        $this->title($left, $this->larp->Name);
+        $this->title($left);
         $this->names($left, $left2);
         
         $y += $this->cell_y_space;
