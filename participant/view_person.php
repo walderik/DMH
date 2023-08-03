@@ -57,13 +57,19 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Erfarenhet</td><td><?php echo Experience::loadById($current_person->ExperienceId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td><td><?php echo $current_person->NotAcceptableIntrigues;?></td></tr>
 
+
+			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
+			<tr><td valign="top" class="header">Viken typ av mat vill du äta?</td><td><?php echo TypeOfFood::loadById($registration->TypeOfFoodId)->Name;?></td></tr>
+			<?php } ?>
 			<tr><td valign="top" class="header">Vanliga allergier</td><td><?php echo commaStringFromArrayObject($current_person->getNormalAllergyTypes());?></td></tr>
 
 			<tr><td valign="top" class="header">Andra allergier</td><td><?php echo $current_person->FoodAllergiesOther;?></td></tr>
 
 			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $registration->NPCDesire;?></td></tr>
 			<tr><td valign="top" class="header">Husförvaltare</td><td><?php if (isset($current_person->HouseId)) { echo $current_person->getHouse()->Name; }?></td></tr>
+			<?php if (HousingRequest::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
+			<?php } ?>
 			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo $current_person->HousingComment;?></td></tr>
 			<tr><td valign="top" class="header">Hälsa</td><td><?php echo $current_person->HealthComment;?></td></tr>
 
@@ -75,8 +81,9 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
 			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->ApprovedCharacters)) { echo $registration->ApprovedCharacters; } else { echo "Nej"; }?></td></tr>
 			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
+			<?php if (OfficialType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php echo commaStringFromArrayObject($registration->getOfficialTypes());?></td></tr>
-
+			<?php } ?>
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
 			<tr><td valign="top" class="header">Belopp att betala</td><td><?php echo $registration->AmountToPay;?></td></tr>
 			<tr><td valign="top" class="header">Belopp betalat</td><td><?php echo $registration->AmountPayed;?></td></tr>

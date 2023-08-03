@@ -86,8 +86,10 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td>
 			<td><input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo htmlspecialchars($person->NotAcceptableIntrigues); ?>" size="100" maxlength="250" ></td></tr>
 
+			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Typ av mat&nbsp;<font style="color:red">*</font></td>
 			<td><?php TypeOfFood::selectionDropdown($current_larp, false, true, $registration->TypeOfFoodId); ?></td></tr>
+			<?php } ?>
 			<tr><td valign="top" class="header">Vanliga allergier</td>
 			<td><?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?></td></tr>
 
@@ -98,8 +100,10 @@ include 'navigation.php';
 			<td><input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="250" value="<?php echo htmlspecialchars($registration->NPCDesire);?>"></td></tr>
 			<tr><td valign="top" class="header">Husförvaltare</td>
 			<td><?php selectionByArray('House', House::all(), false, false, $person->HouseId); ?></td></tr>
+			<?php if (HousingRequest::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown($current_larp, false,true,$registration->HousingRequestId);?></td></tr>
+			<?php } ?>
 			<tr><td valign="top" class="header">Boendehänsyn</td>
 			<td><input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo htmlspecialchars($person->HousingComment); ?>" size="100" maxlength="200" ></td></tr>
 
@@ -116,8 +120,9 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
 			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->ApprovedCharacters)) { echo $registration->ApprovedCharacters; } else { echo "Nej"; }?></td></tr>
 			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
+			<?php if (OfficialType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php OfficialType::selectionDropdown($current_larp, true,false,$registration->getSelectedOfficialTypeIds());?></td></tr>
-
+			<?php } ?>
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
 			<tr><td valign="top" class="header">Belopp att betala</td><td><?php echo $registration->AmountToPay;?></td></tr>
 			<tr><td valign="top" class="header">Belopp betalat</td><td><?php echo $registration->AmountPayed;?></td></tr>

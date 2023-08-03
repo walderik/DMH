@@ -136,13 +136,16 @@ include 'navigation.php';
         		</table>
         	</div>
 			
+			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
 			<div class="question">
 				<label for="TypesOfFoodId">Viken typ av mat vill du äta?</label>&nbsp;<font style="color:red">*</font>
 				<br> 
 				<div class="explanation"><?php TypeOfFood::helpBox($current_larp); ?></div>
 				<?php TypeOfFood::selectionDropdown($current_larp, false, true); ?>
 			</div>
+			<?php } ?>
 			
+			<?php if (HousingRequest::isInUse($current_larp)) { ?>
 			<div class="question">
     			<label for="HousingRequest">Boende</label>&nbsp;<font style="color:red">*</font>
     			<div class="explanation">Hur vill du helst bo? Vi kan inte garantera plats i hus. <br><?php HousingRequest::helpBox($current_larp); ?></div>
@@ -152,7 +155,7 @@ include 'navigation.php';
                 
                 ?>
             </div>
-
+			<?php } ?>
 
 			<div class="question">
     			<label for="NPCDesire">NPC</label>
@@ -166,7 +169,7 @@ include 'navigation.php';
                 <input class="input_field" type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="200">
             </div>
 
-
+			<?php if (OfficialType::isInUse($current_larp)) { ?>
 			<div class="question">
     			<label for="OfficialType">Intresseranmälan för funktionär</label>
     			<div class="explanation">
@@ -182,7 +185,7 @@ include 'navigation.php';
                 
                 ?>
             </div>
-
+			<?php } ?>
 
 			<div class="question">Godkända karaktärer&nbsp;<font style="color:red">*</font><br>
 			<div class="explanation">
