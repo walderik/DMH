@@ -15,14 +15,14 @@ include "navigation.php";
         	      echo '<div class="message">'.$message_message.'</div>';
         	  }
         	  
-            if ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
+        	  if ($current_larp->isPastLatestRegistrationDate()) {
+        	      
+        	      echo "<div><b style='color: red'>Sista anmälningsdag har passerat</b>";
+        	      echo "</div>";
+        	  }
+        	  elseif ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
 
                 echo "<div><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b>";
-                echo "</div>";
-            }
-            elseif ($current_larp->isPastLatestRegistrationDate()) {
-
-                echo "<div><b style='color: red'>Sista anmälningsdag har passerat</b>";
                 echo "</div>";
             }
             elseif ($current_larp->RegistrationOpen == 0) {
