@@ -2,6 +2,11 @@
 
 require 'header.php';
 
+if (!$current_larp->mayRegister()) {
+    header('Location: index.php');
+    exit;
+}
+
 $current_persons = $current_user->getUnregisteredPersonsForUser($current_larp);
 
 if (empty($current_persons)) {
