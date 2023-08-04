@@ -124,7 +124,7 @@ include_once '../javascript/table_sort.js';
     		        $show = true;
     		        $larp_group=LARP_Group::loadByIds($group->Id, $current_larp->Id);
     		        if (!empty($intrigueTypes)) {
-    		            $group_intrigueTypeIds = $larp_group->getSelectedIntrigueTypeIds();
+    		            $group_intrigueTypeIds = $group->getSelectedIntrigueTypeIds();
     		            if (empty(array_intersect($intrigueTypes, $group_intrigueTypeIds))) {
     		                $show = false;
     		            }
