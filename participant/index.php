@@ -137,10 +137,14 @@ include "navigation.php";
     		        
                     
                     //Grupper
-    		        if (isset($groups) && count($groups) > 0) {
+    		        if (!empty($groups)) {
     		            echo "<br><b>Gruppansvarig för:</b><br>\n";
+    		            echo "<table class='roles'>\n";
+    		            
     		        }
     		        foreach ($groups as $group)  {
+    		            echo "<tr>";
+    		            echo "<td>";
     		            if ($group->isRegistered($current_larp) && !$group->userMayEdit($current_larp)) {
     		                echo  "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
     		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
@@ -155,7 +159,8 @@ include "navigation.php";
     		                 }
     		                 
     		            }
-    		            echo " Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "<br>\n";
+    		            echo "</td>";
+    		            echo "<td>Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "</td>\n";
     		            if ($group->hasImage()) {
     		                
     		                $image = Image::loadById($group->ImageId);
@@ -164,8 +169,10 @@ include "navigation.php";
     		            else {
     		                echo "<td><a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
     		            }
+    		            echo "</tr>";
     		        }
-    		       
+    		        echo "</table>";
+    		        
     		        
     		        //Karaktärer
     		        if (isset($roles) && count($roles) > 0) {
