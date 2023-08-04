@@ -20,7 +20,7 @@ class IntrigueType extends SelectionData{
     }
     
     public static function getIntrigeTypesForGroup($groupId) {
-        if (is_null($larpId) || is_null($groupId)) return array();
+        if (is_null($groupId)) return array();
         
         $sql = "SELECT * from regsys_intriguetype WHERE Id IN ".
             "(SELECT IntrigueTypeId FROM regsys_intriguetype_group ".

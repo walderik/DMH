@@ -124,7 +124,7 @@ class Group extends BaseModel{
      }
      
      public function getIntrigueTypes(){
-         return IntrigueType::getIntrigeTypesForGroup($this->GroupId);
+         return IntrigueType::getIntrigeTypesForGroup($this->Id);
      }
      
      
