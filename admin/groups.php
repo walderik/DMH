@@ -19,12 +19,12 @@
     		    $tableId = "main_roles";
     		    $colnum=0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+    		    echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
         		    "<th>&nbsp; &nbsp; </th>";
     		    $colnum++;
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Gruppledare</th>";
-    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Gruppledare</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($groups as $group)  {
     		        echo "<tr>\n";
     		        echo "<td><a href='view_group.php?id=" . $group->Id . "'>$group->Name</a>";

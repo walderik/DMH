@@ -19,12 +19,12 @@
     		    $tableId = "main_roles";
     		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Kommer<br>på lajvet</th>";
-    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Lagfarter</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Pengar ($currency)</th>".
+    		    echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Kommer<br>på lajvet</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Lagfarter</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>\n";
     		    foreach ($roles as $role)  {
     		        //Man vill se alla roller som kommer på lajvet och har handel och 

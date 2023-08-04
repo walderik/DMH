@@ -20,9 +20,9 @@
     		    $tableId = "main";
     		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>";
-    		    if (Wealth::isInUse($current_larp))  echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Pengar ($currency)</th>".
+    		    echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>";
+    		    if (Wealth::isInUse($current_larp))  echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>";
     		    foreach ($groups as $group)  {
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);

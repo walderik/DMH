@@ -127,13 +127,13 @@ include_once '../javascript/table_sort.js';
     		    echo "<table id='$tableId' class='data'>";
     		    echo "<tr>".
     		          "<th></th>".
-    		          "<th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
-    		          "<th onclick='sortTable($colnum++, \"$tableId\");'>Yrke</th>";
+    		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
+    		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Yrke</th>";
     		    if (IntrigueType::isInUse($current_larp)) {   		    
-    		          echo "<th onclick='sortTable($colnum++, \"$tableId\");'>Intrigtyper</th>";
+    		          echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Intrigtyper</th>";
     		    }
-    	          echo "<th onclick='sortTable($colnum++, \"$tableId\");'>Grupp</th>".
-    	          "<th onclick='sortTable($colnum++, \"$tableId\");'>Spelas av</th>".
+    	          echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Grupp</th>".
+    	          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Spelas av</th>".
     	          "</tr>";
  
     		    foreach ($mainroles as $role)  {
@@ -175,13 +175,13 @@ include_once '../javascript/table_sort.js';
     		    echo "<table id='$tableId' class='data'>";
     		    echo "<tr>".
         		    "<th></th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\");'>Yrke</th>";
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Yrke</th>";
     		    if (IntrigueType::isInUse($current_larp)) {
-    		        echo "<th onclick='sortTable($colnum++, \"$tableId\");'>Intrigtyper</th>";
+    		        echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Intrigtyper</th>";
     		    }
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\");'>Grupp</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\");'>Spelas av</th>".
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Grupp</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Spelas av</th>".
         		    "</tr>";
     		    
     		foreach ($nonmainroles as $role)  {

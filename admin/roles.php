@@ -18,16 +18,16 @@
     		    $tableId = "main_roles";
     		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+    		    echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
         		    "<th>&nbsp; &nbsp; </th>";
     		    $colnum++;
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Plats<br>på lajvet</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")' width='10%'>Yrke</th>";
-    		    if (LarperType::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Typ av lajvare</th>";    		    
-    		    if (IntrigueType::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Intrigtyper</th>";
-    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Plats<br>på lajvet</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' width='10%'>Yrke</th>";
+    		    if (LarperType::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Typ av lajvare</th>";    		    
+    		    if (IntrigueType::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Intrigtyper</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
     		        $registration=$person->getRegistration($current_larp);
@@ -139,16 +139,16 @@
     		    $tableId = "other_roles";
     		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
+    		    echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
         		    "<th>&nbsp; &nbsp; </th>";
     		    $colnum++;
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Plats<br>på lajvet</th>".
-    		    "<th onclick='sortTable($colnum++, \"$tableId\")' width='10%'>Yrke</th>";
-    		    if (LarperType::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Typ av lajvare</th>";
-    		    if (IntrigueType::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Intrigtyper</th>";
-    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Plats<br>på lajvet</th>".
+    		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' width='10%'>Yrke</th>";
+    		    if (LarperType::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Typ av lajvare</th>";
+    		    if (IntrigueType::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Intrigtyper</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
     		        $registration=$person->getRegistration($current_larp);

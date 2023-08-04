@@ -22,11 +22,11 @@
     		    $tableId = "main_roles";
     		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")' width='10%'>Yrke</th>";
-    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Pengar ($currency)</th>".
+    		    echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' width='10%'>Yrke</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>";
     		    foreach ($roles as $role)  {
     		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
@@ -72,11 +72,11 @@
     		    $tableId = "other_roles";
     		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
-    		    echo "<tr><th onclick='sortTable($colnum++, \"$tableId\");'>Namn</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")' width='10%'>Yrke</th>";
-    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Rikedom</th>";
-    		    echo "<th onclick='sortTable($colnum++, \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable($colnum++, \"$tableId\")'>Pengar ($currency)</th>".
+    		    echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' width='10%'>Yrke</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>";
     		    foreach ($roles as $role)  {
     		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
