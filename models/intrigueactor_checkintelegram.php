@@ -57,7 +57,7 @@ class IntrigueActor_CheckinTelegram extends BaseModel{
     }
     
     public function getIntrigueTelegram() {
-        return Intrigue_Letter::loadById($this->IntrigueTelegramId);
+        return Intrigue_Telegram::loadById($this->IntrigueTelegramId);
     }
     
     public static function getAllCheckinTelegramsForIntrigueActor(IntrigueActor $intrigueActor) {
