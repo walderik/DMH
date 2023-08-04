@@ -134,10 +134,10 @@ class CharacterSheet_PDF extends PDF_MemImage {
     }
     
     function intrigues() {
-        global $y, $left, $left2, $rowImageHeight, $lovest_y;
+        global $y, $left;
         
         $space = 3;
-        $image_width = 25;
+//         $image_width = 25;
         
         # Kolla först att det finns intriger och att någon har en intrigtext
         $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $this->larp->Id);
@@ -298,6 +298,34 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->SetXY($this->current_left, $y);
     }
     
+    function romours(){
+        global $y, $left;
+        $space = 3;
+        
+        $rumours = Rumour::allKnownByRole($this->larp, $this->role);
+        if (empty($rumours)) return true;
+        
+        $this->AddPage();
+        $this->SetXY($left, $y);
+        $this->SetFont('Helvetica','B',static::$text_fontsize);
+        $name = $this->role->Name;
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Rykten $name känner till "),0,0,'L');
+        $this->SetFont('Arial','',static::$text_fontsize-3);
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("(Hjälp gärna till att sprida och reagera på dom) "),0,0,'L');
+        
+        $this->SetFont('Arial','',static::$text_fontsize);
+        $y = $this->GetY()+$space*3;
+        $this->SetXY($left, $y);
+        
+        foreach($rumours as $rumour) {
+            $this->MultiCell(0, static::$cell_y-1, trim(utf8_decode($rumour->Text)), 0, 'L');
+            $y = $this->GetY()+$space;
+            $this->SetXY($left, $y);
+        }
+        
+    }
+    
+    
     function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false) {
         global $current_user, $x, $y, $left, $left2, $mitten;
         
@@ -386,6 +414,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         if (!$this->isReserve && ($this->larp->isIntriguesReleased() || $this->all)) {
             $this->intrigues();
+            $this->romours();
         }
 	}
 	
