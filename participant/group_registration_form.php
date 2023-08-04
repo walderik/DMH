@@ -2,6 +2,11 @@
 
 require 'header.php';
 
+if (!$current_larp->mayRegister()) {
+    header('Location: index.php');
+    exit;
+}
+
 $current_groups = $current_user->getUnregisteredAliveGroupsForUser($current_larp);
 
 if (empty($current_groups)) {

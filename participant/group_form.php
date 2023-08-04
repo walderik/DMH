@@ -180,7 +180,7 @@ include 'navigation.php';
 			
 
 			  <input type="submit" name="action" value="<?php default_value('action'); ?>">
-			  <?php if ($current_larp->RegistrationOpen == 1 && !$group->isRegistered($current_larp)) { ?>
+			  <?php if ($current_larp->mayRegister() && !$group->isRegistered($current_larp)) { ?>
 			  <input type="submit" name="action" value="<?php default_value('action'); ?> och gå direkt till anmälan">
 			  <?php }?>
 		</form>
