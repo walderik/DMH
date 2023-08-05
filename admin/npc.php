@@ -59,10 +59,10 @@ div.npc {
                     echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name<i class='fa-solid fa-pen'></i></a> \n";
                     echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> \n";
                     echo "$npc->Time<br>$npc->Description<br>\n";
-                    echo "Spelas av $person->Name\n";
                     echo "<form action='logic/assign_npc.php' method='post'><input type='hidden' name='id' value='$npc->Id'>\n";
+                    echo "Spelas av $person->Name\n";
                     echo "<input type='hidden' name='PersonId' value='null'>\n";
-                    echo "<input type ='submit' value='Ta bort från deltagaren'>\n";
+                    echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från deltagaren'></i></button>";
                     echo "</form>\n";
                     
                     
@@ -86,10 +86,10 @@ div.npc {
                 echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name<i class='fa-solid fa-pen'></i></a> \n";
                 echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> \n";
                 echo "$npc->Time<br>$npc->Description<br>\n";
-                echo "Spelas av $person->Name\n";
                 echo "<form action='logic/assign_npc.php' method='post'><input type='hidden' name='id' value='$npc->Id'>\n";
+                echo "Spelas av $person->Name\n";
                 echo "<input type='hidden' name='PersonId' value='null'>\n";
-                echo "<input type ='submit' value='Ta bort från deltagaren'>\n";
+                echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från deltagaren'></i></button>";
                 echo "</form>\n";
 
                 if ($npc->IsReleased()) {
