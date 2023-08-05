@@ -2,6 +2,11 @@
 
 include_once 'header.php';
 
+if (!$current_larp->isIntriguesReleased()) {
+    header('Location: index.php');
+    exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
         $intriguePdfId = $_GET['id'];
@@ -20,6 +25,11 @@ if (empty($pdf)) {
 }
 
 if ($pdf->getIntrigue()->LarpId != $current_larp->Id) {
+    header('Location: index.php');
+    exit;
+}
+
+if (!$pdf->mayView($current_user)) {
     header('Location: index.php');
     exit;
 }

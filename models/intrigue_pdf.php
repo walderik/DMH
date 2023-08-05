@@ -84,5 +84,18 @@ class Intrigue_Pdf extends BaseModel{
         return IntrigueActor_KnownPdf::getAllKnownPdfsForIntriguePdf($this);
     }
     
-    
+    public function mayView(User $user) {
+        $sql = "SELECT Count(regsys_intrigueactor_knownpdf.IntriguePdfId) as Num FROM ".
+            "regsys_person, regsys_role, regsys_intrigueactor, regsys_intrigueactor_knownpdf WHERE ".
+            "regsys_person.UserId = ? AND ".
+            "regsys_person.Id = regsys_role.PersonId AND ".
+            "regsys_role.Id = regsys_intrigueactor.RoleId AND ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownpdf.IntriguePdfId = ?;";
+        echo $sql;
+        echo "<br>";
+        $count = static::countQuery($sql, array($user->Id, $this->Id));
+        if ($count > 0) return true;
+        return false;
+    }
 }

@@ -119,6 +119,7 @@ include 'navigation.php';
 			    $known_npcs = array();
 			    $known_npcgroups = array();
 			    $known_props = array();
+			    $known_pdfs = array();
 			    $checkin_letters = array();
 			    $checkin_telegrams = array();
 			    $checkin_props = array();
@@ -136,6 +137,7 @@ include 'navigation.php';
 		                $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
 		                $known_npcgroups = array_merge($known_npcgroups, $intrigueActor->getAllKnownNPCGroups());
 		                $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+		                $known_pdfs = array_merge($known_pdfs, $intrigueActor->getAllKnownPdfs());
 		                $checkin_letters = array_merge($checkin_letters, $intrigueActor->getAllCheckinLetters());
 		                $checkin_telegrams = array_merge($checkin_telegrams, $intrigueActor->getAllCheckinTelegrams());
 		                $checkin_props = array_merge($checkin_props, $intrigueActor->getAllCheckinProps());
@@ -238,6 +240,13 @@ include 'navigation.php';
 			        echo "</ul>";
 		        }
 
+		        foreach ($known_pdfs as $known_pdf) {
+		            $intrigue_pdf = $known_pdf->getIntriguePDF();
+		            echo "<a href='view_intrigue_pdf.php?id=$intrigue_pdf->Id' target='_blank'>$intrigue_pdf->Filename</a>";
+		            echo "<br>";
+		        }
+		        
+		        
 		        if (!empty($checkin_letters) || !empty($checkin_telegrams) || !empty($checkin_props)) {
 		            echo "<h3>Ska ha vid incheckning</h3>";
 		            foreach ($checkin_letters as $checkin_letter) {

@@ -251,7 +251,7 @@ th, td {
     <div class="content">
         <h1>Intrig: <?php echo "$intrigue->Number. $intrigue->Name" ?> <a href="intrigue_form.php?operation=update&id=<?php echo $intrigue->Id ?>"><i class='fa-solid fa-pen'></i></a></h1>
 <table width='100%'>
-<tr><td>Aktuell</td><td><?php echo ja_nej($intrigue->isActive()); ?></td></tr>
+<tr><td width="10%">Aktuell</td><td><?php echo ja_nej($intrigue->isActive()); ?></td></tr>
 <tr><td>Huvudintrig</td><td><?php echo ja_nej($intrigue->MainIntrigue); ?></td></tr>
 <tr><td>Intrigtyp</td><td><?php echo commaStringFromArrayObject($intrigue->getIntriguetypes())?></td></tr>
 <tr><td>Ansvarig</td><td>

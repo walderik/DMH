@@ -17,7 +17,7 @@ class IntrigueActor_KnownPdf extends BaseModel{
     public function setValuesByArray($arr) {
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['IntrigueActorId'])) $this->IntrigueActorId = $arr['IntrigueActorId'];
-        if (isset($arr['$IntriguePdfId'])) $this->$IntriguePdfId = $arr['$IntriguePdfId'];
+        if (isset($arr['IntriguePDFId'])) $this->IntriguePdfId = $arr['IntriguePDFId'];
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -57,7 +57,7 @@ class IntrigueActor_KnownPdf extends BaseModel{
     }
     
     public function getIntriguePDF() {
-        return Intrigue_Prop::loadById($this->$IntriguePdfId);
+        return Intrigue_Pdf::loadById($this->IntriguePdfId);
     }
     
     public static function getAllKnowninPdfsForIntrigueActor(IntrigueActor $intrigueActor) {
