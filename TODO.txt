@@ -2,13 +2,6 @@ Bygghelgs-anmälningar
 
 Intriger, vid filtrering ta även bort inaktiva
 Intriger, generell text som går till alla i intrigen
-Inntriger - kanske rollernas texter borde gå mata in direkt med Ajax.
-Rykten, Länk från karaktärer så man kan sprida rykten om en karaktär. Kanske går att lösa med hidden-fält eller temporär-rykte?
-
-
-Karaktärsblad:
-* Visa Props
-* Visa Gruppintrig och grupp-props
 
 Mat:
 DÖH, mat valbart. Pris beror på ålder
@@ -25,7 +18,9 @@ Ge tillstånd att visa spelarens namn vid karaktärspresentationen
 Kopiera intrig från tidigare år
 Skriva in "vad som hände" per intrig
 
+
 "Släppa intriger" - Kräver att massmail fungerar
+Skicka med pdf'er från intriguer
 
 Visa på hus vilka som anmält sig som husägare på resp hus.
 
