@@ -48,6 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_POST['TelegramId'])) $intrigue->addTelegrams($_POST['TelegramId']);
         if (isset($_POST['LetterId'])) $intrigue->addLetters($_POST['LetterId']);
+    } elseif ($operation == "add_intrigue_pdf") {
+        $intrigue=Intrigue::loadById($_POST['Id']);
+        if (isset($_FILES['bilaga'])) $intrigue->addPdf();
     } elseif ($operation == "add_intrigue_relation") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_POST['IntrigueId'])) $intrigue->addIntrigueRelations($_POST['IntrigueId']);
@@ -67,6 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
         if (isset($_POST['Intrigue_PropId'])) $intrigueActor->addKnownProps($_POST['Intrigue_PropId']);
+        if (isset($_POST['Intrigue_PdfId'])) $intrigueActor->addKnownPdf($_POST['Intrigue_PdfId']);
     } elseif ($operation == "choose_intrigue_knownactors") {
         $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
@@ -116,6 +120,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
         $intrigueActor->removeKnownProp($_GET['PropId']);
+    } elseif ($operation == "remove_pdf_known") {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->removeKnownPdf($_GET['PdfId']);
     } elseif ($operation == "remove_intrigueactor_knownRole") {
         $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
@@ -132,8 +140,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
         $intrigueActor->removeKnownNPC($_GET['NPCId']);
+    } elseif (($operation == "delete_pdf")) {
+        $intriguePdf=Intrigue_Pdf::loadById($_GET['pdfId']);
+        $intrigue=$intriguePdf->getIntrigue();
+        Intrigue_Pdf::delete($intriguePdf->Id);
     }
 }
+
 
 if (isset($_POST['Referer']) && $_POST['Referer']!="") {
     header('Location: ' . $_POST['Referer']);

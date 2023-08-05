@@ -30,10 +30,12 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     printAllTelegrams($checkinTelegrams, $intrgueActor);
     
     echo "</td></tr>\n";
-    echo "<tr><td>Rekvisita aktören känner till</td><td>\n";
+    echo "<tr><td>Rekvisita och PDF aktören känner till</td><td>\n";
     echo "<a href='choose_intrigue_props.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownProps = $intrgueActor->getAllPropsThatAreKnown();
     printAllProps($knownProps, $intrgueActor, false);
+    $knownPdfs = $intrgueActor->getAllPdfsThatAreKnown();
+    printAllPdfs($knownPdfs, $intrgueActor);
     echo "</td></tr>\n";
     echo "<tr><td>Karaktärer aktören känner till</td><td>\n";
     echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
@@ -83,6 +85,15 @@ function printAllProps($props, $intrigueActor, $isCheckin) {
 
 
 	echo "</ul>";
+}
+
+function printAllPdfs($intrigue_pdfs, $intrigueActor) {
+    foreach($intrigue_pdfs as $intrigue_pdf) {
+        echo "<a href='view_intrigue_pdf.php?id=$intrigue_pdf->Id' target='_blank'>$intrigue_pdf->Filename</a>";
+        echo " <a href='logic/view_intrigue_logic.php?operation=remove_pdf_known&PdfId=$intrigue_pdf->Id&IntrigueActorId=$intrigueActor->Id'><i class='fa-solid fa-xmark'></i></a>";
+        echo "<br>";
+    }
+    
 }
 
 function printAllLetters($letters, $intrigueActor) {
@@ -496,6 +507,20 @@ foreach ($intrigue_telegrams as $intrigue_telegram) {
 
 ?>
 </td></tr>
+
+<tr><td>PDF</td><td>
+<a href="add_intrigue_pdf.php?Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till PDF"></i></a>
+<br>
+<?php 
+$intrigue_pdfs = $intrigue->getAllPdf();
+foreach ($intrigue_pdfs as $intrigue_pdf) {
+    echo "<a href='view_intrigue_pdf.php?id=$intrigue_pdf->Id' target='_blank'>$intrigue_pdf->Filename</a>";
+    echo " <a href='logic/view_intrigue_logic.php?operation=delete_pdf&pdfId=$intrigue_pdf->Id'><i class='fa-solid fa-trash'></i></a>";    
+    echo "<br>"; 
+}
+?>
+</td></tr>
+
 <tr><td>Länkade intriger</td><td>
   <a href="choose_intrigue.php?operation=add_intrigue_relation&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till länk till annan intrig"></i></a>
   <br>

@@ -45,6 +45,30 @@ include 'navigation.php';
     		<br>
 			<input type="submit" value="Lägg till">
 			
+        <h2>PDF</h2>
+     		<?php 
+     		$intrigue_pdfs = $intrigue->getAllPdf();
+     		if (empty($intrigue_pdfs)) {
+     		    echo "Inga uppladdade PDF'er";
+     		} else {
+     		    ?>
+    		    <table class='data'>
+    		    <tr><th>Namn</th></tr>
+    		    <?php 
+    		    foreach ($intrigue_pdfs as $intrigue_pdf)  {
+    		        echo "<tr>\n";
+    		        echo "<td><input type='checkbox' id='Intrigue_Pdf$intrigue_pdf->Id' name='Intrigue_PdfId[]' value='$intrigue_pdf->Id'>";
+
+    		        echo "<label for='Pdf$intrigue_pdf->Id'>$intrigue_pdf->Filename</label></td>\n";
+
+    		        echo "</tr>\n";
+    		    }
+    		    echo "</table>";
+    		}
+    		?>
+			
+    		<br>
+			<input type="submit" value="Lägg till">
 			
 			
 			

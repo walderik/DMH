@@ -255,6 +255,33 @@ class Intrigue extends BaseModel{
         }
     }
 
+    public function addPdf() {
+        if ($_FILES["bilaga"]["size"] > 5242880) return array();
+        
+        $file_tmp  = $_FILES['bilaga']['tmp_name'];
+        if(empty($file_tmp)) return array();
+        $fileSize = filesize($file_tmp);
+        if ($fileSize > 5242880) return array();
+        
+        $allowed = array("pdf" => "application/pdf");
+        $filetype = $_FILES["bilaga"]["type"];
+        $file_name = $_FILES['bilaga']['name'];
+        
+        // Validate file extension
+        $ext = pathinfo($file_name, PATHINFO_EXTENSION);
+        if(!array_key_exists($ext, $allowed)) return array();
+        // Validate type of the file
+        if(!in_array($filetype, $allowed)) return array();
+        
+        $the_file = file_get_contents($file_tmp);
+        
+        $intrigue_pdf = Intrigue_Pdf::newWithDefault();
+        $intrigue_pdf->IntrigueId = $this->Id;
+        $intrigue_pdf->Filename = $file_name;
+        $intrigue_pdf->FileData = $the_file;
+        $intrigue_pdf->create();
+    }
+    
     public function addTelegrams($telegramIds) {
         //Ta reda på vilka som inte redan är kopplade till intrigen
         $exisitingIds = array();
@@ -387,6 +414,10 @@ class Intrigue extends BaseModel{
         return Intrigue_Telegram::getAllTelegramsForIntrigue($this);
     }
 
+    public function getAllPdf() {
+        return Intrigue_Pdf::getAllPDFsForIntrigue($this);
+    }
+    
     public function getAllIntrigueRelations() {
         $sql = "SELECT regsys_intrigue.* FROM regsys_intrigue, regsys_intrigue_relationship r1, regsys_intrigue_relationship r2 WHERE ".
             "r1.IntrigueId = ? AND ".

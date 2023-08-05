@@ -254,6 +254,25 @@ class IntrigueActor extends BaseModel{
          }
      }
      
+     public function addKnownPdf($intrigue_pdfIds) {
+         //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_pdfs = $this->getAllKnownPdfs();
+         foreach ($intrigue_pdfs as $intrigue_pdf) {
+             $exisitingIds[] = $intrigue_pdf->IntriguePdfId;
+         }
+         
+         $newPdfIds = array_diff($intrigue_pdfIds,$exisitingIds);
+         //Koppla rekvisitan till aktören
+         foreach ($newPdfIds as $intrigue_pdfId) {
+             $intrigueactor_knownpdf = IntrigueActor_KnownPdf::newWithDefault();
+             $intrigueactor_knownpdf->IntrigueActorId = $this->Id;
+             $intrigueactor_knownpdf->IntriguePdfId = $intrigue_pdfId;
+             $intrigueactor_knownpdf->create();
+         }
+     }
+     
+     
      public function getAllCheckinLetters() {
          return IntrigueActor_CheckinLetter::getAllCheckinLettersForIntrigueActor($this);
      }
@@ -282,6 +301,10 @@ class IntrigueActor extends BaseModel{
          return Telegram::getAllCheckinTelegramsForIntrigueActor($this);
      }
      
+     public function getAllPdfsThatAreKnown() {
+         return Intrigue_Pdf::getAllPDFsForIntrigueActor($this);
+     }
+     
      
      public function getAllKnownProps() {
          return IntrigueActor_KnownProp::getAllKnowninPropsForIntrigueActor($this);
@@ -301,6 +324,10 @@ class IntrigueActor extends BaseModel{
      
      public function getAllKnownNPCs() {
          return IntrigueActor_KnownNPC::getAllKnownNPCsForIntrigueActor($this);
+     }
+     
+     public function getAllKnownPdfs() {
+         return IntrigueActor_KnownPdf::getAllKnowninPdfsForIntrigueActor($this);
      }
      
      public function removePropCheckin($propId) {
@@ -342,4 +369,11 @@ class IntrigueActor extends BaseModel{
          $checkin_telegram=IntrigueActor_CheckinTelegram::loadByIds($telegramId, $this->Id);
          IntrigueActor_CheckinTelegram::delete($checkin_telegram->Id);
      }
+
+     public function removeKnownPdf($intriguePdfId) {
+         $known_pdf=IntrigueActor_KnownPdf::loadByIds($intriguePdfId, $this->Id);
+         IntrigueActor_KnownPdf::delete($known_pdf->Id);
+     }
+     
+     
 }
