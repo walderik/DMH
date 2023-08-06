@@ -5,7 +5,18 @@ $persons=Person::getAllInterestedNPC($current_larp);
 
 
 function print_assigned_npc(NPC $npc, $npc_group) {
+    echo "<tr><td width='80'>";
+    if ($npc->hasImage()) {
+        $image = Image::loadById($npc->ImageId);
+        echo "<img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+        echo " <a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+    } else {
+        echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+    }
+    echo "</td><td>";
+    
     echo "<div class='npc'>";
+    
     $person=$npc->getPerson();
     
     echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a> \n";
@@ -15,18 +26,27 @@ function print_assigned_npc(NPC $npc, $npc_group) {
     echo "<input type='hidden' name='PersonId' value='null'>\n";
     echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från deltagaren'></i></button>";
     echo "</form>\n";
-    if (empty($npc_group) || ($npc_group->IsReleased() && !$npc->IsReleased())) {
+    if (empty($npc_group) || (!$npc->IsReleased())) {
         echo "<form action='logic/release_npc.php' method='post' style='display:inline-block'><input type='hidden' name='id' value='$npc->Id'>\n";
         echo " <button class='invisible' type ='submit'><i class='fa-solid fa-envelope' title=''Skicka NPC:n till deltagaren'></i></button>\n";
         echo "</form>\n";
     }
     echo "</div>";
+    echo "</td></tr>";
     
 }
 
 function print_unassigned_npc(NPC $npc) {
     global $persons;
-    echo "<tr><td style='font-weight:normal'>";
+    echo "<tr><td width='80'>";
+    if ($npc->hasImage()) {
+        $image = Image::loadById($npc->ImageId);
+        echo "<img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+        echo " <a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+    } else {
+        echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+    }
+    echo "</td><td>";
     echo "<div class='npc'>";
     echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a> ";
     echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> ";
@@ -76,10 +96,12 @@ div.npc {
             
             
             $npc_groups = NPCGroup::getAllForLARP($current_larp);
+            echo "<table>";
             
             foreach ($npc_groups as $npc_group) {
                 $npcs=NPC::getAllAssignedByGroup($npc_group, $current_larp);
                 if (!empty($npcs)) {
+                    echo "<tr><td colspan='2'>";
                     echo "<form action='logic/release_npc_group.php' method='post'><input type='hidden' name='id' value='$npc_group->Id'>\n";
                     echo "<h3><a href='npc_group_form.php?operation=update&id=$npc_group->Id'>$npc_group->Name</a>";
                     
@@ -89,9 +111,10 @@ div.npc {
                     }
                     else {
                         echo " <button class='invisible' type ='submit'><i class='fa-solid fa-envelope' title=''Skicka NPC:n till deltagarna'></i></button>\n";
-                        echo "</h2>";
+                        echo "</h3>";
                     }
                     echo "</form>\n";
+                    echo "</td></tr>";
                 }
                 foreach($npcs as $npc) {
                     print_assigned_npc($npc, $npc_group);
@@ -99,12 +122,14 @@ div.npc {
             }
             $npcs=NPC::getAllAssignedWithoutGroup($current_larp);
             if (!empty($npcs)) {
+                echo "<tr><td colspan='2'>";
                 echo "<h3>Utan grupp</h3>";
+                echo "</td></tr>";
             }
             foreach($npcs as $npc) {
                 print_assigned_npc($npc, null);
             }
-            
+            echo "</table>";
             ?>
             </div>
             
