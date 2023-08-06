@@ -11,8 +11,6 @@ Bygghelg, mat anges per måltid, gratis
 
 Ta bort sidokaraktär
 
-Ladda upp bilder på NPC'er både från admin och deltagare
-
 Ge tillstånd att visa spelarens namn vid karaktärspresentationen
 
 Kopiera intrig från tidigare år
