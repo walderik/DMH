@@ -167,6 +167,7 @@ div.npc {
             }
 
             echo "</table>";
+            //TODO visa bara de som inte har någon npc i sig (oavsett om den är tilldelad eller inte
             echo "<h3>Grupper utan npc'er<h3>";
             echo implode(", ", $unused_group_links);
             

@@ -265,6 +265,19 @@ class Group extends BaseModel{
          return $resultArray;
      }
      
+     public static function getGroupsInHouse(House $house, LARP $larp) {
+         $sql = "SELECT * FROM regsys_group WHERE Id IN ".
+             "(SELECT regsys_role.GroupId FROM regsys_housing, regsys_role, regsys_larp_role WHERE ". 
+            "regsys_housing.HouseId = ? AND ".
+            "regsys_housing.LarpId = ? AND ".
+            "regsys_role.PersonId = regsys_housing.PersonId AND ".
+            "regsys_role.Id = regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.LarpId = regsys_housing.LarpId".
+            ") ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($house->Id, $larp->Id));
+         
+     }
+     
      
     
 }
