@@ -52,7 +52,7 @@ function print_role(Role $role, Group $group) {
     }
     
     echo "<div class='description'>$role->DescriptionForGroup</div>\n";
-    if (isset($role->ImageId) && !is_null($role->ImageId)) {
+    if ($role->hasImage()) {
         $image = Image::loadById($role->ImageId);
         if (!is_null($image)) {
             

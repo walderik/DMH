@@ -37,6 +37,19 @@ include 'navigation.php';
 		<h1><?php echo $npc->Name;?></h1>
 		<table>
 			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $npc->getPerson()->Name; ?></td>
+ 			<?php 
+ 			if ($npc->hasImage()) {
+ 			    
+ 			    $image = Image::loadById($npc->ImageId);
+ 			    echo "<td rowspan='20' valign='top'><img width='300' src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+ 			    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+ 			    echo "</td>";
+ 			}
+ 			
+ 			
+ 			
+ 			?>
+			
 			</tr>
 		<?php if (isset($npc_group)) {?>
 			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_npc_group.php?id=<?php echo $npc_group->Id;?>"><?php echo $npc_group->Name; ?></a></td></tr>

@@ -32,9 +32,26 @@ function print_npc(NPC $npc) {
     
     echo "<li>\n";
     echo "<div class='name'>$npc->Name";    echo "</div>\n";
-    echo "Spelas av ".$npc->getPerson()->Name."<br>";
+    $person = $npc->getPerson();
+    if (isset($person)) echo "Spelas av $person->Name<br>";
+    else echo "Inte tilldelad<br>";
     
     echo "<div class='description'>$npc->Description</div>\n";
+    if ($npc->hasImage()) {
+        $image = Image::loadById($npc->ImageId);
+        if (!is_null($image)) {
+            
+            echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+            if (!empty($image->Photographer) && $image->Photographer!="") {
+                echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
+            }
+        }
+    }
+    else {
+        echo "<img src='../images/man-shape.png' />\n";
+        echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
+    }
+    
     echo "</li>\n\n";
     
 }

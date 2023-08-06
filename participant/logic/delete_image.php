@@ -39,6 +39,13 @@ switch ($type) {
             exit;
         }
         break;
+    case "npc":
+        $object = NPC::loadById($id);
+        if (Person::loadById($object->PersonId)->UserId != $current_user->Id) {
+            header('Location: ../index.php');
+            exit;
+        }
+        break;
 }
 
 

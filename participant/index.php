@@ -251,6 +251,16 @@ include "navigation.php";
     		            echo "<table class='roles'>\n";
     		            foreach ($npcs as $npc)  {
     		                echo "<tr><td style='font-weight: normal; padding-right: 0px;'>";
+    		                if ($npc->hasImage()) {
+    		                    $image = Image::loadById($npc->ImageId);
+    		                    echo "<img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+    		                    echo "<a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+    		                }
+    		                else {
+    		                    echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+    		                }
+    		                
+    		                echo "</td><td>";
     		                echo "<a href='view_npc.php?id=$npc->Id'>$npc->Name</a>";
     		                
     		                if ($npc->IsInGroup()) {
