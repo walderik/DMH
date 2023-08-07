@@ -47,7 +47,7 @@ include 'navigation.php';
     <div class="content">
         <h1>Rykten</h1>
         <p>Rykten skapade av arrangörer blir automatiskt godkända. Rykten skapade av deltagare behöver godkännas av arrangörer innan de kan spridas.<br> 
-        <a href="rumour_wizard_pg1.php">Fördela ett eller flera rykten slumpmässigt <i class="fa-solid fa-wand-sparkles"></i></a>
+        <a href="rumour_wizard_pg1.php">Fördela ett eller flera rykten, som ingen redan känner till, slumpmässigt <i class="fa-solid fa-wand-sparkles"></i></a>
         </p>
 		<form action="rumour_admin.php" method="post">
             <a href="rumour_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
@@ -68,7 +68,7 @@ include 'navigation.php';
         $rumour_array = Rumour::allBySelectedLARP($current_larp);
         if (!empty($rumour_array)) {
             echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Text</th><th></th><th>Skapare</th><th>Gäller</th><th>Kopplad<br>till intrig</th><th>Ok</th><th></th></tr>\n";
+            echo "<tr><th>Text</th><th></th><th>Skapare</th><th>Gäller</th><th>Antal som<br>känner till</th><th>Kopplad<br>till intrig</th><th>Ok</th><th></th></tr>\n";
             foreach ($rumour_array as $rumour) {
                 echo "<tr>\n";
                 if ($short_text) {
@@ -94,6 +94,9 @@ include 'navigation.php';
                     $concers_str_arr[] = $concern->getViewLink();
                 }
                 echo implode(", ", $concers_str_arr);
+                echo "</td>";
+                echo "<td>";
+                echo count($rumour->getKnows());
                 echo "</td>";
                 echo "<td>";
                 if (isset($rumour->IntrigueId)) {
