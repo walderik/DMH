@@ -22,6 +22,8 @@ if ($role->isMysLajvare()) {
     			<td valign="top" class="header">Spelas av</td>
     			<td>
     			<a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $person->Name; ?></a>&nbsp;
+    			<?php  echo contactEmailIcon($person->Name,$person->Email); ?>&nbsp;
+    			
     			(<?php echo $person->getAgeAtLarp($current_larp) ?> år)
 			</td>
 		<?php 
