@@ -3,11 +3,11 @@ include_once 'header.php';
 include 'navigation.php';
 
 $individualcols = 3;
-$individualwidth = "30%";
+$individualwidth = "auto";
 $groupcols = 3;
-$groupwidth = "30%";
+$groupwidth = "auto";
 $housecols = 2;
-$housewidth = "49%";
+$housewidth = "auto";
 
 
 
@@ -19,9 +19,10 @@ function print_group(Group $group,$group_members, $house) {
     foreach($group_members as $group_member) {
         if (!empty($group_member->HousingComment)) $comments[] = $group_member->HousingComment;
     }
-    
-    echo "<li style='display:table-cell; width:$groupwidth;' draggable='true' ondragstart='drag(event)'>\n";
-    echo "<div class='name' nowrap><a href='view_group.php?id=$group->Id'>$group->Name</a>";
+    $id="group_$group->Id";
+    if (isset($house)) $id = $id."_$house->Id";
+    echo "<li style='display:table-cell; width:$groupwidth;' id='$id' draggable='true' ondragstart='drag(event)'>\n";
+    echo "<div class='name' nowrap><a href='view_group.php?id=$group->Id' draggable='false'>$group->Name</a>";
     if (isset($house)) {
         echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från huset'></i></button>";        
     }
@@ -50,8 +51,8 @@ function print_group(Group $group,$group_members, $house) {
 
 function print_individual(Person $person, $house) {
     global $current_larp, $individualwidth;
-    echo "<li style='display:table-cell; width:$individualwidth;' draggable='true' ondragstart='drag(event)'>\n";
-    echo "<div class='name'><a href='view_person.php?id=$person->Id'>$person->Name</a>";
+    echo "<li style='display:table-cell; width:$individualwidth;' id='person_$person->Id' draggable='true' ondragstart='drag(event)'>\n";
+    echo "<div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>$person->Name</a>";
     if (!empty($person->HousingComment)) {
         echo " <i class='fa-solid fa-circle-info' title='$person->HousingComment'></i>";
     }
@@ -66,7 +67,7 @@ function print_individual(Person $person, $house) {
 
 function print_house($house) {
     global $current_larp, $housewidth;
-    echo "<li style='display:table-cell; width:$housewidth;' ondrop='drop(event)' ondragover='allowDrop(event)'>\n";
+    echo "<li style='display:table-cell; width:$housewidth;' id='house_$house->Id' ondrop='drop(event)' ondragover='allowDrop(event)'>\n";
     echo "<div class='name'>$house->Name <button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>";
     echo "<div>Antal platser: $house->NumberOfBeds</div>";
     $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
@@ -108,6 +109,16 @@ include_once '../javascript/show_hide_area.js';
 
 ?>
 
+<style>
+div.housing-group {
+    border: 1px solid #ccc;
+	border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+</style>
+
 <script>
 function allowDrop(ev) {
   ev.preventDefault();
@@ -121,7 +132,8 @@ function drop(ev) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
   alert(data);
-  //ev.target.appendChild(document.getElementById(data));
+  alert(ev.target.id);
+  ev.target.appendChild(document.getElementById(data));
 }
 </script>
 
@@ -218,10 +230,13 @@ function drop(ev) {
 	?>
 	</td><td width='45%'>
 	<h2>Tilldelat boende</h2>
-	<div>
-	<h3>Hus</h3>
+	<div class='housing-group'>
+	
+	<h3>Hus <?php echo " <span onclick='show_hide_area(\"houses\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>";?></h3>
+	
 	<?php 
 	$houses=House::all();
+	echo "<div id='houses'>";
 	echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 	$temp = 0;
 	
@@ -235,11 +250,18 @@ function drop(ev) {
 	    }
 	}
 	echo "</ul>\n";
-	
+	echo "</div>";
 	?>
 	</div>
-	<div>
-	<h3>Lägerplatser</h3>
+	<div class='housing-group'>
+	<h3>Lägerplatser <?php echo " <span onclick='show_hide_area(\"camps\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>"; ?></h3>
+	<?php 
+	echo "<div id='camps'>";
+	
+	echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+	echo "</ul>";
+	echo "</div>";
+	?>
 	</div>
 	</td></tr></table>
 </div>
