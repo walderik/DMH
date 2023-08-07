@@ -35,17 +35,8 @@ if (isset($_SESSION['larp'])) {
 }
 
 # Körs efter att current_user och current_larp är satt, så blir det bäst.
-if (!handleEmailQueue()) {
+if (!Email::handleEmailQueue()) {
 //     echo "<h1>Failing sending Email</h1>"; # Vad gör vi nu? Skicka felnotering till admin?
 }
 
 
-function handleEmailQueue() {
-//     return;
-    $current_queue = Email::allUnsent();
-    if (empty($current_queue)) return;
-    if (!Email::okToSendNow()) return;
-//     echo "Send an email";
-    $to_send = array_pop($current_queue); # Hämta äldsta mailet i kön
-    return $to_send->sendNow();
-}

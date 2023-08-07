@@ -288,5 +288,13 @@ class Email extends BaseModel{
         
     }
     
-    
+    public static function handleEmailQueue() {
+        //     return;
+        $current_queue = static::allUnsent();
+        if (empty($current_queue)) return;
+        if (!static::okToSendNow()) return;
+        //     echo "Send an email";
+        $to_send = array_pop($current_queue); # Hämta äldsta mailet i kön
+        return $to_send->sendNow();
+    }
 }

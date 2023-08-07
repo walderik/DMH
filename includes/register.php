@@ -1,4 +1,5 @@
 <?php
+
 // Now we check if the data was submitted, isset() function will check if the data exists.
 if (isset($_POST['submit'])) {
     
@@ -15,11 +16,6 @@ if (isset($_POST['submit'])) {
 //     //Running error handlers and user signup
     $signup->signupUser();
 
-    if (!handleEmailQueue()) {
-        //     echo "<h1>Failing sending Email</h1>"; # Vad gör vi nu? Skicka felnotering till admin?
-    }
-    
-    
     //Going back to front page
     header("location: ../index.php?message=user_created"); 
     exit;
