@@ -1,5 +1,8 @@
 Bygghelgs-anmälningar
 
+Rykten sprids till myslajvare
+Man borde kunna ange minimiantal som ska ha ett rykte
+
 Intriger, vid filtrering ta även bort inaktiva
 Intriger, generell text som går till alla i intrigen
 
