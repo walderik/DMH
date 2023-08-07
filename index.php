@@ -4,6 +4,11 @@ session_start();
 session_unset();
 
 include_once 'includes/error_handling.php';
+
+if (!handleEmailQueue()) {
+    //     echo "<h1>Failing sending Email</h1>"; # Vad gör vi nu? Skicka felnotering till admin?
+}
+
 ?>
 
 
