@@ -9,7 +9,7 @@ $groupwidth = "30%";
 $housecols = 2;
 $housewidth = "49%";
 
-include_once '../javascript/table_sort.js';
+
 
 function print_group(Group $group,$group_members, $house) {
     global $current_larp, $groupwidth;
@@ -20,14 +20,16 @@ function print_group(Group $group,$group_members, $house) {
         if (!empty($group_member->HousingComment)) $comments[] = $group_member->HousingComment;
     }
     
-    echo "<li style='display:table-cell; width:$groupwidth;'>\n";
+    echo "<li style='display:table-cell; width:$groupwidth;' draggable='true' ondragstart='drag(event)'>\n";
     echo "<div class='name' nowrap><a href='view_group.php?id=$group->Id'>$group->Name</a>";
     if (isset($house)) {
         echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från huset'></i></button>";        
     }
     $houseId = "";
     if (isset($house)) $houseId = $house->Id;
-    echo "<button class='invisible' onclick='show_hide(\"Group_".$group->Id."_".$houseId."\")'><i class='fa-solid fa-caret-left'></i></button></div>\n";
+    echo " <span onclick='show_hide_area(\"Group_".$group->Id."_".$houseId."\", this)' name='hide'><i class='fa-solid fa-caret-left'></i></span>";
+    echo "</div>\n";
+    //echo "<button class='invisible' onclick='show_hide(\"Group_".$group->Id."_".$houseId."\")'><i class='fa-solid fa-caret-left'></i></button></div>\n";
     echo "<div>".count($group_members)." st";
     if (!empty($comments)) {
         echo " <i class='fa-solid fa-circle-info' title='".implode(", ", $comments)."'></i>";
@@ -48,7 +50,7 @@ function print_group(Group $group,$group_members, $house) {
 
 function print_individual(Person $person, $house) {
     global $current_larp, $individualwidth;
-    echo "<li style='display:table-cell; width:$individualwidth;'>\n";
+    echo "<li style='display:table-cell; width:$individualwidth;' draggable='true' ondragstart='drag(event)'>\n";
     echo "<div class='name'><a href='view_person.php?id=$person->Id'>$person->Name</a>";
     if (!empty($person->HousingComment)) {
         echo " <i class='fa-solid fa-circle-info' title='$person->HousingComment'></i>";
@@ -58,16 +60,13 @@ function print_individual(Person $person, $house) {
     }
     echo "</div>\n";
     echo "<div>".HousingRequest::loadById($person->getRegistration($current_larp)->HousingRequestId)->Name."</div>\n";
-
-    //$role = $person->getMainRole($current_larp);
-    //echo "<div>Spelar: $role->Name, $role->Profession</div>";
     echo "</li>";
     
 }
 
 function print_house($house) {
     global $current_larp, $housewidth;
-    echo "<li style='display:table-cell; width:$housewidth;'>\n";
+    echo "<li style='display:table-cell; width:$housewidth;' ondrop='drop(event)' ondragover='allowDrop(event)'>\n";
     echo "<div class='name'>$house->Name <button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>";
     echo "<div>Antal platser: $house->NumberOfBeds</div>";
     $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
@@ -102,31 +101,28 @@ function print_house($house) {
 
 ?>
 
-<style>
+<?php 
 
+include_once '../javascript/table_sort.js';
+include_once '../javascript/show_hide_area.js';
 
-div.hidden {
-  display: none;
-}
-div.shown {
-  display: table-row;
-}
-
-</style>
+?>
 
 <script>
-function show_hide(id) {
-alert(id);
-  var obj = document.getElementById(id);
-  if (obj.classList.indexOf("hidden") > -1) {
-  		obj.classList.remove('hidden');
-  }
-  else {
-		obj..classList.add('hidden');
-  }
+function allowDrop(ev) {
+  ev.preventDefault();
 }
 
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
 
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  alert(data);
+  //ev.target.appendChild(document.getElementById(data));
+}
 </script>
 
 <div class="content">
@@ -221,7 +217,9 @@ alert(id);
 	}
 	?>
 	</td><td width='45%'>
-	<h2>Husen</h2>
+	<h2>Tilldelat boende</h2>
+	<div>
+	<h3>Hus</h3>
 	<?php 
 	$houses=House::all();
 	echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
@@ -239,5 +237,9 @@ alert(id);
 	echo "</ul>\n";
 	
 	?>
+	</div>
+	<div>
+	<h3>Lägerplatser</h3>
+	</div>
 	</td></tr></table>
 </div>
