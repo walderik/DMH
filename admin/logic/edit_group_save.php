@@ -19,8 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $larp_group->setValuesByArray($_POST);
         $larp_group->update();
         
-        $larp_group->deleteAllIntrigueTypes();
-        $larp_group->saveAllIntrigueTypes($_POST);
+        $group->deleteAllIntrigueTypes();
+        $group->saveAllIntrigueTypes($_POST);
     }
     if (isset($_POST['Referer']) && $_POST['Referer']!="") {
         header('Location: ' . $_POST['Referer']);
