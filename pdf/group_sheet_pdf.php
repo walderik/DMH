@@ -5,11 +5,11 @@ global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require_once $root . '/includes/fpdf185/fpdf.php';
-
+require_once $root . '/includes/fpdf185/script/mem_image.php';
 require_once $root . '/includes/all_includes.php';
 
 
-class Group_PDF extends FPDF {
+class Group_PDF extends PDF_MemImage {
     
     public static $Margin = 5;
     
@@ -114,6 +114,198 @@ class Group_PDF extends FPDF {
         return true;
     }
     
+    function intrigues() {
+        global $y, $left;
+        
+        $space = 3;
+        
+        # Kolla först att det finns intriger och att någon har en intrigtext
+        $intrigues = Intrigue::getAllIntriguesForGroup($this->group->Id, $this->larp->Id);
+        if (empty($intrigues)) return true;
+        
+        $tomma_intriger = true;
+        foreach ($intrigues as $intrigue) {
+            if (!$intrigue->isActive()) continue;
+            $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this->group);
+            if (!empty($intrigueActor->IntrigueText)) $tomma_intriger = false;
+        }
+        if ($tomma_intriger) return true;
+        
+        
+        $this->AddPage();
+        $this->SetXY($left, $y);
+        $this->SetFont('Helvetica','B',static::$text_fontsize);
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Intriger'),0,0,'L');
+        $y = $this->GetY()+$space*3;
+        $this->SetXY($left, $y);
+        
+        $this->SetFont('Arial','',static::$text_fontsize);
+        
+        //point to end of the array
+        end($intrigues);
+        //fetch key of the last element of the array.
+        $lastElementKey = key($intrigues);
+        
+        $known_actors = array();
+        $known_npcs = array();
+        $known_npcgroups = array();
+        $known_props = array();
+        
+        foreach ($intrigues as $key => $intrigue) {
+            if (!$intrigue->isActive()) continue;
+            
+            $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this->group);
+            if (empty($intrigueActor)) continue;
+            
+            $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
+            $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
+            $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
+            $known_npcgroups = array_merge($known_npcgroups, $intrigueActor->getAllKnownNPCGroups());
+            
+            if (!empty($intrigueActor->IntrigueText)) {
+                $text = "($intrigue->Number) " . trim(utf8_decode($intrigueActor->IntrigueText));
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+            }
+            
+            if (!empty($intrigueActor->OffInfo)) {
+                $text = trim(utf8_decode("OFF_INFORMATION: " . $intrigueActor->OffInfo));
+                if (empty($intrigueActor->IntrigueText)) $text = "($intrigue->Number) " . $text;
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+            }
+            
+            if($key != $lastElementKey && !empty($intrigueActor->IntrigueText)) {
+                $this->bar();
+                $y = $this->GetY()+$space*2;
+                $this->SetXY($left, $y);
+            }
+        }
+        
+        # Dom man känner till från intrigerna
+        if (!empty($known_actors) && !empty($known_npcgroups && !empty($known_npcs)  && !empty($known_props))) {
+            $this->bar();
+            $y = $this->GetY()+$space*2;
+            
+            $this->current_left = $left;
+            $this->SetXY($this->current_left, $y);
+            $this->SetFont('Helvetica','B',static::$text_fontsize);
+            $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Känner till'),0,0,'L');
+            
+            $y = $this->GetY() + $space*3;
+            $this->SetXY($this->current_left, $y);
+            $this->SetFont('Helvetica','',static::$text_fontsize);
+            $rowImageHeight = 0;
+            $lovest_y = $y;
+            foreach ($known_actors as $known_actor) {
+                $image = null;
+                $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
+                
+                if (!empty($knownIntrigueActor->GroupId)) {
+                    $groupActor=$knownIntrigueActor->getGroup();
+                    $this->print_know_stuff($groupActor->Name, $image);
+                    continue;
+                }
+                
+                $role = $knownIntrigueActor->getRole();
+                if ($role->hasImage()) $image = Image::loadById($role->ImageId);
+                $text = $role->Name; #, $y, $lovest_y, $realHeight, ".$this->GetPageHeight();
+                $role_group = $role->getGroup();
+                if (!empty($role_group)) $text .= "\n\r($role_group->Name)";
+                $this->print_know_stuff($text, $image);
+            }
+            foreach ($known_npcgroups as $known_npcgroup) {
+                $image = null;
+                $npcgroup = $known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
+                $this->print_know_stuff("$npcgroup->Name - NPC-grupp", $image);
+            }
+            foreach ($known_npcs as $known_npc) {
+                $image = null;
+                $npc = $known_npc->getIntrigueNPC()->getNPC();
+                $text = "$npc->Name - NPC";
+                $npc_group = $npc->getNPCGroup();
+                if (!empty($npc_group)) $text .="\n\r($npc_group->Name)";
+                if ($npc->hasImage()) $image = Image::loadById($npc->ImageId);
+                $this->print_know_stuff($text, $image);
+            }
+            foreach ($known_props as $known_prop) {
+                $image = null;
+                $prop = $known_prop->getIntrigueProp()->getProp();
+                if ($prop->hasImage()) $image = Image::loadById($prop->ImageId);
+                $this->print_know_stuff($prop->Name, $image);
+            }
+        }
+        
+        
+        return true;
+    }
+    
+    protected function print_know_stuff($text, $image){
+        global $y, $left, $left2, $rowImageHeight, $lovest_y;
+        $space = 3;
+        $image_width = 25;
+        $realHeight = 0;
+        
+        if (isset($image)) {
+            $v = 'img'.md5($image->file_data);
+            $GLOBALS[$v] = $image->file_data;
+            list($width, $new_y) =  getimagesize('var://'.$v);
+            
+            $realHeight = round(($new_y / $width) * $image_width);
+            if ($realHeight > $rowImageHeight) $rowImageHeight = $realHeight;
+            $this->MemImage($image->file_data, $this->current_left, $y, $image_width);
+            $this->SetXY($this->current_left + 25, $y); # Skjut texten till höger
+        }
+        
+        $this->MultiCell(0, static::$cell_y-1, trim(utf8_decode($text)), 0, 'L');
+        $new_y = $this->GetY() + $space;
+        if ($new_y > $lovest_y) $lovest_y = $new_y;
+        
+        # Räkna upp en cell i bredd
+        if ($this->current_left == $left) {
+            $this->current_left = $left2;
+        } else {
+            # Vi har just ritat den högra rutan
+            $this->current_left = $left;
+            $y = $this->GetY() + $space;
+            if ($lovest_y > $y) $y = $lovest_y;
+            $y += $rowImageHeight;
+            $rowImageHeight = 0;
+            $lovest_y = $y;
+        }
+        $this->SetXY($this->current_left, $y);
+    }
+    
+    function rumours(){
+        global $y, $left;
+        $space = 3;
+        
+        $rumours = Rumour::allKnownByGroup($this->larp, $this->group);
+        if (empty($rumours)) return true;
+        
+        $this->AddPage();
+        $this->SetXY($left, $y);
+        $this->SetFont('Helvetica','B',static::$text_fontsize);
+        $name = $this->group->Name;
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Rykten $name känner till "),0,0,'L');
+        $this->SetFont('Arial','',static::$text_fontsize-3);
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("(Hjälp gärna till att sprida och reagera på dom) "),0,0,'L');
+        
+        $this->SetFont('Arial','',static::$text_fontsize);
+        $y = $this->GetY()+$space*3;
+        $this->SetXY($left, $y);
+        
+        foreach($rumours as $rumour) {
+            $this->MultiCell(0, static::$cell_y-1, trim(utf8_decode($rumour->Text)), 0, 'L');
+            $y = $this->GetY()+$space;
+            $this->SetXY($left, $y);
+        }
+        
+    }
+    
+    
     function new_group_sheet(Group $group_in, LARP $larp_in, bool $all_in=false) {
         global $x, $y, $left, $left2, $mitten;
         
@@ -166,9 +358,9 @@ class Group_PDF extends FPDF {
         
         $this->beskrivning();
         
-    return;    
+   
 
-     
+     /* TODO lös vad som har hänt
         # Det nedan löser vi med tiden. Just nu et jag inte hur det är tänkt fungera
 
         $previous_larps = $this->group->getPreviousLarps();
@@ -194,6 +386,12 @@ class Group_PDF extends FPDF {
                 $this->set_rest_of_page("Vad hände för andra?", $text);
             }
         }
+        */
+        if ($this->larp->isIntriguesReleased() || $this->all) {
+            $this->intrigues();
+            $this->rumours();
+        }
+        
 	}
 	
 	function all_group_sheets(LARP $larp_in ) {

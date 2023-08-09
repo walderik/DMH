@@ -297,7 +297,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->SetXY($this->current_left, $y);
     }
     
-    function romours(){
+    function rumours(){
         global $y, $left;
         $space = 3;
         
@@ -413,7 +413,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         if (!$this->isReserve && ($this->larp->isIntriguesReleased() || $this->all)) {
             $this->intrigues();
-            $this->romours();
+            $this->rumours();
         }
 	}
 	
