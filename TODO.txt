@@ -1,6 +1,17 @@
+Prio före lajvet
+================
+
+Göra klart husfördelningen
+Husfördelningsutskick + visa för deltagaren
+
+Intriger och rykten på Grupp-pdf
+
+"Släppa intriger" - Kräver att massmail fungerar
+Skicka med pdf'er från intriguer
+
+--------------------------------------------------
 Bygghelgs-anmälningar
 
-Rykten sprids till myslajvare
 Man borde kunna ange minimiantal som ska ha ett rykte
 
 Intriger, vid filtrering ta även bort inaktiva
@@ -19,10 +30,6 @@ Ge tillstånd att visa spelarens namn vid karaktärspresentationen
 Kopiera intrig från tidigare år
 Skriva in "vad som hände" per intrig
 
-
-"Släppa intriger" - Kräver att massmail fungerar
-Skicka med pdf'er från intriguer
-
 Visa på hus vilka som anmält sig som husägare på resp hus.
 
 Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anmäld till, men som inte har varit så ska man sättas till icke-godkänd
@@ -30,8 +37,6 @@ Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anm
 Sökfunktion på roller och grupper (ex Hitta alla som kommer från slow river)
 
 Handelssystemet - skriva in resultat
-
-Göra klart husfördelningen
 
 byta user för en person (admin funktion)
 
