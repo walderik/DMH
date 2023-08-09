@@ -40,7 +40,8 @@ $pdf->SetSubject(utf8_decode($subject));
 if (empty($group)) {
     $pdf->all_group_sheets($current_larp);
 } else {
-    $pdf->new_group_sheet($group, $current_larp);
+    $all_info = (isset($_GET['all_info'])) ? true : false;
+    $pdf->new_group_sheet($group, $current_larp, $all_info);
 }
 
 $pdf->Output();

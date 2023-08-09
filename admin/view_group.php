@@ -75,8 +75,14 @@ include 'navigation.php';
 		<h1><?php echo $current_group->Name;?>&nbsp;
 		<?php if ($current_group->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
 		<a href='edit_group.php?id=<?php echo $current_group->Id;?>'><i class='fa-solid fa-pen'></i></a> 
-		<a href='group_sheet.php?id=<?php echo $current_group->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för <?php echo $current_group->Name;?>'></i></a>
-		</h1>
+		</h1>		
+		<a href='group_sheet.php?id=<?php echo $current_group->Id;?>' target='_blank'>
+		<i class='fa-solid fa-file-pdf' title='Gruppblad för <?php echo $current_group->Name;?>'></i>Gruppblad för <?php echo $current_group->Name;?></a> &nbsp;
+
+		<a href='group_sheet.php?id=<?php echo $current_group->Id;?>&all_info=<?php echo date_format(new Datetime(),"suv") ?>' target='_blank'>
+		<i class='fa-solid fa-file-pdf' title='All info om <?php echo $current_group->Name;?>'></i>All info om <?php echo $current_group->Name;?></a> &nbsp;
+
+
         <?php if ($larp_group->UserMayEdit  == 1) {
                 echo "Gruppledaren får ändra gruppen " . showStatusIcon(false);
                 $editButton = "Ta bort tillåtelsen att ändra";
