@@ -81,8 +81,7 @@ include 'navigation.php';
 
 		<a href='group_sheet.php?id=<?php echo $current_group->Id;?>&all_info=<?php echo date_format(new Datetime(),"suv") ?>' target='_blank'>
 		<i class='fa-solid fa-file-pdf' title='All info om <?php echo $current_group->Name;?>'></i>All info om <?php echo $current_group->Name;?></a> &nbsp;
-
-
+		<br><br>
         <?php if ($larp_group->UserMayEdit  == 1) {
                 echo "Gruppledaren får ändra gruppen " . showStatusIcon(false);
                 $editButton = "Ta bort tillåtelsen att ändra";
