@@ -2,11 +2,10 @@
 include_once 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-
     if (isset($_POST['operation'])) {
         $operation = $_POST['operation'];
         
+        echo "Operation: ".$operation;
         if ($operation == 'add_income') {
             $bookkeeping = Bookkeeping::newFromArray($_POST);
             $bookkeeping->create();
@@ -22,12 +21,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
             $bookkeeping->create();
+        } elseif ($operation == 'update_income') {
+            $bookkeeping = Bookkeeping::loadById($_POST['id']);
+            $bookkeeping->setValuesByArray($_POST);
+            $bookkeeping->update();
+        } elseif ($operation == 'update_expense') {
+            $bookkeeping = Bookkeeping::loadById($_POST['id']);
+            $bookkeeping->setValuesByArray($_POST);
+            $bookkeeping->Amount = 0 - $_POST['Amount'];
             
+            /* TODO kolla hur man ser om man har bytt fil
+             * if (!empty($_FILES["upload"]["name"])) {
+                $error = Image::maySave();
+                if (!isset($error)) {
+                    $id = Image::saveImage();
+                    $bookkeeping->ImageId = $id;
+                }
+            }'*/
+            $bookkeeping->update();
         }
     }
-    if (isset($error)) header("Location: economy.php?error=$error");
-    else header('Location: ' . 'economy.php');
-    exit;
+    //if (isset($error)) header("Location: economy.php?error=$error");
+    //else header('Location: ' . 'economy.php');
+    //exit;
     
 }
 
@@ -55,8 +71,8 @@ include 'navigation.php';
         En varning betyder att det saknas ett kvitto på en utgift.<br><br>
         Konton läggs upp under <a href="settings.php">inställningar</a></p>
         <p>
-        <a href="economy_add_income.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a> &nbsp; 
-        <a href="economy_add_expense.php"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a><br>
+        <a href="economy_form.php?operation=add_income"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a> &nbsp; 
+        <a href="economy_form.php?påeration=add_expense"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a><br>
         <a href="reports/economy.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Generera rapport till kassör</a> &nbsp; 
         <a href="logic/all_bookkeeping_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Alla verifikationer till kassör</a><br>
         </p>
@@ -69,13 +85,18 @@ include 'navigation.php';
            echo "<tr>\n";
            echo "<td>" . $bookkeeping->Number . "</td>\n";
            echo "<td>" . $bookkeeping->Date . "</td>\n";
-           echo "<td><a href='economy_view_bookkeeping.php?id=$bookkeeping->Id'>" . $bookkeeping->Headline;
+           echo "<td><a href='economy_view_bookkeeping.php?id=$bookkeeping->Id'>" . $bookkeeping->Headline."</a>";
            if ($bookkeeping->Amount < 0 && !$bookkeeping->hasImage()) {
                echo " " . showStatusIcon(false);
-           } elseif ($bookkeeping->Amount > 0) {
-               echo " <a href='economy_receipt_pdf.php?id=$bookkeeping->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i>";
            }
-           echo "</a></td>\n";
+           if ($bookkeeping->Amount > 0) {
+               echo " <a href='economy_form.php?operation=update_income&id=$bookkeeping->Id'><i class='fa-solid fa-pen' title='Ändra inkomst'></i></a>";
+               echo " <a href='economy_receipt_pdf.php?id=$bookkeeping->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i></a>";
+           } else {
+               echo " <a href='economy_form.php?operation=update_expense&id=$bookkeeping->Id'><i class='fa-solid fa-pen' title='Ändra utgift'></i></a>";
+               
+           }
+           echo "</td>\n";
            echo "<td>" . $bookkeeping->getBookkeepingAccount()->Name . "</td>"; 
            echo "<td class='amount'>" . $bookkeeping->Amount . "</td>\n";
            $sum += $bookkeeping->Amount;

@@ -277,7 +277,7 @@ th, td {
 	    $actor_intrigues = $groupActor->getAllIntrigues();
 	    foreach ($actor_intrigues as $actor_intrigue) {
 	        if ($actor_intrigue->Id != $intrigue->Id) {
-	            echo "<div><a href='view_intrigue.php?Id=$actor_intrigue->Id'>Intrig: $actor_intrigue->Number. $actor_intrigue->Name</a></div>";
+	            echo "<div><a href='view_intrigue.php?Id=$actor_intrigue->Id'>$actor_intrigue->Number. $actor_intrigue->Name</a></div>";
 	        }
 	    }
 	    if ($group->hasImage()) {
@@ -321,7 +321,7 @@ th, td {
 	    $actor_intrigues = $roleActor->getAllIntrigues();
 	    foreach ($actor_intrigues as $actor_intrigue) {
 	        if ($actor_intrigue->Id != $intrigue->Id) {
-	           echo "<div><a href='view_intrigue.php?Id=$actor_intrigue->Id'>Intrig: $actor_intrigue->Number. $actor_intrigue->Name</a></div>";
+	           echo "<div><a href='view_intrigue.php?Id=$actor_intrigue->Id'>$actor_intrigue->Number. $actor_intrigue->Name</a></div>";
 	        }
 	    }
 	    if ($role->hasImage()) {

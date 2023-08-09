@@ -115,6 +115,9 @@ class IntrigueActor extends BaseModel{
         $known_npcs = $intrigueActor->getAllKnownNPCs();
         foreach ($known_npcs as $known_npc) IntrigueActor_KnownNPC::delete($known_npc->Id);
         
+        $known_npcgroups = $intrigueActor->getAllKnownNPCGroups();
+        foreach ($known_npcgroups as $known_npcgroup) IntrigueActor_KnownNPCGroup::delete($known_npcgroup->Id);
+        
         $known_props = $intrigueActor->getAllKnownProps();
         foreach ($known_props as $known_prop) IntrigueActor_KnownProp::delete($known_prop->Id);
         
