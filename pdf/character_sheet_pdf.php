@@ -137,7 +137,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
         global $y, $left;
         
         $space = 3;
-//         $image_width = 25;
         
         # Kolla först att det finns intriger och att någon har en intrigtext
         $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $this->larp->Id);
@@ -262,7 +261,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         return true;
     }
     
-    function print_know_stuff($text, $image){
+    protected function print_know_stuff($text, $image){
         global $y, $left, $left2, $rowImageHeight, $lovest_y;
         $space = 3;
         $image_width = 25;
