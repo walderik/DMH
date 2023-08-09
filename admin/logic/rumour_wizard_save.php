@@ -70,6 +70,8 @@ foreach ($rumourIdArr as $rumourId) {
         
         
         foreach ($roles as $role) {
+            if ($role->isMysLajvare()) continue;
+            
             //Kolla så att inte ryktet berör någon  gruppen
             $group = $role->getGroup();
             if (!empty($group) && in_array($group, $concernedGrops)) continue;
