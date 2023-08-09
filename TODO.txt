@@ -4,8 +4,6 @@ Prio före lajvet
 Göra klart husfördelningen
 Husfördelningsutskick + visa för deltagaren
 
-Intriger och rykten på Grupp-pdf
-
 "Släppa intriger" - Kräver att massmail fungerar
 Skicka med pdf'er från intriguer
 
