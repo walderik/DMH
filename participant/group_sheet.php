@@ -49,7 +49,7 @@ $pdf->SetSubject(utf8_decode($subject));
 if (empty($group)) {
     $pdf->all_group_sheets($current_larp);
 } else {
-    $pdf->new_group_sheet($group, $current_larp);
+    $pdf->new_group_sheet($group, $current_larp, false);
 }
 
 $pdf->Output();

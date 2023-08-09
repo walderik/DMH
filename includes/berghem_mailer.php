@@ -197,7 +197,7 @@ class BerghemMailer {
                 $pdf->AddFont('Helvetica','');
                 $subject = $group->Name;
                 $pdf->SetSubject(utf8_decode($subject));
-                $pdf->new_group_sheet($group, $larp);
+                $pdf->new_group_sheet($group, $larp, false);
                 $sheets[utf8_decode($group->Name)] = $pdf->Output('S');
             }
         }
@@ -242,7 +242,7 @@ class BerghemMailer {
                 $pdf->AddFont('Helvetica','');
                 $subject = $group->Name;
                 $pdf->SetSubject(utf8_decode($subject));
-                $pdf->new_group_sheet($group, $larp);
+                $pdf->new_group_sheet($group, $larp, false);
                 $sheets[utf8_decode($group->Name)] = $pdf->Output('S');
             }
         }
