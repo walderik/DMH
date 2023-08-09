@@ -44,16 +44,20 @@ class Bookkeeping extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_larp;
+        global $current_larp, $current_user;
         $obj = new self();
+        $obj->Date = date("Y-m-d");
         $obj->LarpId = $current_larp->Id;
+        $obj->UserId=$current_user->Id;
         return $obj;
     }
     
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_bookkeeping SET ImageId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_bookkeeping SET Headline=?, BookkeepingAccountId=?, 
+        Text=?, Who=?, Amount=?, Date=?, ImageId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->ImageId, $this->Id))) {
+        if (!$stmt->execute(array($this->Headline, $this->BookkeepingAccountId,
+            $this->Text, $this->Who, $this->Amount, $this->Date, $this->ImageId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

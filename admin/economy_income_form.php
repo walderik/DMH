@@ -10,13 +10,11 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 
 
     <div class="content"> 
-    <h1>Lägg till utgift <a href="economy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1>Lägg till inkomst <a href="economy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
     
    
-	<form action="economy.php" method="post" enctype="multipart/form-data">
-		<input type="hidden" id="operation" name="operation" value="add_expense"> 
-		<input type="hidden" id="Photographer" name="Photographer" value="Kvitto"> 
-		
+	<form action="economy.php" method="post">
+		<input type="hidden" id="operation" name="operation" value="add_income"> 
  		
 		<table>
 			<tr>
@@ -36,13 +34,13 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 				<td><?php  selectionDropDownByArray("BookkeepingAccountId", $booking_accounts);?></td>
 			</tr>
 			<tr>
-				<td><label for="Who">Till vem?</label></td>
+				<td><label for="Who">Från vem?</label></td>
 				<td><input type="text" id="Who" name="Who" value="" size="100" maxlength="250" ></td>
 
 			</tr>
 			<tr>
 				<td><label for="Amount">Summa</label></td>
-				<td><input type="number" id="Amount" name="Amount" min="0" size="100" maxlength="250" ></td>
+				<td><input type="number" id="Amount" name="Amount"  step='0.01' value='0.00' min="0" size="100" maxlength="250" > kr</td>
 
 			</tr>
 			<tr>
@@ -50,12 +48,7 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 				<td><input type="date" id="Date"
     					name="Date" value="<?php echo date("Y-m-d") ?>" size="50" required></td>
 			</tr>
-			<tr>
-				<td><label for="upload">Kvitto</label></td>
-				<td><input type="file" name="upload"></td>
-			</tr>
 		</table>
-          	<br><br>
 
 		<input id="submit_button" type="submit" value="Spara">
 	</form>
