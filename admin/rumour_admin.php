@@ -68,7 +68,7 @@ include 'navigation.php';
         $rumour_array = Rumour::allBySelectedLARP($current_larp);
         if (!empty($rumour_array)) {
             echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Text</th><th></th><th>Skapare</th><th>Gäller</th><th>Antal som<br>känner till</th><th>Kopplad<br>till intrig</th><th>Ok</th><th></th></tr>\n";
+            echo "<tr><th>Text</th><th></th><th>Skapare</th><th>Gäller</th><th>Antal som<br>känner till</th><th>Används<br>i intrig</th><th>Ok</th><th></th></tr>\n";
             foreach ($rumour_array as $rumour) {
                 echo "<tr>\n";
                 if ($short_text) {
@@ -106,7 +106,9 @@ include 'navigation.php';
                 echo "</td>";
                 
                 echo "<td>" . showStatusIcon($rumour->Approved) . "</td>\n";
-                echo "<td>" . "<a href='rumour_admin.php?operation=delete&id=" . $rumour->Id . "'><i class='fa-solid fa-trash' title='Ta bort rykte'></i></td>\n";
+                echo "<td>";
+                if (!isset($rumour->IntrigueId)) echo "<a href='rumour_admin.php?operation=delete&id=" . $rumour->Id . "'><i class='fa-solid fa-trash' title='Ta bort rykte'></i>";
+                echo "</td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
