@@ -5,6 +5,7 @@ $persons=Person::getAllInterestedNPC($current_larp);
 
 
 function print_assigned_npc(NPC $npc, $npc_group) {
+    global $current_larp;
     echo "<tr><td width='80'>";
     if ($npc->hasImage()) {
         $image = Image::loadById($npc->ImageId);
@@ -20,7 +21,24 @@ function print_assigned_npc(NPC $npc, $npc_group) {
     $person=$npc->getPerson();
     
     echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a> \n";
-    echo "$npc->Time<br>$npc->Description<br>\n";
+    if (!empty($npc->Time)) echo "$npc->Time";
+    echo "<br>";
+    if (!empty($npc->Description)) echo "$npc->Description<br>\n";
+    
+    $intrigues = Intrigue::getAllIntriguesForNPC($npc->Id, $current_larp->Id);
+    if (!empty($intrigues)) {
+        echo "Intrig: ";
+        foreach ($intrigues as $intrigue) {
+            echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+            if ($intrigue->isActive()) echo $intrigue->Number;
+            else echo "<s>$intrigue->Number</s>";
+            echo "</a>";
+            echo " ";
+        }
+    echo "<br>";
+    }
+    
+    
     echo "Spelas av $person->Name\n";
     echo "<form action='logic/assign_npc.php' method='post' style='display:inline-block'><input type='hidden' name='id' value='$npc->Id'>\n";
     echo "<input type='hidden' name='PersonId' value='null'>\n";
@@ -37,7 +55,8 @@ function print_assigned_npc(NPC $npc, $npc_group) {
 }
 
 function print_unassigned_npc(NPC $npc) {
-    global $persons;
+    global $persons, $current_larp;
+    $intrigues = Intrigue::getAllIntriguesForNPC($npc->Id, $current_larp->Id);
     echo "<tr><td width='80'>";
     if ($npc->hasImage()) {
         $image = Image::loadById($npc->ImageId);
@@ -49,8 +68,17 @@ function print_unassigned_npc(NPC $npc) {
     echo "</td><td>";
     echo "<div class='npc'>";
     echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a> ";
-    echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> ";
+    if (empty($intrigues)) echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> ";
     echo "$npc->Time<br>$npc->Description";
+    
+    if (!empty($intrigues)) echo "<br>Intrig: ";
+    foreach ($intrigues as $intrigue) {
+        echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+        if ($intrigue->isActive()) echo $intrigue->Number;
+        else echo "<s>$intrigue->Number</s>";
+        echo "</a>";
+        echo " ";
+    }
     echo "</td><td>";
     echo "<form action='logic/assign_npc.php' method='post'><input type='hidden' name='id' value=$npc->Id>";
     echo selectionDropDownByArray("PersonId", $persons);
@@ -96,11 +124,13 @@ div.npc {
             
             
             $npc_groups = NPCGroup::getAllForLARP($current_larp);
+            $groups_with_assigned_npcs = array();
             echo "<table>";
             
             foreach ($npc_groups as $npc_group) {
                 $npcs=NPC::getAllAssignedByGroup($npc_group, $current_larp);
                 if (!empty($npcs)) {
+                    $groups_with_assigned_npcs[] = $npc_group;
                     echo "<tr><td colspan='2'>";
                     echo "<form action='logic/release_npc_group.php' method='post'><input type='hidden' name='id' value='$npc_group->Id'>\n";
                     echo "<h3><a href='npc_group_form.php?operation=update&id=$npc_group->Id'>$npc_group->Name</a>";
@@ -114,6 +144,21 @@ div.npc {
                         echo "</h3>";
                     }
                     echo "</form>\n";
+                    
+                    $intrigues = Intrigue::getAllIntriguesForNPCGroup($npc_group->Id, $current_larp->Id);
+                    if (!empty($intrigues)) {
+                        echo "Intrig: ";
+                        foreach ($intrigues as $intrigue) {
+                            echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+                            if ($intrigue->isActive()) echo $intrigue->Number;
+                            else echo "<s>$intrigue->Number</s>";
+                            echo "</a>";
+                            echo " ";
+                        }
+                    }
+                    
+                    
+                    
                     echo "</td></tr>";
                 }
                 foreach($npcs as $npc) {
@@ -138,14 +183,29 @@ div.npc {
             <?php 
             
             $npc_groups = NPCGroup::getAllForLARP($current_larp);
-            $unused_group_links = array();
+            $groups_without_unassigned_npcs = array();
             echo "<table>";
             foreach ($npc_groups as $npc_group) {
                 $npcs=NPC::getAllUnassignedByGroup($npc_group, $current_larp);
                 
                 if(!empty($npcs)) {
                     echo "<tr><td colspan='2'><h3><a href='npc_group_form.php?operation=update&id=$npc_group->Id'>$npc_group->Name</a>";
-                    echo "</h3></td></tr>";
+                    echo "</h3>";
+                    
+                    $intrigues = Intrigue::getAllIntriguesForNPCGroup($npc_group->Id, $current_larp->Id);
+                    if (!empty($intrigues)) {
+                        echo "Intrig: ";
+                        foreach ($intrigues as $intrigue) {
+                            echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+                            if ($intrigue->isActive()) echo $intrigue->Number;
+                            else echo "<s>$intrigue->Number</s>";
+                            echo "</a>";
+                            echo " ";
+                        }
+                    }
+                    
+                    
+                    echo "</td></tr>";
                     
     
                     foreach($npcs as $npc) {
@@ -153,8 +213,7 @@ div.npc {
                     }
                 }
                 else {
-                    $unused_group_links[] = "<a href='npc_group_form.php?operation=update&id=$npc_group->Id'>$npc_group->Name</a>".
-                        " <a href='logic/delete_npc_group.php?id=$npc_group->Id'><i class='fa-solid fa-trash'></i></a>";
+                    $groups_without_unassigned_npcs[] = $npc_group;
                 }
             }
  
@@ -167,7 +226,34 @@ div.npc {
             }
 
             echo "</table>";
-            //TODO visa bara de som inte har någon npc i sig (oavsett om den är tilldelad eller inte
+            $unused_groups = array_udiff($groups_without_unassigned_npcs, $groups_with_assigned_npcs,
+            function ($objOne, $objTwo) {
+                return $objOne->Id - $objTwo->Id;
+            });
+            $unused_group_links = array();
+            foreach($unused_groups as $npc_group) {
+                $intrigues = Intrigue::getAllIntriguesForNPCGroup($npc_group->Id, $current_larp->Id);
+                if (empty($intrigues)) {
+                    $unused_group_links[] = "<a href='npc_group_form.php?operation=update&id=$npc_group->Id'>$npc_group->Name</a>".
+                        " <a href='logic/delete_npc_group.php?id=$npc_group->Id'><i class='fa-solid fa-trash'></i></a>";
+                } else {
+                    $intrigstr = ", intrig: ";
+                    foreach ($intrigues as $intrigue) {
+                        $intrigstr = $intrigstr . "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+                        if ($intrigue->isActive()) $intrigstr = $intrigstr . $intrigue->Number;
+                        else $intrigstr = $intrigstr . "<s>$intrigue->Number</s>";
+                        $intrigstr = $intrigstr . "</a>";
+                        $intrigstr = $intrigstr . " ";
+                    }
+                    $unused_group_links[] = "<a href='npc_group_form.php?operation=update&id=$npc_group->Id'>$npc_group->Name</a>". $intrigstr;
+                }
+                
+                
+                
+                
+            }
+            
+            
             echo "<h3>Grupper utan npc'er<h3>";
             echo implode(", ", $unused_group_links);
             
