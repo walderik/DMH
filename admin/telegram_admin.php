@@ -43,7 +43,7 @@ include 'navigation.php';
         if (!empty($telegram_array)) {
             echo "<table id='telegrams' class='data'>";
             echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th>";
-            echo "<th>Meddelande</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th></th><th></th></tr>\n";
+            echo "<th>Meddelande</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th>Används<br>i intrig</th><th></th><th></th></tr>\n";
             foreach ($telegram_array as $telegram) {
                 echo "<tr>\n";
                 echo "<td>" . $telegram->Id . "</td>\n";
@@ -65,8 +65,24 @@ include 'navigation.php';
                 echo "<td>" . showStatusIcon($telegram->Approved,  "logic/approve_telegram.php?id=$telegram->Id") . "</td>\n";
                 echo "<td>" . str_replace("\n", "<br>", $telegram->OrganizerNotes) . "</td>\n";
                 
+                echo "<td>";
+                $intrigues = Intrigue::getAllIntriguesForTelegram($telegram->Id, $current_larp->Id);
+                echo "<br>";
+                if (!empty($intrigues)) echo "Intrig: ";
+                foreach ($intrigues as $intrigue) {
+                    echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+                    if ($intrigue->isActive()) echo $intrigue->Number;
+                    else echo "<s>$intrigue->Number</s>";
+                    echo "</a>";
+                    echo " ";
+                }
+                echo "</td>";
+                
+                
                 echo "<td>" . "<a href='telegram_form.php?operation=update&id=" . $telegram->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='telegram_admin.php?operation=delete&id=" . $telegram->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>";
+                if (empty($intrigues)) echo "<a href='telegram_admin.php?operation=delete&id=" . $telegram->Id . "'><i class='fa-solid fa-trash'></i>";
+                echo "</td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
