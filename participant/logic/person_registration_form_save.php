@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['IsMainRole'])) $mainRole = $_POST['IsMainRole'];
         
         
-        if ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
+        if ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp) || $current_larp->isPastLatestRegistrationDate()) {
             //Sätt på reservlistan
             $reserve_registration = Reserve_Registration::newFromArray($_POST);
 

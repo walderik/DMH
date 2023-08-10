@@ -15,17 +15,17 @@ include "navigation.php";
         	      echo '<div class="message">'.$message_message.'</div>';
         	  }
         	  
-        	  if ($current_larp->isPastLatestRegistrationDate()) {
-        	      
+        	  if ($current_larp->isPastLatestRegistrationDate() && !$current_larp->mayRegister()) {        	      
         	      echo "<div><b style='color: red'>Sista anmälningsdag har passerat</b>";
         	      echo "</div>";
-        	  }
-        	  elseif ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
+        	  } elseif ($current_larp->isPastLatestRegistrationDate()) {       	      
+        	      echo "<div><b style='color: red'>Sista anmälningsdag har passerat</b>, men du kan göra en anmälan så att du hamnar på reservlistan.<br>Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.";
+        	      echo "</div>";
+        	  } elseif ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
 
-                echo "<div><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b>";
+                echo "<div><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b> Om någon annan avbokar kan du kanske få en plats.<br>Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.";
                 echo "</div>";
-            }
-            elseif ($current_larp->RegistrationOpen == 0) {
+            } elseif ($current_larp->RegistrationOpen == 0) {
 
                 echo "<div><b style='color: red'>Anmälan inte öppen</b>";
                 echo "<br><br>Du kan registrera deltagare, grupper och karaktärer i väntan på att anmälan ska öppna. <br><br>"; 
