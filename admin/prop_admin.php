@@ -26,7 +26,7 @@ include 'navigation.php';
        $prop_array = Prop::allByCampaign($current_larp);
         if (!empty($prop_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Märkning</th><th>In-lajv<br>egenskaper</th><th>Innehavare</th><th>Bild</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Märkning</th><th>In-lajv<br>egenskaper</th><th>Innehavare</th><th>Bild</th><th>Intrig</th><th></th><th></th></tr>\n";
             foreach ($prop_array as $prop) {
                 $owner = "";
                 if (isset($prop->GroupId)) {
@@ -54,9 +54,24 @@ include 'navigation.php';
                     echo "<td><a href='upload_image.php?id=$prop->Id&type=prop'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
                 }
                 
+                echo "<td>";
+                $intrigues = Intrigue::getAllIntriguesForProp($prop->Id, $current_larp->Id);
+                echo "<br>";
+                if (!empty($intrigues)) echo "Intrig: ";
+                foreach ($intrigues as $intrigue) {
+                    echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+                    if ($intrigue->isActive()) echo $intrigue->Number;
+                    else echo "<s>$intrigue->Number</s>";
+                    echo "</a>";
+                    echo " ";
+                }
+                echo "</td>";
+                
                 
                 echo "<td>" . "<a href='prop_form.php?operation=update&id=" . $prop->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='prop_admin.php?operation=delete&id=" . $prop->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>";
+                if (empty($intrigues)) echo "<a href='prop_admin.php?operation=delete&id=" . $prop->Id . "'><i class='fa-solid fa-trash'></i>";
+                echo "</td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
