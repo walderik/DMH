@@ -52,7 +52,7 @@ include 'navigation.php';
                 echo "<td>" . $telegram->SenderCity . "</td>\n";
                 echo "<td>" . $telegram->Reciever . "</td>\n";
                 echo "<td>" . $telegram->RecieverCity . "</td>\n";
-                echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
+                echo "<td>" . nl2br(htmlspecialchars($telegram->Message)) . "</td>\n";
                 echo "<td>";
                 $user = $telegram->getUser();
                 if ($user->isComing($current_larp)) {
@@ -63,7 +63,7 @@ include 'navigation.php';
                 }
                 echo "</td>\n";
                 echo "<td>" . showStatusIcon($telegram->Approved,  "logic/approve_telegram.php?id=$telegram->Id") . "</td>\n";
-                echo "<td>" . str_replace("\n", "<br>", $telegram->OrganizerNotes) . "</td>\n";
+                echo "<td>" . nl2br(htmlspecialchars($telegram->OrganizerNotes)) . "</td>\n";
                 
                 echo "<td>";
                 $intrigues = Intrigue::getAllIntriguesForTelegram($telegram->Id, $current_larp->Id);

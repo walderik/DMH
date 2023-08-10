@@ -67,7 +67,7 @@ include 'navigation.php';
         if (!empty($letter_array)) {
             echo "<table id='telegrams' class='data'>";
             echo "<tr><th>Id</td><th>Mottagare</th><th>Ort och datum</th><th>Hälsning</th><th>Meddelande</th><th>Hälsning</th><th>Underskrift</th>";
-            echo "<th>Font</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th></th><th></th><th></th></tr>\n";
+            echo "<th>Font</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th>Används<br>i intrig</th><th></th><th></th><th></th></tr>\n";
             foreach ($letter_array as $letter) {
                 echo "<tr>\n";
                 echo "<td>" . $letter->Id . "</td>\n";
@@ -78,7 +78,7 @@ include 'navigation.php';
                 echo "<td>" . mb_strimwidth(str_replace("\n", "<br>", $letter->Message), 0, 100, "...") . "</td>\n";
                 }
                 else {
-                    echo "<td>" . str_replace("\n", "<br>", $letter->Message) . "</td>\n";
+                    echo "<td>" . nl2br(htmlspecialchars($letter->Message)) . "</td>\n";
                 }
                 echo "<td>" . $letter->EndingPhrase . "</td>\n";
                 echo "<td>" . $letter->Signature . "</td>\n";
@@ -93,11 +93,27 @@ include 'navigation.php';
                 }
                 echo "</td>\n";
                 echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
-                echo "<td>" . str_replace("\n", "<br>", $letter->OrganizerNotes) . "</td>\n";
+                echo "<td>" . nl2br(htmlspecialchars($letter->OrganizerNotes)) . "</td>\n";
+                
+                echo "<td>";
+                $intrigues = Intrigue::getAllIntriguesForLetter($letter->Id, $current_larp->Id);
+                echo "<br>";
+                if (!empty($intrigues)) echo "Intrig: ";
+                foreach ($intrigues as $intrigue) {
+                    echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+                    if ($intrigue->isActive()) echo $intrigue->Number;
+                    else echo "<s>$intrigue->Number</s>";
+                    echo "</a>";
+                    echo " ";
+                }
+                echo "</td>";
+                
                 
                 echo "<td>" . "<a href='letter_form.php?operation=update&id=" . $letter->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='logic/show_letter.php?id=" . $letter->Id . "' target='_blank'><i class='fa-solid fa-file-pdf'></i></td>\n";
-                echo "<td>" . "<a href='letter_admin.php?operation=delete&id=" . $letter->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>";
+                if (empty($intrigues)) echo "<a href='letter_admin.php?operation=delete&id=" . $letter->Id . "'><i class='fa-solid fa-trash'></i>";
+                echo "</td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
