@@ -69,9 +69,11 @@ function print_unassigned_npc(NPC $npc) {
     echo "<div class='npc'>";
     echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a> ";
     if (empty($intrigues)) echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> ";
-    echo "$npc->Time<br>$npc->Description";
+    if (!empty($npc->Time)) echo "$npc->Time";
+    echo "<br>";
+    if (!empty($npc->Description)) echo "$npc->Description<br>\n";
     
-    if (!empty($intrigues)) echo "<br>Intrig: ";
+    if (!empty($intrigues)) echo "Intrig: ";
     foreach ($intrigues as $intrigue) {
         echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
         if ($intrigue->isActive()) echo $intrigue->Number;
