@@ -135,7 +135,7 @@ class BerghemMailer {
         $roles = $person->getReserveRolesAtLarp($larp);
         
         $text  = "Lajvet $larp->Name är fullt, men du står nu på reservlistan.<br>".
-                 "Betala in in något nu. Om du får en plats på lajvet kommer du att få ett mail med information om hur mycket och vart du ska betala.<br><br>\n";
+                 "Betala inte in något nu. Om du får en plats på lajvet kommer du att få ett mail med information om hur mycket och vart du ska betala.<br><br>\n";
         $text .= "De karaktärer du har anmält är:<br>\n";
         $text .= "<br>\n";
         foreach ($roles as $role) {

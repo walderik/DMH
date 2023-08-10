@@ -154,7 +154,7 @@ function drop(ev) {
         "</tr>";
     foreach ($care_takers as $care_taker) {
         $group = $care_taker->getMainRole($current_larp)->getGroup();
-        echo "<tr><td><a href='view_person-php?$care_taker->Id'>$care_taker->Name ".contactEmailIcon($care_taker->Name,$care_taker->Email)."</a></td>";
+        echo "<tr><td><a href='view_person.php?id=$care_taker->Id'>$care_taker->Name ".contactEmailIcon($care_taker->Name,$care_taker->Email)."</a></td>";
         $house = $care_taker->getHouse();
         echo "<td><a href='view_house.php?id=$house->Id'>$house->Name</a></td>";
         
