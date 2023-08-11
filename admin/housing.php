@@ -2,14 +2,6 @@
 include_once 'header.php';
 include 'navigation.php';
 
-$individualcols = 3;
-$individualwidth = "auto";
-$groupcols = 3;
-$groupwidth = "auto";
-$housecols = 2;
-$housewidth = "auto";
-
-
 
 function print_group(Group $group,$group_members, $house) {
     global $current_larp, $groupwidth;
@@ -21,16 +13,12 @@ function print_group(Group $group,$group_members, $house) {
     }
     $id="group_$group->Id";
     if (isset($house)) $id = $id."_$house->Id";
-    echo "<li style='display:table-cell; width:$groupwidth;' id='$id' draggable='true' ondragstart='drag(event)'>\n";
+    echo "<div class='group' id='$id' draggable='true' ondragstart='drag(event)'>\n";
     echo "<div class='name' nowrap><a href='view_group.php?id=$group->Id' draggable='false'>$group->Name</a>";
-    if (isset($house)) {
-        echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från huset'></i></button>";        
-    }
     $houseId = "";
     if (isset($house)) $houseId = $house->Id;
     echo " <span onclick='show_hide_area(\"Group_".$group->Id."_".$houseId."\", this)' name='hide'><i class='fa-solid fa-caret-left'></i></span>";
     echo "</div>\n";
-    //echo "<button class='invisible' onclick='show_hide(\"Group_".$group->Id."_".$houseId."\")'><i class='fa-solid fa-caret-left'></i></button></div>\n";
     echo "<div>".count($group_members)." st";
     if (!empty($comments)) {
         echo " <i class='fa-solid fa-circle-info' title='".implode(", ", $comments)."'></i>";
@@ -39,44 +27,43 @@ function print_group(Group $group,$group_members, $house) {
     echo "<div>".HousingRequest::loadById($group_housing_requestId)->Name."</div>\n";
     
     echo "<div class='hidden' id='Group_".$group->Id."_".$houseId."'>";
+    echo "<div class='group_members clearfix' style='display:table; border-spacing:5px;'>";
     foreach($group_members as $person) {
-        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
         print_individual($person, $house);
-        echo "</ul>";
+        echo "<br>";
     }
+    echo "</div>";
     
     
-    echo "</li>\n";
+    echo "</div>\n";
+    echo "</div>\n";
 }
 
 function print_individual(Person $person, $house) {
     global $current_larp, $individualwidth;
-    echo "<li style='display:table-cell; width:$individualwidth;' id='person_$person->Id' draggable='true' ondragstart='drag(event)'>\n";
+    echo "<div class='person' id='person_$person->Id' draggable='true' ondragstart='drag(event)'>\n";
     echo "<div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>$person->Name</a>";
     if (!empty($person->HousingComment)) {
         echo " <i class='fa-solid fa-circle-info' title='$person->HousingComment'></i>";
     }
-    if (isset($house)) {
-        echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från huset'></i></button>";
-    }
     echo "</div>\n";
     echo "<div>".HousingRequest::loadById($person->getRegistration($current_larp)->HousingRequestId)->Name."</div>\n";
-    echo "</li>";
+    echo "</div>";
     
 }
 
 function print_house($house) {
     global $current_larp, $housewidth;
-    echo "<li style='display:table-cell; width:$housewidth;' id='house_$house->Id' ondrop='drop(event)' ondragover='allowDrop(event)'>\n";
-    echo "<div class='name'>$house->Name <button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>";
-    echo "<div>Antal platser: $house->NumberOfBeds</div>";
+    echo "<div class='house' id='house_$house->Id' ondrop='drop_in_house(event, this)' ondragover='allowDrop(event)'>\n";
+    echo "<div class='name'>$house->Name <button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>\n";
+    echo "<div>Antal platser: $house->NumberOfBeds</div>\n";
     $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
     echo "<div>".count($personsInHouse)." st</div>";
     
     $groupsInHouse = Group::getGroupsInHouse($house, $current_larp);
     
+    echo "<div id='in_house_$house->Id' class='in_house clearfix'>\n";
     foreach($groupsInHouse as $group) {
-        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
         
         $membersInHouse = Person::getGroupMembersInHouse($group, $house, $current_larp);
         print_group($group, $membersInHouse, $house);
@@ -84,20 +71,13 @@ function print_house($house) {
             function ($objOne, $objTwo) {
                 return $objOne->Id - $objTwo->Id;
             });
-        echo "</ul>";
     }
-     
-    
-    
     foreach ($personsInHouse as $person) {
-        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-        
         print_individual($person, $house);
-        echo "</ul>";
-
     }
- 
-    echo "</li>";
+    echo "</div>\n";
+    
+    echo "</div>\n";
 }
 
 ?>
@@ -117,6 +97,25 @@ div.housing-group {
     margin-bottom: 5px;
 }
 
+
+.person, .group, .house {
+    border: 1px solid #ccc;
+	border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
+	background-color: #fff;
+	width: 45%;
+	float: left;
+	box-sizing:border-box;
+	margin: 2px;
+}
+
+.clearfix::after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
+}
 </style>
 
 <script>
@@ -124,17 +123,38 @@ function allowDrop(ev) {
   ev.preventDefault();
 }
 
+
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
 }
 
-function drop(ev) {
+function drop_in_house(ev, el) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
-  alert(data);
-  alert(ev.target.id);
-  ev.target.appendChild(document.getElementById(data));
+  var in_house = document.getElementById('in_'+el.id);
+  in_house.appendChild(document.getElementById(data));
 }
+
+function drop_unassigned_group(ev, el) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  if (data.indexOf("group_") === 0 ) {
+	  var box = document.getElementById('unassigned_groups');
+  	  box.appendChild(document.getElementById(data));
+  }
+}
+
+function drop_unassigned_person(ev, el) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  if (data.indexOf("person_") === 0 ) {
+  	var box = document.getElementById('unassigned_persons');
+  	box.appendChild(document.getElementById(data));
+  }
+}
+
+
+
 </script>
 
 <div class="content">
@@ -174,7 +194,7 @@ function drop(ev) {
 	}
 	echo "<br>";
 	?>
-	<table><tr><td width='45%'>
+	<table width='100%'><tr><td width='45%'>
 	<h2>Deltagare som inte har tilldelats boende</h2>
 	<?php 
 	
@@ -182,8 +202,7 @@ function drop(ev) {
 
 	$groups = Group::getAllRegistered($current_larp);
 	
-	echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-	$temp = 0;
+	echo "<div id='unassigned_groups' class='housing-group clearfix' ondrop='drop_unassigned_group(event, this)' ondragover='allowDrop(event)'>";
 	foreach ($groups as $group) {
 	    $group_members = Person::getPersonsInGroup($group, $current_larp);
 
@@ -198,68 +217,43 @@ function drop(ev) {
 	    
 	    if (!empty($group_members_without_housing)) {
     	    print_group($group, $group_members_without_housing, null);
-    	    $temp++;
-    	    if ($temp == $groupcols) {
-    	        echo"</ul>\n";
-    	        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-    	        $temp = 0;
-    	    }
 	    }
 
 	}
-	echo"</ul>\n";
+	echo"</div>\n";
 	
 	if (!empty($personsWithoutHousing)) {
     	echo "<h3>Individer</h3>";
     
-    	echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-    	$temp = 0;
+    	echo "<div id='unassigned_persons' class='housing-group clearfix' ondrop='drop_unassigned_person(event, this)' ondragover='allowDrop(event)'>";
     	foreach ($personsWithoutHousing as $person) {
     	    print_individual($person, null);
-    	    $temp++;
-    	    if ($temp == $individualcols) {
-    	        echo"</ul>\n";
-    	        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-    	        $temp = 0;
-    	    }
-    	    
     	}
-    	echo "</ul>\n";
+    	echo "</div>\n";
 
 	}
 	?>
 	</td><td width='45%'>
 	<h2>Tilldelat boende</h2>
-	<div class='housing-group'>
+	<div class='housing-group clearfix'>
 	
 	<h3>Hus <?php echo " <span onclick='show_hide_area(\"houses\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>";?></h3>
 	
 	<?php 
 	$houses=House::all();
 	echo "<div id='houses'>";
-	echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-	$temp = 0;
 	
 	foreach($houses as $house) {
 	    print_house($house);
-	    $temp++;
-	    if ($temp == $housecols) {
-	        echo"</ul>\n";
-	        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-	        $temp = 0;
-	    }
 	}
-	echo "</ul>\n";
 	echo "</div>";
 	?>
 	</div>
-	<div class='housing-group'>
+	<div class='housing-group clearfix'>
 	<h3>Lägerplatser <?php echo " <span onclick='show_hide_area(\"camps\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>"; ?></h3>
 	<?php 
 	echo "<div id='camps'>";
 	
-	echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-	echo "</ul>";
 	echo "</div>";
 	?>
 	</div>
