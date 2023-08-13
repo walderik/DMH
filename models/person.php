@@ -176,6 +176,15 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
+    # Hämta anmälda personer som har en huvudkaraktär i en grupp
+    public static function getPersonsInGroupWithoutHousing($group, $larp) {
+        $all_group_members = static::getPersonsInGroup($group, $larp);
+        $group_members = array();
+        foreach ($all_group_members as $group_member) {
+            if (!$group_member->hasHousing($larp)) $group_members[] = $group_member;
+        }
+        return $group_members;
+    }
     
     
     public function getGuardianFor(LARP $larp) {

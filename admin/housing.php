@@ -4,7 +4,7 @@ include 'navigation.php';
 
 
 function print_group(Group $group,$group_members, $house) {
-    global $current_larp, $groupwidth;
+    global $current_larp;
     $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     $group_housing_requestId = $larp_group->HousingRequestId;
     $comments = array();
@@ -19,7 +19,7 @@ function print_group(Group $group,$group_members, $house) {
     if (isset($house)) $houseId = $house->Id;
     echo " <span onclick='show_hide_area(\"Group_".$group->Id."_".$houseId."\", this)' name='hide'><i class='fa-solid fa-caret-left'></i></span>";
     echo "</div>\n";
-    echo "<div>".count($group_members)." st";
+    echo "<div id='count_$id>".count($group_members)." st";
     if (!empty($comments)) {
         echo " <i class='fa-solid fa-circle-info' title='".implode(", ", $comments)."'></i>";
     }
@@ -29,7 +29,7 @@ function print_group(Group $group,$group_members, $house) {
     echo "<div class='hidden' id='Group_".$group->Id."_".$houseId."'>";
     echo "<div class='group_members clearfix' style='display:table; border-spacing:5px;'>";
     foreach($group_members as $person) {
-        print_individual($person, $house);
+        print_individual($person, $group, $house);
         echo "<br>";
     }
     echo "</div>";
@@ -39,8 +39,13 @@ function print_group(Group $group,$group_members, $house) {
     echo "</div>\n";
 }
 
-function print_individual(Person $person, $house) {
-    global $current_larp, $individualwidth;
+function print_individual(Person $person, $group, $house) {
+    global $current_larp;
+    $id="person_$person->Id";
+    if (isset($group)) $id = $id."_$group->Id";
+    else  $id = $id."_X";
+    if (isset($house)) $id = $id."_$house->Id";
+    
     echo "<div class='person' id='person_$person->Id' draggable='true' ondragstart='drag(event)'>\n";
     echo "<div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>$person->Name</a>";
     if (!empty($person->HousingComment)) {
@@ -53,12 +58,12 @@ function print_individual(Person $person, $house) {
 }
 
 function print_house($house) {
-    global $current_larp, $housewidth;
+    global $current_larp;
     echo "<div class='house' id='house_$house->Id' ondrop='drop_in_house(event, this)' ondragover='allowDrop(event)'>\n";
     echo "<div class='name'>$house->Name <button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>\n";
     echo "<div>Antal platser: $house->NumberOfBeds</div>\n";
     $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
-    echo "<div>".count($personsInHouse)." st</div>";
+    echo "<div id='count_house_$house->Id'>".count($personsInHouse)." st</div>";
     
     $groupsInHouse = Group::getGroupsInHouse($house, $current_larp);
     
@@ -73,7 +78,7 @@ function print_house($house) {
             });
     }
     foreach ($personsInHouse as $person) {
-        print_individual($person, $house);
+        print_individual($person, null, $house);
     }
     echo "</div>\n";
     
@@ -102,12 +107,11 @@ div.housing-group {
     border: 1px solid #ccc;
 	border-radius: 10px;
     padding: 5px;
-    margin-bottom: 5px;
 	background-color: #fff;
 	width: 45%;
 	float: left;
 	box-sizing:border-box;
-	margin: 2px;
+	margin: 5px;
 }
 
 .clearfix::after { 
@@ -118,44 +122,6 @@ div.housing-group {
 }
 </style>
 
-<script>
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop_in_house(ev, el) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  var in_house = document.getElementById('in_'+el.id);
-  in_house.appendChild(document.getElementById(data));
-}
-
-function drop_unassigned_group(ev, el) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  if (data.indexOf("group_") === 0 ) {
-	  var box = document.getElementById('unassigned_groups');
-  	  box.appendChild(document.getElementById(data));
-  }
-}
-
-function drop_unassigned_person(ev, el) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  if (data.indexOf("person_") === 0 ) {
-  	var box = document.getElementById('unassigned_persons');
-  	box.appendChild(document.getElementById(data));
-  }
-}
-
-
-
-</script>
 
 <div class="content">
     <h1>Boende</h1>
@@ -204,12 +170,7 @@ function drop_unassigned_person(ev, el) {
 	
 	echo "<div id='unassigned_groups' class='housing-group clearfix' ondrop='drop_unassigned_group(event, this)' ondragover='allowDrop(event)'>";
 	foreach ($groups as $group) {
-	    $group_members = Person::getPersonsInGroup($group, $current_larp);
-
-	    $group_members_without_housing = array_uintersect($personsWithoutHousing, $group_members, 
-	        function ($objOne, $objTwo) {
-	            return $objOne->Id - $objTwo->Id;
-	        });
+	    $group_members_without_housing = Person::getPersonsInGroupWithoutHousing($group, $current_larp);
 	    $personsWithoutHousing = array_udiff($personsWithoutHousing, $group_members_without_housing,
 	        function ($objOne, $objTwo) {
 	            return $objOne->Id - $objTwo->Id;
@@ -227,7 +188,7 @@ function drop_unassigned_person(ev, el) {
     
     	echo "<div id='unassigned_persons' class='housing-group clearfix' ondrop='drop_unassigned_person(event, this)' ondragover='allowDrop(event)'>";
     	foreach ($personsWithoutHousing as $person) {
-    	    print_individual($person, null);
+    	    print_individual($person, null, null);
     	}
     	echo "</div>\n";
 
