@@ -31,6 +31,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 include 'navigation.php';
 ?>
 
+<style>
+th {
+  cursor: pointer;
+}
+
+</style>
+
+<script src="../javascript/table_sort.js"></script>
+
     <div class="content">
         <h1>Lagfarter</h1>
         <p>Lagfarter går bara att ta bort om det inte finns några ägare eller instälningar för produktion/behov. 
@@ -129,7 +138,5 @@ include 'navigation.php';
     </div>
 	
 </body>
-<?php 
-include_once '../javascript/table_sort.js';
-?>
+
 </html>

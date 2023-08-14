@@ -4,6 +4,15 @@
  include 'navigation.php';
 ?>
 
+<style>
+th {
+  cursor: pointer;
+}
+
+</style>
+
+<script src="../javascript/table_sort.js"></script>
+
 
     <div class="content">   
         <h1>Deltagare som ska ha återbetalning</h1>
@@ -65,5 +74,4 @@
 	</div>
 </body>
 
-<?php include_once '../javascript/table_sort.js';?>
 </html>

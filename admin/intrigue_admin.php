@@ -3,9 +3,9 @@ include_once 'header.php';
 
 include 'navigation.php';
 
-include_once '../javascript/show_hide_rows.js';
 
 ?>
+<script src="../javascript/show_hide_rows.js"></script>
 
     <div class="content">
         <h1>Intriger</h1>

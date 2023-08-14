@@ -4,6 +4,15 @@ include_once 'header.php';
 include 'navigation.php';
 ?>
 
+<style>
+th {
+  cursor: pointer;
+}
+
+</style>
+
+<script src="../javascript/table_sort.js"></script>
+
 <div class="content">
     <h1>E-post</h1>
     <?php 
@@ -48,6 +57,3 @@ include 'navigation.php';
     	
     	?>
 	</table>
-	<?php 
-include_once '../javascript/table_sort.js';
-?>

@@ -6,6 +6,14 @@
  $currency = $current_larp->getCampaign()->Currency;
 ?>
 
+<style>
+th {
+  cursor: pointer;
+}
+
+</style>
+
+<script src="../javascript/table_sort.js"></script>
 <script src="../javascript/setmoney_ajax.js"></script>
 
 
@@ -84,8 +92,5 @@
     		?>
 
  </body>
-<?php 
-include_once '../javascript/table_sort.js';
-?>
 
 </html>

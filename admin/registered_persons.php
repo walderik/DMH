@@ -4,6 +4,14 @@
  include 'navigation.php';
 ?>
 
+<style>
+th {
+  cursor: pointer;
+}
+
+</style>
+
+<script src="../javascript/table_sort.js"></script>
 
     <div class="content">   
         <h1>Anmälda deltagare <?php echo contactAllEmailIcon() ?></h1>
@@ -124,5 +132,4 @@
 	</div>
 </body>
 
-<?php include_once '../javascript/table_sort.js';?>
 </html>

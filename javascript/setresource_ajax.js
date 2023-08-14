@@ -1,20 +1,7 @@
-<style>
-input {
-  width: 60px;
-  text-align: right; 
-}
-
-</style>
-
-
-<script  type="text/javascript">
-
-
-function recalculate(selectObject) {
+function recalculate(selectObject, larpId) {
 
   var currency = document.getElementById("Currency").value;
   var value = selectObject.value;
-  var larpId = <?php echo $current_larp->Id?>;
   var ids = selectObject.id.split(":");
   var resourceId = ids[0];
   var titledeedId = ids[1];
@@ -36,11 +23,10 @@ function recalculate(selectObject) {
 
 
 
-function recalculateMoney(selectObject) {
+function recalculateMoney(selectObject, larpId) {
 
   var currency = document.getElementById("Currency").value;
   var value = selectObject.value;
-  var larpId = <?php echo $current_larp->Id?>;
   var titledeedId = selectObject.id;
   
   var callString = "../ajax/setresource.php?titledeedId=" + titledeedId + "&value=" + value + "&larpId=" + larpId; 
@@ -58,5 +44,3 @@ function recalculateMoney(selectObject) {
 }
 
 
-
-</script>

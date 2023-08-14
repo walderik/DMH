@@ -5,6 +5,15 @@
 ?>
 
 
+<style>
+th {
+  cursor: pointer;
+}
+
+</style>
+
+<script src="../javascript/table_sort.js"></script>
+
     <div class="content">   
         <h1>Karaktärer</h1>
         <a href="role_list.php"><i class='fa-solid fa-eye' title='Se alla karaktärer samlat på en sida'></i> En sida med alla</a> &nbsp; &nbsp; &nbsp;
@@ -237,7 +246,5 @@
         
 	</div>
 </body>
-<?php 
-include_once '../javascript/table_sort.js';
-?>
+
 </html>

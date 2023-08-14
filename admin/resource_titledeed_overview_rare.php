@@ -13,10 +13,25 @@ th, td {
   border-style:solid;
   border-color: #d4d4d4;
   padding: 10px;
-  margin: 0px;
-  
+  margin: 0px;  
 }
+
+input {
+  width: 60px;
+  text-align: right; 
+}
+
 </style>
+<style>
+th {
+  cursor: pointer;
+}
+
+</style>
+
+<script src="../javascript/table_sort.js"></script>
+<script src="../javascript/setresource_ajax.js"></script>
+
     <div class="content">
         <h1>Resursfördelning - ovanliga resurser <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till handel"></i></a></h1>
 		<input type="hidden" id="Currency" value="<?php echo $currency ?>">
@@ -45,7 +60,7 @@ th, td {
 		        $quantity = 0;
 		        if (!empty($resource_titledeed)) $quantity = $resource_titledeed->Quantity;
 		        echo "<td style='text-align:right'>";
-		        echo "<input type='number' id='$resource->Id:$titledeed->Id' value='$quantity' onchange='recalculate(this)'>";
+		        echo "<input type='number' id='$resource->Id:$titledeed->Id' value='$quantity' onchange='recalculate(this, $current_larp->Id)'>";
 		        echo "</td>\n";
 		    }
 		    echo "</tr>\n";
@@ -67,8 +82,5 @@ th, td {
         </table>
         <?php }?>
     </body>
-<?php 
-include_once '../javascript/table_sort.js';
-include_once '../javascript/setresource_ajax.js';
-?>
+
 </html>

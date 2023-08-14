@@ -80,11 +80,10 @@ else {
 
 include 'navigation.php';
 ?>
-<?php 
 
-include_once '../javascript/show_hide_rows.js';
-include_once '../javascript/table_sort.js';
-?>
+<script src="../javascript/show_hide_rows.js"></script>
+
+
 
     <div class="content">   
         <h1><?php echo $purpose;?></h1>

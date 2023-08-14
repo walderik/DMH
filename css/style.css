@@ -223,3 +223,12 @@ table.helpBox td {
    text-decoration: underline;
    cursor: pointer;
  }
+ 
+ .hidden {
+  display: none;
+}
+
+.shown {
+  display: table-row;
+}
+

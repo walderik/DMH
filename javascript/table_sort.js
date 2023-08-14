@@ -1,10 +1,4 @@
-<style>
-th {
-  cursor: pointer;
-}
 
-</style>
-<script>
 function getText(element) {
 
 	if (element.innerHTML.startsWith("<a ")) {
@@ -69,4 +63,4 @@ function sortTable(n, tableid) {
     }
   }
 }
-</script>
+

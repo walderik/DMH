@@ -23,7 +23,24 @@ background-color: lightgreen;
 input.requires {
 background-color: lightcoral;
 }
+
+input {
+  width: 60px;
+  text-align: right; 
+}
+
 </style>
+
+ <style>
+th {
+  cursor: pointer;
+}
+
+</style>
+
+<script src="../javascript/table_sort.js"></script>
+<script src="../javascript/setresource_ajax.js"></script>
+
     <div class="content">
         <h1>Resursfördelning - normala resurser <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till handel"></i></a></h1>
 		<input type="hidden" id="Currency" value="<?php echo $currency ?>">
@@ -60,7 +77,7 @@ background-color: lightcoral;
 		foreach ($titledeeds as $titledeed) {
 		    echo "<tr><td style='text-align:left'><a href='resource_titledeed_form.php?Id=$titledeed->Id'>$titledeed->Name</a></td>";
 		    echo "<th style='text-align:left'>";
-		    echo "<input type='number' id='$titledeed->Id' value='$titledeed->Money' onchange='recalculateMoney(this)'>";
+		    echo "<input type='number' id='$titledeed->Id' value='$titledeed->Money' onchange='recalculateMoney(this, $current_larp->Id)'>";
 		    echo "</th>\n";
 		    $produces = $titledeed->ProducesNormally();
 		    $requires = $titledeed->RequiresNormally();
@@ -73,7 +90,7 @@ background-color: lightcoral;
 		        if (in_array($resource, $produces)) $class = "produces";
 		        elseif (in_array($resource, $requires)) $class="requires";
 	            echo "<td style='text-align:right'>";
-	            echo "<input type='number'  class='$class' id='$resource->Id:$titledeed->Id' value='$quantity' onchange='recalculate(this)'>";
+	            echo "<input type='number'  class='$class' id='$resource->Id:$titledeed->Id' value='$quantity' onchange='recalculate(this, $current_larp->Id)'>";
 	            echo "</td>\n";
 		    }
 		    echo "<td style='text-align:right' id='Result_$titledeed->Id'>".$titledeed->calculateResult()." $currency</td>\n";
@@ -100,8 +117,6 @@ background-color: lightcoral;
         </table>
         <?php }?>
     </body>
-<?php 
-include_once '../javascript/table_sort.js';
-include_once '../javascript/setresource_ajax.js';
-?>
+    
+
 </html>

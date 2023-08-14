@@ -14,28 +14,24 @@ function print_group(Group $group,$group_members, $house) {
     $id="group_$group->Id";
     if (isset($house)) $id = $id."_$house->Id";
     echo "<div class='group' id='$id' draggable='true' ondragstart='drag(event)'>\n";
-    echo "<div class='name' nowrap><a href='view_group.php?id=$group->Id' draggable='false'>$group->Name</a>";
+    echo "  <div class='name' nowrap><a href='view_group.php?id=$group->Id' draggable='false'>$group->Name</a>";
     $houseId = "";
     if (isset($house)) $houseId = $house->Id;
-    echo " <span onclick='show_hide_area(\"Group_".$group->Id."_".$houseId."\", this)' name='hide'><i class='fa-solid fa-caret-left'></i></span>";
+    echo " <span onclick='show_hide_area(\"members_$id\", this)' name='hide'><i class='fa-solid fa-caret-left'></i></span>";
     echo "</div>\n";
-    echo "<div id='count_$id>".count($group_members)." st";
+    echo "  <div id='count_$id'>".count($group_members)." st";
     if (!empty($comments)) {
         echo " <i class='fa-solid fa-circle-info' title='".implode(", ", $comments)."'></i>";
     }
     echo "</div>\n";
-    echo "<div>".HousingRequest::loadById($group_housing_requestId)->Name."</div>\n";
-    
-    echo "<div class='hidden' id='Group_".$group->Id."_".$houseId."'>";
-    echo "<div class='group_members clearfix' style='display:table; border-spacing:5px;'>";
+    echo "  <div>".HousingRequest::loadById($group_housing_requestId)->Name."</div>\n";
+    echo "  <div class='hidden' id='members_$id'>\n";
+    echo "    <div class='group_members clearfix' style='display:table; border-spacing:5px;'>\n";
     foreach($group_members as $person) {
         print_individual($person, $group, $house);
-        echo "<br>";
     }
-    echo "</div>";
-    
-    
-    echo "</div>\n";
+    echo "    </div>\n";
+    echo "  </div>\n";
     echo "</div>\n";
 }
 
@@ -47,13 +43,16 @@ function print_individual(Person $person, $group, $house) {
     if (isset($house)) $id = $id."_$house->Id";
     
     echo "<div class='person' id='person_$person->Id' draggable='true' ondragstart='drag(event)'>\n";
-    echo "<div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>$person->Name</a>";
+
+    echo "  <div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>$person->Name</a>\n";
     if (!empty($person->HousingComment)) {
-        echo " <i class='fa-solid fa-circle-info' title='$person->HousingComment'></i>";
+        echo "   <i class='fa-solid fa-circle-info' title='$person->HousingComment'></i>\n";
     }
+    echo "  </div>\n";
+
+    echo "  <div>".HousingRequest::loadById($person->getRegistration($current_larp)->HousingRequestId)->Name."</div>\n";
+
     echo "</div>\n";
-    echo "<div>".HousingRequest::loadById($person->getRegistration($current_larp)->HousingRequestId)->Name."</div>\n";
-    echo "</div>";
     
 }
 
@@ -87,12 +86,19 @@ function print_house($house) {
 
 ?>
 
-<?php 
 
-include_once '../javascript/table_sort.js';
-include_once '../javascript/show_hide_area.js';
+<style>
+th {
+  cursor: pointer;
+}
 
-?>
+</style>
+
+<script src="../javascript/table_sort.js"></script>
+<script src="../javascript/assign_to_house_ajax.js"></script>
+<script src="../javascript/show_hide_area.js"></script>
+
+
 
 <style>
 div.housing-group {
@@ -140,25 +146,25 @@ div.housing-group {
         "</tr>";
     foreach ($care_takers as $care_taker) {
         $group = $care_taker->getMainRole($current_larp)->getGroup();
-        echo "<tr><td><a href='view_person.php?id=$care_taker->Id'>$care_taker->Name ".contactEmailIcon($care_taker->Name,$care_taker->Email)."</a></td>";
+        echo "<tr><td><a href='view_person.php?id=$care_taker->Id'>$care_taker->Name ".contactEmailIcon($care_taker->Name,$care_taker->Email)."</a></td>\n";
         $house = $care_taker->getHouse();
-        echo "<td><a href='view_house.php?id=$house->Id'>$house->Name</a></td>";
+        echo "<td><a href='view_house.php?id=$house->Id'>$house->Name</a></td>\n";
         
         if (!empty($group)) {
-            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</a></td>";
-        } else echo "<td></td>";
-        echo "</tr>";
+            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</a></td>\n";
+        } else echo "<td></td>\n";
+        echo "</tr>\n";
     }
-    echo "</table>";
+    echo "</table>\n";
     ?>
 
 	<h2>Önskat boende</h2>
 	<?php 
 	$count = HousingRequest::countByType($current_larp);
 	foreach($count as $item) {
-	    echo $item['Name'].": ".$item['Num']." st<br>";
+	    echo $item['Name'].": ".$item['Num']." st<br>\n";
 	}
-	echo "<br>";
+	echo "<br>\n";
 	?>
 	<table width='100%'><tr><td width='45%'>
 	<h2>Deltagare som inte har tilldelats boende</h2>
@@ -168,7 +174,7 @@ div.housing-group {
 
 	$groups = Group::getAllRegistered($current_larp);
 	
-	echo "<div id='unassigned_groups' class='housing-group clearfix' ondrop='drop_unassigned_group(event, this)' ondragover='allowDrop(event)'>";
+	echo "<div id='unassigned_groups' class='housing-group clearfix' ondrop='drop_unassigned_group(event, this)' ondragover='allowDrop(event)'>\n";
 	foreach ($groups as $group) {
 	    $group_members_without_housing = Person::getPersonsInGroupWithoutHousing($group, $current_larp);
 	    $personsWithoutHousing = array_udiff($personsWithoutHousing, $group_members_without_housing,
@@ -186,7 +192,7 @@ div.housing-group {
 	if (!empty($personsWithoutHousing)) {
     	echo "<h3>Individer</h3>";
     
-    	echo "<div id='unassigned_persons' class='housing-group clearfix' ondrop='drop_unassigned_person(event, this)' ondragover='allowDrop(event)'>";
+    	echo "<div id='unassigned_persons' class='housing-group clearfix' ondrop='drop_unassigned_person(event, this)' ondragover='allowDrop(event)'>\n";
     	foreach ($personsWithoutHousing as $person) {
     	    print_individual($person, null, null);
     	}
@@ -202,21 +208,22 @@ div.housing-group {
 	
 	<?php 
 	$houses=House::all();
-	echo "<div id='houses'>";
+	echo "<div id='houses'>\n";
 	
 	foreach($houses as $house) {
 	    print_house($house);
 	}
-	echo "</div>";
+	echo "</div>\n";
 	?>
 	</div>
 	<div class='housing-group clearfix'>
 	<h3>Lägerplatser <?php echo " <span onclick='show_hide_area(\"camps\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>"; ?></h3>
 	<?php 
-	echo "<div id='camps'>";
+	echo "<div id='camps'>\n";
 	
-	echo "</div>";
+	echo "</div>\n";
 	?>
 	</div>
 	</td></tr></table>
 </div>
+
