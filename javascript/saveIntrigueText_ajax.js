@@ -1,6 +1,3 @@
-<script  type="text/javascript">
-
-
 function saveIntrigueTextForActor(textArea) {
 
   var text = textArea.value;
@@ -16,7 +13,3 @@ function saveIntrigueTextForActor(textArea) {
   xmlhttp.send();
 }
 
-
-
-
-</script>

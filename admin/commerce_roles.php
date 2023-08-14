@@ -6,6 +6,8 @@
  $currency = $current_larp->getCampaign()->Currency;
 ?>
 
+<script src="../javascript/setmoney_ajax.js"></script>
+
 
     <div class="content">   
         <h1>Karaktärer med handel</h1>
@@ -71,7 +73,7 @@
                             
         		        }
                         echo "</td>";
-        		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this)'></td>";
+        		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'></td>";
         		        echo "</td>";
         		        echo "</tr>\n";
     		        }
@@ -84,7 +86,6 @@
  </body>
 <?php 
 include_once '../javascript/table_sort.js';
-include_once '../javascript/setmoney_ajax.js';
 ?>
 
 </html>

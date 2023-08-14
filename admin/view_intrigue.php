@@ -579,7 +579,6 @@ foreach ($roleActors as $roleActor) {
 
 
 ?>
-<?php 
 
-include_once '../javascript/saveIntrigueText_ajax.js';
-?>        
+<script src="../javascript/saveIntrigueText_ajax.js"></script>
+       

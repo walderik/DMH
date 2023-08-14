@@ -4,6 +4,7 @@
  include 'navigation.php';
 ?>
 
+<script src="../javascript/setmoney_ajax.js"></script>
 
 
     <div class="content">   
@@ -54,7 +55,7 @@
     		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</></td>\n";
     		        }
     		        
-    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this)'></td>";
+    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'></td>";
     		        
     		        echo "</tr>\n";
     		    }
@@ -104,7 +105,7 @@
     		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</></td>\n";
     		        }
     		        
-    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this)'></td>";
+    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'></td>";
     		        
     		        echo "</tr>\n";
     		    
@@ -117,7 +118,6 @@
 </body>
 <?php 
 include_once '../javascript/table_sort.js';
-include_once '../javascript/setmoney_ajax.js';
 ?>
 
 

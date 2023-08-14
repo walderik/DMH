@@ -1,9 +1,5 @@
-<script  type="text/javascript">
-
-
-function setMoney(selectObject) {
+function setMoney(selectObject, larpId) {
   var value = selectObject.value;
-  var larpId = <?php echo $current_larp->Id?>;
   var roleId = selectObject.id;
 
   var callString = "../ajax/setmoney.php?roleId=" + roleId + "&" + "value=" + value + "&" + "larpId=" + larpId; 
@@ -15,9 +11,8 @@ function setMoney(selectObject) {
 }
 
 
-function setMoneyGroup(selectObject) {
+function setMoneyGroup(selectObject, larpId) {
   var value = selectObject.value;
-  var larpId = <?php echo $current_larp->Id?>;
   var groupId = selectObject.id;
 
   var callString = "../ajax/setmoney.php?groupId=" + groupId + "&" + "value=" + value + "&" + "larpId=" + larpId; 
@@ -28,4 +23,3 @@ function setMoneyGroup(selectObject) {
   xmlhttp.send();
 }
 
-</script>

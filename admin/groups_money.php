@@ -4,6 +4,7 @@
  include 'navigation.php';
 ?>
 
+<script src="../javascript/setmoney_ajax.js"></script>
 
 
     <div class="content">   
@@ -36,7 +37,7 @@
         		        if (!empty($wealth)) echo $wealth->Name;
         		        echo "</td>\n";
     		        }
-    		        echo "<td><input type='number' id='$group->Id' value='$larp_group->StartingMoney' onchange='setMoneyGroup(this)'></td>";
+    		        echo "<td><input type='number' id='$group->Id' value='$larp_group->StartingMoney' onchange='setMoneyGroup(this, $current_larp->Id)'></td>";
     		        
     		        echo "</tr>\n";
     		    }
@@ -48,7 +49,6 @@
 </body>
 <?php 
 include_once '../javascript/table_sort.js';
-include_once '../javascript/setmoney_ajax.js';
 ?>
 
 
