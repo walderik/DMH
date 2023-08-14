@@ -24,39 +24,109 @@ function drop_in_house(ev, house) {
 		var groupId = data_array[2];
 		if (data_array.length > 3) {
 			//Kommer från ett hus
-			//Om personen låg i ett hus måste det gamla husets antal ändras
-			if (groupId != "X") {
-				//Från grupp som är i hus  
-				//Om det man drar är en person från en grupp måste gruppens antal uppdateras
-				var old_group_count = document.getElementById('count_group_' + groupId);
-				old_group_count.innerHTML = "XXX";
-
-				var oldHouseId = data_array[3];
-				var old_house_count = document.getElementById('count_house_' + oldHouseId);
-				old_house_count.innerHTML = "XXX";
-			} else {
+			if (groupId == "X") {
 				//Enskild som låg i hus
-				var oldHouseId = data_array[3];
-				var old_house_count = document.getElementById('count_house_' + oldHouseId);
-				old_house_count.innerHTML = "XXX";
+				var fromHouseId = data_array[3];
+				var from_house_count = document.getElementById('count_house_' + fromHouseId);
+
+				/* Flytta en person från ett hus till ett annat hus */
+				var callString = "../ajax/assign_to_house.php?personId=" + personId + "&fromHouseId=" + fromHouseId + "&toHouseId=" + toHouseId;
+
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var result = this.responseText.split(";");
+
+						from_house_count.innerHTML = result[1] + " pers";
+						house_count.innerHTML = result[2] + " pers";
+					}
+				};
+				xmlhttp.open("GET", callString, true);
+				xmlhttp.send();
+
+				//Ändra id
+				dragged_object.id = "person_" + personId + "_X_" + toHouseId;
+				in_house.appendChild(dragged_object);
+			} else {
+
+
+
+				//Från grupp som är i hus  
+				var fromHouseId = data_array[3];
+				var from_group_count = document.getElementById('count_group_' + groupId + '_' + fromHouseId);
+				var from_house_count = document.getElementById('count_house_' + fromHouseId);
+
+
+				/* Flytta en person från en grupp i ett hus till ett annat hus */
+				var callString = "../ajax/assign_to_house.php?personId=" + personId + "&fromGroupId=" + groupId + "&fromHouseId=" + fromHouseId + "&toHouseId=" + toHouseId;
+
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var result = this.responseText.split(";");
+
+						from_group_count.innerHTML = result[0] + " pers";
+						from_house_count.innerHTML = result[1] + " pers";
+						house_count.innerHTML = result[2] + " pers";
+					}
+				};
+				xmlhttp.open("GET", callString, true);
+				xmlhttp.send();
+
+				//Ändra id
+				dragged_object.id = "person_" + personId + "_X_" + toHouseId;
+				in_house.appendChild(dragged_object);
 			}
 		} else {
 
-			if (groupId != "X") {
+			if (groupId == "X") {
+				//Enskild som inte låg i hus, gör inget särskilt
+
+				/* Flytta en person inte är tilldelad ett hus */
+				var callString = "../ajax/assign_to_house.php?personId=" + personId + "&toHouseId=" + toHouseId;
+
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var result = this.responseText.split(";");
+
+						house_count.innerHTML = result[2] + " pers";
+					}
+				};
+				xmlhttp.open("GET", callString, true);
+				xmlhttp.send();
+
+
+				//Ändra id
+				dragged_object.id = "person_" + personId + "_X_" + toHouseId;
+				in_house.appendChild(dragged_object);
+			} else {
 				//Från grupp som inte är i hus  
 				//Om det man drar är en person från en grupp måste gruppens antal uppdateras
-				var old_group_count = document.getElementById('count_group_' + groupId);
-				old_group_count.innerHTML = "XXX";
-			} else {
-				//Enskild som inte låg i hus, gör inget särskilt
+				var from_group_count = document.getElementById('count_group_' + groupId);
+
+
+				/* Flytta en person från en grupp som inte är tilldelad ett hus */
+				var callString = "../ajax/assign_to_house.php?personId=" + personId + "&fromGroupId=" + groupId + "&toHouseId=" + toHouseId;
+
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var result = this.responseText.split(";");
+
+						from_group_count.innerHTML = result[0] + " pers";
+						house_count.innerHTML = result[2] + " pers";
+					}
+				};
+				xmlhttp.open("GET", callString, true);
+				xmlhttp.send();
+
+				//Ändra id
+				dragged_object.id = "person_" + personId + "_X_" + toHouseId;
+				in_house.appendChild(dragged_object);
 			}
 
 		}
-		//Ändra id
-		dragged_object.id = "person_" + personId + "_0_" + toHouseId;
-		//Uppdatera antalet i huset man drar till
-		house_count.innerHTML = "XXX";
-		in_house.appendChild(dragged_object);
 
 	} else {
 		//Grupp
@@ -112,6 +182,8 @@ function drop_unassigned_group(ev, el) {
 	ev.preventDefault();
 	var data = ev.dataTransfer.getData("text");
 	let data_array = data.split('_');
+	var dragged_object = document.getElementById(data);
+
 
 	if ((data_array[0] == "group") && (data_array.length > 2)) {
 		var groupId = data_array[1];
@@ -125,7 +197,7 @@ function drop_unassigned_group(ev, el) {
 			if (this.readyState == 4 && this.status == 200) {
 				var result = this.responseText.split(";");
 				//Uppdatera antalet i huset man drar från
-				from_house_count.innerHTML = result[0] + " st";
+				from_house_count.innerHTML = result[0] + " pers";
 			}
 		};
 
@@ -134,7 +206,9 @@ function drop_unassigned_group(ev, el) {
 
 
 		var box = document.getElementById('unassigned_groups');
-		box.appendChild(document.getElementById(data));
+		box.appendChild(dragged_object);
+		//Ändra id
+		dragged_object.id = "group_" + groupId;
 
 	}
 }
@@ -142,15 +216,59 @@ function drop_unassigned_group(ev, el) {
 function drop_unassigned_person(ev, el) {
 	ev.preventDefault();
 	var data = ev.dataTransfer.getData("text");
-	if (data.indexOf("person_") === 0) {
-		var box = document.getElementById('unassigned_persons');
+	let data_array = data.split('_');
+	var dragged_object = document.getElementById(data);
 
-		//Uppdatera antalet i huset man drar från
-		var oldHouseId = data_array[2];
-		var old_house_count = document.getElementById('count_house_' + oldHouseId);
-				old_house_count.innerHTML = "XXX";
-		
-		box.appendChild(document.getElementById(data));
+	if (data.indexOf("person_") === 0) {
+		var personId = data_array[1];
+		var groupId = data_array[2];
+
+
+		if (groupId == "X") {
+			//Enskild som låg i hus
+			var fromHouseId = data_array[3];
+			var from_house_count = document.getElementById('count_house_' + fromHouseId);
+
+			/* Flytta en person från ett hus till icke tilldelad */
+			var callString = "../ajax/assign_to_house.php?personId=" + personId + "&fromHouseId=" + fromHouseId;
+
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var result = this.responseText.split(";");
+
+					from_house_count.innerHTML = result[1] + " pers";
+				}
+			};
+			xmlhttp.open("GET", callString, true);
+			xmlhttp.send();
+		} else {
+			//Från grupp som är i hus  
+			var from_group_count = document.getElementById('count_group_' + groupId + '_' + fromHouseId);
+			var fromHouseId = data_array[3];
+			var from_house_count = document.getElementById('count_house_' + fromHouseId);
+
+
+			/* Flytta en person från en grupp i ett hus till icke tilldelad */
+			var callString = "../ajax/assign_to_house.php?personId=" + personId + "&fromGroupId=" + groupId + "&fromHouseId=" + fromHouseId;
+
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var result = this.responseText.split(";");
+
+					from_group_count.innerHTML = result[0] + " pers";
+					from_house_count.innerHTML = result[1] + " pers";
+				}
+			};
+			xmlhttp.open("GET", callString, true);
+			xmlhttp.send();
+
+		}
+		//Ändra id
+		dragged_object.id = "person_" + personId + "_X";
+		var box = document.getElementById('unassigned_persons');
+		box.appendChild(dragged_object);
 	}
 }
 

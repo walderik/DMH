@@ -42,7 +42,7 @@ function print_individual(Person $person, $group, $house) {
     else  $id = $id."_X";
     if (isset($house)) $id = $id."_$house->Id";
     
-    echo "<div class='person' id='person_$person->Id' draggable='true' ondragstart='drag(event)'>\n";
+    echo "<div class='person' id='$id' draggable='true' ondragstart='drag(event)'>\n";
 
     echo "  <div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>$person->Name</a>\n";
     if (!empty($person->HousingComment)) {
