@@ -17,7 +17,7 @@ function drop_in_house(ev, house) {
 
 	let house_array = house.id.split('_');
 	let data_array = data.split('_');
-	var houseId = house_array[1];
+	var toHouseId = house_array[1];
 
 	if (data_array[0] == "person") {
 		var personId = data_array[1];
@@ -53,7 +53,7 @@ function drop_in_house(ev, house) {
 
 		}
 		//Ändra id
-		dragged_object.id = "person_" + personId + "_0_" + houseId;
+		dragged_object.id = "person_" + personId + "_0_" + toHouseId;
 		//Uppdatera antalet i huset man drar till
 		house_count.innerHTML = "XXX";
 		in_house.appendChild(dragged_object);
@@ -63,8 +63,8 @@ function drop_in_house(ev, house) {
 		var groupId = data_array[1];
 		if (data_array.length > 2) {
 			//Antalet i huset man flyttar från måste uppdateras
-			var oldHouseId = data_array[2];
-			var old_house_count = document.getElementById('count_house_' + oldHouseId);
+			var fromHouseId = data_array[2];
+			var from_house_count = document.getElementById('count_house_' + fromHouseId);
 
 			/* Flytta en grupp från ett hus till ett annat */
 			var callString = "../ajax/assign_to_house.php?groupId=" + groupId + "&fromHouseId=" + fromHouseId + "&toHouseId=" + toHouseId;
@@ -74,7 +74,7 @@ function drop_in_house(ev, house) {
 				if (this.readyState == 4 && this.status == 200) {
 					var result = this.responseText.split(";");
 					//Uppdatera antalet i huset man drar från
-					old_house_count.innerHTML = result[0] + " st";
+					from_house_count.innerHTML = result[0] + " st";
 					//Uppdatera antalet i huset man drar till
 					house_count.innerHTML = result[1] + " st";
 				}
@@ -83,7 +83,7 @@ function drop_in_house(ev, house) {
 			xmlhttp.send();
 
 			//Ändra id
-			dragged_object.id = "group_" + groupId + "_" + houseId;
+			dragged_object.id = "group_" + groupId + "_" + toHouseId;
 			in_house.appendChild(dragged_object);
 		} else {
 			/* Flytta grupp från otilldelad til ett hus */
@@ -101,7 +101,7 @@ function drop_in_house(ev, house) {
 			xmlhttp.send();
 
 			//Ändra id
-			dragged_object.id = "group_" + groupId + "_" + houseId;
+			dragged_object.id = "group_" + groupId + "_" + toHouseId;
 			in_house.appendChild(dragged_object);
 		}
 
@@ -115,8 +115,8 @@ function drop_unassigned_group(ev, el) {
 
 	if ((data_array[0] == "group") && (data_array.length > 2)) {
 		var groupId = data_array[1];
-		var oldHouseId = data_array[2];
-		var old_house_count = document.getElementById('count_house_' + oldHouseId);
+		var fromHouseId = data_array[2];
+		var from_house_count = document.getElementById('count_house_' + fromHouseId);
 
 		var callString = "../ajax/assign_to_house.php?groupId=" + groupId + "&fromHouseId=" + fromHouseId;
 
@@ -125,7 +125,7 @@ function drop_unassigned_group(ev, el) {
 			if (this.readyState == 4 && this.status == 200) {
 				var result = this.responseText.split(";");
 				//Uppdatera antalet i huset man drar från
-				old_house_count.innerHTML = result[0] + " st";
+				from_house_count.innerHTML = result[0] + " st";
 			}
 		};
 

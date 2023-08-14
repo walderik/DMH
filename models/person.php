@@ -115,6 +115,7 @@ class Person extends BaseModel{
             "regsys_role.PersonId = regsys_housing.PersonId AND ".
             "regsys_role.Id = regsys_larp_role.RoleId AND ".
             "regsys_larp_role.LarpId = regsys_housing.LarpId AND ".
+            "regsys_larp_role.IsMainRole=1 AND ".
             "regsys_role.GroupId = ?".
             ") ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($house->Id, $larp->Id, $group->Id));
@@ -181,7 +182,9 @@ class Person extends BaseModel{
         $all_group_members = static::getPersonsInGroup($group, $larp);
         $group_members = array();
         foreach ($all_group_members as $group_member) {
-            if (!$group_member->hasHousing($larp)) $group_members[] = $group_member;
+            if (!$group_member->hasHousing($larp)) {
+                $group_members[] = $group_member;
+            }
         }
         return $group_members;
     }
@@ -585,8 +588,7 @@ class Person extends BaseModel{
     }
     
     public function hasHousing(LARP $larp) {
-        $housing = Housing::getHousing($this, $larp);
-        if (empty($housing)) return false;
-        return true;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_housing WHERE LARPId=? AND PersonId=?";
+        return static::existsQuery($sql, array($larp->Id, $this->Id));
     }
 }

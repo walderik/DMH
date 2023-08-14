@@ -1,5 +1,5 @@
 <?php
-include_once '../header.php';
+include_once 'header.php';
 
 // get the parameters from URL
 if (isset($_REQUEST["roleId"])) $roleId = $_REQUEST["roleId"];
@@ -16,7 +16,7 @@ if (isset($roleId)) {
         $fromHouse = House::loadById($fromHouseId);
         $group_members = Person::getGroupMembersInHouse($group, $fromHouse, $current_larp);
     } else {
-        $all_unassigned_group_members = Person::getPersonsInGroupWithoutHousing($group, $current_larp);
+        $group_members = Person::getPersonsInGroupWithoutHousing($group, $current_larp);
     }
 
     if (isset($toHouseId)) {
@@ -29,10 +29,9 @@ if (isset($roleId)) {
         }
         
     }
-    $res = [
-        0 => "",
-        1 => "",
-    ];
+    $res = array();
+    $res[0] = "";
+    $res[1] = "";
     if (isset($fromHouseId)) {
         $fromHouse = House::loadById($fromHouseId);
         $personsInFromHouse = Person::personsAssignedToHouse($fromHouse, $current_larp);  
@@ -43,7 +42,7 @@ if (isset($roleId)) {
         $personsInToHouse = Person::personsAssignedToHouse($toHouse, $current_larp);
         $res[1] = count($personsInToHouse);
     }
-    return implode(";"$res);   
+    echo implode(";",$res);   
 }  else {  
     header('Location: ../admin/index.php');
     exit;
@@ -52,10 +51,9 @@ if (isset($roleId)) {
 
 
 function assign(Person $person, $houseId, LARP $larp) {
-    //Om ta bort gammalt boende
-    if ($person->hasHousing($larp)) {
-        Housing::deleteHousing($larp->Id, $person->Id);
-    }
+    //Ta bort gammalt boende
+    Housing::deleteHousing($larp->Id, $person->Id);
+
 
     $housing = Housing::newWithDefault();
     $housing->HouseId = $houseId;
@@ -65,9 +63,7 @@ function assign(Person $person, $houseId, LARP $larp) {
    
 }
 
-function unassign(Person $person, $houseId, LARP $larp) {
-    //Om ta bort gammalt boende
-    if ($person->hasHousing($larp)) {
-        Housing::deleteHousing($larp->Id, $person->Id);
-    }
+function unassign(Person $person, LARP $larp) {
+    //Ta bort gammalt boende
+    Housing::deleteHousing($larp->Id, $person->Id);
 }

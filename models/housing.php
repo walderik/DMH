@@ -13,6 +13,9 @@ class Housing extends BaseModel{
         if (isset($post['LARPId'])) $housing->LARPId = $post['LARPId'];
         if (isset($post['PersonId'])) $housing->PersonId = $post['PersonId'];
         if (isset($post['HouseId'])) $housing->HouseId = $post['HouseId'];
+        echo "New housing: ";
+        print_r($housing);
+        echo "<br>";
         return $housing;
     }
     

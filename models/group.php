@@ -272,7 +272,8 @@ class Group extends BaseModel{
             "regsys_housing.LarpId = ? AND ".
             "regsys_role.PersonId = regsys_housing.PersonId AND ".
             "regsys_role.Id = regsys_larp_role.RoleId AND ".
-            "regsys_larp_role.LarpId = regsys_housing.LarpId".
+            "regsys_larp_role.LarpId = regsys_housing.LarpId AND ".
+            "regsys_larp_role.IsMainRole=1".
             ") ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($house->Id, $larp->Id));
          
