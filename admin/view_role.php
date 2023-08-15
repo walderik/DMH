@@ -274,6 +274,37 @@ include 'navigation.php';
 		?>
 		
 		</div>
+		
+		
+		<h2>Handel</h2>
+		<div>
+		<?php 
+		$currency = $current_larp->getCampaign()->Currency;
+		$titledeeds = Titledeed::getAllForRole($role);
+		foreach ($titledeeds as $titledeed) {
+		    $numberOfOwners = $titledeed->numberOfOwners();
+		    echo "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
+		    if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
+		    echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
+		    echo "<br>";
+		    $produces_normally = $titledeed->ProducesNormally();
+		    if (!empty($produces_normally)) echo "Producerar: ". commaStringFromArrayObject($produces_normally) . "<br>\n";
+		    $requires_normally = $titledeed->RequiresNormally();
+		    if (!empty($requires_normally)) echo "Behöver: " . commaStringFromArrayObject($requires_normally)."<br>\n";
+		    echo "<br>";
+		    
+		}
+		echo "Pengar vid lajvets start $larp_role->StartingMoney $currency";
+		
+		
+		
+		
+		
+		
+		?>
+		
+		 </div>
+		
 		<h2>Anteckningar (visas inte för deltagaren) <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php    echo nl2br(htmlspecialchars($role->OrganizerNotes)); ?>

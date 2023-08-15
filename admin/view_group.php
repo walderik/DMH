@@ -351,6 +351,38 @@ include 'navigation.php';
 		?>
 		
 		</div>
+		
+				<h2>Handel</h2>
+		<div>
+		<?php 
+		$currency = $current_larp->getCampaign()->Currency;
+		$titledeeds = Titledeed::getAllForGroup($current_group);
+		foreach ($titledeeds as $titledeed) {
+		    $numberOfOwners = $titledeed->numberOfOwners();
+		    echo "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
+		    if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
+		    echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
+		    echo "<br>";
+		    $produces_normally = $titledeed->ProducesNormally();
+		    if (!empty($produces_normally)) echo "Producerar: ". commaStringFromArrayObject($produces_normally) . "<br>\n";
+		    $requires_normally = $titledeed->RequiresNormally();
+		    if (!empty($requires_normally)) echo "Behöver: " . commaStringFromArrayObject($requires_normally)."<br>\n";
+		    echo "<br>";
+		    
+		}
+		echo "Pengar vid lajvets start $larp_group->StartingMoney $currency";
+		
+		
+		
+		
+		
+		
+		?>
+		
+		 </div>
+		
+		
+		
 		<h2>Anteckningar (visas inte för deltagarna)</h2>
 		<div>
 		<?php echo $current_group->OrganizerNotes; ?>
