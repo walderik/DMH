@@ -245,5 +245,17 @@ class Rumour extends BaseModel{
         }
     }
     
+    public static function delete($id)
+    {
+        $rumour = static::loadById($id);
+        $rumour_knows = $rumour->getKnows();
+        foreach ($rumour_knows as $rumour_know) Rumour_knows::delete($rumour_know->Id);
+        
+        $rumour_concerns = $rumour->getConcerns();
+        foreach ($rumour_concerns as $rumour_concern) Rumour_concerns::delete($rumour_concern->Id);
+        
+        parent::delete($id);
+    }
+    
     
 }
