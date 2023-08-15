@@ -15,12 +15,18 @@ th {
 
 <script src="../javascript/table_sort.js"></script>
 <script src="../javascript/setmoney_ajax.js"></script>
+<script src="../javascript/show_hide_rows.js"></script>
 
 
     <div class="content">   
         <h1>Karaktärer med handel</h1>
         <p>Alla karaktärer som har <?php if (Wealth::isInUse($current_larp)) echo "rikedom 3 eller högre eller"?> som äger en lagfart visas här. Det gäller alla karaktärer i kampanjen, även de som inte kommer på ett visst lajv.</p>
-        <p>Sidokaraktärer markeras med en * efter namnet</p>
+        <p>Sidokaraktärer markeras med en * efter namnet. De är gömda från början.</p>
+		    <?php 
+	        echo "Karaktärer filtrerade på om de är sidokaraktär eller inte.<br>";
+	        echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
+	        echo "<br><br>";
+		    ?>
      		<?php 
      		$roles = Role::getAllInCampaign($current_larp->CampaignId);
     		if (empty($roles)) {
@@ -46,8 +52,9 @@ th {
     		        $isComing = !empty($larp_role);
     		        if (!empty($registration) && $registration->isNotComing()) $isComing=false;
     		        if (($isComing && $role->is_trading($current_larp)) || !empty($titledeeds)) {
-        		        echo "<tr>\n";
-        		        echo "<td>";
+    		            if ($larp_role->IsMainRole == 1) echo "<tr>\n";
+    		            else echo "<tr class='show_hide hidden'>\n";
+    		            echo "<td>";
     		            echo "<a href='view_role.php?id=$role->Id'>$role->Name</a>\n";
                         if (!empty($larp_role) && ($larp_role->IsMainRole == 0)) echo " * ";
     		            if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
