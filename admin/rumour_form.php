@@ -5,11 +5,11 @@ $rumour = Rumour::newWithDefault();;
 $rumour->Approved = 1;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $operation = "new";
+    $operation = "insert";
     if (isset($_GET['operation'])) {
         $operation = $_GET['operation'];
     }
-    if ($operation == 'new') {
+    if ($operation == 'insert') {
         if (isset($_GET['IntrigueId'])) $rumour->IntrigueId = $_GET['IntrigueId'];
         if (isset($_GET['RoleId'])) $roleId = $_GET['RoleId'];
     } elseif ($operation == 'update') {
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    $operation = "new";
+    $operation = "insert";
     $referer = $_POST['Referer'];
     if (isset($_POST['operation'])) $operation = $_POST['operation'];
     $rumour = Rumour::loadById($_POST['id']);
