@@ -41,7 +41,7 @@ th {
 <script src="../javascript/table_sort.js"></script>
 
     <div class="content">
-        <h1>Lagfarter</h1>
+        <h1>Lagfarter <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
         <p>Lagfarter går bara att ta bort om det inte finns några ägare eller instälningar för produktion/behov. 
         Detta för att man inte ska råka ta bort lagfarter som är i spel av misstag.</p>
         <p>Ikoner:<br>
