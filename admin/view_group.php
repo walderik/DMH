@@ -136,7 +136,7 @@ include 'navigation.php';
 		
 		<h2>Anmälda medlemmar</h2>
 		<?php 
-
+        echo "<div>";
 		echo "<table>";
 		foreach($main_characters_in_group as $group_member) {
 		    print_role($group_member, $current_group);
@@ -150,7 +150,9 @@ include 'navigation.php';
 		        print_role($group_member, $current_group);
 		    }
 		    echo "</table>";
+		    
 		}
+		echo "</div>";
 		?>
 		<h2>Intrig <a href='edit_group_intrigue.php?id=<?php echo $current_group->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
