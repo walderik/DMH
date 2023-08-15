@@ -6,7 +6,7 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require_once $root . '/pdf/titledeed_pdf.php';
 include_once '../header.php';
 
-$arrayOfTitledeeds = Titledeed::allByCampaign($current_larp);
+$arrayOfTitledeeds = Titledeed::allByCampaign($current_larp, false);
 $pdf = new TITLEDEED_PDF();
 $pdf->SetTitle(utf8_decode('Ägarbevisen'));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));

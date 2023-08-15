@@ -1,7 +1,7 @@
 <?php
 include_once 'header.php';
 
-$titledeeds = Titledeed::allByCampaign($current_larp);
+$titledeeds = Titledeed::allByCampaign($current_larp, false);
 $resources = Resource::allRareByCampaign($current_larp);
 
 $currency = $current_larp->getCampaign()->Currency;

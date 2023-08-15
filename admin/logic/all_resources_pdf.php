@@ -6,7 +6,7 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require_once $root . '/pdf/resource_pdf.php';
 include_once '../header.php';
 
-$arrayOfTitledeeds = Titledeed::allByCampaign($current_larp);
+$arrayOfTitledeeds = Titledeed::allByCampaign($current_larp, false);
 $pdf = new RESOURCE_PDF();
 $pdf->SetTitle(utf8_decode('Alla resurser för alla lagfarter'));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));

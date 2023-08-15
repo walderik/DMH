@@ -58,7 +58,7 @@ th {
         </p>
        <?php
     
-       $titledeed_array = Titledeed::allByCampaign($current_larp);
+       $titledeed_array = Titledeed::allByCampaign($current_larp, true);
        $currency = $current_larp->getCampaign()->Currency;
         if (!empty($titledeed_array)) {
             $tableId = "titledeeds";
@@ -66,9 +66,10 @@ th {
             echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                 "<th onclick='sortTable(1, \"$tableId\")'>Plats</th>".
                 "<th onclick='sortTable(2, \"$tableId\")'>Ägare</th>".
-                "<th onclick='sortTable(1, \"$tableId\")'>Normalt<br>Producerar/Behöver</th>".
-                "<th onclick='sortTable(2, \"$tableId\")'>Nu<br>Producerar/Behöver</th>".
-                "<th onclick='sortTable(1, \"$tableId\")'>Resultat</th>".
+                "<th onclick='sortTable(3, \"$tableId\")'>I spel</th>".
+                "<th onclick='sortTable(4, \"$tableId\")'>Normalt<br>Producerar/Behöver</th>".
+                "<th onclick='sortTable(5, \"$tableId\")'>Nu<br>Producerar/Behöver</th>".
+                "<th onclick='sortTable(6, \"$tableId\")'>Resultat</th>".
                 "<th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
                 echo "<tr>\n";
@@ -101,7 +102,11 @@ th {
                     
                 }
                 echo "</td>\n";
+ 
+                echo "<td>";
+                echo showStatusIcon($titledeed->isInUse());
                 
+                echo "</td>";
                 echo "<td>";
                 $produces_normally = $titledeed->ProducesNormally();
                 if (!empty($produces_normally)) echo "Producerar: ". commaStringFromArrayObject($produces_normally) . "<br>\n";

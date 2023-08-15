@@ -107,14 +107,24 @@ include_once 'header.php';
 			<tr>
 
 				<td><label for="Produces">Producerar (normalt)</label></td>
-				<td><?php selectionByArray('Produces', $resources, true, false) ?>
+				<td><?php selectionByArray('Produces', $resources, true, false, $titledeed->getSelectedProducesResourcesIds()) ?>
 				</td>
 			</tr>
 			<tr>
 
 				<td><label for="Requires">Behöver (normalt)</label></td>
-				<td><?php selectionByArray('Requires', $resources, true, false) ?>
+				<td><?php selectionByArray('Requires', $resources, true, false, $titledeed->getSelectedRequiresResourcesIds()) ?>
 				</td>
+			</tr>
+			<tr>
+
+				<td><label for="IsTradingPost">Är i spel</label></td>
+    			<td>
+    				<input type="radio" id="IsInUse_yes" name="IsInUse" value="1" <?php if ($titledeed->IsInUse()) echo 'checked="checked"'?>> 
+        			<label for="IsInUse_yes">Ja</label><br> 
+        			<input type="radio" id="IsInUse_no" name="IsInUse" value="0" <?php if (!$titledeed->isInUse()) echo 'checked="checked"'?>> 
+        			<label for="IsInUse_no">Nej</label>
+    			</td>
 			</tr>
 			<tr>
 				<td><label for="PublicNotes">Anteckingar om lagfarten<br>som visas på lagfarten</label></td>

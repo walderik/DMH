@@ -15,6 +15,7 @@ class Titledeed extends BaseModel{
     public $SpecialUpgradeRequirements;
     public $Type;
     public $Size;
+    public $IsInUse = 1;
     
     
     public static $orderListBy = 'Name';
@@ -41,6 +42,7 @@ class Titledeed extends BaseModel{
         if (isset($arr['SpecialUpgradeRequirements'])) $this->SpecialUpgradeRequirements = $arr['SpecialUpgradeRequirements'];
         if (isset($arr['Type'])) $this->Type = $arr['Type'];
         if (isset($arr['Size'])) $this->Size = $arr['Size'];
+        if (isset($arr['IsInUse'])) $this->IsInUse = $arr['IsInUse'];
         
     }
     
@@ -58,11 +60,11 @@ class Titledeed extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_titledeed SET Name=?, Location=?, Tradeable=?, IsTradingPost=?,
                   CampaignId=?, Money=?, MoneyForUpgrade=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=?, 
-                  `Type`=?, Size=? WHERE Id = ?;");
+                  `Type`=?, Size=?, IsInUse=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
             $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes, 
-            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->Id))) {
+            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -74,11 +76,11 @@ class Titledeed extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_titledeed (Name, Location, Tradeable, IsTradingPost, 
-            CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements, `Type`, Size) VALUES (?,?,?,?,?,?, ?,?,?,?,?,?);");
+            CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements, `Type`, Size, IsInUse) VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
             $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes,
-            $this->SpecialUpgradeRequirements, $this->Type, $this->Size))) {
+            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -89,12 +91,17 @@ class Titledeed extends BaseModel{
             $stmt = null;
     }
     
-    public static function allByCampaign(LARP $larp) {
+    public static function allByCampaign(LARP $larp, $includeNotInUse) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_titledeed WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
+        if ($includeNotInUse) $sql = "SELECT * FROM regsys_titledeed WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
+        else $sql = "SELECT * FROM regsys_titledeed WHERE CampaignId = ? AND IsInUse = 1 ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public function isInUse() {
+        if ($this->IsInUse == 1) return true;
+        return false;
+    }
     
     public function getRoleOwners() {
         return Role::getTitledeedOwners($this);
@@ -177,10 +184,11 @@ class Titledeed extends BaseModel{
     public function ProducesNormally() {
         return Resource::TitleDeedProcucesNormally($this);
     }
-    
+
     public function RequiresNormally() {
         return Resource::TitleDeedRequiresNormally($this);
     }
+    
     
     public function ProducesString() {
         $resource_titledeeds = $this->Produces();
