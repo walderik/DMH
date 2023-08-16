@@ -207,7 +207,7 @@ div.housing-group {
 	<h3>Hus <?php echo " <span onclick='show_hide_area(\"houses\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>";?></h3>
 	
 	<?php 
-	$houses=House::all();
+	$houses=House::getAllHouses();
 	echo "<div id='houses'>\n";
 	
 	foreach($houses as $house) {
@@ -219,7 +219,11 @@ div.housing-group {
 	<div class='housing-group clearfix'>
 	<h3>Lägerplatser <?php echo " <span onclick='show_hide_area(\"camps\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>"; ?></h3>
 	<?php 
+	$camps=House::getAllCamps();
 	echo "<div id='camps'>\n";
+	foreach($camps as $camp) {
+	    print_house($camp);
+	}
 	
 	echo "</div>\n";
 	?>

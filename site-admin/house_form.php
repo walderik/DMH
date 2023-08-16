@@ -55,7 +55,7 @@ img {
 </style>
 
     <div class="content"> 
-    	<h1><?php echo default_value('action');?> hus</h1>
+    	<h1><?php echo default_value('action');?> hus eller lägerplats</h1>
     	        <?php 
     	        if ($house->hasImage()) {
     	            $image = Image::loadById($house->ImageId);
@@ -75,12 +75,20 @@ img {
     				<td><label for="Name">Namn</label></td>
     				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($house->Name); ?>" required></td>
     			</tr>
+				<tr><td valign="top" class="header">Typ</td>
+        			<td>
+        				<input type="radio" id="IsHouse_house" name="IsHouse" value="1" <?php if ($house->IsHouse()) echo 'checked="checked"'?>> 
+            			<label for="IsHouse_house">Hus</label><br> 
+            			<input type="radio" id="IsHouse_camp" name="IsHouse" value="0" <?php if (!$house->IsHouse()) echo 'checked="checked"'?>> 
+            			<label for="IsHouse_camp">Lägerplats</label>
+        			</td>
+    			</tr>
     			<tr>
-    				<td><label for="NumberOfBeds">Antal sovplatser</label></td>
+    				<td><label for="NumberOfBeds">Antal sovplatser/<br>tältplatser</label></td>
     				<td><input type="text" id="NumberOfBeds" name="NumberOfBeds" value="<?php echo htmlspecialchars($house->NumberOfBeds); ?>" required></td>
     			</tr>
     			<tr>
-    				<td><label for="PositionInVillage">Plats i byn</label></td>
+    				<td><label for="PositionInVillage">Plats</label></td>
     				<td><textarea id="PositionInVillage" name="PositionInVillage" rows="4" cols="121" maxlength="60000" required><?php echo htmlspecialchars($house->PositionInVillage); ?></textarea></td>
     			</tr>
     			<tr>

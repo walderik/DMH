@@ -8,6 +8,7 @@ class House extends BaseModel{
     public $PositionInVillage;
     public $Description;
     public $ImageId;
+    public $IsHouse = 0; //1= hus, 0=lägerplats
     
     public static $orderListBy = 'Name';
     
@@ -24,6 +25,7 @@ class House extends BaseModel{
         if (isset($arr['PositionInVillage'])) $this->PositionInVillage = $arr['PositionInVillage'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
+        if (isset($arr['IsHouse'])) $this->IsHouse = $arr['IsHouse'];
         
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
     }
@@ -35,9 +37,9 @@ class House extends BaseModel{
     
     # Update an existing house in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_house SET Name=?, NumberOfBeds=?, PositionInVillage=?, Description=?, ImageId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_house SET Name=?, NumberOfBeds=?, PositionInVillage=?, Description=?, ImageId=?, IsHouse=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, $this->ImageId, $this->Id))) {
+        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, $this->ImageId, $this->IsHouse, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -49,9 +51,9 @@ class House extends BaseModel{
     # Create a new house in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_house (Name, NumberOfBeds, PositionInVillage, Description) VALUES (?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_house (Name, NumberOfBeds, PositionInVillage, Description, IsHouse) VALUES (?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description))) {
+        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, $this->IsHouse))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -64,9 +66,23 @@ class House extends BaseModel{
         if (isset($this->ImageId)) return true;
         return false;
     }
+ 
     
+    public function IsHouse() {
+        if ($this->IsHouse==1) return true;
+        return false;
+    }
     
+    public static function getAllHouses() {
+        $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array());
+    }
     
+    public static function getAllCamps() {
+        $sql = "SELECT * FROM regsys_house WHERE IsHouse=0 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array());
+        
+    }
     
 }
     
