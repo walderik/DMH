@@ -107,7 +107,20 @@ th {
         		        if (is_null($group)) {
         		            echo "<td>&nbsp;</td>\n";
         		        } else {
-        		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</></td>\n";
+        		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</a>";
+        		            $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
+        		            echo "<br>";
+        		            if (!empty($intrigues)) echo "Intrig: ";
+        		            foreach ($intrigues as $intrigue) {
+        		                echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+        		                if ($intrigue->isActive()) echo $intrigue->Number;
+        		                else echo "<s>$intrigue->Number</s>";
+        		                echo "</a>";
+        		                echo " ";
+        		            }
+        		            
+        		            
+        		            echo "</td>\n";
         		        }
         		        if ($role->isMysLajvare()) {
         		            echo "<td colspan=2>N/A</td>\n";
