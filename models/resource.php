@@ -119,6 +119,7 @@ class Resource extends BaseModel{
         $sql = "SELECT Sum(regsys_resource_titledeed.Quantity) as Num FROM regsys_resource_titledeed, regsys_titledeed WHERE ".
             "regsys_resource_titledeed.ResourceId = ? AND ".
             "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
+            "regsys_titledeed.IsInUse = 1 AND ".
             "regsys_titledeed.CampaignId = ? AND ".
             "regsys_resource_titledeed.Quantity > 0 ";
         $count = static::countQuery($sql, array($this->Id, $larp->CampaignId));
@@ -131,6 +132,7 @@ class Resource extends BaseModel{
         $sql = "SELECT Sum(regsys_resource_titledeed.Quantity) as Num FROM regsys_resource_titledeed, regsys_titledeed WHERE ".
             "regsys_resource_titledeed.ResourceId = ? AND ".
             "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
+            "regsys_titledeed.IsInUse = 1 AND ".
             "regsys_titledeed.CampaignId = ?";
         $count = static::countQuery($sql, array($this->Id, $larp->CampaignId));
         if (isset($count)) return $count;
