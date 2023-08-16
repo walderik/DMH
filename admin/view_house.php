@@ -25,20 +25,35 @@ img {
     	
     		<table>
     			<tr>
-    				<td>Antal sovplatser</td>
+    			
+    				<td>Antal 
+    				<?php 
+    				if ($house->IsHouse()) echo "sovplatser"; 
+    				else echo "tältplatser";
+    				?>
+    				</td>
     				<td><?php echo htmlspecialchars($house->NumberOfBeds); ?></td>
-	        <?php 
-	        if ($house->hasImage()) {
-	            $image = Image::loadById($house->ImageId);
-                echo "<td>";
-                echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
-                if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-                echo "</td>";
-            }
-            ?>
+        	        <?php 
+        	        if ($house->hasImage()) {
+        	            $image = Image::loadById($house->ImageId);
+                        echo "<td>";
+                        echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
+                        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+                        echo "</td>";
+                    }
+                    ?>
     			</tr>
     			<tr>
-    				<td>Plats i byn</td>
+    				<td>Plats</td>
+    				<td>
+    				<?php                 
+    				if ($house->IsHouse()) echo "Hus";
+                    else echo "Lägerplats";
+    				?>
+    				</td>
+    			</tr>
+    			<tr>
+    				<td>Plats</td>
     				<td><?php echo nl2br(htmlspecialchars($house->PositionInVillage)); ?></td>
     			</tr>
     			<tr>

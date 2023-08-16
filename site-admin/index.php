@@ -7,7 +7,7 @@ include "navigation.php";
 			<h1>Omnes Mundos administration</h1>
 			<p>			    
 				<a href="campaign_admin.php">Kampanjer</a><br>
-			    <a href="house_admin.php">Hus i byn</a><br>
+			    <a href="house_admin.php">Hus och lägerplatser</a><br>
 			    <a href="user_admin.php">Användare / Logins /Admin behörighet</a><br>
 		    </p>
 		    <h2>Basdata</h2>
