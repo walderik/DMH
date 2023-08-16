@@ -11,6 +11,7 @@ class NPC extends BaseModel{
     public $LarpId;
     public $ImageId;
     public $IsReleased = 0;
+    public $IsToBePlayed = 1;
     
     
     public static $orderListBy = 'Name';
@@ -33,6 +34,7 @@ class NPC extends BaseModel{
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         if (isset($arr['IsReleased'])) $this->IsReleased = $arr['IsReleased'];
+        if (isset($arr['IsToBePlayed'])) $this->IsToBePlayed = $arr['IsToBePlayed'];
         
         if (isset($this->NPCGroupId) && $this->NPCGroupId=='null') $this->NPCGroupId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
@@ -53,11 +55,11 @@ class NPC extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_npc SET Name=?, Description=?,
                 Time=?, PersonId=?, NPCGroupId=?, 
-                LarpId=?, ImageId=?, IsReleased=? WHERE Id = ?;");
+                LarpId=?, ImageId=?, IsReleased=?, IsToBePlayed=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Description,
             $this->Time, $this->PersonId,
-            $this->NPCGroupId, $this->LarpId, $this->ImageId, $this->IsReleased, $this->Id))) {
+            $this->NPCGroupId, $this->LarpId, $this->ImageId, $this->IsReleased, $this->IsToBePlayed, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -71,11 +73,11 @@ class NPC extends BaseModel{
         
        $stmt = $connection->prepare("INSERT INTO regsys_npc (Name, Description,
                                                             Time, PersonId,
-                                                            NPCGroupId, LarpId, ImageId, IsReleased) 
-                                                            VALUES (?,?,?,?,?, ?,?,?);");
+                                                            NPCGroupId, LarpId, ImageId, IsReleased, IsToBePlayed) 
+                                                            VALUES (?,?,?,?,?, ?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Description, $this->Time,
-            $this->PersonId, $this->NPCGroupId, $this->LarpId, $this->ImageId, $this->IsReleased))) {
+            $this->PersonId, $this->NPCGroupId, $this->LarpId, $this->ImageId, $this->IsReleased, $this->IsToBePlayed))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -173,6 +175,11 @@ class NPC extends BaseModel{
     
     public function IsReleased() {
         if ($this->IsReleased==1) return true;
+        return false;
+    }
+    
+    public function IsToBePlayed() {
+        if ($this->IsToBePlayed==1) return true;
         return false;
     }
     

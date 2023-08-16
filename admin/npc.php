@@ -82,11 +82,12 @@ function print_unassigned_npc(NPC $npc) {
         echo " ";
     }
     echo "</td><td>";
-    echo "<form action='logic/assign_npc.php' method='post'><input type='hidden' name='id' value=$npc->Id>";
-    echo selectionDropDownByArray("PersonId", $persons);
-    echo "<input type ='submit' value='Tilldela'>";
-    echo "</form>";
-    echo "</div>";
+    if ($npc->IsToBePlayed()) {
+        echo "<form action='logic/assign_npc.php' method='post'><input type='hidden' name='id' value=$npc->Id>";
+        echo selectionDropDownByArray("PersonId", $persons);
+        echo "<input type ='submit' value='Tilldela'>";
+        echo "</form>";
+    }
     echo "</td></tr>";
     
     

@@ -98,6 +98,14 @@ include 'navigation.php';
  			<tr><td valign="top" class="header">När ska karaktären spelas?<br>Om den ska spelas vid ett särskillt tillfälle.</td>
  			<td><input type="text" id="Time" name="Time" value="<?php echo htmlspecialchars($npc->Time); ?>" size="100" maxlength="250"></td></tr>
 
+			<tr><td valign="top" class="header">Ska NPC'n spelas</td>
+			<td>
+				<input type="radio" id="IsToBePlayed_yes" name="IsToBePlayed" value="1" <?php if ($npc->IsToBePlayed()) echo 'checked="checked"'?>> 
+    			<label for="IsToBePlayed_yes">Ja</label><br> 
+    			<input type="radio" id="IsToBePlayed_no" name="IsToBePlayed" value="0" <?php if (!$npc->IsToBePlayed()) echo 'checked="checked"'?>> 
+    			<label for="IsToBePlayed_no">Nej</label>
+			</td></tr>
+
 		</table>		
 			<input type="submit" value="<?php default_value("action");?>">
 
