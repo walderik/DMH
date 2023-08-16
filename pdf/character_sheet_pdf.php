@@ -204,7 +204,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         }
         
         # Dom man känner till från intrigerna
-        if (!empty($known_actors) && !empty($known_npcgroups && !empty($known_npcs)  && !empty($known_props))) {
+        if (!empty($known_actors) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props))) {
             $this->bar();
             $y = $this->GetY()+$space*2;
             
