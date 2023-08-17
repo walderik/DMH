@@ -85,38 +85,43 @@ class RESOURCE_PDF extends FPDF {
                 # Rubriken
                 $this->SetFont('specialelite','',12);
                 $this->SetXY( 3+$this->margin+($x_nr * $rut_width), $this->margin+($y_nr * $rut_height));
-                $this->Cell($rut_width,10,utf8_decode(ucfirst("Kvitto för")),0,1,'L');
+                $txt = ucfirst("Kvitto för");
+                $this->Cell($rut_width,10,utf8_decode($txt),0,1,'L');
                 
                 # Resursnamnet
 
                 $font = $this->handfonts[array_rand($this->handfonts, 1)];
 
-//                 if ($font=='homemadeapple') $size = 38;
-//                 elseif ($font=='cherish')   $size = 38;
-//                 else $size = 38; 
-                $size = 38;
-                $txt = "$resource->UnitSingular ";
-                
-                
-//                 if (strlen($txt) > 12) $size -= 2;
-//                 elseif (strlen($txt)< 5) $size += 8;
+                $size = 40;
+                $txt = "$resource->UnitSingular";
                 
                 # En bit kos för att säkerställa att inget hamnar utanför kanten på rutan
                 $this->SetFont($font,'',$size);
                 $slen = $this->GetStringWidth($txt,0);
-                while ($slen > ($rut_width-3)) {
+                while ($slen > ($rut_width-7)) {
                     $size -= 1;
                     $this->SetFont($font,'',$size);
                     $slen = $this->GetStringWidth($txt,0);
                 }
+                # Fix för font som alltid blir för stor
+                if ($font == 'simplyglamorous') $this->SetFont($font,'',$size-2);
                 
-                $this->SetXY($this->margin+($x_nr * $rut_width), 4+($rut_height/2) + ($y_nr * $rut_height));
+                $this->SetXY($this->margin+($x_nr * $rut_width), 3+($rut_height/2) + ($y_nr * $rut_height));
                 $this->Cell($rut_width,10,utf8_decode(ucfirst($txt)),0,1,'C');
                 
                 # Undertext
-                $this->SetFont('specialelite','',12);
-                $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-3) + ($y_nr * $rut_height));
-                $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+                if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
+                    $this->SetFont('specialelite','',11);
+                    $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
+                    $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+                    $this->SetFont('specialelite','',10);
+                    $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
+                    $this->Cell($rut_width,10,utf8_decode('för '.ucfirst($titledeed->Name)),0,1,'L');
+                } else {
+                    $this->SetFont('specialelite','',12);
+                    $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-3) + ($y_nr * $rut_height));
+                    $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+                }
                 
                 
                 $x_nr += 1;
