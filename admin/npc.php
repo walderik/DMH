@@ -23,7 +23,7 @@ function print_assigned_npc(NPC $npc, $npc_group) {
     echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a> \n";
     if (!empty($npc->Time)) echo "$npc->Time";
     echo "<br>";
-    if (!empty($npc->Description)) echo "$npc->Description<br>\n";
+    if (!empty($npc->Description)) echo nl2br(htmlspecialchars($npc->Description))."<br>\n";
     
     $intrigues = Intrigue::getAllIntriguesForNPC($npc->Id, $current_larp->Id);
     if (!empty($intrigues)) {
@@ -71,7 +71,7 @@ function print_unassigned_npc(NPC $npc) {
     if (empty($intrigues)) echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> ";
     if (!empty($npc->Time)) echo "$npc->Time";
     echo "<br>";
-    if (!empty($npc->Description)) echo "$npc->Description<br>\n";
+    if (!empty($npc->Description)) echo nl2br(htmlspecialchars($npc->Description))."<br>\n";
     
     if (!empty($intrigues)) echo "Intrig: ";
     foreach ($intrigues as $intrigue) {
