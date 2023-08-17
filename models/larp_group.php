@@ -106,11 +106,6 @@ class LARP_Group extends BaseModel{
     }
     
 
-    public function hasIntrigue() {
-        if (isset($this->Intrigue) && $this->Intrigue != "") return true;
-        return false;
-        
-    }
     
     public static function userMayEdit($groupId, $larpId) {
         $larp_group = static::loadByIds($groupId, $larpId);

@@ -48,9 +48,10 @@ th {
     		        echo "<td>" . $person->Name . " " . contactEmailIcon($person->Name,$person->Email) . "</td>\n";
     		        if (Wealth::isInUse($current_larp)) echo "<td>" . $group->getWealth()->Name . "</td>\n";
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
-    		        echo "<td>" . showStatusIcon($larp_group->hasIntrigue());
-
-    		        if ($larp_group->hasIntrigue()) echo "<br>".str_word_count($larp_group->Intrigue)." ord";
+    		        echo "<td>" . showStatusIcon($group->hasIntrigue($current_larp));
+    		        $intrigueWords = $group->intrigueWords($current_larp);
+    		        
+    		        if (!empty($intrigueWords)) echo "<br>$intrigueWords ord";
     		        $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
     		        echo "<br>";
     		        if (!empty($intrigues)) echo "Intrig: ";

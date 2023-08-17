@@ -154,10 +154,28 @@ class Group extends BaseModel{
      
      public function hasIntrigue(LARP $larp) {
          $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
-         return $larp_group->hasIntrigue();
+         if (!empty($larp_group->Intrigue)) return true;
+         $intrigues = Intrigue::getAllIntriguesForGroup($this->Id, $larp->Id);
+         if (!empty($intrigues)) return true;
+         return false;
      }
      
-
+     public function intrigueWords(LARP $larp) {
+         $wordCount = 0;
+         $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
+         if (!empty($larp_group->Intrigue)) {
+             $wordCount += str_word_count($larp_group->Intrigue);
+         }
+         $intrigues = Intrigue::getAllIntriguesForGroup($this->Id, $larp->Id);
+         foreach ($intrigues as $intrigue) {
+             $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this);
+             $wordCount += str_word_count($intrigueActor->IntrigueText);
+         }
+         return $wordCount;
+     }
+     
+     
+     
      public static function getAllRegistered($larp) {
          
          if (is_null($larp)) return Array();
