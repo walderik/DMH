@@ -111,7 +111,7 @@ include 'navigation.php';
 		</div>
 		<h2>Intrig</h2>
 		<div>
-			<?php if ($current_larp->DisplayIntrigues == 1) {
+			<?php if ($current_larp->isIntriguesReleased()) {
 			    echo "<p>".nl2br($larp_role->Intrigue) ."</p>"; 
 			    
 			    

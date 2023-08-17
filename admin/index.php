@@ -26,15 +26,12 @@ include "navigation.php";
             Anmälan är 
             <?php if ($current_larp->RegistrationOpen == 1) {
                 echo "öppen";
-                $openButton = "Stäng";
             }
             else {
                 echo "stängd";
-                $openButton = "Öppna";
             }
                   
                 ?>
-            <form action="logic/toggle_larp_registration_open.php"><input type="submit" value="<?php echo $openButton;?>"></form>
 
         </div>
 		<div class="content">
@@ -75,9 +72,6 @@ include "navigation.php";
 		<div class="content">
 			Förväntade intäkter: <?php echo Registration::totalIncomeToBe($current_larp);?> SEK<br>
 		    Faktiskta intäkter: <?php echo Registration::totalIncomeToday($current_larp)?> SEK
-		</div>
-		<div class="content">
-		<a href="doh_ssn_check.php">Medlemskontroll flera personnummer.</a> 
 		</div>
 
 	</body>

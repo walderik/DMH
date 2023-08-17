@@ -33,6 +33,18 @@ if ($_POST['email'] == 'ALLADELTAGARE') {
 } elseif ($_POST['email'] == 'OFFICIALTYPE') {
     $official_type = OfficialType::loadById($_POST['official_type']);
     if (isset($official_type)) BerghemMailer::sendContactMailToAllOfficals($current_larp, $official_type, nl2br($_POST['text']));
+} elseif ($_POST['email'] == 'send_intrigues') {
+    if (!$current_larp->isIntriguesReleased()) {
+        $current_larp->DisplayIntrigues = 1;
+        $current_larp->update();
+    }
+    BerghemMailer::sendIntrigues($current_larp, nl2br($_POST['text']));
+} elseif ($_POST['email'] == 'send_housing') {
+    if (!$current_larp->isHousingReleased()) {
+        $current_larp->DisplayHousing = 1;
+        $current_larp->update();
+    } 
+    BerghemMailer::sendHousing($current_larp, nl2br($_POST['text']));
 } else {
     BerghemMailer::sendContactMailToSomeone($_POST['email'], $name, "Meddelande till $name från $current_user->Name", nl2br($_POST['text']));
 }

@@ -258,7 +258,6 @@ class BerghemMailer {
         $larp = $npc->getLARP();
         
         
-        //TODO bättre text när npc är klar
         $text  = "Du har fått en NPC på lajvet $larp->Name<br>\n";
         $text .= "<br>\n";
         $text .= "Namn: $npc->Name";
@@ -370,6 +369,38 @@ class BerghemMailer {
         $attachments[$file_name] = $the_file;
         return $attachments;
     }
+    
+    
+    # Skicka ut intrigerna/karaktärsbladen till alla deltagare
+    public static function sendIntrigues(LARP $larp, $text) {
+        $subject = "Intriger för $larp->Name";
+        
+        $persons = Person::getAllRegistered($larp, false);
+        foreach($persons as $person) {
+            $registration = $person->getRegistration($larp);
+            if (empty($registration)) continue;
+            if (!$registration->hasSpotAtLarp()) continue;
+            //TODO skapa upp alla karaktärsblad och bifoga, även gruppens karaktärsblad + pdf'er från intriger
+            //BerghemMailer::send($person->Email, $person->Name, $text, $subject, null);
+        }
+    }
+    
+
+    # Skicka ut intrigerna/karaktärsbladen till alla deltagare
+    public static function sendHousing(LARP $larp, $text) {
+        $subject = "Intriger för $larp->Name";
+        
+        $houses = House::all();
+        foreach($houses as $house) {
+            $personsInHouse = Person::personsAssignedToHouse($house, $larp);
+            foreach ($personsInHouse as $person) {
+                //TODO lägg till text om boendet
+                //BerghemMailer::send($person->Email, $person->Name, $text, $subject, null);
+               
+            }
+        }
+    }
+    
     
 }
 

@@ -12,6 +12,7 @@ class LARP extends BaseModel{
     public  $StartTimeLARPTime;
     public  $EndTimeLARPTime;
     public  $DisplayIntrigues = 0;
+    public  $DisplayHousing = 0;
     public  $CampaignId;
     public  $RegistrationOpen = 0;
     public  $PaymentReferencePrefix = "";
@@ -38,6 +39,7 @@ class LARP extends BaseModel{
         if (isset($arr['StartTimeLARPTime'])) $this->StartTimeLARPTime = $arr['StartTimeLARPTime'];
         if (isset($arr['EndTimeLARPTime'])) $this->EndTimeLARPTime = $arr['EndTimeLARPTime'];
         if (isset($arr['DisplayIntrigues'])) $this->DisplayIntrigues = $arr['DisplayIntrigues'];
+        if (isset($arr['DisplayHousing'])) $this->DisplayHousing = $arr['DisplayHousing'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['RegistrationOpen'])) $this->RegistrationOpen = $arr['RegistrationOpen'];        
@@ -54,11 +56,11 @@ class LARP extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_larp SET Name=?, TagLine=?, StartDate=?, EndDate=?, ".
                  "MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, ".
-                 "DisplayIntrigues=?, CampaignId=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=? WHERE Id = ?");
+                 "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, 
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
             $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -72,13 +74,13 @@ class LARP extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp (Name, TagLine, StartDate, EndDate, MaxParticipants, 
-            LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, CampaignId, 
+            LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, DisplayHousing, CampaignId, 
             RegistrationOpen, PaymentReferencePrefix, NetDays) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
-            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->CampaignId, 
+            $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
             $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -127,6 +129,10 @@ class LARP extends BaseModel{
     # Har intrigerna släppts för det här lajvet
     public function isIntriguesReleased() {
         return $this->DisplayIntrigues == 1;
+    }
+    
+    public function isHousingReleased() {
+        return $this->DisplayHousing == 1;
     }
     
     public function mayRegister() {
