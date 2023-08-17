@@ -103,6 +103,15 @@ include 'navigation.php';
     		<p><br />
     		<p><?php echo "$hej $name"; ?> !<br></p>
 			<p><textarea id="text" name="text" rows="8" cols="121" maxlength="60000" required></textarea></p>
+			<?php 
+			if ($type=="housing") { 
+			    echo "<p>";
+			    echo "Du kommer att bo i hus/lägerplats &lt;namn&gt; tillsammand med &lt;antal&gt; andra personer.<br>\n";
+			    echo "&lt;Huset/lägerplatsens beskrivning&gt;<br>\n";
+			    echo "&lt;Huset/lägerplatsens plats&gt;<br>\n";
+			    echo "</p>";
+			    
+			}?>
 			Med vänliga hälsningar<br /><br />
 			<b>Arrangörerna av <?php echo $current_larp->Name; ?></b><br>
 
