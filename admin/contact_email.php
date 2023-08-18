@@ -106,9 +106,9 @@ include 'navigation.php';
 			<?php 
 			if ($type=="housing") { 
 			    echo "<p>";
-			    echo "Du kommer att bo i hus/lägerplats &lt;namn&gt; tillsammand med &lt;antal&gt; andra personer.<br>\n";
-			    echo "&lt;Huset/lägerplatsens beskrivning&gt;<br>\n";
-			    echo "&lt;Huset/lägerplatsens plats&gt;<br>\n";
+			    echo "Du kommer att bo i/på hus/lägerplats &lt;namn&gt; tillsammans med &lt;antal&gt; andra personer.<br>\n";
+			    echo "Beskrivning av &lt;namn&gt;: &lt;Huset/lägerplatsens beskrivning&gt;<br>\n";
+			    echo "Vägbeskrivning: &lt;Huset/lägerplatsens plats&gt;<br>\n";
 			    echo "</p>";
 			    
 			}?>

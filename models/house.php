@@ -72,6 +72,11 @@ class House extends BaseModel{
         if ($this->IsHouse==1) return true;
         return false;
     }
+
+    public function IsCamp() {
+        return !$this->IsHouse();
+    }
+    
     
     public static function getAllHouses() {
         $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 ORDER BY ".static::$orderListBy.";";

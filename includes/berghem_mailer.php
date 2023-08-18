@@ -386,18 +386,38 @@ class BerghemMailer {
     }
     
 
-    # Skicka ut intrigerna/karaktärsbladen till alla deltagare
+    # Skicka ut boendet till alla deltagare
     public static function sendHousing(LARP $larp, $text) {
-        $subject = "Intriger för $larp->Name";
+        $subject = "Boende för $larp->Name";
         
         $houses = House::all();
         foreach($houses as $house) {
             $personsInHouse = Person::personsAssignedToHouse($house, $larp);
-            foreach ($personsInHouse as $person) {
-                //TODO lägg till text om boendet
-                //BerghemMailer::send($person->Email, $person->Name, $text, $subject, null);
-               
+            if (empty($personsInHouse)) continue;
+            $type = "hus";
+           
+            $preposition = "i";
+            if ($house->isCamp()) {
+                $type = "lägerplats";
+                $preposition = "på";
             }
+            $count_others = count($personsInHouse) - 1;    
+            $housetext = $text . "<br><br>Du kommer att bo $preposition $type $house->Name tillsammans med $count_others andra personer.<br>".
+		      "Beskrivning av $house->Name: $house->Description<br>".
+		      "Vägbeskrivning: $house->PositionInVillage";
+            
+            $receiver_emails = array();
+            
+            foreach ($personsInHouse as $person) {
+                $registration = $person->getRegistration($larp);
+                if (empty($registration)) continue;
+                if (!$registration->hasSpotAtLarp()) continue;
+                if ($registration->NotComing == 1) continue;
+                $receiver_emails[] = $person->Email;
+            }
+            if (empty($receiver_emails)) continue;
+            
+            BerghemMailer::send($receiver_emails, "", $housetext, $subject, null);
         }
     }
     
