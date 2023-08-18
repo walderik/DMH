@@ -132,6 +132,9 @@ div.housing-group {
 <div class="content">
     <h1>Boende</h1>
     
+    <a href="reports/housing_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a><br><br>  
+    
+    
     <h2>Husförvaltare</h2>
     <?php 
     $care_takers = Person::getHouseCaretakers($current_larp);

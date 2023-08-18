@@ -10,7 +10,7 @@ class House extends BaseModel{
     public $ImageId;
     public $IsHouse = 0; //1= hus, 0=lägerplats
     
-    public static $orderListBy = 'Name';
+    public static $orderListBy = 'IsHouse, Name';
     
     public static function newFromArray($post){
         $house = static::newWithDefault();
