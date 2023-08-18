@@ -1,8 +1,6 @@
 Prio före lajvet
 ================
 
-Husfördelningsutskick + visa för deltagaren 
-
 "Släppa intriger" - Kräver att massmail fungerar
 Skicka med pdf'er från intriguer
 
@@ -50,6 +48,7 @@ Att göra-listor per lajv och för Admin
 OFF-annonser för exmepelvis skjuts.
 
 Visa alla mail som har skapats, visa status, möjlighet att ta bort
+Markering för mail skickade av systemet (aktiverinf, byta lösenord). Ska inte visas för lajv-arrangör
 
 
 Hur fixa MySQL:
