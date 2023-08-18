@@ -56,21 +56,21 @@ img {
 
     <div class="content"> 
     	<h1><?php echo default_value('action');?> hus eller lägerplats</h1>
-    	        <?php 
-    	        if ($house->hasImage()) {
-    	            $image = Image::loadById($house->ImageId);
-                echo "<td>";
-                echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
-                if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-                echo "</td>";
-            }
-            ?>
+	        <?php 
+	        if ($house->hasImage()) {
+	            $image = Image::loadById($house->ImageId);
+            echo "<td>";
+            echo '<img  style="width:40%" src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
+            if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+            echo "</td>";
+        }
+        ?>
     	
     	
     	<form action="house_admin.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
-    		<table>
+    		<table  style="width:50%">
     			<tr>
     				<td><label for="Name">Namn</label></td>
     				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($house->Name); ?>" required></td>

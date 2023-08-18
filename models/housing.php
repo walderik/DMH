@@ -49,8 +49,4 @@ class Housing extends BaseModel{
         $stmt = null;
     }
     
-    public static function getHousing(Person $person, Larp $larp) {
-        $sql = "SELECT * FROM regsys_housing WHERE LARPId=? AND PersonId=?";
-        static::getOneObjectQuery($sql, array($larp->Id, $person->Id));
-    }
 }

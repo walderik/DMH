@@ -89,5 +89,18 @@ class House extends BaseModel{
         
     }
     
+    public static function getHouseAtLarp(Person $person, Larp $larp) {
+        $sql = "SELECT regsys_house.* FROM regsys_house, regsys_housing WHERE ".
+            "regsys_house.Id = regsys_housing.HouseId AND ".
+            "regsys_housing.LARPId=? AND ".
+            "regsys_housing.PersonId=?";
+        return static::getOneObjectQuery($sql, array($larp->Id, $person->Id));
+    }
+    
+    public function getHouse() {
+        return House::loadById($this->HouseId);
+    }
+    
+    
 }
     

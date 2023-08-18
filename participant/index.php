@@ -131,7 +131,19 @@ include "navigation.php";
                         }
 
                         echo "<tr><td>Säker plats på lajvet</td><td>".showStatusIcon(($registration->hasSpotAtLarp()))."</a></td></tr>";
-                       
+                        echo "<tr><td>Boende</td>";
+                        if ($current_larp->isHousingReleased()) {
+                            $house = House::getHouseAtLarp($person, $current_larp);
+                            if (empty($house)) {
+                                echo "<td>Inget tilldelat</td>";
+                            } else {
+                                echo "<td><a href='view_house.php?id=$house->Id'>$house->Name</a></td>";
+                            }
+                        } else {
+                            echo "<td>Inte klart än</td>";
+                        }
+                        echo "</tr>";
+
                     }
                     echo "</table>";
     		        
