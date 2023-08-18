@@ -1,11 +1,14 @@
 Prio före lajvet
 ================
 
-Göra klart husfördelningen
-Husfördelningsutskick + visa för deltagaren
+Husfördelningsutskick + visa för deltagaren 
 
 "Släppa intriger" - Kräver att massmail fungerar
 Skicka med pdf'er från intriguer
+
+Rapport med husfördelning
+
+Incheckning/utcheknings-lista
 
 --------------------------------------------------
 Bygghelgs-anmälningar
@@ -35,6 +38,8 @@ Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anm
 Sökfunktion på roller och grupper (ex Hitta alla som kommer från slow river)
 
 Handelssystemet - skriva in resultat
+
+skapa kvitto på inbetalade avgifter
 
 byta user för en person (admin funktion)
 
