@@ -80,9 +80,9 @@ class Email extends BaseModel{
             foreach ($attachments as $filename => $attachment) {
                 if (is_null($filename) || is_numeric($filename)) {
                     if (is_null($email->larp())) {
-                        $filename = utf8_decode("Berghemsvänner");
+                        $filename = scrub("Berghemsvänner");
                     } else {
-                        $filename = utf8_decode($current_larp->Name);
+                        $filename = scrub($current_larp->Name);
                     }
                 }
                 if (!str_ends_with($filename,'.pdf')) $filename = $filename.'.pdf';

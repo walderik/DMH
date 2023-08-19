@@ -31,9 +31,11 @@ class Attachment  extends BaseModel{
     
     # Normala sättet att lägga in attachments
     public static function normalCreate(Email $email, $filename, $the_attachment) {
+        $scrubbed_filename = str_replace(array("'",'´', '"', '`'), '',$filename);
+        $scrubbed_filename = mb_convert_encoding($scrubbed_filename, "ASCII");
         $attachment = Attachment::newWithDefault();
         $attachment->EmailId = $email->Id;
-        $attachment->Filename = $filename;
+        $attachment->Filename = $scrubbed_filename;
         $attachment->Attachement = $the_attachment;
         $attachment->create();
         return $attachment;

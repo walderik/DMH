@@ -12,3 +12,10 @@ function startsWithNumber($string) {
 function displayEmailQueue() {
     
 }
+
+
+function scrub($filename) {
+    $scrubbed_filename = str_replace(array("'",'´', '"', '`'), '',$filename);
+    $scrubbed_filename = mb_convert_encoding($scrubbed_filename, "ASCII");
+    return $scrubbed_filename;
+}

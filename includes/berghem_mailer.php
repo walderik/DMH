@@ -185,7 +185,8 @@ class BerghemMailer {
             $pdf->AddFont('Helvetica','');
             $pdf->SetSubject(utf8_decode($role->Name));
             $pdf->new_character_sheet($role, $larp);
-            $sheets[utf8_decode($role->Name)] = $pdf->Output('S');
+            
+            $sheets[scrub($role->Name)] = $pdf->Output('S');
             
             $group = $role->getGroup();
             if (!empty($group)) {
@@ -198,7 +199,8 @@ class BerghemMailer {
                 $subject = $group->Name;
                 $pdf->SetSubject(utf8_decode($subject));
                 $pdf->new_group_sheet($group, $larp, false);
-                $sheets[utf8_decode($group->Name)] = $pdf->Output('S');
+
+                $sheets[scrub($group->Name)] = $pdf->Output('S');
             }
         }
         
@@ -230,7 +232,9 @@ class BerghemMailer {
             $pdf->AddFont('Helvetica','');
             $pdf->SetSubject(utf8_decode($role->Name));
             $pdf->new_character_sheet($role, $larp);
-            $sheets[utf8_decode($role->Name)] = $pdf->Output('S');
+
+            
+            $sheets[scrub($role->Name)] = $pdf->Output('S');
             
             $group = $role->getGroup();
             if (!empty($group)) {
@@ -243,7 +247,7 @@ class BerghemMailer {
                 $subject = $group->Name;
                 $pdf->SetSubject(utf8_decode($subject));
                 $pdf->new_group_sheet($group, $larp, false);
-                $sheets[utf8_decode($group->Name)] = $pdf->Output('S');
+                $sheets[scrub($group->Name)] = $pdf->Output('S');
             }
         }
         
