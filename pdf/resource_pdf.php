@@ -82,20 +82,22 @@ class RESOURCE_PDF extends FPDF {
             
             for ($i = 0; $i < $resource_titledeed->Quantity; $i++){
                 
-                # Rubriken
-                $this->SetFont('specialelite','',12);
-                $this->SetXY( 3+$this->margin+($x_nr * $rut_width), $this->margin+($y_nr * $rut_height));
-                $txt = ucfirst("Kvitto för");
-                $this->Cell($rut_width,10,utf8_decode($txt),0,1,'L');
+                
+//                 # Rubriken
+//                 $this->SetFont('specialelite','',12);
+//                 $this->SetXY( 3+$this->margin+($x_nr * $rut_width), $this->margin+($y_nr * $rut_height));
+//                 $txt = ucfirst("Kvitto för");
+//                 $this->Cell($rut_width,10,utf8_decode($txt),0,1,'L');
                 
                 # Resursnamnet
 
                 $font = $this->handfonts[array_rand($this->handfonts, 1)];
 
-                $size = 40;
+                $size = 44;
                 $txt = "$resource->UnitSingular";
+//                 $txt = "Bal ull eller ".$font;
                 
-                # En bit kos för att säkerställa att inget hamnar utanför kanten på rutan
+                # En bit kod för att säkerställa att inget hamnar utanför kanten på rutan
                 $this->SetFont($font,'',$size);
                 $slen = $this->GetStringWidth($txt,0);
                 while ($slen > ($rut_width-7)) {
@@ -104,23 +106,32 @@ class RESOURCE_PDF extends FPDF {
                     $slen = $this->GetStringWidth($txt,0);
                 }
                 # Fix för font som alltid blir för stor
-                if ($font == 'simplyglamorous') $this->SetFont($font,'',$size-2);
+                if ($font == 'simplyglamorous' || $font == 'cherish') $this->SetFont($font,'',$size-2);
                 
-                $this->SetXY($this->margin+($x_nr * $rut_width), 3+($rut_height/2) + ($y_nr * $rut_height));
+                $this->SetXY($this->margin+($x_nr * $rut_width), ($rut_height/2)-2 + ($y_nr * $rut_height));
                 $this->Cell($rut_width,10,utf8_decode(ucfirst($txt)),0,1,'C');
                 
                 # Undertext
+//                 if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
+//                     $this->SetFont('specialelite','',11);
+//                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
+//                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+//                     $this->SetFont('specialelite','',10);
+//                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
+//                     $this->Cell($rut_width,10,utf8_decode('för '.ucfirst($titledeed->Name)),0,1,'L');
+//                 } else {
+//                     $this->SetFont('specialelite','',12);
+//                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-3) + ($y_nr * $rut_height));
+//                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+//                 }
+
                 if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
                     $this->SetFont('specialelite','',11);
                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
-                    $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+                    $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
                     $this->SetFont('specialelite','',10);
                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
-                    $this->Cell($rut_width,10,utf8_decode('för '.ucfirst($titledeed->Name)),0,1,'L');
-                } else {
-                    $this->SetFont('specialelite','',12);
-                    $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-3) + ($y_nr * $rut_height));
-                    $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+                    $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
                 }
                 
                 
