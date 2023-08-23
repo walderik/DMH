@@ -408,7 +408,10 @@ class BerghemMailer {
             $count_others = count($personsInHouse) - 1;    
             $housetext = $text . "<br><br>Du kommer att bo $preposition $type $house->Name tillsammans med $count_others andra personer.<br><br>".
 		      "Beskrivning av $house->Name: $house->Description<br><br>".
-		      "Vägbeskrivning: $house->PositionInVillage";
+		      "Vägbeskrivning: $house->PositionInVillage<br><br>".
+		      "Om du vill veta mer om ditt hus kan du titta på <a href='http://main.berghemsvanner.se/husen-i-byn/'>http://main.berghemsvanner.se/husen-i-byn/</a> ".
+		      "eller logga in i Omnes Mundos <a href='https://www.berghemsvanner.se/regsys/'>https://www.berghemsvanner.se/regsys/</a>."
+
             
             $receiver_emails = array();
             
