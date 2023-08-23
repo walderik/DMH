@@ -1,7 +1,17 @@
 <?php
 include_once 'header.php';
 
+
 include 'navigation.php';
+
+$unsent_emails = Email::allUnsent();
+
+if (!empty($unsent_emails)) {
+    $currentPageUrl = 'http://' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+    echo "<meta http-equiv='refresh' content='5'; URL='$currentPageUrl'>";
+}
+
+
 ?>
 
 <style>
@@ -16,6 +26,10 @@ th {
 <div class="content">
     <h1>E-post</h1>
     <?php 
+        if (!empty($unsent_emails)) {
+            echo "<strong>".count($unsent_emails) ."</strong> mail har ännu inte skickats iväg. <br>Sidan kommer automatiskt att laddas om till alla har skickats. Du måste inte stanna på den här sidan, men gå gärna tillbaka hit efteråt så att du ser att alla mail verkligen har kommit iväg.";
+        }
+        
 	    $tableId = "mail";
         echo "<table id='$tableId' class='data'>";
         echo "<tr><th onclick='sortTable(0, \"$tableId\");' width='30%'>Till</th>".

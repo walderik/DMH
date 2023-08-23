@@ -47,8 +47,10 @@ if ($_POST['email'] == 'ALLADELTAGARE') {
     BerghemMailer::sendHousing($current_larp, nl2br($_POST['text']));
 } else {
     BerghemMailer::sendContactMailToSomeone($_POST['email'], $name, "Meddelande till $name från $current_user->Name", nl2br($_POST['text']));
+    header('Location: ' . $referer);
+    exit;
 }
 
+header('Location: ../mail_admin.php');
 
-header('Location: ' . $referer);
 
