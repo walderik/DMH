@@ -97,6 +97,8 @@ th {
 		    echo "</tr>\n";
 		}
 		
+		
+		
 		echo "<tr><th style='text-align:left'>Balans</th>\n";
 		echo "<th style='text-align:right' id='Money_sum'>".$titledeed->moneySum($current_larp)."</th>\n";
 		foreach ($resources as $resource) {
@@ -110,6 +112,14 @@ th {
 		}
 		echo "<td></td>";
 		echo "</tr>\n";
+
+		echo "<th></th>";
+		echo "<th>$currency</th>\n";
+		foreach ($resources as $key => $resource) {
+		    echo "<th><a href='resource_form.php?operation=update&Id=$resource->Id'>$resource->Name</a><br>$resource->Price</th>\n";
+		}
+		
+		
 		?>
 		    
         
