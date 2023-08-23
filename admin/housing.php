@@ -43,8 +43,10 @@ function print_individual(Person $person, $group, $house) {
     if (isset($house)) $id = $id."_$house->Id";
     
     echo "<div class='person' id='$id' draggable='true' ondragstart='drag(event)'>\n";
-
-    echo "  <div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>$person->Name</a>\n";
+    echo "  <div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>";
+    if ($person->isNotComing($current_larp)) echo "<s>$person->Name</s>";
+    else echo "$person->Name";
+    echo "</a>\n";
     if (!empty($person->HousingComment)) {
         echo "   <i class='fa-solid fa-circle-info' title='$person->HousingComment'></i>\n";
     }
@@ -177,6 +179,7 @@ div.housing-group {
 
 	$groups = Group::getAllRegistered($current_larp);
 	
+	echo "<h3>Grupper</h3>";
 	echo "<div id='unassigned_groups' class='housing-group clearfix' ondrop='drop_unassigned_group(event, this)' ondragover='allowDrop(event)'>\n";
 	foreach ($groups as $group) {
 	    $group_members_without_housing = Person::getPersonsInGroupWithoutHousing($group, $current_larp);
@@ -192,16 +195,14 @@ div.housing-group {
 	}
 	echo"</div>\n";
 	
-	if (!empty($personsWithoutHousing)) {
-    	echo "<h3>Individer</h3>";
-    
-    	echo "<div id='unassigned_persons' class='housing-group clearfix' ondrop='drop_unassigned_person(event, this)' ondragover='allowDrop(event)'>\n";
-    	foreach ($personsWithoutHousing as $person) {
-    	    print_individual($person, null, null);
-    	}
-    	echo "</div>\n";
+	echo "<h3>Individer</h3>";
 
+	echo "<div id='unassigned_persons' class='housing-group clearfix' ondrop='drop_unassigned_person(event, this)' ondragover='allowDrop(event)'>\n";
+	foreach ($personsWithoutHousing as $person) {
+	    print_individual($person, null, null);
 	}
+	echo "</div>\n";
+
 	?>
 	</td><td width='45%'>
 	<h2>Tilldelat boende</h2>
