@@ -8,7 +8,7 @@ $value = $_REQUEST["value"];
 $larpId = $_REQUEST["larpId"];
 
 
-if (empty($titledeedId)|| empty($value) || empty($larpId)) {
+if (empty($titledeedId)|| !isset($value) || empty($larpId)) {
     return;
 }
 
