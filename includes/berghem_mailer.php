@@ -406,8 +406,8 @@ class BerghemMailer {
                 $preposition = "på";
             }
             $count_others = count($personsInHouse) - 1;    
-            $housetext = $text . "<br><br>Du kommer att bo $preposition $type $house->Name tillsammans med $count_others andra personer.<br>".
-		      "Beskrivning av $house->Name: $house->Description<br>".
+            $housetext = $text . "<br><br>Du kommer att bo $preposition $type $house->Name tillsammans med $count_others andra personer.<br><br>".
+		      "Beskrivning av $house->Name: $house->Description<br><br>".
 		      "Vägbeskrivning: $house->PositionInVillage";
             
             $receiver_emails = array();
