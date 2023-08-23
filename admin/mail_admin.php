@@ -8,7 +8,7 @@ $unsent_emails = Email::allUnsent();
 
 if (!empty($unsent_emails)) {
     $currentPageUrl = 'http://' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
-    echo "<meta http-equiv='refresh' content='5'; URL='$currentPageUrl'>";
+    echo "<meta http-equiv='refresh' content='15'; URL='$currentPageUrl'>";
 }
 
 
