@@ -38,11 +38,10 @@ include "navigation.php";
         $resultCheck = count($house_array);
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Typ</th><th>Antal sovplatser/<br>tältplatser</th><th>Plats</th><th>Beskrivning</th><th></th><th></th><th></th></tr>\n";
+            echo "<tr><th>Namn</th><th>Typ</th><th>Antal sovplatser/<br>tältplatser</th><th>Plats</th><th>Beskrivning</th><th></th><th></th></tr>\n";
             foreach ($house_array as $house) {
                 echo "<tr>\n";
-                echo "<td>" . $house->Id . "</td>\n";
-                echo "<td>" . $house->Name . "</td>\n";
+                echo "<td><a href='house_form.php?operation=update&id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
                 echo "<td>";
                 if ($house->IsHouse()) echo "Hus";
                 else echo "Lägerplats";
@@ -60,7 +59,6 @@ include "navigation.php";
                 }
                 
                 
-                echo "<td>" . "<a href='house_form.php?operation=update&id=" . $house->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='house_admin.php?operation=delete&id=" . $house->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }
