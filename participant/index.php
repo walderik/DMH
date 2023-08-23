@@ -51,7 +51,7 @@ include "navigation.php";
 			 	<?php echo showStatusIcon(true); ?> - Allt klart på den här punkten<br>
 			 	<i class='fa-solid fa-pen'></i> - Ändra<br>
 			 	<i class='fa-solid fa-trash'></i> - Ta bort<br>
-			 	<i class='fa-solid fa-image-portrait'></i> - Ladda upp bild (går bara efter anmälan)<br>
+			 	<i class='fa-solid fa-image-portrait'></i> - Ladda upp bild (går bara efter anmälan). Om du vill byta bild får du först ta bort den gamla.<br>
 			 	<i class='fa-solid fa-skull-crossbones'></i> - Död	
 			 	
 			 </div>
