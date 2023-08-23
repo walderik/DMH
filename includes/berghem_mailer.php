@@ -421,6 +421,7 @@ class BerghemMailer {
             }
             if (empty($receiver_emails)) continue;
             
+            $subject = "Boende för $larp->Name ($house->Name)";
             BerghemMailer::send($receiver_emails, "", $housetext, $subject, null);
         }
     }
