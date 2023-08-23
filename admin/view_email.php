@@ -31,8 +31,15 @@ include 'navigation.php';
 	
 		<div>
 		<table>
+    		<?php 
+    		if (!($to_array = @unserialize($email->To))) {
+    		    $to = $email->To;
+    		} elseif (!empty($to_array)) {
+    		    $to = implode(", ", $to_array);
+    		}
+    		?>
 			<tr><td>Skickat av</td><td><?php echo $user->Name ?></td></tr>
-			<tr><td>Till</td><td><?php echo "$email->ToName ($email->To)"; ?></td></tr>
+			<tr><td>Till</td><td><?php echo "$email->ToName ($to)"; ?></td></tr>
 			<tr><td>Ämne</td><td><?php echo $email->Subject ?></td></tr>
 			<tr><td>När</td><td><?php echo $email->SentAt ?></td></tr>
 			<?php 
