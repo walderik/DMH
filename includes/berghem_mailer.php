@@ -410,7 +410,7 @@ class BerghemMailer {
 		      "Beskrivning av $house->Name: $house->Description<br><br>".
 		      "Vägbeskrivning: $house->PositionInVillage<br><br>".
 		      "Om du vill veta mer om ditt hus kan du titta på <a href='http://main.berghemsvanner.se/husen-i-byn/'>http://main.berghemsvanner.se/husen-i-byn/</a> ".
-		      "eller logga in i Omnes Mundos <a href='https://www.berghemsvanner.se/regsys/'>https://www.berghemsvanner.se/regsys/</a>."
+		      "eller logga in i Omnes Mundos <a href='https://www.berghemsvanner.se/regsys/'>https://www.berghemsvanner.se/regsys/</a>.";
 
             
             $receiver_emails = array();
