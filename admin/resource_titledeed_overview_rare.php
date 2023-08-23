@@ -54,7 +54,7 @@ th {
 		<?php 
 		
 		foreach ($titledeeds as $titledeed) {
-		    echo "<tr><th style='text-align:left'><a href='resource_titledeed_form.php?Id=$titledeed->Id'>$titledeed->Name</a></th>";
+		    echo "<tr><th style='text-align:left'><a href='titledeed_form.php?operation=update&id=$titledeed->Id'>$titledeed->Name</a></th>";
 		    foreach ($resources as $key => $resource) {
 		        $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
 		        $quantity = 0;
