@@ -64,7 +64,7 @@ foreach ($houses as $house) {
    }
    $rows[] = array($house->Name, $type, implode(", ", $names));
 }
-$pdf->new_report($current_larp, "Vilka bor i vilket hus?", $rows);
+$pdf->new_report($current_larp, "Vilka bor i husen/på lägerplatserna?", $rows);
 
 
 $pdf->Output();
