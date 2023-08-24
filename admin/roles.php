@@ -18,6 +18,8 @@ th {
         <h1>Karaktärer</h1>
         <a href="role_list.php"><i class='fa-solid fa-eye' title='Se alla karaktärer samlat på en sida'></i> En sida med alla</a> &nbsp; &nbsp; &nbsp;
         <a href='character_sheet.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Allt om alla karaktärer som en stor PDF (tar tid att generera)'></i> Allt om alla</a>
+         &nbsp; &nbsp; &nbsp;
+        <a href='character_sheet.php?bara_intrig=japp' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla intriger (tar tid att generera)'></i> Alla intriger</a>
         <h2>Huvudkaraktärer</h2>
      		<?php 
      		$roles = $current_larp->getAllMainRoles(true);
