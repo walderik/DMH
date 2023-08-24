@@ -14,6 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
+$bara_intrig = false;
+$role = null;
 
 if (isset($_GET['id'])) {
     $roleId = $_GET['id'];
@@ -25,7 +27,10 @@ if (isset($_GET['id'])) {
         header('Location: index.php'); // Karaktären är inte anmäld
         exit;
     }
+} elseif (isset($_GET['bara_intrig'])) {
+    $bara_intrig = true;
 }
+
 
 $pdf = new CharacterSheet_PDF();
 $title = (empty($role)) ? 'Alla Karaktärer' : ('Karaktärsblad '.$role->Name) ;
@@ -38,10 +43,10 @@ $subject = (empty($role)) ? 'ALLA' : $role->Name;
 $pdf->SetSubject(utf8_decode($subject));
 
 if (empty($role)) {
-    $pdf->all_character_sheets($current_larp);
+    $pdf->all_character_sheets($current_larp, $bara_intrig);
 } else {
     $all_info = (isset($_GET['all_info'])) ? true : false;
-    $pdf->new_character_sheet($role, $current_larp, $all_info);
+    $pdf->new_character_sheet($role, $current_larp, $all_info, false);
 }
 
 $pdf->Output();

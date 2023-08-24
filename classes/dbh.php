@@ -29,6 +29,16 @@ class Dbh {
         }
     }
     
+ # Om vi behöver längre timout :   
+//     $DBH = new PDO(
+//         "mysql:host=$host;dbname=$dbname",
+//         $username,
+//         $password,
+//         array(
+//             PDO::ATTR_TIMEOUT => 5, // in seconds
+//             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+//         )
+//         );
     
     protected function connect() {
         Dbh::setUpConnection();

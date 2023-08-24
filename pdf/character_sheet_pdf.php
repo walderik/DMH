@@ -133,7 +133,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         return true;
     }
     
-    function intrigues() {
+    function intrigues($new_page = true) {
         global $y, $left;
         
         $space = 3;
@@ -146,12 +146,11 @@ class CharacterSheet_PDF extends PDF_MemImage {
         foreach ($intrigues as $intrigue) {
             if (!$intrigue->isActive()) continue;
             $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);   
-            if (!empty($intrigueActor->IntrigueText)) $tomma_intriger = false;
+            if ((!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo))) $tomma_intriger = false;
         }
         if ($tomma_intriger) return true;
-        
-        
-        $this->AddPage();
+  
+        if ($new_page) $this->AddPage();
         $this->SetXY($left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
         $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Intriger'),0,0,'L');
@@ -196,7 +195,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $this->SetXY($left, $y);
             }
             
-            if($key != $lastElementKey && !empty($intrigueActor->IntrigueText)) {
+            if ($key != $lastElementKey && (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo))) {
                 $this->bar();
                 $y = $this->GetY()+$space*2;
                 $this->SetXY($left, $y);
@@ -204,7 +203,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         }
         
         # Dom man känner till från intrigerna
-        if (!empty($known_actors) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props))) {
+        if ($new_page && (!empty($known_actors) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props)))) {
             $this->bar();
             $y = $this->GetY()+$space*2;
             
@@ -297,14 +296,14 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->SetXY($this->current_left, $y);
     }
     
-    function rumours(){
+    function rumours($new_page = true){
         global $y, $left;
         $space = 3;
         
         $rumours = Rumour::allKnownByRole($this->larp, $this->role);
         if (empty($rumours)) return true;
         
-        $this->AddPage();
+        if ($new_page) $this->AddPage();
         $this->SetXY($left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
         $name = $this->role->Name;
@@ -324,6 +323,46 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
     }
     
+    # Skriv bara ut intriger och rykten
+    function intrigue_info(Role $role_in, LARP $larp_in){
+        global $current_user, $x, $y, $left, $left2, $mitten;
+        
+        $this->role = $role_in;
+        $this->person = $this->role->getPerson();
+        $this->isMyslajvare = $this->role->isMysLajvare();
+        $this->larp = $larp_in;
+        $this->cell_y_space = static::$cell_y + (2*static::$Margin);
+        $this->current_cell_height = $this->cell_y_space;
+        
+        $this->isReserve = Reserve_LARP_Role::isReserve($this->role->Id, $this->larp->Id);
+        
+        # Säkerställer att bara arrngörer någonsin kan få se all info om en karaktär
+        if (!(AccessControl::hasAccessCampaign($current_user->Id, $larp_in->CampaignId))) return;
+        
+        $left = static::$x_min + static::$Margin;
+        $x = $left;
+        $this->cell_width = (static::$x_max - static::$x_min) / 2 - (2*static::$Margin);
+        $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
+        $left2 = $mitten + static::$Margin;
+        
+        $this->current_left = $left;
+        
+        $this->AddPage();
+        
+        $this->title($left);
+        $this->names($left, $left2);
+        
+        $y += $this->cell_y_space;
+        
+        $this->bar();
+        
+        $y += 3;
+        
+        if (!$this->isMyslajvare && !$this->isReserve) {
+            $this->intrigues(false);
+            $this->rumours(false);
+        }
+    }
     
     function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false) {
         global $current_user, $x, $y, $left, $left2, $mitten;
@@ -411,24 +450,34 @@ class CharacterSheet_PDF extends PDF_MemImage {
             }
         }
         
-        if (!$this->isReserve && ($this->larp->isIntriguesReleased() || $this->all)) {
-            $this->intrigues();
-            $this->rumours();
+        if (!$this->isMyslajvare && !$this->isReserve && ($this->larp->isIntriguesReleased() || $this->all)) {
+            $this->intrigues(true);
+            $this->rumours(true);
         }
 	}
 	
-	function all_character_sheets(LARP $larp_in ) {
+	function all_character_sheets(LARP $larp_in, bool $bara_intrig ) {
 	    $this->larp = $larp_in;
 
 	    $roles = $this->larp->getAllMainRoles(false);
 	    foreach($roles as $role) {
- 	        $this->new_character_sheet($role, $larp_in, true);
+	        if ($bara_intrig) {
+                $this->intrigue_info($role, $larp_in);
+	        } else {
+                $this->new_character_sheet($role, $larp_in, true);
+	        }
 	    }
 	    $roles = $this->larp->getAllNotMainRoles(false);
 	    foreach($roles as $role) {
-	        $this->new_character_sheet($role, $larp_in, true);
+	        if ($bara_intrig) {
+	           $this->intrigue_info($role, $larp_in);
+	        } else {
+	           $this->new_character_sheet($role, $larp_in, true);
+	        }
 	    }
 	}
+	
+	
 	
 	# Dynamiska småfält
 	
