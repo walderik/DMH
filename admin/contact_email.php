@@ -65,25 +65,25 @@ include 'navigation.php';
 		
 		if(isset($official_type)) {
 		    echo "<h1>Skicka ett utskick till alla funktionärer som tar $official_type->Name.</h1>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Som mest skickas 60 mail i minuten.<br>\n";
+		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
 		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
 		} elseif (isset($_GET['allagruppledare'])) {
 		    echo "<h1>Skicka ett utskick till alla gruppledarna.</h1>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Vi skickar som mest 60 mail per minut.<br>\n";
+		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
 		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
 		} elseif (isset($_GET['all'])) {
 		    echo "<h1>Skicka ett utskick till alla deltagarna.</h1>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest 60 mail i minuten.<br>\n";
+		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
 		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
 		} elseif (isset($_POST['send_intrigues'])) {
 		    echo "<h1>Skicka ut intrigerna till alla deltagarna.</h1>\n";
 		    echo "I mailet kommer karaktärsbladen till alla deras karaktärer och grupper som de är med i bifogas.<br>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest 60 mail i minuten.<br>\n";
+		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
 		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
 		} elseif (isset($_POST['send_housing'])) {
 		    echo "<h1>Skicka ut boendet till alla deltagarna.</h1>\n";
 		    echo "Det kommer att skickas ett mail för varje hus/lägerplats.<br>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest 60 mail i minuten.<br>\n";
+		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
 		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
 		} else {
 		  echo "<h1>Skicka ett mail till $email";
