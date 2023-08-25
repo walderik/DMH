@@ -93,6 +93,11 @@ class Bookkeeping extends BaseModel{
         return Bookkeeping_Account::loadById($this->BookkeepingAccountId);
     }
     
+    public function getLarp() {
+        return LARP::loadById($this->LarpId);
+    }
+    
+    
     public static function allByLARP(Larp $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_bookkeeping WHERE LarpId = ? ORDER BY ".static::$orderListBy.";";

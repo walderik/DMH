@@ -83,7 +83,7 @@ include 'navigation.php';
            }
            if ($bookkeeping->Amount > 0) {
                echo " <a href='economy_form.php?operation=update_income&id=$bookkeeping->Id'><i class='fa-solid fa-pen' title='Ändra inkomst'></i></a>";
-               echo " <a href='economy_receipt_pdf.php?id=$bookkeeping->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i></a>";
+               echo " <a href='economy_receipt_pdf.php?bookkeepingId=$bookkeeping->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i></a>";
            } else {
                echo " <a href='economy_form.php?operation=update_expense&id=$bookkeeping->Id'><i class='fa-solid fa-pen' title='Ändra utgift'></i></a>";
                

@@ -1,11 +1,7 @@
 Prio före lajvet
 ================
 
-"Släppa intriger" - Kräver att massmail fungerar
-Skicka med pdf'er från intriguer
-
-
-Incheckning/utcheknings-lista
+Lista med rekvisita, med bilder i
 
 --------------------------------------------------
 Bygghelgs-anmälningar
@@ -35,8 +31,6 @@ Om man ändrar en roll/grupp medan det är ytterliggare ett lajv som man är anm
 Sökfunktion på roller och grupper (ex Hitta alla som kommer från slow river)
 
 Handelssystemet - skriva in resultat
-
-skapa kvitto på inbetalade avgifter
 
 byta user för en person (admin funktion)
 

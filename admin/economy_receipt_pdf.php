@@ -16,8 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
-if (isset($_GET['id'])) {
-    $bookkeepingId = $_GET['id'];
+if (isset($_GET['bookkeepingId'])) {
+    $bookkeepingId = $_GET['bookkeepingId'];
     $bookkeeping = Bookkeeping::loadById($bookkeepingId);
     if (empty($bookkeeping)) {
         header('Location: index.php'); // Posten finns inte
@@ -26,15 +26,35 @@ if (isset($_GET['id'])) {
         header('Location: index.php'); // Tillhr inte aktuellt lajv
         exit;
     }
+    $pdf = new Receipt_PDF();
+    $pdf->SetTitle('Kvitto');
+    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetCreator('Omnes Mundos');
+    $pdf->AddFont('SpecialElite','');
+    $pdf->SetSubject('Kvitto');
+    $pdf->nytt_kvitto($bookkeeping);
+    
+} elseif (isset($_GET['registrationId'])) {
+    $registrationId = $_GET['registrationId'];
+    $registration = Registration::loadById($registrationId);
+    if (empty($registration)) {
+        header('Location: index.php'); // Posten finns inte
+        exit;
+    } elseif ($registration->LARPId != $current_larp->Id) {
+        header('Location: index.php'); // Tillhr inte aktuellt lajv
+        exit;
+    }
+    $pdf = new Receipt_PDF();
+    $pdf->SetTitle('Kvitto');
+    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetCreator('Omnes Mundos');
+    $pdf->AddFont('SpecialElite','');
+    $pdf->SetSubject('Kvitto');
+    $pdf->nytt_kvitto_avgift($registration);
+    
 }
 
-$pdf = new Receipt_PDF();
-$pdf->SetTitle('Kvitto');
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator('Omnes Mundos');
-$pdf->AddFont('SpecialElite','');
-$pdf->SetSubject('Kvitto');
-$pdf->nytt_kvitto($bookkeeping);
+
 
 $pdf->Output();
 
