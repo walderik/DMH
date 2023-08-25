@@ -110,6 +110,25 @@ function updateResult() {
 			<tr>
 				<td>Producerar<br>ovanliga resurser</td>
 				<td>
+                <?php 
+                
+                foreach ($rare_resources as $resource) {
+                    $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
+                    $quantity = 0;
+                    if (!empty($resource_titledeed) && $resource_titledeed->Quantity > 0) $quantity = abs($resource_titledeed->Quantity);
+                    echo "<input class='Produces' type ='number' name='Produces_$resource->Id' value = '$quantity' min='0' onchange='updateResult()' required> ";
+                    echo "<input type='hidden' id='Produces_".$resource->Id."Cost' value='$resource->Price'>";
+                    if (in_array($resource->Id, $normally_produces_resourceIds)) {
+                        echo "<span style='color:green;font-weight: bold;'>$resource->Name</span>";
+                    }
+                    else echo $resource->Name;
+                    echo " ($resource->Price $currency / st)";
+                    echo "<br>";
+                }
+                
+                
+                ?>
+
 				</td>
 			</tr>
 			<tr>
@@ -172,6 +191,20 @@ function updateResult() {
 			<tr>
 				<td>Behöver<br>ovanliga resurser</td>
 				<td>
+				<?php 
+				foreach ($rare_resources as $resource) {
+				    $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id, $current_larp->Id);
+				    $quantity = 0;
+				    if (!empty($resource_titledeed)) $quantity = abs($resource_titledeed->QuantityForUpgrade);
+				    echo "<input type ='number' name='Upgrade_Required_$resource->Id' value = '$quantity' min='0' required> ";
+				    echo $resource->Name;
+				    echo " ($resource->Price $currency / st)";
+				    echo "<br>";
+				}
+				
+				
+				
+				?>
 				</td>
 			</tr>
 			<tr>
