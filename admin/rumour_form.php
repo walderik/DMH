@@ -128,7 +128,10 @@ include 'navigation.php';
 			</tr>
 			<tr>
 
-				<td><label for="Text">Vem/vilka handlar<br>ryktet om?</label></td>
+				<td>
+					<label for="Text">Vem/vilka handlar<br>ryktet om?</label>
+					<label for="Text">Dess får det inte!</label>
+				</td>
 				<td>
 					
 					<?php if ($operation=='update') {
