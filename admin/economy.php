@@ -30,14 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $bookkeeping->setValuesByArray($_POST);
             $bookkeeping->Amount = 0 - $_POST['Amount'];
             
-            /* TODO kolla hur man ser om man har bytt fil
-             * if (!empty($_FILES["upload"]["name"])) {
-                $error = Image::maySave();
-                if (!isset($error)) {
-                    $id = Image::saveImage();
-                    $bookkeeping->ImageId = $id;
-                }
-            }'*/
             $bookkeeping->update();
         }
     }
