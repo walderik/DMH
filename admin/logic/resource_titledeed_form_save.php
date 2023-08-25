@@ -1,8 +1,6 @@
 <?php
 include_once '../header.php';
 
-print_r($_POST);
-echo "<br><br>";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titledeed = Titledeed::loadById($_POST['Id']);
     
