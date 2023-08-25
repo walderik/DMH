@@ -61,7 +61,7 @@ class Resource extends BaseModel{
     
     # Create a new object in db
     public function create() {
-        if ($this->IsRare == 1) {
+        if ($this->isRare()) {
             $this->Price = 0;
         }
         $connection = $this->connect();
@@ -79,6 +79,13 @@ class Resource extends BaseModel{
         $this->Id = $connection->lastInsertId();
         $stmt = null;
     }
+    
+    
+    public function isRare() {
+        if ($this->IsRare == 1) return true;
+        return false;
+    }
+    
     
     public static function allByCampaign(LARP $larp) {
         if (is_null($larp)) return Array();
