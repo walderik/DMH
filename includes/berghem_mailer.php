@@ -176,33 +176,7 @@ class BerghemMailer {
             $text .= "<br>\n";
         }
         
-        $sheets = Array();
-        foreach($roles as $role) {
-            $pdf = new CharacterSheet_PDF();
-            $pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
-            $pdf->SetAuthor(utf8_decode($larp->Name));
-            $pdf->SetCreator('Omnes Mundos');
-            $pdf->AddFont('Helvetica','');
-            $pdf->SetSubject(utf8_decode($role->Name));
-            $pdf->new_character_sheet($role, $larp);
-            
-            $sheets[scrub($role->Name)] = $pdf->Output('S');
-            
-            $group = $role->getGroup();
-            if (!empty($group)) {
-                $pdf = new Group_PDF();
-                $title = 'Gruppblad '.$group->Name ;
-                $pdf->SetTitle(utf8_decode($title));
-                $pdf->SetAuthor(utf8_decode($larp->Name));
-                $pdf->SetCreator('Omnes Mundos');
-                $pdf->AddFont('Helvetica','');
-                $subject = $group->Name;
-                $pdf->SetSubject(utf8_decode($subject));
-                $pdf->new_group_sheet($group, $larp, false);
-
-                $sheets[scrub($group->Name)] = $pdf->Output('S');
-            }
-        }
+        $sheets = static::getAllSheets($roles, $larp);
         
         static::send($mail, $person->Name, $text, "Godkända karaktärer till ".$larp->Name, $sheets);
     }
@@ -223,36 +197,11 @@ class BerghemMailer {
         $text .= "<br>\n";
         $text .= "Närmare lajvet kommer intriger och information om boende.<br>\n";
 
-        $sheets = Array();
-        foreach($roles as $role) {
-            $pdf = new CharacterSheet_PDF();
-            $pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
-            $pdf->SetAuthor(utf8_decode($larp->Name));
-            $pdf->SetCreator('Omnes Mundos');
-            $pdf->AddFont('Helvetica','');
-            $pdf->SetSubject(utf8_decode($role->Name));
-            $pdf->new_character_sheet($role, $larp);
-
-            
-            $sheets[scrub($role->Name)] = $pdf->Output('S');
-            
-            $group = $role->getGroup();
-            if (!empty($group)) {
-                $pdf = new Group_PDF();
-                $title = 'Gruppblad '.$group->Name ;
-                $pdf->SetTitle(utf8_decode($title));
-                $pdf->SetAuthor(utf8_decode($larp->Name));
-                $pdf->SetCreator('Omnes Mundos');
-                $pdf->AddFont('Helvetica','');
-                $subject = $group->Name;
-                $pdf->SetSubject(utf8_decode($subject));
-                $pdf->new_group_sheet($group, $larp, false);
-                $sheets[scrub($group->Name)] = $pdf->Output('S');
-            }
-        }
+        $sheets = static::getAllSheets($roles, $larp); 
         
         static::send($mail, $person->Name, $text, "Plats på ".$larp->Name, $sheets);        
     }
+    
     
     public static function sendNPCMail(NPC $npc) {
  
@@ -384,8 +333,43 @@ class BerghemMailer {
             $registration = $person->getRegistration($larp);
             if (empty($registration)) continue;
             if (!$registration->hasSpotAtLarp()) continue;
-            //TODO skapa upp alla karaktärsblad och bifoga, även gruppens karaktärsblad + pdf'er från intriger
-            //BerghemMailer::send($person->Email, $person->Name, $text, $subject, null);
+            $roles = Role::getRegistredRolesForPerson($person, $larp); 
+            $rolesText = "";
+            
+            if (!empty($roles)) {
+                $rolesText .= "De karaktärer du ska spela är:<br>\n";
+                $rolesText .= "<br>\n";
+                foreach ($roles as $role) {
+                    $rolesText .= '* '.$role->Name;
+                    if ($role->isMain($larp)) {
+                        $rolesText .= " - Din huvudkaraktär";
+                    }
+                    $rolesText .= "<br>\n";
+                }
+                
+            }
+            
+            $sheets = static::getAllSheets($roles, $larp);
+            
+            $npcs = NPC::getReleasedNPCsForPerson($person, $larp);
+            $npcText = "";
+            
+            if (!empty($npcs)) {
+                $npcText  = "<br>De NPC'er du ska spela är:<br>\n";
+                $npcText .= "<br>\n";
+                foreach($npcs as $npc) {
+                    $npcText .= "Namn: $npc->Name";
+                    $npcText .= "<br>\n";
+                    $npcText .= "Beskrivning: $npc->Description";
+                    $npcText .= "<br>\n";
+                    $npcText .= "Tiden när vi vill att du spelar npc'n: $npc->Time";
+                    $npcText .= "<br>\n";
+                
+                }
+            }
+            
+            $sendtext = $text . "<br><br>". $rolesText . $npcText;
+            BerghemMailer::send($person->Email, $person->Name, $sendtext, $subject, $sheets);
         }
     }
     
@@ -429,7 +413,48 @@ class BerghemMailer {
         }
     }
     
-    
+    public static function getAllSheets($roles, LARP $larp) {
+        $sheets = Array();
+        foreach($roles as $role) {
+            $pdf = new CharacterSheet_PDF();
+            $pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
+            $pdf->SetAuthor(utf8_decode($larp->Name));
+            $pdf->SetCreator('Omnes Mundos');
+            $pdf->AddFont('Helvetica','');
+            $pdf->SetSubject(utf8_decode($role->Name));
+            $pdf->new_character_sheet($role, $larp);
+            
+            
+            $sheets[scrub($role->Name)] = $pdf->Output('S');
+
+            if ($larp->isIntriguesReleased()) {
+                $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $larp->Id);
+                foreach ($intrigues as $intrigue) {
+                    $intrgueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
+                    $intrigue_Pdfs = $intrgueActor->getAllPdfsThatAreKnown();
+                    foreach($intrigue_Pdfs as $intrigue_Pdf) {
+                        $sheets[$intrigue_Pdf->Filename] = $intrigue_Pdf->FileData;
+                    }
+                }
+            }
+            
+            $group = $role->getGroup();
+            if (!empty($group)) {
+                $pdf = new Group_PDF();
+                $title = 'Gruppblad '.$group->Name ;
+                $pdf->SetTitle(utf8_decode($title));
+                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetCreator('Omnes Mundos');
+                $pdf->AddFont('Helvetica','');
+                $subject = $group->Name;
+                $pdf->SetSubject(utf8_decode($subject));
+                $pdf->new_group_sheet($group, $larp, false);
+                $sheets[scrub($group->Name)] = $pdf->Output('S');
+            }
+        }
+        return $sheets;
+        
+    }
 }
 
 
