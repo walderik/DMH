@@ -40,5 +40,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     $referer = (isset($_POST['Referer'])) ? $_POST['Referer'] : '../titledeed_admin.php';
-    //header('Location: ' . $referer);
+    header('Location: ' . $referer);
 }
