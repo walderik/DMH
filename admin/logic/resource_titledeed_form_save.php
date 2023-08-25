@@ -1,6 +1,8 @@
 <?php
 include_once '../header.php';
 
+print_r($_POST);
+echo "<br><br>";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titledeed = Titledeed::loadById($_POST['Id']);
     
@@ -9,13 +11,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titledeed->SpecialUpgradeRequirements = $_POST['SpecialUpgradeRequirements'];
     $titledeed->update();
     
-    $resources = Resource::allNormalByCampaign($current_larp);
+    $resources = Resource::allByCampaign($current_larp);
     foreach ($resources as $resource) {
         $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
         $produces = $_POST['Produces_'.$resource->Id];
-        $requires = $_POST['Requires_'.$resource->Id];
+        $requires = 0;
+        if (isset($_POST['Requires_'.$resource->Id])) $requires = $_POST['Requires_'.$resource->Id];
         $amount = $produces - $requires;
-        $upgrade_amount = $_POST['Upgrade_Required_'.$resource->Id];
+        $upgrade_amount = 0;
+        if (isset($_POST['Upgrade_Required_'.$resource->Id])) $upgrade_amount = $_POST['Upgrade_Required_'.$resource->Id];
         
         if (($amount == 0) && ($upgrade_amount == 0)) {
             if (!empty($resource_titledeed))
@@ -38,5 +42,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     $referer = (isset($_POST['Referer'])) ? $_POST['Referer'] : '../titledeed_admin.php';
-    header('Location: ' . $referer);
+    //header('Location: ' . $referer);
 }
