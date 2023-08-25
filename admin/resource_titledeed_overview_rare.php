@@ -41,6 +41,7 @@ th {
         }
         else {
         ?>
+        <p>En positiv siffra betyder arr lagfartern producerar caran, en negativ att det behövs för uppgradering.</p>
         <table>
     	<tr>
     		<th></th>
@@ -58,7 +59,12 @@ th {
 		    foreach ($resources as $key => $resource) {
 		        $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
 		        $quantity = 0;
-		        if (!empty($resource_titledeed)) $quantity = $resource_titledeed->Quantity;
+		        if (!empty($resource_titledeed)) {
+		            $quantity = 0;
+		            if ($resource_titledeed->Quantity > 0) $quantity = $resource_titledeed->Quantity;
+		            elseif ($resource_titledeed->QuantityForUpgrade > 0) $quantity = 0 - $resource_titledeed->QuantityForUpgrade;
+		        }
+		        
 		        echo "<td style='text-align:right'>";
 		        echo "<input type='number' id='$resource->Id:$titledeed->Id' value='$quantity' onchange='recalculate(this, $current_larp->Id)'>";
 		        echo "</td>\n";
