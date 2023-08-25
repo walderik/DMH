@@ -45,6 +45,20 @@ function whatHappens($starttime) {
     return $res;
 }
 
+
+$formatter = new IntlDateFormatter(
+    'sv-SE',
+    IntlDateFormatter::FULL,
+    IntlDateFormatter::FULL,
+    'Europe/Stockholm',
+    IntlDateFormatter::GREGORIAN,
+    'EEEE d MMMM'
+    );
+
+
+
+
+
 include 'navigation.php';
 ?>
 
@@ -53,11 +67,9 @@ include 'navigation.php';
         <h1>Körschema</h1>
             <a href="timeline_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
         
-        <?php //TODO generera pdf ?>
-           <!--  <a href="logic/print_timeline_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a>  --> 
-        <?php
+        <a href="reports/print_timeline_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a> 
     
-        
+        <?php 
         
         $startdate = new DateTime(substr($current_larp->StartDate, 0, 10));
         $enddate   = new DateTime(substr($current_larp->EndDate, 0, 10));
@@ -69,10 +81,9 @@ include 'navigation.php';
         $enddate->modify('+1 minute');
         $period = new DatePeriod($startdate, $interval, $enddate);
         $enddate->modify('-1 minute');
-        //$period = new DatePeriod($startdate, $interval, $enddate, DatePeriod::INCLUDE_END_DATE);
         echo "<table border='0'>";
         foreach ($period as $dt) {
-            echo "<tr><td colspan='2'><h2>".$dt->format('l d F')."</h2></td></tr>";
+            echo "<tr><td colspan='2'><h2>".ucfirst($formatter->format($dt))."</h2></td></tr>";
             $morning = 0;
             $evening = 23;
             if ($dt == $startdate) $morning = $starthour;
@@ -105,33 +116,6 @@ include 'navigation.php';
         }
         echo "</table>";
 
-        /*
-            echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Id</td><th>Mottagare</th><th>Ort och datum</th><th>Hälsning</th><th>Meddelande</th><th>Hälsning</th><th>Underskrift</th>";
-            echo "<th>Font</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th></th><th></th><th></th></tr>\n";
-            foreach ($letter_array as $letter) {
-                echo "<tr>\n";
-                echo "<td>" . $letter->Id . "</td>\n";
-                echo "<td>" . $letter->Recipient . "</td>\n";
-                echo "<td>" . $letter->WhenWhere . "</td>\n";
-                echo "<td>" . $letter->Greeting . "</td>\n";
-                echo "<td>" . $letter->EndingPhrase . "</td>\n";
-                echo "<td>" . $letter->Signature . "</td>\n";
-                echo "<td>" . $letter->Font . "</td>\n";
-                echo "<td>";
-                echo "</td>\n";
-                echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
-                echo "<td>" . str_replace("\n", "<br>", $letter->OrganizerNotes) . "</td>\n";
-                
-                echo "<td>" . "<a href='letter_form.php?operation=update&id=" . $letter->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='logic/show_letter.php?id=" . $letter->Id . "' target='_blank'><i class='fa-solid fa-file-pdf'></i></td>\n";
-                echo "<td>" . "<a href='letter_admin.php?operation=delete&id=" . $letter->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
-                echo "</tr>\n";
-            }
-            echo "</table>";
-
-        }
-            */
         ?>
     </div>
 	

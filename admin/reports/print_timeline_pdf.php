@@ -13,6 +13,16 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
+
+$formatter = new IntlDateFormatter(
+    'sv-SE',
+    IntlDateFormatter::FULL,
+    IntlDateFormatter::FULL,
+    'Europe/Stockholm',
+    IntlDateFormatter::GREGORIAN,
+    'EEEE d MMMM'
+    );
+
 $name = 'Körschema';
 
 $pdf = new Report_PDF();
@@ -48,7 +58,7 @@ $period = new DatePeriod($startdate, $interval, $enddate);
 $enddate->modify('-1 minute');
 
 foreach ($period as $dt) {
-    $headline = $dt->format('l d F');
+    $headline = ucfirst($formatter->format($dt));
     $rows = array();
     $rows[] = array("Tid", "Händelse");
     if ($dt == $startdate) $rows[] = array($starttime, "Lajvstart");
