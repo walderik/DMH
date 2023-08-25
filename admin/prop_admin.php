@@ -26,7 +26,7 @@ include 'navigation.php';
        $prop_array = Prop::allByCampaign($current_larp);
         if (!empty($prop_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Märkning</th><th>In-lajv<br>egenskaper</th><th>Innehavare</th><th>Bild</th><th>Används<br>i intrig</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Märkning</th><th>In-lajv<br>egenskaper</th><th>Innehavare</th><th>Bild</th><th>Används<br>i intrig</th><th></th></tr>\n";
             foreach ($prop_array as $prop) {
                 $owner = "";
                 if (isset($prop->GroupId)) {
@@ -39,7 +39,7 @@ include 'navigation.php';
                 }
                 echo "<tr>\n";
                 echo "<td>" . $prop->Id . "</td>\n";
-                echo "<td>" . $prop->Name . "</td>\n";
+                echo "<td><a href='prop_form.php?operation=update&id=$prop->Id'>$prop->Name</a></td>\n";
                 echo "<td>" . $prop->Description . "</td>\n";
                 echo "<td>" . $prop->StorageLocation . "</td>\n";
                 echo "<td>" . $prop->Marking . "</td>\n";
@@ -68,7 +68,6 @@ include 'navigation.php';
                 echo "</td>";
                 
                 
-                echo "<td>" . "<a href='prop_form.php?operation=update&id=" . $prop->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>";
                 if (empty($intrigues)) echo "<a href='prop_admin.php?operation=delete&id=" . $prop->Id . "'><i class='fa-solid fa-trash'></i>";
                 echo "</td>\n";
