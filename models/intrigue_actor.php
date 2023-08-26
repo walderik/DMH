@@ -121,6 +121,9 @@ class IntrigueActor extends BaseModel{
         $known_props = $intrigueActor->getAllKnownProps();
         foreach ($known_props as $known_prop) IntrigueActor_KnownProp::delete($known_prop->Id);
         
+        $known_pdfs = $intrigueActor->getAllKnownPdfs();
+        foreach ($known_pdfs as $known_pdf) IntrigueActor_KnownPdf::delete($known_pdf->Id);
+        
         //Ta bort så att ingen känner till den här aktören
         $known_actors = $intrigueActor->getAllWhoKnowsActor();
         foreach ($known_actors as $known_actor) IntrigueActor_KnownActor::delete($known_actor->Id);
