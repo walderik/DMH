@@ -41,7 +41,7 @@ th {
         }
         else {
         ?>
-        <p>En positiv siffra betyder arr lagfartern producerar caran, en negativ att det behövs för uppgradering.</p>
+        <p>En positiv siffra betyder arr lagfartern producerar varan, en negativ att det behövs för uppgradering.</p>
         <table>
     	<tr>
     		<th></th>
@@ -81,6 +81,15 @@ th {
 		    echo "<th style='text-align:right' id='Cards_$resource->Id' >".$resource->countNumberOfCards($current_larp)."</th>\n";
 		}
 		echo "</tr>\n";
+
+		echo "<tr>\n";
+		echo "<th></th>\n";
+		foreach ($resources as $key => $resource) {
+		    echo "<th><a href='resource_form.php?operation=update&Id=$resource->Id'>$resource->Name</a><br>$resource->Price</th>\n";
+		}
+		echo "</tr>\n";
+		
+		
 		?>
 		    
         

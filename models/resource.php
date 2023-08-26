@@ -138,7 +138,7 @@ class Resource extends BaseModel{
         if (is_null($larp)) return 0;
         
         if ($this->isRare()) return $this->countBalanceRare($larp);
-        $this->countBalanceNormal($larp);
+        return $this->countBalanceNormal($larp);
     }
 
     
@@ -152,7 +152,6 @@ class Resource extends BaseModel{
         $count = static::countQuery($sql, array($this->Id, $larp->CampaignId));
         if (isset($count)) return $count;
         return 0;
-        
     }
     
     

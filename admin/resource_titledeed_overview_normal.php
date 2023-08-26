@@ -113,11 +113,13 @@ th {
 		echo "<td></td>";
 		echo "</tr>\n";
 
-		echo "<th></th>";
+		echo "<tr>\n";
+		echo "<th></th>\n";
 		echo "<th>$currency</th>\n";
 		foreach ($resources as $key => $resource) {
 		    echo "<th><a href='resource_form.php?operation=update&Id=$resource->Id'>$resource->Name</a><br>$resource->Price</th>\n";
 		}
+		echo "</tr>\n";
 		
 		
 		?>
