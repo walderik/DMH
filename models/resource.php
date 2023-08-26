@@ -136,6 +136,14 @@ class Resource extends BaseModel{
     
     public function countBalance(LARP $larp) {
         if (is_null($larp)) return 0;
+        
+        if ($this->isRare()) return $this->countBalanceRare($larp);
+        $this->countBalanceNormal($larp);
+    }
+
+    
+    private function countBalanceNormal(LARP $larp) {
+        if (is_null($larp)) return 0;
         $sql = "SELECT Sum(regsys_resource_titledeed.Quantity) as Num FROM regsys_resource_titledeed, regsys_titledeed WHERE ".
             "regsys_resource_titledeed.ResourceId = ? AND ".
             "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
@@ -148,9 +156,9 @@ class Resource extends BaseModel{
     }
     
     
-    public function countBalanceRare(LARP $larp) {
+    private function countBalanceRare(LARP $larp) {
         if (is_null($larp)) return 0;
-        $sql = "SELECT Sum(regsys_resource_titledeed.Quantity) as Num FROM regsys_resource_titledeed, regsys_titledeed WHERE ".
+        $sql = "SELECT Sum(regsys_resource_titledeed.QuantityForUpgrade) as Num FROM regsys_resource_titledeed, regsys_titledeed WHERE ".
             "regsys_resource_titledeed.ResourceId = ? AND ".
             "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
             "regsys_titledeed.IsInUse = 1 AND ".
@@ -158,9 +166,8 @@ class Resource extends BaseModel{
             "regsys_resource_titledeed.QuantityForUpgrade > 0 ";
         $countForUpgrade = static::countQuery($sql, array($this->Id, $larp->CampaignId));
         if (!isset($countForUpgrade)) $countForUpgrade = 0;
-        $countProduces = $this->countBalance($larp);
+        $countProduces = $this->countNumberOfCards($larp);
         return $countProduces - $countForUpgrade;
-        
     }
     
 }
