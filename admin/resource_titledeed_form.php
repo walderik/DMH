@@ -122,7 +122,6 @@ function updateResult() {
                         echo "<span style='color:green;font-weight: bold;'>$resource->Name</span>";
                     }
                     else echo $resource->Name;
-                    echo " ($resource->Price $currency / st)";
                     echo "<br>";
                 }
                 
@@ -198,7 +197,6 @@ function updateResult() {
 				    if (!empty($resource_titledeed)) $quantity = abs($resource_titledeed->QuantityForUpgrade);
 				    echo "<input type ='number' name='Upgrade_Required_$resource->Id' value = '$quantity' min='0' required> ";
 				    echo $resource->Name;
-				    echo " ($resource->Price $currency / st)";
 				    echo "<br>";
 				}
 				
@@ -209,7 +207,7 @@ function updateResult() {
 			</tr>
 			<tr>
 				<td><label for="SpecialUpgradeRequirements">Speciella krav<br>Dvs krav som inte är i handelsystemet<br>utan något i spel, tex kontrakt</label></td>
-				<td><textarea id="SpecialUpgradeRequirements" name="SpecialUpgradeRequirements" rows="4" cols="100" maxlength="60000" ><?php echo nl2br(htmlspecialchars($titledeed->SpecialUpgradeRequirements)); ?></textarea></td>
+				<td><textarea id="SpecialUpgradeRequirements" name="SpecialUpgradeRequirements" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($titledeed->SpecialUpgradeRequirements); ?></textarea></td>
 			</tr>
 		</table>
 
