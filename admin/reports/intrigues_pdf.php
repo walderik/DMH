@@ -33,6 +33,40 @@ foreach ($intrigue_array as $intrigue) {
     $rows = array();
     $rows[] = array("Ansvarig", $intrigue->getResponsibleUser()->Name);
     $rows[] = array("Anteckningar", $intrigue->Notes);
+
+    //Brev
+    $intrigue_letters = $intrigue->getAllLetters();
+    if (!empty($intrigue_letters)) {
+        $letter_text_array = array();
+        foreach ($intrigue_letters as $intrigue_letter) {
+            $letter = $intrigue_letter->getLetter();
+            $letter_text_array[] = "Från: $letter->Signature, Till: $letter->Recipient, ".mb_strimwidth(str_replace('\n', '<br>', $letter->Message), 0, 50, '...');
+        }
+        
+        $rows[] = array("Brev", "* ".implode("\n* ", $letter_text_array));
+    }
+    
+    //Telegram
+    $intrigue_telegrams = $intrigue->getAllTelegrams();
+    if (!empty($intrigue_telegrams)) {
+        $telegram_text_array = array();
+        foreach ($intrigue_telegrams as $intrigue_telegram) {
+            $telegram = $intrigue_telegram->getTelegram();
+            $telegram_text_array[] = "$telegram->Deliverytime, Från: $telegram->Sender, Till: $telegram->Reciever, ".mb_strimwidth(str_replace('\n', '<br>', $telegram->Message), 0, 50, '...');
+        }
+        
+        $rows[] = array("Telegram", "* ".implode("\n* ", $telegram_text_array));
+    }
+    
+    //Rykten
+    $rumours = $intrigue->getRumours();
+    if (!empty($rumours)) {
+        $rumour_text_array = array();
+        foreach ($rumours as $rumour) $rumour_text_array[] = $rumour->Text;
+        
+        $rows[] = array("Rykten", "* ".implode("\n* ", $rumour_text_array));
+    }
+    
     $groupActors = $intrigue->getAllGroupActors();
     foreach($groupActors as $groupActor) {
         if (empty($groupActor->IntrigueText)) continue;
