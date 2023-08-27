@@ -20,6 +20,8 @@ include 'navigation.php';
     <h3>Handel</h3>
         <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Ägarbevis till lagfarterna</a><br>
         <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Resurskort till lagfarterna</a><br>
+        <a href="reports/titledeeds_info_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Lista med lagfarter (för notarie)</a><br>  
+        <a href="reports/titledeeds_info_pdf.php?all_info=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Lista med lagfarter (för handelsansvarig)</a><br> 
 
 
 	</div>

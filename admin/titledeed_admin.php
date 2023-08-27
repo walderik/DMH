@@ -55,6 +55,7 @@ th {
         <br><br>
         <a href="resource_titledeed_overview_normal.php">Översikt - normala resurser</a> &nbsp; 
         <a href="resource_titledeed_overview_rare.php">Översikt - ovanliga resurser</a>
+        
         </p>
        <?php
     
