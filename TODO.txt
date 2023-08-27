@@ -3,6 +3,10 @@ Prio före lajvet
 
 Lista med rekvisita, med bilder i
 
+Lista över lagfarter och ägare
+
+Lista över priser i Slow River
+
 --------------------------------------------------
 Bygghelgs-anmälningar
 

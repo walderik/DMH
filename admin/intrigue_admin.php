@@ -9,7 +9,8 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Intriger</h1>
-            <a href="intrigue_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="intrigue_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>&nbsp;  
+            <a href="reports/intrigues_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a><br><br>  
        
        <?php
        echo "<br>";
