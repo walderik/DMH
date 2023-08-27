@@ -49,7 +49,8 @@ class TITLEDEED_PDF extends FPDF {
         
         $this->SetFont($txt_font,'',20);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
 		# För mer fonter använder du http://www.fpdf.org/makefont/
-
+        if (strlen($titledeed->Name) > 40) $this->SetFont($txt_font,'',18);
+        
         $y += 25;
         $this->SetXY($left, $y);
 		$this->Cell(80,10,utf8_decode('Namn'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
@@ -102,21 +103,25 @@ class TITLEDEED_PDF extends FPDF {
 
         $y += 14;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Producerar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,utf8_decode('Producerar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($titledeed->ProducesString()),0,1);
 
+        $this->MultiCell(0, 7, utf8_decode($titledeed->ProducesString()), 0, 'L');
+        $y = $this->GetY();
+        
+        //$y += 7;
+        $this->SetXY($left, $y);
+        $this->Cell(80,7,utf8_decode('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left2, $y);
+        $this->MultiCell(0, 7, utf8_decode($titledeed->RequiresString()), 0, 'L');
+        $y = $this->GetY();
+        
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,utf8_decode('Förbättring'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($titledeed->RequiresString()),0,1);
-        
-        $y += 14;
-        $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Förbättring'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
-        $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($titledeed->RequiresForUpgradeString()),0,1);
+        $this->MultiCell(0, 7, utf8_decode($titledeed->RequiresForUpgradeString()), 0, 'L');
+        $y = $this->GetY();
     }
     
     
