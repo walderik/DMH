@@ -121,6 +121,7 @@ div.npc {
             <div>
             <h2>Alla tilldelade NPC'er</h2>
             <p>För att deltagaren ska kunna se en NPC som de har fått tilldelad måste man "Skicka NPC" <i class='fa-solid fa-envelope' title=''Skicka NPC'></i> till dem. Då får deltagaren ett mail om det och NPC'n går att se på deltagarens översiktssida. Det går att skicka en hel grupp på en gång.</p>
+          <a href="reports/npc_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>PDF med NPC'er som ska spelas</a> 
             <?php 
             
             
