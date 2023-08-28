@@ -4,8 +4,8 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require $root . '/includes/init.php';
 
-$future_open_larp_array = LARP::allFutureOpenLARPs();
-$future_closed_larp_array = LARP::allFutureNotYetOpenLARPs();
+$future_larp_array = LARP::allFutureLARPs();
+//$future_closed_larp_array = LARP::allFutureNotYetOpenLARPs();
 $past_larp_array = LARP::allPastLarpsWithRegistrations($current_user);
 
 ?>
@@ -50,10 +50,10 @@ function myFunction() {
     </div>
 
 		<div class="content">
-			<h1>Vilket lajv?</h1>
+			<h1>Kommande lajv</h1>
     			<?php
 
-    			$resultCheck = count($future_open_larp_array);
+    			$resultCheck = count($future_larp_array);
     			 if ($resultCheck > 0) {
     			     ?>
     			     <h3>Kommande lajv</h3>
@@ -63,7 +63,7 @@ function myFunction() {
     			     <select name='larp' id='larp'>
     			<?php
     
-    			     foreach ($future_open_larp_array as $larp) {
+    			     foreach ($future_larp_array as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";
@@ -73,31 +73,6 @@ function myFunction() {
     			 
     			 ?>
 
-			 </form>
-
-    			<?php
-
-    			$resultCheck = count($future_closed_larp_array);
-    			 if ($resultCheck > 0) {
-    			     ?>
-	     			 
-    			     <h3>Kommande lajv (anmälan är inte öppen än)</h3>
-
-					<form action="../includes/set_larp.php" method="POST">
- 					<label for="larp">Välj lajv: </label>
-    			    <select name='larp' id='larp'>
-    
-    			<?php
-    			     foreach ($future_closed_larp_array as $larp) {
-    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
-    			     }
-    			     echo "</select>";
-    			     echo '<input type="submit" value="Välj">';
-    			     echo "<br><hr>";
-    			 }
-    			 
-    			 ?>
-    			 
 			 </form>
 
     			<?php
@@ -127,7 +102,7 @@ function myFunction() {
     			 foreach ($campaigns as $campaign) {
 
     			     echo "<h3>Arrangör för $campaign->Name</h3>";
-    			     echo "<p>Eftersom du är arrangör för $campaign->Name kan du välja bland alla lajv i kampanjen.</p>";
+    			     echo "<div>Eftersom du är arrangör för $campaign->Name kan du välja bland alla lajv i kampanjen.</div>";
     			     $larps_in_campaign=LARP::allByCampaign($campaign->Id);
     			     ?>
     			     <form action="../includes/set_larp.php" method="POST">
@@ -140,10 +115,10 @@ function myFunction() {
     			     echo "</select>";
     			     echo '<input type="submit" value="Välj">';
     			     echo "<br><hr>";
+    			     echo "</form>";
     			 }
     			 
     			 ?>
-			 </form>
     			     
   
 			 

@@ -166,6 +166,12 @@ class LARP extends BaseModel{
         
     }
     
+
+    public static function allFutureLARPs() {
+        $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, null);
+    }
+    
     
     public static function allFutureOpenLARPs() {
         $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND RegistrationOpen=1 ORDER BY ".static::$orderListBy.";";
