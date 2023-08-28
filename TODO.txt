@@ -1,8 +1,6 @@
 Prio före lajvet
 ================
 
-Lista med npc'er
-
 
 --------------------------------------------------
 Bygghelgs-anmälningar

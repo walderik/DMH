@@ -33,7 +33,7 @@ include 'navigation.php';
     <h3>Kök</h3>
     <a href="reports/matlista.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Allergier & typ av mat</a><br>  
     <h3>Boende</h3>
-            <a href="reports/housing_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Vem bor var? & Vilka bor i husen/på lägerplatserna?</a><br>
+            <a href="reports/housing_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Boende per deltagare och per hus/lägerplats</a><br>
     <h3>Ekonomi</h3>
         <a href="reports/economy.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Rapport till kassören</a><br>
         <a href="logic/all_bookkeeping_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Alla verifikationer till kassören</a><br>
