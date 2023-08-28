@@ -112,7 +112,7 @@ class Prop extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
     }
     
-    public static function getCheckinProps(Person $person, LARP $larp) {
+    public static function getCheckinPropsForPerson(Person $person, LARP $larp) {
         $sql = "SELECT * FROM regsys_prop WHERE Id IN (".
             "SELECT PropId FROM regsys_intrigueactor_checkinprop, regsys_intrigue_prop, regsys_intrigueactor, regsys_intrigue, regsys_role WHERE ".
             "regsys_intrigue_prop.Id = regsys_intrigueactor_checkinprop.IntriguePropId AND ".

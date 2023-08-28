@@ -123,6 +123,35 @@ class Letter extends BaseModel{
             "regsys_intrigueactor_checkinletter.IntrigueActorId = ?)  ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
     }
+ 
+    
+    public static function getCheckinLettersForPerson(Person $person, LARP $larp) {
+        $sql = "SELECT * FROM regsys_letter WHERE Id IN (".
+            "SELECT LetterId FROM regsys_intrigueactor_checkinletter, regsys_intrigue_letter, regsys_intrigueactor, regsys_intrigue, regsys_role WHERE ".
+            "regsys_intrigue_letter.Id = regsys_intrigueactor_checkinletter.IntrigueLetterId AND ".
+            "regsys_intrigueactor_checkinletter.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.RoleId = regsys_role.Id AND ".
+            "regsys_role.PersonId = ? AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?".
+            ")  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+        
+    }
+    
+    
+    public static function getCheckinLettersForGroup(Group $group, LARP $larp) {
+        $sql = "SELECT * FROM regsys_letter WHERE Id IN (".
+            "SELECT LetterId FROM regsys_intrigueactor_checkinletter, regsys_intrigue_letter, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigue_letter.Id = regsys_intrigueactor_checkinletter.IntrigueLetterId AND ".
+            "regsys_intrigueactor_checkinletter.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.GroupId = ? AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?".
+            ")  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
+        
+    }
     
     
     

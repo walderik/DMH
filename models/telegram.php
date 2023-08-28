@@ -118,4 +118,32 @@ class Telegram extends BaseModel{
     }
     
     
+    public static function getCheckinTelegramsForPerson(Person $person, LARP $larp) {
+        $sql = "SELECT * FROM regsys_telegram WHERE Id IN (".
+            "SELECT TelegramId FROM regsys_intrigueactor_checkintelegram, regsys_intrigue_telegram, regsys_intrigueactor, regsys_intrigue, regsys_role WHERE ".
+            "regsys_intrigue_telegram.Id = regsys_intrigueactor_checkintelegram.IntrigueTelegramId AND ".
+            "regsys_intrigueactor_checkintelegram.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.RoleId = regsys_role.Id AND ".
+            "regsys_role.PersonId = ? AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?".
+            ")  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+        
+    }
+    
+    
+    public static function getCheckinTelegramsForGroup(Group $group, LARP $larp) {
+        $sql = "SELECT * FROM regsys_telegram WHERE Id IN (".
+            "SELECT TelegramId FROM regsys_intrigueactor_checkintelegram, regsys_intrigue_telegram, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigue_telegram.Id = regsys_intrigueactor_checkintelegram.IntrigueTelegramId AND ".
+            "regsys_intrigueactor_checkintelegram.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.GroupId = ? AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?".
+            ")  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
+        
+    }
+    
 }
