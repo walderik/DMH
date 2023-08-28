@@ -114,6 +114,17 @@ class LARP_Group extends BaseModel{
         return false;
     }
     
+    public static function delete_larp_group($groupId, $larpId) {
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_larp_group WHERE GroupId = ? AND LarpId = ?");
+        
+        if (!$stmt->execute(array($groupId, $larpId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+        
+    }
     
     
 }

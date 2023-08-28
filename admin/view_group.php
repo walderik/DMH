@@ -166,7 +166,6 @@ include 'navigation.php';
 		$checkin_letters = array();
 		$checkin_telegrams = array();
 		$checkin_props = array();
-		$intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id, $current_larp->Id);
 		if (!empty($intrigues)) {
 		    echo "<table class='data'>";
 		    echo "<tr><th>Intrig</th><th>Intrigtext</th><th></th></tr>";

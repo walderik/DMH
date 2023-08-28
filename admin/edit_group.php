@@ -28,6 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $main_characters_in_group = Role::getAllMainRolesInGroup($group, $current_larp);
 $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($group, $current_larp);
 
+$intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
+
 
 if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = $_SERVER['HTTP_REFERER'];
@@ -71,9 +73,14 @@ function print_role($group_member) {
 include 'navigation.php';
 ?>
 
-
 	<div class="content">
 		<h1><?php echo $group->Name;?></h1>
+    	<?php 
+    	if (empty($main_characters_in_group) && empty($non_main_characters_in_group) && (empty($intrigues))) {
+    	
+    	?>
+        <form action="logic/remove_group_from_larp.php" method="post"><input type="hidden" id="groupId" name="groupId" value="<?php echo $group->Id;?>"><input type="submit" value="Ta bort gruppen från lajvet"></form>
+    	<?php } ?>
 		<form action="logic/edit_group_save.php" method="post">
     		<input type="hidden" id="GroupId" name="GroupId" value="<?php echo $group->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
