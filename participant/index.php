@@ -15,7 +15,10 @@ include "navigation.php";
         	      echo '<div class="message">'.$message_message.'</div>';
         	  }
         	  
-        	  if ($current_larp->isPastLatestRegistrationDate() && !$current_larp->mayRegister()) {        	      
+        	  if ($current_larp->isEnded()) {
+        	      echo "<div><b style='color: green'>Lajvet är över. Hoppas att du hade roligt.<br>Gå gärna och och skriv vad som hände.</b>";
+        	      echo "</div>";
+        	  }elseif ($current_larp->isPastLatestRegistrationDate() && !$current_larp->mayRegister()) {        	      
         	      echo "<div><b style='color: red'>Sista anmälningsdag har passerat</b>";
         	      echo "</div>";
         	  } elseif ($current_larp->isPastLatestRegistrationDate()) {       	      
