@@ -111,5 +111,35 @@ class Prop extends BaseModel{
             "regsys_intrigueactor_knownprop.IntrigueActorId = ?)  ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));
     }
+    
+    public static function getCheckinProps(Person $person, LARP $larp) {
+        $sql = "SELECT * FROM regsys_prop WHERE Id IN (".
+            "SELECT PropId FROM regsys_intrigueactor_checkinprop, regsys_intrigue_prop, regsys_intrigueactor, regsys_intrigue, regsys_role WHERE ".
+            "regsys_intrigue_prop.Id = regsys_intrigueactor_checkinprop.IntriguePropId AND ".
+            "regsys_intrigueactor_checkinprop.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.RoleId = regsys_role.Id AND ".
+            "regsys_role.PersonId = ? AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?".
+            ")  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+        
+    }
+
+
+    public static function getCheckinPropsForGroup(Group $group, LARP $larp) {
+        $sql = "SELECT * FROM regsys_prop WHERE Id IN (".
+            "SELECT PropId FROM regsys_intrigueactor_checkinprop, regsys_intrigue_prop, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigue_prop.Id = regsys_intrigueactor_checkinprop.IntriguePropId AND ".
+            "regsys_intrigueactor_checkinprop.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.GroupId = ? AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?".
+            ")  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
+        
+    }
+    
+
 }
 
