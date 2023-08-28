@@ -19,7 +19,8 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Rekvisita</h1>
-            <a href="prop_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <a href="prop_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>&nbsp;
+        <a href="logic/props_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Generera pdf</a><br>
         
        <?php
     

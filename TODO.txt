@@ -1,9 +1,8 @@
 Prio före lajvet
 ================
 
-Lista med rekvisita, med bilder i
+Lista med npc'er
 
-Lista över priser i Slow River
 
 --------------------------------------------------
 Bygghelgs-anmälningar
