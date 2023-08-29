@@ -4,8 +4,7 @@ require 'header.php';
 
 
 $current_persons = $current_user->getPersons();
-
-if (empty($current_persons)) {
+if (empty($current_persons) && !$admin) {
     header('Location: index.php?error=no_person');
     exit;
 }
@@ -294,7 +293,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			</div>
 			<div class="question intrigue">
 				<label for="Religion">Religion</label><br>
-				<div class="explanation">Vissa religioner har bättre anseende än andra. Är du kristen, så ange inte bara det utan vilken typ av kristen du är. Katoliker har generellt sett fortfarande lite sämre anseende än andra kristna.</div>
+				<div class="explanation">Vissa religioner har bättre anseende än andra. Religionen kommer att påverka spel. Skriv så noggrant du kan om du inte har en "vanlig" religion.</div>
 				<input class="input_field" type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="200">
 			</div>
 
@@ -351,9 +350,17 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			 
 			</div>
 
-
-		
-			<input type="submit" value="<?php default_value('action'); ?>">
+			<?php 
+			if ($admin) {
+			    //Om bara tittar på formuläret som arrangör får man inte lyckas skicka in
+			    echo "<input type='button' value='".default_value('action')."'>";
+			    
+			    
+			} else {
+			    echo "<input type='submit' value='".default_value('action')."'>";
+			    
+			    }
+			    ?>
 		</form>
 	</div>
 

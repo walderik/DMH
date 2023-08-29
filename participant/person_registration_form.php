@@ -2,76 +2,72 @@
 
 require 'header.php';
 
-if (!$current_larp->mayRegister()) {
-    header('Location: index.php');
-    exit;
-}
+$admin = false;
+if (isset($_GET['admin'])) $admin = true;
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    if (isset($_POST['PersonId'])) {
-        $PersonId = $_POST['PersonId'];
-    }
-    else {
-
-        header('Location: index.php');
-        exit;
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    
-    if (isset($_GET['PersonId'])) {
-
-        $PersonId = $_GET['PersonId'];
-        
-    }
-    else {
-
-        header('Location: index.php');
-        exit;
-    }
-}
-
-if (isset($PersonId)) {
-    $current_person = Person::loadById($PersonId);
+if ($admin) {
+    $current_person = Person::newWithDefault();
+    $roles = array();
+    $role = Role::newWithDefault();
+    $role->Name = "Karaktärens namn";
+    $roles[] = $role;
 }
 else {
-
-    header('Location: index.php?error=no_person');
-    exit;
+    if (!$current_larp->mayRegister()) {
+        header('Location: index.php');
+        exit;
+    }
+    
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['PersonId'])) {
+            $PersonId = $_POST['PersonId'];
+        }
+    }
+    
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        
+        if (isset($_GET['PersonId'])) {
+            $PersonId = $_GET['PersonId'];
+        }
+    }
+    
+    if (isset($PersonId)) {
+        $current_person = Person::loadById($PersonId);
+    }
+    else {
+        header('Location: index.php?error=no_person');
+        exit;
+    }
+    
+    if ($current_person->UserId != $current_user->Id) {
+        header('Location: index.php');
+        exit;
+    }
+    
+    $roles = $current_person->getAliveRoles($current_larp);
+    
+    if (empty($roles)) {
+        header('Location: index.php?error=no_role');
+        exit;
+    
+    }
+    
+    //Kolla att minst en karaktär går att anmäla
+    $mayRegister = false;
+    foreach ($roles as $role) {
+        if ($role->groupIsRegistered($current_larp)) $mayRegister = true;
+    }
+    if ($mayRegister == false) {
+        header('Location: index.php?error=no_role_may_register');
+        exit;
+    }
+    
+    if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAge) {
+        header('Location: index.php?error=too_young_for_larp');
+        exit;
+    }
 }
-
-if ($current_person->UserId != $current_user->Id) {
-    header('Location: index.php');
-    exit;
-}
-
-
-$roles = $current_person->getAliveRoles($current_larp);
-
-if (empty($roles)) {
-    header('Location: index.php?error=no_role');
-    exit;
-
-}
-
-//Kolla att minst en karaktär går att anmäla
-$mayRegister = false;
-foreach ($roles as $role) {
-    if ($role->groupIsRegistered($current_larp)) $mayRegister = true;
-}
-if ($mayRegister == false) {
-    header('Location: index.php?error=no_role_may_register');
-    exit;
-}
-
-if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAge) {
-    header('Location: index.php?error=too_young_for_larp');
-    exit;
-}
-
 include 'navigation.php';
 ?>
 
@@ -210,8 +206,18 @@ include 'navigation.php';
   			<label for="Rules">Jag lovar</label> 
 			</div>
 			
+			
+			<?php 
+			if ($admin) {
+			    //Om bara tittar på formuläret som arrangör får man inte lyckas skicka in
+			    $type = "button";
+			} else {
+			    $type = "submit";
+		    }
+	       ?>
+			
 
-			  <input type="submit" value="Anmäl">
+			  <input type="<?php echo $type ?>" value="Anmäl">
 
 		</form>
 	</div>

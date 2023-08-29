@@ -95,7 +95,12 @@ $param = date_format(new Datetime(),"suv");
     		    <a href="selection_data_admin.php?type=typesoffood">Matalternativ för deltagare</a><br>
 			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer för deltagare</a>	<br>		    			
 		    </p>
-        
+        <p>
+        Se ut de olika formulären blir.<br>
+        <a href="../participant/group_form.php?admin=1" target="_blank">Registrering av grupp</a><br>
+        <a href="../participant/group_registration_form.php?admin=1" target="_blank">Anmälan av grupp</a><br>
+        <a href="../participant/role_form.php?admin=1" target="_blank">Registrering av karaktär</a><br>
+        <a href="../participant/person_registration_form.php?admin=1" target="_blank">Anmälan av deltagare</a><br>
         </div>
 </body>
 

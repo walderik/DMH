@@ -2,9 +2,12 @@
 
 require 'header.php';
 
+$admin = false;
+if (isset($_GET['admin'])) $admin = true;
+
 $current_persons = $current_user->getPersons();
 
-if (empty($current_persons)) {
+if (empty($current_persons) && !admin) {
     header('Location: index.php?error=no_person');
     exit;
 }
@@ -177,11 +180,22 @@ include 'navigation.php';
 			
 			 
 			</div>
+
+
+			<?php 
+			if ($admin) {
+			    //Om bara tittar på formuläret som arrangör får man inte lyckas skicka in
+			    $type = "button";
+			} else {
+			    $type = "submit";
+		    }
+		    
+			    ?>
 			
 
-			  <input type="submit" name="action" value="<?php default_value('action'); ?>">
+			  <input type="<?php echo $type ?>" name="action" value="<?php default_value('action'); ?>">
 			  <?php if ($current_larp->mayRegister() && !$group->isRegistered($current_larp)) { ?>
-			  <input type="submit" name="action" value="<?php default_value('action'); ?> och gå direkt till anmälan">
+			  <input type="<?php echo $type ?>" name="action" value="<?php default_value('action'); ?> och gå direkt till anmälan">
 			  <?php }?>
 		</form>
 	</div>

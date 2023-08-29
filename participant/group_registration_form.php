@@ -2,24 +2,29 @@
 
 require 'header.php';
 
-if (!$current_larp->mayRegister()) {
+$admin = false;
+if (isset($_GET['admin'])) $admin = true;
+
+
+if (!$current_larp->mayRegister() && !$admin) {
     header('Location: index.php');
     exit;
 }
 
 $current_groups = $current_user->getUnregisteredAliveGroupsForUser($current_larp);
 
-if (empty($current_groups)) {
+if (empty($current_groups) && !$admin) {
     header('Location: index.php?error=no_group');
     exit;
 }
 
-if ($current_larp->RegistrationOpen == 0) {
+if ($current_larp->RegistrationOpen == 0 && !$admin) {
     header('Location: index.php?error=registration_not_open');
     exit;   
 }
 
 $new_group = null;
+if ($admin) $new_group = Group::newWithDefault();
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['new_group'])) {
@@ -112,7 +117,17 @@ include 'navigation.php';
   			<label for="rules">Jag lovar</label> 
 			</div>
 
-			  <input type="submit" value="Anmäl">
+			<?php 
+			if ($admin) {
+			    //Om bara tittar på formuläret som arrangör får man inte lyckas skicka in
+			    $type = "button";
+			} else {
+			    $type = "submit";
+		    }
+		    
+			    ?>
+
+			  <input type="<?php echo $type ?>" value="Anmäl">
 
 		</form>
 	</div>
