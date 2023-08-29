@@ -96,7 +96,7 @@ include 'navigation.php';
                 echo implode(", ", $concers_str_arr);
                 echo "</td>";
                 echo "<td>";
-                echo count($rumour->getKnows());
+                echo $rumour->getKnowsCount();
                 echo "</td>";
                 echo "<td>";
                 if (isset($rumour->IntrigueId)) {

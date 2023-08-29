@@ -68,6 +68,7 @@ class Rumour extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    /*
     public static function allApprovedUnknownBySelectedLARP(Larp $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT regsys_rumour.* FROM regsys_rumour WHERE LARPid = ? AND Approved=1 AND ".
@@ -75,7 +76,7 @@ class Rumour extends BaseModel{
             "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
-    
+    */
     
     
     public static function getAllForIntrigue(Intrigue $intrigue) {
@@ -174,6 +175,22 @@ class Rumour extends BaseModel{
     
     public function getKnows() {
         return Rumour_knows::getAllForRumour($this);
+    }
+
+    public function getKnowsCount() {
+        global $current_larp;
+        $rumour_knows =  Rumour_knows::getAllForRumour($this);
+        $i = 0;
+        foreach ($rumour_knows as $knows) {
+            if (isset($knows->RoleId)) {
+                $role = Role::loadById($knows->RoleId);
+                $person = $role->getPerson();
+                $registration=$person->getRegistration($current_larp);
+                if ($registration->isNotComing()) continue;
+            }
+            $i++;
+        }
+        return $i;
     }
     
     
