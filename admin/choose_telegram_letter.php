@@ -43,13 +43,14 @@ if ($multiple) {
     $array="";
 }
 
+/*
 if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = $_SERVER['HTTP_REFERER'];
 }
 else {
     $referer = "";
 }
-
+*/
 include 'navigation.php';
 ?>
 
@@ -60,7 +61,7 @@ include 'navigation.php';
             <a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt brev</a>  
     		    <form action="<?php echo $url;?>" method="post">
     		    <input type="hidden" id="operation" name="operation" value="<?php echo $operation;?>">
-    			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+    			<!--  <input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">  -->
      		<?php 
      		if (isset($id)) {
      		    echo "<input type='hidden' id='id' name='id' value='$id'>";
