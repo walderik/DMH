@@ -56,7 +56,7 @@ class Rumour_knows extends BaseModel{
     public function getViewLink() {
         global $current_larp;
         if (!empty($this->RoleId)) {
-            $role = Role::loadById($knows->RoleId);
+            $role = Role::loadById($this->RoleId);
             $person = $role->getPerson();
             $registration=$person->getRegistration($current_larp);
             if ($registration->isNotComing()) return "<s><a href='view_role.php?id=$role->Id'>$role->Name</a></s>";
