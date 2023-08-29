@@ -1,2 +1,44 @@
 2023-08-23
 ALTER TABLE `regsys_email` CHANGE `To` `To` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+2023-08-25 Ny backup
+
+2023-08-29
+
+
+CREATE TABLE `regsys_race` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+
+CREATE TABLE `regsys_ability` (
+  `Id` int NULL AUTO_INCREMENT,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`Id`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_ability_role` (
+  `AbilityId` int NOT NULL,
+  `RoleId` int NOT NULL,
+  PRIMARY KEY (`AbilityId`, `RoleId`),
+  FOREIGN KEY (`RoleId`) REFERENCES `regsys_role`(`Id`),
+  FOREIGN KEY (`AbilityId`) REFERENCES `regsys_ability`(`Id`)
+);
+
+
+ALTER TABLE `regsys_role`
+  ADD COLUMN `RaceId` INT NULL,
+  ADD FOREIGN KEY (`RaceId`) REFERENCES `regsys_race`(`Id`);
+

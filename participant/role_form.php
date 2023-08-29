@@ -2,6 +2,9 @@
 
 require 'header.php';
 
+$admin = false;
+if (isset($_GET['admin'])) $admin = true;
+
 
 $current_persons = $current_user->getPersons();
 if (empty($current_persons) && !$admin) {
@@ -205,20 +208,33 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
                 <?php selectionByArray('Group', Group::getAllRegistered($current_larp), false, false, $role->GroupId); ?>
             </div>
 				
-							<div class="question">
+				
+			<?php  if (Race::isInUse($current_larp)) {?>	
+			<div class="question">
+				<label for="LarperTypesId">Vilken typ av varelse är du?</label>&nbsp;<font style="color:red">*</font><br>
+       			<div class="explanation"><?php LarperType::helpBox($current_larp); ?></div>
+                <?php Race::selectionDropdown($current_larp, false, true, $role->RaceId); ?>
+            </div>
+				<div class="question">
+					<label for="TypeOfLarperComment">Specificera din varelse/ras närmare om du vill.</label>
+				<div class="explanation">Exempelvis vilken typ av svartblod, troll eller alv du spelar.</div>
+					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
+				</div>
+			<?php } ?>	
+				
+				
+			<div class="question">
 				<label for="NoIntrigue">Vill du vara myslajvare/statist?</label><br>
        			<div class="explanation">Du vill bara sitta vid elden och dricka te och småprata om minnen från förr. 
        			Du får inga intriger och är inte inblandad i någon annans intriger. Du får heller ingen handel.<br>
        			Du är mest på lajvet för att njuta av stämningen och för att bidra till bra stämning.<br>
        			Detta rekommenderas inte för nybörjare eller barn.
-</div>
-					
-					
+			</div>
 
-	<input type="radio" id="myslajvare_yes" name="NoIntrigue" value="1" onclick="handleRadioClick()" <?php if ($role->isMysLajvare()) echo 'checked="checked"'?>>
-	<label for="myslajvare_yes">Ja</label><br>
-	<input type="radio" id="myslajvare_no" name="NoIntrigue" value="0" onclick="handleRadioClick()"<?php if (!$role->isMysLajvare()) echo 'checked="checked"'?>>
-	<label for="myslajvare_no">Nej</label><br>
+        	<input type="radio" id="myslajvare_yes" name="NoIntrigue" value="1" onclick="handleRadioClick()" <?php if ($role->isMysLajvare()) echo 'checked="checked"'?>>
+        	<label for="myslajvare_yes">Ja</label><br>
+        	<input type="radio" id="myslajvare_no" name="NoIntrigue" value="0" onclick="handleRadioClick()"<?php if (!$role->isMysLajvare()) echo 'checked="checked"'?>>
+        	<label for="myslajvare_no">Nej</label><br>
 
 								
            </div>
@@ -234,13 +250,13 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
                 <?php LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId); ?>
             </div>
 				<div class="question intrigue">
+				<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
 				<div class="explanation">Exempel:<br>
 				                         Jag är passiv lajvare, men kan tänka mig aktiva intriger som rör X, Y och Z.<br>
 				                         Jag är karaktärslajvare och klarar mig utan intriger, men om ni har tankar om saker min karaktär kann vara involverad i som ger spel åt andra kan jag vara intresserad.<br>
 				                         Jag är aktiv lajvare, men vill helst undvika våldsamma intriger.<br>
 				                         Jag är action-lajvare och vill spela den sökta karaktären NN.<br>
 				                         Jag är action-lajvare och har inget emot en våldsam död.</div>
-					<label for="TypeOfLarperComment">Kommentar till typ av lajvare</label>
 					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
 				</div>
 			<?php } ?>	
@@ -350,17 +366,18 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 			 
 			</div>
 
+
 			<?php 
 			if ($admin) {
 			    //Om bara tittar på formuläret som arrangör får man inte lyckas skicka in
-			    echo "<input type='button' value='".default_value('action')."'>";
-			    
-			    
+			    $type = "button";
 			} else {
-			    echo "<input type='submit' value='".default_value('action')."'>";
-			    
-			    }
+			    $type = "submit";
+		    }
+		    
 			    ?>
+
+			<input type='<?php echo $type ?>' value='<?php echo default_value('action') ?>'>
 		</form>
 	</div>
 

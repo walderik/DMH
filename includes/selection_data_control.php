@@ -12,6 +12,8 @@ function getObjectName($name) {
         case "intriguetypes" : return "Typ av intriger";
         case "housingrequests" : return "Boendeönskemål";
         case "experiences" : return "Erfarenhet";
+        case "race" : return "Ras";
+        case "abilities" : return "Förmågor";
     }
 }
 
@@ -27,5 +29,7 @@ function getObjectType($name) {
         case "intriguetypes" : return "IntrigueType";
         case "housingrequests" : return "HousingRequest";
         case "experiences" : return "Experience";
+        case "race" : return "Race";
+        case "abilities" : return "Ability";
     }
 }
