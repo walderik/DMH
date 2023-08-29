@@ -257,10 +257,27 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 				                         Jag är aktiv lajvare, men vill helst undvika våldsamma intriger.<br>
 				                         Jag är action-lajvare och vill spela den sökta karaktären NN.<br>
 				                         Jag är action-lajvare och har inget emot en våldsam död.</div>
-					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
+					<br> <input class="input_field" type="text" id="RaceComment" value="<?php echo htmlspecialchars($role->RaceComment); ?>" name="RaceComment"  size="100" maxlength="200">
 				</div>
 			<?php } ?>	
 				
+			<?php  if (Ability::isInUse($current_larp)) {?>	
+			<div class="question intrigue">
+				<label for="AbilityId">Har din karaktär någon av följande kunskaper?</label><br>
+       			<div class="explanation">Specialförmågor är sådant som påverkar speltekniken. Exempelvis "tål ett extra slag", men inte "har bättre luktsinne". Om du ska vara magi- eller alkemikunnig ska du innan din anmälan fått detta godkänt av magi-/alkemiarrangör, via e-post doh@berghemsvanner.se.
+Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och facebook-sidan.   
+       			<br><?php Ability::helpBox($current_larp); ?></div>
+                <?php 
+                selectionByArray('Ability' , Ability::allActive($current_larp), true, false, $role->getSelectedAbilityIds());
+                ?>
+            </div>
+				<div class="question intrigue">
+				<label for="AbilityComment">Om du valde specialstyrka/-förmåga, specificera och beskriv den/dessa så utförligt som möjligt.</label>
+				<div class="explanation">Motivera varför du har denna specialstyrka/-förmåga väl.</div>
+					<br> <input class="input_field" type="text" id="AbilityComment" value="<?php echo htmlspecialchars($role->AbilityComment); ?>" name="RaceComment"  size="100" maxlength="200">
+				</div>
+			<?php } ?>	
+
 			<div class="question intrigue">
 				<label for="Birthplace">Var är karaktären född?</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Skriv land, delstat, stad</div>

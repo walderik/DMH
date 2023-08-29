@@ -31,6 +31,8 @@ class Role extends BaseModel{
     public $NoIntrigue = 0; //"Myslajvare"
     public $LarperTypeId;
     public $TypeOfLarperComment;
+    public $RaceComment;
+    public $AbilityComment;
     
 
     public static $orderListBy = 'Name';
@@ -72,6 +74,8 @@ class Role extends BaseModel{
         if (isset($arr['NoIntrigue'])) $this->NoIntrigue = $arr['NoIntrigue'];
         if (isset($arr['LarperTypeId'])) $this->LarperTypeId = $arr['LarperTypeId'];
         if (isset($arr['TypeOfLarperComment'])) $this->TypeOfLarperComment = $arr['TypeOfLarperComment'];
+        if (isset($arr['RaceComment'])) $this->RaceComment = $arr['RaceComment'];
+        if (isset($arr['AbilityComment'])) $this->AbilityComment = $arr['AbilityComment'];
         
         if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
@@ -96,7 +100,7 @@ class Role extends BaseModel{
                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
-                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=? WHERE Id = ?;");
+                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
@@ -104,7 +108,8 @@ class Role extends BaseModel{
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
             $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
-            $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, $this->Id))) {
+            $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
+            $this->RaceComment, $this->AbilityComment, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -121,8 +126,8 @@ class Role extends BaseModel{
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId, 
                                                             Birthplace, CharactersWithRelations, CampaignId, ImageId, 
-                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?);");
+                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment) 
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
@@ -130,7 +135,9 @@ class Role extends BaseModel{
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
             $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
-            $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment))) {
+            $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
+            $this->RaceComment, $this->AbilityComment
+        ))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -564,6 +571,55 @@ class Role extends BaseModel{
     
     public function deleteAllIntrigueTypes() {
         $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_role WHERE RoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function getSelectedAbilityIds() {
+        $stmt = $this->connect()->prepare("SELECT AbilityId FROM  regsys_ability_role WHERE RoleId = ? ORDER BY AbilityId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['AbilityId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function saveAllAbilities($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_ability_role (AbilityId, RoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllAbilities() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_ability_role WHERE RoleId = ?;");
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");

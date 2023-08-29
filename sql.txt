@@ -42,3 +42,5 @@ ALTER TABLE `regsys_role`
   ADD COLUMN `RaceId` INT NULL,
   ADD FOREIGN KEY (`RaceId`) REFERENCES `regsys_race`(`Id`);
 
+ALTER TABLE `regsys_role` ADD `RaceComment` VARCHAR(255) NULL AFTER `RaceId`;
+ALTER TABLE `regsys_role` ADD `AbilityComment` VARCHAR(255) NULL AFTER `RaceComment`;
