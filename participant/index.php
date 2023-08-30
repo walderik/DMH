@@ -177,9 +177,9 @@ include "navigation.php";
     		            echo "</td>";
     		            echo "<td>Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "</td>\n";
     		            if ($group->hasImage()) {
-    		                
-    		                $image = Image::loadById($group->ImageId);
-    		                echo "<td><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/> <a href='logic/delete_image.php?id=$group->Id&type=group'>Ta bort bild</a></td>\n";
+    		                echo "<td>";
+    		                echo "<img width='30' src='image.php?id=$group->ImageId'/>\n";
+    		                echo " <a href='logic/delete_image.php?id=$group->Id&type=group'>Ta bort bild</a></td>\n";
     		            }
     		            else {
     		                echo "<td><a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
@@ -200,8 +200,9 @@ include "navigation.php";
         		            //Eventuell bild
         		            echo "<td style='font-weight: normal; padding-right: 0px;'>";
         		            if ($role->hasImage()) {
-        		                $image = Image::loadById($role->ImageId);
-        		                echo "<a href='view_role.php?id=$role->Id'><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/></a>";
+        		                echo "<a href='view_role.php?id=$role->Id'>";
+        		                echo "<img width='30' src='image.php?id=$role->ImageId'/>\n";
+        		                echo "</a>";
         		                echo "<a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
         		            }
         		            else {
@@ -267,8 +268,7 @@ include "navigation.php";
     		            foreach ($npcs as $npc)  {
     		                echo "<tr><td style='font-weight: normal; padding-right: 0px;'>";
     		                if ($npc->hasImage()) {
-    		                    $image = Image::loadById($npc->ImageId);
-    		                    echo "<img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+    		                    echo "<img width='30' src='image.php?id=$npc->ImageId'/>\n";
     		                    echo "<a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
     		                }
     		                else {

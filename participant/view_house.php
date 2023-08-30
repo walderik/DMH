@@ -26,7 +26,7 @@ img {
 	        if ($house->hasImage()) {
 	            $image = Image::loadById($house->ImageId);
                 echo "<td>";
-                echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
+                echo "<img src='image.php?id=$house->ImageId'/>\n";
                 if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
                 echo "</td>";
             }

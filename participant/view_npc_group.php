@@ -38,14 +38,7 @@ function print_npc(NPC $npc) {
     
     echo "<div class='description'>$npc->Description</div>\n";
     if ($npc->hasImage()) {
-        $image = Image::loadById($npc->ImageId);
-        if (!is_null($image)) {
-            
-            echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
-            if (!empty($image->Photographer) && $image->Photographer!="") {
-                echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
-            }
-        }
+        echo "<img width='30' src='image.php?id=$npc->ImageId'/>\n";
     }
     else {
         echo "<img src='../images/man-shape.png' />\n";
