@@ -26,6 +26,8 @@ $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 $main_characters_in_group = Role::getAllMainRolesInGroup($current_group, $current_larp);
 $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($current_group, $current_larp);
 
+$intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id, $current_larp->Id);
+
 
 function print_role($role, $group) {
     global $current_larp;
@@ -158,7 +160,6 @@ include 'navigation.php';
 		<div>
 		<?php echo $larp_group->Intrigue; ?>
 		<?php 
-
 		$known_actors = array();
 		$known_npcs = array();
 		$known_npcgroups = array();
@@ -177,9 +178,9 @@ include 'navigation.php';
 	           $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $current_group);
 	           echo "<td>";
 	           if ($intrigue->isActive()) {
-	               echo "$intrigueActor->IntrigueText";
+	               echo nl2br($intrigueActor->IntrigueText);
 	               if (!empty($intrigueActor->OffInfo)) {
-	                   echo "<br><br><strong>Off-information:</strong><br>$intrigueActor->OffInfo";
+	                   echo "<br><br><strong>Off-information:</strong><br>".nl2br($intrigueActor->OffInfo);
 	               }
 	               echo "</td>";
 	               echo "<td><a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$current_group->Name'><i class='fa-solid fa-pen'></i></a></td>";
