@@ -1,6 +1,6 @@
 <?php
 
-require '../admin/header.php';
+require 'header.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
