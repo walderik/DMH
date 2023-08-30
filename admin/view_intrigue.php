@@ -67,8 +67,7 @@ function printAllProps($props, $intrigueActor, $isCheckin) {
         echo "<li style='display:table-cell; width:19%;'>\n";
         echo "<div class='name'>$prop->Name</div>\n";
         if ($prop->hasImage()) {
-            $image = Image::loadById($prop->ImageId);
-            echo "<img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+            echo "<img width=100 src='image.php?id=$prop->ImageId'/>\n";
         }
         echo "<div align='right'>";
         echo "<a href='logic/view_intrigue_logic.php?operation=$remove_operation&PropId=$prop->Id&IntrigueActorId=$intrigueActor->Id'>";
@@ -138,11 +137,7 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor) {
         }
         
         if ($role->hasImage()) {
-            $image = Image::loadById($role->ImageId);
-            if (!is_null($image)) {
-                
-                echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
-            }
+            echo "<img src='image.php?id=$role->ImageId'/>\n";
         }
         echo "<div align='right'>";
         echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor_knownRole&RoleId=$role->Id&IntrigueActorId=$intrigueActor->Id'>";
@@ -190,8 +185,7 @@ function printAllKnownNPCs($known_npcs, $intrigueActor) {
         
         
         if ($npc->hasImage()) {
-            $image = Image::loadById($npc->ImageId);
-            echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+            echo "<img width='100' src='image.php?id=$npc->ImageId'/>\n";
         }
         echo "<div align='right'>";
         echo "<a href='logic/view_intrigue_logic.php?operation=remove_npc_intrigueactor&NPCId=$npc->Id&IntrigueActorId=$intrigueActor->Id'>";
@@ -281,11 +275,7 @@ th, td {
 	        }
 	    }
 	    if ($group->hasImage()) {
-	        $image = Image::loadById($group->ImageId);
-	        if (!is_null($image)) {
-	            
-	            echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
-	        }
+	        echo "<img src='image.php?id=$group->ImageId'/>\n";
 	    }
 	    echo "<div align='right'>";
 	    echo "<a href='choose_group.php?operation=exhange_intrigue_actor_group&Id=$groupActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut grupp som får intrigen'></i></a> ";
@@ -325,11 +315,7 @@ th, td {
 	        }
 	    }
 	    if ($role->hasImage()) {
-	        $image = Image::loadById($role->ImageId);
-	        if (!is_null($image)) {
-	            
-	            echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
-	        }
+	        echo "<img src='image.php?id=$role->ImageId'/>\n";
 	    }
 	    echo "<div align='right'>";
 	    echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut karaktär som får intrigen'></i></a> ";
@@ -369,8 +355,7 @@ th, td {
 	        }
 	    }
 	    if ($prop->hasImage()) {
-	        $image = Image::loadById($prop->ImageId);
-	        echo "<img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+	        echo "<img width='100' src='image.php?id=$prop->ImageId'/>\n";
 	    }
 	    echo "<div align='right'>";
 	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_prop&IntriguePropId=$intrigue_prop->Id&Id=$intrigue->Id'>";
@@ -449,8 +434,7 @@ th, td {
 	    
 	    
 	    if ($npc->hasImage()) {
-	        $image = Image::loadById($npc->ImageId);
-	        echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+	        echo "<img width='100' src='image.php?id=$npc->ImageId'/>\n";
 	    }
 	    echo "<div align='right'>";
 	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_npc&IntrigueNPCId=$intrigue_npc->Id&Id=$intrigue->Id'>";
