@@ -85,9 +85,8 @@ include 'navigation.php';
 
           <?php 
           if ($bookkeeping->hasImage()) {
-              $image = Image::loadById($bookkeeping->ImageId);
                 echo "<td rowspan='20' valign='top'>";
-                echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
+                echo "<img src='image.php?id=$bookkeeping->ImageId'/>\n";
                 echo "</td>";
             }
             

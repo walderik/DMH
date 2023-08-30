@@ -8,8 +8,7 @@ function print_assigned_npc(NPC $npc, $npc_group) {
     global $current_larp;
     echo "<tr><td width='80'>";
     if ($npc->hasImage()) {
-        $image = Image::loadById($npc->ImageId);
-        echo "<img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+        echo "<img width='30' src='image.php?id=$npc->ImageId'/>\n";
         echo " <a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
     } else {
         echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";

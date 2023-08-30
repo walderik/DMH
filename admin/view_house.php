@@ -24,8 +24,8 @@ img {
     	<h1><?php echo $house->Name ?></h1>
 	        <?php 
 	        if ($house->hasImage()) {
+	            echo "<img src='image.php?id=$house->ImageId'/>\n";
 	            $image = Image::loadById($house->ImageId);
-                echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
                 if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
             }
             ?>
