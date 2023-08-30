@@ -89,6 +89,8 @@ $param = date_format(new Datetime(),"suv");
 			    <a href="selection_data_admin.php?type=larpertypes">Typ av lajvare för karaktärer</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=race">Ras för karaktärer</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=abilities">Typ av förmågor för karaktärer</a>	<br>		    			 					    
+			    <a href="selection_data_admin.php?type=council">Byråd för karaktärer</a>	<br>		    			 					    
+			    <a href="selection_data_admin.php?type=guard">Markvakt för karaktärer</a>	<br>		    			 					    
 			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger för karaktärer och grupper</a>	<br>		    			 					    
 			    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål för deltagare och grupper</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=wealth">Rikedom för karaktärer och grupper</a><br>

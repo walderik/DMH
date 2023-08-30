@@ -21,6 +21,8 @@ class Role extends BaseModel{
     public $WealthId;
     public $PlaceOfResidenceId;
     public $RaceId;
+    public $CouncilId;
+    public $GuardId;
     public $Photo;
     public $Birthplace;
     public $CharactersWithRelations;
@@ -65,6 +67,8 @@ class Role extends BaseModel{
         if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
         if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
         if (isset($arr['RaceId'])) $this->RaceId = $arr['RaceId'];
+        if (isset($arr['CouncilId'])) $this->CouncilId = $arr['CouncilId'];
+        if (isset($arr['GuardId'])) $this->GuardId = $arr['GuardId'];
         if (isset($arr['Birthplace'])) $this->Birthplace = $arr['Birthplace'];
         if (isset($arr['CharactersWithRelations'])) $this->CharactersWithRelations = $arr['CharactersWithRelations'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
@@ -98,7 +102,7 @@ class Role extends BaseModel{
                               DescriptionForGroup=?, DescriptionForOthers=?,
                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
-                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, Birthplace=?, 
+                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, CouncilId=?, GuardId=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
                               NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=? WHERE Id = ?;");
         
@@ -106,7 +110,7 @@ class Role extends BaseModel{
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
-            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
+            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, $this->CouncilId, $this->GuardId, 
             $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
             $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
             $this->RaceComment, $this->AbilityComment, $this->Id))) {
@@ -124,7 +128,7 @@ class Role extends BaseModel{
                                                             DescriptionForGroup, DescriptionForOthers, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
-                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId, 
+                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId, CouncilId, GuardId, 
                                                             Birthplace, CharactersWithRelations, CampaignId, ImageId, 
                                     IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment) 
                                     VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?);");
@@ -134,7 +138,7 @@ class Role extends BaseModel{
             $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
-            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
+            $this->CouncilId, $this->GuardId, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
             $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
             $this->RaceComment, $this->AbilityComment
         ))) {
@@ -186,6 +190,14 @@ class Role extends BaseModel{
         return Race::loadById($this->RaceId);
     }
     
+    public function getCouncil() {
+        if (is_null($this->CouncilId)) return null;
+        return Council::loadById($this->CouncilId);
+    }
+    public function getGuard() {
+        if (is_null($this->GuardId)) return null;
+        return Guard::loadById($this->GuardId);
+    }
     
     
     public function hasIntrigue(LARP $larp) {

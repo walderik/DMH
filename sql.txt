@@ -3,7 +3,7 @@ ALTER TABLE `regsys_email` CHANGE `To` `To` TEXT CHARACTER SET utf8mb4 COLLATE u
 
 2023-08-25 Ny backup
 
-2023-08-29
+2023-08-29 
 
 
 CREATE TABLE `regsys_race` (
@@ -19,7 +19,7 @@ CREATE TABLE `regsys_race` (
 
 
 CREATE TABLE `regsys_ability` (
-  `Id` int NULL AUTO_INCREMENT,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(255),
   `Description` text(65535),
   `Active` tinyint,
@@ -44,3 +44,38 @@ ALTER TABLE `regsys_role`
 
 ALTER TABLE `regsys_role` ADD `RaceComment` VARCHAR(255) NULL AFTER `RaceId`;
 ALTER TABLE `regsys_role` ADD `AbilityComment` VARCHAR(255) NULL AFTER `RaceComment`;
+
+
+2023-08-30
+
+
+CREATE TABLE `regsys_guard` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+CREATE TABLE `regsys_council` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255),
+  `Description` text(65535),
+  `Active` tinyint,
+  `SortOrder` int,
+  `CampaignId` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  FOREIGN KEY (`CampaignId`) REFERENCES `regsys_campaign`(`Id`)
+);
+
+ALTER TABLE `regsys_role`
+  ADD COLUMN `GuardId` INT NULL,
+  ADD FOREIGN KEY (`GuardId`) REFERENCES `regsys_guard`(`Id`);
+
+ALTER TABLE `regsys_role`
+  ADD COLUMN `CouncilId` INT NULL,
+  ADD FOREIGN KEY (`CouncilId`) REFERENCES `regsys_council`(`Id`);
+

@@ -280,7 +280,7 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
 
 			<div class="question intrigue">
 				<label for="Birthplace">Var är karaktären född?</label>&nbsp;<font style="color:red">*</font><br>
-				<div class="explanation">Skriv land, delstat, stad</div>
+				<div class="explanation">Beskriv noggrannare ju längre bortifrån du kommer.</div>
 				<input class="input_field requiredIntrigueField" type="text" id="Birthplace" name="Birthplace" value="<?php echo htmlspecialchars($role->Birthplace); ?>"  size="100" maxlength="100" required>
 			</div>
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
@@ -338,6 +338,29 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
             </div>
 			<?php } ?>	
 				
+			<?php  if (Council::isInUse($current_larp)) {?>	
+			<div class="question intrigue">
+				<label for="CouncilId">Byrådet</label><br>
+       			<div class="explanation">Jag är med i eller intresserad av att sitta i byrådet. För att sitta i byrådet måste du vara bybo. Annars måste du bli invald i byrådet inlajv.   
+       			<br><?php Council::helpBox($current_larp); ?></div>
+                <?php 
+                Council::selectionDropdown($current_larp, false, false, $role->CouncilId);
+                ?>
+            </div>
+			<?php } ?>	
+
+			<?php  if (Guard::isInUse($current_larp)) {?>	
+			<div class="question intrigue">
+				<label for="GuardId">Markvakten</label><br>
+       			<div class="explanation">Jag är med i eller intresserad av att vara med i markvakten.   
+       			<br><?php Guard::helpBox($current_larp); ?></div>
+                <?php 
+                Guard::selectionDropdown($current_larp, false, false, $role->GuardId);
+                ?>
+            </div>
+			<?php } ?>	
+
+
 			<div class="question intrigue">
 				<label for="IntrigueSuggestions">Intrigideer</label><br> 
 				<div class="explanation">Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar". </div>
@@ -373,6 +396,9 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 				<div class="explanation">Hur kan vi spela på din mörka hemlighet?</div>
 				<input class="input_field requiredIntrigueField" type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo htmlspecialchars($role->DarkSecretIntrigueIdeas); ?>"  size="100" maxlength="200" required>
 			</div>
+
+
+
 
 
 			<div class="question">

@@ -16,7 +16,8 @@ class SelectionData extends BaseModel{
     public static function isInUse(LARP $larp) {
         
         static $in_use;
-        if (!is_null($in_use)) return $in_use;
+        //Fungerar inte, verkar hålla en variabel för alla som ärver den.
+        //if (!is_null($in_use)) return $in_use;
         
         $stmt = static::connectStatic()->prepare("SELECT * FROM regsys_".strtolower(static::class)." WHERE active = 1 AND CampaignId = ? ORDER BY SortOrder LIMIT 1;");
         
