@@ -69,10 +69,8 @@ img {
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
         <?php 
             if ($prop->hasImage()) {
-                $image = Image::loadById($prop->ImageId);
                 echo "<td>";
-                echo '<img src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
-                if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+                echo "<img src='image.php?id=$prop->ImageId'/>\n";
                 echo "</td>";
             }
             ?>

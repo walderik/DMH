@@ -25,8 +25,6 @@ img {
 	        <?php 
 	        if ($house->hasImage()) {
 	            echo "<img src='image.php?id=$house->ImageId'/>\n";
-	            $image = Image::loadById($house->ImageId);
-                if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
             }
             ?>
     	

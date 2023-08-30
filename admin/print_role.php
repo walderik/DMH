@@ -30,7 +30,8 @@ if ($role->isMysLajvare()) {
 		if ($role->hasImage()) {
 		    
 		    $image = Image::loadById($role->ImageId);
-		    echo "<td rowspan='20' valign='top'><img width='300' src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+		    echo "<td rowspan='20' valign='top'>";
+		    echo "<img width='300' src='image.php?id=$role->ImageId'/>\n";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
 		    echo "</td>";
 		}

@@ -71,10 +71,8 @@ include 'navigation.php';
  			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($npc->Name); ?>" size="100" maxlength="250" required></td>
  			<?php 
  			if ($npc->hasImage()) {
- 			    
- 			    $image = Image::loadById($npc->ImageId);
- 			    echo "<td rowspan='20' valign='top'><img width='300' src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
- 			    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+ 			    echo "<td rowspan='20' valign='top'>";
+ 			    echo "<img width='300' src='image.php?id=$npc->ImageId'/>\n";
  			    echo "</td>";
  			}
  			

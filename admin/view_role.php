@@ -141,11 +141,7 @@ include 'navigation.php';
 	               }
 	               
 	               if ($roleActor->hasImage()) {
-	                   $image = Image::loadById($roleActor->ImageId);
-	                   if (!is_null($image)) {
-	                       
-	                       echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
-	                   }
+	                   echo "<img src='image.php?id=$roleActor->ImageId'/>\n";
 	               }
 	               echo "</li>";
 	               
@@ -179,8 +175,8 @@ include 'navigation.php';
 	               echo "<div>$npc_group->Name</div>";
 	           }
 	           if ($npc->hasImage()) {
-	               $image = Image::loadById($npc->ImageId);
-	               echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+	               echo "<td>";
+	               echo "<img width='100' src='image.php?id=$npc->ImageId'/>\n";
 	           }
 	           echo "</li>\n";
 	           $temp++;
@@ -195,8 +191,8 @@ include 'navigation.php';
                echo "<li style='display:table-cell; width:19%;'>\n";
                echo "<div class='name'>$prop->Name</div>\n";
                if ($prop->hasImage()) {
-                   $image = Image::loadById($prop->ImageId);
-                   echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+                   echo "<td>";
+                   echo "<img width='100' src='image.php?id=$prop->ImageId'/>\n";
                }
                echo "</li>\n";
                $temp++;
@@ -235,8 +231,8 @@ include 'navigation.php';
 	               echo "<li style='display:table-cell; width:19%;'>\n";
 	               echo "<div class='name'>$prop->Name</div>\n";
 	               if ($prop->hasImage()) {
-	                   $image = Image::loadById($prop->ImageId);
-	                   echo "<td><img width=100 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
+	                   echo "<td>";
+	                   echo "<img width='100' src='image.php?id=$prop->ImageId'/>\n";
 	               }
 	               echo "</li>\n";
 	               $temp++;

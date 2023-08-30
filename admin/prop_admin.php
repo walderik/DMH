@@ -48,8 +48,8 @@ include 'navigation.php';
                 echo "<td>" . $owner . "<a href='prop_owner_form.php?id=" . $prop->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
 
                 if ($prop->hasImage()) {
-                    $image = Image::loadById($prop->ImageId);
-                    echo "<td><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/> <a href='logic/delete_image.php?id=$prop->Id&type=prop'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a></td>\n";
+                    echo "<td><img width='30' src='image.php?id=$prop->ImageId'/>\n";
+                    echo " <a href='logic/delete_image.php?id=$prop->Id&type=prop'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a></td>\n";
                 }
                 else {
                     echo "<td><a href='upload_image.php?id=$prop->Id&type=prop'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";

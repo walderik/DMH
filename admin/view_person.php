@@ -114,9 +114,7 @@ include 'navigation.php';
                         echo "<tr>";
                         echo "<td>";
                         if ($role->hasImage()) {
-                            
-                            $image = Image::loadById($role->ImageId);
-                            echo " <img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>";
+                            echo "<img width='30' src='image.php?id=$role->ImageId'/>\n";
                         }
                         echo "</td>";
                         
