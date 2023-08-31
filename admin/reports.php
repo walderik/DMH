@@ -40,6 +40,7 @@ include 'navigation.php';
     	</p>
     <h3>Övrigt</h3>
 		<a href="reports/check_in_out_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>In och utcheckning</a><br>
+		<a href="reports/medical.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Hälsoinformation till sjukvårdare/trygghetsvärdar</a><br>
     </div>
     <h2>Övrigt</h2>
     <p>
