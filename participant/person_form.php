@@ -135,7 +135,7 @@
 			
 			<div class="question">
 				<label for="FoodAllergiesOther">Annat kring matallergier eller annan specialkost? </label><br>
-				Om du har allergier eller specialkost som inte täcks av den ovanstående frågan vill vi att du skriver om det här.<br>
+				<div class="explanation">Om du har allergier eller specialkost som inte täcks av den ovanstående frågan vill vi att du skriver om det här.<br>
 				Om du inte har något, skriv inget.</div>
 				<textarea class="input_field" id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->FoodAllergiesOther); ?></textarea>
 			</div>
