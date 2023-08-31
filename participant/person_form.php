@@ -161,11 +161,31 @@
 			</div>
 			
 
+			<h2>Personuppgifter</h2>
+
+			<div class="question">
+				<label for="HasPermissionShowName">Visa namn</label><br>
+       			<div class="explanation">Tillåter du att vi visar ditt namn i olika sammanhang? Exempelvis i listan med karaktärer och när boendet presenteras.
+			</div>
+
+    			<input type="radio" id="HasPermissionShowName_yes" name="HasPermissionShowName" value="1" <?php if ($person->HasPermissionShowName()) echo 'checked="checked"'?>> 
+    			<label for="HasPermissionShowName_yes">Ja</label><br> 
+    			<input type="radio" id="HasPermissionShowName_no" name="HasPermissionShowName" value="0" <?php if (!$person->HasPermissionShowName()) echo 'checked="checked"'?>> 
+    			<label for="HasPermissionShowName_no">Nej</label>
+
+								
+           </div>
+
+
 			<div class="question">
 			Härmed samtycker jag till att föreningen Berghems
-			Vänner får spara och lagra mina uppgifter - såsom namn/
+			Vänner får hantera och lagra mina uppgifter - såsom namn/
 			e-postadress/telefonnummer/hälsouppgifter/annat. Detta för att kunna
-			arrangera lajvet.&nbsp;<font style="color:red">*</font><br>
+			arrangera lajvet. <br>Den rättsliga grunden för personuppgiftsbehandlingen är att du ger ditt samtycke.&nbsp;
+			
+			
+			
+			<font style="color:red">*</font><br>
 			<input type="checkbox" id="PUL" name="PUL" value="Ja" required>
   			<label for="PUL">Jag samtycker</label> 
 			</div>
