@@ -77,5 +77,14 @@ class Rumour_knows extends BaseModel{
     }
     
     
+    public static function roleKnows($rumourId, $roleId) {
+        $sql = "SELECT count(Id) as Num FROM regsys_rumour_knows WHERE RumourId = ? AND RoleId = ?";
+        return static::existsQuery($sql, array($rumourId, $roleId));
+    }
+    
+    public static function groupKnows($rumourId, $groupId) {
+        $sql = "SELECT count(Id) as Num FROM regsys_rumour_knows WHERE RumourId = ? AND GroupId = ?";
+        return static::existsQuery($sql, array($rumourId, $groupId));
+    }
     
 }

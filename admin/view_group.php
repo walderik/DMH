@@ -325,7 +325,7 @@ include 'navigation.php';
 		</div>
 		<h2>Rykten</h2>
 		<div>
-		<h3>Rykten som <?php echo $current_group->Name ?> känner till</h3>
+		<h3>Rykten som <?php echo $current_group->Name ?> känner till <a href='rumour_for.php?GroupId=<?php echo $current_group->Id ?>'><i class='fa-solid fa-plus' title='Tilldela rykten till <?php echo $current_group->Name ?>'></i></a></h3>
 		<?php 
 		$rumours = Rumour::allKnownByGroup($current_larp, $current_group);
 		foreach($rumours as $rumour) {

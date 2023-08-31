@@ -253,7 +253,7 @@ include 'navigation.php';
 		</div>
 		<h2>Rykten</h2>
 		<div>
-		<h3>Rykten som <?php echo $role->Name ?> känner till</h3>
+		<h3>Rykten som <?php echo $role->Name ?> känner till <a href='rumour_for.php?RoleId=<?php echo $role->Id ?>'><i class='fa-solid fa-plus' title='Tilldela rykten till <?php echo $role->Name ?>'></i></a></h3>
 		<?php 
 		$rumours = Rumour::allKnownByRole($current_larp, $role);
 		foreach($rumours as $rumour) {
