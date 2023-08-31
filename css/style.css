@@ -234,3 +234,7 @@ table.helpBox td {
   display: table-row;
 }
 
+div.question > label:first-child {
+	font-weight: bold;
+}
+

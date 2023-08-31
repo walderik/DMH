@@ -398,15 +398,20 @@ class BerghemMailer {
 
             
             $receiver_emails = array();
-            
+            $names_in_house = array();
             foreach ($personsInHouse as $person) {
                 $registration = $person->getRegistration($larp);
                 if (empty($registration)) continue;
                 if (!$registration->hasSpotAtLarp()) continue;
                 if ($registration->NotComing == 1) continue;
                 $receiver_emails[] = $person->Email;
+                if ($person->hasPermissionShowName()) $names_in_house[] = $person->Name;
+                else $names_in_house[] = "(Vill inte visa sitt namn)";
             }
             if (empty($receiver_emails)) continue;
+            
+            $housetext = $housetext . "<br><br>De som bor i huset är: ".implode(", ", $names_in_house);
+            
             
             $subject = "Boende för $larp->Name ($house->Name)";
             BerghemMailer::send($receiver_emails, "", $housetext, $subject, null);

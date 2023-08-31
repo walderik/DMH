@@ -99,6 +99,10 @@ function print_role($role) {
     
     echo "<div class='name'>$role->Name</div>\n";
     if($larp_role->IsMainRole == 0) echo "<div>Sidokaraktär</div>\n";
+    $person = $role->getPerson();
+    if ($person->hasPermissionShowName()) {
+        echo "<div>Spelas av $person->Name</div>";
+    }
     echo "<div class='description'>$role->DescriptionForOthers</div>\n";
     if (isset($role->ImageId) && !is_null($role->ImageId)) {
         $image = Image::loadById($role->ImageId);

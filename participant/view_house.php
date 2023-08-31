@@ -60,6 +60,21 @@ img {
     				<td>Beskrivning</td>
     				<td><?php echo nl2br(htmlspecialchars($house->Description)); ?></td>
     			</tr>
+    			<tr>
+    				<td colspan = '2'>De som bor i huset under <?php echo $current_larp->Name ?> är:<br>
+    				<?php 
+    				$personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
+    				foreach ($personsInHouse as $personInHouse) {
+    				    if ($personInHouse->hasPermissionShowName()) echo $personInHouse->Name;
+    				    else echo "(Vill inte visa sitt namn)";
+    				    echo "<br>";
+    				}
+    				
+    				?>
+    				</td>
+				</tr>
+    			
+    			
     		</table>
     </body>
 

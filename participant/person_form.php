@@ -21,12 +21,7 @@
         exit;
     }
     
-    
-    if ($person->isRegistered($current_larp) || $person->isReserve($current_larp)) {
-        header('Location: view_person.php?id='.$person->Id);
-        exit;
-    }
-    
+        
     function default_value($field) {
         GLOBAL $person;
         $output = "";
@@ -81,8 +76,16 @@
 				<div class="explanation">Nummret ska vara ÅÅÅÅMMDD-NNNN.<br />
 				Om du saknar personnummer kommer du att behöva hjälp av Berghems Vänner för att kunna bli medlem. Skriv då in 0000 som de fyra sista så länge.<br />
 				Personnumret kommer att kontrolleras mot medlemsregistret eftersom medlemsskap krävs för att få delta på lajvet. </div>
-				<input type="text" id="SocialSecurityNumber" value="<?php echo $person->SocialSecurityNumber; ?>"
-				name="SocialSecurityNumber" pattern="\d{8}-\d{4}|\d{12}"  placeholder="ÅÅÅÅMMDD-NNNN" size="20" maxlength="13" required>
+				<?php 
+				if ($person->isNeverRegistered()) {
+				    echo "<input type='text' id='SocialSecurityNumber' value='$person->SocialSecurityNumber;'".
+				    "name='SocialSecurityNumber' pattern='\d{8}-\d{4}|\d{12}'  placeholder='ÅÅÅÅMMDD-NNNN' size='20' maxlength='13' required>";
+				} else {
+				    echo "$person->SocialSecurityNumber";
+				    
+				    
+				}?>
+				
 			</div>
 			<div class="question">
 				<label for="PhoneNumber">Mobilnummer</label>
@@ -122,15 +125,17 @@
 			<h2>Hälsa</h2>
 
 			<div class="question">
-				<label for="NormalAllergyType">Har du någon eller några av de vanligaste mat-allergierna?</label>
+				<label for="NormalAllergyType">Vanliga allergier?</label>
 				<br> 
-				<div class="explanation"><?php NormalAllergyType::helpBox(); ?></div>
+				
+				<div class="explanation">Har du någon eller några av de vanligaste mat-allergierna?<br>
+				<?php NormalAllergyType::helpBox(); ?></div>
 				<?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?>
 			</div>
 			
 			<div class="question">
-				<label for="FoodAllergiesOther">Har du matallergier eller annan specialkost? </label><br>
-				<div class="explanation">Om du har allergier eller specialkost som inte täcks av de två ovanstående frågorna vill vi att du skriver om det här.<br>
+				<label for="FoodAllergiesOther">Annat kring matallergier eller annan specialkost? </label><br>
+				Om du har allergier eller specialkost som inte täcks av den ovanstående frågan vill vi att du skriver om det här.<br>
 				Om du inte har något, skriv inget.</div>
 				<textarea class="input_field" id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->FoodAllergiesOther); ?></textarea>
 			</div>
@@ -164,13 +169,13 @@
 			<h2>Personuppgifter</h2>
 
 			<div class="question">
-				<label for="HasPermissionShowName">Visa namn</label><br>
+				<label for="HasPermissionShowName">Visa namn</label> <font style="color:red">*</font><br>
        			<div class="explanation">Tillåter du att vi visar ditt namn i olika sammanhang? Exempelvis i listan med karaktärer och när boendet presenteras.
 			</div>
 
-    			<input type="radio" id="HasPermissionShowName_yes" name="HasPermissionShowName" value="1" <?php if ($person->HasPermissionShowName()) echo 'checked="checked"'?>> 
+    			<input type="radio" id="HasPermissionShowName_yes" name="HasPermissionShowName" value="1" <?php if ($person->hasPermissionShowName()) echo 'checked="checked"'?> required> 
     			<label for="HasPermissionShowName_yes">Ja</label><br> 
-    			<input type="radio" id="HasPermissionShowName_no" name="HasPermissionShowName" value="0" <?php if (!$person->HasPermissionShowName()) echo 'checked="checked"'?>> 
+    			<input type="radio" id="HasPermissionShowName_no" name="HasPermissionShowName" value="0" <?php if (!$person->hasPermissionShowName()) echo 'checked="checked"'?>> 
     			<label for="HasPermissionShowName_no">Nej</label>
 
 								
@@ -178,16 +183,17 @@
 
 
 			<div class="question">
-			Härmed samtycker jag till att föreningen Berghems
+			<label for="PUL">GDPR</label> <font style="color:red">*</font><br>
+			<div class="explanation">Härmed samtycker jag till att föreningen Berghems
 			Vänner får hantera och lagra mina uppgifter - såsom namn/
 			e-postadress/telefonnummer/hälsouppgifter/annat. Detta för att kunna
-			arrangera lajvet. <br>Den rättsliga grunden för personuppgiftsbehandlingen är att du ger ditt samtycke.&nbsp;
+			arrangera lajvet. <br>Den rättsliga grunden för personuppgiftsbehandlingen är att du ger ditt samtycke.&nbsp;</div>
 			
 			
 			
-			<font style="color:red">*</font><br>
+			
 			<input type="checkbox" id="PUL" name="PUL" value="Ja" required>
-  			<label for="PUL">Jag samtycker</label> 
+  			<label for="PUL">Jag samtycker</label>
 			</div>
 
 			  <input type="submit" value="<?php default_value('action'); ?>">

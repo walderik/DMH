@@ -75,16 +75,13 @@ include "navigation.php";
     		        
     		        echo "<div class='person'>\n";
     		        
-    		        if (($person->isRegistered($current_larp)) || $person->isReserve($current_larp)) {
-    		            echo "<a href='view_person.php?id=" . $person->Id . "'><h3>$person->Name</a></h3>\n";    		            
-    		        }
-    		        else {
-    		            echo "<a href='person_form.php?operation=update&id=" . $person->Id . "'><h3>$person->Name&nbsp;<i class='fa-solid fa-pen'></i></a>";
-    		            if($person->isNeverRegistered() && (!isset($roles) or count($roles) == 0) && (!isset($groups) or count($groups) == 0)) {
-    		                echo "&nbsp;<a href='logic/delete_person.php?id=" . $person->Id . "'><i class='fa-solid fa-trash' title='Ta bort deltagare'></i></a>";
-    		            }
-    		            echo "</h3>\n";
-    		        }
+
+		            echo "<h3><a href='person_form.php?operation=update&id=" . $person->Id . "'>$person->Name&nbsp;<i class='fa-solid fa-pen'></i></a>";
+		            if($person->isNeverRegistered() && (!isset($roles) or count($roles) == 0) && (!isset($groups) or count($groups) == 0)) {
+		                echo "&nbsp;<a href='logic/delete_person.php?id=" . $person->Id . "'><i class='fa-solid fa-trash' title='Ta bort deltagare'></i></a>";
+		            }
+		            echo "</h3>\n";
+    		        
     		        echo "Epost: " . $person->Email. "<br>\n";
     		        echo "Mobilnummer: " . $person->PhoneNumber. "<br>\n";
     		        echo "<table  class='checks'>";
