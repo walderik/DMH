@@ -136,21 +136,21 @@
 			<div class="question">
 				<label for="FoodAllergiesOther">Annat kring matallergier eller annan specialkost? </label><br>
 				<div class="explanation">Om du har allergier eller specialkost som inte täcks av den ovanstående frågan vill vi att du skriver om det här.<br>
-				Om du inte har något, skriv inget.</div>
+				Om du inte har något, lämna fältet tomt.</div>
 				<textarea class="input_field" id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->FoodAllergiesOther); ?></textarea>
 			</div>
 
 			<div class="question">
 				<label for="HousingComment">Boendehänsyn</label><br>
 				<div class="explanation">Har du några speciella saker vi behöver ta hänsyn till när vi planerar boendet?<br>
-				Om du inte har något, skriv inget.</div>
+				Om du inte har något, lämna fältet tomt.</div>
 				<input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo htmlspecialchars($person->HousingComment); ?>" size="100" maxlength="200" >
 			</div>
 
 			<div class="question">
 				<label for="HealthComment">Fysisk och mental hälsa</label><br>
 				<div class="explanation">Är det något som vore bra om våra sjukvårdare/trygghetsvärdar vet om dig för att lättare kunna göra ett bra jobb?<br>
-				Om du inte har något, skriv inget.</div>
+				Om du inte har något, lämna fältet tomt.</div>
 				<textarea class="input_field" id="HealthComment" name="HealthComment" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->HealthComment); ?></textarea>
 			</div>
 
@@ -159,7 +159,7 @@
 			<div class="question">
 				<label for="OtherInformation">Övrig information</label><br>
 				<div class="explanation">Är det något annat kring din off-person arrangörerna bör veta? Tex bra kunskaper som sjukvårdare.<br><br>
-				Om du inte har något, skriv inget.</div>
+				Om du inte har något, lämna fältet tomt.</div>
 				<textarea class="input_field" id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->OtherInformation); ?></textarea>
 			
 			 
