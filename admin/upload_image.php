@@ -32,6 +32,9 @@ switch ($type) {
     case "npc":
         $object = NPC::loadById($id);
         break;
+    case "role":
+        $object = Role::loadById($id);
+        break;
 }
         
 

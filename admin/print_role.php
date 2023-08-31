@@ -34,6 +34,8 @@ if ($role->isMysLajvare()) {
 		    echo "<img width='300' src='image.php?id=$role->ImageId'/>\n";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
 		    echo "</td>";
+		} else {
+		    echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";		    
 		}
 		?>
 			
