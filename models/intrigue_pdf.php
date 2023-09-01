@@ -67,6 +67,14 @@ class Intrigue_Pdf extends BaseModel{
         parent::delete($id);
     }
     
+    public static function getAllByLarp(LARP $larp) {
+        $sql = "SELECT regsys_intrigue_pdf.* FROM regsys_intrigue_pdf, regsys_intrigue WHERE ".
+        "regsys_intrigue.LarpId = ? AND ".
+        "regsys_intrigue_pdf.IntrigueId = regsys_intrigue.Id ".
+        "ORDER BY regsys_intrigue.Number";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
     public static function getAllPDFsForIntrigue(Intrigue $intrigue) {
         $sql = "SELECT * FROM regsys_intrigue_pdf WHERE IntrigueId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
