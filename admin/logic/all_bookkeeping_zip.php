@@ -8,10 +8,11 @@ include_once '../header.php';
 
 
 
-
+$file = tempnam($root . '/tmp', 'zip');
+register_shutdown_function('unlink', $file);
 $zipname = "Verifikationer $current_larp->Name.zip";
 $zip = new ZipArchive;
-$zip->open($zipname, ZipArchive::CREATE);
+$zip->open($file, ZipArchive::OVERWRITE);
 
 
 //Skapa pdf med alla vanliga verifikationer
@@ -37,5 +38,5 @@ $zip->close();
 ///Then download the zipped file.
 header('Content-Type: application/zip');
 header('Content-disposition: attachment; filename='.$zipname);
-header('Content-Length: ' . filesize($zipname));
-readfile($zipname);
+header('Content-Length: ' . filesize($file));
+readfile($file);
