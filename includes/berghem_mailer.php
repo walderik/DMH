@@ -368,7 +368,9 @@ class BerghemMailer {
                 }
             }
             
-            $sendtext = $text . "<br><br>". $rolesText . $npcText;
+            $printText = "<br>Skriv ut de bifogade filerna och ta med till lajvet.<br>";
+            
+            $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
             BerghemMailer::send($person->Email, $person->Name, $sendtext, $subject, $sheets);
         }
     }
