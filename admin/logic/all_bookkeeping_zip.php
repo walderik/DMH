@@ -9,7 +9,6 @@ include_once '../header.php';
 
 
 
-$files = array('image.jpeg','text.txt','music.wav');
 $zipname = "Verifikationer $current_larp->Name.zip";
 $zip = new ZipArchive;
 $zip->open($zipname, ZipArchive::CREATE);
