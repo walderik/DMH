@@ -32,7 +32,8 @@ if (isset($_FILES["upload"])) {
     
     $error = Image::maySave();
     if (!isset($error)) {
-        $id = Image::saveImage();
+ 
+        $id = Image::saveImage("Verifikation $bookkeeping->Number", true);
         $bookkeeping->ImageId = $id;
         $bookkeeping->update();
         
@@ -85,10 +86,16 @@ include 'navigation.php';
 
           <?php 
           if ($bookkeeping->hasImage()) {
-                echo "<td rowspan='20' valign='top'>";
-                echo "<img src='image.php?id=$bookkeeping->ImageId'/>\n";
-                echo "</td>";
-            }
+                $image = Image::loadById($bookkeeping->ImageId);
+                if ($image->file_mime == "application/pdf") {
+                    echo "</tr><tr><td>Kvitto</td><td><a href='view_pdf_receipt.php?id=$image->Id' target='_blank'>$image->file_name</a></td>";
+                    
+                } else {
+                    echo "<td rowspan='20' valign='top'>";
+                    echo "<img src='image.php?id=$bookkeeping->ImageId'/>\n";
+                    echo "</td>";
+                }
+          }
             
             ?>
 			</tr>

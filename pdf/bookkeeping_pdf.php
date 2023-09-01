@@ -59,17 +59,20 @@ class Bookkeeping_PDF extends PDF_MemImage {
         global $y, $mitten;
         $txt_font='Helvetica';
         $left = 11;
-        $page_height = $this->GetPageHeight();
+        //$page_height = $this->GetPageHeight();
         $left2 = $left + 30;
+
         
+        
+        if ($bookkeeping->hasImage()) {
+            $image = Image::loadById($bookkeeping->ImageId);
+        }
        
         $this->SetFont($txt_font,'',16);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
 
         $y += 3;
-        if ($bookkeeping->hasImage()) {
-            $image = Image::loadById($bookkeeping->ImageId);
-            $this->MemImage($image->file_data, $mitten, $y);
-        }
+        if (isset($image) && ($image->file_mime != "application/pdf")) $this->MemImage($image->file_data, $mitten+5, $y, $mitten-20);
+        
         
         $this->SetXY($left, $y);
         $this->Cell(80,10,utf8_decode($bookkeeping->Number." "),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
@@ -115,6 +118,15 @@ class Bookkeeping_PDF extends PDF_MemImage {
         $this->SetXY($left2, $y);
         $this->Cell(80,10,utf8_decode($bookkeeping->Date),0,1);        
 
+        if (isset($image) && ($image->file_mime == "application/pdf")) {
+            $y += 7;
+            $this->SetXY($left, $y);
+            $this->Cell(80,10,utf8_decode(''),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+            $this->SetXY($left2, $y+2.1);
+            $this->MultiCell($mitten-$left2, 5.5, "Kvitto finns i separat pdf");
+            
+        }
+        
         if (!empty($bookkeeping->Text)) {
             $y += 7;
             $this->SetXY($left, $y);
@@ -125,18 +137,15 @@ class Bookkeeping_PDF extends PDF_MemImage {
         }
         
         
-        $y=0;
-        $this->AddPage();
-        
     }
     
     function printBookkeepings($bookkeepings) {
         global $mitten;
         $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
         
-        $this->AddPage();
-        
         foreach($bookkeepings as $bookkeeping) {
+            $y=0;
+            $this->AddPage();
             $this->SetText($bookkeeping);
         }
     }

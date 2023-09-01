@@ -12,15 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } elseif ($operation == 'add_expense') {
             $bookkeeping = Bookkeeping::newFromArray($_POST);
             $bookkeeping->Amount = 0 - $_POST['Amount'];
-            
-            if (!empty($_FILES["upload"]["name"])) {
-                $error = Image::maySave();
-                if (!isset($error)) {
-                    $id = Image::saveImage();
-                    $bookkeeping->ImageId = $id;
-                }
-            }
             $bookkeeping->create();
+            saveReceipt($bookkeeping);
         } elseif ($operation == 'update_income') {
             $bookkeeping = Bookkeeping::loadById($_POST['id']);
             $bookkeeping->setValuesByArray($_POST);
@@ -31,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $bookkeeping->Amount = 0 - $_POST['Amount'];
             
             $bookkeeping->update();
+            saveReceipt($bookkeeping);
         }
     }
     //if (isset($error)) header("Location: economy.php?error=$error");
@@ -38,6 +32,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //exit;
     
 }
+
+function saveReceipt(Bookkeeping $bookkeeping) {
+    if (!empty($_FILES["upload"]["name"])) {
+        $error = Image::maySave(true);
+        if (!isset($error)) {
+            $id = Image::saveImage("Verifikation $bookkeeping->Number", true);
+            $bookkeeping->ImageId = $id;
+            $bookkeeping->update();
+        }
+    }
+    
+}
+
 
 include_once '../includes/error_handling.php';
 
@@ -66,7 +73,8 @@ include 'navigation.php';
         <a href="economy_form.php?operation=add_income"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a> &nbsp; 
         <a href="economy_form.php?påeration=add_expense"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a><br>
         <a href="reports/economy.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Generera rapport till kassör</a> &nbsp; 
-        <a href="logic/all_bookkeeping_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Alla verifikationer till kassör</a><br>
+        <a href="logic/all_bookkeeping_zip.php" target="_blank"><i class="fa-solid fa-file-zipper"></i> Alla verifikationer till kassör</a><br>
+        
         </p>
 	<?php 
        $bookkeepings = Bookkeeping::allByLARP($current_larp);

@@ -40,7 +40,7 @@ if (isset($_FILES["upload"])) {
     
     $error = Image::maySave();
     if (!isset($error)) {
-        $id = Image::saveImage();
+        $id = Image::saveImage("$object->Name - $type");
         $object->ImageId = $id;
         $object->update();
         
