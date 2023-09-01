@@ -65,6 +65,7 @@ img {
     				<?php 
     				$personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
     				foreach ($personsInHouse as $personInHouse) {
+    				    if ($person->isNotComing($current_larp)) continue;
     				    if ($personInHouse->hasPermissionShowName()) echo $personInHouse->Name;
     				    else echo "(Vill inte visa sitt namn)";
     				    echo "<br>";
