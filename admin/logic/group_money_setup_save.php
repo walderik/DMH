@@ -31,7 +31,7 @@ $groups = Group::getAllRegistered($current_larp);
 
 foreach ($groups as $group) {
     $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
-    if (($which_groups_effect == "notset") && !empty($larp_group->StartingMoney)) {
+    if (($which_groups_effect == "notset") && isset($larp_group->StartingMoney)) {
         continue;
     }
     

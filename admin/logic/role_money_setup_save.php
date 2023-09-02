@@ -39,7 +39,7 @@ if ($which_roles == "all") {
 
 foreach ($roles as $role) {
     $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
-    if (($which_roles_effect == "notset") && !empty(($larp_role->StartingMoney)) {
+    if (($which_roles_effect == "notset") && isset($larp_role->StartingMoney)) {
         continue;
     }
     
