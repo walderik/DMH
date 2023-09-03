@@ -63,7 +63,7 @@ if ($role->isMysLajvare()) {
 			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td><td><?php echo $role->TypeOfLarperComment;?></td></tr>
 			<?php } ?>
 			<tr><td valign="top" class="header">Tidigare lajv</td><td><?php echo $role->PreviousLarps;?></td></tr>
-			<tr><td valign="top" class="header">Varför befinner sig karaktären på platsen?</td><td><?php echo $role->ReasonForBeingInSlowRiver;?></td></tr>
+			<tr><td valign="top" class="header">Varför befinner sig karaktären på platsen?</td><td><?php echo nl2br(htmlspecialchars($role->ReasonForBeingInSlowRiver));?></td></tr>
 			<tr><td valign="top" class="header">Religion</td><td><?php echo $role->Religion;?></td></tr>
 			<tr><td valign="top" class="header">Mörk hemlighet</td><td><?php echo $role->DarkSecret;?></td></tr>
 			<tr><td valign="top" class="header">Mörk hemlighet - intrig idéer</td><td><?php echo nl2br($role->DarkSecretIntrigueIdeas); ?></td></tr>
