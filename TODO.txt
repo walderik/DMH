@@ -18,10 +18,9 @@ Bygghelg, mat anges per måltid, gratis
 
 Ta bort sidokaraktär
 
-Ge tillstånd att visa spelarens namn vid karaktärspresentationen
 
 Kopiera intrig från tidigare år
-Skriva in "vad som hände" per intrig
+Visa "vad som hände" på nästa år och för arr.
 
 Visa på hus vilka som anmält sig som husägare på resp hus.
 
