@@ -45,7 +45,11 @@ $param = date_format(new Datetime(),"suv");
 			    onsubmit="return confirm('Är du säker?\nEpost kommer att skickas till alla deltagarna med alla intriger som de ser ut just nu.')">
 				<input type=hidden name="send_intrigues" valie=<?php echo $param ?>>
                 <input type='submit' value='Skicka ut intrigerna'></form>
-		
+                <br>
+                <?php if (!$current_larp->isIntriguesReleased()) { ?>
+				<form action='logic/release_intrigues.php'  method="post">
+                <input type='submit' value='Släpp intrigerna (utan att skicka ut dem)'></form>
+				<?php }?>
         </td></tr>
         <tr><td style="font-weight: normal;">
 		Boendet är 
