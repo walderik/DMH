@@ -62,7 +62,12 @@ foreach ($intrigue_array as $intrigue) {
     $rumours = $intrigue->getRumours();
     if (!empty($rumours)) {
         $rumour_text_array = array();
-        foreach ($rumours as $rumour) $rumour_text_array[] = $rumour->Text;
+        foreach ($rumours as $rumour) {
+            $knows_rumour = $rumour->getKnows();
+            $knows_rumour_array = array();
+            foreach($knows_rumour as $knows) $knows_rumour_array[] = $knows->getName();
+            $rumour_text_array[] = $rumour->Text . "\nVet om: ". implode(", ", $knows_rumour_array);
+        }
         
         $rows[] = array("Rykten", "* ".implode("\n\n* ", $rumour_text_array));
     }
