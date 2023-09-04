@@ -231,6 +231,8 @@ class Report_PDF extends FPDF {
 	    $this->SetXY($x_location, $y + static::$Margin + 1);
 	    
 	    # Skriv ut texten i cellen
+	    $this->MultiCell($this->cell_widths[$this->current_col], static::$cell_y-1.5, $text, 0, 'L');
+	    /*
 	    if (strlen($text) > ($this->text_max_length*$scaling-2)){
 // 	       $this->MultiCell($this->default_cell_width, static::$cell_y-1.5, $text, 0, 'L');
 	       $this->MultiCell($this->cell_widths[$this->current_col], static::$cell_y-1.5, $text, 0, 'L');
@@ -238,7 +240,7 @@ class Report_PDF extends FPDF {
 // 	       $this->Cell($this->default_cell_width, static::$cell_y, $text, 0, 0, 'L');
 	       $this->Cell($this->cell_widths[$this->current_col], static::$cell_y, $text, 0, 0, 'L');
 	    }
-	    
+	    */
 	    # Hantering om resultatet av cellen är för stort för att få plats.
         $current_y = $this->GetY();
         if ($current_y > $y + $this->current_cell_height) {
