@@ -40,10 +40,10 @@ foreach ($intrigue_array as $intrigue) {
         $letter_text_array = array();
         foreach ($intrigue_letters as $intrigue_letter) {
             $letter = $intrigue_letter->getLetter();
-            $letter_text_array[] = "Från: $letter->Signature, Till: $letter->Recipient, ".mb_strimwidth(str_replace('\n', '<br>', $letter->Message), 0, 50, '...');
+            $letter_text_array[] = "Från: $letter->Signature, Till: $letter->Recipient, $letter->Message";
         }
         
-        $rows[] = array("Brev", "* ".implode("\n* ", $letter_text_array));
+        $rows[] = array("Brev", "* ".implode("\n\n* ", $letter_text_array));
     }
     
     //Telegram
@@ -52,10 +52,10 @@ foreach ($intrigue_array as $intrigue) {
         $telegram_text_array = array();
         foreach ($intrigue_telegrams as $intrigue_telegram) {
             $telegram = $intrigue_telegram->getTelegram();
-            $telegram_text_array[] = "$telegram->Deliverytime, Från: $telegram->Sender, Till: $telegram->Reciever, ".mb_strimwidth(str_replace('\n', '<br>', $telegram->Message), 0, 50, '...');
+            $telegram_text_array[] = "$telegram->Deliverytime, Från: $telegram->Sender, Till: $telegram->Reciever, $telegram->Message";
         }
         
-        $rows[] = array("Telegram", "* ".implode("\n* ", $telegram_text_array));
+        $rows[] = array("Telegram", "* ".implode("\n\n* ", $telegram_text_array));
     }
     
     //Rykten
@@ -64,7 +64,7 @@ foreach ($intrigue_array as $intrigue) {
         $rumour_text_array = array();
         foreach ($rumours as $rumour) $rumour_text_array[] = $rumour->Text;
         
-        $rows[] = array("Rykten", "* ".implode("\n* ", $rumour_text_array));
+        $rows[] = array("Rykten", "* ".implode("\n\n* ", $rumour_text_array));
     }
     
     $groupActors = $intrigue->getAllGroupActors();
