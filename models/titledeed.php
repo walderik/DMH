@@ -115,6 +115,21 @@ class Titledeed extends BaseModel{
         return count($this->getRoleOwners()) + count($this->getGroupOwners());
     }
     
+    public function IsFirstOwnerRole(Role $role) {
+        $role_owners = $this->getRoleOwners();
+        if (!empty($role_owners) && $role_owners[0] == $role) return true;
+        return false;
+    }
+
+    
+    public function IsFirstOwnerGroup(Group $group) {
+        $role_owners = $this->getRoleOwners();
+        if (!empty($role_owners)) return false;
+        $group_owners = $this->getGroupOwners();
+        if (!empty($group_owners) && $group_owners[0] == $group) return true;       
+        return false;
+    }
+    
     public function deleteRoleOwner($roleId) {
         $stmt = $this->connect()->prepare("DELETE FROM regsys_titledeed_role WHERE RoleId = ? AND TitledeedId = ?;");
         if (!$stmt->execute(array($roleId, $this->Id))) {
