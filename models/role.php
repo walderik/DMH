@@ -640,5 +640,37 @@ class Role extends BaseModel{
         $stmt = null;
     }
     
+    public function getAllKnownActors(LARP $larp) {
+        return IntrigueActor_KnownActor::getAllKnownIntrigueActorsForRole($this, $larp);
+    }
+    
+    public function getAllKnownNPCGroups(LARP $larp) {
+        return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForRole($this, $larp);
+    }
+
+    public function getAllKnownNPCs(LARP $larp) {
+        return IntrigueActor_KnownNPC::getAllKnownNPCsForRole($this, $larp);
+    }
+ 
+    public function getAllKnownProps(LARP $larp) {
+        return IntrigueActor_KnownProp::getAllKnownPropsForRole($this, $larp);
+    }
+    
+    public function getAllKnownPdfs(LARP $larp) {
+        return IntrigueActor_KnownPdf::getAllKnownPdfsForRole($this, $larp);
+    }
+    
+    public function getAllCheckinLetters(LARP $larp) {
+        return IntrigueActor_CheckinLetter::getAllCheckinLettersForRole($this, $larp);
+    }
+    
+    public function getAllCheckinTelegrams(LARP $larp) {
+        return IntrigueActor_CheckinTelegram::getAllCheckinTelegramsForRole($this, $larp);
+    }
+    
+    public function getAllCheckinProps(LARP $larp) {
+        return IntrigueActor_CheckinProp::getAllCheckinPropsForRole($this, $larp);
+    }
+    
     
 }

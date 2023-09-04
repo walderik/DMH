@@ -134,7 +134,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
     }
     
     function intrigues($new_page = true) {
-        global $y, $left;
+        global $y, $left, $lovest_y;
         
         $space = 3;
         
@@ -164,10 +164,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         //fetch key of the last element of the array.
         $lastElementKey = key($intrigues);
         
-        $known_actors = array();
-        $known_npcs = array();
-        $known_npcgroups = array();
-        $known_props = array();
+        $intrigue_numbers = array();
         
         foreach ($intrigues as $key => $intrigue) {
             if (!$intrigue->isActive()) continue;
@@ -175,13 +172,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
             if (empty($intrigueActor)) continue;
 
-            $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
-            $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
-            $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
-            $known_npcgroups = array_merge($known_npcgroups, $intrigueActor->getAllKnownNPCGroups());
+            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo)) {
+                $intrigue_numbers[$intrigue->Number] = $intrigue->Number;
+            }
             
             if (!empty($intrigueActor->IntrigueText)) {
-                $text = "($intrigue->Number) " . trim(utf8_decode($intrigueActor->IntrigueText));
+                $text = trim(utf8_decode($intrigueActor->IntrigueText));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
@@ -189,21 +185,39 @@ class CharacterSheet_PDF extends PDF_MemImage {
             
             if (!empty($intrigueActor->OffInfo)) {
                 $text = trim(utf8_decode("OFF_INFORMATION: " . $intrigueActor->OffInfo));
-                if (empty($intrigueActor->IntrigueText)) $text = "($intrigue->Number) " . $text;
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
             }
-            
+            /*
             if ($key != $lastElementKey && (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo))) {
                 $this->bar();
                 $y = $this->GetY()+$space*2;
                 $this->SetXY($left, $y);
             }
+            */
         }
         
+        if (!empty($intrigue_numbers)) {
+            $this->bar();
+            $y = $this->GetY()+$space;
+            $this->SetXY($left, $y);
+            $this->SetFont('Arial','',static::$text_fontsize-3);
+            $text = utf8_decode("Intrignummer: " . implode(', ', $intrigue_numbers).".\nDet/dem kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet");
+            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+            $this->SetFont('Arial','',static::$text_fontsize);
+            $y = $this->GetY() + $space;
+            $this->SetXY($left, $y);
+        }
+        
+        
+        $known_actors = $this->role->getAllKnownActors($this->larp);
+        $known_npcgroups = $this->role->getAllKnownNPCGroups($this->larp);
+        $known_npcs = $this->role->getAllKnownNPCs($this->larp);
+        $known_props = $this->role->getAllKnownProps($this->larp);
+        
         # Dom man känner till från intrigerna
-        if ($new_page && (!empty($known_actors) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props)))) {
+        if (!empty($known_actors) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props))) {
             $this->bar();
             $y = $this->GetY()+$space*2;
             
@@ -255,8 +269,8 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $this->print_know_stuff($prop->Name, $image);
             }
         }
-     
-
+        $y = $this->GetY();
+        if ($lovest_y > $y) $y = $lovest_y;
         return true;
     }
     
@@ -265,6 +279,8 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $space = 3;
         $image_width = 25;
         $realHeight = 0;
+        
+        if ($y +40 > $this->GetPageHeight()) $this->AddPage();
         
         if (isset($image)) {
             $v = 'img'.md5($image->file_data);
@@ -279,7 +295,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->MultiCell(0, static::$cell_y-1, trim(utf8_decode($text)), 0, 'L');
         $new_y = $this->GetY() + $space;
-        if ($new_y > $lovest_y) $lovest_y = $new_y;
+        if ($new_y > $lovest_y) $lovest_y = $new_y + $rowImageHeight;
         
         # Räkna upp en cell i bredd
         if ($this->current_left == $left) {
@@ -303,6 +319,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $rumours = Rumour::allKnownByRole($this->larp, $this->role);
         if (empty($rumours)) return true;
         
+        $y = $y + 2*$space;
         if ($new_page) $this->AddPage();
         $this->SetXY($left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
@@ -451,8 +468,8 @@ class CharacterSheet_PDF extends PDF_MemImage {
         }
         
         if (!$this->isMyslajvare && !$this->isReserve && ($this->larp->isIntriguesReleased() || $this->all)) {
-            $this->intrigues(true);
-            $this->rumours(true);
+            $this->intrigues(false);
+            $this->rumours(false);
         }
 	}
 	
@@ -743,10 +760,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    if (strlen($text)>1800){
 	        $this->SetFont('Helvetica','',static::$text_fontsize/1.5); # Hantering för riktigt långa texter
 	        $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y-1.3, $text, 0,'L');
+	        $y = $this->GetY();
 	        return;
 	    }
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
 	    $this->MultiCell(($this->cell_width*2)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
+	    $y = $this->GetY();
 	}
 	
 	

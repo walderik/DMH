@@ -60,6 +60,15 @@ class IntrigueActor_CheckinTelegram extends BaseModel{
         return Intrigue_Telegram::loadById($this->IntrigueTelegramId);
     }
     
+    public static function getAllCheckinTelegramsForRole(Role $role, LARP $larp) {
+        $sql = "SELECT regsys_intrigueactor_checkintelegram.* FROM regsys_intrigueactor_checkintelegram, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigueactor_checkintelegram.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ? AND ".
+            "regsys_intrigueactor.RoleId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
+    }
+    
     public static function getAllCheckinTelegramsForIntrigueActor(IntrigueActor $intrigueActor) {
         $sql = "SELECT * FROM regsys_intrigueactor_checkintelegram WHERE IntrigueActorId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));

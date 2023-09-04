@@ -60,6 +60,16 @@ class IntrigueActor_KnownNPC extends BaseModel{
         return Intrigue_NPC::loadById($this->IntrigueNPCId);
     }
     
+    
+    public static function getAllKnownNPCsForRole(Role $role, LARP $larp) {
+        $sql = "SELECT regsys_intrigueactor_knownnpc.* FROM regsys_intrigueactor_knownnpc, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigueactor_knownnpc.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ? AND ".
+            "regsys_intrigueactor.RoleId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
+    }
+    
     public static function getAllKnownNPCsForIntrigueActor(IntrigueActor $intrigueActor) {
         $sql = "SELECT * FROM regsys_intrigueactor_knownnpc WHERE IntrigueActorId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));

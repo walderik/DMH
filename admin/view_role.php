@@ -74,14 +74,6 @@ include 'navigation.php';
 		<div>
 		<?php    echo nl2br(htmlspecialchars($larp_role->Intrigue)); ?>
 		<?php
-		$known_actors = array();
-		$known_npcs = array();
-		$known_npcgroups = array();
-		$known_props = array();
-		$known_pdfs = array();
-		$checkin_letters = array();
-		$checkin_telegrams = array();
-		$checkin_props = array();
 		$intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
 		if (!empty($intrigues)) {
 		    echo "<table class='data'>";
@@ -101,14 +93,6 @@ include 'navigation.php';
 	               echo "</td>";
 	               echo "<td><a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$role->Name'><i class='fa-solid fa-pen'></i></a></td>";
 	               echo "</tr>";
-	               $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
-	               $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
-	               $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
-	               $known_pdfs = array_merge($known_pdfs, $intrigueActor->getAllKnownPdfs());
-	               $known_npcgroups = array_merge($known_npcgroups, $intrigueActor->getAllKnownNPCGroups());
-	               $checkin_letters = array_merge($checkin_letters, $intrigueActor->getAllCheckinLetters());
-	               $checkin_telegrams = array_merge($checkin_telegrams, $intrigueActor->getAllCheckinTelegrams());
-	               $checkin_props = array_merge($checkin_props, $intrigueActor->getAllCheckinProps());
 	           }
 	           else {
 	               echo "<s>$intrigueActor->IntrigueText</s>";
@@ -117,6 +101,19 @@ include 'navigation.php';
 	           }
 	        }
 	       echo "</table>";
+	       
+	       
+	       $known_actors = $role->getAllKnownActors($current_larp);
+	       $known_npcgroups = $role->getAllKnownNPCGroups($current_larp);
+	       $known_npcs = $role->getAllKnownNPCs($current_larp);
+	       $known_props = $role->getAllKnownProps($current_larp);
+	       $known_pdfs = $role->getAllKnownPdfs($current_larp);	       
+	       
+	       $checkin_letters = $role->getAllCheckinLetters($current_larp);
+	       $checkin_telegrams = $role->getAllCheckinTelegrams($current_larp);
+	       $checkin_props = $role->getAllCheckinProps($current_larp);
+	       
+	       
 	       echo "<h3>Känner till</h3>";
 	       echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 	       $temp=0;

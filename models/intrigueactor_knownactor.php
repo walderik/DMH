@@ -60,6 +60,17 @@ class IntrigueActor_KnownActor extends BaseModel{
         return IntrigueActor::loadById($this->KnownIntrigueActorId);
     }
     
+    public static function getAllKnownIntrigueActorsForRole(Role $role, LARP $larp) {
+        $sql = "SELECT regsys_intrigueactor_knownactor.* FROM regsys_intrigueactor_knownactor, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigueactor_knownactor.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ? AND ".
+            "regsys_intrigueactor.RoleId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
+    }
+    
+    
+    
     public static function getAllKnownIntrigueActorsForIntrigueActor(IntrigueActor $intrigueActor) {
         $sql = "SELECT * FROM regsys_intrigueactor_knownactor WHERE IntrigueActorId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));

@@ -115,15 +115,6 @@ include 'navigation.php';
 			<?php if ($current_larp->isIntriguesReleased()) {
 			    echo "<p>".nl2br($larp_role->Intrigue) ."</p>"; 
 			    
-			    
-			    $known_actors = array();
-			    $known_npcs = array();
-			    $known_npcgroups = array();
-			    $known_props = array();
-			    $known_pdfs = array();
-			    $checkin_letters = array();
-			    $checkin_telegrams = array();
-			    $checkin_props = array();
 			    $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
 			    $intrigue_numbers = array();
 		        foreach ($intrigues as $intrigue) {
@@ -133,22 +124,25 @@ include 'navigation.php';
 		                if (!empty($intrigueActor->OffInfo)) {
 		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
 		                }
-		                
-		                $known_actors = array_merge($known_actors, $intrigueActor->getAllKnownActors());
-		                $known_npcs = array_merge($known_npcs, $intrigueActor->getAllKnownNPCs());
-		                $known_npcgroups = array_merge($known_npcgroups, $intrigueActor->getAllKnownNPCGroups());
-		                $known_props = array_merge($known_props, $intrigueActor->getAllKnownProps());
-		                $known_pdfs = array_merge($known_pdfs, $intrigueActor->getAllKnownPdfs());
-		                $checkin_letters = array_merge($checkin_letters, $intrigueActor->getAllCheckinLetters());
-		                $checkin_telegrams = array_merge($checkin_telegrams, $intrigueActor->getAllCheckinTelegrams());
-		                $checkin_props = array_merge($checkin_props, $intrigueActor->getAllCheckinProps());
 		                if (!empty($intrigueActor->IntrigueText)) $intrigue_numbers[] = $intrigue->Number;
 		            }
 		        }
 		        if (!empty($intrigue_numbers)) {
 		            echo "<p>Intrignummer " . implode(', ', $intrigue_numbers).". De kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet.</p>";
                 }
-		        if (!empty($known_actors) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
+                
+                $known_actors = $role->getAllKnownActors($current_larp);
+                $known_npcgroups = $role->getAllKnownNPCGroups($current_larp);
+                $known_npcs = $role->getAllKnownNPCs($current_larp);
+                $known_props = $role->getAllKnownProps($current_larp);
+                $known_pdfs = $role->getAllKnownPdfs($current_larp);
+ 
+                $checkin_letters = $role->getAllCheckinLetters($current_larp);
+                $checkin_telegrams = $role->getAllCheckinTelegrams($current_larp);
+                $checkin_props = $role->getAllCheckinProps($current_larp);
+                
+                
+                if (!empty($known_actors) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
 			        echo "<h3>Känner till</h3>";
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
