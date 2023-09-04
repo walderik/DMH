@@ -76,7 +76,11 @@ class Intrigue_Telegram extends BaseModel{
     }
     
     public static function getAllTelegramsForIntrigue(Intrigue $intrigue) {
-        $sql = "SELECT * FROM regsys_intrigue_telegram WHERE IntrigueId = ? ORDER BY Id";
+        $sql = "SELECT regsys_intrigue_telegram.* FROM regsys_intrigue_telegram, regsys_telegram WHERE ".
+        "regsys_intrigue_telegram.IntrigueId = ? AND ".
+        "regsys_intrigue_telegram.TelegramId = regsys_telegram.Id ".
+        "ORDER BY regsys_telegram.Deliverytime";
+        
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
     }
     
