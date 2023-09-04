@@ -297,6 +297,63 @@ class Group extends BaseModel{
          
      }
      
+     public function getAllKnownRoles(LARP $larp) {
+         return Role::getAllKnownRolesForGroup($this, $larp);
+     }
      
-    
+     public function getAllKnownGroups(LARP $larp) {
+         return Group::getAllKnownGroupsForGroup($this, $larp);
+     }
+     
+     public function getAllKnownNPCGroups(LARP $larp) {
+         return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForGroup($this, $larp);
+     }
+     
+     public function getAllKnownNPCs(LARP $larp) {
+         return IntrigueActor_KnownNPC::getAllKnownNPCsForGroup($this, $larp);
+     }
+     
+     public function getAllKnownProps(LARP $larp) {
+         return IntrigueActor_KnownProp::getAllKnownPropsForGroup($this, $larp);
+     }
+     
+     public function getAllKnownPdfs(LARP $larp) {
+         return IntrigueActor_KnownPdf::getAllKnownPdfsForGroup($this, $larp);
+     }
+     
+     public function getAllCheckinLetters(LARP $larp) {
+         return IntrigueActor_CheckinLetter::getAllCheckinLettersForGroup($this, $larp);
+     }
+     
+     public function getAllCheckinTelegrams(LARP $larp) {
+         return IntrigueActor_CheckinTelegram::getAllCheckinTelegramsForGroup($this, $larp);
+     }
+     
+     public function getAllCheckinProps(LARP $larp) {
+         return IntrigueActor_CheckinProp::getAllCheckinPropsForGroup($this, $larp);
+     }
+     
+     
+     public static function getAllKnownGroupsForRole(Role $role, LARP $larp) {
+         $sql = "SELECT * FROM regsys_group WHERE Id IN (".
+             "SELECT iak.GroupId FROM regsys_intrigueactor_knownactor, regsys_intrigueactor as ias, regsys_intrigueactor as iak, regsys_intrigue WHERE ".
+             "ias.RoleId = ? AND ".
+             "ias.id = regsys_intrigueactor_knownactor.IntrigueActorId AND ".
+             "regsys_intrigueactor_knownactor.KnownIntrigueActorId = iak.Id AND ".
+             "ias.IntrigueId = regsys_intrigue.Id AND ".
+             "regsys_intrigue.LarpId = ?) ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($role->Id, $larp->Id));
+     }
+     
+     public static function getAllKnownGroupsForGroup(Group $group, LARP $larp) {
+         $sql = "SELECT * FROM regsys_group WHERE Id IN (".
+             "SELECT iak.GroupId FROM regsys_intrigueactor_knownactor, regsys_intrigueactor as ias, regsys_intrigueactor as iak, regsys_intrigue WHERE ".
+             "ias.GroupId = ? AND ".
+             "ias.id = regsys_intrigueactor_knownactor.IntrigueActorId AND ".
+             "regsys_intrigueactor_knownactor.KnownIntrigueActorId = iak.Id AND ".
+             "ias.IntrigueId = regsys_intrigue.Id AND ".
+             "regsys_intrigue.LarpId = ?) ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
+     }
+     
 }

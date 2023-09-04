@@ -69,6 +69,15 @@ class IntrigueActor_CheckinProp extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
     }
     
+    public static function getAllCheckinPropsForGroup(Group $group, LARP $larp) {
+        $sql = "SELECT regsys_intrigueactor_checkinprop.* FROM regsys_intrigueactor_checkinprop, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigueactor_checkinprop.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ? AND ".
+            "regsys_intrigueactor.GroupId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
+    }
+    
     public static function getAllCheckinPropsForIntrigueActor(IntrigueActor $intrigueActor) {
         $sql = "SELECT * FROM regsys_intrigueactor_checkinprop WHERE IntrigueActorId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));

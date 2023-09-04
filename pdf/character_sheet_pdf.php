@@ -211,13 +211,14 @@ class CharacterSheet_PDF extends PDF_MemImage {
         }
         
         
-        $known_actors = $this->role->getAllKnownActors($this->larp);
+        $known_groups = $this->role->getAllKnownGroups($this->larp);
+        $known_roles = $this->role->getAllKnownRoles($this->larp);
         $known_npcgroups = $this->role->getAllKnownNPCGroups($this->larp);
         $known_npcs = $this->role->getAllKnownNPCs($this->larp);
         $known_props = $this->role->getAllKnownProps($this->larp);
         
         # Dom man känner till från intrigerna
-        if (!empty($known_actors) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props))) {
+        if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props))) {
             $this->bar();
             $y = $this->GetY()+$space*2;
             
@@ -231,23 +232,21 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $this->SetFont('Helvetica','',static::$text_fontsize);
             $rowImageHeight = 0;
             $lovest_y = $y;
-            foreach ($known_actors as $known_actor) {
+            foreach ($known_groups as $group) {
                 $image = null;
-                $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
-                
-                if (!empty($knownIntrigueActor->GroupId)) {
-                    $groupActor=$knownIntrigueActor->getGroup();
-                    $this->print_know_stuff($groupActor->Name, $image);
-                    continue;
-                }
-                
-                $role = $knownIntrigueActor->getRole();
+                if ($group->hasImage()) $image = Image::loadById($group->ImageId);
+                $this->print_know_stuff($group->Name, $image);
+            }
+            
+            foreach ($known_roles as $role) {
+                $image = null;
                 if ($role->hasImage()) $image = Image::loadById($role->ImageId);
                 $text = $role->Name; #, $y, $lovest_y, $realHeight, ".$this->GetPageHeight();
                 $role_group = $role->getGroup();
                 if (!empty($role_group)) $text .= "\n\r($role_group->Name)";
                 $this->print_know_stuff($text, $image);
             }
+            
             foreach ($known_npcgroups as $known_npcgroup) {
                 $image = null;
                 $npcgroup = $known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
@@ -280,7 +279,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $image_width = 25;
         $realHeight = 0;
         
-        if ($y +40 > $this->GetPageHeight()) $this->AddPage();
+        if ($y + 40 > $this->GetPageHeight()) $this->AddPage();
         
         if (isset($image)) {
             $v = 'img'.md5($image->file_data);
@@ -295,7 +294,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->MultiCell(0, static::$cell_y-1, trim(utf8_decode($text)), 0, 'L');
         $new_y = $this->GetY() + $space;
-        if ($new_y > $lovest_y) $lovest_y = $new_y + $rowImageHeight;
+        if (($new_y) > $lovest_y) $lovest_y = $new_y + $rowImageHeight;
         
         # Räkna upp en cell i bredd
         if ($this->current_left == $left) {

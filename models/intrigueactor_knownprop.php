@@ -69,6 +69,15 @@ class IntrigueActor_KnownProp extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
     }
     
+    public static function getAllKnownPropsForGroup(Group $group, LARP $larp) {
+        $sql = "SELECT regsys_intrigueactor_knownprop.* FROM regsys_intrigueactor_knownprop, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigueactor_knownprop.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ? AND ".
+            "regsys_intrigueactor.GroupId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
+    }
+    
     public static function getAllKnowninPropsForIntrigueActor(IntrigueActor $intrigueActor) {
         $sql = "SELECT * FROM regsys_intrigueactor_knownprop WHERE IntrigueActorId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));

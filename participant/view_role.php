@@ -131,7 +131,9 @@ include 'navigation.php';
 		            echo "<p>Intrignummer " . implode(', ', $intrigue_numbers).". De kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet.</p>";
                 }
                 
-                $known_actors = $role->getAllKnownActors($current_larp);
+                $known_groups = $role->getAllKnownGroups($current_larp);
+                $known_roles = $role->getAllKnownRoles($current_larp);
+                
                 $known_npcgroups = $role->getAllKnownNPCGroups($current_larp);
                 $known_npcs = $role->getAllKnownNPCs($current_larp);
                 $known_props = $role->getAllKnownProps($current_larp);
@@ -142,36 +144,20 @@ include 'navigation.php';
                 $checkin_props = $role->getAllCheckinProps($current_larp);
                 
                 
-                if (!empty($known_actors) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
+                if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
 			        echo "<h3>Känner till</h3>";
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
 			        $cols=5;
-			        foreach ($known_actors as $known_actor) {
-			            $knownIntrigueActor = $known_actor->getKnownIntrigueActor();
-			            
-			            if (!empty($knownIntrigueActor->GroupId)) {
-			                $groupActor=$knownIntrigueActor->getGroup();
-			                echo "<li style='display:table-cell; width:19%;'>";
-			                echo "<div class='name'>$groupActor->Name</div>";
-			                echo "<div>Grupp</div>";
-			                echo "</li>";
-			                
-			            } else {
-			                $roleActor = $knownIntrigueActor->getRole();
-			                echo "<li style='display:table-cell; width:19%;'>";
-			                echo "<div class='name'>$roleActor->Name</div>";
-			                $role_group = $roleActor->getGroup();
-			                if (!empty($role_group)) {
-			                    echo "<div>$role_group->Name</div>";
-			                }
-			                
-			                if ($roleActor->hasImage()) {
-			                    echo "<img src='image.php?id=$roleActor->ImageId'/>\n";
-			                }
-			                echo "</li>";
-			                
+			        foreach ($known_groups as $known_group) {
+			            echo "<li style='display:table-cell; width:19%;'>";
+			            echo "<div class='name'>$known_group->Name</div>";
+			            echo "<div>Grupp</div>";
+			            if ($known_group->hasImage()) {
+			                echo "<img src='image.php?id=$known_group->ImageId'/>\n";
 			            }
+			            echo "</li>";
+			            
 			            $temp++;
 			            if($temp==$cols)
 			            {
@@ -179,6 +165,26 @@ include 'navigation.php';
 			                $temp=0;
 			            }
 			        }
+			        foreach ($known_roles as $known_role) {
+			            echo "<li style='display:table-cell; width:19%;'>";
+			            echo "<div class='name'>$known_role->Name</div>";
+			            $role_group = $known_role->getGroup();
+			            if (!empty($role_group)) {
+			                echo "<div>$role_group->Name</div>";
+			            }
+			            
+			            if ($known_role->hasImage()) {
+			                echo "<img src='image.php?id=$known_role->ImageId'/>\n";
+			            }
+			            echo "</li>";
+			            $temp++;
+			            if($temp==$cols)
+			            {
+			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+			                $temp=0;
+			            }
+			        }
+			        
 			        foreach ($known_npcgroups as $known_npcgroup) {
 			            $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
 			            echo "<li style='display:table-cell; width:19%;'>\n";

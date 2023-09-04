@@ -640,12 +640,9 @@ class Role extends BaseModel{
         $stmt = null;
     }
     
-    public function getAllKnownActors(LARP $larp) {
-        return IntrigueActor_KnownActor::getAllKnownIntrigueActorsForRole($this, $larp);
-    }
     
     public function getAllKnownNPCGroups(LARP $larp) {
-        return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForRole($this, $larp);
+        return NPCGroup::getAllKnownNPCGroupsForRole($this, $larp);
     }
 
     public function getAllKnownNPCs(LARP $larp) {
@@ -671,6 +668,38 @@ class Role extends BaseModel{
     public function getAllCheckinProps(LARP $larp) {
         return IntrigueActor_CheckinProp::getAllCheckinPropsForRole($this, $larp);
     }
+    
+
+    public function getAllKnownGroups(LARP $larp) {
+        return Group::getAllKnownGroupsForRole($this, $larp);
+    }
+    
+    public function getAllKnownRoles(LARP $larp) {
+        return Role::getAllKnownRolesForRole($this, $larp);
+    }
+    
+    public static function getAllKnownRolesForRole(Role $role, LARP $larp) {
+        $sql = "SELECT * FROM regsys_role WHERE Id IN (".
+            "SELECT iak.RoleId FROM regsys_intrigueactor_knownactor, regsys_intrigueactor as ias, regsys_intrigueactor as iak, regsys_intrigue WHERE ".
+            "ias.RoleId = ? AND ".
+            "ias.id = regsys_intrigueactor_knownactor.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownactor.KnownIntrigueActorId = iak.Id AND ".
+            "ias.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($role->Id, $larp->Id));
+    }
+    
+    public static function getAllKnownRolesForGroup(Group $group, LARP $larp) {
+        $sql = "SELECT * FROM regsys_role WHERE Id IN (".
+            "SELECT iak.RoleId FROM regsys_intrigueactor_knownactor, regsys_intrigueactor as ias, regsys_intrigueactor as iak, regsys_intrigue WHERE ".
+            "ias.GroupId = ? AND ".
+            "ias.id = regsys_intrigueactor_knownactor.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownactor.KnownIntrigueActorId = iak.Id AND ".
+            "ias.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
+    }
+    
     
     
 }
