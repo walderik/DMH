@@ -458,7 +458,7 @@ th, td {
 $intrigue_letters = $intrigue->getAllLetters();
 foreach ($intrigue_letters as $intrigue_letter) {
     $letter=$intrigue_letter->getLetter();
-    echo "Från: $letter->Signature, Till: $letter->Recipient, ".mb_strimwidth(str_replace('\n', '<br>', $letter->Message), 0, 50, '...');
+    echo "Från: $letter->Signature, Till: $letter->Recipient, ".str_replace('\n', '<br>', $letter->Message);
     echo "<a href='letter_form.php?operation=update&id=$letter->Id'><i class='fa-solid fa-pen'></i></a>";
     echo " ";
     echo "<a href='logic/view_intrigue_logic.php?operation=remove_letter&IntrigueLetterId=$intrigue_letter->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort brev'></i></a>";
@@ -470,12 +470,12 @@ foreach ($intrigue_letters as $intrigue_letter) {
         }
     }
     
-    echo "<br>"; 
+    echo "<br><br>"; 
 }
 $intrigue_telegrams = $intrigue->getAllTelegrams();
 foreach ($intrigue_telegrams as $intrigue_telegram) {
     $telegram=$intrigue_telegram->getTelegram();
-    echo "$telegram->Deliverytime, Från: $telegram->Sender, Till: $telegram->Reciever, ".mb_strimwidth(str_replace('\n', '<br>', $telegram->Message), 0, 50, '...');
+    echo "$telegram->Deliverytime, Från: $telegram->Sender, Till: $telegram->Reciever, ".str_replace('\n', '<br>', $telegram->Message);
     echo "<a href='telegram_form.php?operation=update&id=$telegram->Id'><i class='fa-solid fa-pen'></i></a>";
     echo " ";
     echo "<a href='logic/view_intrigue_logic.php?operation=remove_telegram&IntrigueTelegramId=$intrigue_telegram->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort telegram'></i></a>";
@@ -485,7 +485,7 @@ foreach ($intrigue_telegrams as $intrigue_telegram) {
             echo "<br>&nbsp;&nbsp;&nbsp;<a href='view_intrigue.php?Id=$telegram_intrigue->Id'>Intrig: $telegram_intrigue->Number. $telegram_intrigue->Name</a>";
         }
     }
-    echo "<br>";
+    echo "<br><br>";
 }
 
 
@@ -537,10 +537,18 @@ foreach ($timeline_array as $timeline) {
 <?php 
 $rumour_array = $intrigue->getRumours();
 foreach ($rumour_array as $rumour) {
+    $knows_rumour = $rumour->getKnows();
+    $knows_rumour_array = array();
+    foreach($knows_rumour as $knows) $knows_rumour_array[] = $knows->getName();
+    $knows_txt = "Vet om: ". implode(", ", $knows_rumour_array);
+    
+    
+    
     echo $rumour->Text;
     echo " <a href='rumour_form.php?operation=update&id=$rumour->Id'><i class='fa-solid fa-pen'></i></a>";
     echo " <a href='rumour_admin.php?operation=delete&id=$rumour->Id&gotoreferer='true'><i class='fa-solid fa-trash'></i></a>";
     echo "<br>";
+    echo $knows_txt."<br><br>";
 }
 ?>
 </td></tr>
