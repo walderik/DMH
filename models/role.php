@@ -642,7 +642,7 @@ class Role extends BaseModel{
     
     
     public function getAllKnownNPCGroups(LARP $larp) {
-        return NPCGroup::getAllKnownNPCGroupsForRole($this, $larp);
+        return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForRole($this, $larp);
     }
 
     public function getAllKnownNPCs(LARP $larp) {
