@@ -60,6 +60,24 @@ class IntrigueActor_KnownNPCGroup extends BaseModel{
         return Intrigue_NPCGroup::loadById($this->IntrigueNPCGroupId);
     }
     
+    public static function getAllKnownNPCGroupsForRole(Role $role, LARP $larp) {
+        $sql = "SELECT regsys_intrigueactor_knownnpcgroup.* FROM regsys_intrigueactor_knownnpcgroup, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigueactor_knownnpcgroup.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ? AND ".
+            "regsys_intrigueactor.RoleId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
+    }
+    
+    public static function getAllKnownNPCGroupsForGroup(Group $group, LARP $larp) {
+        $sql = "SELECT regsys_intrigueactor_knownnpcgroup.* FROM regsys_intrigueactor_knownnpcgroup, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigueactor_knownnpcgroup.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ? AND ".
+            "regsys_intrigueactor.GroupId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
+    }
+    
     
     public static function getAllKnownNPCGroupsForIntrigueActor(IntrigueActor $intrigueActor) {
         $sql = "SELECT * FROM regsys_intrigueactor_knownnpcgroup WHERE IntrigueActorId = ? ORDER BY Id";
