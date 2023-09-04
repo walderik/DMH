@@ -265,7 +265,10 @@ class Group_PDF extends PDF_MemImage {
         $image_width = 25;
         $realHeight = 0;
         
-        if ($y + 40 > $this->GetPageHeight()) $this->AddPage();
+        if ($y + 40 > $this->GetPageHeight()) {
+            $lovest_y = 0;
+            $this->AddPage();
+        }
         if ($this->current_left == $left) {
             $rowImageHeight = 0;
         }
