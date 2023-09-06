@@ -78,7 +78,7 @@
 				Personnumret kommer att kontrolleras mot medlemsregistret eftersom medlemsskap krävs för att få delta på lajvet. </div>
 				<?php 
 				if ($person->isNeverRegistered()) {
-				    echo "<input type='text' id='SocialSecurityNumber' value='$person->SocialSecurityNumber;'".
+				    echo "<input type='text' id='SocialSecurityNumber' value='$person->SocialSecurityNumber'".
 				    "name='SocialSecurityNumber' pattern='\d{8}-\d{4}|\d{12}'  placeholder='ÅÅÅÅMMDD-NNNN' size='20' maxlength='13' required>";
 				} else {
 				    echo "$person->SocialSecurityNumber";

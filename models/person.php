@@ -272,7 +272,7 @@ class Person extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_person (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, OtherInformation, ExperienceId,
                                                                     UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, HasPermissionShowName) 
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);");
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId, 
