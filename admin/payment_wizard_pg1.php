@@ -32,7 +32,7 @@ include 'navigation.php';
 			</div>
 			<div class="question">
 				<label for="last_date">Sista datum</label>&nbsp;<font style="color:red">*</font>
-				<br> <input type="date" id="last_date" name="last_date" value="<?php echo $current_larp->LatestRegistrationDate; ?>" required>
+				<br> <input type="date" id="last_date" name="last_date" value="<?php echo $current_larp->StartDate; ?>" required>
 			</div>
 			<div class="question">
 				<label for="number_of_time_intervals">Antal tidsintervaller</label>&nbsp;<font style="color:red">*</font>
