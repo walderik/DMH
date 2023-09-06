@@ -74,7 +74,7 @@ class Receipt_PDF extends FPDF {
         $this->SetXY($left, $y);
         $this->Cell(80,10,utf8_decode('Summa'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($amount),0,1);
+        $this->Cell(80,10,utf8_decode($amount." kr"),0,1);
         
         $y += 7;
         $this->SetXY($left, $y);
