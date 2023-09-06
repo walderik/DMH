@@ -12,9 +12,9 @@ class Receipt_PDF extends FPDF {
     
     function Header()
     {
-//         global $root, $current_larp;
-//         $icon = "../images/".$current_larp->getCampaign()->Icon;
-//         $this->Image($icon, 10, 10, -300);
+         global $root, $current_larp;
+         $omlogo = "../images/omnes_mundos_small.jpg";
+         $this->Image($omlogo, 10, 10, -300);
     }
     
     function Footer()
