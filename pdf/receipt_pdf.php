@@ -12,7 +12,19 @@ class Receipt_PDF extends FPDF {
     
     function Header()
     {
-        global $root;
+//         global $root, $current_larp;
+//         $icon = "../images/".$current_larp->getCampaign()->Icon;
+//         $this->Image($icon, 10, 10, -300);
+    }
+    
+    function Footer()
+    {
+        // Go to 1.5 cm from bottom
+        $this->SetY(-15);
+        // Select Arial italic 8
+        $this->SetFont('Arial', 'I', 8);
+        // Print centered page number
+        $this->Cell(0, 10, 'Genererad av Omns Mundos', 0, 0, 'C');
     }
     
     function SetText(string $headline, $matter, $who, $specification, $amount, $date, $larp) {
@@ -70,13 +82,9 @@ class Receipt_PDF extends FPDF {
         $this->SetXY($left2, $y);
         $this->Cell(80,10,utf8_decode($date),0,1);
         
-        $y += 14;
-        $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Attesteras'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
-
-        $y += 28;
-        $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('För '.$larp->Name),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+         $y += 28;
+         $this->SetXY($left, $y);
+         $this->Cell(80,10,utf8_decode('Kvittot skapat för '.$larp->Name),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         
     }
     
