@@ -279,10 +279,12 @@ include 'navigation.php';
 		        
 		        echo "<h2>Rykten</h2>";
         		$rumours = Rumour::allKnownByRole($current_larp, $role);
+        		echo "<ul style='list-style-type: disc;'>";
         		foreach($rumours as $rumour) {
-        		    echo $rumour->Text;
-        		    echo "<br>";
+        		    echo "<li style='margin-bottom:7px;margin-left:20px'>$rumour->Text\n";
+
         		}
+        		echo "</ul>";
 			}
 
 			else {
