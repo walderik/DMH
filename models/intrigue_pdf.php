@@ -100,8 +100,7 @@ class Intrigue_Pdf extends BaseModel{
             "regsys_role.Id = regsys_intrigueactor.RoleId AND ".
             "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
             "regsys_intrigueactor_knownpdf.IntriguePdfId = ?;";
-        echo $sql;
-        echo "<br>";
+
         $count = static::countQuery($sql, array($user->Id, $this->Id));
         if ($count > 0) return true;
         return false;
