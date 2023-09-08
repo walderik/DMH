@@ -265,6 +265,7 @@ class Rumour extends BaseModel{
     public static function delete($id)
     {
         $rumour = static::loadById($id);
+        if (empty($rumour)) return; 
         $rumour_knows = $rumour->getKnows();
         foreach ($rumour_knows as $rumour_know) Rumour_knows::delete($rumour_know->Id);
         
