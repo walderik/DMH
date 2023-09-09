@@ -93,6 +93,8 @@ class Intrigue_Pdf extends BaseModel{
     }
     
     public function mayView(User $user) {
+        
+        //Kontrollera om användaren har en roll som får se 
         $sql = "SELECT Count(regsys_intrigueactor_knownpdf.IntriguePdfId) as Num FROM ".
             "regsys_person, regsys_role, regsys_intrigueactor, regsys_intrigueactor_knownpdf WHERE ".
             "regsys_person.UserId = ? AND ".
@@ -103,6 +105,19 @@ class Intrigue_Pdf extends BaseModel{
 
         $count = static::countQuery($sql, array($user->Id, $this->Id));
         if ($count > 0) return true;
+        
+        //Kontrollera om användaren har en roll i en grupp som får se
+        $sql = "SELECT Count(regsys_intrigueactor_knownpdf.IntriguePdfId) as Num FROM ".
+            "regsys_person, regsys_role, regsys_intrigueactor, regsys_intrigueactor_knownpdf WHERE ".
+            "regsys_person.UserId = ? AND ".
+            "regsys_person.Id = regsys_role.PersonId AND ".
+            "regsys_role.GroupId = regsys_intrigueactor.GroupId AND ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownpdf.IntriguePdfId = ?;";
+        
+        $count = static::countQuery($sql, array($user->Id, $this->Id));
+        if ($count > 0) return true;
+
         return false;
     }
 }
