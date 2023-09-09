@@ -151,7 +151,7 @@ include 'navigation.php';
 			        $cols=5;
 			        foreach ($known_groups as $known_group) {
 			            echo "<li style='display:table-cell; width:19%;'>";
-			            echo "<div class='name'>$known_group->Name</div>";
+			            echo "<div class='name'><a href='view_known_group.php?id=$known_group->Id'>$known_group->Name</a></div>";
 			            echo "<div>Grupp</div>";
 			            if ($known_group->hasImage()) {
 			                echo "<img src='image.php?id=$known_group->ImageId'/>\n";
@@ -167,7 +167,7 @@ include 'navigation.php';
 			        }
 			        foreach ($known_roles as $known_role) {
 			            echo "<li style='display:table-cell; width:19%;'>";
-			            echo "<div class='name'>$known_role->Name</div>";
+			            echo "<div class='name'><a href='view_known_role.php?id=$known_role->Id'>$known_role->Name</a></div>";
 			            $role_group = $known_role->getGroup();
 			            if (!empty($role_group)) {
 			                echo "<div>$role_group->Name</div>";
