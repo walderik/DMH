@@ -41,9 +41,10 @@ $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('Helvetica','');
 $subject = (empty($role)) ? 'ALLA' : $role->Name;
 $pdf->SetSubject(utf8_decode($subject));
+$all_info = (isset($_GET['all_info'])) ? true : false;
 
 if (empty($role)) {
-    $pdf->all_character_sheets($current_larp, $bara_intrig);
+    $pdf->all_character_sheets($current_larp, $bara_intrig, $all_info);
 } else {
     $all_info = (isset($_GET['all_info'])) ? true : false;
     $pdf->new_character_sheet($role, $current_larp, $all_info, false);

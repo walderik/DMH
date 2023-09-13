@@ -36,11 +36,11 @@ $pdf->SetCreator('Omnes Mundos');
 $pdf->AddFont('Helvetica','');
 $subject = (empty($group)) ? 'ALLA' : $group->Name;
 $pdf->SetSubject(utf8_decode($subject));
+$all_info = (isset($_GET['all_info'])) ? true : false;
 
 if (empty($group)) {
-    $pdf->all_group_sheets($current_larp);
+    $pdf->all_group_sheets($current_larp, $all_info);
 } else {
-    $all_info = (isset($_GET['all_info'])) ? true : false;
     $pdf->new_group_sheet($group, $current_larp, $all_info);
 }
 

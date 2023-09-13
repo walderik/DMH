@@ -419,12 +419,12 @@ class Group_PDF extends PDF_MemImage {
         
 	}
 	
-	function all_group_sheets(LARP $larp_in ) {
+	function all_group_sheets(LARP $larp_in, $all_info ) {
 	    $this->larp = $larp_in;
 
 	    $groups = Group::getAllRegistered($this->larp);
 	    foreach($groups as $group) {
-	        $this->new_group_sheet($group, $larp_in, true);
+	        $this->new_group_sheet($group, $larp_in, $all_info);
 	    }
 	}
 

@@ -126,12 +126,24 @@ class RESOURCE_PDF extends FPDF {
 //                 }
 
                 if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
-                    $this->SetFont('specialelite','',11);
-                    $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
-                    $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
-                    $this->SetFont('specialelite','',10);
-                    $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
-                    $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
+                    if (strlen($titledeed->Name) > 28) {
+                        $first_chars = substr($titledeed->Name, 0, 19);
+                        $rest_max_30_chars = substr($titledeed->Name, 19, 30);
+                        $this->SetFont('specialelite','',11);
+                        $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
+                        $this->Cell($rut_width,10,utf8_decode(ucfirst("Från $first_chars-")),0,1,'L');
+                        $this->SetFont('specialelite','',10);
+                        $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
+                        $this->Cell($rut_width,10,utf8_decode($rest_max_30_chars),0,1,'L');
+                        
+                    } else {
+                        $this->SetFont('specialelite','',11);
+                        $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
+                        $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
+                        $this->SetFont('specialelite','',10);
+                        $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
+                        $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
+                    }
                 }
                 
                 

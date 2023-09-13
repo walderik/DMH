@@ -475,7 +475,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         }
 	}
 	
-	function all_character_sheets(LARP $larp_in, bool $bara_intrig ) {
+	function all_character_sheets(LARP $larp_in, bool $bara_intrig, ?bool $all_info=true) {
 	    $this->larp = $larp_in;
 
 	    $roles = $this->larp->getAllMainRoles(false);
@@ -483,7 +483,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	        if ($bara_intrig) {
                 $this->intrigue_info($role, $larp_in);
 	        } else {
-                $this->new_character_sheet($role, $larp_in, true);
+	            $this->new_character_sheet($role, $larp_in, $all_info);
 	        }
 	    }
 	    $roles = $this->larp->getAllNotMainRoles(false);
@@ -491,7 +491,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	        if ($bara_intrig) {
 	           $this->intrigue_info($role, $larp_in);
 	        } else {
-	           $this->new_character_sheet($role, $larp_in, true);
+	            $this->new_character_sheet($role, $larp_in, $all_info);
 	        }
 	    }
 	}

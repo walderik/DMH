@@ -15,7 +15,9 @@ class Letter_PDF extends FPDF {
 		# För mer fonter använder du http://www.fpdf.org/makefont/
 		$left = 21;
 
-		$this->SetXY(140, 20);
+		if ($this->GetStringWidth(utf8_decode($whenwhere)) > 60) {
+		    $this->SetXY($this->GetPageWidth() - 20 - $this->GetStringWidth(utf8_decode($whenwhere)), 20);
+		} else $this->SetXY(140, 20);
 		# http://www.fpdf.org/en/doc/cell.htm
 		# https://stackoverflow.com/questions/3514076/special-characters-in-fpdf-with-php
 		$this->Cell(80,10,utf8_decode($whenwhere),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad	
@@ -24,9 +26,16 @@ class Letter_PDF extends FPDF {
 		$this->Cell(80,10,utf8_decode($greeting),0,1);
 		$this->SetXY($left, 72);
 		$this->MultiCell(0,8,utf8_decode($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
-		$this->SetXY(140, $this->GetY()+30);
+
+		
+		if ($this->GetStringWidth(utf8_decode($endingPhrase)) > 60) {
+		    $ending_x = $this->GetPageWidth() - 20 - $this->GetStringWidth(utf8_decode($endingPhrase));
+		} else $ending_x = 140;
+		
+		
+		$this->SetXY($ending_x, $this->GetY()+30);
 		$this->Cell(80,10,utf8_decode($endingPhrase),0,1);
-		$this->SetX(140);
+		$this->SetX($ending_x);
 		$this->Cell(80,10,utf8_decode($signature),0,1);
     }
     
@@ -34,6 +43,7 @@ class Letter_PDF extends FPDF {
     {
         $this->AddFont($letter->Font,'');
         $this->AddPage();
+        $this->SetMargins(10, 10, 20);
 
         $this->SetText($letter->WhenWhere, $letter->Greeting, $letter->EndingPhrase, $letter->Signature, $letter->Message, $letter->Font);
 	}
