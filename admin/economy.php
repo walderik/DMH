@@ -98,18 +98,18 @@ include 'navigation.php';
            }
            echo "</td>\n";
            echo "<td>" . $bookkeeping->getBookkeepingAccount()->Name . "</td>"; 
-           echo "<td class='amount'>" . $bookkeeping->Amount . "</td>\n";
+           echo "<td class='amount'>" .number_format((float)$bookkeeping->Amount, 2, ',', '')."</td>\n";
            $sum += $bookkeeping->Amount;
            echo "</tr>\n";
        }
        $registration_fees = Registration::totalFeesPayed($current_larp);
        $sum += $registration_fees;
-       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Deltagaravgifter</td><td></td><td class='amount'>$registration_fees</td></tr>";
+       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Deltagaravgifter</td><td></td><td class='amount'>".number_format((float)$registration_fees, 2, ',', '')."</td></tr>";
        $returned_fees = Registration::totalFeesReturned($current_larp);
        $sum -= $returned_fees;
-       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Återbetalade deltagaravgifter</td><td></td><td class='amount'>".(0-$returned_fees)."</td></tr>";
+       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Återbetalade deltagaravgifter</td><td></td><td class='amount'>".number_format((float)(0-$returned_fees), 2, ',', '')."</td></tr>";
        echo "<tr></tr>";
-       echo "<tr><th colspan='4'>Summa</th><th class='amount' style='text-align: right;'>$sum</th></tr>";
+       echo "<tr><th colspan='4'>Summa</th><th class='amount' style='text-align: right;'>".number_format((float)$sum, 2, ',', '')."</th></tr>";
        echo "</table>";
        ?>
        
