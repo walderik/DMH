@@ -77,6 +77,7 @@ function myFunction() {
             <a href="rumour_admin.php">Rykten</a>
             <a href="prop_admin.php">Rekvisita</a>
             <a href="npc.php">NPC'er</a>
+            <a href="what_happened.php">Vad hände?</a>
 	    </div>
 	  </div> 
       <a href="../participant/" style="color: #99bbff"><i class="fa-solid fa-unlock"></i>Deltagare</a>
