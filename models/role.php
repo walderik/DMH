@@ -81,6 +81,12 @@ class Role extends BaseModel{
         if (isset($arr['RaceComment'])) $this->RaceComment = $arr['RaceComment'];
         if (isset($arr['AbilityComment'])) $this->AbilityComment = $arr['AbilityComment'];
         
+        if (isset($this->LarperTypeId) && $this->LarperTypeId=='null') $this->LarperTypeId = null;
+        if (isset($this->PlaceOfResidenceId) && $this->PlaceOfResidenceId=='null') $this->PlaceOfResidenceId = null;
+        if (isset($this->RaceId) && $this->RaceId=='null') $this->RaceId = null;
+        if (isset($this->GuardId) && $this->GuardId=='null') $this->GuardId = null;
+        if (isset($this->CouncilId) && $this->CouncilId=='null') $this->CouncilId = null;
+        if (isset($this->WealthId) && $this->WealthId=='null') $this->WealthId = null;
         if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         
