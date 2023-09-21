@@ -4,8 +4,6 @@ global $root, $current_user;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
-print_r($_POST);
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $larp_role = LARP_Role::loadByIds($_POST['RoleId'], $current_larp->Id);
     if (!isset($larp_role)) {
@@ -34,4 +32,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 }
 
-//header('Location: ../index.php');
+header('Location: ../index.php');
