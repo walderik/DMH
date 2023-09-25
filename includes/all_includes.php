@@ -23,6 +23,7 @@ include_once $root . '/models/council.php';
 include_once $root . '/models/selection_data.php';
 include_once $root . '/models/email.php';
 include_once $root . '/models/attachment.php';
+include_once $root . '/models/evaluation.php';
 include_once $root . '/models/experience.php';
 include_once $root . '/models/guard.php';
 include_once $root . '/models/group.php';

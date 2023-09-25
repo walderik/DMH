@@ -101,6 +101,19 @@ include "navigation.php";
     		        }
     		        if ($person->isRegistered($current_larp) && !$person->isNotComing($current_larp)) {
                         $registration = $person->getRegistration($current_larp);
+                        if ($current_larp->isEnded()) {
+                            echo "<tr><td>Utvärdering</td><td>";
+                            if ($registration->hasDoneEvaluation()) {
+                                echo showStatusIcon(true);
+                                echo "</td><td>Utvärderingen är inlämnad";
+                            }
+                            else {
+                                echo showStatusIcon(false);
+                                echo "</td><td><a href='evaluation.php?PersonId=$person->Id'>Gör utvärdering";
+                            }
+                            echo "</td></tr>\n";
+                            
+                        }
                         
                         if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
                             echo "<tr><td>Ansvarig vuxen</td><td>";
