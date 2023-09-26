@@ -5,7 +5,8 @@ include 'navigation.php';
 
 
 function chart($headline, $id, ?bool $include_dont_know=false, ?String $explanation="") {
-    $question_result = EvaluationNumberQuestion::get($id);
+    global $current_larp;
+    $question_result = EvaluationNumberQuestion::get($id, $current_larp);
     $val = $question_result->valuesArr;
     echo "<div class='chart'>\n";
     echo "$headline\n";
@@ -45,7 +46,8 @@ function chart($headline, $id, ?bool $include_dont_know=false, ?String $explanat
 
 
 function comments($headline, $id) {
-    $question_result = EvaluationCommentsQuestion::get($id);
+    global $current_larp;
+    $question_result = EvaluationCommentsQuestion::get($id, $current_larp);
     
     echo "<div class='comments'>\n";
     echo "$headline\n";
@@ -68,7 +70,7 @@ $campaign = $current_larp->getCampaign();
 
 	<h1>Resultat av utvärdering</h1>
 	<?php 
-	$question_result = EvaluationNumberQuestion::get("larp_q1");
+	$question_result = EvaluationNumberQuestion::get("larp_q1", $current_larp);
 	echo "<p>$question_result->number_of_responders utvärderingar har lämnats in. Om det är mindre än 5 st visas inget.</p>";
 	
 	if ($question_result->number_of_responders < 5) exit;

@@ -169,13 +169,13 @@ class EvaluationNumberQuestion extends Dbh {
     public $valuesArr = array(0,0,0,0,0,0,0,0,0,0,0);
     
     
-    public static function get($question_id) {
+    public static function get($question_id, LARP $larp) {
         $question_result = new self();
         
-        $sql = "SELECT $question_id FROM regsys_evaluation";
+        $sql = "SELECT $question_id FROM regsys_evaluation WHERE LarpId = ?";
         $stmt = static::connectStatic()->prepare($sql);
         
-        if (!$stmt->execute()) {
+        if (!$stmt->execute(array($larp->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -205,13 +205,13 @@ class EvaluationCommentsQuestion extends Dbh {
     public $comments = array();
     
     
-    public static function get($question_id) {
+    public static function get($question_id, LARP $larp) {
         $question_result = new self();
         
-        $sql = "SELECT $question_id FROM regsys_evaluation";
+        $sql = "SELECT $question_id FROM regsys_evaluation WHERE LarpId = ?";
         $stmt = static::connectStatic()->prepare($sql);
         
-        if (!$stmt->execute()) {
+        if (!$stmt->execute(array($larp->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -225,7 +225,6 @@ class EvaluationCommentsQuestion extends Dbh {
          return $question_result;
          }
          
-        
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($rows as $row) {
             $question_result->comments[] = $row[$question_id];
