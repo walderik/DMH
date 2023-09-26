@@ -162,3 +162,75 @@ class Evaluation extends BaseModel{
     }
     
 }
+
+
+class EvaluationNumberQuestion extends Dbh {
+    public $number_of_responders;
+    public $valuesArr = array(0,0,0,0,0,0,0,0,0,0,0);
+    
+    
+    public static function get($question_id) {
+        $question_result = new self();
+        
+        $sql = "SELECT $question_id FROM regsys_evaluation";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $question_result->number_of_responders = $stmt->rowCount();
+        
+        //Dela inte ut resultat om det är färre än 5 svar.
+        if ($question_result->number_of_responders < 5) {
+            $stmt = null;
+            return $question_result;
+        }
+        
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $row) {
+            $val = $row[$question_id];
+            $question_result->valuesArr[$val]++;
+        }
+        $stmt = null;
+        return $question_result;
+    }
+}
+
+class EvaluationCommentsQuestion extends Dbh {
+    public $number_of_responders;
+    public $comments = array();
+    
+    
+    public static function get($question_id) {
+        $question_result = new self();
+        
+        $sql = "SELECT $question_id FROM regsys_evaluation";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $question_result->number_of_responders = $stmt->rowCount();
+        
+        //Dela inte ut resultat om det är färre än 5 svar.
+        if ($question_result->number_of_responders < 5) {
+         $stmt = null;
+         return $question_result;
+         }
+         
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $row) {
+            $question_result->comments[] = $row[$question_id];
+        }
+        $stmt = null;
+        return $question_result;
+    }
+}

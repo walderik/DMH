@@ -56,6 +56,7 @@ function myFunction() {
             <a href="refund_persons.php">Återbetalning</a>
             <a href="reports.php">Rapporter</a>
             <a href="statistics.php">Statistik</a>
+            <a href="evaluation_result.php">Utvärdering</a>
 		    <a href="ssn_check.php">Medlemskontroll</a> 
 
 
