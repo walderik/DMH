@@ -30,6 +30,8 @@ include "navigation.php";
 
     <div class="content">   
         <h1>Kampanjer</h1>
+            <p>Alla arrangörer får tillgång till alla tidigare lajv i kampanjen eftersom det är en historia och då behöver man kunna se vad som har hänt.</p>
+        
             <a href="campaign_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
         
         <?php
