@@ -22,7 +22,7 @@ function whatHappenedGroup(Group $group) {
         echo "<h2>$group->Name</h2>";
         foreach($intrigueActors as $intrigueActor) {
             $intrigue = $intrigueActor->getIntrigue();
-            echo "<h3>$intrigue->Number. $intrigue->Name</h3>";
+            echo "<h3><a href='view_intrigue.php?Id=$intrigue->Id'>$intrigue->Number. $intrigue->Name</a></h3>";
             echo nl2br($intrigueActor->WhatHappened);
         }
         if (!empty($larp_group->WhatHappened)) {
@@ -53,13 +53,13 @@ function whatHappenedRole(Role $role) {
         }
     }
     if ($hasWhatHappened) {
-        echo "<h2>$role->Name";
+        echo "<h2><a href='view_role.php?id=$role->Id'>$role->Name</a>";
         $group = $role->getGroup();
-        if (isset($group)) echo " $group->Name";
+        if (isset($group)) echo " - <a href='view_group.php?id=$group->Id'>$group->Name</a>";
         echo "</h2>";
         foreach($intrigueActors as $intrigueActor) {
             $intrigue = $intrigueActor->getIntrigue();
-            echo "<h3>$intrigue->Number. $intrigue->Name</h3>";
+            echo "<h3><a href='view_intrigue.php?Id=$intrigue->Id'>$intrigue->Number. $intrigue->Name</a></h3>";
             echo nl2br($intrigueActor->WhatHappened);
         }
         if (!empty($larp_role->WhatHappened)) {
