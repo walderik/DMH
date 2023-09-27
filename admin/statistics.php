@@ -79,28 +79,84 @@ Det är <?php echo Statistics::countParticipantHasSpot($current_larp)?> helt kla
 	I nedanstående tabell finns huvudkaraktärer i första kolumnen och sidokaraktärer i andra. Myslajvare är inte medräknade.
     	
     	<table>
-    	<tr><th colspan="2"><h3>Rikedom</h3></th></tr>
-    	<tr>
-    	<td>
-    <?php 
-    $count = Wealth::countByTypeOnRoles($current_larp, true);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
+
+    	<?php  if (Wealth::isInUse($current_larp)) { ?>
+        	<tr><th colspan="2"><h3>Rikedom</h3></th></tr>
+        	<tr>
+        	<td>
+        <?php 
+        $count = Wealth::countByTypeOnRoles($current_larp, true);
+        foreach($count as $item) {
+            echo $item['Name'].": ".$item['Num']." st<br>";
+        }
+        
+        
+        ?>
+        	</td>
+        	<td>
+        <?php 
+        $count = Wealth::countByTypeOnRoles($current_larp, false);
+        foreach($count as $item) {
+            echo $item['Name'].": ".$item['Num']." st<br>";
+        }
+        ?>
     
-    
+    </td></tr>
+     <?php  }
     ?>
-    	</td>
-    	<td>
-    <?php 
-    $count = Wealth::countByTypeOnRoles($current_larp, false);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
+
+    	<?php  if (Religion::isInUse($current_larp)) { ?>
+        	<tr><th colspan="2"><h3>Religion</h3></th></tr>
+        	<tr>
+        	<td>
+        <?php 
+        $count = Religion::countByTypeOnRoles($current_larp, true);
+        foreach($count as $item) {
+            echo $item['Name'].": ".$item['Num']." st<br>";
+        }
+        
+        
+        ?>
+        	</td>
+        	<td>
+        <?php 
+        $count = Religion::countByTypeOnRoles($current_larp, false);
+        foreach($count as $item) {
+            echo $item['Name'].": ".$item['Num']." st<br>";
+        }
+        ?>
     
-    
+    </td></tr>
+     <?php  }
     ?>
-    	</td>
+    	
+     	<?php  if (Race::isInUse($current_larp)) { ?>
+        	<tr><th colspan="2"><h3>Ras</h3></th></tr>
+        	<tr>
+        	<td>
+        <?php 
+        $count = Race::countByTypeOnRoles($current_larp, true);
+        foreach($count as $item) {
+            echo $item['Name'].": ".$item['Num']." st<br>";
+        }
+        
+        
+        ?>
+        	</td>
+        	<td>
+        <?php 
+        $count = Race::countByTypeOnRoles($current_larp, false);
+        foreach($count as $item) {
+            echo $item['Name'].": ".$item['Num']." st<br>";
+        }
+        ?>
+    
+    </td></tr>
+     <?php  }
+    ?>
+    	
+    	
+    	
     	<tr><th colspan="2"><h3>Var karaktären bor</h3></th></tr>
     	<tr>
     	<td>
