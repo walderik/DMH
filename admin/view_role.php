@@ -73,6 +73,15 @@ include 'navigation.php';
 		<h2>Intrig <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php    echo nl2br(htmlspecialchars($larp_role->Intrigue)); ?>
+		<?php 
+		if (!empty($larp_role->WhatHappened) || !empty($larp_role->WhatHappendToOthers)) {
+		    echo "<h3>Vad hände med/för $role->Name ?</h3>";
+		    echo  nl2br(htmlspecialchars($larp_role->WhatHappened));
+		    echo "<h3>Vad hände med/för andra?</h3>";
+		    echo  nl2br(htmlspecialchars($larp_role->WhatHappendToOthers));
+		}
+		    ?>
+		
 		<?php
 		$intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
 		if (!empty($intrigues)) {
@@ -89,6 +98,9 @@ include 'navigation.php';
 	               echo nl2br(htmlspecialchars($intrigueActor->IntrigueText));
 	               if (!empty($intrigueActor->OffInfo)) {
 	                   echo "<br><br><strong>Off-information:</strong><br>".nl2br(htmlspecialchars($intrigueActor->OffInfo));
+	               }
+	               if (!empty($intrigueActor->WhatHappened)) {
+	                   echo "<br><br><strong>Vad hände:</strong><br>".nl2br(htmlspecialchars($intrigueActor->WhatHappened));
 	               }
 	               echo "</td>";
 	               echo "<td><a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$role->Name'><i class='fa-solid fa-pen'></i></a></td>";

@@ -154,7 +154,15 @@ include 'navigation.php';
 		?>
 		<h2>Intrig <a href='edit_group_intrigue.php?id=<?php echo $current_group->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
-		<?php echo $larp_group->Intrigue; ?>
+		<?php echo $larp_group->Intrigue; ?>		<?php 
+		if (!empty($larp_group->WhatHappened) || !empty($larp_group->WhatHappendToOthers)) {
+		    echo "<h3>Vad hände med/för $current_group->Name ?</h3>";
+		    echo  nl2br(htmlspecialchars($larp_group->WhatHappened));
+		    echo "<h3>Vad hände med/för andra?</h3>";
+		    echo  nl2br(htmlspecialchars($larp_group->WhatHappendToOthers));
+		}
+		    ?>
+		
 		<?php 
 		if (!empty($intrigues)) {
 		    echo "<table class='data'>";
@@ -171,6 +179,10 @@ include 'navigation.php';
 	               if (!empty($intrigueActor->OffInfo)) {
 	                   echo "<br><br><strong>Off-information:</strong><br>".nl2br($intrigueActor->OffInfo);
 	               }
+	               if (!empty($intrigueActor->WhatHappened)) {
+	                   echo "<br><br><strong>Vad hände:</strong><br>".nl2br(htmlspecialchars($intrigueActor->WhatHappened));
+	               }
+	               
 	               echo "</td>";
 	               echo "<td><a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$current_group->Name'><i class='fa-solid fa-pen'></i></a></td>";
 	               echo "</tr>";

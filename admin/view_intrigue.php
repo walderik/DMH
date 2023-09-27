@@ -46,6 +46,10 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     $knownNPCs = $intrgueActor->getAllKnownNPCs();
     printAllKnownNPCs($knownNPCs, $intrgueActor);
     echo "</td></tr>\n";
+    if (!empty($intrgueActor->WhatHappened)) {
+        echo "<tr><td>Vad hände</td>\n";
+        echo "<td>".nl2br($intrgueActor->WhatHappened)."</td></tr>\n";
+    }
     echo "</table>\n";
     
 }
