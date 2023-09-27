@@ -16,6 +16,7 @@ function getObjectName($name) {
         case "abilities" : return "Förmågor";
         case "council" : return "Byråd";
         case "guard" : return "Markvakt";
+        case "religon" : return "Religion";
     }
 }
 
@@ -35,5 +36,6 @@ function getObjectType($name) {
         case "abilities" : return "Ability";
         case "council" : return "Council";
         case "guard" : return "Guard";
+        case "religion" : return "Religion";
     }
 }

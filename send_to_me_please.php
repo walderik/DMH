@@ -29,7 +29,7 @@ if ($todo=='activation') {
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 	<body>
-	  <h1>Död mans hand anmälningssystem</h1>
+	  <h1>Omnes Mundos</h1>
 	  <?php if (isset($error_message) && strlen($error_message)>0) {
 	      echo '<div class="error">'.$error_message.'</div>';
 	  }?>

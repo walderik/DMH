@@ -63,6 +63,8 @@ function default_value($field) {
     echo $output;
 }
 
+$campaign = $current_larp->getCampaign();
+
 include 'navigation.php';
 
 ?>
@@ -317,23 +319,38 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 				
 			<div class="question intrigue">
 				<label for="PreviousLarps">Tidigare lajv</label><br> 
-				<div class="explanation">Död mans hand är ett kampanjlajv. Det innebär att allt din karaktär gör ett år och andra gör mot den ska påverka det här lajvet.    
+				<div class="explanation"><?php echo $campaign->Name ?> är en kampanj. Det innebär att allt din karaktär gör ett år och andra gör mot den ska påverka det här lajvet.    
 					Det är inte så farligt som det låter, utan är ett bra sätt att ge större djup i lajvet och göra din egen karaktär intressantare både för dig själv och andra.<br><br>
 					Om du var med förra året med din karaktär, vad hände med din karaktär som är bra att komma ihåg? Gjorde den några särskilt bra affärer? Var den med i en duell? Blev den svindlad eller svindlade den någon? Hur gick det med kärleken?<br><br>
 					Har din karaktär gjort något minnesvärt tidigare år?
 				</div>
 				<textarea class="input_field" id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo htmlspecialchars($role->PreviousLarps); ?></textarea>
 			</div>
+			<?php if (Religion::isInUse($current_larp)) {?>
 			<div class="question intrigue">
-				<label for="Religion">Religion</label><br>
-				<div class="explanation">Vissa religioner har bättre anseende än andra. Religionen kommer att påverka spel. Skriv så noggrant du kan om du inte har en "vanlig" religion.</div>
+				<label for="ReligionId">Vilken religion har karaktären?</label>&nbsp;<font style="color:red">*</font><br>
+       			<div class="explanation">Vissa religioner har bättre anseende än andra. Religionen kommer att påverka spel. <?php Religion::helpBox($current_larp); ?></div>
+                <?php Religion::selectionDropdown($current_larp, false,true, $role->ReligionId); ?>
+            </div>
+
+			<div class="question intrigue">
+				<label for="Religion">Religion förklaring</label><br>
+				<div class="explanation"> Skriv så noggrant du kan om du inte har en "vanlig" religion.</div>
 				<input class="input_field" type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="200">
 			</div>
+
+			<?php } ?>	
+				
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
 			<div class="question intrigue">
 				<label for="WealthsId">Hur rik är karaktären?</label>&nbsp;<font style="color:red">*</font><br>
-       			<div class="explanation">Om du anser att du har rikedom 3 eller högre förväntas du i regel ha någon form av affärer på gång. Det kan vara att sälja saker din gård producerat, leta guld eller nästan vad som helst som gör att man inte är fattig längre.   Det kommer att vara ett begränsat antal stenrika på lajvet och vi godkänner i regel inte nya. Undantag kan naturligtvis förekomma om det gynnar lajvet.   Däremot är Död Mans Hand ett kampanjlajv så det går att spela sig till att bli stenrik. Det går också att bli fattig om man är stenrik.<?php Wealth::helpBox($current_larp); ?></div>
+       			<div class="explanation">Om du anser att du har rikedom 3 eller högre förväntas du i regel ha någon form av affärer på gång. 
+       			Det kan vara att sälja saker din gård producerat, leta guld eller nästan vad som helst som gör att man inte är fattig längre.   
+       			Det kommer att vara ett begränsat antal stenrika på lajvet och vi godkänner i regel inte nya. 
+       			Undantag kan naturligtvis förekomma om det gynnar lajvet.   
+       			Däremot är <?php echo $campaign->Name ?> en kampanj så det går att spela sig till att bli stenrik. 
+       			Det går också att bli fattig om man är stenrik.<?php Wealth::helpBox($current_larp); ?></div>
                 <?php Wealth::selectionDropdown($current_larp, false,true, $role->WealthId); ?>
             </div>
 			<?php } ?>	

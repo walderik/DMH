@@ -10,6 +10,7 @@ class Role extends BaseModel{
     public $DescriptionForOthers;
     public $PreviousLarps;
     public $ReasonForBeingInSlowRiver;
+    public $ReligionId;
     public $Religion;
     public $DarkSecret;
     public $DarkSecretIntrigueIdeas;
@@ -56,6 +57,7 @@ class Role extends BaseModel{
         if (isset($arr['DescriptionForOthers'])) $this->DescriptionForOthers = $arr['DescriptionForOthers'];
         if (isset($arr['PreviousLarps'])) $this->PreviousLarps = $arr['PreviousLarps'];
         if (isset($arr['ReasonForBeingInSlowRiver'])) $this->ReasonForBeingInSlowRiver = $arr['ReasonForBeingInSlowRiver'];
+        if (isset($arr['ReligionId'])) $this->ReligionId = $arr['ReligionId'];
         if (isset($arr['Religion'])) $this->Religion = $arr['Religion'];
         if (isset($arr['DarkSecret'])) $this->DarkSecret = $arr['DarkSecret'];
         if (isset($arr['DarkSecretIntrigueIdeas'])) $this->DarkSecretIntrigueIdeas = $arr['DarkSecretIntrigueIdeas'];
@@ -106,7 +108,7 @@ class Role extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_role SET Name=?, Profession=?, Description=?,
                               DescriptionForGroup=?, DescriptionForOthers=?,
-                              PreviousLarps=?, ReasonForBeingInSlowRiver=?, Religion=?, DarkSecret=?,
+                              PreviousLarps=?, ReasonForBeingInSlowRiver=?, ReligionId=?, Religion=?, DarkSecret=?,
                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, CouncilId=?, GuardId=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
@@ -114,7 +116,7 @@ class Role extends BaseModel{
         
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
-            $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
+            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, $this->CouncilId, $this->GuardId, 
             $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
@@ -132,16 +134,16 @@ class Role extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_role (Name, Profession, Description, 
                                                             DescriptionForGroup, DescriptionForOthers, PreviousLarps,
-                                                            ReasonForBeingInSlowRiver, Religion, DarkSecret, DarkSecretIntrigueIdeas,
+                                                            ReasonForBeingInSlowRiver, ReligionId, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId, CouncilId, GuardId, 
                                                             Birthplace, CharactersWithRelations, CampaignId, ImageId, 
                                     IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?);");
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
-            $this->ReasonForBeingInSlowRiver, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
+            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
             $this->CouncilId, $this->GuardId, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
@@ -179,6 +181,11 @@ class Role extends BaseModel{
     public function userMayEdit(LARP $larp) {
         return LARP_Role::userMayEdit($this->Id, $larp->Id);
         
+    }
+    
+    public function getReligion() {
+        if (is_null($this->ReligionId)) return null;
+        return Religion::loadById($this->ReligionId);
     }
     
     public function getWealth() {
@@ -491,9 +498,11 @@ class Role extends BaseModel{
         
     }
     
-    public function groupIsRegistered(Larp $larp) {
+    public function groupIsRegisteredApproved(Larp $larp) {
         if (!isset($this->GroupId)) return true;
-        return $this->GetGroup()->isRegistered($larp);
+        $group = $this->GetGroup();
+        if ($group->isRegistered($larp) && $group->isApproved()) return true;
+        return false;
     }
     
     public function isNeverRegistered() {

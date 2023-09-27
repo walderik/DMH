@@ -110,7 +110,7 @@ include 'navigation.php';
 				<table class="list">
         			<?php 
         			foreach($roles as $role) {
-        			    if ($role->groupIsRegistered($current_larp)) {
+        			    if ($role->groupIsRegisteredApproved($current_larp)) {
             			    echo "<tr><td>\n";
             			    echo "<input type='checkbox' id='roleId$role->Id' name='roleId[]' value='$role->Id' checked='checked'>";
             			    echo "\n";
@@ -123,7 +123,7 @@ include 'navigation.php';
         			    else {
         			        echo "<div class='role'>\n";
         			        echo "<h3>".htmlspecialchars($role->Name)."</h3>";
-        			        echo "Karaktären kan inte anmälas eftersom gruppen " . htmlspecialchars($role->getGroup()->Name) . " inte är anmäld.";
+        			        echo "Karaktären kan inte anmälas eftersom gruppen " . htmlspecialchars($role->getGroup()->Name) . " inte är anmäld och godkänd.";
         			        echo "</div>";
         			    }
         			}		

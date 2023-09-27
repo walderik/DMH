@@ -62,6 +62,7 @@ include_once $root . '/models/place_of_residence.php';
 include_once $root . '/models/prop.php';
 include_once $root . '/models/race.php';
 include_once $root . '/models/registration.php';
+include_once $root . '/models/religion.php';
 include_once $root . '/models/reserve_registration.php';
 include_once $root . '/models/reserve_larp_role.php';
 include_once $root . '/models/resource.php';

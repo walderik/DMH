@@ -91,6 +91,7 @@ $param = date_format(new Datetime(),"suv");
 				Om man inte fyller i några värden så kommer inte frågan att komma upp för deltagarna.<br>
 				Tänk på att sätta upp det här innan man öppnar anmälan, annars kommer de som har anmält sig tidigare att sakna svar på de frågorna.<br><br>
 			    <a href="selection_data_admin.php?type=larpertypes">Typ av lajvare för karaktärer</a>	<br>		    			
+			    <a href="selection_data_admin.php?type=religion">Religion för karaktärer</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=race">Ras för karaktärer</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=abilities">Typ av förmågor för karaktärer</a>	<br>		    			 					    
 			    <a href="selection_data_admin.php?type=council">Byråd för karaktärer</a>	<br>		    			 					    
