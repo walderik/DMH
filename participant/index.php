@@ -194,6 +194,10 @@ include "navigation.php";
     		            else {
     		                echo "<td><a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
     		            }
+    		            if ($group->isRegistered($current_larp) && $current_larp->isEnded()) {
+    		                echo "<td><a href='larp_report_form.php?groupId=$group->Id'>Vad hände?</a></td>";
+    		            }
+    		            
     		            echo "</tr>";
     		        }
     		        echo "</table>";
@@ -257,7 +261,7 @@ include "navigation.php";
         		            echo "</td>";  		            
     		                
     		                if ($current_larp->isEnded()) {
-    		                    echo "<td><a href='larp_report_form.php?id=$role->Id'>Vad hände?</a></td>";
+    		                    echo "<td><a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a></td>";
     		                }
         		            echo "</tr>\n";
         		            
