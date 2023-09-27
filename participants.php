@@ -156,7 +156,7 @@ function print_role($role) {
 
                 echo "<h2>$group->Name</h2>\n";
                 if ($group->DescriptionForOthers !="") {
-                    echo "<p>$group->DescriptionForOthers</p>\n";
+                    echo "<p>".nl2br($group->DescriptionForOthers)."</p>\n";
                 }
                 
                 
