@@ -47,7 +47,7 @@ function myFunction() {
 	      	<a href="settings.php">Inställningar</a>
 	      	<a href="mail_admin.php">E-post</a>
             <a href="registered_persons.php">Deltagare</a>
-            <a href="persons_to_approve.php">Godkänna</a>
+            <a href="approval.php">Godkänna</a>
             <a href="kitchen.php">Köket</a>
             <a href="officials.php">Funktionärer</a>
             <a href="housing.php">Boende</a>

@@ -9,6 +9,30 @@ include 'navigation.php';
 
 
     <div class="content">   
+        <h1>Grupper som ska godkännas</h1>
+     		<?php 
+    		$groups = Group::getAllToApprove($current_larp);
+    		if (empty($groups)) {
+    		    echo "<p>Alla anmälda är godkända</p>";
+    		} else {
+    		    foreach ($groups as $group)  {
+    		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
+    		        echo "<div>";
+    		        echo "<form action='logic/approve_group.php' method='post'>";
+    		        echo "<input type='hidden' id='GroupId' name='GroupId' value='$group->Id'>";
+    		        
+    		        echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>, Gruppledare ".$group->getPerson()->Name;
+    		        echo "<br>\n";
+    		        if ($larp_group->UserMayEdit == 1) {
+    		            echo "Gruppledare får ändra på gruppen och kan därför inte godkännas.";
+    		        } else {
+    		            echo "<input type='submit' value='Godkänn gruppen'>";
+    		        }
+    		        echo "</form>";
+    		        echo "</div>\n";
+    		    }
+    		}
+    		?>    
         <h1>Karaktärer som ska godkännas per deltagare</h1>
      		<?php 
     		$persons = Person::getAllToApprove($current_larp);

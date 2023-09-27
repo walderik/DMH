@@ -17,6 +17,7 @@ class Group extends BaseModel{
     public $IsDead = 0;
     public $OrganizerNotes;
     public $ImageId;
+    public $IsApproved = 0;
     
 //     public static $tableName = 'group';
     public static $orderListBy = 'Name';
@@ -43,6 +44,7 @@ class Group extends BaseModel{
         if (isset($arr['IsDead'])) $this->IsDead = $arr['IsDead'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
+        if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
         
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         
@@ -62,11 +64,11 @@ class Group extends BaseModel{
        
         $stmt = $this->connect()->prepare("UPDATE regsys_group SET Name=?, Friends=?, Enemies=?,
                                                                   Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?,
-                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=? WHERE Id = ?");
+                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, IsApproved=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
             $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, 
-            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->Id))) {
+            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -82,12 +84,12 @@ class Group extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_group (Name,  
                          Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
-                         WealthId, PlaceOfResidenceId, PersonId, CampaignId, IsDead, OrganizerNotes, ImageId) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
+                         WealthId, PlaceOfResidenceId, PersonId, CampaignId, IsDead, OrganizerNotes, ImageId, IsApproved) 
+                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
-            $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId))) {
+            $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -107,6 +109,12 @@ class Group extends BaseModel{
          if (isset($this->ImageId)) return true;
          return false;
      }
+     
+     public function isApproved() {
+         if ($this->IsApproved == 1) return true;
+         return false;
+     }
+     
      
      
      public function is_trading(LARP $larp) {
@@ -174,12 +182,27 @@ class Group extends BaseModel{
          return $wordCount;
      }
      
+     public static function getAllToApprove($larp) {
+         if (is_null($larp)) return array();
+         $sql = "SELECT * from regsys_group WHERE Id in (SELECT GroupId FROM ".
+             "regsys_larp_group WHERE LarpId = ?) AND IsApproved = 0 ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+     }
+     
      
      
      public static function getAllRegistered($larp) {
          
          if (is_null($larp)) return Array();
          $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND Id IN ".
+             "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+     }
+     
+     public static function getAllRegisteredApproved($larp) {
+         
+         if (is_null($larp)) return Array();
+         $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND IsApproved=1 AND Id IN ".
              "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }

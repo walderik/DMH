@@ -49,10 +49,11 @@ include "navigation.php";
 
 		</div>
 		<?php 
+		$approval_count_group = count (Group::getAllToApprove($current_larp));
 		$approval_count = count (Person::getAllToApprove($current_larp));
-		if ($approval_count>0) { ?>
+		if ($approval_count_group>0 || $approval_count>0) { ?>
 			<div class="content">
-			<?php echo $approval_count; ?> deltagare har karaktärer som väntar på <a href="persons_to_approve.php">godkännande</a>. 
+			<?php echo "$approval_count_group grupper och $approval_count deltagare väntar på <a href='approval.php'>godkännande</a>."; ?> 
 		
 			</div>			
 		<?php }
@@ -61,6 +62,13 @@ include "navigation.php";
 		if ($approval_t_count>0) { ?>
 			<div class="content">
 			<?php echo $approval_t_count; ?> telegram som väntar på <a href="telegram_admin.php">godkännande</a>. 
+		
+			</div>			
+		<?php }
+		$approval_l_count = count (Letter::getAllToApprove($current_larp));
+		if ($approval_l_count>0) { ?>
+			<div class="content">
+			<?php echo $approval_l_count; ?> brev som väntar på <a href="letter_admin.php">godkännande</a>. 
 		
 			</div>			
 		<?php }?>

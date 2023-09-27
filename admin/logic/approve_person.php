@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $registration->update();
         BerghemMailer::send_approval_mail($registration);
-        header('Location: ../persons_to_approve.php');
+        header('Location: ../approval.php');
         exit;
     }
     

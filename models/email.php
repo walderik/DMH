@@ -56,7 +56,7 @@ class Email extends BaseModel{
             $email->LarpId = $current_larp->Id;
             $campaign = $current_larp->getCampaign();
             if (!is_null($campaign)) {
-                $email->From = $campaign->Email;
+                $email->From = scrub($campaign->Email);
             }
         }
         $myName = $email->myName();

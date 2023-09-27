@@ -181,6 +181,17 @@ class BerghemMailer {
         static::send($mail, $person->Name, $text, "Godkända karaktärer till ".$larp->Name, $sheets);
     }
     
+    public static function send_group_approval_mail(Group $group, LARP $larp) {
+        $person = $group->getPerson();
+        $mail = $person->Email;
+        
+        
+        $text  = "Din grupp $group->Name är nu godkänd för att vara med i lajvet $larp->Name.\n";
+        
+        static::send($mail, $person->Name, $text, "Godkänd grupp till ".$larp->Name);
+    }
+    
+    
     
     
     public static function send_spot_at_larp(Registration $registration) {

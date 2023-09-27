@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($operation == 'insert') {
         $group = Group::newFromArray($_POST);
+        $group->IsApproved = 0;
         $group->create();
         $group->deleteAllIntrigueTypes();
         $group->saveAllIntrigueTypes($_POST);
@@ -45,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         
         $group->setValuesByArray($_POST);
+        $group->IsApproved = 0;
         $group->update();
         $group->deleteAllIntrigueTypes();
         $group->saveAllIntrigueTypes($_POST);
