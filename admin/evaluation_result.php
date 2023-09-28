@@ -11,7 +11,7 @@ function chart($headline, $id, ?bool $include_dont_know=false, ?String $explanat
     echo "<div class='chart'>\n";
     echo "$headline\n";
     
-    echo "<canvas id='$id' height='50px'></canvas>\n";
+    echo "<canvas id='$id' height='100em'></canvas>\n";
     echo "</div>\n";
     
     echo "<script>";
@@ -94,7 +94,7 @@ $campaign = $current_larp->getCampaign();
 		<h2>Hur väl stämmer följande påståenden överens med din upplevelse av <?php echo $current_larp->Name ?></h2>
 		<?php chart("Det var ett välorganiserat lajv","exp_q1", true)?>
 		<?php chart("Det var ett nybörjarvänligt lajv","exp_q2", true)?>
-		<?php chart("Det var ett nybörjarvänligt lajv","exp_q3", true)?>
+		<?php //chart("Det var ett nybörjarvänligt lajv","exp_q3", true)?>
 		<?php chart("Det var ett lajv för erfarna","exp_q4", true)?>
 		<?php chart("Det var ett barn- och familjevänligt lajv","exp_q5", true)?>
 		<?php chart("Jag hade roligt på lajvet","exp_q6", true)?>

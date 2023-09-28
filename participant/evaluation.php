@@ -134,7 +134,7 @@ label::before {
 			</div>
 			<?php slider("Det var ett välorganiserat lajv","exp_q1",0,10,0)?>
 			<?php slider("Det var ett nybörjarvänligt lajv","exp_q2",0,10,0)?>
-			<?php slider("Det var ett nybörjarvänligt lajv","exp_q3",0,10,0)?>
+			<?php //slider("Det var ett nybörjarvänligt lajv","exp_q3",0,10,0)?>
 			<?php slider("Det var ett lajv för erfarna","exp_q4",0,10,0)?>
 			<?php slider("Det var ett barn- och familjevänligt lajv","exp_q5",0,10,0)?>
 			<?php slider("Jag hade roligt på lajvet","exp_q6",0,10,0)?>
