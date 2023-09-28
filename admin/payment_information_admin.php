@@ -45,7 +45,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo "<a href='payment_information_form.php?operation=new'><i class='fa-solid fa-file-circle-plus'></i>Lägg till</a>";
             
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Från datum</th><th>Till datum</th><th>Från ålder</th><th>Till ålder</th><th>Pris</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Från datum</th><th>Till datum</th><th>Från ålder</th><th>Till ålder</th><th>Deltagaravgift</th>";
+            echo "<th>Matalternativ</th>";
+            echo "<th></th><th></th></tr>\n";
             foreach ($payment_array as $payment) {
                 echo "<tr>\n";
                 echo "<td>" . $payment->Id . "</td>\n";
@@ -54,6 +56,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 echo "<td>" . $payment->FromAge . "</td>\n";
                 echo "<td>" . $payment->ToAge . "</td>\n";
                 echo "<td>" . $payment->Cost . "</td>\n";
+                echo "<td>";
+                foreach ($payment->FoodDescription as $i => $description) {
+                    echo $description.": ".$payment->FoodCost[$i]."<br>";
+                }
+                echo "</td>\n";
                 
                 echo "<td>" . "<a href='payment_information_form.php?operation=update&id=" . $payment->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='payment_information_admin.php?operation=delete&id=" . $payment->Id . "'><i class='fa-solid fa-trash'></i></td>\n";

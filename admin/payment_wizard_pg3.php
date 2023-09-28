@@ -9,7 +9,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $min_age=$_POST['min_age'];
     $max_age=$_POST['max_age'];
     $number_of_age_groups=$_POST['number_of_age_groups'];
+    $number_of_food_options=$_POST['number_of_food_options'];
     
+    if (isset($_POST['food_description'])) $food_descriptionArr = $_POST['food_description'];    
     if (isset($_POST['date'])) $dateArr = $_POST['date'];
     if (isset($_POST['age'])) $ageArr = $_POST['age'];
     
@@ -23,6 +25,20 @@ include 'navigation.php';
 
 ?>
 
+<style>
+input {
+  width: 60px;
+  text-align: right; 
+}
+
+div.food {
+	border-top: 1px solid #808080;
+	padding-top: 6px;
+}
+div.cost {
+  height: 2em;
+}
+</style>
 
 
 
@@ -52,7 +68,12 @@ include 'navigation.php';
 			<input type="hidden" id="min_age" name="min_age" value="<?php echo $min_age; ?>">
 			<input type="hidden" id="max_age" name="max_age" value="<?php echo $max_age; ?>">
 			<input type="hidden" id="number_of_age_groups" name="number_of_age_groups" value="<?php echo $number_of_age_groups; ?>">
-
+			<input type="hidden" id="number_of_food_options" name="number_of_food_options" value="<?php echo $number_of_food_options; ?>">
+			<?php 
+			foreach ($food_descriptionArr as $food_description) {
+			    echo "<input type='hidden' id='food_description[]' name='food_description[]' value='$food_description'>";
+			}
+			?>
         
         
 
@@ -72,21 +93,21 @@ include 'navigation.php';
                     }
                     elseif ($j == 1 && $j == $number_of_age_groups) {
                         //Bara en kolumn
-                        echo "<th>$min_age - " . $max_age . " år</th>";
+                        echo "<th colspan='2'>$min_age - " . $max_age . " år</th>";
                         echo "<input type='hidden' id='age[]' name='age[]' value='$max_age'>";
                     }
                     elseif ($j == 1) {
                         //Andra cellen i första raden
-                        echo "<th>$min_age - " . $ageArr[$j-1] . " år</th>";
+                        echo "<th colspan='2'>$min_age - " . $ageArr[$j-1] . " år</th>";
                         echo "<input type='hidden' id='age[]' name='age[]' value='".$ageArr[$j-1]."'>";
                     }
                     elseif ($j == $number_of_age_groups) {
                         //Sista cellen i första raden
-                        echo "<th>" . $ageArr[$j-2]+1 . " - " . $max_age . " år</th>";
+                        echo "<th colspan='2'>" . $ageArr[$j-2]+1 . " - " . $max_age . " år</th>";
                         echo "<input type='hidden' id='age[]' name='age[]' value='$max_age'>";
                     }                   
                     else {
-                        echo "<th>" . $ageArr[$j-2]+1 . " - " . $ageArr[$j-1] . " år</th>";
+                        echo "<th colspan='2'>" . $ageArr[$j-2]+1 . " - " . $ageArr[$j-1] . " år</th>";
                         echo "<input type='hidden' id='age[]' name='age[]' value='".$ageArr[$j-1]."'>";
                     }
                     
@@ -122,7 +143,24 @@ include 'navigation.php';
                 }
                 else {
                     //Cell i mitten
-                    echo "<td><input type='number' id='cost[$i][$j]' name='cost[$i][$j]' value='0' required> SEK</td>";
+                    echo "<td>";
+                    if ($number_of_food_options > 0) echo "<div class='cost'>Deltagaravgift:</div>";
+                    if ($number_of_food_options > 0) {
+                        echo "<div class='food'>Matkostnad:</div>";
+                        for ($k = 0; $k < $number_of_food_options; ++$k) {
+                            echo "<div class='cost'>".$food_descriptionArr[$k]."</div>";
+                        }
+                    }
+                    echo "</td><td>";                   
+                    
+                    echo "<div class='cost'><input type='number' id='cost[$i][$j]' name='cost[$i][$j]' value='0' size='4' required> SEK</div>";
+                    if ($number_of_food_options > 0) {
+                        echo "<div class='food'>&nbsp;</div>";
+                        for ($k = 0; $k < $number_of_food_options; ++$k) {
+                            echo "<div class='cost'><input type='number' id='food_cost[$i][$j][$k]' name='food_cost[$i][$j][$k]' value='0' size='4' required> SEK</div>";
+                        }
+                    }
+                    echo "</td>";
                 }
             }
             echo "</tr>";
@@ -134,7 +172,7 @@ include 'navigation.php';
         
         <br>
         
-        	<input type="submit" value="Spara">
+        	<button type="submit">Spara</button>
         </form>
             </div>
 	

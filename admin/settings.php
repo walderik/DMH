@@ -80,7 +80,7 @@ $param = date_format(new Datetime(),"suv");
         <p>
 		    <a href="campaign_admin.php">Inställningar för kampanjen</a> <br> 
 		    <a href="larp_admin.php">Lajv i kampanjen</a> <br> 
-        	<a href="payment_information_admin.php">Avgift för <?php echo $current_larp->Name ?></a>
+        	<a href="payment_information_admin.php">Avgift för <?php echo $current_larp->Name ?> inklusive matavgifter</a><br>
 			<a href="bookkeeping_account_admin.php">Bokföringskonton</a>	<br>
 
         </p>

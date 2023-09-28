@@ -32,7 +32,7 @@ include 'navigation.php';
 			</div>
 			<div class="question">
 				<label for="last_date">Sista datum</label>&nbsp;<font style="color:red">*</font>
-				<br> <input type="date" id="last_date" name="last_date" value="<?php echo $current_larp->StartDate; ?>" required>
+				<br> <input type="date" id="last_date" name="last_date" value="<?php echo substr($current_larp->StartDate, 0, 10); ?>" required>
 			</div>
 			<div class="question">
 				<label for="number_of_time_intervals">Antal tidsintervaller</label>&nbsp;<font style="color:red">*</font>
@@ -43,16 +43,26 @@ include 'navigation.php';
         <p>Tänk på att ha med alla åldrar som kan delta. Även om kostnaden är 0 för dem.</p>
 			<div class="question">
 				<label for="min_age">Minsta ålder</label>&nbsp;<font style="color:red">*</font>
-				<br> <input type="text" id="min_age" name="min_age" value="<?php echo $current_larp->getCampaign()->MinimumAge; ?>" size="10" required>
+				<br> <input type="number" id="min_age" name="min_age" value="<?php echo $current_larp->getCampaign()->MinimumAge; ?>" min="0" size="10" required>
 			</div>
 			<div class="question">
 				<label for="max_age">Högsta ålder</label>&nbsp;<font style="color:red">*</font>
-				<br> <input type="text" id="max_age" name="max_age" value="200" size="10"required>
+				<br> <input type="number" id="max_age" name="max_age" value="200" size="10" min="0" required>
 			</div>
  			<div class="question">
 				<label for="number_of_age_groups">Antal åldersgrupper</label>&nbsp;<font style="color:red">*</font>
-				<br> <input type="text" id="number_of_age_groups" name="number_of_age_groups" value="1" size="10"required>
+				<br> <input type="number" id="number_of_age_groups" name="number_of_age_groups" value="1" size="10" min="1" required>
 			</div>
+			
+			
+        <h2>Matalternativ</h2>
+        <p>Om maten ingår i priset, eller det inte finns möjlighet att få mat, välj 0 st. 
+        Om maten kostar extra behöver man ha minst 2 alternativ, där ett av dem är att man inte vill ha mat.</p>
+			<div class="question">
+				<label for="min_age">Antal alternativ</label>&nbsp;<font style="color:red">*</font>
+				<br> <input type="number" id="number_of_food_options" name="number_of_food_options" value="0" size="10" required>
+			</div>
+			
         
         	<input type="submit" value="Nästa">
         </form>

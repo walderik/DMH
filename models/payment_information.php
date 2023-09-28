@@ -9,6 +9,8 @@ class PaymentInformation extends BaseModel{
     public $FromAge;
     public $ToAge;
     public $Cost;
+    public $FoodDescription;
+    public $FoodCost;
     
     public static $orderListBy = 'FromDate';
     
@@ -26,6 +28,8 @@ class PaymentInformation extends BaseModel{
         if (isset($arr['FromAge'])) $this->FromAge = $arr['FromAge'];
         if (isset($arr['ToAge'])) $this->ToAge = $arr['ToAge'];
         if (isset($arr['Cost'])) $this->Cost = $arr['Cost'];
+        if (isset($arr['FoodDescription'])) $this->FoodDescription = explode(";",$arr['FoodDescription']);
+        if (isset($arr['FoodCost'])) $this->FoodCost = explode(";",$arr['FoodCost']);
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -52,10 +56,10 @@ class PaymentInformation extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_paymentinformation SET LARPId=?, FromDate=?, ToDate=?, FromAge=?, ToAge=?,
-                                                                  Cost=? WHERE Id = ?;");
+                                                                  Cost=?, FoodDescription=?, FoodCost=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->LARPId, $this->FromDate, $this->ToDate, $this->FromAge, $this->ToAge,
-            $this->Cost, $this->Id))) {
+            $this->Cost, implode(";", $this->FoodDescription), implode(";", $this->FoodCost), $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -69,10 +73,10 @@ class PaymentInformation extends BaseModel{
         $connection = $this->connect();
 
         $stmt = $connection->prepare("INSERT INTO regsys_paymentinformation (LARPId, FromDate, ToDate, FromAge, ToAge,
-                                                                Cost) VALUES (?,?,?,?,?,?);");
+            Cost, FoodDescription, FoodCost) VALUES (?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->LARPId, $this->FromDate, $this->ToDate, $this->FromAge, $this->ToAge,
-            $this->Cost))) {
+            $this->Cost, implode(";", $this->FoodDescription), implode(";", $this->FoodCost)))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");

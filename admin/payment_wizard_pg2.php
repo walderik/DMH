@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $min_age=$_POST['min_age'];
     $max_age=$_POST['max_age'];
     $number_of_age_groups=$_POST['number_of_age_groups'];
-    
+    $number_of_food_options=$_POST['number_of_food_options'];
 } else {
     header('Location: payment_information_admin.php');
     exit;
@@ -69,6 +69,7 @@ function updateFromDate(num) {
 			<input type="hidden" id="min_age" name="min_age" value="<?php echo $min_age; ?>">
 			<input type="hidden" id="max_age" name="max_age" value="<?php echo $max_age; ?>">
 			<input type="hidden" id="number_of_age_groups" name="number_of_age_groups" value="<?php echo $number_of_age_groups; ?>">
+			<input type="hidden" id="number_of_food_options" name="number_of_food_options" value="<?php echo $number_of_food_options; ?>">
 
         
         <h2>Datumintervaller</h2>
@@ -128,6 +129,24 @@ function updateFromDate(num) {
         </table>
         <br>
         
+        <?php if ($number_of_food_options > 0) {?>
+        <h2>Matalternativ</h2>
+        <p>Beskrivningen kommer att visas för deltagarna vid anmälan.</p>
+        <table class="small_data">
+    	<tr><th>Beskrivning</th></tr>
+        <?php 
+        for ($i = 0; $i < $number_of_food_options; ++$i) {
+            echo "<tr>";
+            echo "<td><input type='text' id='food_description[$i]' name='food_description[$i]' max-length='50' required></td>";
+            echo "</tr>";
+        }
+            
+        ?>
+        </table>
+ 
+        
+		<br>   
+		<?php } ?>     
         	<input type="submit" value="Nästa">
         </form>
             </div>

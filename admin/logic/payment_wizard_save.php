@@ -12,11 +12,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $min_age=$_POST['min_age'];
     $max_age=$_POST['max_age'];
     $number_of_age_groups=$_POST['number_of_age_groups'];
+    $number_of_food_options=$_POST['number_of_food_options'];
     
+    if (isset($_POST['food_description'])) $food_descriptionArr = $_POST['food_description'];
     if (isset($_POST['date'])) $dateArr = $_POST['date'];
     if (isset($_POST['age'])) $ageArr = $_POST['age'];
     if (isset($_POST['cost'])) $costMatrix = $_POST['cost'];
-
+    if (isset($_POST['food_cost'])) $foodCostMatrix = $_POST['food_cost'];
+     
 } else {
     header('Location: ../payment_information_admin.php');
     exit;
@@ -52,7 +55,15 @@ for ($i = 0; $i < $number_of_time_intervals; ++$i) {
          $paymentInformation->FromAge = $from_age;
          $paymentInformation->ToAge = $ageArr[$j];
          $paymentInformation->Cost = $costMatrix[$i+1][$j+1];
-         $paymentInformation->Create();         
+         if ($number_of_food_options > 0) {
+             $paymentInformation->FoodDescription = $food_descriptionArr;
+             $paymentInformation->FoodCost = $foodCostMatrix[$i+1][$j+1];
+         } else {
+             $paymentInformation->FoodDescription = array();
+             $paymentInformation->FoodCost = array();
+         }
+         
+         $paymentInformation->create();         
      }
 }
 
