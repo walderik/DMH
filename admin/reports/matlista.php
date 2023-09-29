@@ -15,6 +15,17 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = 'Matlista';
 
+
+$foodChoises = Registration::getFoodVariants($current_larp);
+$hasFoodChoices = false;
+foreach($foodChoises as $foodChoise) {
+    if (!empty($foodChoise[0])) {
+        $hasFoodChoices = true;
+        break;
+    }
+}
+
+
 $pdf = new Report_PDF();
 
 $pdf->SetTitle(utf8_decode($name));
@@ -30,11 +41,14 @@ if (NormalAllergyType::isInUse()){
         $persons = Person::getAllWithSingleAllergy($allergy, $current_larp);
         if (isset($persons) && count($persons) > 0) {
             $rows = array();
-            $rows[] = array('Namn','Epost','Övrigt','Vald Mat');
+            if ($hasFoodChoices) $rows[] = array('Namn','Epost','Övrigt','Vald Mat', 'Matalternativ');
+            else $rows[] = array('Namn','Epost','Övrigt','Vald Mat');
     
             foreach($persons as $person) {
                 $registration=$person->getRegistration($current_larp);
-                $rows[] = array($person->Name, $person->Email, 
+                if ($hasFoodChoices) $rows[] = array($person->Name, $person->Email,
+                    $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name, $registration->FoodChoice);
+                else $rows[] = array($person->Name, $person->Email, 
                                 $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
             }
     
@@ -46,10 +60,14 @@ if (NormalAllergyType::isInUse()){
     $persons = Person::getAllWithMultipleAllergies($current_larp);
     if (!empty($persons) && count($persons) > 0) {
         $rows = array();
-        $rows[] = array('Namn','Epost','Allergier','Övrigt','Vald Mat');
+        if ($hasFoodChoices) $rows[] = array('Namn','Epost','Allergier','Övrigt','Vald Mat', 'Matalternativ');
+        else $rows[] = array('Namn','Epost','Allergier','Övrigt','Vald Mat');
+        
         foreach($persons as $person) {
             $registration=$person->getRegistration($current_larp);
-            $rows[] = array($person->Name, $person->Email, commaStringFromArrayObject($person->getNormalAllergyTypes()),
+            if ($hasFoodChoices) $rows[] = array($person->Name, $person->Email, commaStringFromArrayObject($person->getNormalAllergyTypes()),
+                $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name, $registration->FoodChoice);
+            else $rows[] = array($person->Name, $person->Email, commaStringFromArrayObject($person->getNormalAllergyTypes()),
                             $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
         }
         $pdf->new_report($current_larp, "Multipla vanliga allergier", $rows);
@@ -60,10 +78,15 @@ if (NormalAllergyType::isInUse()){
 $persons = Person::getAllWithoutAllergiesButWithComment($current_larp);
 if (!empty($persons) && count($persons) > 0) {
     $rows = array();
-    $rows[] = array('Namn','Epost','Övrigt','Vald Mat');
+    if ($hasFoodChoices) $rows[] = array('Namn','Epost','Övrigt','Vald Mat','Matalternativ');
+    else $rows[] = array('Namn','Epost','Övrigt','Vald Mat');
+    
     foreach($persons as $person) {
         $registration=$person->getRegistration($current_larp);
-        $rows[] = array($person->Name, $person->Email, 
+        
+        if ($hasFoodChoices) $rows[] = array($person->Name, $person->Email,
+            $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name, $registration->FoodChoice);
+        else $rows[] = array($person->Name, $person->Email, 
                         $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
     }
     $pdf->new_report($current_larp, "Special", $rows);
