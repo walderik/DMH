@@ -406,4 +406,42 @@ class Registration extends BaseModel{
         if ($diff->days > $larp->NetDays) return true;
         return false;
     }
+    
+    
+    public static function getFoodVariants($larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT FoodChoice, regsys_typeoffood.Name as Name, count(regsys_registration.Id) as Count FROM regsys_registration, regsys_typeoffood WHERE ".
+            "regsys_registration.LarpId = ? AND ".
+            "regsys_registration.NotComing = 0 AND ".
+            "regsys_registration.TypeOfFoodId = regsys_typeoffood.Id ".
+            "GROUP BY FoodChoice, regsys_typeoffood.Name ".
+            "ORDER BY FoodChoice, regsys_typeoffood.SortOrder";
+         
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($larp->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return null;
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $res = array();
+        
+        foreach ($rows as $row) {
+            $res[] = array($row['FoodChoice'], $row['Name'], $row['Count']);
+        }
+        $stmt = null;
+        
+        return $res;
+        
+    }
+    
+    
 }
