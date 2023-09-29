@@ -44,15 +44,6 @@ class PaymentInformation extends BaseModel{
         return $payment;
     }
     
-    public static function getPrice($date, $age, $larp) {
-        $sql = "SELECT * FROM regsys_paymentinformation WHERE 
-                               DATE(FromDate) <= ? AND DATE(ToDate) >= ? AND 
-                               FromAge <= ? AND ToAge >= ? AND LARPId = ?";
-        $payment_information = static::getOneObjectQuery($sql, array($date, $date, $age, $age, $larp->Id));
-        if (empty($payment_information)) return 0;
-        return $payment_information->Cost;
-        
-    }
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_paymentinformation SET LARPId=?, FromDate=?, ToDate=?, FromAge=?, ToAge=?,
@@ -86,6 +77,29 @@ class PaymentInformation extends BaseModel{
             $this->Id = $connection->lastInsertId();
             $stmt = null;
     }
+    
+    
+    public static function get($date, $age, $larp) {
+        $sql = "SELECT * FROM regsys_paymentinformation WHERE
+                               DATE(FromDate) <= ? AND DATE(ToDate) >= ? AND
+                               FromAge <= ? AND ToAge >= ? AND LARPId = ?";
+        return static::getOneObjectQuery($sql, array($date, $date, $age, $age, $larp->Id));
+        
+    }
+    
+    public static function getPrice($date, $age, $larp, $foodChoice) {
+        $payment_information = static::get($date, $age, $larp);
+        if (empty($payment_information)) return 0;
+        $base_cost = $payment_information->Cost;
+        $food_cost = 0;
+        if (isset($foodChoice)) {
+            $key = array_search($foodChoice, $payment_information->FoodDescription);
+            $food_cost = $payment_information->FoodCost[$key];
+        }
+        return $base_cost + $food_cost;
+    }
+    
+    
     
     public static function allBySelectedLARP(LARP $larp) {
         $sql = "SELECT * FROM regsys_paymentinformation WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";

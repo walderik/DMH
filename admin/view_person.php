@@ -67,6 +67,10 @@ include 'navigation.php';
 			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Typ av mat</td><td><?php echo TypeOfFood::loadById($registration->TypeOfFoodId)->Name;?></td></tr>
 			<?php } ?>
+			<?php if (isset($registration->FoodChoice)) { ?>
+			    <tr><td valign="top" class="header">Matalternativ</td><td><?php echo $registration->FoodChoice; ?></td></tr>
+			    
+			<?php } ?>
 			<tr><td valign="top" class="header">Vanliga allergier</td><td><?php echo commaStringFromArrayObject($person->getNormalAllergyTypes());?></td></tr>
 
 			<tr><td valign="top" class="header">Andra allergier</td><td><?php echo $person->FoodAllergiesOther;?></td></tr>

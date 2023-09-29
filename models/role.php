@@ -287,10 +287,10 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($personId, $campaignId));
     }
     
-    public static function getAliveRolesForPerson($personId) {
+    public static function getAliveRolesForPerson($personId, $campaignId) {
         if (is_null($personId)) return Array();
-        $sql = "SELECT * FROM regsys_role WHERE PersonId = ? AND IsDead=0 ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($personId));
+        $sql = "SELECT * FROM regsys_role WHERE PersonId = ? AND IsDead=0 AND CampaignId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($personId, $campaignId));
     }
     
     # Hämta de karaktärer en person har anmält till ett lajv

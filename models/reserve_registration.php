@@ -225,7 +225,7 @@ class Reserve_Registration extends BaseModel{
         $person = Person::loadById($registration->PersonId);
         $larp = LARP::loadById($this->LARPId);
         $age = $person->getAgeAtLarp($larp);
-        $registration->AmountToPay = PaymentInformation::getPrice(date($larp->LatestRegistrationDate), $age, $larp);
+        $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age, $larp, $registration->FoodChoice);
         
         $registration->PaymentReference = $registration->createPaymentReference();
 

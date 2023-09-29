@@ -56,7 +56,7 @@ else {
     //Kolla att minst en karaktär går att anmäla
     $mayRegister = false;
     foreach ($roles as $role) {
-        if ($role->groupIsRegistered($current_larp)) $mayRegister = true;
+        if ($role->groupIsRegisteredApproved($current_larp)) $mayRegister = true;
     }
     if ($mayRegister == false) {
         header('Location: index.php?error=no_role_may_register');
@@ -68,6 +68,9 @@ else {
         exit;
     }
 }
+
+$age = $current_person->getAgeAtLarp($current_larp);
+
 include 'navigation.php';
 ?>
 
@@ -85,7 +88,7 @@ include 'navigation.php';
 			</p>
 				
 		    <?php 
-		    if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+		    if ($age < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		    ?>
 			<div class="question">
     			<label for="GuardianInfo">Ansvarig vuxen</label>&nbsp;<font style="color:red">*</font>
@@ -141,6 +144,22 @@ include 'navigation.php';
 			</div>
 			<?php } ?>
 			
+			
+			<?php 
+			$paymentInformation = PaymentInformation::get(date("Y-m-d"), $age, $current_larp);
+			if (!empty($paymentInformation->FoodDescription)) {
+			    echo "<div class='question'>";
+			    echo "<label for='FoodChoice'>Vilket matalternativ väljer du?</label>&nbsp;<font style='color:red'>*</font>";
+			    echo "<br>";
+			    foreach ($paymentInformation->FoodDescription as $i => $description) {
+			        echo "<input type='radio' id='FoodChoice_$description' name='FoodChoice' value='$description' required>";
+			        echo "<label for='FoodChoice_$description'>$description, ".$paymentInformation->FoodCost[$i]." SEK</label><br>";
+			    }
+			    echo "</div>";
+			}
+			?>
+			
+			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
 			<div class="question">
     			<label for="HousingRequest">Boende</label>&nbsp;<font style="color:red">*</font>
@@ -182,6 +201,9 @@ include 'navigation.php';
                 ?>
             </div>
 			<?php } ?>
+			
+			
+		
 
 			<div class="question">Godkända karaktärer&nbsp;<font style="color:red">*</font><br>
 			<div class="explanation">

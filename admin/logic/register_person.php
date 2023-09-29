@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $registration->TypeOfFoodId = TypeOfFood::allActive($current_larp)[0]->Id;
     
     $age = $person->getAgeAtLarp($current_larp);
-    $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age, $current_larp);
+    $registration->AmountToPay = PaymentInformation::getPrice(date("Y-m-d"), $age, $current_larp, $registration->FoodChoice);
         
     $registration->PaymentReference = $registration->createPaymentReference();
 

@@ -26,6 +26,7 @@ class Registration extends BaseModel{
     public $NotComingReason;
     public $SpotAtLARP = 0;
     public $TypeOfFoodId;
+    public $FoodChoice;
     public $EvaluationDone = 0;
     
     public static $orderListBy = 'RegisteredAt';
@@ -60,6 +61,7 @@ class Registration extends BaseModel{
         if (isset($arr['NotComingReason'])) $this->NotComingReason = $arr['NotComingReason'];
         if (isset($arr['SpotAtLARP'])) $this->SpotAtLARP = $arr['SpotAtLARP'];
         if (isset($arr['TypeOfFoodId'])) $this->TypeOfFoodId = $arr['TypeOfFoodId'];
+        if (isset($arr['FoodChoice'])) $this->FoodChoice = $arr['FoodChoice'];
         if (isset($arr['EvaluationDone'])) $this->EvaluationDone = $arr['EvaluationDone'];
         
     }
@@ -95,13 +97,13 @@ class Registration extends BaseModel{
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, NotComingReason=?,
-                SpotAtLARP=?, TypeOfFoodId=?, EvaluationDone=? WHERE Id = ?");
+                SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, EvaluationDone=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, 
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, 
-            $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->EvaluationDone, $this->Id))) {
+            $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->EvaluationDone, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -118,12 +120,12 @@ class Registration extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, ApprovedCharacters, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId, EvaluationDone) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId, FoodChoice, EvaluationDone) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason,
-            $this->SpotAtLARP, $this->TypeOfFoodId, $this->EvaluationDone))) {
+            $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->EvaluationDone))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
