@@ -14,13 +14,18 @@ class Dbh {
     
     
     private static function setUpConnection() {
-        if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
+        if (str_contains($_SERVER['HTTP_HOST'], 'localhost') || str_contains($_SERVER['HTTP_HOST'], '192.168.0.19')) {
             self::$dbServername = "192.168.0.19";
             self::$dbUsername = "root";
             self::$dbPassword = "";
             self::$dbName = "berghemsvanner_";
-        }
-        else {
+        } elseif (str_contains($_SERVER['HTTP_HOST'], '79.136.15.1')) {
+            self::$dbServername = "localhost";
+            self::$dbUsername = "root";
+            self::$dbPassword = "";
+            self::$dbName = "berghemsvanner_";
+            
+        } else {
             self::$dbServername = "berghemsvanner.se.mysql.service.one.com";
             self::$dbUsername = "berghemsvanner_";
             self::$dbPassword = "Y2K0U1!";
