@@ -15,6 +15,7 @@ class Email extends BaseModel{
     public  $Text;
     public  $CreatedAt;
     public  $SentAt;
+    public  $DeletesAt;
     public  $ErrorMessage;
 
     public static $orderListBy = 'CreatedAt';
@@ -36,6 +37,7 @@ class Email extends BaseModel{
         if (isset($arr['Text'])) $this->Text = $arr['Text'];
         if (isset($arr['CreatedAt'])) $this->CreatedAt = $arr['CreatedAt'];
         if (isset($arr['SentAt'])) $this->SentAt = $arr['SentAt'];
+        if (isset($arr['DeletesAt'])) $this->DeletesAt = $arr['DeletesAt'];
         if (isset($arr['$ErrorMessage'])) $this->ErrorMessage = $arr['$ErrorMessage'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];  
     }
@@ -67,13 +69,18 @@ class Email extends BaseModel{
     # Normala sättet att skapa ett mail som kommer skickas vid ett senare tillfälle.
     # Attachments skall vara en array med namnen på filerna som nyckel.
     # Just nu tillåter vi bara pdf:er som bilagor.
-    public static function normalCreate($To, $ToName, $Subject, $Text, $attachments) {
+    public static function normalCreate($To, $ToName, $Subject, $Text, $attachments, $noOfDaysKept) {
         $email = self::newWithDefault();
         $email->To = $To;
         $email->ToName = $ToName;
         $email->Subject = $Subject;
         $email->Text = $Text; 
-        if (!is_null($attachments) && !empty($attachments)) $email->SentAt = date_format(new Datetime(),"Y-m-d H:i:s"); # Förhindra att det skickas innan bilagorna sparats färdigt.
+        $now = new Datetime();
+        if (!is_null($attachments) && !empty($attachments)) $email->SentAt = date_format($now,"Y-m-d H:i:s"); # Förhindra att det skickas innan bilagorna sparats färdigt.
+        
+        $now->modify("+$noOfDaysKept day");
+        $email->DeletesAt = date_format($now,"Y-m-d H:i:s");
+        
         $email->create();
         
         if (!is_null($attachments) && !empty($attachments)) {
@@ -156,9 +163,9 @@ class Email extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_email SET SentAt=?, SenderUserId=?, LarpId=?, `From`=?, `To`=?, `ToName`=?, `CC`=?, Subject=?, Text=?, ErrorMessage=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_email SET SentAt=?, DeletesAt=?, SenderUserId=?, LarpId=?, `From`=?, `To`=?, `ToName`=?, `CC`=?, Subject=?, Text=?, ErrorMessage=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->SentAt, $this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->CC, $this->Subject, 
+        if (!$stmt->execute(array($this->SentAt, $this->DeletesAt, $this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->CC, $this->Subject, 
                                   $this->Text, $this->ErrorMessage, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -171,9 +178,9 @@ class Email extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_email (SenderUserId, LarpId, `From`, `To`, ToName, CC, Subject, Text, CreatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_email (SenderUserId, LarpId, `From`, `To`, ToName, CC, Subject, Text, CreatedAt, DeletesAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->CC, $this->Subject, $this->Text, date_format(new Datetime(),"Y-m-d H:i:s")))) {
+        if (!$stmt->execute(array($this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->CC, $this->Subject, $this->Text, date_format(new Datetime(),"Y-m-d H:i:s"), $this->DeletesAt))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -230,7 +237,7 @@ class Email extends BaseModel{
     # Normalt bör man inte anropa den här direkt utan newWithDefault
     public function sendNow() {        
         global $current_larp, $current_user;
-     
+
         
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
@@ -290,11 +297,26 @@ class Email extends BaseModel{
     
     public static function handleEmailQueue() {
         //     return;
+        Email::deleteOldMails();
         $current_queue = static::allUnsent();
         if (empty($current_queue)) return;
         if (!static::okToSendNow()) return;
         //     echo "Send an email";
         $to_send = array_pop($current_queue); # Hämta äldsta mailet i kön
         return $to_send->sendNow();
+    }
+    
+    public static function deleteOldMails() {
+        $now = new Datetime();
+        $sql = "DELETE FROM `regsys_email` WHERE Date(`DeletesAt`) < '".date_format($now,"Y-m-d")."';";
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute()) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+        
     }
 }
