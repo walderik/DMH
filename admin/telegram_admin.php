@@ -1,7 +1,7 @@
 <?php
 include_once 'header.php';
 
-// BerghemMailer::send('Mats.rappe@yahoo.se', 'Mats Rappe', "Det här är ett mail");
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

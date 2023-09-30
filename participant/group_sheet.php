@@ -52,8 +52,3 @@ if (empty($group)) {
 
 $pdf->Output();
 
-
-// $doc = $pdf->Output('S');
-
-// $attachments = ['Telegrammen' => $doc];
-//BerghemMailer::send('Mats.rappe@yahoo.se', 'Admin', "Det här är alla telegrammen", "Alla Telegrammen som PDF", $attachments);
