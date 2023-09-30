@@ -15,7 +15,6 @@ class Dbh {
     
     private static function setUpConnection() {
         if (str_contains($_SERVER['HTTP_HOST'], 'localhost') || str_contains($_SERVER['HTTP_HOST'], '192.168.0.19') || str_contains($_SERVER['HTTP_HOST'], '155.4.119.71')) {
-            echo "local";
             self::$dbServername = "192.168.0.19";
             self::$dbUsername = "root";
             self::$dbPassword = "";
