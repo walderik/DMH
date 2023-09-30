@@ -79,6 +79,20 @@ include 'navigation.php';
 				<td><label for="Cost">Avgift</label>&nbsp;<font style="color:red">*</font></td>
 				<td><input type="text" id="Cost" name="Cost" value="<?php echo $payment->Cost; ?>" required></td>
 			</tr>
+			<?php 
+			
+			if (!empty($payment->FoodDescription)) {
+			    echo "<tr><td colspan='2'>Matalternativ</td></tr>";
+			    foreach ($payment->FoodDescription as $key => $description) {
+			        echo "<tr><td></td><td><input type='text' id='FoodDescription_$key' name='FoodDescription[]' value='$description' required></td>";
+			        echo "<td><input type='number' id='FoodCost_$key' name='FoodCost[]' value='".$payment->FoodCost[$key]."' required> SEK</td></tr>";
+			    }
+			}
+			
+			
+			?>
+			
+			
 		</table>
 
 		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">

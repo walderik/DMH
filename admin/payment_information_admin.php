@@ -10,14 +10,13 @@ include 'navigation.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $operation = $_POST['operation'];
-     
     if ($operation == 'insert') {
         $payment_information = PaymentInformation::newFromArray($_POST);
         $payment_information->create();
     } elseif ($operation == 'delete') {
         PaymentInformation::delete($_POST['Id']);
     } elseif ($operation == 'update') {
-        $payment_information = PaymentInformation::loadById(['Id']);
+        $payment_information = PaymentInformation::loadById($_POST['Id']);
         $payment_information->setValuesByArray($_POST);
         $payment_information->update();
     } 

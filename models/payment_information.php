@@ -28,8 +28,14 @@ class PaymentInformation extends BaseModel{
         if (isset($arr['FromAge'])) $this->FromAge = $arr['FromAge'];
         if (isset($arr['ToAge'])) $this->ToAge = $arr['ToAge'];
         if (isset($arr['Cost'])) $this->Cost = $arr['Cost'];
-        if (isset($arr['FoodDescription'])) $this->FoodDescription = explode(";",$arr['FoodDescription']);
-        if (isset($arr['FoodCost'])) $this->FoodCost = explode(";",$arr['FoodCost']);
+        if (isset($arr['FoodDescription'])) {
+            if (is_array($arr['FoodDescription'])) $this->FoodDescription = $arr['FoodDescription'];
+            else $this->FoodDescription = explode(";",$arr['FoodDescription']);
+        }
+        if (isset($arr['FoodCost'])) {
+            if (is_array($arr['FoodCost'])) $this->FoodCost = $arr['FoodCost'];
+            else $this->FoodCost = explode(";",$arr['FoodCost']);
+        }
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
