@@ -19,7 +19,7 @@ class Dbh {
             self::$dbUsername = "root";
             self::$dbPassword = "";
             self::$dbName = "berghemsvanner_";
-        } elseif (str_contains($_SERVER['HTTP_HOST'], '79.136.15.1')) {
+        } elseif (str_contains($_SERVER['HTTP_HOST'], '155.4.119.71')) {
             self::$dbServername = "localhost";
             self::$dbUsername = "root";
             self::$dbPassword = "";
