@@ -156,4 +156,29 @@ class Image extends BaseModel{
         return "";
     }
     
+    public static function update() {
+        //Används bara vid anonymisering av databasen
+
+        
+        $file_mime = mime_content_type($_FILES["upload"]["tmp_name"]);
+        $filename = "anonym";
+
+        $connection = static::connectStatic();
+        
+        $stmt = $connection->prepare("UPDATE regsys_image SET file_name=?, file_mime=?, file_data=?, Photographer=? WHERE Id=?");
+        
+        if (!$stmt->execute(array($filename,
+            $file_mime,
+            file_get_contents($_FILES["upload"]["tmp_name"]),
+            "",1))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+            }
+            $id = $connection->lastInsertId();
+            $stmt = null;
+            return $id;
+    }
+    
+    
 }
