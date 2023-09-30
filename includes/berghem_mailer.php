@@ -25,7 +25,7 @@ class BerghemMailer {
         global $current_user;
         
         //Om test, skicka bara till inloggad användare
-        if (str_contains($_SERVER['HTTP_HOST'], 'localhost')) {
+        if (Dbh::isLocal()) {
             # Fixa så inga mail går iväg om man utvecklar
             if (isset($current_user)) {
                 $to_email = $current_user->Email;

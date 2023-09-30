@@ -1,6 +1,5 @@
 <?php 
 
-# Testa med http://localhost/regsys/includes/font_test.php
 class OurFonts {
     
     public static function fontArray() {

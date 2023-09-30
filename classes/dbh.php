@@ -12,9 +12,15 @@ class Dbh {
 //     public static $dbPassword = "Y2K0U1!";
 //     public static $dbName = "berghemsvanner_";
     
+    public static function isLocal() {
+        if (str_contains($_SERVER['HTTP_HOST'], 'localhost') || str_contains($_SERVER['HTTP_HOST'], '192.168.0.19') || str_contains($_SERVER['HTTP_HOST'], '155.4.119.71')) {
+            return true;
+        } else return false;
+            
+    }
     
     private static function setUpConnection() {
-        if (str_contains($_SERVER['HTTP_HOST'], 'localhost') || str_contains($_SERVER['HTTP_HOST'], '192.168.0.19') || str_contains($_SERVER['HTTP_HOST'], '155.4.119.71')) {
+        if (static::isLocal()) {
             self::$dbServername = "192.168.0.19";
             self::$dbUsername = "root";
             self::$dbPassword = "";

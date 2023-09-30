@@ -13,7 +13,7 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
-if (!str_contains($_SERVER['HTTP_HOST'], 'localhost')) exit;
+if (!Dbh::isLocal()) exit;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     echo "Anonymiserar data i databasen...<br>";

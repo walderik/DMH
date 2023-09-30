@@ -1,8 +1,6 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-# http://localhost/regsys/admin/group_sheet.php?id=4
-
 global $root, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
