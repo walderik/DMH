@@ -10,6 +10,10 @@ include "navigation.php";
 			    <a href="house_admin.php">Hus och lägerplatser</a><br>
 			    <a href="user_admin.php">Användare / Logins /Admin behörighet</a><br>
 		    </p>
+		    <p>
+				<a href="dev-tools/test.php">Ta en backup</a><br>
+		    
+		    </p>
 		    <h2>Basdata</h2>
 		    <p>	    			
     		    <a href="selection_data_general_admin.php?type=normalallergytypes">Vanliga allergier</a>	<br>

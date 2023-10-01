@@ -94,11 +94,13 @@ class Backup extends Dbh {
     
     
     private static function downloadScript($sqlScript) {
+        global $root;
         if(!empty($sqlScript)) {
+            $sqlScript = "SET FOREIGN_KEY_CHECKS=0;\n\n" . $sqlScript . "\n\nSET FOREIGN_KEY_CHECKS=1;";
             // Save the SQL script to a backup file
-            $backup_file_name = 'OM_backup_' . time() . '.sql';
+            $backup_file_name = $root . '/tmp/OM_backup_' . time() . '.sql';
             $fileHandler = fopen($backup_file_name, 'w+');
-            $number_of_lines = fwrite($fileHandler, $sqlScript);
+            fwrite($fileHandler, $sqlScript);
             fclose($fileHandler);
             
             // Download the SQL backup file to the browser
@@ -110,10 +112,11 @@ class Backup extends Dbh {
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
             header('Content-Length: ' . filesize($backup_file_name));
-            ob_clean();
+            //ob_clean();
             flush();
             readfile($backup_file_name);
-            exec('rm ' . $backup_file_name);
+            unlink($backup_file_name);
+            //exec('rm ' . $backup_file_name);
         }
         
     }
