@@ -4,8 +4,8 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require $root . '/includes/init.php';
 
-require 'random_name.php';
-require 'lorem_ipsum.php';
+require 'backup.php';
+
 
 //Ifthe user isnt admin it may not see these pages
 if (!isset($_SESSION['admin'])) {
@@ -13,6 +13,4 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
-for($i=0; $i < 10; $i++) {
-    echo RandomName::getName()."<br>";
-}
+Backup::doBackup();
