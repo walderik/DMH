@@ -72,10 +72,10 @@ class Backup extends Dbh {
                 $sqlScript .= "INSERT INTO $table VALUES(";
                 $columnCount = count($row);
                 for ($j = 0; $j < $columnCount; $j ++) {
-                    $row[$j] = $row[$j];
+                    //$row[$j] = $row[$j];
                     
                     if (isset($row[$j])) {
-                        $sqlScript .= '"' . $row[$j] . '"';
+                        $sqlScript .= '"' . static::escapeQuotes($row[$j]) . '"';
                     } else {
                         $sqlScript .= '""';
                     }
@@ -92,6 +92,13 @@ class Backup extends Dbh {
         
     }
     
+    
+    
+    private static function escapeQuotes(String $str) {
+        $pattern = '"';
+        $replacement = '\"';
+        return str_replace($pattern, $replacement, $str);
+    }
     
     private static function downloadScript($sqlScript) {
         global $root;
