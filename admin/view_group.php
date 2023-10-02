@@ -169,7 +169,7 @@ include 'navigation.php';
 		    echo "<tr><th>Intrig</th><th>Intrigtext</th><th></th></tr>";
 	        foreach ($intrigues as $intrigue) {
 	           echo "<tr>";
-	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrig: $intrigue->Number. $intrigue->Name</a>";
+	           echo "<td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrigspår: $intrigue->Number. $intrigue->Name</a>";
 	           if (!$intrigue->isActive()) echo " (inte aktuell)";
 	           echo "</td>";
 	           $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $current_group);

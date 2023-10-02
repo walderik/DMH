@@ -56,7 +56,7 @@ include 'navigation.php';
     
 
     <div class="content"> 
-    <h1><?php echo default_value('action');?> intrig <a href="<?php echo $referer; ?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1><?php echo default_value('action');?> intrigspår <a href="<?php echo $referer; ?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 	<form action="logic/view_intrigue_logic.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
@@ -66,7 +66,7 @@ include 'navigation.php';
 				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($intrigue->Name); ?>" size="50" maxlength="250" required></td>
 			</tr>
 			<tr>
-				<td><label for="Active">Aktuell</label><br>(Kommer att visas för deltagarna när intrigerna släpps. Intriger går inte att radera, bara att sättas till inte aktuell.)</td>
+				<td><label for="Active">Aktuell</label><br>(Kommer att visas för deltagarna när intrigerna släpps. Intrigspår går inte att radera, bara att sättas till inte aktuell.)</td>
 				<td>
 					<input type="radio" id="Active_yes" name="Active" value="1" <?php if ($intrigue->Active == 1) echo 'checked="checked"'?>> 
         			<label for="Active_yes">Ja</label><br> 

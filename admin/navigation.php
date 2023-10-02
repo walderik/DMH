@@ -69,7 +69,7 @@ function myFunction() {
 	    <div class="dropdown-content">
             <a href="groups.php">Grupper</a>
             <a href="roles.php">Karaktärer</a>
-            <a href="intrigue_admin.php">Intriger</a>
+            <a href="intrigue_admin.php">Intrigspår</a>
             <a href="commerce.php">Handel</a>
             <a href="timeline_admin.php">Körschema</a>
 
