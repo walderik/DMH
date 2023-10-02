@@ -9,10 +9,8 @@ include "navigation.php";
 				<a href="campaign_admin.php">Kampanjer</a><br>
 			    <a href="house_admin.php">Hus och lägerplatser</a><br>
 			    <a href="user_admin.php">Användare / Logins /Admin behörighet</a><br>
-		    </p>
-		    <p>
-				<a href="dev-tools/test.php">Ta en backup</a><br>
-		    
+			    <br>
+				<a href="dev-tools/doBackup.php">Ta en backup</a>
 		    </p>
 		    <h2>Basdata</h2>
 		    <p>	    			
