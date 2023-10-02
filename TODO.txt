@@ -1,11 +1,4 @@
 
-
-Matalternativ ska visas i kök-delar.
-
-Lägg till / redigera payment_information måste hantera matkostnader.
-
-
-
 --------------------------------------------------
 Bygghelgs-anmälningar
 
@@ -56,3 +49,17 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;
 
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role
+
+
+MySQL - import av backup
+=========================
+Change php.ini
+
+max_execution_time = 600
+max_input_time = 600
+memory_limit = 1024M
+post_max_size = 1024M
+
+Change my.ini
+
+max_allowed_packet = 1024M
