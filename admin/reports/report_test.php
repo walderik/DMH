@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 }
 
 $name = 'Rapporten';
-$persons = Person::getAllToApprove($current_larp);
+$persons = Person::getAllRegistered($current_larp, false);
 
 $rows = array();
 foreach($persons as $person) {

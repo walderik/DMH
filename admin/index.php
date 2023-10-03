@@ -48,38 +48,32 @@ include "navigation.php";
                 
 
 		</div>
+					<div class="content">
 		<?php 
 		$approval_count_group = count (Group::getAllToApprove($current_larp));
-		$approval_count = count (Person::getAllToApprove($current_larp));
-		if ($approval_count_group>0 || $approval_count>0) { ?>
-			<div class="content">
-			<?php echo "$approval_count_group grupper och $approval_count deltagare väntar på <a href='approval.php'>godkännande</a>."; ?> 
-		
-			</div>			
-		<?php }
-		
+		$approval_count_roles = count (Role::getAllToApprove($current_larp));
+		if ($approval_count_group>0 || $approval_count_roles>0) echo "$approval_count_group grupper och $approval_count_roles karaktärer väntar på <a href='approval.php'>godkännande</a>.<br>"; 
+
 		$approval_t_count = count (Telegram::getAllToApprove($current_larp));
-		if ($approval_t_count>0) { ?>
-			<div class="content">
-			<?php echo $approval_t_count; ?> telegram som väntar på <a href="telegram_admin.php">godkännande</a>. 
-		
-			</div>			
-		<?php }
+		if ($approval_t_count>0) echo "$approval_t_count telegram väntar på <a href='telegram_admin.php'>godkännande</a>. <br>";
+
 		$approval_l_count = count (Letter::getAllToApprove($current_larp));
-		if ($approval_l_count>0) { ?>
-			<div class="content">
-			<?php echo $approval_l_count; ?> brev som väntar på <a href="letter_admin.php">godkännande</a>. 
-		
-			</div>			
-		<?php }?>
+		if ($approval_l_count>0) echo "$approval_l_count brev väntar på <a href='letter_admin.php'>godkännande</a>. <br>";
+
+		$approval_r_count = count (Rumour::getAllToApprove($current_larp));
+		if ($approval_r_count>0) echo "$approval_r_count rykten väntar på <a href='rumour_admin.php'>godkännande</a>.<br>"; 
+		?>
+		</div>
 		
 		<div class="content">
             <a href="not_registered_roles.php">Karaktärer som inte är anmälda (än) i år</a>
 		</div>
 		
 		<div class="content">
-			Förväntade intäkter: <?php echo Registration::totalIncomeToBe($current_larp);?> SEK<br>
-		    Faktiskta intäkter: <?php echo Registration::totalIncomeToday($current_larp)?> SEK
+		<table>
+			<tr><td style='font-weight: normal'>Förväntade intäkter:</td><td align='right'><?php echo Registration::totalIncomeToBe($current_larp);?> SEK</td></tr>
+		    <tr><td style='font-weight: normal'>Faktiskta intäkter:</td><td align='right'><?php echo Registration::totalIncomeToday($current_larp)?> SEK</td></tr>
+	    </table>
 		</div>
 
 	</body>

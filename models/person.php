@@ -206,15 +206,6 @@ class Person extends BaseModel{
     }
     
     
-    public static function getAllToApprove($larp) {
-        if (is_null($larp)) return array();
-        $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
-        "regsys_registration WHERE LarpId = ? AND ApprovedCharacters IS Null AND NotComing = 0) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
-    }
- 
-    
-    
     public static function findGuardian($guardianInfo, $larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_person WHERE (Name=? OR SocialSecurityNumber = ?) AND Id IN ".
@@ -486,11 +477,11 @@ class Person extends BaseModel{
     
 
     public function isApprovedCharacters(LARP $larp) {
-        $registration = Registration::loadByIds($this->Id, $larp->Id);
-        if (!isset($registration)) {
-            return false;
+        $roles = Role::getRegistredRolesForPerson($this, $larp);
+        foreach ($roles as $role) {
+            if (!$role->isApproved()) return false;
         }
-        return $registration->isApprovedCharacters();
+        return true;
     }
     
     public function hasPayed($larp) {

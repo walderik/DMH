@@ -89,7 +89,6 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Får visa namn</td><td><?php echo ja_nej($person->HasPermissionShowName)?></td></tr>
 			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($registration->isMember())?></td></tr>
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
-			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->ApprovedCharacters)) { echo $registration->ApprovedCharacters; } else { echo "Nej"; }?></td></tr>
 			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
 			
 			<?php if (OfficialType::isInUse($current_larp)) { ?>

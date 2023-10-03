@@ -23,11 +23,8 @@ $isReserve = Reserve_LARP_Role::isReserve($role->Id, $current_larp->Id);
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 
-$person = $role->getPerson();
-
 include 'navigation.php';
 ?>
-
 
 	<div class="content">
 		<h1><?php echo $role->Name;?>&nbsp;
@@ -41,7 +38,7 @@ include 'navigation.php';
 		<i class='fa-solid fa-file-pdf' title='All info om <?php echo $role->Name;?>'></i>All info om <?php echo $role->Name;?></a>
 		<br><br>
 		<?php 
-		if ($person->isApprovedCharacters($current_larp)) {
+		if ($role->isApproved()) {
 		  echo "<strong>Godkänd</strong>";
 		}
 		else {

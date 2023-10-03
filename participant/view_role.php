@@ -42,8 +42,10 @@ include 'navigation.php';
 		<a href='character_sheet.php?id=<?php echo $role->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för <?php echo $role->Name;?>'></i></a>
 		</h1>
 		<div>
+		
 		<table>
-			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $person->Name; ?></td>
+			<tr><td valign="top" class="header">Godkänd</td><td><?php echo showStatusIcon($role->isApproved())." ". ja_nej($role->isApproved()) ?></td><tr>
+					<tr><td valign="top" class="header">Spelas av</td><td><?php echo $person->Name; ?></td>
 		<?php 
 		if ($role->hasImage()) {
 		    

@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $operation = $_POST['operation'];
     if ($operation == 'insert') {
         $role = Role::newFromArray($_POST);
+        $role->IsApproved = 0;
         $role->create();
     } elseif ($operation == 'update') {
         $role = Role::loadById($_POST['Id']);
@@ -27,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
  
         $role->setValuesByArray($_POST);
+        $role->IsApproved = 0;
         $role->update();
 
         $role->deleteAllIntrigueTypes();
@@ -38,15 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($larp_role)) {
             $larp_role->UserMayEdit = 0;
             $larp_role->update();
-            
-            
-            //Sätt deltagaren till icke-godkänd
-            $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
-            if (!empty($registration)) {
-                $registration->ApprovedCharacters=null;
-                $registration->update();
-            }
-            
         }
     }
     

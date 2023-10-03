@@ -95,7 +95,7 @@ th {
     		                
     		            }
     		            
-        		        echo "<td align='center'>" . showStatusIcon($registration->isApprovedCharacters()) . "</td>\n";
+    		            echo "<td align='center'>" . showStatusIcon($person->isApprovedCharacters($current_larp)) . "</td>\n";
         		        echo "<td align='center'>" . showStatusIcon($registration->isMember()) . "</td>\n";
         		        echo "<td>".$registration->PaymentReference .  "</td>\n";
         		        echo "<td align='center'>" . showStatusIcon($registration->hasPayed());

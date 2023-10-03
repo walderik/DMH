@@ -41,14 +41,6 @@ include 'navigation.php';
 
 	<div class="content">
 		<h1><?php echo $person->Name;?></h1>
-		<?php 
-		if (!$registration->isApprovedCharacters() && !$userMayEdit) {
-	        echo "<form action='logic/approve_person.php' method='post'>";
-	        echo "<input type='hidden' id='RegistrationId' name='RegistrationId' value='$registration->Id'>";
-	        echo "<input type='submit' value='Godkänn karaktärerna'>";
-	        echo "</form>";
-		}
-		?>
 		<form action="logic/edit_person_save.php" method="post">
     		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $person->Id; ?>">
     		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $registration->Id; ?>">
@@ -128,7 +120,7 @@ include 'navigation.php';
 
 			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($registration->isMember())?></td></tr>
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
-			<tr><td valign="top" class="header">Godkänd</td><td><?php if (isset($registration->ApprovedCharacters)) { echo $registration->ApprovedCharacters; } else { echo "Nej"; }?></td></tr>
+			<tr><td valign="top" class="header">Godkända karaktärer</td><td><?php echo ja_nej($person->isApprovedCharacters($current_larp))?></td></tr>
 			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
 			<?php if (OfficialType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php OfficialType::selectionDropdown($current_larp, true,false,$registration->getSelectedOfficialTypeIds());?></td></tr>

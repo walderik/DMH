@@ -23,11 +23,6 @@ else {
 
 $larp_role->update();
 
-//Sätt deltagaren till icke-godkänd
-$role = Role::loadById($larp_role->RoleId);
-$registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
-$registration->ApprovedCharacters=null;
-$registration->update();
 
 if (isset($_POST['Referer']) && $_POST['Referer']!="") {
     header('Location: ' . $_POST['Referer']);

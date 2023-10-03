@@ -159,29 +159,17 @@ class BerghemMailer {
     
     
     
-    public static function send_approval_mail(Registration $registration) {
-        $person = $registration->getPerson();
+    public static function send_role_approval_mail(Role $role, LARP $larp) {
+        $person = $role->getPerson();
         $mail = $person->Email;
-        
-        $larp = $registration->getLARP();
-        $roles = $person->getRolesAtLarp($larp);
+       
         
         
-        $text  = "Dina karaktärer är nu godkända för att vara med i lajvet $larp->Name<br>\n";
-        $text .= "<br>\n";
-        $text .= "De karaktärer du har anmält är:<br>\n";
-        $text .= "<br>\n";
-        foreach ($roles as $role) {
-            $text .= '* '.$role->Name;
-            if ($role->isMain($larp)) {
-                $text .= " - Din huvudkaraktär";
-            }
-            $text .= "<br>\n";
-        }
+        $text  = "Din karaktär $role->Name är nu godkänd för att vara med i lajvet $larp->Name<br>\n";
         
-        $sheets = static::getAllSheets($roles, $larp);
+        $sheets = static::getAllSheets(array($role), $larp);
         
-        static::send($mail, $person->Name, $text, "Godkända karaktärer till ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);
+        static::send($mail, $person->Name, $text, "Godkänd karaktär till ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);
     }
     
     public static function send_group_approval_mail(Group $group, LARP $larp) {

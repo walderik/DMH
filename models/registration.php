@@ -7,7 +7,6 @@ class Registration extends BaseModel{
     public $Id;
     public $LARPId;
     public $PersonId;
-    public $ApprovedCharacters; //Date
     public $RegisteredAt;
     public $PaymentReference;
     public $AmountToPay = 0;
@@ -42,7 +41,6 @@ class Registration extends BaseModel{
         if (isset($arr['Id']))   $this->Id = $arr['Id'];
         if (isset($arr['LARPId'])) $this->LARPId = $arr['LARPId'];
         if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
-        if (isset($arr['ApprovedCharacters'])) $this->ApprovedCharacters = $arr['ApprovedCharacters'];
         if (isset($arr['RegisteredAt'])) $this->RegisteredAt = $arr['RegisteredAt'];
         if (isset($arr['PaymentReference'])) $this->PaymentReference = $arr['PaymentReference'];
         if (isset($arr['AmountToPay'])) $this->AmountToPay = $arr['AmountToPay'];
@@ -93,13 +91,13 @@ class Registration extends BaseModel{
     
     # Update an existing registration in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?, ApprovedCharacters=?, 
+        $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?,  
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, NotComingReason=?,
                 SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, EvaluationDone=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, 
+        if (!$stmt->execute(array($this->LARPId, $this->PersonId,  
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, 
@@ -117,12 +115,12 @@ class Registration extends BaseModel{
     # Create a new registration in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, ApprovedCharacters, RegisteredAt, 
+        $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, 
             NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId, FoodChoice, EvaluationDone) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->ApprovedCharacters, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
+        if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason,
             $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->EvaluationDone))) {
@@ -132,13 +130,6 @@ class Registration extends BaseModel{
         }
         $this->Id = $connection->lastInsertId();
         $stmt = null;
-    }
-    
-    public function isApprovedCharacters() {
-        if (isset($this->ApprovedCharacters)) {
-            return true;
-        }
-        return false;
     }
     
     public function hasPayed() {
@@ -248,12 +239,13 @@ class Registration extends BaseModel{
     
     
     public function allChecksPassed() {
-        if (!$this->isApprovedCharacters()) return false;
         if (!$this->isMember()) return false;
         if (!$this->hasPayed()) return false;
         
         $person = $this->getPerson();
         $larp = $this->getLARP();
+        if (!$person->isApprovedCharacters($larp)) return false;
+
         if ($person->getAgeAtLarp($larp) < $larp->getCampaign()->MinimumAgeWithoutGuardian && 
             empty($this->GuardianId))  return false;
         return true;

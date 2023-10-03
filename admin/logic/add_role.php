@@ -11,11 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $larp_role->LARPId = $current_larp->Id;
     $larp_role->IsMainRole = 0;
     $larp_role->create();   
-    
-    //Karaktären måste godkännas.
-    $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
-    $registration->ApprovedCharacters = null;
-    $registration->update();
+
     
     BerghemMailer::send_added_role_mail($role, $current_larp);
         
