@@ -1,11 +1,12 @@
 <?php
 include_once 'header.php';
+include_once '../includes/error_handling.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['operation'])) {
         $operation = $_POST['operation'];
         
-        echo "Operation: ".$operation;
         if ($operation == 'add_income') {
             $bookkeeping = Bookkeeping::newFromArray($_POST);
             $bookkeeping->create();
@@ -34,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 function saveReceipt(Bookkeeping $bookkeeping) {
+    global $error_code, $error_message;
     if (!empty($_FILES["upload"]["name"])) {
         $error = Image::maySave(true);
         if (!isset($error)) {
@@ -41,6 +43,8 @@ function saveReceipt(Bookkeeping $bookkeeping) {
             $bookkeeping->ImageId = $id;
             $bookkeeping->update();
         }
+        $error_code = $error;
+        $error_message = getErrorText($error_code);
     }
     
 }
@@ -61,10 +65,12 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Kassabok</h1>
-	  <?php if (isset($error_message) && strlen($error_message)>0) {
-	      echo '<div class="error">'.$error_message.'<br>Du kan ladda upp kvittot i efterhand genom att klicka på utgiften du just lade in i listan nedan.</div>';
-	  }
-	  ?>
+        	  <?php if (isset($error_message) && strlen($error_message)>0) {
+	      echo '<div class="error">'.$error_message.'</div>';
+	  }?>
+	  <?php if (isset($message_message) && strlen($message_message)>0) {
+	      echo '<div class="message">'.$message_message.'</div>';
+	  }?>
         <p>Lägg in alla inkomster och utgifter som lajvet har. Deltagaravgifter kommer med automatiskt. 
         När lajvet är klart behöver du bara generera rapporten och skicka till kassören för att bokföringen ska vara avklarad.<br><br>
         En varning betyder att det saknas ett kvitto på en utgift.<br><br>
