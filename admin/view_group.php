@@ -346,6 +346,12 @@ include 'navigation.php';
         ?>
 		
 		</div>
+		
+		<?php 
+		if ($current_larp->hasRumours()) {
+		
+		?>
+		
 		<h2>Rykten</h2>
 		<div>
 		<h3>Rykten som <?php echo $current_group->Name ?> känner till <a href='rumour_for.php?GroupId=<?php echo $current_group->Id ?>'><i class='fa-solid fa-plus' title='Tilldela rykten till <?php echo $current_group->Name ?>'></i></a></h3>
@@ -365,6 +371,9 @@ include 'navigation.php';
 		?>
 		
 		</div>
+		<?php 
+		}
+		?>
 		
 				<h2>Handel</h2>
 		<div>

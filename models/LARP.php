@@ -17,6 +17,9 @@ class LARP extends BaseModel{
     public  $RegistrationOpen = 0;
     public  $PaymentReferencePrefix = "";
     public  $NetDays = 0;
+    public  $HasTelegrams = 0;
+    public  $HasLetters = 1;
+    public  $HasRumours = 1;
 
     
 //     public static $tableName = 'larp';
@@ -45,6 +48,9 @@ class LARP extends BaseModel{
         if (isset($arr['RegistrationOpen'])) $this->RegistrationOpen = $arr['RegistrationOpen'];        
         if (isset($arr['PaymentReferencePrefix'])) $this->PaymentReferencePrefix = $arr['PaymentReferencePrefix'];
         if (isset($arr['NetDays'])) $this->NetDays = $arr['NetDays'];
+        if (isset($arr['HasTelegrams'])) $this->HasTelegrams = $arr['HasTelegrams'];
+        if (isset($arr['HasLetters'])) $this->HasLetters = $arr['HasLetters'];
+        if (isset($arr['HasRumours'])) $this->HasRumours = $arr['HasRumours'];
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -56,12 +62,13 @@ class LARP extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_larp SET Name=?, TagLine=?, StartDate=?, EndDate=?, ".
                  "MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, ".
-                 "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=? WHERE Id = ?");
+                 "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=?, ".
+                 "HasTelegrams=?, HasLetters=?, HasRumours=?  WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
-            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->Id))) {
+            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -75,13 +82,13 @@ class LARP extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp (Name, TagLine, StartDate, EndDate, MaxParticipants, 
             LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, DisplayHousing, CampaignId, 
-            RegistrationOpen, PaymentReferencePrefix, NetDays) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            RegistrationOpen, PaymentReferencePrefix, NetDays, HasTelegrams, HasLetters, HasRumours) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
-            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays))) {
+            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->HasTelegrams, $this->HasLetters, $this->HasRumours))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -134,6 +141,21 @@ class LARP extends BaseModel{
     public function isHousingReleased() {
         return $this->DisplayHousing == 1;
     }
+    
+    public function hasTelegrams() {
+        return $this->HasTelegrams == 1;
+    }
+    
+    
+    public function hasLetters() {
+        return $this->HasLetters == 1;
+    }
+    
+    
+    public function hasRumours() {
+        return $this->HasRumours == 1;
+    }
+    
     
     public function mayRegister() {
         if ($this->RegistrationOpen == 0) return false;

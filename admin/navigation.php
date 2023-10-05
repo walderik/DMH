@@ -72,10 +72,19 @@ function myFunction() {
             <a href="intrigue_admin.php">Intrigspår</a>
             <a href="commerce.php">Handel</a>
             <a href="timeline_admin.php">Körschema</a>
-
+			
+			<?php if ($current_larp->hasTelegrams()) {?>
             <a href="telegram_admin.php">Telegram</a>
+            <?php }?>
+            
+			<?php if ($current_larp->hasLetters()) {?>
             <a href="letter_admin.php">Brev</a>
+            <?php }?>
+            
+			<?php if ($current_larp->hasRumours()) {?>
             <a href="rumour_admin.php">Rykten</a>
+            <?php }?>
+            
             <a href="prop_admin.php">Rekvisita</a>
             <a href="npc.php">NPC'er</a>
             <a href="what_happened.php">Vad hände?</a>

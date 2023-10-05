@@ -455,7 +455,9 @@ th, td {
     ?>
     </ul>
 </td></tr>
-<tr><td>Telegram & Brev</td><td>
+<?php if ($current_larp->hasTelegrams() || $current_larp->hasLetters()) {?>
+
+<tr><td>Meddelanden</td><td>
 <a href="choose_telegram_letter.php?operation=add_intrigue_message&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till telegram och brev"></i></a>
 <br>
 <?php 
@@ -495,6 +497,7 @@ foreach ($intrigue_telegrams as $intrigue_telegram) {
 
 ?>
 </td></tr>
+<?php }?>
 
 <tr><td>PDF</td><td>
 <a href="add_intrigue_pdf.php?Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till PDF"></i></a>
@@ -535,6 +538,8 @@ foreach ($timeline_array as $timeline) {
 }
 ?>
 </td></tr>
+
+<?php if ($current_larp->hasRumours()) {?>
 <tr><td>Rykten</td><td>
   <a href="rumour_form.php?operation=insert&IntrigueId=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Skapa rykte under lajvet"></i></a>
   <br>
@@ -556,7 +561,7 @@ foreach ($rumour_array as $rumour) {
 }
 ?>
 </td></tr>
-
+<?php }?>
 </table>
 
 <?php 

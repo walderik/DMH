@@ -57,6 +57,7 @@ include 'navigation.php';
 
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
+        <?php if ($current_larp->hasLetters()) { ?>
         	<h2>Brev</h2>
             <a href="letter_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt brev</a>  
     		    <form action="<?php echo $url;?>" method="post">
@@ -90,7 +91,9 @@ include 'navigation.php';
     		    echo "<br>";
     		    echo "<input type='submit' value='$purpose'>";
     		}
+        }
     		?>
+        <?php if ($current_larp->hasTelegrams()) { ?>
 			
 			<h2>Telegram</h2>
      		<a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt telegram</a>
@@ -119,6 +122,7 @@ include 'navigation.php';
     		    echo "<input type='submit' value='$purpose'></form>";
     		    
     		}
+		}
     		?>
         
         

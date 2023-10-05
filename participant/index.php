@@ -311,7 +311,9 @@ include "navigation.php";
 		</div>
 		<?php 
 		  if ($current_user->isComing($current_larp)) {
-		        echo "</div><div class='content'>\n";
+		      if ($current_larp->hasTelegrams()) {
+		      
+		        echo "<div class='content'>\n";
 		        echo "<h2>Telegram</h2>\n";
 		        echo "<div>\n";
 		        $telegram_array = $current_user->getTelegramsAtLarp($current_larp);
@@ -336,9 +338,11 @@ include "navigation.php";
 		        }
 		        echo "<p><a href='telegram_suggestion.php'><b>Skapa ett telegram</b></i></a>\n";
 		        echo "</div></div>";
+		      }
+		      if ($current_larp->hasLetters()) {
+		          
 		        
-		        
-		        echo "</div><div class='content'>\n";
+		        echo "<div class='content'>\n";
 		        echo "<h2>Brev</h2>\n";
 		        echo "<div>\n";
 		        $letter_array = $current_user->getLettersAtLarp($current_larp);
@@ -364,10 +368,12 @@ include "navigation.php";
 		        }
 		        echo "<p><a href='letter_suggestion.php'><b>Skapa ett brev</b></i></a>\n";
 		        echo "</div></div>";
+		      }
+		      if ($current_larp->hasRumours()) {
+		          
 		        
 		        
-		        
-    		    echo "</div><div class='content'>\n";
+    		    echo "<div class='content'>\n";
     		    echo "<h2>Rykten</h2>\n";
     		    echo "<div>\n";
     		    $rumour_array = $current_user->getRumoursAtLarp($current_larp);
@@ -390,7 +396,7 @@ include "navigation.php";
     		    }
     		    echo "<p><a href='rumour_suggestion.php'><b>Skapa ett rykte</b></i></a>\n";
     		    echo "</div></div>";
-    		    
+		      }
     }
     ?>
 	</body>

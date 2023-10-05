@@ -98,6 +98,33 @@ include_once 'header.php';
     				<td><input type="number" id="NetDays"
     					name="NetDays" value="<?php echo $larp->NetDays; ?>" size="15" maxlength="10" required></td>
     			</tr>
+    			<tr>
+    				<td><label for=HasTelegrams>Telegram</label><br>Ska stöd för telegram visas i systemet?</td>
+    				<td>
+						<input type="radio" id="HasTelegrams_yes" name="HasTelegrams" value="1" <?php if ($larp->hasTelegrams()) echo 'checked="checked"'?>> 
+            			<label for="HasTelegrams_yes">Ja</label><br> 
+            			<input type="radio" id="HasTelegrams_no" name="HasTelegrams" value="0" <?php if (!$larp->hasTelegrams()) echo 'checked="checked"'?>> 
+            			<label for="HasTelegrams_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=HasLetters>Brev</label><br>Ska stöd för brev visas i systemet?</td>
+    				<td>
+						<input type="radio" id="HasLetters_yes" name="HasLetters" value="1" <?php if ($larp->hasLetters()) echo 'checked="checked"'?>> 
+            			<label for="HasLetters_yes">Ja</label><br> 
+            			<input type="radio" id="HasLetters_no" name="HasLetters" value="0" <?php if (!$larp->hasLetters()) echo 'checked="checked"'?>> 
+            			<label for="HasLetters_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=HasRumours>Rykten</label><br>Ska stöd för rykten visas i systemet?</td>
+    				<td>
+						<input type="radio" id="HasRumours_yes" name="HasRumours" value="1" <?php if ($larp->hasRumours()) echo 'checked="checked"'?>> 
+            			<label for="HasRumours_yes">Ja</label><br> 
+            			<input type="radio" id="HasRumours_no" name="HasRumours" value="0" <?php if (!$larp->hasRumours()) echo 'checked="checked"'?>> 
+            			<label for="HasRumours_no">Nej</label>
+					</td>
+    			</tr>
     		</table>
     
     		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">

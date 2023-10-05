@@ -263,6 +263,11 @@ include 'navigation.php';
 			}
 	    ?>
 		</div>
+		<?php 
+		if ($current_larp->hasRumours()) {
+		
+		?>
+		
 		<h2>Rykten</h2>
 		<div>
 		<h3>Rykten som <?php echo $role->Name ?> känner till <a href='rumour_for.php?RoleId=<?php echo $role->Id ?>'><i class='fa-solid fa-plus' title='Tilldela rykten till <?php echo $role->Name ?>'></i></a></h3>
@@ -282,7 +287,7 @@ include 'navigation.php';
 		?>
 		
 		</div>
-		
+		<?php }?>
 		
 		<h2>Handel</h2>
 		<div>
