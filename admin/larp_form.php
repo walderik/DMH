@@ -53,7 +53,7 @@ include_once 'header.php';
     	<form action="larp_admin.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
-     		<input type="hidden" id="Campaign" name="Campaign" value="<?php echo $larp->CampaignId?>">
+     		<input type="hidden" id="CampaignId" name="CampaignId" value="<?php echo $larp->CampaignId?>">
     		<table>
     			<tr>
     				<td><label for="Name">Namn</label></td>

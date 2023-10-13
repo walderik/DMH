@@ -55,7 +55,11 @@ class LARP extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        global $current_larp;
+        $larp = new self();
+        $larp->CampaignId = $current_larp->CampaignId;
+        
+        return $larp;
     }
     
     # Update an existing larp in db

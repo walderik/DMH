@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      
     if ($operation == 'insert') {
         $larp = LARP::newFromArray($_POST);
+        $larp->CampaignId = $current_larp->CampaignId;
         $larp->create();
     } elseif ($operation == 'delete') {
         LARP::delete($_POST['Id']);
