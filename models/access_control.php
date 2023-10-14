@@ -1,6 +1,7 @@
 <?php
 
-class AccessControl extends BaseModel{
+class AccessControl {
+    /*
     public $Id;
     public $UserId;
     public $CampaignId;
@@ -25,7 +26,7 @@ class AccessControl extends BaseModel{
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         
     }
-    
+    */
    
     public static function accessControlCampaign() {
         global $current_user, $current_larp;
@@ -49,25 +50,45 @@ class AccessControl extends BaseModel{
         
     }
 
-
+    public static function accessControlLarp() {
+        global $current_user, $current_larp;
+        if (empty($current_larp) or (empty($current_user))) {
+            header('Location: ../index.php');
+            exit;
+        }
+        //If the user has admin privielieges they may always see
+        
+        if (isset($_SESSION['admin'])) {
+            
+            return;
+        }
+        
+        if (static::hasAccessLarp($current_user, $current_larp)) {
+            return;
+        }
+        //Does not have access send to participant
+        header('Location: ../participant/index.php');
+        exit;
+        
+    }
+    
+    
         
     public static function hasAccessCampaign($userId, $campaignId) {
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control WHERE UserId =? AND CampaignId=?;";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_campaign WHERE UserId =? AND CampaignId=?;";
         return static::existsQuery($sql, array($userId, $campaignId));
     }
     
-    public static function loadByIds($userId, $campaignId) {
-        if (!isset($userId) or !isset($campaignId)) return null;
-        
-        # Gör en SQL där man söker baserat på ID och returnerar ett object mha newFromArray
-        $sql = "SELECT * FROM regsys_access_control WHERE UserId = ? AND CampaignId = ?";
-        return static::getOneObjectQuery($sql, array($userId, $campaignId));
-        
+    public static function hasAccessLarp(User $user, LARP $larp) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_campaign WHERE UserId =? AND CampaignId=?;";
+        $hasCampaignAccess = static::existsQuery($sql, array($user->Id, $larp->CampaignId));
+        if ($hasCampaignAccess) return true;
+        return false;
     }
     
-    public static function save($userId, $campaignId) {    
+    public static function grantCampaign($userId, $campaignId) {    
         $connection = static::connectStatic();
-        $stmt = $connection->prepare("INSERT INTO regsys_access_control (UserId, CampaignId) VALUES (?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_access_control_campaign (UserId, CampaignId) VALUES (?,?)");
         
         if (!$stmt->execute(array($userId, $campaignId))) {
                 $stmt = null;
@@ -80,11 +101,11 @@ class AccessControl extends BaseModel{
     }
     
     
-    public static function delete($id)
+    public static function revokeCampaign($userId, $campaignId)
     {
-        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control WHERE Id = ?");
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_campaign WHERE UserId=? AND CampaignId=?");
         
-        if (!$stmt->execute(array($id))) {
+        if (!$stmt->execute(array($userId, $campaignId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

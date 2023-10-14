@@ -17,11 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $campaignId = $_GET['campaignId'];
     $userId = $_GET['userId'];
 
-    $access = AccessControl::loadByIds($userId, $campaignId);
-    if (!empty($access)) {
-        AccessControl::delete($access->Id);
-    }
-    
+    AccessControl::revokeCampaign($userId, $campaignId);
 }
 header('Location: ../campaign_admin.php');
 

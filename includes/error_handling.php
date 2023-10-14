@@ -142,6 +142,9 @@ function getErrorText($code) {
         case "image_size":
             $output = "Filen är för stor. Minska ner den i ett bildhanteringsprogram.";
             break;
+        case "group_cannot_be_deleted":
+            $output = "Gruppen kan inte raderas eftersom den har varit med på ett lajv.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }

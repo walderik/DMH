@@ -62,7 +62,7 @@ function myFunction() {
 	  </div> 
     <?php }?>
 	<?php 
-	 if (isset($_SESSION['admin']) or AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+	if (isset($_SESSION['admin']) or AccessControl::hasAccessLarp($current_user, $current_larp)) {
 	 ?>	
 	  <a href="../admin/" style="color: red"><i class="fa-solid fa-lock"></i>Arrangör</a>
     <?php }?>

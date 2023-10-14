@@ -356,7 +356,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->isReserve = Reserve_LARP_Role::isReserve($this->role->Id, $this->larp->Id);
         
         # Säkerställer att bara arrngörer någonsin kan få se all info om en karaktär
-        if (!(AccessControl::hasAccessCampaign($current_user->Id, $larp_in->CampaignId))) return;
+        if (!(AccessControl::hasAccessLarp($current_user, $larp_in))) return;
         
         $left = static::$x_min + static::$Margin;
         $x = $left;
@@ -397,7 +397,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->isReserve = Reserve_LARP_Role::isReserve($this->role->Id, $this->larp->Id);
         
         # Säkerställer att bara arrngörer någonsin kan få se all info om en karaktär
-        if ($this->all && !(AccessControl::hasAccessCampaign($current_user->Id, $larp_in->CampaignId))) $this->all = false;
+        if ($this->all && !(AccessControl::hasAccessLarp($current_user, $larp_in))) $this->all = false;
         
         $left = static::$x_min + static::$Margin;
         $x = $left;

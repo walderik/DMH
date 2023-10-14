@@ -4,8 +4,6 @@ global $root, $current_user;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
-AccessControl::accessControlCampaign();
-
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     if (isset($_GET['id'])) {
@@ -29,7 +27,10 @@ if (!$current_user->isGroupLeader($group)) {
     exit;
 }
 
-Group::delete($group->Id);
-
-header('Location: ../index.php?message=group_deleted');
+if ($group->isNeverRegistered()) {
+    Group::delete($group->Id);
+    header('Location: ../index.php?message=group_deleted');
+} else {
+    header('Location: ../index.php?error=group_cannot_be_deleted');
+}
 
