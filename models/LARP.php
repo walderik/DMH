@@ -241,4 +241,10 @@ class LARP extends BaseModel{
         
     }
     
+    public static function organizerForLarps(User $user) {
+        $sql="SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_access_control_larp WHERE UserId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($user->Id));
+    }
+    
+    
 }

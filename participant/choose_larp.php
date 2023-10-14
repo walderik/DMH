@@ -33,6 +33,14 @@ function myFunction() {
 	
 </head>
 <body>
+<style>
+.content > p {
+    margin: 5px;
+    margin-left:20px;
+    padding:0px;
+} 
+
+</style>
 <div class="topnav"  id="myTopnav">
     <div id="right">
 
@@ -50,66 +58,78 @@ function myFunction() {
     </div>
 
 		<div class="content">
-			<h1>Kommande lajv</h1>
+			<h1>Välj aktivt lajv</h1>
     			<?php
 
     			$resultCheck = count($future_larp_array);
     			 if ($resultCheck > 0) {
-    			     ?>
-    			     <h3>Kommande lajv</h3>
-					<form action="../includes/set_larp.php" method="POST">
-					<label for="larp">Välj lajv:</label>
-    			     
-    			     <select name='larp' id='larp'>
-    			<?php
+
+			        echo "<h3>Kommande lajv</h3>";
     
+        			echo "<form action='../includes/set_larp.php' method='POST'>";
+        			echo "<label for='larp'>Välj lajv: </label>";
+        			echo "<select name='larp' id='larp'>";
+    			
     			     foreach ($future_larp_array as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";
     			     echo '<input type="submit" value="Välj">';  
     			     echo "<br><hr>";
+    			     echo "</form>";
     			 }
     			 
-    			 ?>
-
-			 </form>
-
-    			<?php
-
     			$resultCheck = count($past_larp_array);
     			 if ($resultCheck > 0) {
     			     ?>
-     			 <br><hr>
+     			 
     			 <h3>Tidigare lajv</h3> 
     			 <p>Välj det här om du vill fylla i vad som hände på lajvet.</p>   
-				<form action="../includes/set_larp.php" method="POST">
-				<label for="larp">Välj lajv:</label>
-			    <select name='larp' id='larp'>
       			<?php  
-    			     foreach ($past_larp_array as $larp) {
+      			echo "<form action='../includes/set_larp.php' method='POST'>";
+      			echo "<label for='larp'>Välj lajv: </label>";
+      			echo "<select name='larp' id='larp'>";
+      			foreach ($past_larp_array as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";
     			     echo '<input type="submit" value="Välj">';
     			     echo "<br><hr>";
     			 }
+    			 echo "</form>";
     			 
     			 ?>
-			 </form>
 			 <?php 
     			 $campaigns = Campaign::organizerForCampaigns($current_user);
     			 foreach ($campaigns as $campaign) {
 
     			     echo "<h3>Arrangör för $campaign->Name</h3>";
-    			     echo "<div>Eftersom du är arrangör för $campaign->Name kan du välja bland alla lajv i kampanjen.</div>";
+    			     echo "<p>Eftersom du är arrangör för $campaign->Name kan du välja bland alla lajv i kampanjen.</p>";
     			     $larps_in_campaign=LARP::allByCampaign($campaign->Id);
-    			     ?>
-    			     <form action="../includes/set_larp.php" method="POST">
-    			     <label for="larp">Välj lajv:</label>
-    			     <select name='larp' id='larp'>
-    			     <?php
+    			     echo "<form action='../includes/set_larp.php' method='POST'>";
+    			     echo "<label for='larp'>Välj lajv: </label>";
+    			     echo "<select name='larp' id='larp'>";
+
     			     foreach ($larps_in_campaign as $larp) {
+    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
+    			     }
+    			     echo "</select>";
+    			     echo '<input type="submit" value="Välj">';
+    			     echo "<br><hr>";
+    			     echo "</form>";
+    			 }
+    			 
+    			 ?>
+			 <?php 
+    			 $larps = LARP::organizerForLarps($current_user);
+    			 if (!empty($larps)) {
+    			     echo "<h3>Arrangör för enskilda lajv</h3>";
+    			     echo "<p>Eftersom du är arrangör för vissa lajv kan du välja bland alla dem.</p>";
+        			 echo "<form action='../includes/set_larp.php' method='POST'>";
+        			 echo "<label for='larp'>Välj lajv: </label>";
+        			 echo "<select name='larp' id='larp'>";
+        			 
+        			 foreach ($larps as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";

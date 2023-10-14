@@ -1,32 +1,6 @@
 <?php
 
 class AccessControl {
-    /*
-    public $Id;
-    public $UserId;
-    public $CampaignId;
-    
-    
-    # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
-    public static function newWithDefault() {
-        return new self();
-    }
-    
-    
-    public static function newFromArray($post){
-        $ac = static::newWithDefault();
-        $ac->setValuesByArray($post);
-        return $ac;
-    }
-    
-    
-    public function setValuesByArray($arr) {
-        if (isset($arr['Id'])) $this->Id = $arr['Id'];
-        if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
-        if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
-        
-    }
-    */
    
     public static function accessControlCampaign() {
         global $current_user, $current_larp;
@@ -59,7 +33,6 @@ class AccessControl {
         //If the user has admin privielieges they may always see
         
         if (isset($_SESSION['admin'])) {
-            
             return;
         }
         
@@ -83,7 +56,9 @@ class AccessControl {
         $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_campaign WHERE UserId =? AND CampaignId=?;";
         $hasCampaignAccess = static::existsQuery($sql, array($user->Id, $larp->CampaignId));
         if ($hasCampaignAccess) return true;
-        return false;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_larp WHERE UserId =? AND LarpId=?;";
+        return static::existsQuery($sql, array($user->Id, $larp->Id));
+        
     }
     
     public static function grantCampaign($userId, $campaignId) {    
