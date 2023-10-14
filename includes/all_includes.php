@@ -9,13 +9,13 @@ include_once $root . '/includes/sverok.php';
 include_once $root . '/includes/our_fonts.php'; 
 
 include_once $root . '/classes/dbh.php';
+include_once $root . '/classes/access_control.php';
 
 include_once $root . '/models/base_model.php';
 include_once $root . '/models/selection_data.php';
 include_once $root . '/models/selection_data_general.php';
 
 include_once $root . '/models/ability.php';
-include_once $root . '/models/access_control.php';
 include_once $root . '/models/bookkeeping.php';
 include_once $root . '/models/bookkeeping_account.php';
 include_once $root . '/models/campaign.php';

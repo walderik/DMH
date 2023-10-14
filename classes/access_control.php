@@ -113,6 +113,33 @@ class AccessControl {
         $stmt = null;
     }
     
+ 
+    public static function grantLarp($userId, $larpId) {
+        $connection = static::connectStatic();
+        $stmt = $connection->prepare("INSERT INTO regsys_access_control_larp (UserId, LarpId) VALUES (?,?)");
+        
+        if (!$stmt->execute(array($userId, $larpId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $id = $connection->lastInsertId();
+        $stmt = null;
+        return $id;
+    }
+    
+    
+    public static function revokeLarp($userId, $larpId)
+    {
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_larp WHERE UserId=? AND LarpId=?");
+        
+        if (!$stmt->execute(array($userId, $larpId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
     
     
     
