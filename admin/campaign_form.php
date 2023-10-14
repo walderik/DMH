@@ -1,6 +1,10 @@
 <?php
 include_once 'header.php';
 
+if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+    exit;
+}
+
     $campaign = Campaign::newWithDefault();
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {

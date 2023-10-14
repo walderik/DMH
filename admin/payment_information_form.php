@@ -2,6 +2,9 @@
 include_once 'header.php';
 include 'navigation.php';
 
+if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+    exit;
+}
 ?>
 
     

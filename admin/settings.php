@@ -74,13 +74,41 @@ $param = date_format(new Datetime(),"suv");
 		</td></tr>
 		</table>
 
+		<h2>Arrangörer</h2>
+		<?php 
+		echo "<strong>Hela kampanjen</strong><br>";
+		$campaign = $current_larp->getCampaign();
+	     $organizers = User::getAllWithAccessToCampaign($campaign);
+	     foreach ($organizers as $organizer) {
+	         echo $organizer->Name."<br>";
+	     }
+	     $organizersLarp = User::getAllWithAccessOnlyToLarp($current_larp);
+	     if (!empty($organizersLarp)) echo "<br><strong>Enbart detta lajv</strong><br>";
+	     $organizersLarp = User::getAllWithAccessOnlyToLarp($current_larp);
+	     foreach ($organizersLarp as $organizer) {
+	         echo $organizer->Name;
+	         if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+    	         echo " <a href='logic/remove_organizer.php?userId=$organizer->Id'>";
+    	         echo "<i class='fa-solid fa-trash-can' title='Ta bort som arrangör'></i></a>";
+	         }
+	         echo "<br>";
 
+	     }
+	     if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+	       echo "<br><a href='choose_users.php?larpId=$current_larp->Id&operation=organizer'>Lägg till arrangör på $current_larp->Name</a>";
+	     }
+	     ?>
+		
 
-        <h2>Lajv</h2>
+<?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+
+?>
+
+        <h2>Inställningar för kampanjen och lajv i kampanjen</h2>
         <p>
-		    <a href="campaign_admin.php">Inställningar för kampanjen</a> <br> 
 		    <a href="larp_admin.php">Lajv i kampanjen</a> <br> 
         	<a href="payment_information_admin.php">Avgift för <?php echo $current_larp->Name ?> inklusive matavgifter</a><br>
+		    <a href="campaign_admin.php">Inställningar för kampanjen</a> <br> 
 			<a href="bookkeeping_account_admin.php">Bokföringskonton</a>	<br>
 
         </p>
@@ -105,7 +133,10 @@ $param = date_format(new Datetime(),"suv");
 			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer för deltagare</a>	<br>		    			
 		    </p>
         <p>
-        Se ut de olika formulären blir.<br>
+        
+        <?php }?>
+        
+        <h3>Anmälningsformulären</h3>
         <a href="../participant/group_form.php?admin=1" target="_blank">Registrering av grupp</a><br>
         <a href="../participant/group_registration_form.php?admin=1" target="_blank">Anmälan av grupp</a><br>
         <a href="../participant/role_form.php?admin=1" target="_blank">Registrering av karaktär</a><br>

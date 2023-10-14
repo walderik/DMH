@@ -1,6 +1,10 @@
 <?php
 include_once 'header.php';
 
+if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+    exit;
+}
+
 ?>
    
     <?php
