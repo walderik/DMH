@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 include 'navigation.php';
 ?>
 
+<script src="../javascript/table_sort.js"></script>
 
     <div class="content">
         <h1>Brev</h1>
@@ -65,9 +66,21 @@ include 'navigation.php';
     
         $letter_array = Letter::allBySelectedLARP($current_larp);
         if (!empty($letter_array)) {
-            echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Id</td><th>Mottagare</th><th>Ort och datum</th><th>Hälsning</th><th>Meddelande</th><th>Hälsning</th><th>Underskrift</th>";
-            echo "<th>Font</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th>Används<br>i intrig</th><th></th><th></th><th></th></tr>\n";
+            $tableId = "letters";
+            echo "<table id='$tableId' class='data'>";
+            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Id</td>".
+            "<th onclick='sortTable(1, \"$tableId\");'>Mottagare</th>".
+            "<th onclick='sortTable(2, \"$tableId\");'>Ort och datum</th>".
+            "<th onclick='sortTable(3, \"$tableId\");'>Hälsning</th>".
+            "<th onclick='sortTable(4, \"$tableId\");'>Meddelande</th>".
+            "<th onclick='sortTable(5, \"$tableId\");'>Hälsning</th>".
+            "<th onclick='sortTable(6, \"$tableId\");'>Underskrift</th>".
+            "<th onclick='sortTable(7, \"$tableId\");'>Font</th>".
+            "<th onclick='sortTable(8, \"$tableId\");'>Skapare</th>".
+            "<th onclick='sortTable(9, \"$tableId\");'>Ok</th>".
+            "<th onclick='sortTable(10, \"$tableId\");'>Anteckningar</th>".
+            "<th onclick='sortTable(11, \"$tableId\");'>Används<br>i intrig</th>".
+            "<th></th><th></th><th></th></tr>\n";
             foreach ($letter_array as $letter) {
                 echo "<tr>\n";
                 echo "<td>" . $letter->Id . "</td>\n";

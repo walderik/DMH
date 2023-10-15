@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 include 'navigation.php';
 ?>
+<script src="../javascript/table_sort.js"></script>
 
 
     <div class="content">
@@ -41,9 +42,20 @@ include 'navigation.php';
     
         $telegram_array = Telegram::allBySelectedLARP($current_larp);
         if (!empty($telegram_array)) {
-            echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Id</td><th>Leveranstid</th><th>Avsändare</th><th>Avsändarens stad</th><th>Mottagare</th><th>Mottagarens stad</th>";
-            echo "<th>Meddelande</th><th>Skapare</th><th>Ok</th><th>Anteckningar</th><th>Används<br>i intrig</th><th></th><th></th></tr>\n";
+            $tableId = "telegrams";
+            echo "<table id='$tableId' class='data'>";
+            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Id</td>".
+            "<th onclick='sortTable(1, \"$tableId\");'>Leveranstid</th>".
+            "<th onclick='sortTable(2, \"$tableId\");'>Avsändare</th>".
+            "<th onclick='sortTable(3, \"$tableId\");'>Avsändarens stad</th>".
+            "<th onclick='sortTable(4, \"$tableId\");'>Mottagare</th>".
+            "<th onclick='sortTable(5, \"$tableId\");'>Mottagarens stad</th>".
+            "<th onclick='sortTable(6, \"$tableId\");'>Meddelande</th>".
+            "<th onclick='sortTable(7, \"$tableId\");'>Skapare</th>".
+            "<th onclick='sortTable(8, \"$tableId\");'>Ok</th>".
+            "<th onclick='sortTable(9, \"$tableId\");'>Anteckningar</th>".
+            "<th onclick='sortTable(10, \"$tableId\");'>Används<br>i intrig</th>".
+            "<th></th><th></th></tr>\n";
             foreach ($telegram_array as $telegram) {
                 echo "<tr>\n";
                 echo "<td>" . $telegram->Id . "</td>\n";

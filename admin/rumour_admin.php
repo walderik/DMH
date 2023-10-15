@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 include 'navigation.php';
 ?>
+<script src="../javascript/table_sort.js"></script>
 
 
     <div class="content">
@@ -67,8 +68,16 @@ include 'navigation.php';
     
         $rumour_array = Rumour::allBySelectedLARP($current_larp);
         if (!empty($rumour_array)) {
-            echo "<table id='telegrams' class='data'>";
-            echo "<tr><th>Text</th><th></th><th>Skapare</th><th>Gäller</th><th>Antal som<br>känner till</th><th>Används<br>i intrig</th><th>Ok</th><th></th></tr>\n";
+            $tableId = "rumours";
+            echo "<table id='$tableId' class='data'>";
+            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Text</th>".
+            "<th></th>".
+            "<th onclick='sortTable(2, \"$tableId\");'>Skapare</th>".
+            "<th onclick='sortTable(3, \"$tableId\");'>Gäller</th>".
+            "<th onclick='sortTable(4, \"$tableId\");'>Antal som<br>känner till</th>".
+            "<th onclick='sortTable(5, \"$tableId\");'>Används<br>i intrig</th>".
+            "<th onclick='sortTable(6, \"$tableId\");'>Ok</th>".
+            "<th></th></tr>\n";
             foreach ($rumour_array as $rumour) {
                 echo "<tr>\n";
                 if ($short_text) {
