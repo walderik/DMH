@@ -130,7 +130,8 @@ $param = date_format(new Datetime(),"suv");
 			    <a href="selection_data_admin.php?type=placeofresidence">Var karaktärer / grupper bor</a><br>
 		    			
     		    <a href="selection_data_admin.php?type=typesoffood">Matalternativ för deltagare</a><br>
-			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer för deltagare</a>	<br>		    			
+			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer för deltagare</a>	<br><br>		    			
+			    <a href="selection_data_admin.php?type=advertismenttypes">Typer av annonser som deltagare med plats på lajvet kan skapa</a>	<br>		    			
 		    </p>
         <p>
         

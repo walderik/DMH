@@ -213,14 +213,14 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 				
 			<?php  if (Race::isInUse($current_larp)) {?>	
 			<div class="question">
-				<label for="LarperTypesId">Vilken typ av varelse är du?</label>&nbsp;<font style="color:red">*</font><br>
-       			<div class="explanation"><?php LarperType::helpBox($current_larp); ?></div>
+				<label for="RaceId">Vilken typ av varelse är du?</label>&nbsp;<font style="color:red">*</font><br>
+       			<div class="explanation"><?php Race::helpBox($current_larp); ?></div>
                 <?php Race::selectionDropdown($current_larp, false, true, $role->RaceId); ?>
             </div>
 				<div class="question">
-					<label for="TypeOfLarperComment">Specificera din varelse/ras närmare om du vill.</label>
+					<label for="RaceComment">Specificera din varelse/ras närmare om du vill.</label>
 				<div class="explanation">Exempelvis vilken typ av svartblod, troll eller alv du spelar.</div>
-					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
+					<br> <input class="input_field" type="text" id="RaceComment" value="<?php echo htmlspecialchars($role->RaceComment); ?>" name="RaceComment"  size="100" maxlength="200">
 				</div>
 			<?php } ?>	
 				

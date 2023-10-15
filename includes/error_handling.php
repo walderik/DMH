@@ -42,6 +42,9 @@ function getMessageText($code) {
         case "image_deleted":
             $output = "Bilden har raderats.";
             break;
+        case "advertisment_deleted":
+            $output = "Annonsen har raderats.";
+            break;
         case "person_deleted":
             $output = "Deltagare har raderats.";
             break;

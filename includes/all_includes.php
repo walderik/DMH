@@ -16,6 +16,8 @@ include_once $root . '/models/selection_data.php';
 include_once $root . '/models/selection_data_general.php';
 
 include_once $root . '/models/ability.php';
+include_once $root . '/models/advertisment.php';
+include_once $root . '/models/advertisment_type.php';
 include_once $root . '/models/bookkeeping.php';
 include_once $root . '/models/bookkeeping_account.php';
 include_once $root . '/models/campaign.php';

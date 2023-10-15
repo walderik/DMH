@@ -396,8 +396,41 @@ include "navigation.php";
     		    }
     		    echo "<p><a href='rumour_suggestion.php'><b>Skapa ett rykte</b></i></a>\n";
     		    echo "</div></div>";
-		      }
-    }
+	       }
+	       
+	      $adtypes = AdvertismentType::allActive($current_larp);
+	       if (!empty($adtypes)) {
+	           
+	           
+	           
+	           echo "<div class='content'>\n";
+	           echo "<h2>Annonser</h2>\n";
+	           echo "<p><a href='advertisments.php'><b>Se alla annonser</b></i></a></p>\n";
+	           $advertisment_array = $current_user->getAdvertismentsAtLarp($current_larp);
+	           if(isset($advertisment_array) && count($advertisment_array) > 0) {
+	               echo "<div>\n";
+	               echo "<b>Annonser skapade av $current_user->Name:</b><br>\n";
+	               echo "<table class='data' id='ads' align='left'>";
+	               echo "<tr align='left'><th>Kontakt information</th><th>Text</th><th>Ändra/<br>Ta bort</th>";
+	               echo "</tr>\n";
+	               foreach ($advertisment_array as $advertisment) {
+	                   echo "<tr>\n";
+	                   echo "<td style='font-weight:normal'>$advertisment->ContactInformation</td>\n";
+	                   echo "<td>$advertisment->Text</td>\n";
+	                   echo "<td align='center'>";
+	                   echo "<a href='advertisment_form.php?operation=update&id=" . $advertisment->Id . "'><i class='fa-solid fa-pen' title='Ändra annons'></i></a>";
+	                   echo " <a href='logic/delete_advertisment.php?id=" . $advertisment->Id . "'><i class='fa-solid fa-trash' title='Ta bort annons'></i></a>";
+	                   echo "</td>\n";
+	                   echo "</tr>\n";
+	               }
+	               echo "</table></div>\n";
+	               
+	           }
+	           echo "<p><a href='advertisment_form.php'><b>Skapa en annons</b></i></a></p>\n";
+	           echo "</div>";
+	       }
+	       
+        }
     ?>
 	</body>
 </html>

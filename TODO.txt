@@ -1,9 +1,6 @@
-Samåkning + annonser 
 
-Val om telegram, brev, rykten ska finnas.
+Manuellt kunna ta bort godkännande av karaktär
 
-
-Bygghelgs-anmälningar
 
 Man borde kunna ange minimiantal som ska ha ett rykte alt visa hur många som stämmer in på varje "krav"
 
@@ -15,11 +12,7 @@ Man ska kunna sortera telegram på ordningen de skapades.
 Intriger, vid filtrering ta även bort inaktiva
 Intriger, generell text som går till alla i intrigen
 
-Mat:
-DÖH, mat valbart. Pris beror på ålder
-KIR, mat ingår för alla deltagare
-DMH, mat ingår för alla deltagare
-Bygghelg, mat anges per måltid, gratis
+
 
 Ta bort sidokaraktär
 
@@ -39,11 +32,14 @@ Behöver man kunna byta spelare på en roll? JA
 
 Helt nya funktioner:
 Att göra-listor per lajv och för Admin
-OFF-annonser för exmepelvis skjuts.
 
 Visa alla mail som har skapats, visa status, möjlighet att ta bort
 Markering för mail skickade av systemet (aktiverinf, byta lösenord). Ska inte visas för lajv-arrangör
 
+
+Bygghelgs-anmälningar
+Mat:
+Bygghelg, mat anges per måltid, gratis
 
 
 Tips och ticks
