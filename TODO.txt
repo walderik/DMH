@@ -4,10 +4,7 @@ Manuellt kunna ta bort godkännande av karaktär
 
 Man borde kunna ange minimiantal som ska ha ett rykte alt visa hur många som stämmer in på varje "krav"
 
-När man tittar på en person vore det praktiskt att se var dom bor och gärna med en länk till huset och vilka mer som bor där. (Admin)
 Alla borde kunna se länkar till dom andra i huset och om det är ok visa vilka dom verkliga personerna rä så manhar en chans kontakta dem.
-
-Man ska kunna sortera telegram på ordningen de skapades.
 
 Intriger, vid filtrering ta även bort inaktiva
 Intriger, generell text som går till alla i intrigen

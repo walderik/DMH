@@ -56,6 +56,19 @@ img {
     				<td>Beskrivning</td>
     				<td><?php echo nl2br(htmlspecialchars($house->Description)); ?></td>
     			</tr>
+    			<tr>
+    				<td colspan = '2'>De som bor i huset under <?php echo $current_larp->Name ?> är:<br>
+    				<?php 
+    				$personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
+    				foreach ($personsInHouse as $personInHouse) {
+    				    if ($personInHouse->isNotComing($current_larp)) continue;
+    				    echo "<a href='view_person.php?id=$personInHouse->Id'>$personInHouse->Name</a>";
+    				    
+    				    echo "<br>";
+    				}
+    				
+    				?>
+    				</td>
     		</table>
 		</div>
     </body>
