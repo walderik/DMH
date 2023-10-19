@@ -10,6 +10,13 @@ function myFunction() {
     x.className = "topnav";
   }
 }
+
+function changePart() {
+  	var part_selector = document.getElementById("part");
+	if (part_selector.value.length != 0) {
+		window.location.href = part_selector.value;
+	}
+}
 </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,9 +46,21 @@ function myFunction() {
 
 
 	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
-      <a href="../admin/" style="color: #99bbff"><i class="fa-solid fa-unlock"></i>Arrangör</a>
-      <a href="../participant/" style="color: #99bbff"><i class="fa-solid fa-unlock"></i>Deltagare</a>
-	  <a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
+     <select name='part' id='part' onchange="changePart()">
+      	<option value='../participant/'>Deltagare</option>
+      	<?php if (AccessControl::hasAccessLarp($current_user, $current_larp)) {?>
+     	<option value='../admin/'>Arrangör</option>
+     	<?php }?>
+    	<option value=''  selected='selected'>OM Admin</option>
+	 </select>
+	  <!-- <a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a> -->
+    	<div class="dropdown">
+    		<button class="dropbtn"><i class="fa-solid fa-user" title="<?php echo $current_user->Name?>"></i> <?php echo $current_user->Name?></button>
+		    <div class="dropdown-content">
+		    	<a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
+    		</div>
+    	
+    	</div>
 	  <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 	  </div>
     

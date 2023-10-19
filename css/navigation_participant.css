@@ -15,6 +15,31 @@ body {margin:0;font-family:Arial}
   font-size: 17px;
 }
 
+.topnav select {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  background-color: #2f3947;
+  text-align: center;
+  padding: 8px 8px;
+  margin: 6px 8px;
+  text-decoration: none;
+  font-size: 17px;
+  border-color: #f2f2f2;
+}
+
+.topnav select option {
+  float: none;
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+
+
+
 .active {
 
   color: white;

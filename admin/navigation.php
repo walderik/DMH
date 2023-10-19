@@ -10,6 +10,15 @@ function myFunction() {
     x.className = "topnav";
   }
 }
+
+function changePart() {
+  	var part_selector = document.getElementById("part");
+	if (part_selector.value.length != 0) {
+		window.location.href = part_selector.value;
+	}
+	
+}
+
 </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,7 +54,7 @@ function myFunction() {
 	    </button>
 	    <div class="dropdown-content">
 	      	<a href="settings.php">Inställningar</a>
-	      	<a href="mail_admin.php">E-post</a>
+	      	<a href="mail_admin.php">Skickad epost</a>
             <a href="registered_persons.php">Deltagare</a>
             <a href="approval.php">Godkänna</a>
             <a href="kitchen.php">Köket</a>
@@ -90,15 +99,26 @@ function myFunction() {
             <a href="what_happened.php">Vad hände?</a>
 	    </div>
 	  </div> 
-      <a href="../participant/" style="color: #99bbff"><i class="fa-solid fa-unlock"></i>Deltagare</a>
-
-	<?php 
-	 if (isset($_SESSION['admin'])) {
-	 ?>	
-	  <a href="../site-admin/" style="color: red"><i class="fa-solid fa-lock"></i>OM Admin</a>
-    <?php }?>
-	  <a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a>
-	  <a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
+     <select name='part' id='part' onchange="changePart()">
+      	<option value='../participant/'>Deltagare</option>
+     
+     	<option value='' selected='selected'>Arrangör</option>
+    	<?php 
+    	 if (isset($_SESSION['admin'])) {
+    	 ?>	
+    	 <option value='../site-admin/'>OM Admin</option>
+        <?php }?>
+		</select>
+	  <!-- <a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a> -->
+    	<div class="dropdown">
+    		<button class="dropbtn"><i class="fa-solid fa-user" title="<?php echo $current_user->Name?>"></i> <?php echo $current_user->Name?></button>
+		    <div class="dropdown-content">
+		    	<a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
+    		</div>
+    	
+    	</div>
+	  
+	  
 	  <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 	  </div>
     

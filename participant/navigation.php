@@ -10,6 +10,15 @@ function myFunction() {
     x.className = "topnav";
   }
 }
+
+
+function changePart() {
+  	var part_selector = document.getElementById("part");
+	if (part_selector.value.length != 0) {
+		window.location.href = part_selector.value;
+	}
+}
+
 </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,18 +70,31 @@ function myFunction() {
 	    </div>
 	  </div> 
     <?php }?>
+	  <a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a>
+	  
 	<?php 
 	if (isset($_SESSION['admin']) or AccessControl::hasAccessLarp($current_user, $current_larp)) {
-	 ?>	
-	  <a href="../admin/" style="color: red"><i class="fa-solid fa-lock"></i>Arrangör</a>
-    <?php }?>
-	<?php 
-	 if (isset($_SESSION['admin'])) {
-	 ?>	
-	  <a href="../site-admin/" style="color: red"><i class="fa-solid fa-lock"></i>OM Admin</a>
-    <?php }?>
-	  <a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a>
-	  <a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
+    ?>	
+	  
+   	<select name='part' id='part' onchange="changePart()">
+      	<option value='' selected='selected'>Deltagare</option>
+      	<?php if (AccessControl::hasAccessLarp($current_user, $current_larp)) {?>
+     	<option value='../admin/'>Arrangör</option>
+     	<?php }?>
+    	<?php if (isset($_SESSION['admin'])) { ?>	
+    	 <option value='../site-admin/'>OM Admin</option>
+        <?php }?>
+	 </select>
+     <?php }?>
+    	<div class="dropdown">
+    		<button class="dropbtn"><i class="fa-solid fa-user" title="<?php echo $current_user->Name?>"></i> <?php echo $current_user->Name?></button>
+		    <div class="dropdown-content">
+		    	<a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
+    		</div>
+    	
+    	</div>
+	  
+	  
 	  <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 	  </div>
     
