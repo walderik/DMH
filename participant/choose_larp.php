@@ -83,7 +83,7 @@ function myFunction() {
     			 if ($resultCheck > 0) {
     			     ?>
      			 
-    			 <h3>Tidigare lajv</h3> 
+    			 <h3>Lajv du har varit på</h3> 
     			 <p>Välj det här om du vill fylla i vad som hände på lajvet.</p>   
       			<?php  
       			echo "<form action='../includes/set_larp.php' method='POST'>";
@@ -100,42 +100,40 @@ function myFunction() {
     			 
     			 ?>
 			 <?php 
+			     $larps_organizer = array();
     			 $campaigns = Campaign::organizerForCampaigns($current_user);
     			 foreach ($campaigns as $campaign) {
+    			     
 
-    			     echo "<h3>Arrangör för $campaign->Name</h3>";
-    			     echo "<p>Eftersom du är arrangör för $campaign->Name kan du välja bland alla lajv i kampanjen.</p>";
     			     $larps_in_campaign=LARP::allByCampaign($campaign->Id);
-    			     echo "<form action='../includes/set_larp.php' method='POST'>";
-    			     echo "<label for='larp'>Välj lajv: </label>";
-    			     echo "<select name='larp' id='larp'>";
-
-    			     foreach ($larps_in_campaign as $larp) {
-    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
-    			     }
-    			     echo "</select>";
-    			     echo '<input type="submit" value="Välj">';
-    			     echo "<br><hr>";
-    			     echo "</form>";
+    			     $larps_organizer = array_merge($larps_organizer, $larps_in_campaign);
     			 }
-    			 
-    			 ?>
-			 <?php 
     			 $larps = LARP::organizerForLarps($current_user);
-    			 if (!empty($larps)) {
-    			     echo "<h3>Arrangör för enskilda lajv</h3>";
-    			     echo "<p>Eftersom du är arrangör för vissa lajv kan du välja bland alla dem.</p>";
+    			 $larps_organizer = array_merge($larps_organizer, $larps);
+    			 
+ 
+    			 $larps_organizer = array_udiff($larps_organizer, array_merge($future_larp_array, $past_larp_array),
+    			     function ($objOne, $objTwo) {
+    			         return $objOne->Id - $objTwo->Id;
+    			     });
+
+
+    			 
+    			 if (!empty($larps_organizer)) {
+        			 echo "<h3>Arrangör</h3>";
+        			 echo "<p>Eftersom du är arrangör kan du även välja bland dessa lajv.</p>";
         			 echo "<form action='../includes/set_larp.php' method='POST'>";
         			 echo "<label for='larp'>Välj lajv: </label>";
         			 echo "<select name='larp' id='larp'>";
         			 
-        			 foreach ($larps as $larp) {
-    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
-    			     }
-    			     echo "</select>";
-    			     echo '<input type="submit" value="Välj">';
-    			     echo "<br><hr>";
-    			     echo "</form>";
+        			 foreach ($larps_organizer as $larp) {
+        			     echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
+        			 }
+        			 echo "</select>";
+        			 echo '<input type="submit" value="Välj">';
+        			 echo "<br><hr>";
+        			 echo "</form>";
+    			 
     			 }
     			 
     			 ?>
