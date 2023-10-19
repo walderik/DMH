@@ -48,6 +48,36 @@ function changePart() {
 
 
 	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
+	  
+	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) { ?>
+	  
+	  <div class="dropdown">
+	    <button class="dropbtn">Kampanj 
+	      <i class="fa fa-caret-down"></i>
+	    </button>
+	    <div class="dropdown-content">
+	      	<a href="organizers.php">Arrangörer</a>
+	      	<a href="forms.php">Anmälningsformulär</a>
+            <a href="selection_data_admin.php?type=advertismenttypes">Annonsformat</a>
+            <a href="bookkeeping_account_admin.php">Bokföringskonton</a>
+            <a href="campaign_admin.php">Inställningar för kampanjen</a>
+            <a href="larp_admin.php">Lajv i kampanjen</a>
+ 	    </div>
+	  </div>
+	  <?php } ?> 
+	  <div class="dropdown">
+	    <button class="dropbtn">Lajvinställningar 
+	      <i class="fa fa-caret-down"></i>
+	    </button>
+	    <div class="dropdown-content">
+	      	<a href="settings.php">??</a>
+	    	
+	      	<a href="larp_form.php?operation=update&id=<?php echo $current_larp->Id?>">Basinställningar</a>
+	      	<a href="payment_information_admin.php">Avgifter, inklusive mat</a>
+	    </div>
+	  </div> 
+
+
 	  <div class="dropdown">
 	    <button class="dropbtn">Praktiskt 
 	      <i class="fa fa-caret-down"></i>

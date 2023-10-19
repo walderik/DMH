@@ -53,7 +53,7 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     
     ?>
     <div class="content"> 
-    	<h1><?php echo default_value('action');?> lajv <a href="larp_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    	<h1><?php echo default_value('action');?> lajv</h1>
     	<form action="larp_admin.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">

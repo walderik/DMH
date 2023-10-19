@@ -74,75 +74,7 @@ $param = date_format(new Datetime(),"suv");
 		</td></tr>
 		</table>
 
-		<h2>Arrangörer</h2>
-		<?php 
-		echo "<strong>Hela kampanjen</strong><br>";
-		$campaign = $current_larp->getCampaign();
-	     $organizers = User::getAllWithAccessToCampaign($campaign);
-	     foreach ($organizers as $organizer) {
-	         echo $organizer->Name."<br>";
-	     }
-	     $organizersLarp = User::getAllWithAccessOnlyToLarp($current_larp);
-	     if (!empty($organizersLarp)) echo "<br><strong>Enbart detta lajv</strong><br>";
-	     $organizersLarp = User::getAllWithAccessOnlyToLarp($current_larp);
-	     foreach ($organizersLarp as $organizer) {
-	         echo $organizer->Name;
-	         if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
-    	         echo " <a href='logic/remove_organizer.php?userId=$organizer->Id'>";
-    	         echo "<i class='fa-solid fa-trash-can' title='Ta bort som arrangör'></i></a>";
-	         }
-	         echo "<br>";
 
-	     }
-	     if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
-	       echo "<br><a href='choose_users.php?larpId=$current_larp->Id&operation=organizer'>Lägg till arrangör på $current_larp->Name</a>";
-	     }
-	     ?>
-		
-
-<?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
-
-?>
-
-        <h2>Inställningar för kampanjen och lajv i kampanjen</h2>
-        <p>
-		    <a href="larp_admin.php">Lajv i kampanjen</a> <br> 
-        	<a href="payment_information_admin.php">Avgift för <?php echo $current_larp->Name ?> inklusive matavgifter</a><br>
-		    <a href="campaign_admin.php">Inställningar för kampanjen</a> <br> 
-			<a href="bookkeeping_account_admin.php">Bokföringskonton</a>	<br>
-
-        </p>
-        
-	    <h2>Basdata för kampanjen</h2>
-	    	<p>
-				Nedanstående påverkar vilka frågor som ställs i registrerings- och anmälningsformulären.<br>
-				Om man inte fyller i några värden så kommer inte frågan att komma upp för deltagarna.<br>
-				Tänk på att sätta upp det här innan man öppnar anmälan, annars kommer de som har anmält sig tidigare att sakna svar på de frågorna.<br><br>
-			    <a href="selection_data_admin.php?type=larpertypes">Typ av lajvare för karaktärer</a>	<br>		    			
-			    <a href="selection_data_admin.php?type=religion">Religion för karaktärer</a>	<br>		    			
-			    <a href="selection_data_admin.php?type=race">Ras för karaktärer</a>	<br>		    			
-			    <a href="selection_data_admin.php?type=abilities">Typ av förmågor för karaktärer</a>	<br>		    			 					    
-			    <a href="selection_data_admin.php?type=council">Byråd för karaktärer</a>	<br>		    			 					    
-			    <a href="selection_data_admin.php?type=guard">Markvakt för karaktärer</a>	<br>		    			 					    
-			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger för karaktärer och grupper</a>	<br>		    			 					    
-			    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål för deltagare och grupper</a>	<br>		    			
-			    <a href="selection_data_admin.php?type=wealth">Rikedom för karaktärer och grupper</a><br>
-			    <a href="selection_data_admin.php?type=placeofresidence">Var karaktärer / grupper bor</a><br>
-		    			
-    		    <a href="selection_data_admin.php?type=typesoffood">Matalternativ för deltagare</a><br>
-			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer för deltagare</a>	<br><br>		    			
-			    <a href="selection_data_admin.php?type=advertismenttypes">Typer av annonser som deltagare med plats på lajvet kan skapa</a>	<br>		    			
-		    </p>
-        <p>
-        
-        <?php }?>
-        
-        <h3>Anmälningsformulären</h3>
-        <a href="../participant/group_form.php?admin=1" target="_blank">Registrering av grupp</a><br>
-        <a href="../participant/group_registration_form.php?admin=1" target="_blank">Anmälan av grupp</a><br>
-        <a href="../participant/role_form.php?admin=1" target="_blank">Registrering av karaktär</a><br>
-        <a href="../participant/person_registration_form.php?admin=1" target="_blank">Anmälan av deltagare</a><br>
-        </div>
 </body>
 
 </html>        
