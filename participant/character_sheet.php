@@ -39,7 +39,7 @@ $pdf = new CharacterSheet_PDF();
 $title = 'Karaktärsblad '.$role->Name;
 $pdf->SetTitle(utf8_decode($title));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator('Omnes Mundos');
+$pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $subject = $role->Name;
 $pdf->SetSubject(utf8_decode($subject));

@@ -12,8 +12,8 @@ class our_fonts_pdf extends FPDF {
     public static function print_test() {
         $pdf = new our_fonts_pdf();
         $pdf->SetTitle('Font_test');
-        $pdf->SetAuthor('Omnes Mundos');
-        $pdf->SetCreator('Omnes Mundos');
+        $pdf->SetAuthor('Omnes Mundi');
+        $pdf->SetCreator('Omnes Mundi');
         $pdf->SetSubject('Alla valbara fonter');
         $pdf->nytt_test();
         

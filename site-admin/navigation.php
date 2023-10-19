@@ -26,7 +26,7 @@ function changePart() {
 	<link href="../css/style.css" rel="stylesheet" type="text/css">
 	<link href="../css/gallery.css" rel="stylesheet" type="text/css">
 	<link rel="icon" type="image/x-icon" href="../images/bv.ico">
-	<title>Omnes Mundos</title>
+	<title>Omnes Mundi</title>
 	
 </head>
 <body>
@@ -34,7 +34,7 @@ function changePart() {
     <div id="left">
     	<a href="#home" target="_blank" style="padding: 11px 5px 11px 5px;" class="always_show">
     	<img src="../images/bv.ico" width="30" height="30"/></a>
-    	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show">Omnes Mundos</a>
+    	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show">Omnes Mundi</a>
     </div>
     <div id="right">
 

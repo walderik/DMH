@@ -31,7 +31,7 @@ $pdf = new Report_PDF();
 
 $pdf->SetTitle(utf8_decode($name));
 $pdf->SetAuthor(utf8_decode($current_user->Name));
-$pdf->SetCreator('Omnes Mundos');
+$pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $pdf->SetSubject(utf8_decode($name));
 

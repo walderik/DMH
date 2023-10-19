@@ -55,7 +55,7 @@ include 'navigation.php';
 			</div>
 			
 			
-        <h2>Matalternativ</h2>
+        <h2>Matalternativ, som påverkar pris. Ej matpreferenser</h2>
         <p>Om maten ingår i priset, eller det inte finns möjlighet att få mat, välj 0 st. 
         Om maten kostar extra behöver man ha minst 2 alternativ, där ett av dem är att man inte vill ha mat.</p>
 			<div class="question">

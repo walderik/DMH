@@ -37,7 +37,7 @@ $title = (empty($role)) ? 'Alla Karaktärer' : ('Karaktärsblad '.$role->Name) ;
 
 $pdf->SetTitle(utf8_decode($title));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator('Omnes Mundos');
+$pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $subject = (empty($role)) ? 'ALLA' : $role->Name;
 $pdf->SetSubject(utf8_decode($subject));

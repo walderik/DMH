@@ -398,7 +398,7 @@ class BerghemMailer {
 		      "Beskrivning av $house->Name: $house->Description<br><br>".
 		      "Vägbeskrivning: $house->PositionInVillage<br><br>".
 		      "Om du vill veta mer om ditt hus kan du titta på <a href='http://main.berghemsvanner.se/husen-i-byn/'>http://main.berghemsvanner.se/husen-i-byn/</a> ".
-		      "eller logga in i Omnes Mundos <a href='https://www.berghemsvanner.se/regsys/'>https://www.berghemsvanner.se/regsys/</a>.";
+		      "eller logga in i Omnes Mundi <a href='https://www.berghemsvanner.se/regsys/'>https://www.berghemsvanner.se/regsys/</a>.";
 
             
             $receiver_emails = array();
@@ -428,7 +428,7 @@ class BerghemMailer {
             $pdf = new CharacterSheet_PDF();
             $pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
             $pdf->SetAuthor(utf8_decode($larp->Name));
-            $pdf->SetCreator('Omnes Mundos');
+            $pdf->SetCreator('Omnes Mundi');
             $pdf->AddFont('Helvetica','');
             $pdf->SetSubject(utf8_decode($role->Name));
             $pdf->new_character_sheet($role, $larp);
@@ -453,7 +453,7 @@ class BerghemMailer {
                 $title = 'Gruppblad '.$group->Name ;
                 $pdf->SetTitle(utf8_decode($title));
                 $pdf->SetAuthor(utf8_decode($larp->Name));
-                $pdf->SetCreator('Omnes Mundos');
+                $pdf->SetCreator('Omnes Mundi');
                 $pdf->AddFont('Helvetica','');
                 $subject = $group->Name;
                 $pdf->SetSubject(utf8_decode($subject));

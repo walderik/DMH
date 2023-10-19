@@ -10,7 +10,7 @@ $arrayOfTitledeeds = Titledeed::allByCampaign($current_larp, false);
 $pdf = new TITLEDEED_PDF();
 $pdf->SetTitle(utf8_decode('Ägarbevisen'));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator('Omnes Mundos');
+$pdf->SetCreator('Omnes Mundi');
 $pdf->SetSubject(utf8_decode('Alla ägarbevis'));
 $pdf->all_titledeeds($arrayOfTitledeeds, $current_larp);
 

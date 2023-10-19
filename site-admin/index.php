@@ -4,7 +4,7 @@ include_once '../includes/error_handling.php';
 include "navigation.php";
 ?>
 		<div class="content">
-			<h1>Omnes Mundos administration</h1>
+			<h1>Omnes Mundi administration</h1>
 			<p>			    
 				<a href="campaign_admin.php">Kampanjer</a><br>
 			    <a href="house_admin.php">Hus och lägerplatser</a><br>

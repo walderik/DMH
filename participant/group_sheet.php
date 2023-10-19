@@ -39,7 +39,7 @@ $pdf = new Group_PDF();
 $title = (empty($group)) ? 'Alla Grupper' : ('Gruppblad '.$group->Name) ;
 $pdf->SetTitle(utf8_decode($title));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator('Omnes Mundos');
+$pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $subject = (empty($group)) ? 'ALLA' : $group->Name;
 $pdf->SetSubject(utf8_decode($subject));

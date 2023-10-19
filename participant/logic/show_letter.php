@@ -18,9 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     
     $pdf = new Letter_PDF();
-    $pdf->SetTitle('Telegram');
+    $pdf->SetTitle('Brev');
     $pdf->SetAuthor(utf8_decode($current_larp->Name));
-    $pdf->SetCreator('Omnes Mundos');
+    $pdf->SetCreator('Omnes Mundi');
     $pdf->SetSubject('Brev');
     $pdf->nytt_brev($letter);
     

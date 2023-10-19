@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $pdf = new TELEGRAM_PDF();
     $pdf->SetTitle('Telegram');
     $pdf->SetAuthor(utf8_decode($current_larp->Name));
-    $pdf->SetCreator('Omnes Mundos');
+    $pdf->SetCreator('Omnes Mundi');
     $pdf->AddFont('SpecialElite','');
     $pdf->SetSubject('Telegram');
     $pdf->nytt_telegram($telegram);

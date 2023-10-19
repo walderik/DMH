@@ -27,7 +27,7 @@ if (isset($_GET['bookkeepingId'])) {
     $pdf = new Receipt_PDF();
     $pdf->SetTitle('Kvitto');
     $pdf->SetAuthor(utf8_decode($current_larp->Name));
-    $pdf->SetCreator('Omnes Mundos');
+    $pdf->SetCreator('Omnes Mundi');
     $pdf->AddFont('SpecialElite','');
     $pdf->SetSubject('Kvitto');
     $pdf->nytt_kvitto($bookkeeping);
@@ -45,7 +45,7 @@ if (isset($_GET['bookkeepingId'])) {
     $pdf = new Receipt_PDF();
     $pdf->SetTitle('Kvitto');
     $pdf->SetAuthor(utf8_decode($current_larp->Name));
-    $pdf->SetCreator('Omnes Mundos');
+    $pdf->SetCreator('Omnes Mundi');
     $pdf->AddFont('SpecialElite','');
     $pdf->SetSubject('Kvitto');
     $pdf->nytt_kvitto_avgift($registration);

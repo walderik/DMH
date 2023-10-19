@@ -24,7 +24,7 @@ class Receipt_PDF extends FPDF {
         // Select Arial italic 8
         $this->SetFont('Arial', 'I', 8);
         // Print centered page number
-        $this->Cell(0, 10, 'Genererad av Omns Mundos', 0, 0, 'C');
+        $this->Cell(0, 10, 'Genererad av Omns Mundi', 0, 0, 'C');
     }
     
     function SetText(string $headline, $matter, $who, $specification, $amount, $date, $larp) {
