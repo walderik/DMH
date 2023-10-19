@@ -8,7 +8,7 @@ $param = date_format(new Datetime(),"suv");
 
 ?>
     <div class="content">   
-        <h1>Inställningar</h1>
+        <h1>Olika släpp</h1>
         <div>
         <table>
 	    <tr><td style="font-weight: normal;">

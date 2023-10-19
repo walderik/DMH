@@ -70,7 +70,7 @@ function changePart() {
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      	<a href="settings.php">??</a>
+	      	<a href="settings.php">Olika släpp</a>
 	    	
 	      	<a href="larp_form.php?operation=update&id=<?php echo $current_larp->Id?>">Basinställningar</a>
 	      	<a href="payment_information_admin.php">Avgifter, inklusive mat</a>
@@ -83,7 +83,6 @@ function changePart() {
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      	<a href="settings.php">Inställningar</a>
 	      	<a href="mail_admin.php">Skickad epost</a>
             <a href="registered_persons.php">Deltagare</a>
             <a href="approval.php">Godkänna</a>
