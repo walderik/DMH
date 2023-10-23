@@ -14,7 +14,7 @@ $advetismentTypes = AdvertismentType::allActive($current_larp);
     
     <?php 
     foreach ($advetismentTypes as $adtype) {
-        echo "<h2>$adtype->Name</h2>";
+        echo "<div><h2>$adtype->Name</h2>";
         echo "<p>$adtype->Description</p>";
         $advertisments = Advertisment::allBySelectedLARPAndType($current_larp, $adtype);
         if (empty($advertisments)) {
@@ -29,7 +29,7 @@ $advetismentTypes = AdvertismentType::allActive($current_larp);
                 echo "<td>$advertisment->Text</td>\n";
                 echo "</tr>\n";
             }
-            echo "</table></div>\n";
+            echo "</table><br><br></div>\n";
         }
         
         
