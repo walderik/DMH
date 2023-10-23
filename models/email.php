@@ -281,6 +281,23 @@ class Email extends BaseModel{
 
         
         
+        $mail->IsSMTP();
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "tls";
+        $mail->Host = "send.one.com";
+        $mail->Port = 587;
+        $mail->Username = "dmh@berghemsvanner.se";
+        $mail->Password = "colt1!";
+        /*
+        Outgoing server name: mailout.one.com
+        Port and encryption:
+        - 587 with STARTTLS (recommended)
+        - 465 with SSL/TLS
+        - 25 with STARTTLS or none
+        Authentication: your email address and password
+        */
+        
+        
         if (!$mail->send()) {
 //             echo 'Mailer Error: ' . $mail->ErrorInfo;
             $this->ErrorMessage = $mail->ErrorInfo;
