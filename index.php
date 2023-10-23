@@ -34,7 +34,7 @@ if (!Email::handleEmailQueue()) {
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 	<body>
-	<img  class="center" src="images/omnes_mundos_header.jpg">
+	<img  class="center" src="images/omnes_mundi_header.jpg">
 
 	  <?php if (isset($error_message) && strlen($error_message)>0) {
 	      echo '<div class="error">'.$error_message.'</div>';
