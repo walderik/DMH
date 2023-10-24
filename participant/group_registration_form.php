@@ -88,7 +88,7 @@ include 'navigation.php';
 			</div>
 			<div class="question">
     			<label for="HousingRequest">Boende</label>&nbsp;<font style="color:red">*</font>
-    			<div class="explanation">Hur vill gruppen helst bo? Vi kan inte garantera plats i hus. <br><?php HousingRequest::helpBox($current_larp); ?></div>
+    			<div class="explanation">Hur vill gruppen helst bo? Vi kan inte garantera plats i hus.</div>
                 <?php
     
                 HousingRequest::selectionDropdown($current_larp, false,true);

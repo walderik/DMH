@@ -18,19 +18,22 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
     $option = ($required) ? 'required' : '';
     $type = ($multiple) ? "checkbox" : "radio";
     
-    echo "<div class='selectionDropdown'>\n";
-    
     if (empty($selectionDatas)) {
-        echo "</div>\n";
         return;
     }
+    
+    echo "<table class='selectionDropdown'>\n";
     
     //Om det bara finns en och man måste välja så väljs den.
     if (count($selectionDatas)==1 && $required){
         $first_key = array_key_first($selectionDatas);
+        echo "<tr><td>";
         echo htmlspecialchars($selectionDatas[$first_key]->Name) . "<br>\n";
         echo "<input type='hidden' id='" .$name_in.$selectionDatas[$first_key]->Id . "' name='" . $name . "' value=" .  $selectionDatas[$first_key]->Id . ">";
-        echo "</div>\n";
+        echo "</td>";
+        if (isset($selectionDatas[$first_key]->Description)) echo "<td>".nl2br(htmlspecialchars($selectionDatas[$first_key]->Description))."</td>";
+        echo "</tr>";
+        echo "</table>\n";
         return;
     }
     
@@ -39,6 +42,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
         $empty_object = clone $selectionDatas[0];
         $empty_object->Id = "null";
         $empty_object->Name = "[ Ingen / Inget ]";
+        if (isset($empty_object->Description)) $empty_object->Description = "";
         array_unshift($selectionDatas , $empty_object);
     }
     
@@ -52,11 +56,16 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
             if ((!is_null($selected) && $selected == $selectionData->Id) || (is_null($selected) && 'null' == $selectionData->Id))
                 $row_option = $row_option.' checked="checked"';
         }
-        
+        echo "<tr>";
+        echo "<td>";
         echo "<input type='" . $type . "' id='" .$name_in.$selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "' " . $row_option . ">\n";
         echo "<label for='" .$name_in.$selectionData->Id . "'>" .  htmlspecialchars($selectionData->Name) . "</label><br>\n";
+        echo "</td>";
+        if (isset($selectionData->Description)) echo "<td>".nl2br(htmlspecialchars($selectionData->Description))."</td>";
+        
+        echo "</tr>";
     }
-    echo "</div>\n";
+    echo "</table>\n";
 }
 
 

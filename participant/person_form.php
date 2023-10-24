@@ -111,8 +111,7 @@
 			<h2>Lajvrelaterat</h2>
 			
 			<div class="question">
-				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font><br>
-       			<div class="explanation"><?php Experience::helpBox(); ?></div>
+				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font></div>
                 <?php Experience::selectionDropdown(false, true, $person->ExperienceId); ?>
             </div>
 			<div class="question">
@@ -128,8 +127,7 @@
 				<label for="NormalAllergyType">Vanliga allergier?</label>
 				<br> 
 				
-				<div class="explanation">Har du någon eller några av de vanligaste mat-allergierna?<br>
-				<?php NormalAllergyType::helpBox(); ?></div>
+				<div class="explanation">Har du någon eller några av de vanligaste mat-allergierna?</div>
 				<?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?>
 			</div>
 			

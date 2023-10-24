@@ -131,8 +131,8 @@ include 'navigation.php';
 
 			<?php if (Wealth::isInUse($current_larp)) { ?>
 			<div class="question">
-			<label for="Wealth">Hur rik anser du att gruppen är?</label>&nbsp;<font style="color:red">*</font>
-			<div class="explanation"><?php Wealth::helpBox($current_larp); ?></div>
+			<label for="Wealth">Hur rik är gruppen?</label>&nbsp;<font style="color:red">*</font>
+			
             <?php
             Wealth::selectionDropdown($current_larp, false, true, $group->WealthId);
             ?> 
@@ -142,7 +142,7 @@ include 'navigation.php';
 			<?php if (PlaceOfResidence::isInUse($current_larp)) { ?>
 			<div class="question">
 			<label for="PlaceOfResidence">Var bor gruppen?</label>&nbsp;<font style="color:red">*</font>
-			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om gruppen tillfälligt är på platsen så vill vi veta var gruppen har sitt hem.<br><?php PlaceOfResidence::helpBox($current_larp); ?></div>
+			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om gruppen tillfälligt är på platsen så vill vi veta var gruppen har sitt hem.</div>
             <?php
             PlaceOfResidence::selectionDropdown($current_larp, false, true, $group->PlaceOfResidenceId);
             ?> 
@@ -153,8 +153,7 @@ include 'navigation.php';
 			<?php if (IntrigueType::isInUse($current_larp)) { ?>
 			<div class="question">
     			<label for="IntrigueType">Intrigtyper</label>
-    			<div class="explanation">Vilken typ av intriger vill gruppen helst ha?  <br>
-    			    <?php IntrigueType::helpBox($current_larp); ?></div>
+    			<div class="explanation">Vilken typ av intriger vill gruppen helst ha? </div>
                 <?php
     
                 IntrigueType::selectionDropdown($current_larp, true, false, $group->getSelectedIntrigueTypeIds());

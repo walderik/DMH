@@ -8,6 +8,7 @@
  
  $type;
  $objectType;
+ 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['type'])) {
         $type=$_POST['type'];
@@ -26,8 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $user_func = $objectType . '::newFromArray';
         $data = call_user_func($user_func, $_POST);
-
+        echo "<br><br>";
+        print_r($data);
         $data->create();
+        echo "<br><br>";
     } elseif ($operation == 'update') {
         $user_func = $objectType . '::loadById';
         $data = call_user_func($user_func,$_POST['Id']);
@@ -53,7 +56,7 @@ include 'navigation.php';
 
 ?>
     <div class="content">   
-        <h1><?php echo getObjectName($type);?> <a href="settings.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+        <h1><?php echo getObjectName($type);?> <a href="forms.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
             <a href="selection_data_form.php?type=<?php echo $type;?>&operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>          
         <?php
         $data_array = call_user_func($objectType . '::allForLarp', $current_larp);
@@ -64,7 +67,7 @@ include 'navigation.php';
                 echo "<tr>\n";
                 echo "<td>" . $data->Id . "</td>\n";
                 echo "<td>" . $data->Name . "</td>\n";
-                echo "<td>" . $data->Description . "</td>\n";
+                echo "<td>" . nl2br($data->Description) . "</td>\n";
                 echo "<td>" . $data->Active . "</td>\n";
                 echo "<td>" . $data->SortOrder . "</td>\n";
               

@@ -214,7 +214,7 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 			<?php  if (Race::isInUse($current_larp)) {?>	
 			<div class="question">
 				<label for="RaceId">Vilken typ av varelse är du?</label>&nbsp;<font style="color:red">*</font><br>
-       			<div class="explanation"><?php Race::helpBox($current_larp); ?></div>
+       			
                 <?php Race::selectionDropdown($current_larp, false, true, $role->RaceId); ?>
             </div>
 				<div class="question">
@@ -248,7 +248,7 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
        			Är du ny på lajv? Vi rekommenderar då att du att du väljer ett alternativ som ger mycket intriger. 
        			Erfarenhetsmässigt brukar man som ny lajvare ha mer nytta av mycket intriger än en 
        			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.   
-       			<br><?php LarperType::helpBox($current_larp); ?></div>
+       			</div>
                 <?php LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId); ?>
             </div>
 				<div class="question intrigue">
@@ -268,7 +268,7 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 				<label for="AbilityId">Har din karaktär någon av följande kunskaper?</label><br>
        			<div class="explanation">Specialförmågor är sådant som påverkar speltekniken. Exempelvis "tål ett extra slag", men inte "har bättre luktsinne". Om du ska vara magi- eller alkemikunnig ska du innan din anmälan fått detta godkänt av magi-/alkemiarrangör, via e-post doh@berghemsvanner.se.
 Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och facebook-sidan.   
-       			<br><?php Ability::helpBox($current_larp); ?></div>
+       			</div>
                 <?php 
                 selectionByArray('Ability' , Ability::allActive($current_larp), true, false, $role->getSelectedAbilityIds());
                 ?>
@@ -289,7 +289,7 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
 			<div class="question intrigue">
 			<label for="PlaceOfResidence">Var bor karaktären?</label>&nbsp;<font style="color:red">*</font>
 			<div class="explanation">Tänk typ folkbokföringsadress, dvs även om karaktären tillfälligt är på platsen så vill vi veta var karaktären har sitt hem.<br>
-			   <?php PlaceOfResidence::helpBox($current_larp); ?></div>
+			   </div>
 			
 			
             <?php
@@ -329,7 +329,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			<?php if (Religion::isInUse($current_larp)) {?>
 			<div class="question intrigue">
 				<label for="ReligionId">Vilken religion har karaktären?</label>&nbsp;<font style="color:red">*</font><br>
-       			<div class="explanation">Vissa religioner har bättre anseende än andra. Religionen kommer att påverka spel. <?php Religion::helpBox($current_larp); ?></div>
+       			<div class="explanation">Vissa religioner har bättre anseende än andra. Religionen kommer att påverka spel. </div>
                 <?php Religion::selectionDropdown($current_larp, false,true, $role->ReligionId); ?>
             </div>
 
@@ -350,7 +350,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
        			Det kommer att vara ett begränsat antal stenrika på lajvet och vi godkänner i regel inte nya. 
        			Undantag kan naturligtvis förekomma om det gynnar lajvet.   
        			Däremot är <?php echo $campaign->Name ?> en kampanj så det går att spela sig till att bli stenrik. 
-       			Det går också att bli fattig om man är stenrik.<?php Wealth::helpBox($current_larp); ?></div>
+       			Det går också att bli fattig om man är stenrik.</div>
                 <?php Wealth::selectionDropdown($current_larp, false,true, $role->WealthId); ?>
             </div>
 			<?php } ?>	
@@ -359,7 +359,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			<div class="question intrigue">
 				<label for="CouncilId">Byrådet</label><br>
        			<div class="explanation">Jag är med i eller intresserad av att sitta i byrådet. För att sitta i byrådet måste du vara bybo. Annars måste du bli invald i byrådet inlajv.   
-       			<br><?php Council::helpBox($current_larp); ?></div>
+       			</div>
                 <?php 
                 Council::selectionDropdown($current_larp, false, false, $role->CouncilId);
                 ?>
@@ -370,7 +370,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			<div class="question intrigue">
 				<label for="GuardId">Markvakten</label><br>
        			<div class="explanation">Jag är med i eller intresserad av att vara med i markvakten.   
-       			<br><?php Guard::helpBox($current_larp); ?></div>
+       			</div>
                 <?php 
                 Guard::selectionDropdown($current_larp, false, false, $role->GuardId);
                 ?>
@@ -387,7 +387,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			<div class="question intrigue">
 				<label for="IntrigueTypeId">Intrigtyper</label><br> 
 				<div class="explanation">Vilken typ av intriger vill du ha?
-				<?php IntrigueType::helpBox($current_larp); ?>
+				
 				</div>
 				<?php 
 				selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $role->getSelectedIntrigueTypeIds());

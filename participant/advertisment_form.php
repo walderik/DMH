@@ -57,7 +57,7 @@ include 'navigation.php';
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
 		<table>
 			<tr>
-				<td>Typ av annons<br><?php AdvertismentType::helpBox($current_larp); ?></td>
+				<td>Typ av annons</td>
        			<td>
                 <?php AdvertismentType::selectionDropdown($current_larp, false, true, $advertisment->AdvertismentTypeId); ?>
                 </td>
