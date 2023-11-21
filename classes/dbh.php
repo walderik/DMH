@@ -22,8 +22,8 @@ class Dbh {
     private static function setUpConnection() {
         if (static::isLocal()) {
             self::$dbServername = "192.168.0.19";
-            self::$dbUsername = "root";
-            self::$dbPassword = "";
+            self::$dbUsername = "regsys";
+            self::$dbPassword = "}JmX43xmq;rgO![522a6h79C\v4b9;2;";
             self::$dbName = "berghemsvanner_";
         } else {
             self::$dbServername = "berghemsvanner.se.mysql.service.one.com";
