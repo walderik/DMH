@@ -23,7 +23,7 @@ class Dbh {
         if (static::isLocal()) {
             self::$dbServername = "192.168.0.19";
             self::$dbUsername = "regsys";
-            self::$dbPassword = "}JmX43xmq;rgO![522a6h79C\v4b9;2;";
+            self::$dbPassword = "XXX";
             self::$dbName = "berghemsvanner_";
         } else {
             self::$dbServername = "berghemsvanner.se.mysql.service.one.com";
