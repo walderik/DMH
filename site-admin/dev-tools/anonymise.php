@@ -34,8 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $roles = Role::all();
     foreach ($roles as $role) {
         if (isset($role->ImageId) && $role->ImageId != 1) {
-            Image::delete($role->ImageId);
+            $tmpId = $role->ImageId;
             $role->ImageId = 1;
+            //Image::delete($tmpId);
         }
         $role->CharactersWithRelations = "-";
         $role->DarkSecret = "-";
