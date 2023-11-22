@@ -103,6 +103,23 @@ include 'navigation.php';
 		    <?php 
 		    }
 		    ?>
+			
+			<?php 
+			if (!empty($current_larp->ContentDescription)) {
+
+			?>
+			<div class="question">
+					Lajvets innehåll&nbsp;<font style="color:red">*</font><br>
+    			<div class="explanation"><?php echo $current_larp->ContentDescription ?></div>
+
+			<input type="checkbox" id="Content" name="Content" value="Ja" required>
+  			<label for="Content">Jag är införstådd med vad det är för typ av lajv</label> 
+			</div>
+			
+			
+		    <?php 
+		    }
+		    ?>
 				
 			<div class="question">
 				<label for="RoleId">Karaktärer</label>&nbsp;<font style="color:red">*</font><br>

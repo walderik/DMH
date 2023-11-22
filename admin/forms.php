@@ -35,9 +35,12 @@ $param = date_format(new Datetime(),"suv");
 			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer för deltagare</a>	<br>		    			
 
 
+        <h2>Inställningar för lajvet, bland annat innehåll</h2>
+        <a href ="http://localhost/regsys/admin/larp_form.php?operation=update&id=<?php echo $current_larp->Id?>">Inställningar för lajvet</a>
         
         
         </div>
+        
 </body>
 
 </html>        
