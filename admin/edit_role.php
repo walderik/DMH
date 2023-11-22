@@ -92,6 +92,33 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Varför befinner sig<br>karaktären på platsen?&nbsp;<font style="color:red">*</font></td>
 			<td><textarea id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea></td></tr>
 
+
+
+			<?php if (Religion::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Religion</td><td>
+			<?php Religion::selectionDropdown($current_larp, false, false, $role->ReligionId); ?>
+			</td></tr>
+			<tr><td valign="top" class="header">Religion förklaring</td><td><input type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="250"></td></tr>
+			<?php }?>
+
+			<?php if (Council::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Byrådet</td><td>
+			<?php Council::selectionDropdown($current_larp, false, false, $role->CouncilId); ?>
+			</td></tr>
+			<tr><td valign="top" class="header">Byrådet förklaring</td><td><input type="text" id="Council" name="Council" value="<?php echo htmlspecialchars($role->Council); ?>"  size="100" maxlength="250"></td></tr>
+			<?php }?>
+			
+			<?php if (Guard::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Markvakt</td><td>
+			<?php Guard::selectionDropdown($current_larp, false, false, $role->GuardId); ?>
+			</td></tr>
+			<?php }?>			
+
+
+
+
+
+
 			<tr><td valign="top" class="header">Religion</td>
 			<td><input type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="250"></td></tr>
 
