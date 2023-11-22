@@ -23,6 +23,7 @@ class Role extends BaseModel{
     public $PlaceOfResidenceId;
     public $RaceId;
     public $CouncilId;
+    public $Council;
     public $GuardId;
     public $Photo;
     public $Birthplace;
@@ -71,6 +72,7 @@ class Role extends BaseModel{
         if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
         if (isset($arr['RaceId'])) $this->RaceId = $arr['RaceId'];
         if (isset($arr['CouncilId'])) $this->CouncilId = $arr['CouncilId'];
+        if (isset($arr['Council'])) $this->Council = $arr['Council'];
         if (isset($arr['GuardId'])) $this->GuardId = $arr['GuardId'];
         if (isset($arr['Birthplace'])) $this->Birthplace = $arr['Birthplace'];
         if (isset($arr['CharactersWithRelations'])) $this->CharactersWithRelations = $arr['CharactersWithRelations'];
@@ -112,7 +114,7 @@ class Role extends BaseModel{
                               DescriptionForGroup=?, DescriptionForOthers=?,
                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, ReligionId=?, Religion=?, DarkSecret=?,
                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
-                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, CouncilId=?, GuardId=?, Birthplace=?, 
+                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, CouncilId=?, Council=?, GuardId=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
                               NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=? WHERE Id = ?;");
         
@@ -120,7 +122,7 @@ class Role extends BaseModel{
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
             $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
-            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, $this->CouncilId, $this->GuardId, 
+            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, $this->CouncilId, $this->Council, $this->GuardId, 
             $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
             $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
             $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->Id))) {
@@ -138,17 +140,17 @@ class Role extends BaseModel{
                                                             DescriptionForGroup, DescriptionForOthers, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, ReligionId, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
-                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId, CouncilId, GuardId, 
+                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId, CouncilId, Council, GuardId, 
                                                             Birthplace, CharactersWithRelations, CampaignId, ImageId, 
                                     IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, IsApproved) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?);");
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
-            $this->CouncilId, $this->GuardId, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
+            $this->CouncilId, $this->Council, $this->GuardId, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
             $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
             $this->RaceComment, $this->AbilityComment, $this->IsApproved
         ))) {

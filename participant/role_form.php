@@ -364,6 +364,15 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
                 Council::selectionDropdown($current_larp, false, false, $role->CouncilId);
                 ?>
             </div>
+            
+			<div class="question intrigue">
+				<label for="Council">Byrådet förklaring</label><br>
+				<div class="explanation">Vilka sitter du i byrådet för?</div>
+				<input class="input_field" type="text" id="Council" name="Council" value="<?php echo htmlspecialchars($role->Council); ?>"  size="100" maxlength="200">
+			</div>
+            
+            
+            
 			<?php } ?>	
 
 			<?php  if (Guard::isInUse($current_larp)) {?>	
