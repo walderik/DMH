@@ -111,7 +111,7 @@
 			<h2>Lajvrelaterat</h2>
 			
 			<div class="question">
-				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font></div>
+				<label for="ExperiencesId">Hur erfaren lajvare är du?</label>&nbsp;<font style="color:red">*</font>
                 <?php Experience::selectionDropdown(false, true, $person->ExperienceId); ?>
             </div>
 			<div class="question">
