@@ -18,6 +18,10 @@ include_once 'header.php';
 img {
   float: right;
 }
+
+ul.list {
+    list-style-type: disc;
+}
 </style>
 
     <div class="content"> 
@@ -62,16 +66,18 @@ img {
     			</tr>
     			<tr>
     				<td colspan = '2'>De som bor i huset under <?php echo $current_larp->Name ?> är:<br>
+    				<ul class="list">
     				<?php 
     				$personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
     				foreach ($personsInHouse as $personInHouse) {
     				    if ($personInHouse->isNotComing($current_larp)) continue;
-    				    if ($personInHouse->hasPermissionShowName()) echo $personInHouse->Name;
-    				    else echo "(Vill inte visa sitt namn)";
+    				    if ($personInHouse->hasPermissionShowName()) echo "<li>".$personInHouse->Name;
+    				    else echo "<li>(Vill inte visa sitt namn)";
     				    echo "<br>";
     				}
     				
     				?>
+    				</ul>
     				</td>
 				</tr>
     			
