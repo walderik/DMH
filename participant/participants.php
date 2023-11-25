@@ -1,27 +1,8 @@
 <?php
 
-global $root, $current_larp;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+require 'header.php';
 
-include_once $root . '/includes/all_includes.php';
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id'])) {
-        $Id = $_GET['id'];
-        
-    }
-    else {
-        
-        header('Location: index.php');
-        exit;
-    }
-}
-
-
-$larp = Larp::loadById($Id);
-$current_larp=$larp;
-
-if (is_null($larp)) {
+if (!$current_user->isComing($current_larp)) {
     header('Location: index.php');
     exit;
 }
@@ -115,7 +96,7 @@ function print_role($role) {
         }
     }
     else {
-        echo "<img src='images/man-shape.png' />\n";
+        echo "<img src='../images/man-shape.png' />\n";
         echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
     }
     echo "</li>\n\n";
@@ -129,10 +110,10 @@ function print_role($role) {
 
 		<meta charset="utf-8">
 		<title><?php  echo $larp->Name; ?></title>
-		<link href="css/style.css" rel="stylesheet" type="text/css">
-		<link href="css/gallery.css" rel="stylesheet" type="text/css">
+		<link href="../css/style.css" rel="stylesheet" type="text/css">
+		<link href="../css/gallery.css" rel="stylesheet" type="text/css">
 
-		<link rel="icon" type="image/x-icon" href="images/<?php echo $current_larp->getCampaign()->Icon; ?>">
+		<link rel="icon" type="image/x-icon" href="../images/<?php echo $current_larp->getCampaign()->Icon; ?>">
 
 
 
@@ -149,7 +130,7 @@ function print_role($role) {
 		<?php 
 		$groups = Group::getAllRegisteredApproved($larp);
 		foreach ($groups as $group) {
-		    $roles = Role::getAllMainRolesInGroup($group, $larp);
+		    $roles = Role::getAllComingMainRolesInGroup($group, $larp);
 
 		    
             if (!(empty($roles) && count($roles)>0)) {
@@ -185,7 +166,7 @@ function print_role($role) {
 		
 		
 		/* Karaktärer utan grupp */	
-		$roles = Role::getAllMainRolesWithoutGroup($larp);
+		$roles = Role::getAllComingMainRolesWithoutGroup($larp);
 		
 
 		if ((!empty($roles) && count($roles)!=0)) {

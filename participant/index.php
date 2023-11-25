@@ -311,6 +311,15 @@ include "navigation.php";
 		</div>
 		<?php 
 		  if ($current_user->isComing($current_larp)) {
+		      echo "<div class='content'>\n";
+		      echo "<h2>Bildgallerier på deltagare och funktionärer</h2>\n";
+		      echo "<div>";
+		      echo "<a href='participants.php?id=$current_larp->Id' target='_blank'>Deltagare på lajvet</a><br>\n";
+		      echo "<a href='officials.php?id=$current_larp->Id' target='_blank'>Funktionärer på lajvet</a>\n";
+		      echo "</div></div>";
+		      
+		      
+		      
 		      if ($current_larp->hasTelegrams()) {
 		      
 		        echo "<div class='content'>\n";

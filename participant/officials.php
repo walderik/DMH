@@ -112,7 +112,7 @@ function print_role($role) {
         }
     }
     else {
-        echo "<img src='images/man-shape.png' />\n";
+        echo "<img src='../images/man-shape.png' />\n";
         echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
     }
     echo "</li>\n\n";
@@ -126,8 +126,8 @@ function print_role($role) {
 
 		<meta charset="utf-8">
 		<title><?php  echo $larp->Name; ?></title>
-		<link href="css/style.css" rel="stylesheet" type="text/css">
-		<link href="css/gallery.css" rel="stylesheet" type="text/css">
+		<link href="../css/style.css" rel="stylesheet" type="text/css">
+		<link href="../css/gallery.css" rel="stylesheet" type="text/css">
 
 		<link rel="icon" type="image/x-icon" href="images/<?php echo $current_larp->getCampaign()->Icon; ?>">
 
