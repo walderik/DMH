@@ -172,6 +172,19 @@ class BerghemMailer {
         static::send($mail, $person->Name, $text, "Godkänd karaktär till ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);
     }
     
+    public static function send_role_unapproval_mail(Role $role, LARP $larp) {
+        $person = $role->getPerson();
+        $mail = $person->Email;
+        
+        
+        
+        $text  = "Din karaktär $role->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din karaktär godkänd.\n";
+        
+        $sheets = static::getAllSheets(array($role), $larp);
+        
+        static::send($mail, $person->Name, $text, "Icke godkänd karaktär till ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);
+    }
+    
     public static function send_group_approval_mail(Group $group, LARP $larp) {
         $person = $group->getPerson();
         $mail = $person->Email;

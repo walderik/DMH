@@ -17,10 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $roleId = $_POST['RoleId'];
         $role = Role::loadById($roleId);
         if (isset($role)) {
-            $role->IsApproved = 1;
-            $role->update();
-            
-            BerghemMailer::send_role_approval_mail($role, $current_larp);
+            $role->approve($current_larp);
             header('Location: ../approval.php');
             exit;
             

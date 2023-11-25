@@ -764,7 +764,21 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public function approve($larp) {
+        $this->IsApproved = 1;
+        $this->update();
+        
+        BerghemMailer::send_role_approval_mail($this, $larp);
+        
+    }
     
+    public function unapprove($larp) {
+        $this->IsApproved = 0;
+        $this->update();
+        
+        BerghemMailer::send_role_unapproval_mail($this, $larp);
+        
+    }
     
     
     

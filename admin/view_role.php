@@ -40,11 +40,15 @@ include 'navigation.php';
 		<?php 
 		if ($role->isApproved()) {
 		  echo "<strong>Godkänd</strong>";
+		  $editButton = "Ta bort godkännandet";
 		}
 		else {
 		    echo "<strong>Ej godkänd</strong>";
-		}
+		    $editButton = "Godkänn";
+		}		
 		?>
+        <form action="logic/toggle_approve_role.php" method="post"><input type="hidden" id="roleId" name="roleId" value="<?php echo $role->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
+		<br>
 		
             <?php 
             if (!$isReserve) {
