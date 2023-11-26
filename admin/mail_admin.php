@@ -40,7 +40,7 @@ th {
 	    "<th onclick='sortTable(5, \"$tableId\")'>Fel</th>".
         "</tr>\n";
     	
-    	$emails = Email::allBySelectedLARP($current_larp);
+    	$emails = Email::allBySelectedLARPAndCommon($current_larp);
     	foreach (array_reverse($emails) as $email) {
     	    $user = User::loadById($email->SenderUserId);
     	    

@@ -101,9 +101,9 @@ class Email extends BaseModel{
         }
     }
     
-    public static function allBySelectedLARP(Larp $larp) {
+    public static function allBySelectedLARPAndCommon(Larp $larp) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_email WHERE LarpId = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_email WHERE LarpId = ? OR LarpId IS NULL ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
