@@ -27,7 +27,7 @@ class Email extends BaseModel{
     }
     
     public function setValuesByArray($arr) {
-        if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
+        if (array_key_exists('LarpId', $arr)) $this->LarpId = $arr['LarpId'];
         if (isset($arr['SenderUserId'])) $this->SenderUserId = $arr['SenderUserId'];
         if (isset($arr['From'])) $this->From = $arr['From'];
         if (isset($arr['To'])) $this->To = $arr['To'];
@@ -235,10 +235,7 @@ class Email extends BaseModel{
     }
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
-    public function sendNow() {        
-        global $current_larp, $current_user;
-
-        
+    public function sendNow() { 
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
         //Set who the message is to be sent from
@@ -280,14 +277,17 @@ class Email extends BaseModel{
         $mail->Body = utf8_decode($this->mailContent());
 
         
+        if (!str_contains($this->From, "berghemsvanner.se")) {
+            //Exempel på hur anrop kan se ut.
+            $mail->IsSMTP();
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = "tls";
+            $mail->Host = "send.one.com";
+            $mail->Port = 587;
+            $mail->Username = "dmh@berghemsvanner.se";
+            $mail->Password = "colt1!";            
+        }
         
-        $mail->IsSMTP();
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = "tls";
-        $mail->Host = "send.one.com";
-        $mail->Port = 587;
-        $mail->Username = "dmh@berghemsvanner.se";
-        $mail->Password = "colt1!";
         /*
         Outgoing server name: mailout.one.com
         Port and encryption:
