@@ -42,7 +42,11 @@ th {
     	
     	$emails = Email::allBySelectedLARPAndCommon($current_larp);
     	foreach (array_reverse($emails) as $email) {
-    	    $user = User::loadById($email->SenderUserId);
+    	    $sendUserName = "";
+    	    if (isset($email->SenderUserId)) {
+    	       $user = User::loadById($email->SenderUserId);
+    	       $sendUserName = $user->Name;
+    	    }
     	    
     	    if (!($to_array = @unserialize($email->To))) {
     	        $to = $email->To;
@@ -58,7 +62,7 @@ th {
     	    echo "<td>";
     	    if (!empty($attachements)) echo "<i class='fa-solid fa-paperclip'></i>";
             echo "</td>";
-    	    echo "<td>$user->Name</td>";
+    	    echo "<td>$sendUserName</td>";
     	    echo "<td>$email->SentAt</td>";
     	    echo "<td>";
     	    if (!empty($email->ErrorMessage)) {

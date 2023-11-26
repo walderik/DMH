@@ -28,7 +28,7 @@ class Email extends BaseModel{
     
     public function setValuesByArray($arr) {
         if (array_key_exists('LarpId', $arr)) $this->LarpId = $arr['LarpId'];
-        if (isset($arr['SenderUserId'])) $this->SenderUserId = $arr['SenderUserId'];
+        if (array_key_exists('SenderUserId', $arr)) $this->SenderUserId = $arr['SenderUserId'];
         if (isset($arr['From'])) $this->From = $arr['From'];
         if (isset($arr['To'])) $this->To = $arr['To'];
         if (isset($arr['ToName'])) $this->ToName = $arr['ToName'];
