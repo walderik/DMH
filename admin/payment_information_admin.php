@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo "<a href='payment_information_form.php?operation=new'><i class='fa-solid fa-file-circle-plus'></i>Lägg till</a>";
             
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Från datum</th><th>Till datum</th><th>Från ålder</th><th>Till ålder</th><th>Deltagaravgift</th>";
+            echo "<tr><th>Id</td><th>Anmälan från datum</th><th>Till datum</th><th>Från ålder</th><th>Till ålder</th><th>Deltagaravgift</th>";
             echo "<th>Matalternativ</th>";
             echo "<th></th><th></th></tr>\n";
             foreach ($payment_array as $payment) {

@@ -25,7 +25,7 @@ include 'navigation.php';
         
          
         <form action="payment_wizard_pg2.php" method="post" >
-        <h2>Datum</h2>
+        <h2>Anmälningsdatum</h2>
 			<div class="question">
 				<label for="first_date">Första datum</label>&nbsp;<font style="color:red">*</font>
 				<br> <input type="date" id="first_date" name="first_date" value="<?php echo date("Y-m-d"); ?>" required>

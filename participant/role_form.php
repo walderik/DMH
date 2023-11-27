@@ -73,10 +73,13 @@ include 'navigation.php';
 	
 	function setFieldState(isYes) {
 		var intrigueDivs = document.getElementsByClassName("intrigue");
-		var requiredFields = document.getElementsByClassName("requiredIntrigueField")
+		var requiredFields = document.getElementsByClassName("requiredIntrigueField");
 		var larpertype = document.getElementsByName("LarperTypeId");
 		var wealths = document.getElementsByName("WealthId");
+		var religions = document.getElementsByName("ReligionId");
 		var placeofresidences = document.getElementsByName("PlaceOfResidenceId");
+		var councils = document.getElementsByName("CouncilId");
+		var guards = document.getElementsByName("GuardId");
         if (isYes) {
     		for (var i = 0; i < intrigueDivs.length; i++) {
         		intrigueDivs[i].style.display = "none";
@@ -90,8 +93,17 @@ include 'navigation.php';
     		for (var i = 0; i < wealths.length; i++) {
         		wealths[i].required = false;  
     		}
+    		for (var i = 0; i < religions.length; i++) {
+    			religions[i].required = false;  
+    		}
     		for (var i = 0; i < placeofresidences.length; i++) {
         		placeofresidences[i].required = false;        		
+    		}
+    		for (var i = 0; i < councils.length; i++) {
+    			councils[i].required = false;        		
+    		}
+    		for (var i = 0; i < guards.length; i++) {
+    			guards[i].required = false;        		
     		}
         } else {
     		for (var i = 0; i < intrigueDivs.length; i++) {
@@ -106,8 +118,17 @@ include 'navigation.php';
      		for (var i = 0; i < wealths.length; i++) {
         		wealths[i].required = true;        		
     		}
+     		for (var i = 0; i < religions.length; i++) {
+     			religions[i].required = true;        		
+    		}
     		for (var i = 0; i < placeofresidences.length; i++) {
         		placeofresidences[i].required = true;  
+    		}
+    		for (var i = 0; i < councils.length; i++) {
+    			councils[i].required = true;  
+    		}
+    		for (var i = 0; i < guards.length; i++) {
+    			guards[i].required = true;  
     		}
         }
     }
@@ -357,11 +378,11 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 				
 			<?php  if (Council::isInUse($current_larp)) {?>	
 			<div class="question intrigue">
-				<label for="CouncilId">Byrådet</label><br>
+				<label for="CouncilId">Byrådet</label>&nbsp;<font style="color:red">*</font><br>
        			<div class="explanation">Jag är med i eller intresserad av att sitta i byrådet. För att sitta i byrådet måste du vara bybo. Annars måste du bli invald i byrådet inlajv.   
        			</div>
                 <?php 
-                Council::selectionDropdown($current_larp, false, false, $role->CouncilId);
+                Council::selectionDropdown($current_larp, false, true, $role->CouncilId);
                 ?>
             </div>
             
@@ -377,11 +398,11 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 
 			<?php  if (Guard::isInUse($current_larp)) {?>	
 			<div class="question intrigue">
-				<label for="GuardId">Markvakten</label><br>
+				<label for="GuardId">Markvakten</label>&nbsp;<font style="color:red">*</font><br>
        			<div class="explanation">Jag är med i eller intresserad av att vara med i markvakten.   
        			</div>
                 <?php 
-                Guard::selectionDropdown($current_larp, false, false, $role->GuardId);
+                Guard::selectionDropdown($current_larp, false, true, $role->GuardId);
                 ?>
             </div>
 			<?php } ?>	
@@ -445,6 +466,7 @@ Det kan kännas svårt att göra karaktären sårbar på det här sättet, men f
 		    }
 		    
 			    ?>
+
 
 			<input type='<?php echo $type ?>' value='<?php echo default_value('action') ?>'>
 		</form>

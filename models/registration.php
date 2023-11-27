@@ -118,7 +118,8 @@ class Registration extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId, FoodChoice, EvaluationDone) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId, FoodChoice, EvaluationDone) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,

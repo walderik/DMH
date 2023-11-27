@@ -28,7 +28,7 @@ class PaymentInformation extends BaseModel{
         if (isset($arr['FromAge'])) $this->FromAge = $arr['FromAge'];
         if (isset($arr['ToAge'])) $this->ToAge = $arr['ToAge'];
         if (isset($arr['Cost'])) $this->Cost = $arr['Cost'];
-        if (isset($arr['FoodDescription'])) {
+        if (!empty($arr['FoodDescription'])) {
             if (is_array($arr['FoodDescription'])) $this->FoodDescription = $arr['FoodDescription'];
             else $this->FoodDescription = explode(";",$arr['FoodDescription']);
         }
