@@ -38,7 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     <div class="content">
         <h1>Avgift <a href="settings.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-        <p>Var noga när du sätter upp det här så att det inte blir några "hål" varken i ålder eller datum. <br><br>
+        <p>Avgifterna gäller vilket datum det är anmälan kommer in och vilken ålder man har på lajvets första dag.<br>
+        Var noga när du sätter upp det här så att det inte blir några "hål" varken i ålder eller datum. <br><br>
         Börja med att köra vår <a href="payment_wizard_pg1.php">"wizard" <i class="fa-solid fa-wand-sparkles"></i></a> för att sätta upp inställningarna. </p>
   
          <?php
