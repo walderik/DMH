@@ -4,20 +4,16 @@ Man borde kunna ange minimiantal som ska ha ett rykte alt visa hur många som st
 Intriger, vid filtrering ta även bort inaktiva
 Intriger, generell text som går till alla i intrigen
 
-
-
-Ta bort sidokaraktär från lajvet
-
-
 Kopiera intrig från tidigare år
 
 Visa "vad som hände" på nästa år och för arr. Visas efter anmälan, men pdf ser inte snygg ut.
 
 Handelssystemet - skriva in resultat
 
-byta user för en person (admin funktion)
 
-Behöver man kunna byta spelare på en roll? JA
+Bygg när behov uppstår:
+byta user för en person (admin funktion)
+Ta bort sidokaraktär från lajvet
 
 Helt nya funktioner:
 Att göra-listor per lajv och för Admin
