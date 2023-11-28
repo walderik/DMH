@@ -1,22 +1,17 @@
 
 Man borde kunna ange minimiantal som ska ha ett rykte alt visa hur många som stämmer in på varje "krav"
 
-Alla borde kunna se länkar till dom andra i huset och om det är ok visa vilka dom verkliga personerna rä så manhar en chans kontakta dem.
-
 Intriger, vid filtrering ta även bort inaktiva
 Intriger, generell text som går till alla i intrigen
 
 
 
-Ta bort sidokaraktär
+Ta bort sidokaraktär från lajvet
 
 
 Kopiera intrig från tidigare år
-Visa "vad som hände" på nästa år och för arr.
 
-Visa på hus vilka som anmält sig som husägare på resp hus.
-
-Sökfunktion på roller och grupper (ex Hitta alla som kommer från slow river)
+Visa "vad som hände" på nästa år och för arr. Visas efter anmälan, men pdf ser inte snygg ut.
 
 Handelssystemet - skriva in resultat
 
@@ -26,9 +21,6 @@ Behöver man kunna byta spelare på en roll? JA
 
 Helt nya funktioner:
 Att göra-listor per lajv och för Admin
-
-Visa alla mail som har skapats, visa status, möjlighet att ta bort
-Markering för mail skickade av systemet (aktiverinf, byta lösenord). Ska inte visas för lajv-arrangör
 
 
 Bygghelgs-anmälningar
