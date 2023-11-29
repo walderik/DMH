@@ -66,7 +66,7 @@ include "navigation.php";
 		</div>
 		
 		<div class="content">
-            <a href="not_registered_roles.php">Karaktärer som inte är anmälda (än) i år</a>
+            <a href="not_registered_roles.php">Grupper och karaktärer som inte är anmälda (än) i år</a>
 		</div>
 		
 		<div class="content">

@@ -7,6 +7,38 @@ include 'navigation.php';
 
 
     <div class="content">   
+            <h1>Grupper i kampanjen som inte är anmälda (än) i år</h1>
+     		<?php 
+    		$groups = Group::getAllUnregisteredGroups($current_larp);
+    		if (empty($groups)) {
+    		    echo "Inga anmälda grupper";
+    		} else {
+    		    echo "<table class='data'>";
+    		    echo "<tr><th>Namn</th><th>Gruppledare</th><th>Senast spelad</th></tr>\n";
+    		    foreach ($groups as $group)  {
+    		        $person = $group->getPerson();
+    		        echo "<tr>\n";
+    		        echo "<td>" . $group->Name;
+    		        echo "</td>\n";
+    		        echo "<td>$person->Name</td>";
+    		        $larp = $group->lastLarp();
+    		        echo "<td>";
+    		        if (empty($larp)) {
+    		            echo "Aldrig spelad";
+    		        }
+    		        else {
+    		            echo $larp->Name;
+    		        }
+    		        echo "</td>";
+                    echo "</tr>\n";
+		        }
+    		    echo "</table>";
+    		}
+    		?>
+    
+    
+    
+    
         <h1>Karaktärer i kampanjen som inte är anmälda (än) i år</h1>
         <p>
         Om man anmäler någon härifrån kommer de att välja "<?php echo HousingRequest::allActive($current_larp)[0]->Name ?>" som boende och 

@@ -217,11 +217,18 @@ class LARP extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($user->Id));
     }
         
-    public static function lastLarp(Role $role) {
+    public static function lastLarpRole(Role $role) {
         $sql="SELECT * FROM regsys_larp WHERE Id IN ".
             "(SELECT LarpId from regsys_larp_role WHERE RoleId=?) ".
             "ORDER BY StartDate DESC";
         return static::getOneObjectQuery($sql, array($role->Id));
+    }
+    
+    public static function lastLarpGroup(Group $group) {
+        $sql="SELECT * FROM regsys_larp WHERE Id IN ".
+            "(SELECT LarpId from regsys_larp_group WHERE GroupId=?) ".
+            "ORDER BY StartDate DESC";
+        return static::getOneObjectQuery($sql, array($group->Id));
     }
     
     public static function getPreviousLarps($roleId) {

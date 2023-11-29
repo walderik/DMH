@@ -587,7 +587,7 @@ class Role extends BaseModel{
     }
     
     public function lastLarp() {
-        return LARP::lastLarp($this);
+        return LARP::lastLarpRole($this);
     }
     
     # Hämta intrigtyperna

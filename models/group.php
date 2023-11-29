@@ -379,4 +379,21 @@ class Group extends BaseModel{
          return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
      }
      
+     public static function getAllUnregisteredGroups(LARP $larp) {
+         if (is_null($larp)) return Array();
+         $sql = "SELECT * FROM regsys_group WHERE Id NOT IN ".
+             "(SELECT GroupId FROM regsys_larp_group, regsys_group WHERE ".
+             "regsys_larp_group.larpid = ?) AND ".
+             "CampaignId = ? ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $larp->CampaignId));
+     }
+     
+     public function lastLarp() {
+         return LARP::lastLarpGroup($this);
+     }
+     
+     
+     
+     
+     
 }
