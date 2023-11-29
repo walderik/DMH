@@ -146,7 +146,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         foreach ($intrigues as $intrigue) {
             if (!$intrigue->isActive()) continue;
             $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);   
-            if ((!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo))) $tomma_intriger = false;
+            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) $tomma_intriger = false;
         }
         if ($tomma_intriger) return true;
   
@@ -172,8 +172,15 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
             if (empty($intrigueActor)) continue;
 
-            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo)) {
+            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) {
                 $intrigue_numbers[$intrigue->Number] = $intrigue->Number;
+            }
+            
+            if (!empty($intrigue->CommonText)) {
+                $text = trim(utf8_decode($intrigue->CommonText));
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
             }
             
             if (!empty($intrigueActor->IntrigueText)) {

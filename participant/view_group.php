@@ -159,12 +159,13 @@ include 'navigation.php';
 		        foreach ($intrigues as $intrigue) {
 		            if ($intrigue->isActive()) {
 		                $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $current_group);
-		                echo "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+		                if (!empty($intrigue->CommonText)) echo "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
 		                if (!empty($intrigueActor->OffInfo)) {
 		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
 		                }
 		                
-		                $intrigue_numbers[] = $intrigue->Number;
+		                if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) $intrigue_numbers[] = $intrigue->Number;
 		            }
 		        }
 		        if (!empty($intrigue_numbers)) {

@@ -2,7 +2,6 @@
 Man borde kunna ange minimiantal som ska ha ett rykte alt visa hur många som stämmer in på varje "krav"
 
 Intriger, vid filtrering ta även bort inaktiva
-Intriger, generell text som går till alla i intrigen
 
 Kopiera intrig från tidigare år
 

@@ -257,6 +257,7 @@ th, td {
 	  $responsibleUser = $intrigue->getResponsibleUser();
       echo $responsibleUser->Name;
 ?></td></tr>
+<tr><td>Text till alla aktörer</td><td><?php  echo nl2br($intrigue->CommonText); ?></td></tr>
 <tr><td>Anteckningar</td><td><?php  echo nl2br($intrigue->Notes); ?></td></tr>
 <tr><td>Aktörer<br>(Grupper och karaktärer som är inblandade i intrigen)</td>
 <td>

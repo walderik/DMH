@@ -175,6 +175,7 @@ include 'navigation.php';
 	           $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $current_group);
 	           echo "<td>";
 	           if ($intrigue->isActive()) {
+	               if (!empty($intrigue->CommonText)) echo nl2br(htmlspecialchars($intrigue->CommonText))."<br><br>";
 	               echo nl2br($intrigueActor->IntrigueText);
 	               if (!empty($intrigueActor->OffInfo)) {
 	                   echo "<br><br><strong>Off-information:</strong><br>".nl2br($intrigueActor->OffInfo);
@@ -188,6 +189,7 @@ include 'navigation.php';
 	               echo "</tr>";
 	           }
 	           else {
+	               if (!empty($intrigue->CommonText)) echo "<s>".nl2br(htmlspecialchars($intrigue->CommonText))."</s><br><br>";
 	               echo "<s>$intrigueActor->IntrigueText</s>";
 	               echo "</td>";
 	               echo "</tr>";

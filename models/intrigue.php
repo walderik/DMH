@@ -7,6 +7,7 @@ class Intrigue extends BaseModel{
     public $Name;
     public $Active = 1;
     public $MainIntrigue = 0;
+    public $CommonText;
     public $Notes;
     public $LarpId;
     public $ResponsibleUserId;
@@ -25,6 +26,7 @@ class Intrigue extends BaseModel{
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
         if (isset($arr['Active'])) $this->Active = $arr['Active'];
         if (isset($arr['MainIntrigue'])) $this->MainIntrigue = $arr['MainIntrigue'];
+        if (isset($arr['CommonText'])) $this->CommonText = $arr['CommonText'];
         if (isset($arr['Notes'])) $this->Notes = $arr['Notes'];
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
         if (isset($arr['ResponsibleUserId'])) $this->ResponsibleUserId = $arr['ResponsibleUserId'];
@@ -41,9 +43,9 @@ class Intrigue extends BaseModel{
     
     # Update an existing intrigue in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Active=?, MainIntrigue=?, Notes=?, LarpId=?, ResponsibleUserId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Active=?, MainIntrigue=?, CommonText=?, Notes=?, LarpId=?, ResponsibleUserId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->Notes, $this->LarpId, $this->ResponsibleUserId, $this->Id))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsibleUserId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -58,9 +60,9 @@ class Intrigue extends BaseModel{
         
         $connection = $this->connect();
         
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, Notes, LarpId, ResponsibleUserId) VALUES (?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, CommonText, Notes, LarpId, ResponsibleUserId) VALUES (?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->Notes, $this->LarpId, $this->ResponsibleUserId))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsibleUserId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

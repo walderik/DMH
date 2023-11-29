@@ -66,7 +66,7 @@ include 'navigation.php';
 				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($intrigue->Name); ?>" size="50" maxlength="250" required></td>
 			</tr>
 			<tr>
-				<td><label for="Active">Aktuell</label><br>(Kommer att visas för deltagarna när intrigerna släpps. Intrigspår går inte att radera, bara att sättas till inte aktuell.)</td>
+				<td><label for="Active">Aktuell</label><br>(Kommer att visas för deltagarna när intrigerna släpps.<br>Intrigspår går inte att radera, bara att sättas till inte aktuell.)</td>
 				<td>
 					<input type="radio" id="Active_yes" name="Active" value="1" <?php if ($intrigue->Active == 1) echo 'checked="checked"'?>> 
         			<label for="Active_yes">Ja</label><br> 
@@ -89,6 +89,11 @@ include 'navigation.php';
 
 				<td><label for="Message">Intrigtyper</label></td>
 			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $intrigue->getSelectedIntrigueTypeIds());?></td>
+			</tr>
+			<tr>
+
+				<td><label for="CommonText">Text som visas för alla aktörer i intrigen</label></td>
+			<td><textarea id="CommonText" name="CommonText" rows="15" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigue->CommonText); ?></textarea></td>
 			</tr>
 			<tr>
 
