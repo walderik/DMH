@@ -48,7 +48,7 @@ function changePart() {
 	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
      <select name='part' id='part' onchange="changePart()">
       	<option value='../participant/'>Deltagare</option>
-      	<?php if (AccessControl::hasAccessLarp($current_user, $current_larp)) {?>
+      	<?php if (isset($_SESSION['admin']) or AccessControl::hasAccessLarp($current_user, $current_larp)) {?>
      	<option value='../admin/'>Arrangör</option>
      	<?php }?>
     	<option value=''  selected='selected'>OM Admin</option>

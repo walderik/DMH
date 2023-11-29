@@ -78,7 +78,7 @@ function changePart() {
 	  
    	<select name='part' id='part' onchange="changePart()">
       	<option value='' selected='selected'>Deltagare</option>
-      	<?php if (AccessControl::hasAccessLarp($current_user, $current_larp)) {?>
+      	<?php if (isset($_SESSION['admin']) or AccessControl::hasAccessLarp($current_user, $current_larp)) {?>
      	<option value='../admin/'>Arrangör</option>
      	<?php }?>
     	<?php if (isset($_SESSION['admin'])) { ?>	
