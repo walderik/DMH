@@ -335,15 +335,31 @@ include 'navigation.php';
 		        $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
 		        echo "<div class='border'>";
 		        echo "<h3>$prevoius_larp->Name</h3>";
-		        echo "<strong>Intrig</strong><br>";
-		        echo nl2br($previous_larp_role->Intrigue);
+		        if (!empty($previous_larp_role->Intrigue)) {
+		            echo "<strong>Intrig</strong><br>";
+		            echo "<p>".nl2br($previous_larp_role->Intrigue)."</p>";
+		        }
+		        
+		        $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $prevoius_larp->Id);
+		        foreach($intrigues as $intrigue) {
+		            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
+		            if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
+		                echo "<p><strong>Intrig</strong><br>".nl2br($intrigueActor->IntrigueText)."</p>";
+		                
+		                echo "<p><strong>Vad hände med det?</strong><br>";
+		                if (!empty($intrigueActor->WhatHappened)) echo nl2br($intrigueActor->WhatHappened);
+		                else echo "Inget rapporterat";
+		                echo "</p>";
+		            }
+		        }
+		        
 		        echo "<br><strong>Vad hände för $role->Name?</strong><br>";
 		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
-		            echo $previous_larp_role->WhatHappened;
+		            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappened));
 		            else echo "Inget rapporterat";
 	            echo "<br><strong>Vad hände för andra?</strong><br>";
 	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
-	                echo $previous_larp_role->WhatHappendToOthers;
+	                echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
 	                else echo "Inget rapporterat";
 	            echo "</div>";
 		                

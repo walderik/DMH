@@ -413,7 +413,7 @@ class Person extends BaseModel{
     }
     
     public function getGroups(Larp $larp) {
-        return Group::getGroupsForPerson($this->Id, $larp->Id);
+        return Group::getGroupsForPerson($this->Id, $larp->CampaignId);
     }
     
     public function getAgeAtLarp(LARP $larp) {

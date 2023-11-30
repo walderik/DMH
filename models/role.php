@@ -280,7 +280,7 @@ class Role extends BaseModel{
     
     
     public function getPreviousLarps() {
-        return LARP::getPreviousLarps($this->Id);
+        return LARP::getPreviousLarpsRole($this->Id);
     }
     
     

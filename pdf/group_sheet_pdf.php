@@ -392,33 +392,52 @@ class Group_PDF extends PDF_MemImage {
         
    
 
-     /* TODO lös vad som har hänt
+
         # Det nedan löser vi med tiden. Just nu et jag inte hur det är tänkt fungera
 
         $previous_larps = $this->group->getPreviousLarps();
         if (isset($previous_larps) && count($previous_larps) > 0) {
             
+            
             foreach ($previous_larps as $prevoius_larp) {
-                $previous_larp_group = LARP_Role::loadByIds($this->group->Id, $prevoius_larp->Id);
                 $this->AddPage();
+                
+                $previous_larp_group = LARP_Group::loadByIds($this->group->Id, $prevoius_larp->Id);
                 $this->title($left, "Historik $prevoius_larp->Name");
-
+                
                 $this->names($left, $left2);
                 
-                $text = (isset($prevoius_larp_role->Intrigue) && $prevoius_larp_role->Intrigue != "") ? $prevoius_larp_role->Intrigue : "Inget att rapportera";
-                $this->set_rest_of_page("Intrig", $text);
-                $y = $this->GetX();
                 
-               
-                $text = (isset($prevoius_larp_role->WhatHappened) && $prevoius_larp_role->WhatHappened != "") ? $prevoius_larp_role->WhatHappened : "Inget att rapportera";
+                if (!empty($previous_larp_group->Intrigue)) {
+                    $this->set_rest_of_page("Intrig", $previous_larp_group->Intrigue);
+                    $y = $this->GetX();
+                }
+                
+                $intrigues = Intrigue::getAllIntriguesForGroup($this->group->Id, $prevoius_larp->Id);
+                foreach($intrigues as $intrigue) {
+                    $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this->group);
+                    if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
+                        $this->set_rest_of_page("Intrig", $intrigueActor->IntrigueText);
+                        $y = $this->GetX();
+                        
+                        $text = (isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat";
+                        $this->set_rest_of_page("Vad hände med det?", $intrigueActor->WhatHappened);
+                        $y = $this->GetX();
+                        
+                    }
+                }
+                
+                
+                $text = (isset($previous_larp_group->WhatHappened) && $previous_larp_group->WhatHappened != "") ? $previous_larp_group->WhatHappened : "Inget rapporterat";
                 $this->set_rest_of_page("Vad hände för ".$this->group->Name."?", $text);
                 $y = $this->GetX();
                 $this->bar();
-                $text = (isset($prevoius_larp_role->WhatHappendToOthers) && $prevoius_larp_role->WhatHappendToOthers != "") ? $prevoius_larp_role->WhatHappendToOthers : "Inget att rapportera";
+                $text = (isset($previous_larp_group->WhatHappendToOthers) && $previous_larp_group->WhatHappendToOthers != "") ? $previous_larp_group->WhatHappendToOthers : "Inget rapporterat";
                 $this->set_rest_of_page("Vad hände för andra?", $text);
             }
+            
         }
-        */
+       
         if ($this->larp->isIntriguesReleased() || $this->all) {
             $this->intrigues();
             $this->rumours();

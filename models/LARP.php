@@ -231,12 +231,19 @@ class LARP extends BaseModel{
         return static::getOneObjectQuery($sql, array($group->Id));
     }
     
-    public static function getPreviousLarps($roleId) {
+    public static function getPreviousLarpsRole($roleId) {
         global $current_larp;
         if (is_null($roleId)) return Array();
 
-        $sql = "SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_larp_role WHERE RoleId = ? AND LarpId != ?) ORDER BY StartDate DESC";
-        return static::getSeveralObjectsqQuery($sql, array($roleId, $current_larp->Id));
+        $sql = "SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_larp_role WHERE RoleId = ?) AND EndDate < '".date('Y-m-d')."' ORDER BY StartDate DESC";
+        return static::getSeveralObjectsqQuery($sql, array($roleId));
+    }
+    
+    public static function getPreviousLarpsGroup($groupId) {
+        if (is_null($groupId)) return Array();
+        
+        $sql = "SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_larp_group WHERE GroupId = ?) AND EndDate < '".date('Y-m-d')."' ORDER BY StartDate DESC";
+        return static::getSeveralObjectsqQuery($sql, array($groupId));
     }
     
     public static function allByCampaign($campaignId) {
