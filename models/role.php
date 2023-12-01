@@ -647,6 +647,11 @@ class Role extends BaseModel{
         $stmt = null;
     }
     
+    # Hämta intrigtyperna
+    public function getAbilities(){
+        return Ability::getAbilitiesForRole($this->Id);
+    }
+    
     public function getSelectedAbilityIds() {
         $stmt = $this->connect()->prepare("SELECT AbilityId FROM  regsys_ability_role WHERE RoleId = ? ORDER BY AbilityId;");
         

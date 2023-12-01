@@ -52,6 +52,18 @@ if ($role->isMysLajvare()) {
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br($role->Description);?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för gruppen</td><td><?php echo nl2br($role->DescriptionForGroup);?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo nl2br($role->DescriptionForOthers);?></td></tr>
+
+			<?php if (Race::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Ras</td><td>
+			<?php 
+			$race = $role->getRace();
+			if (!empty($race)) echo $race->Name;
+			?>
+			</td></tr>
+			<tr><td valign="top" class="header">Kommentar till ras</td><td><?php echo $role->RaceComment;?></td></tr>
+			<?php } ?>
+
+
 		<?php if (!$role->isMysLajvare()) {?>
 		
 			<?php if (LarperType::isInUse($current_larp)) {?>
@@ -67,6 +79,14 @@ if ($role->isMysLajvare()) {
 			<tr><td valign="top" class="header">Tidigare lajv</td><td><?php echo $role->PreviousLarps;?></td></tr>
 			<tr><td valign="top" class="header">Varför befinner sig karaktären på platsen?</td><td><?php echo nl2br(htmlspecialchars($role->ReasonForBeingInSlowRiver));?></td></tr>
 			
+			<?php if (Ability::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Kunskaper</td><td><?php echo commaStringFromArrayObject($role->getAbilities());?></td></tr>
+			<tr><td valign="top" class="header">Kunskaper förklaring</td><td><?php echo $role->AbilityComment;?></td></tr>
+			<?php }?>
+
+
+
+
 			<?php if (Religion::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Religion</td><td>
 			<?php 
