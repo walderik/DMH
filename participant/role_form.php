@@ -280,7 +280,7 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 				                         Jag är aktiv lajvare, men vill helst undvika våldsamma intriger.<br>
 				                         Jag är action-lajvare och vill spela den sökta karaktären NN.<br>
 				                         Jag är action-lajvare och har inget emot en våldsam död.</div>
-					<br> <input class="input_field" type="text" id="RaceComment" value="<?php echo htmlspecialchars($role->RaceComment); ?>" name="RaceComment"  size="100" maxlength="200">
+					<br> <input class="input_field" type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
 				</div>
 			<?php } ?>	
 				
@@ -297,7 +297,7 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
 				<div class="question intrigue">
 				<label for="AbilityComment">Om du valde specialstyrka/-förmåga, specificera och beskriv den/dessa så utförligt som möjligt.</label>
 				<div class="explanation">Motivera varför du har denna specialstyrka/-förmåga väl.</div>
-					<br> <input class="input_field" type="text" id="AbilityComment" value="<?php echo htmlspecialchars($role->AbilityComment); ?>" name="RaceComment"  size="100" maxlength="200">
+					<br> <input class="input_field" type="text" id="AbilityComment" value="<?php echo htmlspecialchars($role->AbilityComment); ?>" name="AbilityComment"  size="100" maxlength="200">
 				</div>
 			<?php } ?>	
 

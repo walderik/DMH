@@ -13,6 +13,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = Role::newFromArray($_POST);
         $role->IsApproved = 0;
         $role->create();
+        
+        if (isset($_POST['IntrigueTypeId'])) {
+            $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+        }
+        
+        if (isset($_POST['AbilityId'])) {
+            $role->saveAllAbilities($_POST['AbilityId']);
+        }
+        
     } elseif ($operation == 'update') {
         $role = Role::loadById($_POST['Id']);
         
@@ -36,7 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         }
         
-
+        $role->deleteAllAbilities();
+        if (isset($_POST['AbilityId'])) {
+            $role->saveAllAbilities($_POST['AbilityId']);
+        }
+        
+        
         if (!empty($larp_role)) {
             $larp_role->UserMayEdit = 0;
             $larp_role->update();
