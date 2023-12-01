@@ -154,14 +154,14 @@ th {
     		}
     		?>
 
-        
+      		<?php 
+     		$roles = $current_larp->getAllNotMainRoles(true);
+    		if (!empty($roles)) {
+            ?>
                 <h2>Övriga karaktärer</h2>
                 <p>Antal ord på intrig och vilka intriger de är med i visas inte för nedanstående karaktärer.</p>
      		<?php 
-     		$roles = $current_larp->getAllNotMainRoles(true);
-    		if (empty($roles)) {
-    		    echo "Inga anmälda karaktärer";
-    		} else {
+
     		    $tableId = "other_roles";
     		    $colnum = 0;
     		    echo "<table id='$tableId' class='data'>";
