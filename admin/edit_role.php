@@ -68,6 +68,14 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Beskrivning för andra</td>
 			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="400"><?php echo htmlspecialchars($role->DescriptionForOthers); ?></textarea></td></tr>
 
+			<?php if (Race::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Ras</td><td>
+			<?php Race::selectionDropdown($current_larp, false, false, $role->RaceId); ?>
+			</td></tr>
+			<tr><td valign="top" class="header">Ras</td><td><input type="text" id="RaceComment" name="RaceComment" value="<?php echo htmlspecialchars($role->RaceComment); ?>"  size="100" maxlength="250"></td></tr>
+			<?php }?>
+
+
 
 			<tr><td valign="top" class="header">Myslajvare&nbsp;<font style="color:red">*</font></td>
 			<td>
@@ -116,6 +124,11 @@ include 'navigation.php';
 
 
 
+			<?php if (Ability::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Kunskaper</td>
+			<td><?php selectionByArray('Ability' , Ability::allActive($current_larp), true, false, $role->getSelectedAbilityIds());?></td></tr>
+			<?php }?>
+			
 
 
 

@@ -8,14 +8,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = Role::loadById($roleId);
     $role->setValuesByArray($_POST);
     $role->update();
-    
+
     $role->deleteAllIntrigueTypes();
-    if (isset($_POST['IntrigueTypeId'])) $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+    if (isset($_POST['IntrigueTypeId']))
+        $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+
         
-    if (isset($_POST['Referer']) && $_POST['Referer']!="") {
-        header('Location: ' . $_POST['Referer']);
-        exit;
+    if (isset($_POST['AbilityId'])) {
+        $role->saveAllAbilities($_POST['AbilityId']);
     }
-           
+        
+        
+    if (isset($_POST['Referer']) && $_POST['Referer'] != "") {
+        header('Location: ' . $_POST['Referer']);
+        exit();
+    }
 }
 header('Location: ../index.php');
