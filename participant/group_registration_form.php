@@ -14,8 +14,7 @@ if (!$current_larp->mayRegister() && !$admin) {
 $current_groups = $current_user->getUnregisteredAliveGroupsForUser($current_larp);
 
 if (empty($current_groups) && !$admin) {
-    echo "No group!";
-    //header('Location: index.php?error=no_group');
+    header('Location: index.php?error=no_group');
     exit;
 }
 
@@ -108,7 +107,7 @@ include 'navigation.php';
 			<div class="question">
 			Genom att kryssa i denna ruta så lovar jag med
 			heder och samvete att jag har läst igenom alla 
-			<a href="https://dmh.berghemsvanner.se/" target="_blank">hemsidans regler</a> och
+			<a href="<?php echo $current_larp->getCampaign()->Homepage?>" target="_blank">hemsidans regler</a> och
 			förmedlat dessa till mina gruppmedlemmar. Vi har även alla godkänt
 			dem och är införstådda med vad som förväntas av oss som grupp av
 			deltagare på lajvet. Om jag inte har läst reglerna så kryssar jag
