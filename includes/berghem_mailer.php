@@ -105,8 +105,15 @@ class BerghemMailer {
         
         $text  = "Du är nu anmäld för att vara med i lajvet $larp->Name<br>\n";
         $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. Betalas senast ".$registration->paymentDueDate()."<br>\n";
+        
         if (!$registration->isMember()) {
-            $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
+            $currentYear = date("Y");
+            $larpYear = substr($larp->StartDate, 0, 4);
+            if ($currentYear == $larpYear) {
+                $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
+            } else {
+                $text .= "Du måste också vara medlem i Berghems vänner $larpYear.</b><br>\n";
+            }
         }
         $text .= "<br>\n";
         $text .= "Vi kommer att gå igenom karaktärerna du har anmält och godkänna dom för spel.<br>\n";
