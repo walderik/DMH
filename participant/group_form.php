@@ -120,12 +120,12 @@ include 'navigation.php';
 			
 			<div class="question">
 				<label for="Friends">Vänner</label>
-				<div class="explanation">Beskriv vilka gruppen anser vara sina vänner. Det vara både grupper och  beskrivning av egenskaper hos dem som är vänner. Exempelvis: Cheriffen, bankrånare och telegrafarbetare</div>
+				<div class="explanation">Beskriv vilka gruppen anser vara sina vänner. Det vara både grupper och  beskrivning av egenskaper hos dem som är vänner.</div>
 				<textarea class="input_field" id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Friends); ?></textarea>
 			</div>
 			<div class="question">
 				<label for="Enemies">Fiender</label>
-				<div class="explanation">Beskriv vilka gruppen anser vara sina fiender. Det vara både grupper och  beskrivning av egenskaper hos dem som är fiender. Exempelvis: Guldletare, Big Bengt och alla som gillar öl.</div>
+				<div class="explanation">Beskriv vilka gruppen anser vara sina fiender. Det vara både grupper och  beskrivning av egenskaper hos dem som är fiender.</div>
 				<textarea class="input_field" id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Enemies); ?></textarea>
 			</div>
 

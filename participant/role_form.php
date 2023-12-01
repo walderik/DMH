@@ -181,9 +181,9 @@ include 'navigation.php';
 				<div class="explanation">
 					Vad jobbar din karaktär med för att överleva? 
 					Vill du ha ett yrke som kan innebära en central karaktär i lajvet, så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.
-					Det gäller poster som borgmästare, bypräst eller sheriff.   
+					  
 					Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta spela att din karaktär har det yrket. 
-					Vi vill helst inte att du spelar prostituerad.
+					
 				</div>
 				<input class="input_field" type="text" id="Profession" name="Profession" value="<?php echo htmlspecialchars($role->Profession); ?>"  size="30" maxlength="50" required>
 			</div>
