@@ -27,10 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $user_func = $objectType . '::newFromArray';
         $data = call_user_func($user_func, $_POST);
-        echo "<br><br>";
-        print_r($data);
         $data->create();
-        echo "<br><br>";
     } elseif ($operation == 'update') {
         $user_func = $objectType . '::loadById';
         $data = call_user_func($user_func,$_POST['Id']);
