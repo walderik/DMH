@@ -14,7 +14,8 @@ if (!$current_larp->mayRegister() && !$admin) {
 $current_groups = $current_user->getUnregisteredAliveGroupsForUser($current_larp);
 
 if (empty($current_groups) && !$admin) {
-    header('Location: index.php?error=no_group');
+    echo "No group!";
+    //header('Location: index.php?error=no_group');
     exit;
 }
 

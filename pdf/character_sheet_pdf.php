@@ -71,10 +71,10 @@ class CharacterSheet_PDF extends PDF_MemImage {
     }
     
     # Skriv ut lajvnamnet högst upp.
-    function title($left) {
+    function title($left, ?String $text = null) {
         global $y;
 
-        $text =  $this->larp->Name;
+        if (empty($text)) $text =  $this->larp->Name;
         
         $font_size = (850 / strlen(utf8_decode($text)));
         if ($font_size > 90) $font_size = 90;
@@ -392,6 +392,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
     
     function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false) {
         global $current_user, $x, $y, $left, $left2, $mitten;
+        $space = 3;
         
         $this->role = $role_in;
         $this->person = $this->role->getPerson();
@@ -458,38 +459,102 @@ class CharacterSheet_PDF extends PDF_MemImage {
             foreach ($previous_larps as $prevoius_larp) {
                 $this->AddPage();
                 
+                
                 $previous_larp_role = LARP_Role::loadByIds($this->role->Id, $prevoius_larp->Id);
                 $this->title($left, "Historik $prevoius_larp->Name");
 
                 $this->names($left, $left2);
                 
+                $y += $this->cell_y_space;
+                $this->bar();
+                
+                $y += 3;
                 
                 if (!empty($previous_larp_role->Intrigue)) {
-                    $this->set_rest_of_page("Intrig", $previous_larp_role->Intrigue);
-                    $y = $this->GetX();
+                    $this->current_left = $left;
+                    $this->SetXY($this->current_left, $y);
+                    $this->SetFont('Helvetica','B',static::$text_fontsize);
+                    $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Intrig'),0,0,'L');
+                    
+                    $y = $this->GetY() + $space*3;
+                    $this->SetXY($this->current_left, $y);
+                    $this->SetFont('Helvetica','',static::$text_fontsize);
+                    
+                    
+                    $text = trim(utf8_decode($previous_larp_role->Intrigue));
+                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                    $y = $this->GetY() + $space;
+                    $this->SetXY($left, $y);
                 }
                 
                 $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $prevoius_larp->Id);
                 foreach($intrigues as $intrigue) {
                     $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
                     if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
-                        $this->set_rest_of_page("Intrig", $intrigueActor->IntrigueText);
-                        $y = $this->GetX();
+                        $this->current_left = $left;
+                        $this->SetXY($this->current_left, $y);
+                        $this->SetFont('Helvetica','B',static::$text_fontsize);
+                        $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Intrig'),0,0,'L');
+                        
+                        $y = $this->GetY() + $space*3;
+                        $this->SetXY($this->current_left, $y);
+                        $this->SetFont('Helvetica','',static::$text_fontsize);
+                        
+                        
+                        $text = trim(utf8_decode($intrigueActor->IntrigueText));
+                        $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                        $y = $this->GetY() + $space;
+                        $this->SetXY($left, $y);
+                        
+                        
+
+                        $this->current_left = $left;
+                        $this->SetXY($this->current_left, $y);
+                        $this->SetFont('Helvetica','B',static::$text_fontsize);
+                        $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Vad hände med det?'),0,0,'L');
+                        
+                        $y = $this->GetY() + $space*3;
+                        $this->SetXY($this->current_left, $y);
+                        $this->SetFont('Helvetica','',static::$text_fontsize);
+                        
                         
                         $text = (isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat";
-                        $this->set_rest_of_page("Vad hände med det?", $intrigueActor->WhatHappened);
-                        $y = $this->GetX();
+                        $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                        $y = $this->GetY() + $space;
+                        $this->SetXY($left, $y);
                         
                     }
                 }
                 
+                $this->current_left = $left;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','B',static::$text_fontsize);
+                $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Vad hände för ".$this->role->Name."?"),0,0,'L');
+                
+                $y = $this->GetY() + $space*3;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','',static::$text_fontsize);
                 
                 $text = (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "") ? $previous_larp_role->WhatHappened : "Inget rapporterat";
-                $this->set_rest_of_page("Vad hände för ".$this->role->Name."?", $text);
-                $y = $this->GetX();
-                $this->bar();
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+                
+              
+                $this->current_left = $left;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','B',static::$text_fontsize);
+                $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Vad hände för andra?"),0,0,'L');
+                
+                $y = $this->GetY() + $space*3;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','',static::$text_fontsize);
+                
                 $text = (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "") ? $previous_larp_role->WhatHappendToOthers : "Inget rapporterat";
-                $this->set_rest_of_page("Vad hände för andra?", $text);
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+                
             }
         }
         

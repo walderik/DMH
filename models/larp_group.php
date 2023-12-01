@@ -51,22 +51,9 @@ class LARP_Group extends BaseModel{
     }
     
     public static function isRegistered($groupId, $larpId) {
-        $sql = "SELECT * FROM regsys_larp_group WHERE GroupId = ? AND LARPId = ? ORDER BY ".static::$orderListBy.";";
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($groupId, $larpId))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        
-        
-        if ($stmt->rowCount() == 0) {
-            return false;
-        }
-        
-        return true;
-    }
+        $sql = "SELECT count(*) as Num FROM regsys_larp_group WHERE GroupId = ? AND LARPId = ? ORDER BY ".static::$orderListBy.";";
+        return static::existsQuery($sql, array($groupId, $larpId));
+     }
     
     public static function loadByIds($groupId, $larpId)
     {
