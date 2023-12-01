@@ -3,10 +3,6 @@ Man borde kunna ange minimiantal som ska ha ett rykte alt visa hur många som st
 
 Intriger, vid filtrering ta även bort inaktiva
 
-Kopiera intrig från tidigare år
-
-Visa "vad som hände" på nästa år och för arr. Visas efter anmälan, men pdf ser inte snygg ut.
-
 Handelssystemet - skriva in resultat
 
 
