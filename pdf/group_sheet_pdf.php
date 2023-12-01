@@ -430,12 +430,16 @@ class Group_PDF extends PDF_MemImage {
                     $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                     $y = $this->GetY() + $space;
                     $this->SetXY($left, $y);
+                
+                    $this->bar();
+                    $y += 3;
                 }
                 
                 $intrigues = Intrigue::getAllIntriguesForGroup($this->group->Id, $prevoius_larp->Id);
                 foreach($intrigues as $intrigue) {
                     $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this->group);
                     if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
+                        
                         $this->current_left = $left;
                         $this->SetXY($this->current_left, $y);
                         $this->SetFont('Helvetica','B',static::$text_fontsize);
@@ -456,7 +460,7 @@ class Group_PDF extends PDF_MemImage {
                         $this->current_left = $left;
                         $this->SetXY($this->current_left, $y);
                         $this->SetFont('Helvetica','B',static::$text_fontsize);
-                        $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Vad hände med det?'),0,0,'L');
+                        $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Vad hände?'),0,0,'L');
                         
                         $y = $this->GetY() + $space*3;
                         $this->SetXY($this->current_left, $y);
@@ -468,8 +472,13 @@ class Group_PDF extends PDF_MemImage {
                         $y = $this->GetY() + $space;
                         $this->SetXY($left, $y);
                         
+                        $this->bar();
+                        $y += 3;
+                        
                     }
                 }
+                
+                
                 $this->current_left = $left;
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','B',static::$text_fontsize);
