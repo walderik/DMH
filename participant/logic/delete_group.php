@@ -28,6 +28,7 @@ if (!$current_user->isGroupLeader($group)) {
 }
 
 if ($group->isNeverRegistered()) {
+    $group->deleteAllIntrigueTypes();
     Group::delete($group->Id);
     header('Location: ../index.php?message=group_deleted');
 } else {
