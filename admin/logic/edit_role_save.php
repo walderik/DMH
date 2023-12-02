@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
 
         
+    $role->deleteAllAbilities();
     if (isset($_POST['AbilityId'])) {
         $role->saveAllAbilities($_POST['AbilityId']);
     }
