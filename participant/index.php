@@ -138,11 +138,19 @@ include "navigation.php";
  
                         
                         echo "<tr><td>Medlem</td><td>".showStatusIcon($registration->isMember(), "https://ebas.sverok.se/signups/index/5915")."</a>";
+                        echo "</td>";
                         if (!$registration->isMember()) {
-                            echo "</td><td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>Betala medlemsavgiften</a>";
-                            echo "</td></tr>\n";
+                            $currentYear = date("Y");
+                            $larpYear = substr($current_larp->StartDate, 0, 4);
+                            if ($currentYear == $larpYear) {
+                                echo "<td><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>Betala medlemsavgiften</a></td>";
+                            } else {
+                                echo "<td>Medlemsavgiften kan inte betalas än.</td>";
+                            }
+                            
                         }
 
+                        echo "</tr>\n";
                         echo "<tr><td>Säker plats på lajvet</td><td>".showStatusIcon(($registration->hasSpotAtLarp()))."</a></td></tr>";
                         echo "<tr><td>Boende</td>";
                         if ($current_larp->isHousingReleased()) {
