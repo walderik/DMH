@@ -438,8 +438,13 @@ class CharacterSheet_PDF extends PDF_MemImage {
         if ($this->all) $this->draw_field('notOkIntrigues');
         $this->draw_field('reason_for_being_in_here');
         
-        if ($this->all) $this->draw_field('darkSecret');
+        $this->draw_field('race');
+        $this->draw_field('ability');
         $this->draw_field('religion');
+        $this->draw_field('council');
+        $this->draw_field('guard');
+        
+        if ($this->all) $this->draw_field('darkSecret');
         if ($this->all) $this->draw_field('darkSecretSuggestion');
         
         if ($this->all) $this->draw_field('charactersWithRelations');
@@ -731,12 +736,63 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    return true;
 	}
 	
-	protected function religion($left) {
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Religion');
-	    $this->set_text($left, $this->role->Religion);
+	
+	protected function race($left) {
+	    if (!Race::isInUse($this->larp)) return false;
+	    $this->set_header($left, 'Ras');
+	    $mertext = (empty(trim($this->role->RaceComment))) ? '' : " (".trim($this->role->RaceComment).")";
+	    $text = $this->role->getRace()->Name.$mertext;
+	    $this->set_text($left, $text );
 	    return true;
 	}
+	
+	
+	
+	protected function ability($left) {
+	    if (!Ability::isInUse($this->larp)) return false;
+	    
+	    if ($this->isMyslajvare) return false;
+	    $this->set_header($left, 'Kunskap');
+
+	    $mertext = (empty(trim($this->role->AbilityComment))) ? '' : " (".trim($this->role->AbilityComment).")";
+	    
+	    $text = commaStringFromArrayObject($this->role->getAbilities()).$mertext;
+	    $this->set_text($left, $text);
+	    return true;
+	}
+	
+	protected function religion($left) {
+	    if (!Religion::isInUse($this->larp)) return false;
+	    if ($this->isMyslajvare) return false;
+	    $this->set_header($left, 'Religion');
+	    $mertext = (empty(trim($this->role->Religion))) ? '' : " (".trim($this->role->Religion).")";
+	    $text = $this->role->getReligion()->Name.$mertext;
+	    $this->set_text($left, $text );
+	    return true;
+	}
+	
+
+	protected function council($left) {
+	    if (!Council::isInUse($this->larp)) return false;
+	    if ($this->isMyslajvare) return false;
+	    $this->set_header($left, 'Byråd');
+	    $mertext = (empty(trim($this->role->Council))) ? '' : " (".trim($this->role->Council).")";
+	    $text = $this->role->getCouncil()->Name.$mertext;
+	    $this->set_text($left, $text );
+	    return true;
+	}
+	
+	protected function guard($left) {
+	    if (!Guard::isInUse($this->larp)) return false;
+	    if ($this->isMyslajvare) return false;
+	    $this->set_header($left, 'Markvakt');
+	    $text = $this->role->getGuard()->Name;
+	    $this->set_text($left, $text );
+	    return true;
+	}
+	
+	
+	
 	
 	protected function reason_for_being_in_here($left) {
 	    if ($this->isMyslajvare) return false;
