@@ -129,14 +129,16 @@ include 'navigation.php';
 				</div>
 				<table class="list">
         			<?php 
-        			foreach($roles as $role) {
+        			foreach($roles as $key => $role) {
         			    if ($role->groupIsRegisteredApproved($current_larp)) {
             			    echo "<tr><td>\n";
             			    echo "<input type='checkbox' id='roleId$role->Id' name='roleId[]' value='$role->Id' checked='checked'>";
             			    echo "\n";
             			    echo "<label for='roleId$role->Id'>".htmlspecialchars($role->Name)."</label>\n";
             			    echo "</td><td>";
-            			    echo "<input type='radio' id='mainRole$role->Id' name='IsMainRole' value='$role->Id' required>\n";
+            			    echo "<input type='radio' id='mainRole$role->Id' name='IsMainRole' value='$role->Id' required";
+            			    if ($key == 0) echo " checked='checked'";
+            			    echo ">\n";
             			    echo "<label for='mainRole$role->Id'>Huvudkaraktär</label><br><br>\n";   			    
             			    echo '</td></tr>';
         			    }
