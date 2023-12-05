@@ -16,7 +16,7 @@ include 'navigation.php';
        <?php
        echo "<br>";
        echo "<br>";
-       echo "Intrigspår filtrerade på ansvarig.<br>";
+       echo "Intrigspår filtrerade på ansvarig (endast akuella).<br>";
        echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
        echo "<br>";
        echo "<br>";
@@ -29,7 +29,7 @@ include 'navigation.php';
             echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
                 $show = true;
-                if ($current_user->Id != $intrigue->ResponsibleUserId) {
+                if ($current_user->Id != $intrigue->ResponsibleUserId || !$intrigue->isActive()) {
                     $show = false;
                 }
                 if ($show) echo "<tr>\n";

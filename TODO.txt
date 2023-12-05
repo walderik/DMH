@@ -1,8 +1,6 @@
 
 Man borde kunna ange minimiantal som ska ha ett rykte alt visa hur många som stämmer in på varje "krav"
 
-Intriger, vid filtrering ta även bort inaktiva
-
 Handelssystemet - skriva in resultat
 
 
