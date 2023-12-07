@@ -240,11 +240,13 @@ class Registration extends BaseModel{
     
     
     public function allChecksPassed() {
-        if (!$this->isMember()) return false;
         if (!$this->hasPayed()) return false;
         
-        $person = $this->getPerson();
         $larp = $this->getLARP();
+        if (!$this->isMember() && !$larp->larpInJanuary()) return false;
+
+        
+        $person = $this->getPerson();
         if (!$person->isApprovedCharacters($larp)) return false;
 
         if ($person->getAgeAtLarp($larp) < $larp->getCampaign()->MinimumAgeWithoutGuardian && 

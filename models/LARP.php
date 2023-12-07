@@ -263,5 +263,10 @@ class LARP extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($user->Id));
     }
     
+    public function larpInJanuary() {
+        $larpmonth = substr($this->StartDate, 5, 2);
+        if ($larpmonth == "01") return true;
+        return false;
+    }
     
 }
