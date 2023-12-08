@@ -8,6 +8,10 @@ class LARP_Group extends BaseModel{
     public $Intrigue;
     public $ApproximateNumberOfMembers;
     public $HousingRequestId;
+    public $TentType;
+    public $TentSize;
+    public $TentHousing;
+    public $TentPlace;
     public $NeedFireplace = 0;
     public $RemainingIntrigues;
     public $UserMayEdit = 0;
@@ -33,6 +37,10 @@ class LARP_Group extends BaseModel{
         if (isset($arr['WantIntrigue'])) $this->WantIntrigue = $arr['WantIntrigue'];
         if (isset($arr['Intrigue'])) $this->Intrigue = $arr['Intrigue'];
         if (isset($arr['HousingRequestId'])) $this->HousingRequestId = $arr['HousingRequestId'];
+        if (isset($arr['TentType'])) $this->TentType = $arr['TentType'];
+        if (isset($arr['TentSize'])) $this->TentSize = $arr['TentSize'];
+        if (isset($arr['TentHousing'])) $this->TentHousing = $arr['TentHousing'];
+        if (isset($arr['TentPlace'])) $this->TentPlace = $arr['TentPlace'];
         if (isset($arr['ApproximateNumberOfMembers'])) $this->ApproximateNumberOfMembers = $arr['ApproximateNumberOfMembers'];
         if (isset($arr['RemainingIntrigues'])) $this->RemainingIntrigues = $arr['RemainingIntrigues'];          
         if (isset($arr['UserMayEdit'])) $this->UserMayEdit = $arr['UserMayEdit'];
@@ -67,12 +75,14 @@ class LARP_Group extends BaseModel{
         
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_larp_group SET WantIntrigue=?, Intrigue=?, HousingRequestId=?, RemainingIntrigues=? , 
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp_group SET WantIntrigue=?, Intrigue=?, HousingRequestId=?, 
+            TentType=?, TentSize=?, TentHousing=?, TentPlace=?, RemainingIntrigues=? , 
             ApproximateNumberOfMembers=?, NeedFireplace=?, UserMayEdit=?, StartingMoney=?, EndingMoney=?, Result=?,
             WhatHappened=?, WhatHappendToOthers=?
             WHERE GroupId=? AND LARPId=?;");
         
-        if (!$stmt->execute(array($this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, $this->RemainingIntrigues, 
+        if (!$stmt->execute(array($this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, 
+            $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, $this->RemainingIntrigues, 
             $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, $this->StartingMoney, $this->EndingMoney, $this->Result,
             $this->WhatHappened, $this->WhatHappendToOthers,
             $this->GroupId, $this->LARPId))) {
@@ -87,11 +97,12 @@ class LARP_Group extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp_group (GroupId, LARPId, WantIntrigue, Intrigue, 
-            HousingRequestId, RemainingIntrigues, ApproximateNumberOfMembers, NeedFireplace, UserMayEdit, 
-            StartingMoney, EndingMoney, Result, WhatHappened, WhatHappendToOthers) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
+            HousingRequestId, TentType, TentSize, TentHousing, TentPlace, RemainingIntrigues, ApproximateNumberOfMembers, NeedFireplace, UserMayEdit, 
+            StartingMoney, EndingMoney, Result, WhatHappened, WhatHappendToOthers) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, 
-                    $this->HousingRequestId, $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, 
+            $this->HousingRequestId, $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
+            $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, 
             $this->StartingMoney, $this->EndingMoney, $this->Result, $this->WhatHappened, $this->WhatHappendToOthers))) {
                 $this->connect()->rollBack();
                 $stmt = null;

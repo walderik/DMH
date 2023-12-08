@@ -21,6 +21,10 @@ class Registration extends BaseModel{
     public $IsOfficial = 0;
     public $NPCDesire;
     public $HousingRequestId;
+    public $TentType;
+    public $TentSize;
+    public $TentHousing;
+    public $TentPlace;    
     public $GuardianId;
     public $NotComingReason;
     public $SpotAtLARP = 0;
@@ -55,6 +59,10 @@ class Registration extends BaseModel{
         if (isset($arr['IsOfficial'])) $this->IsOfficial = $arr['IsOfficial'];
         if (isset($arr['NPCDesire'])) $this->NPCDesire = $arr['NPCDesire'];
         if (isset($arr['HousingRequestId'])) $this->HousingRequestId = $arr['HousingRequestId'];
+        if (isset($arr['TentType'])) $this->TentType = $arr['TentType'];
+        if (isset($arr['TentSize'])) $this->TentSize = $arr['TentSize'];
+        if (isset($arr['TentHousing'])) $this->TentHousing = $arr['TentHousing'];
+        if (isset($arr['TentPlace'])) $this->TentPlace = $arr['TentPlace'];
         if (isset($arr['GuardianId'])) $this->GuardianId = $arr['GuardianId'];
         if (isset($arr['NotComingReason'])) $this->NotComingReason = $arr['NotComingReason'];
         if (isset($arr['SpotAtLARP'])) $this->SpotAtLARP = $arr['SpotAtLARP'];
@@ -94,13 +102,15 @@ class Registration extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?,  
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
-                RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, NotComingReason=?,
+                RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?, 
+                GuardianId=?, NotComingReason=?,
                 SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, EvaluationDone=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId,  
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, 
+            $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->EvaluationDone, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -118,12 +128,14 @@ class Registration extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId, FoodChoice, EvaluationDone) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?)");
+            NPCDesire, HousingRequestId, TentType, TentSize, TentHousing, TentPlace, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId, FoodChoice, EvaluationDone) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->NotComingReason,
+            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, 
+            $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
+            $this->GuardianId, $this->NotComingReason,
             $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->EvaluationDone))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");

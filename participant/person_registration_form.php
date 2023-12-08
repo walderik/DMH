@@ -189,6 +189,34 @@ include 'navigation.php';
                 ?>
             </div>
 			<?php } ?>
+			
+			
+			<div class="question">
+				<label for="ApproximateNumberOfMembers">Typ av tält</label>
+				<div class="explanation">Om du har med in-lajv tält. Vilken typ av tält är det och vilken färg har det?</div>
+				<input class="input_field" type="text" id="TentType" name="TentType"  maxlength="200">
+			</div>
+
+			<div class="question">
+				<label for="ApproximateNumberOfMembers">Storlek på tält</label> 
+				<div class="explanation">Om du har med tält. Hur stort är tältet?</div>
+				<input class="input_field" type="text" id="TentSize" name="TentSize"  maxlength="200">
+			</div>
+			
+			<div class="question">
+				<label for="ApproximateNumberOfMembers">Vilka ska bo i tältet</label> 
+				<div class="explanation">Om du har med tält. Vilka ska bo i det?</div>
+				<textarea class="input_field" id="TentHousing" name="TentHousing" rows="4" cols="100" maxlength="60000"></textarea>
+			</div>
+
+			<div class="question">
+				<label for="ApproximateNumberOfMembers">Önskad placering</label> 
+				<div class="explanation">Om du har med tält. Var skulle du vilja få slå upp det? Detta är ett önskemål och vi ska försöka ta hänsyn till det, men vi lovar inget.</div>
+				<input class="input_field" type="text" id="TentPlace" name="TentPlace"  maxlength="200">
+			</div>
+
+			
+			
 
 			<div class="question">
     			<label for="NPCDesire">NPC</label>
