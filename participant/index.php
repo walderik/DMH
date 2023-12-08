@@ -97,6 +97,7 @@ include "navigation.php";
     		            else {
     		                echo showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id");
     		            }
+    		            if ($person->isRegistered($current_larp)) echo "</td><td><a href='view_registration.php?id=$person->Id'>Visa anmälan</a>";
     		            echo "</td></tr>\n";
     		        }
     		        if ($person->isRegistered($current_larp) && !$person->isNotComing($current_larp)) {
