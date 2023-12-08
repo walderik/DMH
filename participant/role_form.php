@@ -247,8 +247,8 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 				
 				
 			<div class="question">
-				<label for="NoIntrigue">Vill du vara myslajvare/statist?</label><br>
-       			<div class="explanation">Du vill bara sitta vid elden och dricka te och småprata om minnen från förr. 
+				<label for="NoIntrigue">Vill du vara myslajvare?</label><br>
+       			<div class="explanation">Du vill bara sitta vid elden och dricka te, hantverka och småprata om minnen från förr. 
        			Du får inga intriger och är inte inblandad i någon annans intriger. Du får heller ingen handel.<br>
        			Du är mest på lajvet för att njuta av stämningen och för att bidra till bra stämning.<br>
        			Detta rekommenderas inte för nybörjare eller barn.
