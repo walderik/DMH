@@ -90,10 +90,10 @@ include 'navigation.php';
     		?>
 			
 			</tr>
-			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
-			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo $current_group->DescriptionForOthers;?></td></tr>
-			<tr><td valign="top" class="header">Vänner</td><td><?php echo $current_group->Friends;?></td></tr>
-			<tr><td valign="top" class="header">Fiender</td><td><?php echo $current_group->Enemies;?></td></tr>
+			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br(htmlspecialchars($current_group->Description));?></td></tr>
+			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo nl2br(htmlspecialchars($current_group->DescriptionForOthers));?></td></tr>
+			<tr><td valign="top" class="header">Vänner</td><td><?php echo nl2br(htmlspecialchars($current_group->Friends));?></td></tr>
+			<tr><td valign="top" class="header">Fiender</td><td><?php echo nl2br(htmlspecialchars($current_group->Enemies));?></td></tr>
 			<?php if (Wealth::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Rikedom</td><td><?php echo $current_group->getWealth()->Name; ?></td></tr>
 			<?php }?>
@@ -105,12 +105,19 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($current_group->getIntrigueTypes()); ?></td></tr>
 			<?php } ?>
 			<?php if ($current_user->isGroupLeader($current_group)) { ?>
-			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
+			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo nl2br(htmlspecialchars($current_group->IntrigueIdeas));?></td></tr>
 			<?php } ?>
-			<tr><td valign="top" class="header">Kvarvarande intriger</td><td><?php echo $larp_group->RemainingIntrigues; ?></td></tr>
-			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
+			<tr><td valign="top" class="header">Kvarvarande intriger</td><td><?php echo nl2br(htmlspecialchars($larp_group->RemainingIntrigues)); ?></td></tr>
+			<tr><td valign="top" class="header">Annan information</td><td><?php echo nl2br(htmlspecialchars($current_group->OtherInformation));?></td></tr>
 			<tr><td valign="top" class="header">Antal medlemmar</td><td><?php echo $larp_group->ApproximateNumberOfMembers;?></td></tr>
 			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($larp_group->HousingRequestId)->Name;?></td></tr>
+
+
+			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($larp_group->TentType)); ?></td></tr>
+			<tr><td valign="top" class="header">Storlek på tält</td><td><?php echo nl2br(htmlspecialchars($larp_group->TentSize)); ?></td></tr>
+			<tr><td valign="top" class="header">Vilka ska bo i tältet</td><td><?php echo nl2br(htmlspecialchars($larp_group->TentHousing)); ?></td></tr>
+			<tr><td valign="top" class="header">Önskad placering</td><td><?php echo nl2br(htmlspecialchars($larp_group->TentPlace)); ?></td></tr>
+
 			<tr><td valign="top" class="header">Eldplats</td><td><?php echo ja_nej($larp_group->NeedFireplace);?></td></tr>
 		</table>		
 		
