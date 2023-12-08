@@ -96,6 +96,14 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown($current_larp, false,true,$registration->HousingRequestId);?></td></tr>
 			<?php } ?>
+			<tr><td valign="top" class="header">Typ av tält</td>
+			<td><input class="input_field" type="text" id="TentType" name="TentType"  maxlength="200" value="<?php echo htmlspecialchars($registration->TentType); ?>"></td></tr>
+			<tr><td valign="top" class="header">Storlek på tält</td>
+			<td><input class="input_field" type="text" id="TentSize" name="TentSize"  maxlength="200" value="<?php echo htmlspecialchars($registration->TentSize); ?>"></td></tr>
+			<tr><td valign="top" class="header">Vilka ska bo i tältet</td>
+			<td><textarea class="input_field" id="TentHousing" name="TentHousing" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($registration->TentHousing); ?></textarea></td></tr>
+			<tr><td valign="top" class="header">Önskad placering</td>
+			<td><input class="input_field" type="text" id="TentPlace" name="TentPlace"  maxlength="200" value="<?php echo htmlspecialchars($registration->TentPlace); ?>"></td></tr>
 			<tr><td valign="top" class="header">Boendehänsyn</td>
 			<td><input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo htmlspecialchars($person->HousingComment); ?>" size="100" maxlength="200" ></td></tr>
 

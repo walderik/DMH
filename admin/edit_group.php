@@ -97,7 +97,7 @@ include 'navigation.php';
 			<td><textarea id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo htmlspecialchars($group->Description); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning för andra</td>
-			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000" required><?php echo htmlspecialchars($group->DescriptionForOthers); ?></textarea></td></tr>
+			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000"><?php echo htmlspecialchars($group->DescriptionForOthers); ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Vänner</td>
 			<td><textarea id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Friends); ?></textarea></td></tr>
@@ -150,6 +150,17 @@ include 'navigation.php';
     			<input type="radio" id="NeedFireplace_no" name="NeedFireplace" value="0" <?php if ($larp_group->NeedFireplace == 0) echo 'checked="checked"'?>> 
     			<label for="NeedFireplace_no">Nej</label>
 			</td></tr>
+			
+			<tr><td valign="top" class="header">Typ av tält</td>
+			<td><input class="input_field" type="text" id="TentType" name="TentType"  maxlength="200" value="<?php echo htmlspecialchars($larp_group->TentType); ?>"></td></tr>
+			<tr><td valign="top" class="header">Storlek på tält</td>
+			<td><input class="input_field" type="text" id="TentSize" name="TentSize"  maxlength="200" value="<?php echo htmlspecialchars($larp_group->TentSize); ?>"></td></tr>
+			<tr><td valign="top" class="header">Vilka ska bo i tältet</td>
+			<td><textarea class="input_field" id="TentHousing" name="TentHousing" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($larp_group->TentHousing); ?></textarea></td></tr>
+			<tr><td valign="top" class="header">Önskad placering</td>
+			<td><input class="input_field" type="text" id="TentPlace" name="TentPlace"  maxlength="200" value="<?php echo htmlspecialchars($larp_group->TentPlace); ?>"></td></tr>
+
+			
 			<tr><td valign="top" class="header">Död/Ej i spel&nbsp;<font style="color:red">*</font></td>
 			<td>
 				<input type="radio" id="IsDead_yes" name="IsDead" value="1" <?php if ($group->IsDead == 1) echo 'checked="checked"'?>> 
