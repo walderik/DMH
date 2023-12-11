@@ -225,6 +225,10 @@ table.helpBox td {
    text-decoration: underline;
    cursor: pointer;
  }
+
+form.fabutton {
+	display:inline
+}
  
  .hidden {
   display: none;

@@ -21,8 +21,17 @@ include 'navigation.php';
         $offical_types = OfficialType::allActive($current_larp);
         if (!empty($offical_types)) {
             foreach ($offical_types as $offical_type) {
-                $ikon = contactAllOfficalTypeEmailIcon($offical_type);
-                echo "<a href='officials.php?id=$offical_type->Id'>$offical_type->Name</a> $ikon &nbsp; &nbsp;";
+                
+                $persons = Person::getAllOfficialsByType($offical_type, $current_larp);
+                $emailArr = array();
+                foreach($persons as $person) {
+                    $emailArr[] = $person->Email;
+                }
+                $ikon = contactSeveralEmailIcon("$offical_type->Name", $emailArr, "$offical_type->Name funktionär", "Meddelande till alla $offical_type->Name i $current_larp->Name");
+                
+                
+                //$ikon = contactAllOfficalTypeEmailIcon($offical_type);
+                echo "$ikon &nbsp; &nbsp;";
             }
             echo "<br>\n";
             echo "<br>\n";

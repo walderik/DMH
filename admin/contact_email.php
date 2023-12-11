@@ -4,9 +4,10 @@ include_once 'header.php';
 
 global $current_larp;
 
-$name = 'Stranger';
-$type = "normal";
+$name = '';
+$type = "one";
 
+/*
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     if (isset($_GET['name'])) $name = $_GET['name'];
@@ -29,22 +30,32 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $name = '';
     }
 }
-
+*/
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST['send_intrigues'])) {
         $type="intrigues";
-        $email = 'send_intrigues';
         $name = '';
     } elseif (isset($_POST['send_housing'])) {
         $type="housing";
-        $email = 'send_housing';
         $name = '';
+    } elseif (isset($_POST['send_one'])) {
+        $type="one";
+        $email = $_POST['email'];
+        $name = $_POST['name'];
+    } elseif (isset($_POST['send_all'])) {
+        $type="all";
+        $name = '';
+    } elseif (isset($_POST['send_several'])) {
+        $type="several";
+        $subject = $_POST['subject'];
+        $email = $_POST['email'];
+        $name = $_POST['name'];
     }
 }
 
 
-if (empty($email)) {
+if (empty($type)) {
     header('Location: index.php');
     exit;
 }
@@ -62,46 +73,71 @@ include 'navigation.php';
 	<div class="content">
 		
 		<?php 
-		
-		if(isset($official_type)) {
-		    echo "<h1>Skicka ett utskick till alla funktionärer som tar $official_type->Name.</h1>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
-		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
-		} elseif (isset($_GET['allagruppledare'])) {
-		    echo "<h1>Skicka ett utskick till alla gruppledarna.</h1>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
-		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
-		} elseif (isset($_GET['all'])) {
-		    echo "<h1>Skicka ett utskick till alla deltagarna.</h1>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
-		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
-		} elseif (isset($_POST['send_intrigues'])) {
-		    echo "<h1>Skicka ut intrigerna till alla deltagarna.</h1>\n";
-		    echo "I mailet kommer karaktärsbladen till alla deras karaktärer och grupper som de är med i bifogas.<br>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund.<br>\n";
-		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
-		} elseif (isset($_POST['send_housing'])) {
-		    echo "<h1>Skicka ut boendet till alla deltagarna.</h1>\n";
-		    echo "Det kommer att skickas ett mail för varje hus/lägerplats.<br>\n";
-		    echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
-		    echo "För att mailen ska gå iväg måste du fortsätta att använda systemet.<br>\n";
-		} else {
-		  echo "<h1>Skicka ett mail till $email";
-          if ($name != '') echo " ($name)";
+		switch ($type) {
+		    case "intrigues":
+		        echo "<h1>Skicka ut intrigerna till alla deltagarna.</h1>\n";
+		        echo "I mailet kommer karaktärsbladen till alla deras karaktärer och grupper som de är med i bifogas.<br>\n";
+		        echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund.<br>\n";
+		        echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        break;
+		    case "housing":
+		        echo "<h1>Skicka ut boendet till alla deltagarna.</h1>\n";
+		        echo "Det kommer att skickas ett mail för varje hus/lägerplats.<br>\n";
+		        echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
+		        echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        break;
+		    case "one":
+		        echo "<h1>Skicka ett mail till $name ($email)</h1>";
+		        break;
+		    case "all":
+		        echo "<h1>Skicka ett utskick till alla deltagarna.</h1>\n";
+		        echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
+		        echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        break;
+		    case "several":
+		        echo "<h1>Skicka ett utskick till alla $name</h1>\n";
+		        echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
+		        echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        break;
 		}
-        echo "</h1>\n";
-    	?>
+		
+		?>
     	
     	
 		<form action="logic/send_contact_email.php" method="post" enctype="multipart/form-data">
-    		<input type="hidden" id="email" name="email" value="<?php echo $email; ?>">
-    		<?php if (isset($official_type)) echo "<input type='hidden' id='official_type' name='official_type' value='$official_type->Id'>"; ?>
-    		<input type="hidden" id="name" name="name" value="<?php echo $name; ?>">
+		<?php 
+		if (is_array($email)) {
+		    foreach ($email as $emailStr)  {
+		        echo "<input type='hidden' name='email[]' value='$emailStr'>\n";
+		    }
+		    
+		} else {
+		    echo "<input type='hidden' id='email' name='email' value='$email'>";
+		}
+		
+		if (isset($subject)) {
+		    echo "<input type='hidden' id='subject' name='subject' value='$subject'>";
+		    
+		}
+		
+		?>
+
     		<input type="hidden" id="type" name="type" value="<?php echo $type; ?>">
     		<input type="hidden" id="referer" name="referer" value="<?php echo $referer; ?>">
     		
     		<p><br />
-    		<p><?php echo "$hej $name"; ?> !<br></p>
+    		<p>
+    		<?php 
+    		if($type=="several") {
+    		    echo "$hej ";
+    		    echo "<input id='name' name='name' value='$name'>";
+    		} else {
+    		    echo "<input type='hidden' id='name' name='name' value='$name;'>";
+    		    echo "$hej $name"; 
+    		}
+    		?>
+    		
+    		 !<br></p>
 			<p><textarea id="text" name="text" rows="8" cols="121" maxlength="60000" required></textarea></p>
 			<?php 
 			if ($type=="housing") { 
@@ -116,7 +152,7 @@ include 'navigation.php';
 			Med vänliga hälsningar<br /><br />
 			<b>Arrangörerna av <?php echo $current_larp->Name; ?></b><br>
 
-			<?php if ($type == "normal") {?>
+			<?php if ($type == "one" || $type == "all" || $type == "several") {?>
 			<br><hr><br>
 			Ladda upp en pdf som bilaga om du vill. Max storlek 5 MB och bara pdf:er.<br><br>
 			<input type="file" name="bilaga" id="bilaga"><br>

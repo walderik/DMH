@@ -268,49 +268,14 @@ class BerghemMailer {
         if (empty($receiver_emails)) return;
         BerghemMailer::send($receiver_emails, '', $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
-    
-    public static function sendContactMailToAllGroupLeaders(LARP $larp, String $text) {
-        $subject = "Meddelande till alla gruppledarna i $larp->Name";
-        
-        $persons = array();
-        $receiver_emails = array();
-        
-        $groups = Group::getAllRegistered($larp);
-        if (empty($groups)) return;
-        
-        foreach($groups as $group) {
-            $persons[] = $group->getPerson();
-        }
-        if (empty($persons)) return;
 
-        foreach($persons as $person) {
-       # Än så länge struntar vi om gruppledaren verkligen har plats på lajvet. Det får dom lösa själva.
-//             $registration = $person->getRegistration($larp);
-//             if (empty($registration)) continue;
-//             if (!$registration->hasSpotAtLarp()) continue;
-            $receiver_emails[] = $person->Email;
-        }
-        if (empty($receiver_emails)) return;
+    
+    public static function sendContactMailToSeveral(LARP $larp, String $text, $emailArr, $subject, $name) {
+        if (empty($emailArr)) return;
         
-        BerghemMailer::send($receiver_emails, 'Gruppledare', $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
+        BerghemMailer::send($emailArr, $name, $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
     
-    # Skicka mail till alla deltagare
-    public static function sendContactMailToAllOfficals(LARP $larp, OfficialType $officialType, String $text) {       
-        $subject = "Meddelande till alla $officialType->Name i $larp->Name";
-        
-        $receiver_emails = array();
-        $persons = Person::getAllOfficialsByType($officialType, $larp);
-        foreach($persons as $person) {
-            $registration = $person->getRegistration($larp);
-            if (empty($registration)) continue;
-            if (!$registration->hasSpotAtLarp()) continue;
-            $receiver_emails[] = $person->Email;
-        }
-        if (empty($receiver_emails)) return;
-
-        BerghemMailer::send($receiver_emails, $officialType->Name, $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
-    }
     
     # Plocka fram standardbilagorna
     public static function findAttachment() {        

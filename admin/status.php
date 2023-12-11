@@ -43,7 +43,7 @@ $param = date_format(new Datetime(),"suv");
                 </td><td>
 				<form action='contact_email.php'  method="post"  
 			    onsubmit="return confirm('Är du säker?\nEpost kommer att skickas till alla deltagarna med alla intriger som de ser ut just nu.')">
-				<input type=hidden name="send_intrigues" valie=<?php echo $param ?>>
+				<input type=hidden name="send_intrigues" value=<?php echo $param ?>>
                 <input type='submit' value='Skicka ut intrigerna'></form>
                 <br>
                 <?php if (!$current_larp->isIntriguesReleased()) { ?>
@@ -67,7 +67,7 @@ $param = date_format(new Datetime(),"suv");
         <td>
 		<form action='contact_email.php'  method="post" 
 	    onsubmit="return confirm('Är du säker?\nEpost kommer att skickas till alla deltagarna med boendet så som det är fördelat just nu.')">
-				<input type=hidden name="send_housing" valie=<?php echo $param ?>>
+				<input type=hidden name="send_housing" value=<?php echo $param ?>>
 			
         <input type='submit' value='Skicka ut boendet'>
 		</form>

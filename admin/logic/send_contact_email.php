@@ -6,12 +6,19 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
     exit;
 }
 
-if (!isset($_POST['email'])) {
-    header('Location: ../../admin/index.php?error=no_email');
+if (!isset($_POST['type'])) {
+    header('Location: ../admin/index.php'); //Borde aldrig hända
     exit;
 }
+$type = $_POST['type'];
+
+if ($type == 'one' && !isset($_POST['email'])) {
+    header('Location: ../admin/index.php?error=no_email');
+    exit;
+}
+
 if (!isset($_POST['text'])) {
-    header('Location: ../../admin/index.php?error=no_text');
+    header('Location: ../admin/index.php?error=no_text');
     exit;
 }
 
@@ -25,6 +32,38 @@ $referer .= "?message=contact_email_sent";
 // echo "<br>";
 // print_r($_FILES['bilaga']);
 // echo "<br>";
+
+
+switch ($type) {
+    case "intrigues":
+        if (!$current_larp->isIntriguesReleased()) {
+            $current_larp->DisplayIntrigues = 1;
+            $current_larp->update();
+        }
+        BerghemMailer::sendIntrigues($current_larp, nl2br($_POST['text']));
+        break;
+    case "housing":
+        if (!$current_larp->isHousingReleased()) {
+            $current_larp->DisplayHousing = 1;
+            $current_larp->update();
+        }
+        BerghemMailer::sendHousing($current_larp, nl2br($_POST['text']));
+        break;
+    case "one":
+        BerghemMailer::sendContactMailToSomeone($_POST['email'], $name, "Meddelande till $name från $current_user->Name", nl2br($_POST['text']));
+        header('Location: ' . $referer);
+        exit;
+        break;
+    case "all":
+        BerghemMailer::sendContactMailToAll($current_larp, nl2br($_POST['text']));
+        break;
+    case "several":
+        BerghemMailer::sendContactMailToSeveral($current_larp, nl2br($_POST['text']), $_POST['email'], $_POST['subject'], $_POST['name']);
+        break;
+}
+
+
+/*
 
 if ($_POST['email'] == 'ALLADELTAGARE') {
     BerghemMailer::sendContactMailToAll($current_larp, nl2br($_POST['text']));
@@ -50,7 +89,7 @@ if ($_POST['email'] == 'ALLADELTAGARE') {
     header('Location: ' . $referer);
     exit;
 }
-
+*/
 header('Location: ../mail_admin.php');
 
 

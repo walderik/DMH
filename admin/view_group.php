@@ -136,7 +136,7 @@ include 'navigation.php';
 		</table>		
 		</div>
 		
-		<h2>Anmälda medlemmar</h2>
+		<h2>Anmälda medlemmar <a href='contact_email.php?groupId=<?php echo $current_group->Id ?>' title='Skicka ett utskick till alla medlemmar i gruppen <?php $current_group->Name?>'><i class='fa-solid fa-envelope-open-text'></i></a></h2>
 		<?php 
         echo "<div>";
 		echo "<table>";

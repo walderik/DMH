@@ -124,19 +124,47 @@ function showStatusIcon($value, ?string $fix_url = NULL) {
 }
 
 function contactEmailIcon($name,$email) {
-    return "<a href='contact_email.php?email=$email&name=$name' title='Skicka mail till $name'><i class='fa-solid fa-envelope-open-text'></i></a>";
+    $param = date_format(new Datetime(),"suv");
+    return "<form action='contact_email.php'  class='fabutton' method='post'>".
+        "<input type=hidden name='send_one' value=$param>".
+        "<input type=hidden name='email' value=$email>".
+        "<input type=hidden name='name' value=$name>".
+        "<button type='submit' class='invisible' title='Skicka mail till $name'>".
+        "  <i class='fa-solid fa-envelope-open-text'></i>".
+        "</button>".
+        "</form>";
 }
+
+
 function contactAllEmailIcon(){
     $param = date_format(new Datetime(),"suv");
-    return "<a href='contact_email.php?all=$param' title='Skicka ett utskick till alla deltagare i lajvet'><i class='fa-solid fa-envelope-open-text'></i></a>";
+    return "<form action='contact_email.php'  class='fabutton' method='post'>".
+        "<input type=hidden name='send_all' value=$param>".
+        "<button type='submit' class='invisible' title='Skicka ett utskick till alla deltagare i lajvet'>".
+        "  <i class='fa-solid fa-envelope-open-text'></i>".
+        "</button>".
+        "</form>";
 }
-function contactAllGroupLeadersEmailIcon($txt){
+
+
+function contactSeveralEmailIcon($txt, $emailArr, $greeting, $subject){
     $param = date_format(new Datetime(),"suv");
-    return "<a href='contact_email.php?allagruppledare=$param' title='Skicka ett utskick till alla gruppledare i lajvet'><i class='fa-solid fa-envelope-open-text'></i>$txt</a>";
+    $retrunStr = "<form action='contact_email.php'  class='fabutton' method='post'>".
+        "<input type=hidden name='send_several' value=$param>";
+        
+    foreach ($emailArr as $email)  {
+        $retrunStr .= "<input type='hidden' name='email[]' value='$email'>\n";
+    }
+    $retrunStr .= "<input type=hidden name='name' value='$greeting'>".
+        "<input type=hidden name='subject' value='$subject'>".
+        "<button type='submit' class='invisible' title='$txt'>".
+    "  <i class='fa-solid fa-envelope-open-text'></i>".
+    "$txt".
+    "</button>".
+    "</form>\n";
+    return $retrunStr;
 }
-function contactAllOfficalTypeEmailIcon(OfficialType $official_type){
-    return "<a href='contact_email.php?official_type_id=$official_type->Id' title='Skicka ett utskick till funktionärer som tar $official_type->Name'><i class='fa-solid fa-envelope-open-text'></i></a>";
-}
+
 
 
 # En HTML-selector för fonter
