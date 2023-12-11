@@ -123,6 +123,19 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($house->Id, $larp->Id, $group->Id));
         
     }
+ 
+    
+    public static function getGroupMembers(Group $group, LARP $larp) {
+        $sql = "SELECT * FROM regsys_person WHERE Id IN ".
+            "(SELECT regsys_role.PersonId FROM regsys_role, regsys_larp_role WHERE ".
+            "regsys_role.Id = regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.LarpId = ? AND ".
+            "regsys_role.GroupId = ?".
+            ") ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
+        
+    }
+    
     
     
     public static function getPersonsForUser($userId) {
