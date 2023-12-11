@@ -70,12 +70,12 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     			<tr>
     				<td><label for="StartDate">Startdatum</label></td>
     				<td><input type="datetime-local" id="StartDate"
-    					name="StartDate" value="<?php echo $larp->StartDate; ?>" size="50" required></td>
+    					name="StartDate" value="<?php echo formatDateTimeForInput($larp->StartDate); ?>" size="50" required></td>
     			</tr>
     			<tr>
     				<td><label for="EndDate">Slutdatum</label></td>
     				<td><input type="datetime-local" id="EndDate"
-    					name="EndDate" value="<?php echo $larp->EndDate; ?>" size="50" required></td>
+    					name="EndDate" value="<?php echo formatDateTimeForInput($larp->EndDate); ?>" size="50" required></td>
     			</tr>
     			<tr>
     				<td><label for="MaxParticipants">Max antal deltagare</label></td>
@@ -87,14 +87,14 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     					name="LatestRegistrationDate" value="<?php echo $larp->LatestRegistrationDate; ?>" size="50" required></td>
     			</tr>
     			<tr>
-    				<td><label for="StartTimeLARPTime">Start lajvtid</label></td>
+    				<td><label for="StartTimeLARPTime">Start lajvtid</label><br>Om lajvet har ett datum och tid inlajv så fyller man i det här.</td>
     				<td><input type="datetime-local" id="StartTimeLARPTime"
-    					name="StartTimeLARPTime" value="<?php echo $larp->StartTimeLARPTime; ?>"  size="50"></td>
+    					name="StartTimeLARPTime" value="<?php echo formatDateTimeForInput($larp->StartTimeLARPTime); ?>"  size="50"></td>
     			</tr>
     			<tr>
     				<td><label for="EndTimeLARPTime">Slut lajvtid</label></td>
     				<td><input type="datetime-local" id="EndTimeLARPTime"
-    					name="EndTimeLARPTime" value="<?php echo $larp->EndTimeLARPTime; ?>" size="50"></td>
+    					name="EndTimeLARPTime" value="<?php echo formatDateTimeForInput($larp->EndTimeLARPTime); ?>" size="50"></td>
     			</tr>
     			<tr>
     				<td><label for="PaymentReferencePrefix">Prefix för betalningsreferens</label></td>

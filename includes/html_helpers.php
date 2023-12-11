@@ -166,6 +166,16 @@ function contactSeveralEmailIcon($txt, $emailArr, $greeting, $subject){
 }
 
 
+function formatDateTimeForInput($dateTime) {
+    //2024-05-12 15:25:36
+    $dateTimeSplit = explode(' ',$dateTime);
+    $date = $dateTimeSplit[0];
+    $fullTime = $dateTimeSplit[1];
+    return $date."T".substr($fullTime, 0, 5);
+}
+
+
+
 
 # En HTML-selector för fonter
 function fontDropDown(String $name, ?String $selected=null) {

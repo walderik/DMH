@@ -72,9 +72,9 @@ include 'navigation.php';
     			<tr>
     				<td><label for="When">När</label></td>
     				<td><input type="datetime-local" id="When"
-    					name="When" value="<?php echo $timeline->When; ?>" size="50" 
-    					min="<?php echo $current_larp->StartDate;?>"
-						max="<?php echo $current_larp->EndDate;?>" 
+    					name="When" value="<?php echo formatDateTimeForInput($timeline->When); ?>" size="50" 
+    					min="<?php echo formatDateTimeForInput($current_larp->StartDate);?>"
+						max="<?php echo formatDateTimeForInput($current_larp->EndDate);?>" 
     					required></td>
     			</tr>
 			<tr>

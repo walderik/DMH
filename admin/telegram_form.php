@@ -67,8 +67,8 @@ include_once 'header.php';
 			<tr>
 				<td><label for="Deliverytime">Leveranstid</label></td>
 				<td><input type="datetime-local" id="Deliverytime"
-					name="Deliverytime" value="<?php echo $telegram->Deliverytime; ?>" min="<?php echo $current_larp->StartTimeLARPTime;?>"
-					max="<?php echo $current_larp->EndTimeLARPTime;?>" size="50" required></td>
+					name="Deliverytime" value="<?php echo formatDateTimeForInput($telegram->Deliverytime); ?>" min="<?php echo formatDateTimeForInput($current_larp->StartTimeLARPTime);?>"
+					max="<?php echo formatDateTimeForInput($current_larp->EndTimeLARPTime);?>" size="50" required></td>
 			</tr>
 			<tr>
 				<td><label for="Sender">Avsändare</label></td>
