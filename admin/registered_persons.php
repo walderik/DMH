@@ -29,7 +29,7 @@ th {
     		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
     		      "<th></th>".
     		      "<th onclick='sortTable(2, \"$tableId\")'>Epost</th>".
-    		      "<th onclick='sortTable(3, \"$tableId\")'>Ålder<br>på lajvet</th>".
+    		      "<th onclick='sortTableNumbers(3, \"$tableId\")'>Ålder<br>på lajvet</th>".
     		      "<th onclick='sortTable(4, \"$tableId\")'>Godkända<br>karaktärer</th>".
     		      "<th onclick='sortTable(5, \"$tableId\")'>Medlem</th>".
     		      "<th onclick='sortTable(6, \"$tableId\")'>Betalnings-<br>referens</th>".
