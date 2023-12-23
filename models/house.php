@@ -67,6 +67,10 @@ class House extends BaseModel{
         return false;
     }
  
+    public function getImage() {
+        if (isset($this->ImageId)) return null;
+        return Image::loadById($this->ImageId);
+    }
     
     public function IsHouse() {
         if ($this->IsHouse==1) return true;
@@ -76,6 +80,7 @@ class House extends BaseModel{
     public function IsCamp() {
         return !$this->IsHouse();
     }
+    
     
     
     public static function getAllHouses() {
@@ -96,11 +101,6 @@ class House extends BaseModel{
             "regsys_housing.PersonId=?";
         return static::getOneObjectQuery($sql, array($larp->Id, $person->Id));
     }
-    
-    public function getHouse() {
-        return House::loadById($this->HouseId);
-    }
-    
-    
+
 }
     
