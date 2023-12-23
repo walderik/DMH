@@ -138,7 +138,7 @@ include 'navigation.php';
                         echo "<tr>";
                         echo "<td>";
                         if ($role->hasImage()) {
-                            echo "<img width='30' src='image.php?id=$role->ImageId'/>\n";
+                            echo "<img width='30' src='../includes/display_image.php?id=$role->ImageId'/>\n";
                         }
                         echo "</td>";
                         

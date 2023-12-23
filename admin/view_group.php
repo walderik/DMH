@@ -34,7 +34,7 @@ function print_role($role, $group) {
     echo "<tr>";
     echo "<td>";
     if ($role->hasImage()) {
-        echo "<img width='30' src='image.php?id=$role->ImageId'/>\n";
+        echo "<img width='30' src='../includes/display_image.php?id=$role->ImageId'/>\n";
     }
     echo "</td>";
     
@@ -100,7 +100,7 @@ include 'navigation.php';
 					<?php 
 					if ($current_group->hasImage()) {
             		    echo "<td rowspan='20' valign='top'>";
-            		    echo "<img width='300' src='image.php?id=$current_group->ImageId'/>\n";
+            		    echo "<img width='300' src='../includes/display_image.php?id=$current_group->ImageId'/>\n";
             		    echo "</td>";
             		}
             		?>
@@ -225,7 +225,7 @@ include 'navigation.php';
 		    echo "<div class='name'>$known_group->Name</div>";
 		    echo "<div>Grupp</div>";
 		    if ($known_group->hasImage()) {
-		        echo "<img src='image.php?id=$known_group->ImageId'/>\n";
+		        echo "<img src='../includes/display_image.php?id=$known_group->ImageId'/>\n";
 		    }
 		    echo "</li>";
 		    
@@ -245,7 +245,7 @@ include 'navigation.php';
 		    }
 		    
 		    if ($known_role->hasImage()) {
-		        echo "<img src='image.php?id=$known_role->ImageId'/>\n";
+		        echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
 		    }
 		    echo "</li>";
 		    $temp++;
@@ -278,7 +278,7 @@ include 'navigation.php';
 		        echo "<div>$npc_group->Name</div>";
 		    }
 		    if ($npc->hasImage()) {
-		        echo "<img width='100' src='image.php?id=$npc->ImageId'/>\n";
+		        echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
 		    }
 		    echo "</li>\n";
 		    $temp++;
@@ -294,7 +294,7 @@ include 'navigation.php';
 		    echo "<div class='name'>$prop->Name</div>\n";
 		    if ($prop->hasImage()) {
 		        echo "<td>";
-		        echo "<img width='100' src='image.php?id=$prop->ImageId'/>\n";
+		        echo "<img width='100' src='../includes/display_image.php?id=$prop->ImageId'/>\n";
 		    }
 		    echo "</li>\n";
 		    $temp++;
@@ -335,7 +335,7 @@ include 'navigation.php';
 		        echo "<div class='name'>$prop->Name</div>\n";
 		        if ($prop->hasImage()) {
 		            echo "<td>";
-		            echo "<img width='100' src='image.php?id=$prop->ImageId'/>\n";
+		            echo "<img width='100' src='../includes/display_image.php?id=$prop->ImageId'/>\n";
 		        }
 		        echo "</li>\n";
 		        $temp++;

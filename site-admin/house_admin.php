@@ -51,7 +51,7 @@ include "navigation.php";
                 echo "<td>" . $house->Description . "</td>\n";
                 
                 if ($house->hasImage()) {
-                    $image = Image::loadById($house->ImageId);
+                    $image = $house->getImage();
                     echo "<td><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/> <a href='logic/delete_image.php?id=$house->Id&type=house'>Ta bort bild</a></td>\n";
                 }
                 else {

@@ -42,7 +42,7 @@ include 'navigation.php';
  			    
  			    $image = Image::loadById($npc->ImageId);
  			    echo "<td rowspan='20' valign='top'>";
- 			    echo "<img width='300' src='image.php?id=$bookkeeping->ImageId'/>\n";
+ 			    echo "<img width='300' src='../includes/display_image.php?id=$bookkeeping->ImageId'/>\n";
  			    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
  			    echo "</td>";
  			}

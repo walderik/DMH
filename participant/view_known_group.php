@@ -40,7 +40,7 @@ function print_role(Role $role, Group $group) {
     
     if ($role->hasImage()) {
         $image = Image::loadById($role->ImageId);
-        echo "<img src='image.php?id=$role->ImageId'/>\n";
+        echo "<img src='../includes/display_image.php?id=$role->ImageId'/>\n";
         if (!empty($image->Photographer)) {
             echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
         }
@@ -64,7 +64,7 @@ include 'navigation.php';
     		    
 			    $image = Image::loadById($group->ImageId);
     		    echo "<td rowspan='20' valign='top'>";
-    		    echo "<img width='300' src='image.php?id=$group->ImageId'/>\n";
+    		    echo "<img width='300' src='../includes/display_image.php?id=$group->ImageId'/>\n";
     		    echo "</td>";
     		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
     		}

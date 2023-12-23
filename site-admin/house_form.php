@@ -58,12 +58,12 @@ img {
     	<h1><?php echo default_value('action');?> hus eller lägerplats</h1>
 	        <?php 
 	        if ($house->hasImage()) {
-	            $image = Image::loadById($house->ImageId);
-            echo "<td>";
-            echo '<img  style="width:40%" src="data:image/jpeg;base64,'.base64_encode($image->file_data).'"/>';
-            if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-            echo "</td>";
-        }
+	            $image = $house->getImage();
+                echo "<td>";
+                echo "<img src='../includes/display_image.php?id=$house->ImageId'/>\n";
+                if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+                echo "</td>";
+            }
         ?>
     	
     	

@@ -48,7 +48,7 @@ include 'navigation.php';
                 echo "<td>" . $owner . "<a href='prop_owner_form.php?id=" . $prop->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
 
                 if ($prop->hasImage()) {
-                    echo "<td><img width='30' src='image.php?id=$prop->ImageId'/>\n";
+                    echo "<td><img width='30' src='../includes/display_image.php?id=$prop->ImageId'/>\n";
                     echo " <a href='logic/delete_image.php?id=$prop->Id&type=prop'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a></td>\n";
                 }
                 else {

@@ -54,7 +54,7 @@ function print_role(Role $role, Group $group) {
     echo "<div class='description'>$role->DescriptionForGroup</div>\n";
     if ($role->hasImage()) {
         $image = Image::loadById($role->ImageId);
-        echo "<img src='image.php?id=$role->ImageId'/>\n";
+        echo "<img src='../includes/display_image.php?id=$role->ImageId'/>\n";
         if (!empty($image->Photographer)) {
             echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
         }
@@ -83,7 +83,7 @@ include 'navigation.php';
     		    
 			    $image = Image::loadById($current_group->ImageId);
     		    echo "<td rowspan='20' valign='top'>";
-    		    echo "<img width='300' src='image.php?id=$current_group->ImageId'/>\n";
+    		    echo "<img width='300' src='../includes/display_image.php?id=$current_group->ImageId'/>\n";
     		    echo "</td>";
     		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
     		}
@@ -200,7 +200,7 @@ include 'navigation.php';
 			            echo "<div class='name'>$known_group->Name</div>";
 			            echo "<div>Grupp</div>";
 			            if ($known_group->hasImage()) {
-			                echo "<img src='image.php?id=$known_group->ImageId'/>\n";
+			                echo "<img src='../includes/display_image.php?id=$known_group->ImageId'/>\n";
 			            }
 			            echo "</li>";
 			            
@@ -220,7 +220,7 @@ include 'navigation.php';
 			            }
 			            
 			            if ($known_role->hasImage()) {
-			                echo "<img src='image.php?id=$known_role->ImageId'/>\n";
+			                echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
 			            }
 			            echo "</li>";
 			            $temp++;
@@ -253,7 +253,7 @@ include 'navigation.php';
 			            }
 			            if ($npc->hasImage()) {
 			                echo "<td>";
-			                echo "<img width='100' src='image.php?id=$npc->ImageId'/>\n";
+			                echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
 			            }
 			            echo "</li>\n";
 			            $temp++;
@@ -270,7 +270,7 @@ include 'navigation.php';
 			            if ($prop->hasImage()) {
 			                $image = Image::loadById($prop->ImageId);
 			                echo "<td>";
-			                echo "<img width='100' src='image.php?id=$prop->ImageId'/>\n";
+			                echo "<img width='100' src='../includes/display_image.php?id=$prop->ImageId'/>\n";
 			            }
 			            echo "</li>\n";
 			            $temp++;
@@ -310,7 +310,7 @@ include 'navigation.php';
 		                if ($prop->hasImage()) {
 		                    $image = Image::loadById($prop->ImageId);
 		                    echo "<td>";
-		                    echo "<img width='100' src='image.php?id=$prop->ImageId'/>\n";
+		                    echo "<img width='100' src='../includes/display_image.php?id=$prop->ImageId'/>\n";
 		                }
 		                echo "</li>\n";
 		                $temp++;
