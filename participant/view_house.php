@@ -31,7 +31,6 @@ ul.list {
     		<td>
     		<table>
     			<tr>
-    			
     				<td>Antal 
         				<?php 
         				if ($house->IsHouse()) echo "sovplatser"; 
