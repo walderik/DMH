@@ -22,16 +22,9 @@ img {
 
     <div class="content"> 
     	<h1><?php echo $house->Name ?></h1>
-	        <?php 
-	        if ($house->hasImage()) {
-	            $image = $house->getImage();
-	            echo "<td>";
-	            echo "<img src='../includes/display_image.php?id=$house->ImageId'/>\n";
-	            if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-	            echo "</td>";
-	        }
-            ?>
-    	
+    	<table>
+    		<tr>
+    		<td>
     		<table>
     			<tr>
     			
@@ -70,6 +63,19 @@ img {
     				?>
     				</p>
     				</td>
+    			</tr>
+    		</table>
+    		</td>
+    		<?php 
+	        if ($house->hasImage()) {
+	            $image = $house->getImage();
+	            echo "<td>";
+	            echo "<img src='../includes/display_image.php?id=$house->ImageId'/>\n";
+	            if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+	            echo "</td>";
+	        }
+            ?>
+    		</tr>
     		</table>
 		</div>
     </body>
