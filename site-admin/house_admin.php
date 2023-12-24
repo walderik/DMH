@@ -52,7 +52,8 @@ include "navigation.php";
                 
                 if ($house->hasImage()) {
                     $image = $house->getImage();
-                    echo "<td><img width=30 src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/> <a href='logic/delete_image.php?id=$house->Id&type=house'>Ta bort bild</a></td>\n";
+                    echo "<td><img width=30 src='../includes/display_image.php?id=$house->ImageId'/><br>
+                          <a href='logic/delete_image.php?id=$house->Id&type=house'>Ta bort bild</a></td>\n";
                 }
                 else {
                     echo "<td><a href='upload_image.php?id=$house->Id&type=house'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
