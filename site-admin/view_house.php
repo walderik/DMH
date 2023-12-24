@@ -25,7 +25,9 @@ ul.list {
 </style>
 
     <div class="content"> 
-    	<h1><?php echo $house->Name ?></h1>
+    	<h1><?php echo $house->Name; ?>
+    	<a href='house_form.php?operation=update&id=<?php echo $house->Id ?>'><i class='fa-solid fa-pen'> </i></a>
+    	</h1>
     	<table>
     		<tr>
     		<td>

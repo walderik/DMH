@@ -63,7 +63,7 @@ img {
     		<table>
         		<tr>
             		<td>
-            		<table style="width:100%">
+            		<table>
             			<tr>
             				<td><label for="Name" class="header" style="width:10%">Namn</label></td>
             				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($house->Name); ?>" required style="width:20%"></td>

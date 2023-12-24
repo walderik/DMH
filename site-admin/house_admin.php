@@ -41,7 +41,7 @@ include "navigation.php";
             echo "<tr><th>Namn</th><th>Typ</th><th>Antal sovplatser/<br>tältplatser</th><th>Plats</th><th>Beskrivning</th><th></th><th></th></tr>\n";
             foreach ($house_array as $house) {
                 echo "<tr>\n";
-                echo "<td><a href='house_form.php?operation=update&id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
+                echo "<td><a href='view_house.php?operation=update&id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
                 echo "<td>";
                 if ($house->IsHouse()) echo "Hus";
                 else echo "Lägerplats";
