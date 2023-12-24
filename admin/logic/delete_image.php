@@ -34,8 +34,7 @@ if (!isset($object)) {
 
 $object->ImageId = null;
 $object->update();
-Image::delete($object->ImageId);
-
+$object->destroy();
 
 
 if (isset($_SERVER['HTTP_REFERER'])) {

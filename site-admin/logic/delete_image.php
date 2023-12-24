@@ -34,7 +34,6 @@ if (!isset($object)) {
 
 $object->ImageId = null;
 $object->update();
-// Image::delete($object->ImageId);
 $object->destroy();
 
 
