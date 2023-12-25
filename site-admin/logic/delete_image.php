@@ -32,9 +32,12 @@ if (!isset($object)) {
     exit;
 }
 
+$image = $object->getImage();
+
 $object->ImageId = null;
 $object->update();
-$object->destroy();
+
+$image->destroy();
 
 
 
