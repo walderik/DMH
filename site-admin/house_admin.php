@@ -55,13 +55,15 @@ include "navigation.php";
                 echo "<td nowrap>";
                 foreach ($caretakers as $person) {
                     echo "$person->Name";
-                    echo "  <a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id'><i class='fa-solid fa-trash'></i></a><br>";
+                    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
+                    $confirm = "onclick='return confirm($txt)'";
+                    echo "  <a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a><br>\n";
                 }
                 echo "</td>";
                 
                 if ($house->hasImage()) {
                     $image = $house->getImage();
-                    echo "<td><img width=40 src='../includes/display_image.php?id=$house->ImageId'/><br>
+                    echo "<td><img width=40 src='../includes/display_image.php?id=$house->ImageId'/><br>\n
                           <a href='logic/delete_image.php?id=$house->Id&type=house'>Ta bort bild</a></td>\n";
                 }
                 else {
