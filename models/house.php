@@ -68,7 +68,7 @@ class House extends BaseModel{
     }
  
     public function getImage() {
-        if (isset($this->ImageId)) return null;
+        if (empty($this->ImageId)) return null;
         return Image::loadById($this->ImageId);
     }
     

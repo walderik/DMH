@@ -110,6 +110,11 @@ class Group extends BaseModel{
          return false;
      }
      
+     public function getImage() {
+         if (empty($this->ImageId)) return null;
+         return Image::loadById($this->ImageId);
+     }
+     
      public function isApproved() {
          if ($this->IsApproved == 1) return true;
          return false;

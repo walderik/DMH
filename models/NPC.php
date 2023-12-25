@@ -159,6 +159,10 @@ class NPC extends BaseModel{
         return false;
     }
     
+    public function getImage() {
+        if (empty($this->ImageId)) return null;
+        return Image::loadById($this->ImageId);
+    }
     
     public function getNPCGroup() {
         if ($this->IsInGroup()) {

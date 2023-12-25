@@ -319,7 +319,7 @@ class Person extends BaseModel{
     public function getHouse() {
         return House::loadById($this->HouseId);
     }
-    
+
     public function getRegistration(LARP $larp) {
         return Registration::loadByIds($this->Id, $larp->Id);
     }

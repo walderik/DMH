@@ -96,6 +96,11 @@ class Prop extends BaseModel{
         return false;
     }
     
+    public function getImage() {
+        if (empty($this->ImageId)) return null;
+        return Image::loadById($this->ImageId);
+    }
+    
     public static function getAllCheckinPropsForIntrigueActor(IntrigueActor $intrigueActor) {
         $sql = "SELECT * FROM regsys_prop WHERE Id IN (".
             "SELECT PropId FROM regsys_intrigueactor_checkinprop, regsys_intrigue_prop WHERE ".
