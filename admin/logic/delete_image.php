@@ -32,9 +32,10 @@ if (!isset($object)) {
     exit;
 }
 
+$image = $object->ImageId;
 $object->ImageId = null;
 $object->update();
-$object->destroy();
+$image->destroy();
 
 
 if (isset($_SERVER['HTTP_REFERER'])) {
