@@ -64,6 +64,18 @@ ul.list {
         				<td>Beskrivning</td>
         				<td><?php echo nl2br(htmlspecialchars($house->Description)); ?></td>
         			</tr>
+        			<tr>
+        				<td colspan = '2'><b>Husförvaltare är:</b><br>
+        				<p>
+        				<?php 
+        				$caretakers = $house->getCaretakers();
+        				foreach ($caretakers as $person) {
+        				    echo "$person->Name<br>";
+        				}
+        				?>
+        				</p>
+        				</td>
+        			</tr>
         			<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
         		</table>
         	</td>
