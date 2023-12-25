@@ -28,27 +28,35 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 include "navigation.php";
 ?>
 
-    <div class="content">   
-        <h1>Hus och lägerplatser</h1>
-            <a href="house_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
-        
-        <?php
+<div class="content">   
+    <h1>Hus och lägerplatser</h1>
+    <p><a href="house_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i> Lägg till</a></p>  <br>
+    
+    <?php
         
         $house_array = House::all();
         $resultCheck = count($house_array);
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
-            echo "<tr><th>Namn</th><th>Typ</th><th>Antal sovplatser/<br>tältplatser</th><th>Plats</th><th>Beskrivning</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Namn</th><th>Typ</th><th>Sovplatser/<br>Tältplatser</th><th>Plats</th><th>Beskrivning</th><th>Förvaltare</th><th></th><th></th><th></th></tr>\n";
             foreach ($house_array as $house) {
+                $caretakers = $house->getCaretakers();
                 echo "<tr>\n";
                 echo "<td><a href='view_house.php?operation=update&id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
                 echo "<td>";
                 if ($house->IsHouse()) echo "Hus";
                 else echo "Lägerplats";
                 echo "</td>";
-                echo "<td>" . $house->NumberOfBeds . "</td>\n";
-                echo "<td>" . $house->PositionInVillage . "</td>\n";
+                echo "<td width='8%'>" . $house->NumberOfBeds . "</td>\n";
+                echo "<td width='20%' style='word-break: break-all';>" . $house->PositionInVillage . "</td>\n";
                 echo "<td>" . $house->Description . "</td>\n";
+//                 echo "<td>" . mb_strimwidth(str_replace('\n', '<br>', $house->Description), 0, 200, '...') . "</td>\n";
+                
+                echo "<td>";
+                foreach ($caretakers as $person) {
+                    echo "$person->Name<br>";
+                }
+                echo "</td>";
                 
                 if ($house->hasImage()) {
                     $image = $house->getImage();
@@ -59,8 +67,9 @@ include "navigation.php";
                     echo "<td><a href='upload_image.php?id=$house->Id&type=house'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
                 }
                 
+                echo "<td><a href='house_form.php?operation=update&id=" . $house->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                echo "<td><a href='house_admin.php?operation=delete&id=" . $house->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 
-                echo "<td>" . "<a href='house_admin.php?operation=delete&id=" . $house->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
@@ -69,8 +78,8 @@ include "navigation.php";
             echo "<p>Inga registrerade ännu</p>";
         }
         ?>
-        
-	</div>
+    
+</div>
 </body>
 
 </html>
