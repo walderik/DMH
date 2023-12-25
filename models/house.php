@@ -80,8 +80,7 @@ class House extends BaseModel{
     public function IsCamp() {
         return !$this->IsHouse();
     }
-    
-    
+  
     
     public static function getAllHouses() {
         $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 ORDER BY ".static::$orderListBy.";";
@@ -102,5 +101,11 @@ class House extends BaseModel{
         return static::getOneObjectQuery($sql, array($larp->Id, $person->Id));
     }
 
+    public function getCaretakers() {
+        $sql = "SELECT * FROM regsys_person WHERE ".
+            "HouseId = ? ORDER BY ".Person::$orderListBy.";";
+        return Person::getSeveralObjectsqQuery($sql, array($this->Id));
+    }
+    
 }
     
