@@ -52,15 +52,16 @@ include "navigation.php";
                 echo "<td>" . $house->Description . "</td>\n";
 //                 echo "<td>" . mb_strimwidth(str_replace('\n', '<br>', $house->Description), 0, 200, '...') . "</td>\n";
                 
-                echo "<td>";
+                echo "<td nowrap>";
                 foreach ($caretakers as $person) {
-                    echo "$person->Name<br>";
+                    echo "$person->Name";
+                    echo "  <a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id'><i class='fa-solid fa-trash'></i></a><br>";
                 }
                 echo "</td>";
                 
                 if ($house->hasImage()) {
                     $image = $house->getImage();
-                    echo "<td><img width=30 src='../includes/display_image.php?id=$house->ImageId'/><br>
+                    echo "<td><img width=40 src='../includes/display_image.php?id=$house->ImageId'/><br>
                           <a href='logic/delete_image.php?id=$house->Id&type=house'>Ta bort bild</a></td>\n";
                 }
                 else {
