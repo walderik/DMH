@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id']) && isset($_GET['houseId'])) {
         //echo "Laddar " . $_GET['id'] . "<br>";
         $houseId = $_GET['houseId'];
-        $id = $_GET['id'];
+        $personId = $_GET['id'];
     } else {
         
         header('Location: ../index.php');
@@ -14,21 +14,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-$house = House::loadById($houseId);
-$person = Person::loadById($id);
+$housecaretaker = Housecaretaker::loadByIds($houseId, $personId);
 
-if (!isset($house) || !isset($person)) {
+if (!isset($housecaretaker)) {
     header('Location: ../index.php');
     exit;
 }
 
-if ($person->HouseId != $house->Id) {
-    header('Location: ../index.php');
-    exit;
-}
 
-$person->HouseId = null;
-$person->update();
+Housecaretaker::delete_housecaretaker($houseId, $personId);
 
 
 if (isset($_SERVER['HTTP_REFERER'])) {
