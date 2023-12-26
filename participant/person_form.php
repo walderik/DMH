@@ -105,7 +105,7 @@
 				<label for="House">Är du husförvaltare?</label><br>
 				<div class="explanation">I så fall välj ditt hus</div>
 				<?php 
-				$person->caretakerOf();
+				$houses = $person->caretakerOf();
 				selectionByArray('House', House::all(), false, false, $person->HouseId); ?>
 			</div>
 
