@@ -30,6 +30,7 @@ include_once $root . '/models/experience.php';
 include_once $root . '/models/guard.php';
 include_once $root . '/models/group.php';
 include_once $root . '/models/house.php';
+include_once $root . '/models/housecaretaker.php';
 include_once $root . '/models/housing.php';
 include_once $root . '/models/housing_request.php';
 include_once $root . '/models/image.php';
