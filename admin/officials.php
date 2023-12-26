@@ -14,7 +14,9 @@ include 'navigation.php';
         }
  	} else {
  	    $persons = Person::getAllOfficials($current_larp);
- 	}?>
+ 	}
+ 	
+ 	?>
     <?php 
         echo "<h1>$header</h1>"; 
         echo "<a href='officials.php'>Alla funktionärer</a> &nbsp; &nbsp";
@@ -22,9 +24,9 @@ include 'navigation.php';
         if (!empty($offical_types)) {
             foreach ($offical_types as $offical_type) {
                 
-                $persons = Person::getAllOfficialsByType($offical_type, $current_larp);
+                $officials_by_type = Person::getAllOfficialsByType($offical_type, $current_larp);
                 $emailArr = array();
-                foreach($persons as $person) {
+                foreach($officials_by_type as $person) {
                     $emailArr[] = $person->Email;
                 }
                 $ikon = contactSeveralEmailIcon("$offical_type->Name", $emailArr, "$offical_type->Name funktionär", "Meddelande till alla $offical_type->Name i $current_larp->Name");
@@ -38,7 +40,6 @@ include 'navigation.php';
         }
     ?>
     <?php 
-
     echo "<table class='data'><tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Typ av funktionär</th><th></th></tr>";
     foreach($persons as $person) {
         $registration = $person->getRegistration($current_larp);
