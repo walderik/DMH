@@ -69,7 +69,10 @@ include "navigation.php";
                 }
                 
                 echo "<td><a href='house_form.php?operation=update&id=" . $house->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td><a href='house_admin.php?operation=delete&id=" . $house->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                
+                $txt = '"Är du säker att du helt vill ta bort '.$house->Name.'?"';
+                $confirm = "onclick='return confirm($txt)'";
+                echo "<td><a href='house_admin.php?operation=delete&id=$house->Id' $confirm><i class='fa-solid fa-trash'></i></td>\n";
                 
                 echo "</tr>\n";
             }
