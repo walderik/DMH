@@ -90,8 +90,7 @@ include 'navigation.php';
 
 			<tr><td valign="top" class="header">NPC önskemål</td>
 			<td><input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="250" value="<?php echo htmlspecialchars($registration->NPCDesire);?>"></td></tr>
-			<tr><td valign="top" class="header">Husförvaltare</td>
-			<td><?php selectionByArray('House', House::all(), false, false, $person->HouseId); ?></td></tr>
+			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown($current_larp, false,true,$registration->HousingRequestId);?></td></tr>
