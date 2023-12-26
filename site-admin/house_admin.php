@@ -8,13 +8,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $house = House::newFromArray($_POST);
         $house->create();
-    } elseif ($operation == 'delete') {
-        LARP::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         $house=House::loadById($_POST['Id']);
         $house->setValuesByArray($_POST);
         $house->update();
-    } 
+    }
+    header('Location: house_admin.php');
+    exit;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -22,6 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 //     $operation = $_GET['operation'];
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
         House::delete($_GET['id']);
+        header('Location: house_admin.php');
+        exit;
     }
 }
 
