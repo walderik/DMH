@@ -86,9 +86,46 @@ class Housecaretaker extends BaseModel{
     }
     
     # Icke statisk version av delete
-    public function destroy()
-    {
+    public function destroy() {
         static::delete_housecaretaker($this->HouseId, $this->PersonId);
+    }
+    
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
+    }
+    
+    public function getHouse() {
+        return House::loadById($this->HouseId);
+    }
+    
+    # Kolla om husförvaltaren är medlem
+    public function isMember() {
+        //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
+        if ($this->IsMember == 1) return true;
+        
+        //Kolla inte oftare än en gång per kvart
+        if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false;
+        
+        $larp = LARP::loadById($this->LARPId);
+        $year = substr($larp->StartDate, 0, 4);
+        
+        
+        $val = check_membership($this->getPerson()->SocialSecurityNumber, $year);
+        
+        
+        if ($val == 1) {
+            $this->IsMember=1;
+        }
+        else {
+            $this->IsMember = 0;
+        }
+        $now = new Datetime();
+        $this->MembershipCheckedAt = date_format($now,"Y-m-d H:i:s");
+        $this->update();
+        
+        if ($this->IsMember == 1) return true;
+        return false;
+        
     }
     
 }
