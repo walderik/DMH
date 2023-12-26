@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $housecaretaker = Housecaretaker::loadByIds($_POST['HouseId'], $person->Id);
         if (empty($housecaretaker)) {
-            $houses=$person->caretakerOf();
+            $houses=$person->housesOf();
             foreach ($houses as $house) {
                 $housecaretaker = Housecaretaker::loadByIds($house->Id, $person->Id);
                 $housecaretaker->destroy();
