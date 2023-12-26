@@ -602,7 +602,7 @@ class Person extends BaseModel{
         return static::existsQuery($sql, array($larp->Id, $this->Id));
     }
     
-    public function caretakerOf() {
-        return House::caretakerOf($this);
+    public function housesOf() {
+        return House::housesOf($this);
     }
 }

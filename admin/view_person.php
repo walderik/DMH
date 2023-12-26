@@ -80,7 +80,7 @@ include 'navigation.php';
 				<td valign="top" class="header">Husförvaltare</td>
 				<td><?php 
 				
-				  $houses = $person->caretakerOf();
+				  $houses = $person->housesOf();
 				  $houseslinks = array();
 				  foreach ($houses as $house) {
 				      $houseslinks[] = "<a href='view_house.php?id=$house->Id'>".$house->Name."</a>";
