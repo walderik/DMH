@@ -94,15 +94,12 @@ function selectionDropDownByArray(String $name, Array $selectionDatas, $required
 
 # Tar en array av object och gör en komma-separerad lista av deras namn
 function commaStringFromArrayObject($objectArray) {
-    $output="";
+    $outputs = array();
     
     foreach($objectArray as $object) {
-        $output = $output . htmlspecialchars($object->Name) . ", ";
+        $outputs[] = htmlspecialchars($object->Name);
     }
-    if (strlen($output) > 2) {
-        $output = substr($output, 0, -2);
-    }
-    return $output;
+    return implode(", ", $outputs);
 }
 
 function ja_nej($val) {

@@ -78,7 +78,15 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $registration->NPCDesire;?></td></tr>
 			<tr>
 				<td valign="top" class="header">Husförvaltare</td>
-				<td><?php if (isset($person->HouseId)) { echo "<a href='view_house.php?id=$person->HouseId'>".$person->getHouse()->Name."</a>"; }?></td>
+				<td><?php 
+				
+				  $houses = $person->caretakerOf();
+				  $houseslinks = array();
+				  foreach ($houses as $house) {
+				      $houseslinks[] = "<a href='view_house.php?id=$house->Id'>".$house->Name."</a>";
+				  }
+				  echo implode(",", $houseslinks);
+				  ?>
 			</tr>
 			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>

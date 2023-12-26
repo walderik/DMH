@@ -71,8 +71,11 @@ class Person extends BaseModel{
     public static function getHouseCaretakers(LARP $larp) {
         if (!isset($larp)) return Array();
         $sql = "SELECT * FROM regsys_person WHERE Id IN ".
-            "(SELECT PersonId FROM regsys_registration WHERE LarpId=? AND NotComing = 0) AND ".
-            "HouseId Is NOT NULL ORDER BY ".static::$orderListBy.";";
+            "(SELECT regsys_registration.PersonId FROM regsys_registration, regsys_housecaretaker WHERE 
+                regsys_registration.LarpId=? AND 
+                regsys_registration.NotComing = 0 AND
+                regsys_registration.PersonId = regsys_housecaretaker.PersonId) ".
+            " ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
@@ -327,10 +330,6 @@ class Person extends BaseModel{
     
     public function getUser() {
         return User::loadById($this->UserId);
-    }
-    
-    public function getHouse() {
-        return House::loadById($this->HouseId);
     }
 
     public function getRegistration(LARP $larp) {
@@ -601,5 +600,9 @@ class Person extends BaseModel{
     public function hasHousing(LARP $larp) {
         $sql = "SELECT COUNT(*) AS Num FROM regsys_housing WHERE LARPId=? AND PersonId=?";
         return static::existsQuery($sql, array($larp->Id, $this->Id));
+    }
+    
+    public function caretakerOf() {
+        return House::caretakerOf($this);
     }
 }

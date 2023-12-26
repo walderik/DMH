@@ -102,10 +102,18 @@ class House extends BaseModel{
     }
 
     public function getCaretakers() {
-        $sql = "SELECT * FROM regsys_person WHERE ".
-            "HouseId = ? ORDER BY ".Person::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_person WHERE Id IN (".
+            "SELECT PersonId FROM regsys_housecaretaker) ORDER BY ".Person::$orderListBy.";";
         return Person::getSeveralObjectsqQuery($sql, array($this->Id));
     }
+    
+    public static function caretakerOf(Person $person) {
+        $sql = "SELECT * FROM regsys_house WHERE Id IN (
+            SELECT HouseId FROM regsys_housecaretaker WHERE PersonId =?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id));
+        
+    }
+    
     
 }
     
