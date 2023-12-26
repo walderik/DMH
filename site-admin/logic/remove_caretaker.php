@@ -21,8 +21,7 @@ if (!isset($housecaretaker)) {
     exit;
 }
 
-
-Housecaretaker::delete_housecaretaker($houseId, $personId);
+$housecaretaker->destroy();
 
 
 if (isset($_SERVER['HTTP_REFERER'])) {

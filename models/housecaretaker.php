@@ -85,5 +85,10 @@ class Housecaretaker extends BaseModel{
         
     }
     
+    # Icke statisk version av delete
+    public function destroy()
+    {
+        static::delete_housecaretaker($this->HouseId, $this->PersonId);
+    }
     
 }
