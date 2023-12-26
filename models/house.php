@@ -67,6 +67,10 @@ class House extends BaseModel{
         return false;
     }
  
+    public function getImage() {
+        if (empty($this->ImageId)) return null;
+        return Image::loadById($this->ImageId);
+    }
     
     public function IsHouse() {
         if ($this->IsHouse==1) return true;
@@ -76,7 +80,7 @@ class House extends BaseModel{
     public function IsCamp() {
         return !$this->IsHouse();
     }
-    
+  
     
     public static function getAllHouses() {
         $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 ORDER BY ".static::$orderListBy.";";
@@ -96,11 +100,12 @@ class House extends BaseModel{
             "regsys_housing.PersonId=?";
         return static::getOneObjectQuery($sql, array($larp->Id, $person->Id));
     }
-    
-    public function getHouse() {
-        return House::loadById($this->HouseId);
+
+    public function getCaretakers() {
+        $sql = "SELECT * FROM regsys_person WHERE ".
+            "HouseId = ? ORDER BY ".Person::$orderListBy.";";
+        return Person::getSeveralObjectsqQuery($sql, array($this->Id));
     }
-    
     
 }
     

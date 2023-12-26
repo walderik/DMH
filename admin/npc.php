@@ -8,7 +8,7 @@ function print_assigned_npc(NPC $npc, $npc_group) {
     global $current_larp;
     echo "<tr><td width='80'>";
     if ($npc->hasImage()) {
-        echo "<img width='30' src='image.php?id=$npc->ImageId'/>\n";
+        echo "<img width='30' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
         echo " <a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
     } else {
         echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
@@ -58,7 +58,7 @@ function print_unassigned_npc(NPC $npc) {
     $intrigues = Intrigue::getAllIntriguesForNPC($npc->Id, $current_larp->Id);
     echo "<tr><td width='80'>";
     if ($npc->hasImage()) {
-        echo "<img width='30' src='image.php?id=$npc->ImageId'/>\n";
+        echo "<img width='30' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
         echo " <a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
     } else {
         echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";

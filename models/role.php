@@ -271,6 +271,10 @@ class Role extends BaseModel{
         return false;
     }
     
+    public function getImage() {
+        if (empty($this->ImageId)) return null;
+        return Image::loadById($this->ImageId);
+    }
     
     public function isMysLajvare() {
         if ($this->NoIntrigue == 1) return true;

@@ -92,7 +92,7 @@ include 'navigation.php';
                     
                 } else {
                     echo "<td rowspan='20' valign='top'>";
-                    echo "<img src='image.php?id=$bookkeeping->ImageId'/>\n";
+                    echo "<img src='../includes/display_image.php?id=$bookkeeping->ImageId'/>\n";
                     echo "</td>";
                 }
           }

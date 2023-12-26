@@ -140,7 +140,7 @@ include 'navigation.php';
                echo "<div class='name'>$known_group->Name</div>";
                echo "<div>Grupp</div>";
                if ($known_group->hasImage()) {
-                   echo "<img src='image.php?id=$known_group->ImageId'/>\n";
+                   echo "<img src='../includes/display_image.php?id=$known_group->ImageId'/>\n";
                }
                echo "</li>";
 	           
@@ -160,7 +160,7 @@ include 'navigation.php';
                }
                
                if ($known_role->hasImage()) {
-                   echo "<img src='image.php?id=$known_role->ImageId'/>\n";
+                   echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
                }
                echo "</li>";
 	           $temp++;
@@ -194,7 +194,7 @@ include 'navigation.php';
 	           }
 	           if ($npc->hasImage()) {
 	               echo "<td>";
-	               echo "<img width='100' src='image.php?id=$npc->ImageId'/>\n";
+	               echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
 	           }
 	           echo "</li>\n";
 	           $temp++;
@@ -210,7 +210,7 @@ include 'navigation.php';
                echo "<div class='name'>$prop->Name</div>\n";
                if ($prop->hasImage()) {
                    echo "<td>";
-                   echo "<img width='100' src='image.php?id=$prop->ImageId'/>\n";
+                   echo "<img width='100' src='../includes/display_image.php?id=$prop->ImageId'/>\n";
                }
                echo "</li>\n";
                $temp++;
@@ -250,7 +250,7 @@ include 'navigation.php';
 	               echo "<div class='name'>$prop->Name</div>\n";
 	               if ($prop->hasImage()) {
 	                   echo "<td>";
-	                   echo "<img width='100' src='image.php?id=$prop->ImageId'/>\n";
+	                   echo "<img width='100' src='../includes/display_image.php?id=$prop->ImageId'/>\n";
 	               }
 	               echo "</li>\n";
 	               $temp++;

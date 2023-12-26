@@ -18,12 +18,12 @@ switch ($type) {
     case "house":
         $object = House::loadById($id);
         break;
-    case "prop":
-        $object = Prop::loadById($id);
-        break;
-    case "npc":
-        $object = NPC::loadById($id);
-        break;
+//     case "prop":
+//         $object = Prop::loadById($id);
+//         break;
+//     case "npc":
+//         $object = NPC::loadById($id);
+//         break;
 }
 
 
@@ -32,10 +32,13 @@ if (!isset($object)) {
     exit;
 }
 
-$image = $object->ImageId;
+$image = $object->getImage();
+
 $object->ImageId = null;
 $object->update();
+
 $image->destroy();
+
 
 
 if (isset($_SERVER['HTTP_REFERER'])) {

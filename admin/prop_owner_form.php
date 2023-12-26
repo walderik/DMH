@@ -65,7 +65,7 @@ img {
         <?php 
             if ($prop->hasImage()) {
                 echo "<td>";
-                echo "<img src='image.php?id=$prop->ImageId'/>\n";
+                echo "<img src='../includes/display_image.php?id=$prop->ImageId'/>\n";
                 echo "</td>";
             }
             ?>

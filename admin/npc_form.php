@@ -72,7 +72,7 @@ include 'navigation.php';
  			<?php 
  			if ($npc->hasImage()) {
  			    echo "<td rowspan='20' valign='top'>";
- 			    echo "<img width='300' src='image.php?id=$npc->ImageId'/>\n";
+ 			    echo "<img width='300' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
  			    echo "</td>";
  			}
  			

@@ -197,7 +197,7 @@ include "navigation.php";
     		            echo "<td>Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "</td>\n";
     		            if ($group->hasImage()) {
     		                echo "<td>";
-    		                echo "<img width='30' src='image.php?id=$group->ImageId'/>\n";
+    		                echo "<img width='30' src='../includes/display_image.php?id=$group->ImageId'/>\n";
     		                echo " <a href='logic/delete_image.php?id=$group->Id&type=group'>Ta bort bild</a></td>\n";
     		            }
     		            else {
@@ -224,7 +224,7 @@ include "navigation.php";
         		            echo "<td style='font-weight: normal; padding-right: 0px;'>";
         		            if ($role->hasImage()) {
         		                echo "<a href='view_role.php?id=$role->Id'>";
-        		                echo "<img width='30' src='image.php?id=$role->ImageId'/>\n";
+        		                echo "<img width='30' src='../includes/display_image.php?id=$role->ImageId'/>\n";
         		                echo "</a>";
         		                echo "<a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
         		            }
@@ -291,7 +291,7 @@ include "navigation.php";
     		            foreach ($npcs as $npc)  {
     		                echo "<tr><td style='font-weight: normal; padding-right: 0px;'>";
     		                if ($npc->hasImage()) {
-    		                    echo "<img width='30' src='image.php?id=$npc->ImageId'/>\n";
+    		                    echo "<img width='30' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
     		                    echo "<a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
     		                }
     		                else {

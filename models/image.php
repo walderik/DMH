@@ -114,21 +114,6 @@ class Image extends BaseModel{
     
     */
     
-    # Delete an image in db
-    public function deleteImage($id) {
-        $connection = $this->connect();
-        $stmt = $connection->prepare("DELETE FROM regsys_image WHERE Id=?");
-        
-        if (!$stmt->execute(array($id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-
-        $stmt = null;
-        return;
-    }
-    
     
     public static function getAllPDFVerifications(LARP $larp) {
         $sql = "SELECT * FROM regsys_image WHERE file_mime='application/pdf' AND Id IN (".

@@ -76,7 +76,10 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Andra allergier</td><td><?php echo $person->FoodAllergiesOther;?></td></tr>
 
 			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $registration->NPCDesire;?></td></tr>
-			<tr><td valign="top" class="header">Husförvaltare</td><td><?php if (isset($person->HouseId)) { echo $person->getHouse()->Name; }?></td></tr>
+			<tr>
+				<td valign="top" class="header">Husförvaltare</td>
+				<td><?php if (isset($person->HouseId)) { echo "<a href='view_house.php?id=$person->HouseId'>".$person->getHouse()->Name."</a>"; }?></td>
+			</tr>
 			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
@@ -138,7 +141,7 @@ include 'navigation.php';
                         echo "<tr>";
                         echo "<td>";
                         if ($role->hasImage()) {
-                            echo "<img width='30' src='image.php?id=$role->ImageId'/>\n";
+                            echo "<img width='30' src='../includes/display_image.php?id=$role->ImageId'/>\n";
                         }
                         echo "</td>";
                         

@@ -6,7 +6,7 @@ include_once $root . '/includes/berghem_mailer.php';
 include_once $root . '/includes/helper_functions.php';
 include_once $root . '/includes/html_helpers.php'; 
 include_once $root . '/includes/sverok.php';
-include_once $root . '/includes/our_fonts.php'; 
+include_once $root . '/includes/our_fonts.php';
 
 include_once $root . '/classes/dbh.php';
 include_once $root . '/classes/access_control.php';
@@ -81,5 +81,3 @@ include_once $root . '/models/user.php';
 include_once $root . '/models/wealth.php';
 
 include_once $root . '/models/LARP.php';
-
-
