@@ -68,7 +68,7 @@ class Person extends BaseModel{
         return $person;
     }
     
-    public static function getHouseCaretakers(LARP $larp) {
+    public static function getPersonsWhoIsHouseCaretakers(LARP $larp) {
         if (!isset($larp)) return Array();
         $sql = "SELECT * FROM regsys_person WHERE Id IN ".
             "(SELECT regsys_registration.PersonId FROM regsys_registration, regsys_housecaretaker WHERE 

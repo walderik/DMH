@@ -55,6 +55,7 @@ include "navigation.php";
                 echo "<td nowrap>";
                 foreach ($caretakers as $person) {
                     echo "$person->Name<br />";
+                    echo ja_nej($registration->isMember()
                 }
                 echo "</td>";
                 

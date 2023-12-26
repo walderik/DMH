@@ -151,7 +151,7 @@ div.housing-group {
     
     <h2>Husförvaltare</h2>
     <?php 
-    $care_takers = Person::getHouseCaretakers($current_larp);
+    $caretaking_persons = Person::getPersonsWhoIsHouseCaretakers($current_larp);
     $tableId = "caretakers";
     $colnum = 0;
     echo "<table id='$tableId' class='data'>";
@@ -161,10 +161,10 @@ div.housing-group {
     echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Grupp</th>".
 
         "</tr>";
-    foreach ($care_takers as $care_taker) {
-        $group = $care_taker->getMainRole($current_larp)->getGroup();
-        echo "<tr><td><a href='view_person.php?id=$care_taker->Id'>$care_taker->Name ".contactEmailIcon($care_taker->Name,$care_taker->Email)."</a></td>\n";
-        $houses = $care_taker->housesOf();
+    foreach ($caretaking_persons as $person) {
+        $group = $person->getMainRole($current_larp)->getGroup();
+        echo "<tr><td><a href='view_person.php?id=$person->Id'>$person->Name ".contactEmailIcon($person->Name,$person->Email)."</a></td>\n";
+        $houses = $person->housesOf();
         $houseslinks = array();
         foreach ($houses as $house) {
             $houseslinks[] = "<a href='view_house.php?id=$house->Id'>".$house->Name."</a>";
