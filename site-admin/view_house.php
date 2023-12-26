@@ -64,16 +64,22 @@ ul.list {
         				<td>Beskrivning</td>
         				<td><?php echo nl2br(htmlspecialchars($house->Description)); ?></td>
         			</tr>
+        			<tr><td>&nbsp;</td></tr>
         			<tr>
         				<td colspan = '2'><b>Husförvaltare är:</b><br>
-        				<p>
+        				<table>
         				<?php 
         				$caretakers = $house->getCaretakers();
         				foreach ($caretakers as $person) {
-        				    echo "$person->Name<br>";
+        				    echo "<tr>\n";
+        				    echo "  <td>$person->Name</td>\n";
+        				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
+        				    $confirm = "onclick='return confirm($txt)'";
+        				    echo "  <td><a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
+        				    echo "</tr>\n";
         				}
         				?>
-        				</p>
+        				</table>
         				</td>
         			</tr>
         			<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
