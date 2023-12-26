@@ -164,7 +164,7 @@ div.housing-group {
     foreach ($care_takers as $care_taker) {
         $group = $care_taker->getMainRole($current_larp)->getGroup();
         echo "<tr><td><a href='view_person.php?id=$care_taker->Id'>$care_taker->Name ".contactEmailIcon($care_taker->Name,$care_taker->Email)."</a></td>\n";
-        $houses = $care_taker->caretakerOf();
+        $houses = $care_taker->housesOf();
         $houseslinks = array();
         foreach ($houses as $house) {
             $houseslinks[] = "<a href='view_house.php?id=$house->Id'>".$house->Name."</a>";

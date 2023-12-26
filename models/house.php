@@ -107,7 +107,7 @@ class House extends BaseModel{
         return Person::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
-    public static function caretakerOf(Person $person) {
+    public static function housesOf(Person $person) {
         $sql = "SELECT * FROM regsys_house WHERE Id IN (
             SELECT HouseId FROM regsys_housecaretaker WHERE PersonId =?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($person->Id));
