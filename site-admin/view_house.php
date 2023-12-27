@@ -66,31 +66,60 @@ ul.list {
         			</tr>
         			<tr><td>&nbsp;</td></tr>
         			<tr>
-        				<td colspan = '2'><b>Husförvaltare är:</b><br>
-        				<table>
-        				<?php 
-        				$caretakers = $house->getCaretakers();
-        				foreach ($caretakers as $person) {
-        				    echo "<tr>\n";
-        				    echo "  <td>$person->Name</td>\n";
-        				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
-        				    $confirm = "onclick='return confirm($txt)'";
-        				    echo "  <td><a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
-        				    echo "</tr>\n";
-        				}
-        				?>
-        				</table>
+        				<td colspan = '2'><h2>Husförvaltare är:</h2><br>
+        					<table id='caretakers' class='data'>
+            				<th>Namn</th><th>Medlem</th><th>&nbsp;</th>
+            				<?php 
+            				$caretakers = $house->getHousecaretaker();
+            				foreach ($caretakers as $caretaker) {
+            				    $person = $caretaker->getPerson();
+            				    echo "<tr>\n";
+            				    echo "  <td>$person->Name</td>\n";
+            				    echo "  <td>".showStatusIcon($caretaker->isMember())."</td>";
+            				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
+            				    $confirm = "onclick='return confirm($txt)'";
+            				    echo "  <td><a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
+            				    echo "</tr>\n";
+            				}
+            				?>
+        					</table>
         				</td>
         			</tr>
-        			<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        			<tr><td>&nbsp;</td></tr>
+        			<tr>
+        				<td colspan = '2'><h2>Historik Boende:</h2><br>
+        					<table id='caretakers' class='data'>
+            				<th>Lajv</th><th>Start</th><th>Slut</th><th>Namn</th>
+            				<?php 
+            				$housings = $house->getAllHousing();
+            				foreach ($housings as $housing) {
+            				    $larp = $housing->getLarp();
+            				    $person = $housing->getPerson();
+            				    echo "<tr>\n";
+            				    if (isset($larp)) {
+            				        echo "  <td>$larp->Name</td>\n";
+            				        echo "  <td>".substr($larp->StartDate, 2, 8)."</td>\n";
+            				        echo "  <td>".substr($larp->EndDate, 2, 8)."</td>\n";
+            				    } else {
+            				        echo "<td> </td><td> </td><td> </td>";
+            				    }
+            				    
+            				    echo "  <td>$person->Name</td>\n";
+            				    echo "</tr>\n";
+            				}
+            				?>
+        					</table>
+        				</td>
+        			</tr>
         		</table>
         	</td>
         	<?php 
 	        if ($house->hasImage()) {
 	            $image = $house->getImage();
+	            $photografer = (!empty($image->Photographer) && $image->Photographer!="") ? "Fotograf $image->Photographer" : "";
 	            echo "<td>";
-	            echo "<img src='../includes/display_image.php?id=$house->ImageId'/>\n";
-	            if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+	            echo "<img src='../includes/display_image.php?id=$house->ImageId' title='$photografer'/>\n";
+	            echo "<br>$photografer";
 	            echo "</td>";
 	        }
             ?>
