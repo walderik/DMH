@@ -100,13 +100,19 @@ class House extends BaseModel{
             "regsys_housing.PersonId=?";
         return static::getOneObjectQuery($sql, array($larp->Id, $person->Id));
     }
+    
+    public function getHousecaretaker() {
+        $sql = "SELECT * FROM regsys_housecaretaker WHERE HouseId=? ORDER BY ".Housecaretaker::$orderListBy.";";
+        return Housecaretaker::getSeveralObjectsqQuery($sql, array($this->Id));
+    }
 
-    public function getCaretakers() {
+    public function getCaretakerPersons() {
         $sql = "SELECT * FROM regsys_person WHERE Id IN (".
             "SELECT PersonId FROM regsys_housecaretaker WHERE HouseId=?) ORDER BY ".Person::$orderListBy.";";
         return Person::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
+    # Det finns en objectmetod på person som heter @person->housesOf
     public static function housesOf(Person $person) {
         $sql = "SELECT * FROM regsys_house WHERE Id IN (
             SELECT HouseId FROM regsys_housecaretaker WHERE PersonId =?) ORDER BY ".static::$orderListBy.";";
@@ -114,6 +120,20 @@ class House extends BaseModel{
         
     }
     
+    # Är någon på något lajv tilldelad att bo i det här huset?
+    # Används för att reda ut om det går att radera eller bara ska arkiveras
+    public function hasHousing() {
+        $sql = "SELECT * FROM regsys_housing WHERE HouseId = ? limit 1";
+        $housing = Housing::getOneObjectQuery($sql, array($id));
+        if (is_null($housing)) return false;
+        return true;
+    }
+    
+    # Plocka fram alla som bott i huset
+    public function getAllHousing() {
+        $sql = "SELECT * FROM regsys_housing WHERE HouseId = ? ORDER BY LARPId";
+        return Housing::getSeveralObjectsqQuery($sql, array($id));
+    }
     
 }
     
