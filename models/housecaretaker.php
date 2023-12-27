@@ -108,10 +108,9 @@ class Housecaretaker extends BaseModel{
         if ($this->IsMember == 1) return true;
         
         //Kolla inte oftare än en gång per kvart
-        if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false;
+        if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false; # < 15*60
         
-        $larp = LARP::loadById($this->LARPId);
-        $year = substr($larp->StartDate, 0, 4);
+        $year = date("Y");
         
         
         $val = check_membership($this->getPerson()->SocialSecurityNumber, $year);
@@ -119,8 +118,7 @@ class Housecaretaker extends BaseModel{
         
         if ($val == 1) {
             $this->IsMember=1;
-        }
-        else {
+        } else {
             $this->IsMember = 0;
         }
         $now = new Datetime();
