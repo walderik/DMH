@@ -21,7 +21,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
 //     $operation = $_GET['operation'];
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
-        House::delete($_GET['id']);
+        
+        $house=House::loadById($_POST['Id']);
+        $caretakers = $house->getHousecaretaker();
+        foreach ($caretakers as $caretaker) {
+            $caretaker->destroy();
+        }
+        if ($house->hasImage()) {
+            $image = $house->getImage();
+            $image->destroy();
+        }
+        
+        if ($house->hasHousing()) {
+            
+        } else {
+            $house->destroy();
+        }
+        
         header('Location: house_admin.php');
         exit;
     }
@@ -39,10 +55,10 @@ include "navigation.php";
         $house_array = House::all();
         $resultCheck = count($house_array);
         if ($resultCheck > 0) {
-            echo "<table id='larp' class='data'>";
+            echo "<table id='houses' class='data'>";
             echo "<tr><th>Namn</th><th>Typ</th><th>Sovplatser/<br>Tältplatser</th><th>Plats</th><th>Beskrivning</th><th>Förvaltare</th><th></th><th></th><th></th></tr>\n";
             foreach ($house_array as $house) {
-                $caretakers = $house->getCaretakers();
+                
                 echo "<tr>\n";
                 echo "<td><a href='view_house.php?operation=update&id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
                 echo "<td>";
@@ -55,18 +71,24 @@ include "navigation.php";
 //                 echo "<td>" . mb_strimwidth(str_replace('\n', '<br>', $house->Description), 0, 200, '...') . "</td>\n";
                 
                 echo "<td nowrap>";
-                foreach ($caretakers as $person) {
-                    echo "$person->Name<br />";
-                    echo ja_nej($registration->isMember()
+                
+                $caretakers = $house->getHousecaretaker();
+                foreach ($caretakers as $house_caretaker) {
+                    $person = $house_caretaker->getPerson();
+                    echo "$person->Name ";
+                    if (!$house_caretaker->isMember()) {
+                        echo '<img src="../images/alert-icon.png" alt="Inte medlem i Berghems vänner i år" title="Inte medlem i Berghems vänner i år" width="20" height="20">';
+                    }
+                    echo "<br>";
                 }
                 echo "</td>";
                 
                 if ($house->hasImage()) {
                     $image = $house->getImage();
-                    echo "<td><img width=40 src='../includes/display_image.php?id=$house->ImageId'/><br>\n
-                          <a href='logic/delete_image.php?id=$house->Id&type=house'>Ta bort bild</a></td>\n";
-                }
-                else {
+                    $photografer = (!empty($image->Photographer) && $image->Photographer!="") ? "Fotograf $image->Photographer" : "";
+                    echo "<td><img width=45 src='../includes/display_image.php?id=$house->ImageId' title='$photografer'/><br>\n";
+//                           <a href='logic/delete_image.php?id=$house->Id&type=house'>Ta bort bild</a></td>\n";
+                } else {
                     echo "<td><a href='upload_image.php?id=$house->Id&type=house'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
                 }
                 
