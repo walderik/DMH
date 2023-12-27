@@ -46,4 +46,12 @@ class Housing extends BaseModel{
         $stmt = null;
     }
     
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
+    }
+    
+    public function getHouse() {
+        return House::loadById($this->HouseId);
+    }
+    
 }
