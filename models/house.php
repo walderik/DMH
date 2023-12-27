@@ -124,7 +124,7 @@ class House extends BaseModel{
     # Används för att reda ut om det går att radera eller bara ska arkiveras
     public function hasHousing() {
         $sql = "SELECT * FROM regsys_housing WHERE HouseId = ? limit 1";
-        $housing = Housing::getOneObjectQuery($sql, array($id));
+        $housing = Housing::getOneObjectQuery($sql, array($this->Id));
         if (is_null($housing)) return false;
         return true;
     }
@@ -132,7 +132,7 @@ class House extends BaseModel{
     # Plocka fram alla som bott i huset
     public function getAllHousing() {
         $sql = "SELECT * FROM regsys_housing WHERE HouseId = ? ORDER BY LARPId";
-        return Housing::getSeveralObjectsqQuery($sql, array($id));
+        return Housing::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
 }
