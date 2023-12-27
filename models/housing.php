@@ -46,6 +46,10 @@ class Housing extends BaseModel{
         $stmt = null;
     }
     
+    public function getLarp() {
+        return LARP::loadById($this->LARPId);
+    }
+    
     public function getPerson() {
         return Person::loadById($this->PersonId);
     }
