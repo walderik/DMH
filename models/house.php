@@ -9,7 +9,12 @@ class House extends BaseModel{
     public $Description;
     public $ImageId;
     public $IsHouse = 0; //1= hus, 0=lägerplats
-    
+    public $NotesToUsers;
+    public $History;
+    public $DeletedAt;
+    public $InspectionNotes;
+    public $Position;
+        
     public static $orderListBy = 'IsHouse, Name';
     
     public static function newFromArray($post){
@@ -26,8 +31,14 @@ class House extends BaseModel{
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         if (isset($arr['IsHouse'])) $this->IsHouse = $arr['IsHouse'];
-        
+        if (isset($arr['NotesToUsers'])) $this->NotesToUsers = $arr['NotesToUsers'];
+        if (isset($arr['History'])) $this->History = $arr['History'];
+        if (isset($arr['DeletedAt'])) $this->DeletedAt = $arr['DeletedAt'];
+        if (isset($arr['InspectionNotes'])) $this->InspectionNotes = $arr['InspectionNotes'];
+        if (isset($arr['Position'])) $this->Position = $arr['Position'];
+   
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
+        if (isset($this->DeletedAt) && $this->DeletedAt=='null') $this->DeletedAt = null;
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -37,9 +48,11 @@ class House extends BaseModel{
     
     # Update an existing house in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_house SET Name=?, NumberOfBeds=?, PositionInVillage=?, Description=?, ImageId=?, IsHouse=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_house SET Name=?, NumberOfBeds=?, PositionInVillage=?, Description=?, 
+                ImageId=?, IsHouse=?, NotesToUsers=?, History=?, DeletedAt=?, InspectionNotes=?, Position=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, $this->ImageId, $this->IsHouse, $this->Id))) {
+        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, 
+            $this->ImageId, $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Position, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -51,9 +64,11 @@ class House extends BaseModel{
     # Create a new house in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_house (Name, NumberOfBeds, PositionInVillage, Description, IsHouse) VALUES (?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_house (Name, NumberOfBeds, PositionInVillage, Description, 
+            IsHouse, NotesToUsers, History, DeletedAt, InspectionNotes, Position) VALUES (?,?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, $this->IsHouse))) {
+        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, 
+            $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Position))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -83,12 +98,12 @@ class House extends BaseModel{
   
     
     public static function getAllHouses() {
-        $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 AND DeletedAt IS NULL ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array());
     }
     
     public static function getAllCamps() {
-        $sql = "SELECT * FROM regsys_house WHERE IsHouse=0 ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_house WHERE IsHouse=0 AND DeletedAt IS NULL ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array());
         
     }
