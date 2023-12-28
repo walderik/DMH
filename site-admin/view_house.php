@@ -75,7 +75,8 @@ ul.list {
             				    $person = $caretaker->getPerson();
             				    echo "<tr>\n";
             				    echo "  <td>$person->Name</td>\n";
-            				    echo "  <td>".showStatusIcon($caretaker->isMember())."</td>";
+            				    echo "  <td>".showStatusIcon($caretaker->isMember())."</td>\n";
+            				    echo "  <td>".contactEmailIcon($person->Name,$person->Email)."</td>\n";
             				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
             				    $confirm = "onclick='return confirm($txt)'";
             				    echo "  <td><a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
