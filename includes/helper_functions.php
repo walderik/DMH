@@ -21,8 +21,8 @@ function scrub($filename) {
 }
 
 # Kolla om man just nu är OM-admin för närvarande
-function isOmAdmin() {
+function isOmAdmin(?String $url = NULL) {
     if (!isset($_SESSION['admin'])) return false;
-    $url = $_SERVER['REQUEST_URI'];
+    if (is_null($url)) $url = $_SERVER['REQUEST_URI'];
     return (strpos($url, "/site-admin/")!=false);
 }
