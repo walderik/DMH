@@ -1,20 +1,4 @@
 
-Man borde kunna ange minimiantal som ska ha ett rykte alt visa hur många som stämmer in på varje "krav"
-
-Handelssystemet - skriva in resultat
-
-
-Bygg när behov uppstår:
-byta user för en person (admin funktion)
-Ta bort sidokaraktär från lajvet
-
-Helt nya funktioner:
-Att göra-listor per lajv och för Admin
-
-
-Bygghelgs-anmälningar
-Mat:
-Bygghelg, mat anges per måltid, gratis
 
 
 Tips och ticks
