@@ -87,28 +87,24 @@ ul.list {
         			</tr>
         			<tr><td>&nbsp;</td></tr>
         			<tr>
-        				<td colspan = '2'><h2>Historik Boende:</h2><br>
-        					<table id='caretakers' class='data'>
-            				<th>Lajv</th><th>Start</th><th>Slut</th><th>Namn</th>
-            				<?php 
-            				$housings = $house->getAllHousing();
-            				foreach ($housings as $housing) {
-            				    $larp = $housing->getLarp();
-            				    $person = $housing->getPerson();
-            				    echo "<tr>\n";
-            				    if (isset($larp)) {
-            				        echo "  <td>$larp->Name</td>\n";
-            				        echo "  <td>".substr($larp->StartDate, 2, 8)."</td>\n";
-            				        echo "  <td>".substr($larp->EndDate, 2, 8)."</td>\n";
-            				    } else {
-            				        echo "<td> </td><td> </td><td> </td>";
-            				    }
-            				    
-            				    echo "  <td>$person->Name</td>\n";
-            				    echo "</tr>\n";
+        				<td colspan = '2'><h2>Historik Boende</h2>
+        					<?php 
+        					$larps = $house->getAllLarpsWithHousing();
+            				foreach ($larps as $larp) {
+            				    echo "<h3>$larp->Name</h3>";
+            				    echo substr($larp->StartDate, 2, 8) .' -> '.substr($larp->EndDate, 2, 8)."<br><br>\n";
+            					echo "<table id='caretakers' class='data'>";
+                				echo "<th>Namn</th>";
+                				
+            				    $personsInHouse = Person::personsAssignedToHouse($house, $larp);
+            				    foreach ($personsInHouse as $person) {
+                				    echo "<tr>\n";
+                				    echo "  <td>$person->Name</td>\n";
+                				    echo "</tr>\n";
+                				}
+                				echo "</table><br>\n";
             				}
-            				?>
-        					</table>
+        				    ?>
         				</td>
         			</tr>
         		</table>

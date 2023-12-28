@@ -145,9 +145,10 @@ class House extends BaseModel{
     }
     
     # Plocka fram alla som bott i huset
-    public function getAllHousing() {
-        $sql = "SELECT * FROM regsys_housing WHERE HouseId = ? ORDER BY LARPId";
-        return Housing::getSeveralObjectsqQuery($sql, array($this->Id));
+    public function getAllLarpsWithHousing() {
+        $sql = "SELECT * FROM regsys_larp WHERE Id in 
+            (SELECT LARPId FROM regsys_housing WHERE HouseId = ?) ORDER BY ".LARP::$orderListBy.";";
+        return LARP::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
 }
