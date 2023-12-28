@@ -12,8 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $account = Bookkeeping_Account::newFromArray($_POST);
         $account->create();
-    } elseif ($operation == 'delete') {
-        LARP::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         $account=Bookkeeping_Account::loadById($_POST['Id']);
         $account->setValuesByArray($_POST);

@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $person->Name = RandomName::getName();
         $person->OtherInformation = "";
         $person->PhoneNumber = "070-00 00 00";
-        $person->SocialSecurityNumber = rand(1970, 2023)."0101-0000";
+        $person->SocialSecurityNumber = rand(1965, 2023)."0101-0000";
         $person->update();
     }
     

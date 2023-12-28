@@ -19,7 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $larp=LARP::loadById($_POST['Id']);
         $larp->setValuesByArray($_POST);
         $larp->update();
-    } 
+    }
+    header('Location: larp_admin.php');
+    exit;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -27,6 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 //     $operation = $_GET['operation'];
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
         LARP::delete($_GET['id']);
+        header('Location: larp_admin.php');
+        exit;
     }
 }
 
