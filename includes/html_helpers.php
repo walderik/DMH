@@ -121,13 +121,11 @@ function showStatusIcon($value, ?string $fix_url = NULL) {
 }
 
 function contactEmailIcon($name,$email) {
-    $omAdmin = isOmAdmin();
     $param = date_format(new Datetime(),"suv");
     return "<form action='contact_email.php'  class='fabutton' method='post'>".
         "<input type=hidden name='send_one' value=$param>".
         "<input type=hidden name='email' value=$email>".
         "<input type=hidden name='name' value=$name>".
-        "<input type=hidden name='admin' value=$omAdmin>".
         "<button type='submit' class='invisible' title='Skicka mail till $name'>".
         "  <i class='fa-solid fa-envelope-open-text'></i>".
         "</button>".
