@@ -45,7 +45,7 @@ class Email extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_user, $current_larp;
+        global $current_user;
         
         $email = new self();
         
@@ -54,31 +54,43 @@ class Email extends BaseModel{
 
         $email->From = 'info@berghemsvanner.se';
         
-        if (!is_null($current_larp)) {
-            $email->LarpId = $current_larp->Id;
-            $campaign = $current_larp->getCampaign();
-            if (!is_null($campaign)) {
-                $email->From = scrub($campaign->Email);
-            }
-        }
-        $myName = $email->myName();
-        $email->Subject = "Meddelande från $myName"; 
+//         if (!is_null($larp)) {
+//             $email->LarpId = $larp->Id;
+//             $campaign = $larp->getCampaign();
+//             if (!is_null($campaign)) {
+//                 $email->From = scrub($campaign->Email);
+//             }
+//         }
+//         $myName = $email->myName();
+//         $email->Subject = "Meddelande från $myName"; 
         return $email;
     }
     
     # Normala sättet att skapa ett mail som kommer skickas vid ett senare tillfälle.
     # Attachments skall vara en array med namnen på filerna som nyckel.
     # Just nu tillåter vi bara pdf:er som bilagor.
-    public static function normalCreate($To, $ToName, $Subject, $Text, $attachments, $noOfDaysKept) {
+    public static function normalCreate($To, $ToName, $Subject, $Text, $attachments, $noOfDaysKept, $larp) {
         $email = self::newWithDefault();
         $email->To = $To;
         $email->ToName = $ToName;
         $email->Subject = $Subject;
         $email->Text = $Text; 
         $now = new Datetime();
+        
+        if (!is_null($larp)) {
+            $email->LarpId = $larp->Id;
+            $campaign = $larp->getCampaign();
+            if (!is_null($campaign)) {
+                $email->From = scrub($campaign->Email);
+            }
+        }
+        $myName = $email->myName();
+        $email->Subject = "Meddelande från $myName";
+        
         if (!is_null($attachments) && !empty($attachments)) $email->SentAt = date_format($now,"Y-m-d H:i:s"); # Förhindra att det skickas innan bilagorna sparats färdigt.
         
         $now->modify("+$noOfDaysKept day");
+        
         $email->DeletesAt = date_format($now,"Y-m-d H:i:s");
         
         $email->create();
@@ -89,7 +101,7 @@ class Email extends BaseModel{
                     if (is_null($email->larp())) {
                         $filename = scrub("Berghemsvänner");
                     } else {
-                        $filename = scrub($current_larp->Name);
+                        $filename = scrub($larp->Name);
                     }
                 }
                 if (!str_ends_with($filename,'.pdf')) $filename = $filename.'.pdf';

@@ -7,30 +7,6 @@ global $current_larp;
 $name = '';
 $type = "one";
 
-/*
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    
-    if (isset($_GET['name'])) $name = $_GET['name'];
-    
-    if (isset($_GET['email'])) {
-        $email = $_GET['email'];
-    } elseif (isset($_GET['official_type_id'])) {
-        $official_type = OfficialType::loadById($_GET['official_type_id']);
-        if(!isset($official_type)) {
-            header('Location: index.php?error=no_email');
-            exit;
-        }
-        $email = 'OFFICIALTYPE';
-        $name = '';
-    } elseif (isset($_GET['allagruppledare'])) {
-        $email = 'ALLAGRUPPLEDARE';
-        $name = '';
-    } elseif (isset($_GET['all'])) {
-        $email = 'ALLADELTAGARE';
-        $name = '';
-    }
-}
-*/
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST['send_intrigues'])) {
@@ -157,7 +133,11 @@ include 'navigation.php';
 			Ladda upp en pdf som bilaga om du vill. Max storlek 5 MB och bara pdf:er.<br><br>
 			<input type="file" name="bilaga" id="bilaga"><br>
 			<?php }?>
-    		<br><hr><br>
+			<br>
+			(Tryck inte på "Skicka" innan den valda filen laddats upp ordentligt. Det tar ett litet tag.)
+    		<br>
+    		<br>
+    		<hr><br>
     		<input type="submit" value="Skicka">
 		</form>
 

@@ -16,45 +16,52 @@ include 'navigation.php';
  	    $persons = Person::getAllOfficials($current_larp);
  	}
  	
- 	?>
-    <?php 
-        echo "<h1>$header</h1>"; 
-        echo "<a href='officials.php'>Alla funktionärer</a> &nbsp; &nbsp";
-        $offical_types = OfficialType::allActive($current_larp);
-        if (!empty($offical_types)) {
-            foreach ($offical_types as $offical_type) {
-                
-                $officials_by_type = Person::getAllOfficialsByType($offical_type, $current_larp);
-                $emailArr = array();
-                foreach($officials_by_type as $person) {
-                    $emailArr[] = $person->Email;
-                }
-                $ikon = contactSeveralEmailIcon("$offical_type->Name", $emailArr, "$offical_type->Name funktionär", "Meddelande till alla $offical_type->Name i $current_larp->Name");
-                
-                
-                //$ikon = contactAllOfficalTypeEmailIcon($offical_type);
-                echo "$ikon &nbsp; &nbsp;";
+ 	
+
+    echo "<h1>$header</h1>";
+    
+    $emailArr = array();
+ 	foreach ($persons as $person) {
+ 	    $emailArr[] = $person->Email;
+ 	}
+    echo contactSeveralEmailIcon("", $emailArr, "Funktionär på $current_larp->Name", "Meddelande till alla funktionärer i $current_larp->Name");
+    echo "<a href='officials.php'>Alla funktionärer</a> &nbsp; &nbsp";
+    
+    
+    $offical_types = OfficialType::allActive($current_larp);
+    if (!empty($offical_types)) {
+        foreach ($offical_types as $offical_type) {
+            
+            $officials_by_type = Person::getAllOfficialsByType($offical_type, $current_larp);
+            $emailArr = array();
+            foreach($officials_by_type as $person) {
+                $emailArr[] = $person->Email;
             }
-            echo "<br>\n";
-            echo "<br>\n";
+            $ikon = contactSeveralEmailIcon('', $emailArr, "$offical_type->Name funktionär", "Meddelande till alla $offical_type->Name i $current_larp->Name");
+
+            echo "$ikon<a href='officials.php?id=$offical_type->Id'>$offical_type->Name</a> &nbsp; &nbsp ";
         }
-    ?>
-    <?php 
-    echo "<table class='data'><tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Typ av funktionär</th><th></th></tr>";
+        echo "<br>\n";
+        echo "<br>\n";
+    }
+
+    echo "<table class='data'><tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Typ av funktionär</th><th></th></tr>\n";
     foreach($persons as $person) {
         $registration = $person->getRegistration($current_larp);
-        echo "<tr><td>";
-        echo "<a href ='view_person.php?id=$person->Id'>$person->Name</a>";
-        echo "</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td><td>$person->PhoneNumber</td><td>";
+        echo "<tr><td>\n";
+        echo "<a href ='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
+        echo "<td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td><td>$person->PhoneNumber</td><td>\n";
         if (OfficialType::isInUse($current_larp)) echo commaStringFromArrayObject($registration->getOfficialTypes());
-        echo "&nbsp;<a href='edit_official.php?id=$registration->Id'><i class='fa-solid fa-pen'></i></a>".
-        "&nbsp;<a href='person_payment.php?id=$person->Id'><i class='fa-solid fa-money-check-dollar'></i></a></td><td>";
+        echo "&nbsp;<a href='edit_official.php?id=$registration->Id' title='Redigera vald funktionärstyp'><i class='fa-solid fa-pen'></i></a>\n".
+        "&nbsp;<a href='person_payment.php?id=$person->Id' title='Justera betalning till $person->Name'><i class='fa-solid fa-money-check-dollar'></i></a></td><td>\n";
         ?>
-        <form action="logic/official_save.php" method="post"><input type="hidden" id="Id" name="Id" value="<?php echo $registration->Id;?>"><input type="hidden" id="type" name="type" value="single"><input type="submit" value="Ta bort"></form>
+        <form action="logic/official_save.php" method="post">
+        <input type="hidden" id="Id" name="Id" value="<?php echo $registration->Id;?>">
+        <input type="hidden" id="type" name="type" value="single"><input type="submit" value="Ta bort"></form>
     <?php     
-        echo "</td></tr>";
+        echo "</td></tr>\n";
     }
-    echo "</table>";
+    echo "</table>\n";
     
     ?>
     <h2>Deltagare som vill vara funktionärer</h2>
