@@ -50,7 +50,7 @@ switch ($type) {
         BerghemMailer::sendHousing($current_larp, nl2br($_POST['text']));
         break;
     case "one":
-        BerghemMailer::sendContactMailToSomeone($_POST['email'], $name, "Meddelande till $name från $current_user->Name", nl2br($_POST['text']));
+        BerghemMailer::sendContactMailToSomeone($_POST['email'], $name, "Meddelande till $name från $current_user->Name", nl2br($_POST['text']), $current_larp);
         header('Location: ' . $referer);
         exit;
         break;
@@ -58,7 +58,7 @@ switch ($type) {
         BerghemMailer::sendContactMailToAll($current_larp, nl2br($_POST['text']));
         break;
     case "several":
-        BerghemMailer::sendContactMailToSeveral(nl2br($_POST['text']), $_POST['email'], $_POST['subject'], $_POST['name']);
+        BerghemMailer::sendContactMailToSeveral(nl2br($_POST['text']), $_POST['email'], $_POST['subject'], $_POST['name'], $current_larp);
         break;
 }
 

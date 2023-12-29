@@ -23,7 +23,7 @@ class BerghemMailer {
     # Normalt bör man inte anropa den här direkt utan newWithDefault
     # Attachments skall vara en array med namnen på filerna som nyckel.
     # to_email kan vara en sträng med en epostadress eller en array av sådana strängar
-    public static function send($to_email, string $to_name, string $text, string $subject=null, int $noOfDaysKept, ?array $attachments=[], ?string $cc="") {
+    public static function send($larp, $to_email, string $to_name, string $text, string $subject=null, int $noOfDaysKept, ?array $attachments=[], ?string $cc="") {
     
         global $current_user;
         
@@ -41,15 +41,14 @@ class BerghemMailer {
             
             # Om man skickar in en array av epostadresser skapar vi ett mail per 15 adresser.
             foreach( array_chunk($to_email,15) as $emails_to) {
-                Email::normalCreate(serialize($emails_to), $to_name, $subject, $text, $attachments, $noOfDaysKept);
+                Email::normalCreate(serialize($emails_to), $to_name, $subject, $text, $attachments, $noOfDaysKept, $larp);
             }
             return true;
         }
 
-        Email::normalCreate($to_email, $to_name, $subject, $text, $attachments, $noOfDaysKept);
+        Email::normalCreate($to_email, $to_name, $subject, $text, $attachments, $noOfDaysKept, $larp);
 
-        return true;
-            
+        return true;   
     }
     
     
@@ -60,7 +59,7 @@ class BerghemMailer {
         $text .= "<br>\n";
         
         
-        BerghemMailer::send($guardian->Email, $guardian->Name, $text, "Ansvarig vuxen för $minor->Name på $larp->Name", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $guardian->Email, $guardian->Name, $text, "Ansvarig vuxen för $minor->Name på $larp->Name", BerghemMailer::DaysAutomatic);
     }
     
     
@@ -80,7 +79,7 @@ class BerghemMailer {
         $text .= "<br>\n";
 
         
-        BerghemMailer::send($person->Email, $person->Name, $text, "Tilläggsanmälan till $larp->Name", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $person->Email, $person->Name, $text, "Tilläggsanmälan till $larp->Name", BerghemMailer::DaysAutomatic);
     }
     
     public static function send_registration_information_mail_to_group(Role $role, Group $group, Larp $larp) {
@@ -92,7 +91,7 @@ class BerghemMailer {
         $text .= "Du kan manuellt ta bort karaktären ur gruppen om det är fel.";
         $text .= "<br>\n";
         
-        BerghemMailer::send($admin_person->Email, $admin_person->Name, $text, "Anmälan till $group->Name i $larp->Name", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $admin_person->Email, $admin_person->Name, $text, "Anmälan till $group->Name i $larp->Name", BerghemMailer::DaysAutomatic);
     }
     
     public static function send_registration_mail(Registration $registration) {
@@ -134,7 +133,7 @@ class BerghemMailer {
             $text .= "<br>\n";
         }
         
-        BerghemMailer::send($person->Email, $person->Name, $text, "Bekräftan av anmälan till $larp->Name", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $person->Email, $person->Name, $text, "Bekräftan av anmälan till $larp->Name", BerghemMailer::DaysAutomatic);
     }
     
  
@@ -161,7 +160,7 @@ class BerghemMailer {
             $text .= "<br>\n";
         }
         
-        BerghemMailer::send($person->Email, $person->Name, $text, "Bekräftan av reservanmälan till $larp->Name", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $person->Email, $person->Name, $text, "Bekräftan av reservanmälan till $larp->Name", BerghemMailer::DaysAutomatic);
     }
     
     
@@ -176,7 +175,7 @@ class BerghemMailer {
         
         $sheets = static::getAllSheets(array($role), $larp);
         
-        BerghemMailer::send($mail, $person->Name, $text, "Godkänd karaktär till ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);
+        BerghemMailer::send($larp, $mail, $person->Name, $text, "Godkänd karaktär till ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);
     }
     
     public static function send_role_unapproval_mail(Role $role, LARP $larp) {
@@ -189,7 +188,7 @@ class BerghemMailer {
         
         $sheets = static::getAllSheets(array($role), $larp);
         
-        BerghemMailer::send($mail, $person->Name, $text, "Icke godkänd karaktär till ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);
+        BerghemMailer::send($larp, $mail, $person->Name, $text, "Icke godkänd karaktär till ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);
     }
     
     public static function send_group_approval_mail(Group $group, LARP $larp) {
@@ -199,11 +198,8 @@ class BerghemMailer {
         
         $text  = "Din grupp $group->Name är nu godkänd för att vara med i lajvet $larp->Name.\n";
         
-        BerghemMailer::send($mail, $person->Name, $text, "Godkänd grupp till ".$larp->Name, BerghemMailer::DaysAutomatic);
-    }
-    
-    
-    
+        BerghemMailer::send($larp, $mail, $person->Name, $text, "Godkänd grupp till ".$larp->Name, BerghemMailer::DaysAutomatic);
+    } 
     
     public static function send_spot_at_larp(Registration $registration) {
         $person = $registration->getPerson();
@@ -221,7 +217,7 @@ class BerghemMailer {
 
         $sheets = static::getAllSheets($roles, $larp); 
         
-        BerghemMailer::send($mail, $person->Name, $text, "Plats på ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);        
+        BerghemMailer::send($larp, $mail, $person->Name, $text, "Plats på ".$larp->Name, BerghemMailer::DaysAutomatic, $sheets);        
     }
     
     
@@ -243,12 +239,12 @@ class BerghemMailer {
         $text .= "<br>\n";
         
         
-        BerghemMailer::send($mail, $person->Name, $text, "NPC på ".$larp->Name, BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $mail, $person->Name, $text, "NPC på ".$larp->Name, BerghemMailer::DaysAutomatic);
     }
     
     # Skicka mail till någon
-    public static function sendContactMailToSomeone(String $email, String $name, String $subject, String $text) {
-        BerghemMailer::send($email, $name, $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
+    public static function sendContactMailToSomeone(String $email, String $name, String $subject, String $text, $larp) {
+        BerghemMailer::send($larp, $email, $name, $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
     
     # Skicka mail till alla deltagare
@@ -266,14 +262,14 @@ class BerghemMailer {
             $receiver_emails[] = $person->Email;
         }
         if (empty($receiver_emails)) return;
-        BerghemMailer::send($receiver_emails, '', $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
+        BerghemMailer::send($larp, $receiver_emails, '', $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
 
     
-    public static function sendContactMailToSeveral(String $text, $emailArr, $subject, $name) {
+    public static function sendContactMailToSeveral(String $text, $emailArr, $subject, $name, $larp) {
         if (empty($emailArr)) return;
         
-        BerghemMailer::send($emailArr, $name, $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
+        BerghemMailer::send($larp, $emailArr, $name, $text, $subject, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
     
     
@@ -358,7 +354,7 @@ class BerghemMailer {
             $printText = "<br>Skriv ut de bifogade filerna och ta med till lajvet.<br>";
             
             $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
-            BerghemMailer::send($person->Email, $person->Name, $sendtext, $subject, BerghemMailer::DaysAutomatic, $sheets);
+            BerghemMailer::send($larp, $person->Email, $person->Name, $sendtext, $subject, BerghemMailer::DaysAutomatic, $sheets);
         }
     }
     
@@ -403,7 +399,7 @@ class BerghemMailer {
             
             
             $subject = "Boende för $larp->Name ($house->Name)";
-            BerghemMailer::send($receiver_emails, "", $housetext, $subject, BerghemMailer::DaysAutomatic);
+            BerghemMailer::send($larp, $receiver_emails, "", $housetext, $subject, BerghemMailer::DaysAutomatic);
         }
     }
     

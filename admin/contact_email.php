@@ -7,30 +7,6 @@ global $current_larp;
 $name = '';
 $type = "one";
 
-/*
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    
-    if (isset($_GET['name'])) $name = $_GET['name'];
-    
-    if (isset($_GET['email'])) {
-        $email = $_GET['email'];
-    } elseif (isset($_GET['official_type_id'])) {
-        $official_type = OfficialType::loadById($_GET['official_type_id']);
-        if(!isset($official_type)) {
-            header('Location: index.php?error=no_email');
-            exit;
-        }
-        $email = 'OFFICIALTYPE';
-        $name = '';
-    } elseif (isset($_GET['allagruppledare'])) {
-        $email = 'ALLAGRUPPLEDARE';
-        $name = '';
-    } elseif (isset($_GET['all'])) {
-        $email = 'ALLADELTAGARE';
-        $name = '';
-    }
-}
-*/
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST['send_intrigues'])) {
