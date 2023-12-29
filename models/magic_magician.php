@@ -92,4 +92,44 @@ class Magic_Magician extends BaseModel{
         return Magic_Magician::loadById($this->MasterMagicianId);
     }
     
+    
+    public function getSpells() {
+        Magic_Spell::getSpellsForMagician($this);
+    }
+    
+    public function addSpell(Magic_Spell $spell, LARP $larp) {
+        if (empty($spell)) return null;
+        
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_magician_spell (MagicMagicianId, MagicSpellId, GrantedLarpId) VALUES (?,?,?);");
+        if (!$stmt->execute(array($this->Id, $spell->Id, $larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
+    }
+    
+    
+    public function removeSpell(Magic_Spell $spell) {
+        if (empty($spell)) return null;
+        
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_magician_spell WHERE MagicMagicianId=? AND MagicSpellId=?;");
+        if (!$stmt->execute(array($this->Id, $spell->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function getGrantedLarp(Magic_Spell $spell) {
+        if (empty($spell)) return null;
+        $sql = "SELECT * FROM regsys_larp WHERE Id IN (".
+            "SELECT GrantedLarpId FROM regsys_magician_spell WHERE MagicMagicianId=? AND MagicSpellId=?)";
+        return LARP::getOneObjectQuery($sql, array($this->Id, $spell->Id));
+    }
+    
+    
 }

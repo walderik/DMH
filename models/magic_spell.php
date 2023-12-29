@@ -64,4 +64,11 @@ class Magic_Spell extends BaseModel{
     }
     
     
+    public static function getSpellsForMagician(Magic_Magician $magician) {
+        $sql = "SELECT * FROM regsys_magic_spell WHERE Id IN (".
+            "SELECT MagicSpellId FROM regsys_magician_spell WHERE MagicMagicianId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($magician->Id));
+    }
+    
+    
 }
