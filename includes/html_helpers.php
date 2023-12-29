@@ -122,14 +122,14 @@ function showStatusIcon($value, ?string $fix_url = NULL) {
 
 function contactEmailIcon($name,$email) {
     $param = date_format(new Datetime(),"suv");
-    return "<form action='contact_email.php'  class='fabutton' method='post'>".
-        "<input type=hidden name='send_one' value=$param>".
-        "<input type=hidden name='email' value=$email>".
-        "<input type=hidden name='name' value='$name'>".
+    return "<form action='contact_email.php'  class='fabutton' method='post'>\n".
+        "<input type=hidden name='send_one' value=$param>\n".
+        "<input type=hidden name='email' value=$email>\n".
+        "<input type=hidden name='name' value='$name'>\n".
         "<button type='submit' class='invisible' title='Skicka mail till $name'>".
         "  <i class='fa-solid fa-envelope-open-text'></i>".
-        "</button>".
-        "</form>";
+        "</button>\n".
+        "</form>\n";
 }
 
 
@@ -146,18 +146,17 @@ function contactAllEmailIcon(){
 
 function contactSeveralEmailIcon($txt, $emailArr, $greeting, $subject){
     $param = date_format(new Datetime(),"suv");
-    $retrunStr = "<form action='contact_email.php'  class='fabutton' method='post'>".
-        "<input type=hidden name='send_several' value=$param>";
+    $retrunStr = "<form action='contact_email.php'  class='fabutton' method='post'>\n".
+        "<input type=hidden name='send_several' value=$param>\n";
         
     foreach ($emailArr as $email)  {
         $retrunStr .= "<input type='hidden' name='email[]' value='$email'>\n";
     }
-    $retrunStr .= "<input type=hidden name='name' value='$greeting'>".
-        "<input type=hidden name='subject' value='$subject'>".
+    $retrunStr .= "<input type=hidden name='name' value='$greeting'>\n".
+        "<input type=hidden name='subject' value='$subject'>\n".
         "<button type='submit' class='invisible' title='$txt'>".
-    "  <i class='fa-solid fa-envelope-open-text'></i>".
-    "$txt".
-    "</button>".
+        "  <i class='fa-solid fa-envelope-open-text'></i>  ".$txt.
+        "</button>\n".
     "</form>\n";
     return $retrunStr;
 }
