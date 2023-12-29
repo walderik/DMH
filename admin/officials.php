@@ -24,7 +24,7 @@ include 'navigation.php';
  	foreach ($persons as $person) {
  	    $emailArr[] = $person->Email;
  	}
-    echo contactSeveralEmailIcon("", $emailArr, "Funktionär på $current_larp->Name", "Meddelande till alla funktionärer i $current_larp->Name");;
+    echo contactSeveralEmailIcon("", $emailArr, "Funktionär på $current_larp->Name", "Meddelande till alla funktionärer i $current_larp->Name");
     echo "<a href='officials.php'>Alla funktionärer</a> &nbsp; &nbsp";
     
     

@@ -133,7 +133,11 @@ include 'navigation.php';
 			Ladda upp en pdf som bilaga om du vill. Max storlek 5 MB och bara pdf:er.<br><br>
 			<input type="file" name="bilaga" id="bilaga"><br>
 			<?php }?>
-    		<br><hr><br>
+			<br>
+			(Tryck inte på "Skicka" innan den valda filen laddats upp ordentligt. Det tar ett litet tag.)
+    		<br>
+    		<br>
+    		<hr><br>
     		<input type="submit" value="Skicka">
 		</form>
 
