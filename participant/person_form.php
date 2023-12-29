@@ -106,7 +106,9 @@
 				<div class="explanation">I så fall välj ditt hus</div>
 				<?php 
 				$houses = $person->housesOf();
-				selectionByArray('House', House::getAllHouses(), false, false, $houses[0]->Id); ?>
+				$houseId = null;
+				if (!empty($houses)) $houseId = $houses[0];
+			    selectionByArray('House', House::getAllHouses(), false, false, $houseId); ?>
 			</div>
 
 			

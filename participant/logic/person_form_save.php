@@ -16,10 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $person->create();
         $person->saveAllNormalAllergyTypes($_POST);
-        $housecaretaker = Housecaretaker::newWithDefault();
-        $housecaretaker->HouseId = $_POST['HouseId'];
-        $housecaretaker->PersonId = $person->Id;
-        $housecaretaker->create();
+        if (isset($_POST['HouseId']) && $_POST['HouseId']!="null") {
+            $housecaretaker = Housecaretaker::newWithDefault();
+            $housecaretaker->HouseId = $_POST['HouseId'];
+            $housecaretaker->PersonId = $person->Id;
+            $housecaretaker->create();
+        }
         
     } elseif ($operation == 'update') {
         $person=Person::loadById($_POST['Id']);
@@ -35,17 +37,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $person->deleteAllNormalAllergyTypes();
         $person->saveAllNormalAllergyTypes($_POST);
         
-        $housecaretaker = Housecaretaker::loadByIds($_POST['HouseId'], $person->Id);
-        if (empty($housecaretaker)) {
-            $houses=$person->housesOf();
-            foreach ($houses as $house) {
+        if (isset($_POST['HouseId']) && $_POST['HouseId']!="null") {
+            $housecaretaker = Housecaretaker::loadByIds($_POST['HouseId'], $person->Id);
+            if (empty($housecaretaker)) {
+                $houses=$person->housesOf();
+                foreach ($houses as $house) {
+                    $housecaretaker = Housecaretaker::loadByIds($house->Id, $person->Id);
+                    $housecaretaker->destroy();
+                }
+                $housecaretaker = Housecaretaker::newWithDefault();
+                $housecaretaker->HouseId = $_POST['HouseId'];
+                $housecaretaker->PersonId = $person->Id;
+                $housecaretaker->create();
+            }
+        } else {
+            $houses = $person->housesOf();
+            foreach($houses as $house) {
                 $housecaretaker = Housecaretaker::loadByIds($house->Id, $person->Id);
                 $housecaretaker->destroy();
+                
             }
-            $housecaretaker = Housecaretaker::newWithDefault();
-            $housecaretaker->HouseId = $_POST['HouseId'];
-            $housecaretaker->PersonId = $person->Id;
-            $housecaretaker->create();
         }
     } 
     header('Location: ../index.php');
