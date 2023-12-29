@@ -19,3 +19,10 @@ function scrub($filename) {
     $scrubbed_filename = mb_convert_encoding($scrubbed_filename, "ASCII");
     return $scrubbed_filename;
 }
+
+# Kolla om man just nu är OM-admin för närvarande
+function isOmAdmin(?String $url = NULL) {
+    if (!isset($_SESSION['admin'])) return false;
+    if (is_null($url)) $url = $_SERVER['REQUEST_URI'];
+    return (strpos($url, "/site-admin/")!=false);
+}
