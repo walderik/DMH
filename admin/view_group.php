@@ -22,7 +22,7 @@ if (!$current_group->isRegistered($current_larp)) {
 
 $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 
-
+$persons = Person::getGroupMembers($current_group, $current_larp);
 $main_characters_in_group = Role::getAllMainRolesInGroup($current_group, $current_larp);
 $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($current_group, $current_larp);
 
@@ -138,7 +138,7 @@ include 'navigation.php';
 		
 		<h2>Anmälda medlemmar 
 		<?php 
-		$persons = Person::getGroupMembers($current_group, $current_larp);
+		
 		$emailArr = array();
 		foreach($persons as $person) {
 		    $emailArr[] = $person->Email;
