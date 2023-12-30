@@ -6,7 +6,7 @@ include_once 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
-        Resource::delete($_GET['Id']);
+        Magic_School::delete($_GET['Id']);
     }
 }
 

@@ -9,6 +9,16 @@ class Magic_Spell extends BaseModel{
     public $Type;
     public $Special;
     public $Level;
+    public $CampaignId;
+    
+
+    const TYPES = [
+        "Magi",
+        "Ritual"
+    ];
+  
+
+    
     
     public static $orderListBy = 'Name';
     
@@ -27,12 +37,16 @@ class Magic_Spell extends BaseModel{
         if (isset($arr['Type'])) $this->Type = $arr['Type'];
         if (isset($arr['Special'])) $this->Special = $arr['Special'];
         if (isset($arr['Level'])) $this->Level = $arr['Level'];
-     }
+        if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+    }
     
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        return new self();
+        global $current_larp;
+        $object = new self();
+        $object->CampaignId = $current_larp->CampaignId;
+        return $object;
     }
     
     # Update an existing object in db
@@ -52,9 +66,9 @@ class Magic_Spell extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_magic_spell (Name, Description, OrganizerNotes, Type, Special, Level) VALUES (?,?,?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_magic_spell (Name, Description, OrganizerNotes, Type, Special, Level, CampaignId) VALUES (?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->Name, $this->Description, $this->OrganizerNotes, $this->Type, $this->Special, $this->Level))) {
+        if (!$stmt->execute(array($this->Name, $this->Description, $this->OrganizerNotes, $this->Type, $this->Special, $this->Level, $this->CampaignId))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -68,6 +82,12 @@ class Magic_Spell extends BaseModel{
         $sql = "SELECT * FROM regsys_magic_spell WHERE Id IN (".
             "SELECT MagicSpellId FROM regsys_magician_spell WHERE MagicMagicianId=?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($magician->Id));
+    }
+    
+    public static function allByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_magic_spell WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
     

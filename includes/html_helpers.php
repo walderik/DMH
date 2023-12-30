@@ -1,6 +1,6 @@
 <?php
 
-# En selector där man kan välja i en array
+# En selector där man kan välja objekt i en array
 function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multiple=false, ?bool $required=true, $selected=null) {
 //     $name = ($multiple) ? (static::class . "Id[]") : static::class."Id";
     if (str_ends_with($name_in,"]")) {
@@ -48,6 +48,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
     
     foreach ($selectionDatas as $selectionData) {
         $row_option = $option;
+        
         # Kolla om något är selected
         if($multiple) {
             if (!is_null($selected) && !empty($selected) && in_array($selectionData->Id, $selected))
@@ -70,7 +71,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
 
 
 
-# En selector där man kan välja i en array
+# En selector där man kan välja i en array av objekt
 function selectionDropDownByArray(String $name, Array $selectionDatas, $required=true, $selected=null, ?String $formIdentifier="") {
     // lägg till tomt val om det inte är required
     if (!$required){
@@ -91,6 +92,22 @@ function selectionDropDownByArray(String $name, Array $selectionDatas, $required
     echo "</select>\n";
     
 }
+
+# En selector där man kan välja i en array
+function selectionDropDownBySimpleArray(String $name, Array $alternatives, $selected=null, ?String $formIdentifier="") {
+    
+    echo "<select $formIdentifier name='$name' id='$name'>\n";
+    foreach ($alternatives as $key => $alternative) {
+        $row_option = '';
+        if (!empty($selected) && $key == $selected)
+            $row_option = 'selected';
+            
+            echo "   <option value='$key' $row_option>".htmlspecialchars($alternative)."</option>\n";
+    }
+    echo "</select>\n";
+    
+}
+
 
 # Tar en array av object och gör en komma-separerad lista av deras namn
 function commaStringFromArrayObject($objectArray) {

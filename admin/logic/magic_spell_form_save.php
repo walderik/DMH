@@ -6,12 +6,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $operation = $_POST['operation'];
     
     if ($operation == 'insert') {
-        $school = Magic_School::newFromArray($_POST);
-        $school->create();
+        $spell = Magic_Spell::newFromArray($_POST);
+        $spell->create();
     } elseif ($operation == 'delete') {
-        Magic_School::delete($_POST['Id']);
+        Magic_Spell::delete($_POST['Id']);
     } elseif ($operation == 'update') {
-        $school=Magic_School::loadById($_POST['Id']);
+        $school=Magic_Spell::loadById($_POST['Id']);
         $school->setValuesByArray($_POST);
         $school->update();
     }
