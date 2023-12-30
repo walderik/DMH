@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $resource = Resource::newFromArray($_POST);
         $resource->create();
     } elseif ($operation == 'delete') {
-        Titledeed::delete($_POST['Id']);
+        Resource::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         $resource=Resource::loadById($_POST['Id']);
         $resource->setValuesByArray($_POST);
