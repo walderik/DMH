@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 include 'navigation.php';
 ?>
+<script src="../javascript/table_sort.js"></script>
 
     <div class="content">
         <h1>Magier <a href="magic.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till magi"></i></a></h1>
@@ -21,8 +22,13 @@ include 'navigation.php';
     
        $spells = Magic_Spell::allByCampaign($current_larp);
        if (!empty($spells)) {
-            echo "<table class='data'>";
-            echo "<tr><th>Namn</th><th>Nivå</th><th>Beskrivning</th><th>Magisort</th><th></th><th></th></tr>\n";
+           $tableId = "spells";
+           echo "<table id='$tableId' class='data'>";
+           echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
+               "<th onclick='sortTableNumbers(1, \"$tableId\")'>Nivå</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Beskrivning</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Magisort</th>".
+               "<th></th><th></th>";
             foreach ($spells as $spell) {
                 echo "<tr>\n";
                 echo "<td>" . $spell->Name . "</td>\n";

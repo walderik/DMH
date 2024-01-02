@@ -10,9 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+
 include 'navigation.php';
 ?>
+<script src="../javascript/table_sort.js"></script>
 
+ 
     <div class="content">
         <h1>Magiskolor <a href="magic.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till magi"></i></a></h1>
             <a href="magic_school_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
@@ -21,11 +24,15 @@ include 'navigation.php';
     
        $schools = Magic_School::allByCampaign($current_larp);
        if (!empty($schools)) {
-            echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Anteckningar</th><th></th><th></th></tr>\n";
+           $tableId = "schools";
+           echo "<table id='$tableId' class='data'>";
+           echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
+               "<th onclick='sortTable(1, \"$tableId\")'>Beskrivning</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Anteckningar</th>".
+           "<th></th><th></th>";
+           
             foreach ($schools as $school) {
                 echo "<tr>\n";
-                echo "<td>" . $school->Id . "</td>\n";
                 echo "<td>" . $school->Name . "</td>\n";
                 echo "<td>" . $school->Description . "</td>\n";
                 echo "<td>" . $school->OrganizerNotes . "</td>\n";
