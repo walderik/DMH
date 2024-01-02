@@ -323,8 +323,8 @@ include "navigation.php";
 		      echo "<div class='content'>\n";
 		      echo "<h2>Bildgallerier på deltagare och funktionärer</h2>\n";
 		      echo "<div>";
-		      echo "<a href='participants.php?id=$current_larp->Id' target='_blank'>Deltagare på lajvet</a><br>\n";
-		      echo "<a href='officials.php?id=$current_larp->Id' target='_blank'>Funktionärer på lajvet</a>\n";
+		      echo "<a href='participants.php' target='_blank'>Deltagare på lajvet</a><br>\n";
+		      echo "<a href='officials.php' target='_blank'>Funktionärer på lajvet</a>\n";
 		      echo "</div></div>";
 		      
 		      

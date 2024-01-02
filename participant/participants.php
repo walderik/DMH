@@ -109,7 +109,7 @@ function print_role($role) {
 
 
 		<meta charset="utf-8">
-		<title><?php  echo $larp->Name; ?></title>
+		<title><?php  echo $current_larp->Name; ?></title>
 		<link href="../css/style.css" rel="stylesheet" type="text/css">
 		<link href="../css/gallery.css" rel="stylesheet" type="text/css">
 
@@ -125,12 +125,12 @@ function print_role($role) {
 
 	<DIV class="participants">
 
-		<H1>Karaktärer i <?php  echo $larp->Name; ?></H1>
+		<H1>Karaktärer i <?php  echo $current_larp->Name; ?></H1>
 
 		<?php 
-		$groups = Group::getAllRegisteredApproved($larp);
+		$groups = Group::getAllRegisteredApproved($current_larp);
 		foreach ($groups as $group) {
-		    $roles = Role::getAllComingMainRolesInGroup($group, $larp);
+		    $roles = Role::getAllComingMainRolesInGroup($group, $current_larp);
 
 		    
             if (!(empty($roles) && count($roles)>0)) {
@@ -166,7 +166,7 @@ function print_role($role) {
 		
 		
 		/* Karaktärer utan grupp */	
-		$roles = Role::getAllComingMainRolesWithoutGroup($larp);
+		$roles = Role::getAllComingMainRolesWithoutGroup($current_larp);
 		
 
 		if ((!empty($roles) && count($roles)!=0)) {

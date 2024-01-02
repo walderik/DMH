@@ -1,32 +1,10 @@
 <?php
+require 'header.php';
 
-global $root, $current_larp;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
-
-include_once $root . '/includes/all_includes.php';
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id'])) {
-        $Id = $_GET['id'];
-        
-    }
-    else {
-        
-        header('Location: index.php');
-        exit;
-    }
-}
-
-
-$larp = Larp::loadById($Id);
-$current_larp=$larp;
-
-if (is_null($larp)) {
+if (!$current_user->isComing($current_larp)) {
     header('Location: index.php');
     exit;
 }
-
-//SESSION_START();
 
 //kolla bredd på användarens skärm för att bestämma antal kolumner med karaktärer
 
@@ -125,7 +103,7 @@ function print_role($role) {
 
 
 		<meta charset="utf-8">
-		<title><?php  echo $larp->Name; ?></title>
+		<title><?php  echo $current_larp->Name; ?></title>
 		<link href="../css/style.css" rel="stylesheet" type="text/css">
 		<link href="../css/gallery.css" rel="stylesheet" type="text/css">
 
@@ -141,13 +119,13 @@ function print_role($role) {
 
 	<DIV class="participants">
 
-		<H1>Funktionärer på <?php  echo $larp->Name; ?></H1>
+		<H1>Funktionärer på <?php  echo $current_larp->Name; ?></H1>
 
 		<?php 
 		$officialTypes = OfficialType::allActive($current_larp);
 		
 		foreach ($officialTypes as $officialType) {
-		    $persons = Person::getAllOfficialsByType($officialType, $larp);
+		    $persons = Person::getAllOfficialsByType($officialType, $current_larp);
 		    $temp=0;
 
 
