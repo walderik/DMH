@@ -33,7 +33,7 @@ include 'navigation.php';
            
             foreach ($schools as $school) {
                 echo "<tr>\n";
-                echo "<td>" . $school->Name . "</td>\n";
+                echo "<td><a href ='view_magicschool.php?id=$school->Id'>$school->Name</a></td>\n";
                 echo "<td>" . $school->Description . "</td>\n";
                 echo "<td>" . $school->OrganizerNotes . "</td>\n";
                 

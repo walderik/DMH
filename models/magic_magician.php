@@ -12,7 +12,7 @@ class Magic_Magician extends BaseModel{
     public $Workshop;
     public $OrganizerNotes;
     
-    public static $orderListBy = 'Name';
+    public static $orderListBy = 'Level';
     
     
     public static function newFromArray($post){
@@ -130,6 +130,18 @@ class Magic_Magician extends BaseModel{
             "SELECT GrantedLarpId FROM regsys_magician_spell WHERE MagicMagicianId=? AND MagicSpellId=?)";
         return LARP::getOneObjectQuery($sql, array($this->Id, $spell->Id));
     }
+    
+    public static function getMagiciansForSchool(Magic_School $school) {
+        $sql = "SELECT * FROM regsys_magic_magician WHERE MagicSchoolId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($school->Id));
+    }
+    
+    public static function getMagiciansThatKnowsSpell(Magic_Spell $spell) {
+        $sql = "SELECT * FROM regsys_magic_magician WHERE Id IN (".
+            "SELECT MagicMagicianId FROM regsys_magician_spell WHERE MagicSpellId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($spell->Id));
+    }
+    
     
     
 }

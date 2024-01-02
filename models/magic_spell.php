@@ -78,10 +78,24 @@ class Magic_Spell extends BaseModel{
     }
     
     
+    public function getAllSchools() {
+        return Magic_School::getSchoolsForSpell($this);
+    }
+    
+    public function getAllMagicians() {
+        return Magic_Magician::getMagiciansThatKnowsSpell($this);
+    }
+    
     public static function getSpellsForMagician(Magic_Magician $magician) {
         $sql = "SELECT * FROM regsys_magic_spell WHERE Id IN (".
             "SELECT MagicSpellId FROM regsys_magician_spell WHERE MagicMagicianId=?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($magician->Id));
+    }
+ 
+    public static function getSpellsForSchool(Magic_School $school) {
+        $sql = "SELECT * FROM regsys_magic_spell WHERE Id IN (".
+            "SELECT MagicSpellId FROM regsys_magicschool_spell WHERE MagicSchoolId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($school->Id));
     }
     
     public static function allByCampaign(LARP $larp) {

@@ -90,6 +90,22 @@ class Magic_School extends BaseModel{
     }
     
     
+    public function getAllSpells() {
+        return Magic_Spell::getSpellsForSchool($this);
+    }
+    
+    public function getAllMagicians() {
+        return Magic_Magician::getMagiciansForSchool($this);
+    }
+    
+    public static function getSchoolsForSpell(Magic_Spell $spell) {
+        $sql = "SELECT * FROM regsys_magic_school WHERE Id IN (".
+            "SELECT MagicSchoolId FROM regsys_magicschool_spell WHERE MagicSpellId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($spell->Id));
+    }
+    
+    
+    
     public static function allByCampaign(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_magic_school WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";

@@ -31,7 +31,7 @@ include 'navigation.php';
                "<th></th><th></th>";
             foreach ($spells as $spell) {
                 echo "<tr>\n";
-                echo "<td>" . $spell->Name . "</td>\n";
+                echo "<td><a href='view_magicspell.php?id=$spell->Id'>$spell->Name</a></td>\n";
                 echo "<td>" . $spell->Level . "</td>\n";
                 echo "<td>" . $spell->Description . "</td>\n";
                 echo "<td>" . Magic_Spell::TYPES[$spell->Type] . "</td>\n";
