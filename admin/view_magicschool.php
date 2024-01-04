@@ -23,7 +23,7 @@ include 'navigation.php';
 
 		
 		<a href='magic_school_form.php?id=<?php echo $school->Id;?>'>
-		<i class='fa-solid fa-pen'></i></a> 
+		<i class='fa-solid fa-pen'></i></a> <a href="magic_schools_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till magiskolor"></i></a> 
 		</h1>
 		
 

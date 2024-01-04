@@ -105,4 +105,35 @@ class Magic_Spell extends BaseModel{
     }
     
     
+    public function addSchools($schoolIds) {
+        //Ta reda på vilka som inte redan är kopplade till magin
+        $exisitingIds = array();
+        $spell_schools = $this->getAllSchools();
+        foreach ($spell_schools as $spell_school) {
+            $exisitingIds[] = $spell_school->Id;
+        }
+        
+        $newSchoolIds = array_diff($schoolIds,$exisitingIds);
+        //Koppla skolor till magi
+        foreach ($newSchoolIds as $schoolId) {
+            $this->addSchool($schoolId);
+        }
+    }
+    
+    private function addSchool($schoolId) {
+        
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_magicschool_spell (MagicSchoolId, MagicSpellId) VALUES (?,?);");
+        if (!$stmt->execute(array($schoolId, $this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
+    }
+    
+    
+    
+    
 }
