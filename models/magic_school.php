@@ -92,11 +92,9 @@ class Magic_School extends BaseModel{
     }
     
     
-    public function removeSpell(Magic_Spell $spell) {
-        if (empty($spell)) return;
-        
+    public function removeSpell($spellId) {
         $stmt = $this->connect()->prepare("DELETE FROM regsys_magicschool_spell WHERE MagicSchoolId=? AND MagicSpellId = ?;");
-        if (!$stmt->execute(array($this->Id, $spell->Id))) {
+        if (!$stmt->execute(array($this->Id, $spellId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();

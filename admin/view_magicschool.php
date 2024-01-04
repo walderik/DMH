@@ -56,9 +56,11 @@ include 'navigation.php';
 			    echo "Inga magier i skolan, än.";
 			} else {
 				echo "<table class='small_data'>";
-				echo "<tr><th>Magi</th><th>Nivå</th><th>Typ</th><th>Beskrivning</th></tr>";
+				echo "<tr><th>Magi</th><th>Nivå</th><th>Typ</th><th>Beskrivning</th><th></th></tr>";
 				foreach ($spells as $spell) {
-				    echo "<tr><td><a href='view_magicspell.php?id=$spell->Id'>$spell->Name</td><td>$spell->Level</td><td>".Magic_Spell::TYPES[$spell->Type]."</td><td>$spell->Description</td></tr>";
+				    echo "<tr><td><a href='view_magicspell.php?id=$spell->Id'>$spell->Name</td><td>$spell->Level</td><td>".Magic_Spell::TYPES[$spell->Type]."</td><td>$spell->Description</td>";
+				    echo "<td><a href='logic/view_magicschool_logic.php?operation=remove_spell&SpellId=$spell->Id&Id=$school->Id'><i class='fa-solid fa-xmark' title='Ta bort magi från magiskolan'></i></a></td>";
+				    echo "</tr>";
 				}
 				echo "</table>";
 			}
