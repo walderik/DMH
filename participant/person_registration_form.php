@@ -188,7 +188,20 @@ include 'navigation.php';
                 
                 ?>
             </div>
+            
+            
 			<?php } ?>
+			<div class="question">
+				<label for="LarpHousingComment">Boendehänsyn på <?php echo $current_larp->Name?></label><br>
+				<div class="explanation">
+				Vill du bo i ett särskilt hus eller dela hus med några särskilda personer? 
+				Är där någon du inte vill bo med? Finns det något som bör tas hänsyn till vid fördelning av sovplats? Kan du tänka dig att dela bädd (skriv i så fall ifall du har några preferenser eller om det bara gäller vissa personer och i så fall vilka).
+				Skriv det här så gör vi vad vi kan för att uppfylla önskemålen. 
+				Fyller du inte i något blir du placerad där vi tror det blir bra.
+				<br>
+				Om du inte har något, lämna fältet tomt. Du behöver inte heller skriva om du vill bo med din grupp.</div>
+				<input class="input_field" type="text" id="LarpHousingComment" name="LarpHousingComment" value="" size="100" maxlength="200" >
+			</div>
 			
 			
 			<div class="question">

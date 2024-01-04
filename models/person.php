@@ -605,4 +605,12 @@ class Person extends BaseModel{
     public function housesOf() {
         return House::housesOf($this);
     }
+    
+    public function getFullHousingComment(LARP $larp) {
+        $comments = array();
+        if (!empty($this->HousingComment)) $comments[] = $this->HousingComment;
+        $registration = $this->getRegistration($larp);
+        if (!empty($registration->LarpHousingComment)) $comments[] = $registration->LarpHousingComment;
+        return implode(' ', $comments);
+    }
 }

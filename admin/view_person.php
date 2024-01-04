@@ -112,7 +112,7 @@ include 'navigation.php';
             ?>
 			
 			
-			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo $person->HousingComment;?></td></tr>
+			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo $person->getFullHousingComment($current_larp);?></td></tr>
 			<tr><td valign="top" class="header">Hälsa</td><td><?php echo $person->HealthComment;?></td></tr>
 
 

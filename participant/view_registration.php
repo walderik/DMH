@@ -73,6 +73,7 @@ include 'navigation.php';
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
 			<?php } ?>
+			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo nl2br(htmlspecialchars($registration->LarpHousingComment)); ?></td></tr>
 			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentType)); ?></td></tr>
 			<tr><td valign="top" class="header">Storlek på tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentSize)); ?></td></tr>
 			<tr><td valign="top" class="header">Vilka ska bo i tältet</td><td><?php echo nl2br(htmlspecialchars($registration->TentHousing)); ?></td></tr>

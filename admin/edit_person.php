@@ -103,8 +103,10 @@ include 'navigation.php';
 			<td><textarea class="input_field" id="TentHousing" name="TentHousing" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($registration->TentHousing); ?></textarea></td></tr>
 			<tr><td valign="top" class="header">Önskad placering</td>
 			<td><input class="input_field" type="text" id="TentPlace" name="TentPlace"  maxlength="200" value="<?php echo htmlspecialchars($registration->TentPlace); ?>"></td></tr>
-			<tr><td valign="top" class="header">Boendehänsyn</td>
+			<tr><td valign="top" class="header">Boendehänsyn, generell</td>
 			<td><input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo htmlspecialchars($person->HousingComment); ?>" size="100" maxlength="200" ></td></tr>
+			<tr><td valign="top" class="header">Boendehänsyn för lajvet</td>
+			<td><input class="input_field" type="text" id="LarpHousingComment" name="LarpHousingComment" value="<?php echo htmlspecialchars($registration->LarpHousingComment); ?>" size="100" maxlength="200" ></td></tr>
 
 			<tr><td valign="top" class="header">Hälsa</td>
 			<td>

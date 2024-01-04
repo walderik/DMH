@@ -53,8 +53,9 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
         if($multiple) {
             if (!is_null($selected) && !empty($selected) && in_array($selectionData->Id, $selected))
                 $row_option = $row_option.' checked="checked"';
-        } else {    
-            if ((!is_null($selected) && $selected == $selectionData->Id) || (is_null($selected) && 'null' == $selectionData->Id))
+        } else {  
+            if ((!is_null($selected) && $selected == $selectionData->Id) 
+                || (is_null($selected) && 'null' == $selectionData->Id))
                 $row_option = $row_option.' checked="checked"';
         }
         echo "<tr>";

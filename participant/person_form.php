@@ -107,7 +107,7 @@
 				<?php 
 				$houses = $person->housesOf();
 				$houseId = null;
-				if (!empty($houses)) $houseId = $houses[0];
+				if (!empty($houses)) $houseId = $houses[0]->Id;
 			    selectionByArray('House', House::getAllHouses(), false, false, $houseId); ?>
 			</div>
 
@@ -143,12 +143,9 @@
 			</div>
 
 			<div class="question">
-				<label for="HousingComment">Boendehänsyn</label><br>
+				<label for="HousingComment">Generella boendehänsyn</label><br>
 				<div class="explanation">
-				Vill du bo i ett särskilt hus eller dela hus med några särskilda personer? 
-				Är där någon du inte vill bo med? Finns det något som bör tas hänsyn till vid fördelning av sovplats? Kan du tänka dig att dela bädd (skriv i så fall ifall du har några preferenser eller om det bara gäller vissa personer och i så fall vilka).
-				Skriv det här så gör vi vad vi kan för att uppfylla önskemålen. 
-				Fyller du inte i något blir du placerad där vi tror det blir bra.
+				Har du några speciella saker vi behöver ta hänsyn till när vi planerar boendet? Skriv bara saker som gäller på alla lajv.
 				<br>
 				Om du inte har något, lämna fältet tomt.</div>
 				<input class="input_field" type="text" id="HousingComment" name="HousingComment" value="<?php echo htmlspecialchars($person->HousingComment); ?>" size="100" maxlength="200" >

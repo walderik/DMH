@@ -9,7 +9,8 @@ function print_group(Group $group,$group_members, $house) {
     $group_housing_requestId = $larp_group->HousingRequestId;
     $comments = array();
     foreach($group_members as $group_member) {
-        if (!empty($group_member->HousingComment)) $comments[] = $group_member->HousingComment;
+        $comment = $group_member->getFullHousingComment($current_larp);
+        if (!empty($comment)) $comments[] = $comment;
     }
     $id="group_$group->Id";
     if (isset($house)) $id = $id."_$house->Id";
@@ -47,8 +48,10 @@ function print_individual(Person $person, $group, $house) {
     if ($person->isNotComing($current_larp)) echo "<s>$person->Name</s>";
     else echo "$person->Name";
     echo "</a>\n";
-    if (!empty($person->HousingComment)) {
-        echo "   <i class='fa-solid fa-circle-info' title='$person->HousingComment'></i>\n";
+    
+    $comment = $person->getFullHousingComment($current_larp);
+    if (!empty($comment)) {
+        echo "   <i class='fa-solid fa-circle-info' title='$comment'></i>\n";
     }
     echo "  </div>\n";
 
