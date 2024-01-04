@@ -70,7 +70,7 @@ include 'navigation.php';
     				    echo "Inga skolor har magin, än.";
     				} else {
     				    foreach ($schools as $school) {
-        				    echo "<a href = view_magic_school.php?id=$school->Id'>$school->Name<br>";
+        				    echo "<a href = 'view_magicschool.php?id=$school->Id'>$school->Name<br>";
         				}
     				}
     				?>

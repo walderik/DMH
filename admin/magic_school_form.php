@@ -59,7 +59,7 @@ $school = Magic_School::newWithDefault();;
 
     <div class="content"> 
     <h1><?php echo default_value('action');?> magiskola <a href="<?php echo $referer?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-	<form action="logic/magic_school_form_save.php" method="post">
+	<form action="logic/view_magicschool_logic.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">

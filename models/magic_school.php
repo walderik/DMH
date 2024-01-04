@@ -62,12 +62,27 @@ class Magic_School extends BaseModel{
     }
     
     
-    public function addSpell(Magic_Spell $spell) {
-        if (empty($spell)) return;
+    
+    public function addSpells($spellIds) {
+        //Ta reda på vilka som inte redan är kopplade till skolan
+        $exisitingIds = array();
+        $school_spells = $this->getAllSpells();
+        foreach ($school_spells as $school_spell) {
+            $exisitingIds[] = $school_spells->Id;
+        }
+        
+        $newSpellIds = array_diff($spellIds,$exisitingIds);
+        //Koppla magier till skolan
+        foreach ($newSpellIds as $spellId) {
+            $this->addSpell($spellId);
+        }
+    }
+    
+    private function addSpell($spellId) {
         
         $stmt = $this->connect()->prepare("INSERT INTO ".
             "regsys_magicschool_spell (MagicSchoolId, MagicSpellId) VALUES (?,?);");
-        if (!$stmt->execute(array($this->Id, $spell->Id))) {
+        if (!$stmt->execute(array($this->Id, $spellId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
