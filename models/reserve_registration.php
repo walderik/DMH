@@ -10,6 +10,11 @@ class Reserve_Registration extends BaseModel{
     public $RegisteredAt;
     public $NPCDesire;
     public $HousingRequestId;
+    public $LarpHousingComment;
+    public $TentType;
+    public $TentSize;
+    public $TentHousing;
+    public $TentPlace;
     public $GuardianId;
     public $TypeOfFoodId;
     
@@ -30,6 +35,11 @@ class Reserve_Registration extends BaseModel{
         if (isset($arr['RegisteredAt'])) $this->RegisteredAt = $arr['RegisteredAt'];
         if (isset($arr['NPCDesire'])) $this->NPCDesire = $arr['NPCDesire'];
         if (isset($arr['HousingRequestId'])) $this->HousingRequestId = $arr['HousingRequestId'];
+        if (isset($arr['LarpHousingComment'])) $this->LarpHousingComment = $arr['LarpHousingComment'];
+        if (isset($arr['TentType'])) $this->TentType = $arr['TentType'];
+        if (isset($arr['TentSize'])) $this->TentSize = $arr['TentSize'];
+        if (isset($arr['TentHousing'])) $this->TentHousing = $arr['TentHousing'];
+        if (isset($arr['TentPlace'])) $this->TentPlace = $arr['TentPlace'];
         if (isset($arr['GuardianId'])) $this->GuardianId = $arr['GuardianId'];
         if (isset($arr['TypeOfFoodId'])) $this->TypeOfFoodId = $arr['TypeOfFoodId'];
         
@@ -65,11 +75,13 @@ class Reserve_Registration extends BaseModel{
     # Update an existing registration in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_reserve_registration SET LARPId=?, PersonId=?, 
-                RegisteredAt=?, NPCDesire=?, HousingRequestId=?, GuardianId=?, 
-                TypeOfFoodId=? WHERE Id = ?");
+                RegisteredAt=?, NPCDesire=?, HousingRequestId=?, 
+                LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?,
+                GuardianId=?, TypeOfFoodId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, 
             $this->RegisteredAt,$this->NPCDesire, $this->HousingRequestId,
+            $this->LarpHousingComment, $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace,
             $this->GuardianId, $this->TypeOfFoodId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -85,10 +97,12 @@ class Reserve_Registration extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_reserve_registration (LARPId, PersonId, RegisteredAt,
-            NPCDesire, HousingRequestId, GuardianId, TypeOfFoodId) VALUES (?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, TypeOfFoodId) VALUES (?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, 
-            $this->NPCDesire, $this->HousingRequestId, $this->GuardianId, $this->TypeOfFoodId))) {
+            $this->NPCDesire, $this->HousingRequestId, 
+            $this->LarpHousingComment, $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace,
+            $this->GuardianId, $this->TypeOfFoodId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -218,6 +232,11 @@ class Reserve_Registration extends BaseModel{
         $registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
         $registration->NPCDesire = $this->NPCDesire;
         $registration->HousingRequestId = $this->HousingRequestId;
+        $registration->LarpHousingComment = $this->LarpHousingComment;
+        $registration->TentType = $this->TentType;
+        $registration->TentSize = $this->TentSize;
+        $registration->TentHousing = $this->TentHousing;
+        $registration->TentPlace = $this->TentPlace;
         $registration->GuardianId = $this->GuardianId;
         $registration->TypeOfFoodId = $this->TypeOfFoodId;
         
