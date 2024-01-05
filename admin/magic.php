@@ -10,8 +10,7 @@ include 'navigation.php';
         <p>
         <a href="magic_schools_admin.php">Magiskolor</a><br>
         <a href="magic_spells_admin.php">Magier</a><br>
-        <br>
-        <a href="magic_roles.php">Karaktärer med magi</a><br>
+        <a href="magic_magician_admin.php">Magiker</a><br>
         </p>
     </div>
 

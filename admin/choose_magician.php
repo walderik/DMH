@@ -27,13 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $multiple=false;
 
-if ($operation == "add_school_spell") {
-    $purpose = "Lägg till magi till magiskola";
-    $url = "logic/view_magicschool_logic.php";
-    $multiple=true;
-} elseif ($operation == "add_magician_spell") {
-    $purpose = "Lägg till magi till magiker";
+if ($operation == "set_master") {
+    $purpose = "Välj mästare";
     $url = "logic/view_magician_logic.php";
+    $multiple=false;
+} elseif ($operation == "add_spell_magician") {
+    $purpose = "Lägg till magi till magiker";
+    $url = "logic/view_magicspell_logic.php";
     $multiple=true;
 }
 
@@ -60,11 +60,10 @@ include 'navigation.php';
 
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
-            <a href="magic_spell_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Skapa ny magi</a>  
      		<?php 
-     		$spells = Magic_Spell::allByCampaign($current_larp);
-     		if (empty($spells)) {
-    		    echo "Ingen registrerad magi";
+     		$magicians = Magic_Magician::allByCampaign($current_larp);
+     		if (empty($magicians)) {
+    		    echo "Ingen registrerad magiker";
     		} else {
     		    ?>
     		    <form action="<?php echo $url;?>" method="post">
@@ -77,15 +76,23 @@ include 'navigation.php';
     		    ?> 
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
     		    <table class='data'>
-    		    <tr><th>Namn</th><th>Nivå</th><th>Typ</th></tr>
+    		    <tr><th>Namn</th><th>Nivå</th><th>Magiskola</th><th>Mästare</th></tr>
     		    <?php 
-    		    foreach ($spells as $spell)  {
+    		    foreach ($magicians as $magician)  {
+    		        $role = $magician->getRole();
+    		        $master = $magician->getMaster();
+    		        $school = $magician->getMagicSchool();
+    		        if (isset($master)) $masterRole = $master->getRole();
     		        echo "<tr>\n";
-    		        echo "<td><input type='$type' id='Spell$spell->Id' name='SpellId$array' value='$spell->Id'>";
-
-    		        echo "<label for='Spell$spell->Id'>$spell->Name</label></td>\n";
-
-    		        echo "<td>$spell->Level</td><td>".Magic_Spell::TYPES[$spell->Type]."</td>";
+    		        echo "<td><input type='$type' id='Magician$magician->Id' name='MagicianId$array' value='$magician->Id'>";
+    		        echo "<label for='Magician$magician->Id'>$role->Name</label></td>\n";
+    		        echo "<td>" . $magician->Level . "</td>\n";
+    		        echo "<td>";
+    		        if (!empty($school)) echo $school->Name;
+    		        echo "</td>\n";
+    		        echo "<td>";
+    		        if (isset($masterRole)) echo "$masterRole->Name";
+    		        echo "</td>\n";
     		        echo "</tr>\n";
     		    }
     		}

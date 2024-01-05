@@ -6,7 +6,7 @@ class Magic_Magician extends BaseModel{
     public $RoleId;
     public $MagicSchoolId;
     public $Level;
-    public $StaffImageId;
+    public $ImageId;
     public $StaffApproved;
     public $MasterMagicianId;
     public $Workshop;
@@ -25,16 +25,19 @@ class Magic_Magician extends BaseModel{
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['RoleId'])) $this->RoleId = $arr['RoleId'];
         if (isset($arr['MagicSchoolId'])) $this->MagicSchoolId = $arr['MagicSchoolId'];
-        if (isset($arr['StaffImageId'])) $this->StaffImageId = $arr['StaffImageId'];
+        if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         if (isset($arr['StaffApproved'])) $this->StaffApproved = $arr['StaffApproved'];
         if (isset($arr['MasterMagicianId'])) $this->MasterMagicianId = $arr['MasterMagicianId'];
         if (isset($arr['Workshop'])) $this->Workshop = $arr['Workshop'];
         if (isset($arr['Level'])) $this->Level = $arr['Level'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         
-        if (isset($this->StaffImageId) && $this->StaffImageId=='null') $this->StaffImageId = null;
+        if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         if (isset($this->MagicSchoolId) && $this->MagicSchoolId=='null') $this->MagicSchoolId = null;
         if (isset($this->MasterMagicianId) && $this->MasterMagicianId=='null') $this->MasterMagicianId = null;
+        
+        if (isset($this->StaffApproved) && $this->StaffApproved=='0000-00-00') $this->StaffApproved = null;
+        if (isset($this->Workshop) && $this->Workshop=='0000-00-00') $this->Workshop = null;
     }
     
     
@@ -46,10 +49,10 @@ class Magic_Magician extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_magic_magician SET RoleId=?, MagicSchoolId=?, StaffImageId=?, StaffApproved=?, 
+        $stmt = $this->connect()->prepare("UPDATE regsys_magic_magician SET RoleId=?, MagicSchoolId=?, ImageId=?, StaffApproved=?, 
                     MasterMagicianId=?, Workshop=?, Level=?, OrganizerNotes=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->RoleId, $this->MagicSchoolId, $this->StaffImageId, $this->StaffApproved, 
+        if (!$stmt->execute(array($this->RoleId, $this->MagicSchoolId, $this->ImageId, $this->StaffApproved, 
                     $this->MasterMagicianId, $this->Workshop, $this->Level, $this->OrganizerNotes, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -63,10 +66,10 @@ class Magic_Magician extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_magic_magician (RoleId, MagicSchoolId, StaffImageId, StaffApproved, 
+        $stmt = $connection->prepare("INSERT INTO regsys_magic_magician (RoleId, MagicSchoolId, ImageId, StaffApproved, 
             MasterMagicianId, Workshop, Level, OrganizerNotes) VALUES (?,?,?,?,?, ?,?,?);");
         
-        if (!$stmt->execute(array($this->RoleId, $this->MagicSchoolId, $this->StaffImageId, $this->StaffApproved,
+        if (!$stmt->execute(array($this->RoleId, $this->MagicSchoolId, $this->ImageId, $this->StaffApproved,
             $this->MasterMagicianId, $this->Workshop, $this->Level, $this->OrganizerNotes))) {
                 $this->connect()->rollBack();
                 $stmt = null;
@@ -92,17 +95,38 @@ class Magic_Magician extends BaseModel{
         return Magic_Magician::loadById($this->MasterMagicianId);
     }
     
+ 
+    public function isStaffApproved() {
+        if (empty($this->StaffApproved)) return false;
+        return true;
+    }
+        
     
     public function getSpells() {
-        Magic_Spell::getSpellsForMagician($this);
+        return Magic_Spell::getSpellsForMagician($this);
     }
     
-    public function addSpell(Magic_Spell $spell, LARP $larp) {
-        if (empty($spell)) return null;
+    public function addSpells($spellIds, Larp $larp) {
+        //Ta reda på vilka som inte redan är kopplade till magikern
+        $exisitingIds = array();
+        $magician_spells = $this->getSpells();
+        foreach ($magician_spells as $magician_spell) {
+            $exisitingIds[] = $magician_spell->Id;
+        }
+        
+        $newSpellIds = array_diff($spellIds,$exisitingIds);
+        //Koppla magier till magiker
+        foreach ($newSpellIds as $spellId) {
+            $this->addSpell($spellId, $larp);
+        }
+    }
+    
+    
+     private function addSpell($spellId, LARP $larp) {
         
         $stmt = $this->connect()->prepare("INSERT INTO ".
             "regsys_magician_spell (MagicMagicianId, MagicSpellId, GrantedLarpId) VALUES (?,?,?);");
-        if (!$stmt->execute(array($this->Id, $spell->Id, $larp->Id))) {
+        if (!$stmt->execute(array($this->Id, $spellId, $larp->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
@@ -112,11 +136,10 @@ class Magic_Magician extends BaseModel{
     }
     
     
-    public function removeSpell(Magic_Spell $spell) {
-        if (empty($spell)) return null;
-        
+    
+    public function removeSpell($spellId) {
         $stmt = $this->connect()->prepare("DELETE FROM regsys_magician_spell WHERE MagicMagicianId=? AND MagicSpellId=?;");
-        if (!$stmt->execute(array($this->Id, $spell->Id))) {
+        if (!$stmt->execute(array($this->Id, $spellId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
@@ -140,6 +163,35 @@ class Magic_Magician extends BaseModel{
         $sql = "SELECT * FROM regsys_magic_magician WHERE Id IN (".
             "SELECT MagicMagicianId FROM regsys_magician_spell WHERE MagicSpellId=?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($spell->Id));
+    }
+    
+    
+    public static function allByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_magic_magician WHERE RoleId In (
+            SELECT Id FROM regsys_role WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    public static function createMagicians($roleIds, LARP $larp) {
+        //Ta reda på vilka som inte redan är magiker
+        $exisitingRoleIds = array();
+        $magicians = static::allByCampaign($larp);
+        foreach ($magicians as $magician) {
+            $exisitingRoleIds[] = $magician->RoleId;
+        }
+        
+        $newRoleIds = array_diff($roleIds,$exisitingRoleIds);
+        foreach ($newRoleIds as $roleId) {
+            $magician = Magic_Magician::newWithDefault();
+            $magician->RoleId = $roleId;
+            $magician->create();
+        }
+    }
+    
+    public function hasStaffImage() {
+        if (isset($this->ImageId)) return true;
+        return false;
     }
     
     

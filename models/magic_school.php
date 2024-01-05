@@ -68,7 +68,7 @@ class Magic_School extends BaseModel{
         $exisitingIds = array();
         $school_spells = $this->getAllSpells();
         foreach ($school_spells as $school_spell) {
-            $exisitingIds[] = $school_spells->Id;
+            $exisitingIds[] = $school_spell->Id;
         }
         
         $newSpellIds = array_diff($spellIds,$exisitingIds);

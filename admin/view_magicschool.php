@@ -22,7 +22,7 @@ include 'navigation.php';
 		<h1><?php echo "Magiskola ".$school->Name;?>&nbsp;
 
 		
-		<a href='magic_school_form.php?id=<?php echo $school->Id;?>'>
+		<a href='magic_school_form.php?Id=<?php echo $school->Id;?>&operation=update'>
 		<i class='fa-solid fa-pen'></i></a> <a href="magic_schools_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till magiskolor"></i></a> 
 		</h1>
 		
@@ -39,7 +39,7 @@ include 'navigation.php';
                     </td>
     			</tr>
     			<tr>
-    				<td>Antecknngar</td>
+    				<td>Anteckningar</td>
     				<td><?php echo nl2br(htmlspecialchars($school->OrganizerNotes)); ?></td>
     			</tr>
     			<tr><td></td></tr>
@@ -82,14 +82,16 @@ include 'navigation.php';
 				foreach ($magicians as $magician) {
 				    $role = $magician->getRole();
 				    $master = $magician->getMaster();
-				    echo "<tr><td><a href = view_role.php?id=$role->Id'>$role->Name</td><td>$magician->Level</td>";
+				    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+				    $isComing = !empty($larp_role);
+				    echo "<tr><td><a href = 'view_magician.php?id=$magician->Id'>$role->Name</td><td>$magician->Level</td>";
 				    echo "<td>";
 				    if (isset($master)) {
 				        $masterRole = $master->getRole(); 
-				        echo "<a href = view_role.php?id=$masterRole->Id'>$masterRole->Name (nivå $master->Level)</td>";
+				        echo "<a href = 'view_magician.php?id=$master->Id'>$masterRole->Name (nivå $master->Level)</td>";
 				    }
 				    echo "</td>";
-				    echo "<td>".$role->isComing($current_larp)."</td>";
+				    echo "<td>".showStatusIcon($isComing)."</td>";
 				    echo "</tr>";
 				}
 				echo "</table>";

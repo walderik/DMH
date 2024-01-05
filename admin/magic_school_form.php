@@ -63,7 +63,7 @@ $school = Magic_School::newWithDefault();;
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-		<input type="hidden" id="CampaignId" name="Referer" value="<?php echo $referer;?>">
+		<input type="hidden" id="CampaignId" name="CampaignId" value="<?php echo $school->CampaignId;?>">
 		<table>
 			<tr>
 				<td><label for="Name">Namn</label></td>
@@ -77,7 +77,7 @@ $school = Magic_School::newWithDefault();;
 			<tr>
 				<td><label for="OrganizerNotes">Anteckningar om magiskolan</label><br>(Visas bara för arrangörer)</td>
 				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
-						cols="100"><?php echo htmlspecialchars($school->OrganizerNotes); ?></textarea></td>
+						cols="100"><?php echo nl2br(htmlspecialchars($school->OrganizerNotes)); ?></textarea></td>
 			</tr>
  
 		</table>

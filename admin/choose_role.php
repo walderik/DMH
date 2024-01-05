@@ -45,13 +45,11 @@ elseif ($operation == "add_titledeed_owner_role") {
     $purpose = "Sätt som ägare av lagfart";
     $url = "logic/titledeed_form_save.php";
     $multiple=true;
-}
-elseif ($operation == "add_intrigue_actor_role") {
+} elseif ($operation == "add_intrigue_actor_role") {
     $purpose = "Lägg till aktör i intrig";
     $url = "logic/view_intrigue_logic.php";
     $multiple=true;
-}
-elseif ($operation == "exhange_intrigue_actor_role") {
+} elseif ($operation == "exhange_intrigue_actor_role") {
     $purpose = "Byt aktör på intrig";
     $url = "logic/view_intrigue_logic.php";
 } elseif ($operation == "add_concerns_role") {
@@ -61,6 +59,10 @@ elseif ($operation == "exhange_intrigue_actor_role") {
 } elseif ($operation == "add_knows_role") {
     $purpose = "Lägg till karaktär(er) som känner till ryktet";
     $url = "rumour_form.php";
+    $multiple=true;
+} elseif ($operation == "add_magician") {
+    $purpose = "Lägg till karaktärer som magiker";
+    $url = "logic/view_magician_logic.php";
     $multiple=true;
 }
 

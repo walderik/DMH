@@ -22,18 +22,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
+
+
 switch ($type) {
     case "house":
         $object = House::loadById($id);
+        $name = $object->Name;
         break;
     case "prop":
         $object = Prop::loadById($id);
+        $name = $object->Name;
         break;
     case "npc":
         $object = NPC::loadById($id);
+        $name = $object->Name;
         break;
     case "role":
         $object = Role::loadById($id);
+        $name = $object->Name;
+        break;
+    case "magician":
+        $object = Magic_Magician::loadById($id);
+        $name = "stav";
         break;
 }
         
@@ -49,7 +59,7 @@ if (isset($_FILES["upload"])) {
     
     $error = Image::maySave();
     if (!isset($error)) {
-        $id = Image::saveImage("$object->Name - $type");
+        $id = Image::saveImage("$name - $type");
         $object->ImageId = $id;
         $object->update();
         
@@ -81,7 +91,7 @@ include 'navigation.php';
 
 
 	<div class="content">
-		<h1>Ladda upp bild för <?php echo $object->Name;?> <a href="<?php echo $referer; ?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+		<h1>Ladda upp bild för <?php echo $name;?> <a href="<?php echo $referer; ?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 	  <?php if (isset($error_message) && strlen($error_message)>0) {
 	      echo '<div class="error">'.$error_message.'</div>';
 	  }?>

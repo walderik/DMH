@@ -17,6 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == "add_spell_school") {
         $spell=Magic_Spell::loadById($_POST['Id']);
         if (isset($_POST['SchoolId'])) $spell->addSchools($_POST['SchoolId']);
+    } elseif ($operation == "add_spell_magician") {
+        $spell=Magic_Spell::loadById($_POST['Id']);
+        if (isset($_POST['MagicianId'])) $spell->addToMagicians($_POST['MagicianId'], $current_larp);
     }
 }
 
@@ -29,7 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($operation == "remove_school") {
         $school=Magic_School::loadById($_GET['SchoolId']);
         $school->removeSpell($spell->Id);
+    } elseif ($operation == "remove_magician") {
+        $magician=Magic_Magician::loadById($_GET['MagicianId']);
+        $magician->removeSpell($spell->Id);
     }
+    
 }
 
 

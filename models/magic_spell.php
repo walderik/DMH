@@ -133,6 +133,33 @@ class Magic_Spell extends BaseModel{
         $stmt = null;
     }
     
+    public function addToMagicians($magicianIds, LARP $larp) {
+        //Ta reda på vilka som inte redan är kopplade till magin
+        $exisitingIds = array();
+        $spell_magicians = $this->getAllMagicians();
+        foreach ($spell_magicians as $spell_magician) {
+            $exisitingIds[] = $spell_magician->Id;
+        }
+        
+        $newMagicianIds = array_diff($magicianIds,$exisitingIds);
+        //Koppla skolor till magiker
+        foreach ($newMagicianIds as $magicianId) {
+            $this->addToMagician($magicianId, $larp);
+        }
+    }
+    
+    private function addToMagician($magicianId, LARP $larp) {
+        
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_magician_spell (MagicMagicianId, MagicSpellId, GrantedLarpId) VALUES (?,?,?);");
+        if (!$stmt->execute(array($magicianId, $this->Id, $larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
+    }
     
     
     
