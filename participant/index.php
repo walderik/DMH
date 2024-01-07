@@ -43,7 +43,7 @@ include "navigation.php";
 				<ol>
 			 	<li>Börja med att <a href="person_form.php">registrera en deltagare.</a></li>
 			 	<li>Om du är gruppansvarig, <a href="group_form.php">registrera en grupp</a> och <a href="group_registration_form.php">anmäl den till lajvet</a>.</li>
-			 	<li><a href="role_form.php">Registrera karaktärer</a>, gärna flera.</li>
+			 	<li><a href="role_form.php">Registrera karaktärer</a>, om du ska ha flera karaktärer ska du registrera alla innan du går vidare till anmälan.</li>
 			 	<li><a href="select_person.php">Anmäl deltagaren</a> till lajvet.</li>
 			 	</ol>
 			 	Det går att hantera flera deltagare från ett konto, tex om ni är en familj.<br><br>
@@ -268,7 +268,16 @@ include "navigation.php";
     		                echo "<td>";
     		                echo $role_group_name;
         		            echo "</td>";  		            
-    		                
+
+        		            echo "<td>";
+        		            if (Magic_Magician::isMagician($role)) {
+        		                $magician = Magic_Magician::getForRole($role);
+        		                echo "<a href='view_magician.php?id=$role->Id'>Magiker</a>";
+        		                echo " ".showStatusIcon($magician->StaffApproved && $magician->hasDoneWorkshop());
+        		            }
+        		            echo "</td>";
+        		            
+        		            
     		                if ($current_larp->isEnded()) {
     		                    echo "<td><a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a></td>";
     		                }

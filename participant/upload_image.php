@@ -27,6 +27,7 @@ switch ($type) {
         $object = Role::loadById($id);
         if (Person::loadById($object->PersonId)->UserId != $current_user->Id) {
             header('Location: ../index.php'); //Inte din karaktär
+            $name = $object->Name;
             exit;
         }
         break;
@@ -36,6 +37,7 @@ switch ($type) {
             header('Location: ../index.php');
             exit;
         }
+        $name = $object->Name;
         break;
     case "npc":
         $object = NPC::loadById($id);
@@ -43,6 +45,11 @@ switch ($type) {
             header('Location: ../index.php');
             exit;
         }
+        $name = $object->Name;
+        break;
+    case "magician":
+        $object = Magic_Magician::loadById($id);
+        $name = "stav";
         break;
 }
         
@@ -58,10 +65,17 @@ if (isset($_FILES["upload"])) {
     
     $error = Image::maySave();
     if (!isset($error)) {
-        $id = Image::saveImage("$object->Name - $type");
+        $imageId=$object->ImageId;
+        $id = Image::saveImage("$name - $type");
         $object->ImageId = $id;
+        if ($object instanceof Magic_Magician) {
+            $object->StaffApproved=null;
+        }
         $object->update();
-
+        
+        //Ta bort den gamla bilden
+        if (isset($imageId)) Image::delete($imageId);
+        
         if (isset($_POST['Referer']) && $_POST['Referer']!="") {
             header('Location: ' . $_POST['Referer']);
             exit;

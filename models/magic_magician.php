@@ -79,6 +79,21 @@ class Magic_Magician extends BaseModel{
             $stmt = null;
     }
     
+    public static function getForRole(Role $role) {
+        if (empty($role)) return null;
+        $sql = "SELECT * FROM regsys_magic_magician WHERE RoleId=?";
+        return static::getOneObjectQuery($sql, array($role->Id));
+        
+    }
+    
+    public static function isMagician(Role $role) {
+        if (empty($role)) return null;
+        if (is_null(static::getForRole($role))) return false;
+        return true;
+    }
+    
+    
+    
     public function getRole() {
         if (empty($this->RoleId)) return null;
         return Role::loadById($this->RoleId);
@@ -100,7 +115,12 @@ class Magic_Magician extends BaseModel{
         if (empty($this->StaffApproved)) return false;
         return true;
     }
-        
+
+    public function hasDoneWorkshop() {
+        if (empty($this->StaffApproved)) return false;
+        return true;
+    }
+    
     
     public function getSpells() {
         return Magic_Spell::getSpellsForMagician($this);

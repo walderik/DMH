@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 switch ($type) {
     case "house":
         $object = House::loadById($id);
+        $name = $object->Name;
         break;
 }
         
@@ -40,9 +41,13 @@ if (isset($_FILES["upload"])) {
     
     $error = Image::maySave();
     if (!isset($error)) {
-        $id = Image::saveImage("$object->Name - $type");
+        $imageId=$object->ImageId;
+        $id = Image::saveImage("$name - $type");
         $object->ImageId = $id;
         $object->update();
+        
+        //Ta bort den gamla bilden
+        if (isset($imageId)) Image::delete($imageId);
         
         if (isset($_POST['Referer']) && $_POST['Referer']!="") {
             header('Location: ' . $_POST['Referer']);

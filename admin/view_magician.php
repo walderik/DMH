@@ -62,16 +62,16 @@ include 'navigation.php';
     				<td>Stav</td>
     				<td>
     					<?php 
+    					echo "<a href='upload_image.php?id=$magician->Id&type=magician'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
     					if ($magician->hasStaffImage()) {
+    					    echo "<br>";
     					    $image = Image::loadById($magician->ImageId);
     
     					        echo "<img width='300' src='../includes/display_image.php?id=$magician->ImageId'/>\n";
     					        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
     
-    					    } else {
-    					        echo "<a href='upload_image.php?id=$magician->Id&type=magician'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
-    					    }
-    					    ?>
+    					}
+    					?>
     					
     				</td>
     			</tr>
