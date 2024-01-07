@@ -59,10 +59,23 @@ include 'navigation.php';
     					}?>
                     </td>
     			</tr>
+    			<?php if (isset($master)) {?>
     			<tr>
     				<td>Mästare</td>
     				<td><?php echo $masterRole->Name; ?></td>
     			</tr>
+    			<?php }?>
+    			
+    			<?php 
+    			$apprenticeNames = $magician->getApprenticeNames();
+    			if (isset($apprenticeNames)) {?>
+    			<tr>
+    				<td>Lärlingar</td>
+    				<td><?php echo implode(", ", $apprenticeNames); ?></td>
+    			</tr>
+    			<?php }?>
+    			
+    			
 				<tr>
     				<td>Stav</td>
     				<td>

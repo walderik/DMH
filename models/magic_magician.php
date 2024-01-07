@@ -110,7 +110,22 @@ class Magic_Magician extends BaseModel{
         return Magic_Magician::loadById($this->MasterMagicianId);
     }
     
- 
+    public function getApprenticeNames() {
+        $apprentices = $this->getApprentices();
+        $names = array();
+        foreach($apprentices as $apprentice) {
+            $names[] = $apprentice->getRole()->Name;
+        }
+        return $names;
+    }
+    
+    public function getApprentices() {
+        $sql = "SELECT * FROM regsys_magic_magician WHERE MasterMagicianId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($this->Id));
+        
+    }
+    
+    
     public function isStaffApproved() {
         if (empty($this->StaffApproved)) return false;
         return true;
