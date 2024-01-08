@@ -39,7 +39,6 @@ include 'navigation.php';
                $role = $magician->getRole();
                $master = $magician->getMaster();
                $school = $magician->getMagicSchool();
-               if (isset($master)) $masterRole = $master->getRole();
                 echo "<tr>\n";
                 echo "<td><a href ='view_magician.php?id=$magician->Id'>$role->Name</a></td>\n";
                 echo "<td>" . $magician->Level . "</td>\n";
@@ -47,7 +46,9 @@ include 'navigation.php';
                 if (!empty($school)) echo $school->Name;
                 echo "</td>\n";
                 echo "<td>";
-                if (isset($masterRole)) echo "<a href ='view_magician.php?id=$master->Id'>$masterRole->Name</a>";
+                if (isset($master)) {
+                    echo "<a href ='view_magician.php?id=$master->Id'>".$master->getRole()->Name."</a>";
+                }
                 echo "</td>\n";
                 echo "<td>" . showStatusIcon($magician->isStaffApproved()) . "</td>\n";
                 echo "<td>" . showStatusIcon($magician->hasDoneWorkshop()) . "</td>\n";

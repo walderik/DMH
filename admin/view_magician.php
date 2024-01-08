@@ -67,7 +67,11 @@ include 'navigation.php';
     				<td><?php 
     				    $apprenticeLinks = array();
     				    foreach($apprentices as $apprentice) {
-    				        $apprenticeLinks[] = "<a href ='view_magician.php?id=$apprentice->Id'>".$apprentice->getRole()->Name."</a> (".$apprentice->getMagicSchool()->Name.", nivå $apprentice->Level)";
+    				        $apprenticeSchool = $apprentice->getMagicSchool();
+    				        $str = "<a href ='view_magician.php?id=$apprentice->Id'>".$apprentice->getRole()->Name."</a> (";
+    				        if (isset($apprenticeSchool)) $str.=$apprentice->getMagicSchool()->Name.", ";
+    				        $str.="nivå $apprentice->Level)";
+    				        $apprenticeLinks[] = $str;
     				    }
     				    echo implode("<br>", $apprenticeLinks); 
     				    
