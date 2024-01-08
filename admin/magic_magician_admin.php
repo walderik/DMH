@@ -31,7 +31,8 @@ include 'navigation.php';
                "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
                "<th onclick='sortTable(2, \"$tableId\")'>Skola</th>".
                "<th onclick='sortTable(3, \"$tableId\")'>Mästare</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Stav godkänd</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Stav<br>godkänd</th>".
+               "<th onclick='sortTable(5, \"$tableId\")'>Workshop<br>deltagit</th>".
                "<th></th><th></th>";
            
            foreach ($magicians as $magician) {
@@ -48,7 +49,8 @@ include 'navigation.php';
                 echo "<td>";
                 if (isset($masterRole)) echo "<a href ='view_magician.php?id=$master->Id'>$masterRole->Name</a>";
                 echo "</td>\n";
-                echo "<td>" . showStatusIcon($magician->StaffApproved) . "</td>\n";
+                echo "<td>" . showStatusIcon($magician->isStaffApproved()) . "</td>\n";
+                echo "<td>" . showStatusIcon($magician->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='magic_magician_form.php?operation=update&Id=" . $magician->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='logic/view_magician_logic.php?operation=delete&Id=" . $magician->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
