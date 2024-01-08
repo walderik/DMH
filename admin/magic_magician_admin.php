@@ -50,7 +50,7 @@ include 'navigation.php';
                 echo "</td>\n";
                 echo "<td>" . showStatusIcon($magician->StaffApproved) . "</td>\n";
                 echo "<td>" . "<a href='magic_magician_form.php?operation=update&Id=" . $magician->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='magic_magician_form.php?operation=delete&Id=" . $magician->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>" . "<a href='logic/view_magician_logic.php?operation=delete&Id=" . $magician->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";

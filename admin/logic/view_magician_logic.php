@@ -6,12 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
     
-    if ($operation == 'insert') {
-        $magician = Magic_Magician::newFromArray($_POST);
-        $magician->create();
-    } elseif ($operation == 'delete') {
-        Magic_Magician::delete($_POST['Id']);
-    } elseif ($operation == 'update') {
+    if ($operation == 'update') {
         $magician=Magic_Magician::loadById($_POST['Id']);
         $magician->setValuesByArray($_POST);
         $magician->update();
@@ -37,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     if ($operation == "remove_spell") {
         $magician->removeSpell($_GET['SpellId']);
+    } elseif ($operation == 'delete') {
+        Magic_Magician::delete($_GET['Id']);
     }
 }
 

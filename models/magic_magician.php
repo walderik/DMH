@@ -229,6 +229,23 @@ class Magic_Magician extends BaseModel{
         return false;
     }
     
+ 
+    public static function delete($id)
+    {
+        $magician = static::loadById($id);
+        
+        $spells = $magician->getSpells();
+        foreach($spells as $spell) {
+            $magician->removeSpell($spell->Id);
+        }
+        
+        $imageId=$magician->ImageId;
+        
+        parent::delete($id);
+    
+        //Ta bort den bilden
+        if (isset($imageId)) Image::delete($imageId);
+    }
     
     
 }
