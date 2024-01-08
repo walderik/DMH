@@ -339,7 +339,7 @@ include 'navigation.php';
 		        echo "<h3>$prevoius_larp->Name</h3>";
 		        if (!empty($previous_larp_role->Intrigue)) {
 		            echo "<strong>Intrig</strong><br>";
-		            echo "<p>".nl2br($previous_larp_group->Intrigue)."</p>";
+		            echo "<p>".nl2br($previous_larp_role->Intrigue)."</p>";
 		        }
 		        
 		        $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $prevoius_larp->Id);
