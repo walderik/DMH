@@ -58,6 +58,23 @@ include 'navigation.php';
     				<td>Mästare</td>
     				<td><?php if (isset($masterRole)) echo "<a href ='view_magician.php?id=$master->Id'>$masterRole->Name</a>"; ?></td>
     			</tr>
+
+    			<?php 
+    			$apprentices = $magician->getApprentices();
+    			if (isset($apprentices)) {?>
+    			<tr>
+    				<td>Lärlingar</td>
+    				<td><?php 
+    				    $apprenticeLinks = array();
+    				    foreach($apprentices as $apprentice) {
+    				        $apprenticeLinks[] = "<a href ='view_magician.php?id=$apprentice->Id'>".$apprentice->getRole()->Name."</a> (".$apprentice->getMagicSchool()->Name.", nivå $apprentice->Level)";
+    				    }
+    				    echo implode("<br>", $apprenticeLinks); 
+    				    
+    				    ?></td>
+    			</tr>
+    			<?php }?>
+
 				<tr>
     				<td>Stav</td>
     				<td>
