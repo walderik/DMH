@@ -104,7 +104,7 @@ include 'navigation.php';
 
 
 	<div class="content">
-		<h1>Ladda upp bild för <?php echo $object->Name;?> <a href="<?php echo $referer; ?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+		<h1>Ladda upp bild för <?php echo $name;?> <a href="<?php echo $referer; ?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 	  <?php if (isset($error_message) && strlen($error_message)>0) {
 	      echo '<div class="error">'.$error_message.'</div>';
 	  }?>
