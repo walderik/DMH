@@ -1,6 +1,7 @@
 <?php
 include_once '../header.php';
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
@@ -17,6 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == "add_magician_spell") {
         $magician=Magic_Magician::loadById($_POST['Id']);
         if (isset($_POST['SpellId'])) $magician->addSpells($_POST['SpellId'], $current_larp);
+    } elseif ($operation == "add_magician") {
+        if (isset($_POST['RoleId'])) Magic_Magician::createMagicians($_POST['RoleId'], $current_larp);
     } elseif ($operation == "set_master") {
         $magician=Magic_Magician::loadById($_POST['Id']);
         if (isset($_POST['MagicianId'])) {
