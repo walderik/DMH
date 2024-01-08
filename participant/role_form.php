@@ -213,8 +213,8 @@ include 'navigation.php';
 				<label for="DescriptionForOthers">Beskrivning för andra</label><br> 
 				<div class="explanation">Vad är allmänt känt om dig? Beskriv sådant som de flesta vet om dig. 
 				                         Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter mellan dig och då får du roligare spel.<br><br>
-									     Efter att du är anmäld kommer din karaktär och den här beskrivningen 
-									     att <a href="../participants.php?id=<?php echo $current_larp->Id;?>" target="_blank">synas för alla</a>. 
+									     Efter att du är anmäld och din karaktär är godkänd kommer den här beskrivningen 
+									     att synas för alla andra som är anmälda och godkända.</a>. 
 									     Lägg gärna upp en bild på dig också så att de andra känner igen dig.</div>
 				<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="400"><?php echo htmlspecialchars($role->DescriptionForOthers); ?></textarea>
 			</div>
@@ -224,7 +224,7 @@ include 'navigation.php';
 			<div class="question">
 				<label for="GroupsId">Vilken grupp är karaktären med i?</label><br>
        			<div class="explanation">Finns inte din grupp med på anmälan ska du kontakta den som är ansvarig för din grupp och se till att den är anmäld innan du själv anmäler dig.    
-Är gruppen anmäld, men ändå inte syns här så måste du kontakta arrangörerna som får se till att den är valbar i listan.<br>Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i det <a href="group_form.php">här formuläret</a>.
+Efter att gruppen är anmäld måste den godkännas av arrangörerna innan den syns här. Om det är ett tag sedan gruppen anmäldes och den fortfarande inte syns får gruppledaren kontakta arrangörerna.<br>Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i det <a href="group_form.php">här formuläret</a>.
 <br><br>
 Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste</strong> då ändra den efter att gruppen är anmäld och innan du anmäler dig så att karaktären kommer med i gruppen. Ändra den gör du genom att du klickar på namnet på karaktären från huvudsidan.
 </div>

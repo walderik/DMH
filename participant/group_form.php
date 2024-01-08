@@ -108,8 +108,8 @@ include 'navigation.php';
     			<label for="DescriptionForOthers">Beskrivning av gruppen för andra</label>
 				<div class="explanation">Vad är allmänt känt om gruppen? Beskriv sådant som de flesta vet om er. 
                          Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter med er och då får ni roligare spel.<br><br>
-					     Efter att gruppen är anmäld kommer namnet på gruppen och den här beskrivningen 
-					     att <a href="../participants.php?id=<?php echo $current_larp->Id;?>" target="_blank">synas för alla</a>. 
+					     Efter att gruppen är anmäld och godkänd kommer namnet på gruppen och den här beskrivningen 
+					     att synas för alla som är anmälda och godkända.</a>. 
 					     </div>
     			
     			<textarea class="input_field" id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="50" maxlength="1000"><?php echo htmlspecialchars($group->DescriptionForOthers); ?></textarea>
