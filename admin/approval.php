@@ -62,7 +62,7 @@ include 'navigation.php';
     		        echo "<br><br>";
     		        echo "Spelas av <a href='view_person.php?id=$person->Id'>$person->Name</a>, ".$person->getAgeAtLarp($current_larp)." år ";
     		        echo "<br>\n";
-    		        echo "Epost: $person->Email ".contactEmailIcon($person->Name,$person->Email).", Telefon: $person->PhoneNumber <br>\n";
+    		        echo "Epost: $person->Email, Telefon: $person->PhoneNumber <br>\n";
     		        
     		        if ($role->userMayEdit($current_larp)) {
     		            echo "Spelare får ändra på karaktären och därför kan den inte godkännas.";
