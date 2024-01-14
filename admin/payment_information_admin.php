@@ -61,8 +61,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 echo "<td>" . $payment->ToAge . "</td>\n";
                 echo "<td>" . $payment->Cost . "</td>\n";
                 echo "<td>";
-                foreach ($payment->FoodDescription as $i => $description) {
-                    echo $description.": ".$payment->FoodCost[$i]."<br>";
+                if (isset($payment->FoodDescription)) {
+                    foreach ($payment->FoodDescription as $i => $description) {
+                        echo $description.": ".$payment->FoodCost[$i]."<br>";
+                    }
                 }
                 echo "</td>\n";
                 
