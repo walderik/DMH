@@ -789,6 +789,15 @@ class Role extends BaseModel{
         
     }
     
+    public static function delete($id)
+    {
+        $role = static::loadById($id);
+        
+        $role->deleteAllAbilities();
+        
+        parent::delete($id);
+    }
+    
     
     
 }
