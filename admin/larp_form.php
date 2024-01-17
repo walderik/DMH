@@ -103,7 +103,7 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     			<tr>
     				<td><label for="PaymentReferencePrefix">Prefix för betalningsreferens</label></td>
     				<td><input type="text" id="PaymentReferencePrefix"
-    					name="PaymentReferencePrefix" value="<?php echo htmlspecialchars($larp->PaymentReferencePrefix); ?>" size="15" maxlength="10" required></td>
+    					name="PaymentReferencePrefix" value="<?php echo htmlspecialchars($larp->PaymentReferencePrefix); ?>" size="15" maxlength="10"></td>
     			</tr>
     			<tr>
     				<td><label for=NetDays>Antal dagar för betalning</label></td>
