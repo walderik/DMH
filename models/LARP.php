@@ -20,6 +20,7 @@ class LARP extends BaseModel{
     public  $HasTelegrams = 0;
     public  $HasLetters = 1;
     public  $HasRumours = 1;
+    public  $Description;
     public  $ContentDescription;
 
     
@@ -52,6 +53,7 @@ class LARP extends BaseModel{
         if (isset($arr['HasTelegrams'])) $this->HasTelegrams = $arr['HasTelegrams'];
         if (isset($arr['HasLetters'])) $this->HasLetters = $arr['HasLetters'];
         if (isset($arr['HasRumours'])) $this->HasRumours = $arr['HasRumours'];
+        if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['ContentDescription'])) $this->ContentDescription = $arr['ContentDescription'];
     }
     
@@ -66,13 +68,13 @@ class LARP extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_larp SET Name=?, TagLine=?, StartDate=?, EndDate=?, ".
                  "MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, ".
                  "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=?, ".
-                 "HasTelegrams=?, HasLetters=?, HasRumours=?, ContentDescription=?  WHERE Id = ?");
+                 "HasTelegrams=?, HasLetters=?, HasRumours=?, Description=?, ContentDescription=?  WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
             $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, 
-            $this->ContentDescription, $this->Id))) {
+            $this->Description, $this->ContentDescription, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -86,13 +88,13 @@ class LARP extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp (Name, TagLine, StartDate, EndDate, MaxParticipants, 
             LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, DisplayHousing, CampaignId, 
-            RegistrationOpen, PaymentReferencePrefix, NetDays, HasTelegrams, HasLetters, HasRumours, ContentDescription) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            RegistrationOpen, PaymentReferencePrefix, NetDays, HasTelegrams, HasLetters, HasRumours, Description, ContentDescription) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
-            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, $this->ContentDescription))) {
+            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, $this->Description, $this->ContentDescription))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();

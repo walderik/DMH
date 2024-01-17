@@ -64,6 +64,10 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($larp->Name); ?>" size="100" maxlength="250" required></td>
     			</tr>
     			<tr>
+    				<td><label for="Name">Beskrivning</label><br>Om det står något i det här fältet visas det när man väljer bland kommande lajv. Beskriv gärna kortfattat miljö (tex medeltid, vilda västern) och stämning (tex familjevänligt, tungt förtrycksspel).</td>
+    				<td><textarea id="ContentDescription" name="Description" rows="4" cols="150" maxlength="60000" ><?php echo htmlspecialchars($larp->Description); ?></textarea></td>
+    			</tr>
+    			<tr>
     				<td><label for="Name">Innehåll</label><br>Om det står något i det här fältet kommer alla deltagare vid anmälan behöva bocka i att de förstår vilken typ av lajv det är de anmäler sig till. Beskriv gärna kortfattat miljö (tex medeltid, vilda västern) och stämning (tex familjevänligt, tungt förtrycksspel).</td>
     				<td><textarea id="ContentDescription" name="ContentDescription" rows="4" cols="150" maxlength="60000" ><?php echo htmlspecialchars($larp->ContentDescription); ?></textarea></td>
     			</tr>

@@ -29,7 +29,7 @@ function myFunction() {
     <link href="../css/navigation_participant.css" rel="stylesheet" type="text/css">
 	<link href="../css/style.css" rel="stylesheet" type="text/css">
 	<link rel="icon" type="image/x-icon" href="../images/bv.ico">
-	<title>Berghems vänners anmälningssystem</title>
+	<title>Omnes Mundi, Berghems vänners anmälningssystem</title>
 	
 </head>
 <body>
@@ -39,6 +39,16 @@ function myFunction() {
     margin-left:20px;
     padding:0px;
 } 
+
+
+div.border
+{
+    padding: 10px;
+    border: 2px solid #000;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+}
+
 
 </style>
 <div class="topnav"  id="myTopnav">
@@ -58,25 +68,45 @@ function myFunction() {
     </div>
 
 		<div class="content">
-			<h1>Välj aktivt lajv</h1>
+			<h1>Välj lajv</h1>
     			<?php
 
     			$resultCheck = count($future_larp_array);
     			 if ($resultCheck > 0) {
 
 			        echo "<h3>Kommande lajv</h3>";
-    
-        			echo "<form action='../includes/set_larp.php' method='POST'>";
-        			echo "<label for='larp'>Välj lajv: </label>";
-        			echo "<select name='larp' id='larp'>";
-    			
-    			     foreach ($future_larp_array as $larp) {
-    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
-    			     }
-    			     echo "</select>";
-    			     echo '<input type="submit" value="Välj">';  
+ 
+			        foreach ($future_larp_array as $larp) {
+			            echo "<div class='border'>";
+			            echo "<form action='../includes/set_larp.php' method='POST'>";
+			            echo "<input type='hidden' value='" . $larp->Id . "' name='larp' id='larp'>\n";
+			            echo "<strong>$larp->Name</strong><br>\n";
+			            $startdate=date_create($larp->StartDate);
+			            $enddate=date_create($larp->EndDate);
+			            $fmt = new \IntlDateFormatter('sv_SE', NULL, NULL);
+			            $fmt->setPattern('d MMMM');
+			            // See: https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax for pattern syntax
+			            
+			            echo $fmt->format($startdate) . " - " . $fmt->format($enddate)."<br>\n";
+			            echo "Kampanj: ".$larp->getCampaign()->Name."<br>\n";
+			            if ($larp->mayRegister()) {
+			                echo "Anmälan är öppen.<br>\n";
+			                echo "Sista anmälningsdag: $larp->LatestRegistrationDate<br>\n";
+			            }
+			            if (isset($larp->Description)) {
+			                echo "<br>";
+			                echo nl2br(htmlspecialchars($larp->Description));
+			                echo "<br>";
+			            }
+			            echo "<br>";
+			            echo '<button type="submit">Välj</button>';
+			            echo "</form>";
+			            echo "</div>";
+			            
+			        }
+			        
     			     echo "<br><hr>";
-    			     echo "</form>";
+
     			 }
     			 
     			$resultCheck = count($past_larp_array);
