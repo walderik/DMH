@@ -55,6 +55,10 @@ class LARP extends BaseModel{
         if (isset($arr['HasRumours'])) $this->HasRumours = $arr['HasRumours'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['ContentDescription'])) $this->ContentDescription = $arr['ContentDescription'];
+
+    
+        if ($this->StartTimeLARPTime == '') $this->StartTimeLARPTime = null;
+        if ($this->EndTimeLARPTime == '') $this->EndTimeLARPTime = null;
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
