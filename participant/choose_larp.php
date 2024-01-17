@@ -91,7 +91,8 @@ div.border
 			            echo "Kampanj: ".$larp->getCampaign()->Name."<br>\n";
 			            if ($larp->mayRegister()) {
 			                echo "Anmälan är öppen.<br>\n";
-			                echo "Sista anmälningsdag: $larp->LatestRegistrationDate<br>\n";
+			                $lastregistration=date_create($larp->LatestRegistrationDate);
+			                echo "Sista anmälningsdag: ".$fmt->format($lastregistration)."<br>\n";
 			            }
 			            if (isset($larp->Description)) {
 			                echo "<br>";
