@@ -10,7 +10,8 @@ include 'navigation.php';
     <div class="content">
         <h1>Intrigspår</h1>
             <a href="intrigue_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>&nbsp;  
-            <a href="reports/intrigues_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla intrigspår</a><br>
+            <a href="intrigue_continue.php"><i class="fa-solid fa-file-circle-plus"></i>Fortsätt på intrig från tidigare lajv</a><br>  
+            <a href="reports/intrigues_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla intrigspår</a>&nbsp;
             <a href="intrigue_pdfs.php">All pdf'er som används i intrigspår</a>  
        
        <?php

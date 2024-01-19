@@ -283,6 +283,7 @@ th, td {
 	        echo "<img src='../includes/display_image.php?id=$group->ImageId'/>\n";
 	    }
 	    echo "<div align='right'>";
+	    if (!$groupActor->isAtLARP()) echo "<i class='fa-solid fa-bed' title='Inte anmäld till lajvet'></i> ";
 	    echo "<a href='choose_group.php?operation=exhange_intrigue_actor_group&Id=$groupActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut grupp som får intrigen'></i></a> ";
 	    echo "<a ";
 	    if (!empty($groupActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort gruppen i alla fall?\')" ';
@@ -323,6 +324,7 @@ th, td {
 	        echo "<img src='../includes/display_image.php?id=$role->ImageId'/>\n";
 	    }
 	    echo "<div align='right'>";
+	    if (!$roleActor->isAtLARP()) echo "<i class='fa-solid fa-bed' title='Inte anmäld till lajvet'></i> ";
 	    echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut karaktär som får intrigen'></i></a> ";
 	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$roleActor->Id&Id=$intrigue->Id'";
 	    if (!empty($roleActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort karaktären i alla fall?\')" ';
@@ -569,13 +571,13 @@ foreach ($rumour_array as $rumour) {
 
 foreach ($groupActors as $groupActor) {
     $group = $groupActor->getGroup();
-    printActorIntrigue($groupActor, $group->Name);
+    if ($groupActor->isAtLARP()) printActorIntrigue($groupActor, $group->Name);
 
 }
 
 foreach ($roleActors as $roleActor) {
     $role = $roleActor->getRole();
-    printActorIntrigue($roleActor, $role->Name);
+    if ($roleActor->isAtLARP()) printActorIntrigue($roleActor, $role->Name);
     
 }
 

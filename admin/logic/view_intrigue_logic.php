@@ -77,7 +77,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['KnownIntrigueActorId'])) $intrigueActor->addKnownActors($_POST['KnownIntrigueActorId']);
         if (isset($_POST['Intrigue_NPCGroupId'])) $intrigueActor->addKnownNPCGroups($_POST['Intrigue_NPCGroupId']);
         if (isset($_POST['Intrigue_NPCId'])) $intrigueActor->addKnownNPCs($_POST['Intrigue_NPCId']);
-    } else {
+    } elseif ($operation == "continue_intrigue") {
+        if (isset($_POST['IntrigueId'])) Intrigue::continueIntrigues($_POST['IntrigueId'], $current_larp, $current_user);
+        header('Location: ../intrigue_admin.php');
+        exit;
+     } else {
         $intrigue=Intrigue::loadById($_POST['Id']);
     }
     

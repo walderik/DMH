@@ -68,6 +68,21 @@ class IntrigueActor extends BaseModel{
         if (empty($this->GroupId)) return null;
         return Group::loadById($this->GroupId);
     }
+    
+    public function isAtLARP() {
+        $larp = $this->getIntrigue()->getLarp();
+        
+        $role = $this->getRole();
+        if (isset($role)) {
+            return $role->isRegistered($larp);
+        }
+        
+        $group = $this->getGroup();
+        if (isset($group)) {
+            return $group->isRegistered($larp);
+        }
+        return false;
+    }
 
     
     public function getIntrigue() {

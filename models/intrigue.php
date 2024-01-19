@@ -11,6 +11,7 @@ class Intrigue extends BaseModel{
     public $Notes;
     public $LarpId;
     public $ResponsibleUserId;
+    public $PreviousInstanceId;
     
     public static $orderListBy = 'Number';
     
@@ -30,6 +31,7 @@ class Intrigue extends BaseModel{
         if (isset($arr['Notes'])) $this->Notes = $arr['Notes'];
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
         if (isset($arr['ResponsibleUserId'])) $this->ResponsibleUserId = $arr['ResponsibleUserId'];
+        if (isset($arr['PreviousInstanceId'])) $this->PreviousInstanceId = $arr['PreviousInstanceId'];
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -43,9 +45,9 @@ class Intrigue extends BaseModel{
     
     # Update an existing intrigue in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Active=?, MainIntrigue=?, CommonText=?, Notes=?, LarpId=?, ResponsibleUserId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Active=?, MainIntrigue=?, CommonText=?, Notes=?, LarpId=?, ResponsibleUserId=?, PreviousInstanceId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsibleUserId, $this->Id))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsibleUserId, $this->PreviousInstanceId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -60,9 +62,9 @@ class Intrigue extends BaseModel{
         
         $connection = $this->connect();
         
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, CommonText, Notes, LarpId, ResponsibleUserId) VALUES (?,?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, CommonText, Notes, LarpId, ResponsibleUserId, PreviousInstanceId) VALUES (?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsibleUserId))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsibleUserId, $this->PreviousInstanceId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -83,8 +85,100 @@ class Intrigue extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function allNotContinuedInCampaign(LARP $larp) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id NOT IN (".
+        "SELECT PreviousInstanceId FROM regsys_intrigue WHERE PreviousInstanceId IS NOT NULL) AND ".
+        "LarpId IN (".
+        "SELECT Id from regsys_larp WHERE CampaignId=? AND Id != ?) ".
+        "ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $larp->Id));
+        
+    }
+    
+    
     public function getResponsibleUser() {
         return User::loadById($this->ResponsibleUserId);
+    }
+    
+ 
+    public function getLarp() {
+        return LARP::loadById($this->LarpId);
+    }
+    
+    public function getPreviousInstace() {
+        if (isset($this->PreviousInstanceId)) return Intrigue::loadById($this->PreviousInstanceId);
+        return null;
+    }
+    
+    public function getPreviousInstaces() {
+        $intrigues = array();
+        
+        $previuos = $this->getPreviousInstace();
+        while(isset($previuos)) {
+            $intrigues[] = $previuos;
+            $previuos = $previuos->getPreviousInstace();
+        }
+        return $intrigues;
+
+    }
+    
+    public static function continueIntrigues($intrigueIds, LARP $larp, User $user) {
+        foreach($intrigueIds as $intrigueId) {
+            $previousIntrigue = Intrigue::loadById($intrigueId);
+            $newIntrigue = Intrigue::newWithDefault();
+            
+            //Kopiera intrighuvudet
+            $newIntrigue->Name = $previousIntrigue->Name;
+            $newIntrigue->MainIntrigue = $previousIntrigue->MainIntrigue;
+            $newIntrigue->CommonText = $previousIntrigue->CommonText;
+            $newIntrigue->Notes = $previousIntrigue->Notes;
+            $newIntrigue->LarpId = $larp->Id;
+            $newIntrigue->ResponsibleUserId = $user->Id;
+            $newIntrigue->PreviousInstanceId = $previousIntrigue->Id;
+            $newIntrigue->create();
+            
+            //Kopiera intrigtyper
+            $intrigueTypeIds = $previousIntrigue->getSelectedIntrigueTypeIds();
+            $newIntrigue->saveAllIntrigueTypes($intrigueTypeIds);
+            
+            //Koppla alla roller och grupper
+            $groupactors = $previousIntrigue->getAllGroupActors();
+            foreach($groupactors as $groupactor) {
+                $newactor = IntrigueActor::newWithDefault();
+                $newactor->IntrigueId = $newIntrigue->Id;
+                $newactor->GroupId = $groupactor->GroupId;
+                $newactor->create();
+            }
+            
+            $roleactors = $previousIntrigue->getAllRoleActors();
+            foreach($roleactors as $roleactor) {
+                $newactor = IntrigueActor::newWithDefault();
+                $newactor->IntrigueId = $newIntrigue->Id;
+                $newactor->RoleId = $roleactor->RoleId;
+                $newactor->create();
+            }
+            
+            //Koppla rekvisita
+            $props = $previousIntrigue->getAllProps();
+            foreach($props as $prop) {
+                $newProp = Intrigue_Prop::newWithDefault();
+                $newProp->IntrigueId = $newIntrigue->Id;
+                $newProp->PropId = $prop->PropId;
+                $newProp->create();
+            }
+            
+            
+            //Koppla pdf'er
+            $pdfs = $previousIntrigue->getAllPdf();
+            foreach($pdfs as $pdf) {
+                $newPdf = Intrigue_Pdf::newWithDefault();
+                $newPdf->IntrigueId = $newIntrigue->Id;
+                $newPdf->Filename = $pdf->Filename;
+                $newPdf->FileData = $pdf->FileData;
+                $newPdf->create();
+            }
+            
+        }
     }
     
     public function getSelectedIntrigueTypeIds() {
