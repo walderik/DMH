@@ -16,7 +16,7 @@ include 'navigation.php';
 		<form action="logic/view_intrigue_logic.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="continue_intrigue"> 
 		    <table class='data'>
-		    <tr><th>Namn</th><th>Lajv</th><th>Ansvarig</th></tr>
+		    <tr><th>Namn</th><th>Lajv senast använt</th><th>Ansvarig</th></tr>
 		    <?php 
 		    foreach ($intrigues as $intrigue)  {
 		        echo "<tr>\n";
