@@ -111,9 +111,10 @@ include 'navigation.php';
     		    echo "<input type='hidden' id='name' name='name' value='$name;'>";
     		    echo "$hej $name"; 
     		}
+    		echo "!";
     		?>
     		
-    		 !<br></p>
+    		 <br></p>
 			<p><textarea id="text" name="text" rows="8" cols="121" maxlength="60000" required></textarea></p>
 			<?php 
 			if ($type=="housing") { 
