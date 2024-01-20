@@ -13,7 +13,7 @@ class Receipt_PDF extends FPDF {
     function Header()
     {
          global $root, $current_larp;
-         $omlogo = "../images/Omnes_Mundi_rund.jpg";
+         $omlogo = "../images/omnes_mundi_rund.jpg";
          $this->Image($omlogo, 10, 10, -300);
     }
     
