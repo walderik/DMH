@@ -27,9 +27,10 @@ switch ($type) {
         $object = Role::loadById($id);
         if (Person::loadById($object->PersonId)->UserId != $current_user->Id) {
             header('Location: ../index.php'); //Inte din karaktär
-            $name = $object->Name;
+
             exit;
         }
+        $name = $object->Name;
         break;
     case "group":
         $object = Group::loadById($id);
