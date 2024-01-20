@@ -95,7 +95,7 @@ class Titledeed extends BaseModel{
         if (is_null($larp)) return Array();
         if ($includeNotInUse) $sql = "SELECT * FROM regsys_titledeed WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
         else $sql = "SELECT * FROM regsys_titledeed WHERE CampaignId = ? AND IsInUse = 1 ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
     public function isInUse() {
