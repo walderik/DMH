@@ -34,6 +34,7 @@ include_once $root . '/models/housecaretaker.php';
 include_once $root . '/models/housing.php';
 include_once $root . '/models/housing_request.php';
 include_once $root . '/models/image.php';
+include_once $root . '/models/invoice.php';
 include_once $root . '/models/intrigue.php';
 include_once $root . '/models/intrigue_actor.php';
 include_once $root . '/models/intrigueactor_checkinletter.php';
