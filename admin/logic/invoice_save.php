@@ -26,6 +26,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $invoice=Invoice::loadById($_POST['Id']);
             $invoice->addConcernedPersons($_POST['PersonId']);
         }
+    } elseif ($operation == 'send_invoice') {
+        $invoice=Invoice::loadById($_POST['Id']);
+        BerghemMailer::sendInvoice($invoice);
+    } elseif ($operation == 'mark_invoice_sent') {
+        $invoice=Invoice::loadById($_POST['Id']);
+        $invoice->setSent();
     }
     
 }

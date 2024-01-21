@@ -10,7 +10,8 @@ class Invoice extends BaseModel{
     public $DueDate;
     public $Number;
     public $PaymentReference;
-    public $AmountPayed;
+    public $SentDate;
+    public $AmountPayed = 0;
     public $PayedDate;
     
     public static $orderListBy = 'Number';
@@ -30,6 +31,7 @@ class Invoice extends BaseModel{
         if (isset($arr['DueDate'])) $this->DueDate = $arr['DueDate'];
         if (isset($arr['Number'])) $this->Number = $arr['Number'];
         if (isset($arr['PaymentReference'])) $this->PaymentReference = $arr['PaymentReference'];
+        if (isset($arr['SentDate'])) $this->SentDate = $arr['SentDate'];
         if (isset($arr['AmountPayed'])) $this->AmountPayed = $arr['AmountPayed'];
         if (isset($arr['PayedDate'])) $this->PayedDate = $arr['PayedDate'];
     }
@@ -45,10 +47,12 @@ class Invoice extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_invoice SET LARPId=?, ContactPersonId=?, Name=?, Description=?, DueDate=?, Number=?, PaymentReference=?, AmountPayed=?,
-                                                                  PayedDate=? WHERE Id = ?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_invoice SET LARPId=?, ContactPersonId=?, Name=?, Description=?, DueDate=?, 
+                Number=?, PaymentReference=?, SentDate=?, AmountPayed=?,
+                PayedDate=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->LARPId, $this->ContactPersonId, $this->Name, $this->Description, $this->DueDate, $this->Number, $this->PaymentReference, $this->AmountPayed,
+        if (!$stmt->execute(array($this->LARPId, $this->ContactPersonId, $this->Name, $this->Description, $this->DueDate, 
+            $this->Number, $this->PaymentReference, $this->SentDate, $this->AmountPayed,
             $this->PayedDate, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -66,10 +70,12 @@ class Invoice extends BaseModel{
         
         $connection = $this->connect();
 
-        $stmt = $connection->prepare("INSERT INTO regsys_invoice (LARPId, ContactPersonId, Name, Description, DueDate, Number, PaymentReference, AmountPayed,
-            PayedDate) VALUES (?,?,?,?,?,?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_invoice (LARPId, ContactPersonId, Name, Description, DueDate, 
+            Number, PaymentReference, SentDate, AmountPayed,
+            PayedDate) VALUES (?,?,?,?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->LARPId, $this->ContactPersonId, $this->Name, $this->Description, $this->DueDate, $this->Number, $this->PaymentReference, $this->AmountPayed,
+        if (!$stmt->execute(array($this->LARPId, $this->ContactPersonId, $this->Name, $this->Description, $this->DueDate, 
+            $this->Number, $this->PaymentReference, $this->SentDate, $this->AmountPayed,
             $this->PayedDate))) {
                 $this->connect()->rollBack();
                 $stmt = null;
@@ -130,10 +136,18 @@ class Invoice extends BaseModel{
     }
     
     public function isSent() {
+       if (isset($this->SentDate)) return true;
        return false;
     }
     
+    public function setSent() {
+        if ($this->isSent()) return;
+        $this->SentDate = $this->getSentDate();
+        $this->update();
+    }
+    
     public function getSentDate() {
+        if ($this->isSent()) return $this->SentDate;
         $now = new Datetime();
         return date_format($now,"Y-m-d");
     }

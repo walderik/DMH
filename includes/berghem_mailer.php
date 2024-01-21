@@ -7,6 +7,7 @@ require_once 'PHPMailer/src/SMTP.php';
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require_once $root . '/pdf/character_sheet_pdf.php';
 require_once $root . '/pdf/group_sheet_pdf.php';
+require_once $root . '/pdf/invoice_pdf.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -356,6 +357,31 @@ class BerghemMailer {
             $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
             BerghemMailer::send($larp, $person->Email, $person->Name, $sendtext, $subject, BerghemMailer::DaysAutomatic, $sheets);
         }
+    }
+    
+    
+    public static function sendInvoice(Invoice $invoice) {
+        if ($invoice->isSent()) return;
+        $larp = $invoice->getLarp();
+        $person = $invoice->getContactPerson();
+        $subject = "Faktura från $larp->Name";
+        
+        $sendtext = "Översänder faktura enligt överenskommelse.<br>\n";
+        
+        $pdf = new Invoice_PDF();
+        $pdf->SetTitle('Faktura');
+        $pdf->SetAuthor(utf8_decode($larp->Name));
+        $pdf->SetCreator('Omnes Mundi');
+        $pdf->AddFont('SpecialElite','');
+        $pdf->SetSubject('Faktura');
+        $pdf->ny_faktura($invoice);
+        
+        $sheets = array();
+        $sheets["Faktura"] = $pdf->Output('S'); 
+        
+        $invoice->setSent();
+
+        BerghemMailer::send($larp, $person->Email, $person->Name, $sendtext, $subject, BerghemMailer::DaysAutomatic, $sheets);
     }
     
 

@@ -14,6 +14,12 @@ include_once 'header.php';
         } else {
         }
     }
+    
+    if ($invoice->LARPId != $current_larp->Id) {
+        header('Location: index.php');
+        exit;
+    }
+    
       
     function default_value($field) {
         GLOBAL $invoice;

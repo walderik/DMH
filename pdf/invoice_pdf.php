@@ -12,9 +12,9 @@ class Invoice_PDF extends FPDF {
     
     function Header()
     {
-         global $root;
-         $omlogo = "../images/omnes_mundi_rund.jpg";
-         $this->Image($omlogo, 10, 10, -100);
+        global $root, $current_larp;
+         $omlogo = $root . '/images/'.$current_larp->getCampaign()->Abbreviation.'_logo.jpg';
+         $this->Image($omlogo, 10, 10, -200);
     }
     
     function Footer()

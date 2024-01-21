@@ -26,20 +26,50 @@ include 'navigation.php';
        $invoice_array = Invoice::allBySelectedLARP($current_larp);
        if (!empty($invoice_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Nummer</th><th>Mottagare</th><th>Fakturatext</th><th>Belopp</th><th>Referens</th><th>Betalad</th><th></th></tr>\n";
+            echo "<tr><th>Nummer</th><th>Mottagare</th><th>Kontaktperson<br>Skicka</th><th>Belopp</th><th>Referens</th><th>Betalad</th><th></th><th></th></tr>\n";
             foreach ($invoice_array as $invoice) {
                 echo "<tr>\n";
                 echo "<td>$invoice->Number</td>\n";
                 echo "<td>$invoice->Name</td>\n";
-                echo "<td>" . $invoice->Description . "</td>\n";
-                echo "<td>" . $invoice->Amount() . " SEK</td>\n";
+                echo "<td>";
+                if ($invoice->hasContactPerson()) {
+                    $name = $invoice->getContactPerson()->Name;
+                    echo $name;
+                    if (!$invoice->isSent()) {
+                        echo "<form action='logic/invoice_save.php' class='fabutton' method='post'>\n".
+                        "<input type=hidden name='operation' value='send_invoice'>\n".
+                        "<input type=hidden name='Id' value='$invoice->Id'>\n".
+                        "<button type='submit'>".
+                        " Skicka fakturan".
+                        "</button>\n".
+                        "</form>\n";
+                    }
+                } else {
+                    if (!$invoice->isSent()) {
+                        echo "<form action='logic/invoice_save.php' class='fabutton' method='post'>\n".
+                            "<input type=hidden name='operation' value='mark_invoice_sent'>\n".
+                            "<input type=hidden name='Id' value='$invoice->Id'>\n".
+                            "<button type='submit' >".
+                            "Markera fakturan som skickad".
+                            "</button>\n".
+                            "</form>\n";
+                    }
+                    
+                }
+                echo "</td>\n";
+                echo "<td>";
+                $amount = $invoice->Amount();
+                if (isset($amount)) echo $invoice->Amount() . " SEK";
+                echo "</td>\n";
                 echo "<td>" . $invoice->PaymentReference . " SEK</td>\n";
                 echo "<td>";
-                if (!$invoice->hasPayed() && $invoice->isPastDueDate()) {
-                    showStatusIcon(false);
-                    showStatusIcon(false);
-                } else {
-                    showStatusIcon($invoice->hasPayed());
+                if ($invoice->isSent()) {
+                    if (!$invoice->hasPayed() && $invoice->isPastDueDate()) {
+                        echo showStatusIcon(false);
+                        echo showStatusIcon(false);
+                    } else {
+                        echo showStatusIcon($invoice->hasPayed());
+                    }
                 }
                 echo "</td>\n";
                 
