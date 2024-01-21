@@ -130,7 +130,7 @@ include 'navigation.php';
 
 				<td>
 					<label for="Text">Vem/vilka handlar<br>ryktet om?</label>
-					<label for="Text">Dess får det inte!</label>
+					<label for="Text">Dessa får det inte!</label>
 				</td>
 				<td>
 					
