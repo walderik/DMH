@@ -75,12 +75,12 @@ function updateResult() {
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
 		<tr><td colspan="2"><h2>Normal drift</h2>
-		<p>En lagfart kan antingen producera eller behöva en resurs. 
-    	Om man skriver in att den både producerar och behöver kommer skillnaden att räknas ut.</p>
+		<p>En lagfart kan antingen ha eller behöva en resurs. 
+    	Om man skriver in att den både har och behöver kommer skillnaden att räknas ut.</p>
     	<p>Resultatet räknas om när man ändrar siffrorna, men för att spara behöver man klicka på "Uppdatera".</p>
     	</td>
 			<tr>
-				<td>Producerar</td>
+				<td>Tillgångar</td>
 				<td>
 				<?php 
 				$money = 0;
@@ -108,7 +108,7 @@ function updateResult() {
 				</td>
 			</tr>
 			<tr>
-				<td>Producerar<br>ovanliga resurser</td>
+				<td>Tillgångar<br>ovanliga resurser</td>
 				<td>
                 <?php 
                 

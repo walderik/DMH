@@ -103,7 +103,7 @@ class TITLEDEED_PDF extends FPDF {
 
         $y += 14;
         $this->SetXY($left, $y);
-        $this->Cell(80,7,utf8_decode('Producerar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,utf8_decode('Tillgångar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
 
         $this->MultiCell(0, 7, utf8_decode($titledeed->ProducesString()), 0, 'L');

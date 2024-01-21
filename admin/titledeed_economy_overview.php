@@ -34,7 +34,7 @@ th {
             echo "<table id='$tableId' class='data'>";
             echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                 "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
-                "<th onclick='sortTable(2, \"$tableId\")'>Producerar<br>$currency</th>".
+                "<th onclick='sortTable(2, \"$tableId\")'>Tillgångar<br>$currency</th>".
                 "<th onclick='sortTable(3, \"$tableId\")'>Behöver<br>$currency</th>".
                 "<th onclick='sortTable(4, \"$tableId\")'>Uppgradering<br>$currency</th>".
                 "</tr>\n";

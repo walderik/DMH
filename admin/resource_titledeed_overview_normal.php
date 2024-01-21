@@ -50,13 +50,13 @@ th {
         }
         else {
         ?>
-        <p>Här ställer du in vad alla producerar eller behöver av olika vanliga resurser. 
-        Vill du ange att de producerar något anger du en positiv siffra, om du vill att de 
+        <p>Här ställer du in vad alla har eller behöver av olika vanliga resurser. 
+        Vill du ange att de har något anger du en positiv siffra, om du vill att de 
         behöver något anger du en negativ siffra.<br>
         Om du anger en positiv siffra på pengarna, så är det pengar som följer med lagfarten vid lajvstart, att handla resurser för.<br>
         På balans kan du se hur mycket överskott/underskott det finns av en viss resurs på lajvet.<br>
         Antal kort är så många kort som kommer att behöva skrivas ut.</p>
-        <p>Rutor med grön bakgrund är resurser som lagfarten normalt producerar och bör därför innehålla en positiv siffra.<br>
+        <p>Rutor med grön bakgrund är resurser som lagfarten normalt har och bör därför innehålla en positiv siffra.<br>
         Rutor med röd bakgrund är resurser som lagfarten normalt behöver och bör därför innehålla en negativ siffra.</p>
         <p>Om man ändrar siffrorna sparas det direkt.</p>
         <table>

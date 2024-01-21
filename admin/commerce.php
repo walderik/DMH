@@ -12,6 +12,7 @@ include 'navigation.php';
         <a href="titledeed_admin.php">Verksamheter</a><br>
         <a href="selection_data_admin.php?type=titledeedplace">Platser för verksamheter</a><br>
         <a href="titledeed_economy_overview.php">Översikt ekonomi för verksamheter</a><br>        
+        <a href="titledeed_economy_DOH_rules.php">Regler för nivåer på verksamheter för DÖH</a><br>        
         <br>
         <a href="resource_titledeed_overview_normal.php">Resursfördelning - normala resurser</a><br>
         <a href="resource_titledeed_overview_rare.php">Resursfördelning - ovanliga resurser</a><br>

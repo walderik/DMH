@@ -35,7 +35,7 @@ $currency = $current_larp->getCampaign()->Currency;
 
 $rows = array();
 if ($all_info) {
-    $rows[] = array("Namn", "Plats", "Ägare", "Producerar/Behöver");
+    $rows[] = array("Namn", "Plats", "Ägare", "Tillgångar/Behov");
 } else {
     $rows[] = array("Namn", "Plats", "Ägare");
 }
@@ -56,7 +56,7 @@ foreach ($titledeed_array as $titledeed) {
     
     if ($all_info) {
         $prod_needs = "";
-        $prod_needs = $prod_needs. "Producerar: ";
+        $prod_needs = $prod_needs. "Tillgångar: ";
         $prod_needs = $prod_needs.  $titledeed->ProducesString()."\n";
         $prod_needs = $prod_needs.  "Behöver: ";
         $prod_needs = $prod_needs.  $titledeed->RequiresString()."\n";

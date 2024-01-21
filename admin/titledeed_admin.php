@@ -68,8 +68,8 @@ th {
                 "<th onclick='sortTable(1, \"$tableId\")'>Plats</th>".
                 "<th onclick='sortTable(2, \"$tableId\")'>Ägare</th>".
                 "<th onclick='sortTable(3, \"$tableId\")'>I spel</th>".
-                "<th onclick='sortTable(4, \"$tableId\")'>Normalt<br>Producerar/Behöver</th>".
-                "<th onclick='sortTable(5, \"$tableId\")'>Nu<br>Producerar/Behöver</th>".
+                "<th onclick='sortTable(4, \"$tableId\")'>Normal<br>Tillgång/Behov</th>".
+                "<th onclick='sortTable(5, \"$tableId\")'>Nu<br>Tillgång/Behov</th>".
                 "<th onclick='sortTable(6, \"$tableId\")'>Resultat</th>".
                 "<th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
@@ -110,14 +110,14 @@ th {
                 echo "</td>";
                 echo "<td>";
                 $produces_normally = $titledeed->ProducesNormally();
-                if (!empty($produces_normally)) echo "Producerar: ". commaStringFromArrayObject($produces_normally) . "<br>\n";
+                if (!empty($produces_normally)) echo "Tillgångar: ". commaStringFromArrayObject($produces_normally) . "<br>\n";
                 $requires_normally = $titledeed->RequiresNormally();
                 if (!empty($requires_normally)) echo "Behöver: " . commaStringFromArrayObject($requires_normally)."\n";
                 echo "</td>\n";
                 echo "<td>";
                 echo "<a href='resource_titledeed_form.php?Id=$titledeed->Id'><i class='fa-solid fa-pen' title='Ändra'></i></a><br>";
                 
-                echo "Producerar: ";
+                echo "Tillgångar: ";
                 echo $titledeed->ProducesString()."<br>";
                 
                 echo "Behöver: ";

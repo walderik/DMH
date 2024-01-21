@@ -115,7 +115,7 @@ include_once 'header.php';
 			</tr>
 			<tr>
 
-				<td><label for="Produces">Producerar (normalt)</label></td>
+				<td><label for="Produces">Tillgångar (normalt)</label></td>
 				<td><?php selectionByArray('Produces', $resources, true, false, $titledeed->getSelectedProducesResourcesIds()) ?>
 				</td>
 			</tr>

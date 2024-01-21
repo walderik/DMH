@@ -41,7 +41,7 @@ th {
         }
         else {
         ?>
-        <p>En positiv siffra betyder arr lagfartern producerar varan, en negativ att det behövs för uppgradering.</p>
+        <p>En positiv siffra betyder att verksamheten har varan, en negativ att det behövs för uppgradering.</p>
         <table>
     	<tr>
     		<th></th>
