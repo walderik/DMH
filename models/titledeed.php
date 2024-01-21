@@ -372,9 +372,48 @@ class Titledeed extends BaseModel{
         }
         return $res;
     }
+
+    
+    public function calculateProduces() {
+        $resource_titledeeds = Resource_Titledeed::allForTitledeed($this);
+        $res = 0;
+        foreach ($resource_titledeeds as $resource_titledeed) {
+            if ($resource_titledeed->Quantity > 0) {
+                $resource = $resource_titledeed->getResource();
+                $res = $res + $resource->Price * $resource_titledeed->Quantity;
+            }
+        }
+        return $res;
+    }
+  
+    public function calculateNeeds() {
+        $resource_titledeeds = Resource_Titledeed::allForTitledeed($this);
+        $res = 0;
+        foreach ($resource_titledeeds as $resource_titledeed) {
+            if ($resource_titledeed->Quantity < 0) {
+                $resource = $resource_titledeed->getResource();
+                $res = $res + $resource->Price * $resource_titledeed->Quantity;
+            }
+        }
+        return $res;
+    }
+    
+
+    public function calculateUpgrade() {
+        $resource_titledeeds = Resource_Titledeed::allForTitledeed($this);
+        $res = 0;
+        foreach ($resource_titledeeds as $resource_titledeed) {
+            if ($resource_titledeed->QuantityForUpgrade > 0) {
+                $resource = $resource_titledeed->getResource();
+                $res = $res + $resource->Price * $resource_titledeed->QuantityForUpgrade;
+            }
+        }
+        return $res;
+    }
+    
+    
     
     public function moneySum(LARP $larp) {
-        
         if (is_null($larp)) return 0;
         $sql = "SELECT Sum(regsys_titledeed.Money) as Num FROM regsys_titledeed WHERE ".
             "regsys_titledeed.CampaignId = ?";
