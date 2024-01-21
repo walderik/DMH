@@ -16,7 +16,9 @@ td {
 	margin: 0px;
 }
 
-
+a.no_underline {
+	text-decoration:none;
+}
 
 .input_field {
 	width: 90%;

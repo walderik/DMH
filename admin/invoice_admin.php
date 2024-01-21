@@ -26,12 +26,14 @@ include 'navigation.php';
        $invoice_array = Invoice::allBySelectedLARP($current_larp);
        if (!empty($invoice_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Till</th><th>Beskrivning</th><th>Belopp</th><th>Betalad</th><th>In-lajv<br>egenskaper</th><th>Innehavare</th><th>Bild</th><th>Används<br>i intrig</th><th></th></tr>\n";
+            echo "<tr><th>Nummer</th><th>Mottagare</th><th>Fakturatext</th><th>Belopp</th><th>Referens</th><th>Betalad</th><th></th></tr>\n";
             foreach ($invoice_array as $invoice) {
                 echo "<tr>\n";
-                echo "<td><a href='invoice_form.php?operation=update&id=$invoice->Id'>$invoice->Name</a></td>\n";
+                echo "<td>$invoice->Number</td>\n";
+                echo "<td>$invoice->Name</td>\n";
                 echo "<td>" . $invoice->Description . "</td>\n";
-                echo "<td>" . $invoice->Amount() . "</td>\n";
+                echo "<td>" . $invoice->Amount() . " SEK</td>\n";
+                echo "<td>" . $invoice->PaymentReference . " SEK</td>\n";
                 echo "<td>";
                 if (!$invoice->hasPayed() && $invoice->isPastDueDate()) {
                     showStatusIcon(false);
@@ -40,14 +42,18 @@ include 'navigation.php';
                     showStatusIcon($invoice->hasPayed());
                 }
                 echo "</td>\n";
-                echo "<td>" . $owner . "<a href='prop_owner_form.php?id=" . $prop->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                
+                echo "<td>";
+                echo " <a href='invoice_pdf.php?invoiceId=$invoice->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Visa faktura'></i></a>";
+                echo "</td>\n";
 
                 
                 echo "<td>";
-                
-                
-                echo "<td>";
-                if (empty($intrigues)) echo "<a href='prop_admin.php?operation=delete&id=" . $prop->Id . "'><i class='fa-solid fa-trash'></i>";
+                if (!$invoice->isSent()) {
+                    echo "<a href='invoice_form.php?operation=update&id=$invoice->Id'><i class='fa-solid fa-pen'></i></a>";
+                    echo " ";
+                    echo "<a href='invoice_admin.php?operation=delete&id=$invoice->Id'><i class='fa-solid fa-trash'></i></a>";
+                }
                 echo "</td>\n";
                 echo "</tr>\n";
             }

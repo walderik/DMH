@@ -60,25 +60,24 @@ img {
 
 
     <div class="content"> 
-    <h1><?php echo default_value('action');?> faktura <a href="prop_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1><?php echo default_value('action');?> faktura <a href="invoice_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
     
    
-	<form action="logic/prop_form_save.php" method="post">
+	<form action="logic/invoice_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		
 		<table>
 			<tr>
-				<td><label for="Name">Till</label></td>
-				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($invoice->Name); ?>" size="100" maxlength="250" required></td>
+				<td><label for="Name">Mottagare</label></td>
+				<td><textarea type="text" id="Name" name="Name"  rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($invoice->Name); ?></textarea></td>
 
 			</tr>
 			<tr>
 
-				<td><label for="Description">Beskrivning</label></td>
-				<td><input type="text" id="Description" name="Description"
-					 value="<?php echo htmlspecialchars($invoice->Description); ?>" size="100" maxlength="250" ></td>
+				<td><label for="Description">Fakturatext</label></td>
+				<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($invoice->Description); ?></textarea></td>
 			</tr>
 			<tr>
 
@@ -86,42 +85,68 @@ img {
 				<td><input type="date" id="DueDate" name="DueDate" value="<?php echo $invoice->DueDate ?>" required></td>
 			</tr>
 			<tr>
+
+				<td><label for="StorageLocation">Betalningsreferens</label></td>
+				<td>
+				<?php 
+				if ($operation=='update') {
+				    echo "<input type='text' id='PaymentReference' name='PaymentReference' value='$invoice->PaymentReference' size='100' maxlength='250' required></td>";
+				    
+				} else {
+				    echo "En unik referens skapas när man skapar fakturan. Den går senare att redigera.";
+				}
+				
+				
+				?>
+			</tr>
+			<tr>
 				<td>
 					<label for="Text">Kontaktperson</label>
 				</td>
 				<td>
 					
-					<?php if ($operation=='update') {
-					    echo "<form id='concerns_role' action='choose_role.php' method='post'></form>";
-					    echo "<input form='concerns_role' type='hidden' id='id' name='id' value='$rumour->Id'>";
-					    echo "<input form='concerns_role' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
-					    echo "<input form='concerns_role' type='hidden' id='operation' name='operation' value='add_concerns_role'>";
-					    echo "<button form='concerns_role' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) ryktet handlar om'></i><i class='fa-solid fa-user' title='Lägg till karaktär(er) ryktet handlar om'></i></button>";
-					    
-					} elseif (isset($roleId)) {
-					    $role = Role::loadById($roleId);
-					    echo "<input form='main' type='hidden' id='RoleId' name='RoleId' value='$roleId'>";					    
-					    echo $role->Name;
+					<?php 
+					if ($operation=='update') {
+					    if (isset($invoice->ContactPersonId)) {
+					        $contactPerson = Person::loadById($invoice->ContactPersonId);
+					        echo "<a href='view_person.php?id=$contactPerson->Id'>$contactPerson->Name</a>";
+					    }
+					    echo "<a class='no_underline' href='choose_persons.php?operation=invoice_contact&Id=$invoice->Id'><i class='fa-solid fa-pen' title='Välj kontaktperson'></i></a>";
 					} else {
-					  echo "<strong>När ryktet är skapat, lägga in vilka det handlar om.</strong>";
+					  echo "<strong>När fakturan är skapad kan man lägga in kontaktperson.</strong>";
 					}?>
 					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Fakturan gäller avgifter för
+				</td>
+				<td>
+				<?php 
+					if ($operation=='update') {
+					    echo "<a href='choose_persons.php?operation=invoice_add_concerns&Id=$invoice->Id'<i class='fa-solid fa-plus' title='Lägg till deltagare som fakturan gäller'></i><i class='fa-solid fa-user' title='Lägg till deltagare som fakturan gäller'></i></a>";
+                        echo "<br>";
+					    
+					    
+					    $concerns_array = $invoice->getConcerendRegistrations();
+					    foreach ($concerns_array as $registration) {
+					        $person = $registration->getPerson();
+					        echo "$person->Name $registration->AmountToPay SEK";
+					        echo "<a href='invoice_form.php?operation=delete_concerns?invoiceId=$invoice->Id&registrationId=$registration->Id'><i class='fa-solid fa-trash' title='Ta bort från fakturan'></i></a>";
+                            echo "<br>";
+					    }
+					} else {
+					  echo "<strong>När fakturan är skapad kan man lägga in vilka deltagares avgifter den rör.</strong>";
+					}?>
+				
+				
+				
+				
 					<?php 
-					$concerns_array = $rumour->getConcerns();
-					foreach ($concerns_array as $concern) {
-					    echo "<form id='delete_concern_$concern->Id' action='rumour_form.php' method='post'>";
-					    echo $concern->getViewLink();
-					    echo " ";
-					    echo "<input form='delete_concern_$concern->Id' type='hidden' id='operation' name='operation' value='delete_concern'>";
-					    echo "<input form='delete_concern_$concern->Id' type='hidden' id='id' name='id' value='$rumour->Id'>";
-					    echo "<input form='delete_concern_$concern->Id' type='hidden' id='Referer' name='Referer' value='$referer'>";
-					    echo "<input form='delete_concern_$concern->Id' type='hidden' id='concernId' name='concernId' value='$concern->Id'>";
-					    echo "<button form='delete_concern_$concern->Id' class='invisible' type='submit'><i class='fa-solid fa-trash' title='Ta bort från rykte'></i></button>";
-					    echo "</form>";
-					}
 					?>
 				</td>
-			
+			</tr>
 			
 			
 		</table>
