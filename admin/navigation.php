@@ -59,6 +59,7 @@ function changePart() {
 	      	<a href="organizers.php">Arrangörer</a>
 	      	<a href="forms.php">Anmälningsformulär</a>
             <a href="selection_data_admin.php?type=advertismenttypes">Annonsformat</a>
+            <a href="selection_data_admin.php?type=titledeedplace">Platser för handel</a>
             <a href="bookkeeping_account_admin.php">Bokföringskonton</a>
             <a href="campaign_admin.php">Inställningar för kampanjen</a>
             <a href="larp_admin.php">Lajv i kampanjen</a>

@@ -24,6 +24,9 @@ switch ($type) {
     case "npc":
         $object = NPC::loadById($id);
         break;
+    case "resource":
+        $object = Resource::loadById($id);
+        break;
 }
 
 

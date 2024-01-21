@@ -9,7 +9,9 @@ include 'navigation.php';
         <h1>Handel</h1>
         <p>
         <a href="resource_admin.php">Resurser</a><br>
-        <a href="titledeed_admin.php">Lagfarter</a><br>
+        <a href="titledeed_admin.php">Verksamheter</a><br>
+        <a href="selection_data_admin.php?type=titledeedplace">Platser för verksamheter</a><br>
+        
         <br>
         <a href="resource_titledeed_overview_normal.php">Resursfördelning - normala resurser</a><br>
         <a href="resource_titledeed_overview_rare.php">Resursfördelning - ovanliga resurser</a><br>
@@ -21,8 +23,8 @@ include 'navigation.php';
         <a href="groups_money.php">Pengar till grupper i början på lajvet</a><br>
         <br>
         <br>
-        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till lagfarterna</a><br>
-        <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till lagfarterna</a> 
+        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna</a><br>
+        <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till verksamheterna</a> 
         <br>
         <br>
         <a href="reports/titledeeds_info_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Lista med lagfarter (för notarie)</a><br>  

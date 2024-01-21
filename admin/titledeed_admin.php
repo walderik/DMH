@@ -41,8 +41,8 @@ th {
 <script src="../javascript/table_sort.js"></script>
 
     <div class="content">
-        <h1>Lagfarter <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-        <p>Lagfarter går bara att ta bort om det inte finns några ägare eller instälningar för produktion/behov. 
+        <h1>Verksamheter <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+        <p>Verksamheter går bara att ta bort om det inte finns några ägare eller inställningar för produktion/behov. 
         Detta för att man inte ska råka ta bort lagfarter som är i spel av misstag.</p>
         <p>Ikoner:<br>
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
@@ -50,8 +50,8 @@ th {
         </p>
         <p>
         <a href="titledeed_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a> &nbsp;
-        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till lagfarterna</a> &nbsp; 
-        <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till lagfarterna</a> 
+        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna</a> &nbsp; 
+        <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till verksamheterna</a> 
         <br><br>
         <a href="resource_titledeed_overview_normal.php">Översikt - normala resurser</a> &nbsp; 
         <a href="resource_titledeed_overview_rare.php">Översikt - ovanliga resurser</a>

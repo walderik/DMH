@@ -79,10 +79,19 @@ include_once 'header.php';
 			</tr>
 			<tr>
 
-				<td><label for="Location">Plats</label></td>
+				<td><label for="Location">Plats fritext</label></td>
 				<td><input type="text" id="Location" name="Location"
 					 value="<?php echo htmlspecialchars($titledeed->Location); ?>" size="100" maxlength="250" required></td>
 			</tr>
+			<?php if (TitledeedPlace::isInUse($current_larp)) {?>
+			<tr>
+				<td><label for="Location">Plats</label></td>
+				<td>
+	                <?php TitledeedPlace::selectionDropdown($current_larp, false,true, $titledeed->TitledeedPlaceId); ?>
+				</td>
+			</tr>
+			<?php } ?>	
+
 			<tr>
 
 				<td><label for="Tradeable">Kan säljas</label></td>

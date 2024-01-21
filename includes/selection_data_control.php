@@ -18,6 +18,7 @@ function getObjectName($name) {
         case "guard" : return "Markvakt";
         case "religon" : return "Religion";
         case "advertismenttypes" : return "Annonstyper";
+        case "titledeedplace" : return "Platser för verksamheter";
     }
 }
 
@@ -39,5 +40,6 @@ function getObjectType($name) {
         case "guard" : return "Guard";
         case "religion" : return "Religion";
         case "advertismenttypes" : return "AdvertismentType";
+        case "titledeedplace" : return "TitledeedPlace";
     }
 }

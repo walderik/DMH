@@ -8,6 +8,7 @@ class Resource extends BaseModel{
     public $UnitPlural;
     public $Price = 0;
     public $IsRare = 0;
+    public $ImageId;
     public $CampaignId;
     
     public static $orderListBy = 'IsRare, Name';
@@ -27,6 +28,7 @@ class Resource extends BaseModel{
         if (isset($arr['UnitPlural'])) $this->UnitPlural = $arr['UnitPlural'];
         if (isset($arr['Price'])) $this->Price = $arr['Price'];
         if (isset($arr['IsRare'])) $this->IsRare = $arr['IsRare']; 
+        if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         
     }
@@ -47,11 +49,11 @@ class Resource extends BaseModel{
             $this->Price = 0;
         }
         $stmt = $this->connect()->prepare("UPDATE regsys_resource SET Name=?, 
-            UnitSingular=?, UnitPlural=?, Price=?, IsRare=?,
+            UnitSingular=?, UnitPlural=?, Price=?, IsRare=?, ImageId=?, 
             CampaignId=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->UnitSingular, $this->UnitPlural, 
-            $this->Price, $this->IsRare, $this->CampaignId, $this->Id))) {
+            $this->Price, $this->IsRare, $this->ImageId, $this->CampaignId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -66,10 +68,10 @@ class Resource extends BaseModel{
         }
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_resource (Name, UnitSingular, 
-            UnitPlural, Price, IsRare, CampaignId) VALUES (?,?,?,?,?,?);");
+            UnitPlural, Price, IsRare, ImageId, CampaignId) VALUES (?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->UnitSingular, $this->UnitPlural, 
-            $this->Price, $this->IsRare, $this->CampaignId))) {
+            $this->Price, $this->IsRare, $this->ImageId, $this->CampaignId))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -86,6 +88,15 @@ class Resource extends BaseModel{
         return false;
     }
     
+    public function hasImage() {
+        if (isset($this->ImageId)) return true;
+        return false;
+    }
+    
+    public function getImage() {
+        if (empty($this->ImageId)) return null;
+        return Image::loadById($this->ImageId);
+    }
     
     public static function allByCampaign(LARP $larp) {
         if (is_null($larp)) return Array();

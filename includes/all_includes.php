@@ -80,6 +80,7 @@ include_once $root . '/models/rumour_knows.php';
 include_once $root . '/models/telegram.php';
 include_once $root . '/models/timeline.php';
 include_once $root . '/models/titledeed.php';
+include_once $root . '/models/titledeedplace.php';
 include_once $root . '/models/type_of_food.php';
 include_once $root . '/models/user.php';
 include_once $root . '/models/wealth.php';

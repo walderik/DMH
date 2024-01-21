@@ -22,7 +22,7 @@ include 'navigation.php';
        $resource_array = Resource::allByCampaign($current_larp);
         if (!empty($resource_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Enhet singular</th><th>Enhet plural</th><th>Pris</th><th>Ovanlig</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Enhet singular</th><th>Enhet plural</th><th>Pris</th><th>Ovanlig</th><th>Bild</th><th></th><th></th></tr>\n";
             foreach ($resource_array as $resource) {
                 echo "<tr>\n";
                 echo "<td>" . $resource->Id . "</td>\n";
@@ -32,6 +32,13 @@ include 'navigation.php';
                 echo "<td>" . $resource->Price . "</td>\n";
                 echo "<td>" . ja_nej($resource->IsRare) . "</td>\n";
 
+                if ($resource->hasImage()) {
+                    echo "<td><img width='30' src='../includes/display_image.php?id=$resource->ImageId'/>\n";
+                    echo " <a href='logic/delete_image.php?id=$resource->Id&type=resource'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a></td>\n";
+                }
+                else {
+                    echo "<td><a href='upload_image.php?id=$resource->Id&type=resource'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
+                }
                 
                 echo "<td>" . "<a href='resource_form.php?operation=update&Id=" . $resource->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 echo "<td>" . "<a href='resource_admin.php?operation=delete&Id=" . $resource->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
