@@ -5,14 +5,20 @@ class Invoice extends BaseModel{
     public $Id;
     public $LARPId;
     public $ContactPersonId;
-    public $Name;
-    public $Description;
+    public $Recipient;
+    public $RecipientAddress;
+    public $Matter;
     public $DueDate;
     public $Number;
     public $PaymentReference;
     public $SentDate;
     public $AmountPayed = 0;
     public $PayedDate;
+    
+    const TYPES = [
+        "Normal",
+        "Deltagaravgifter"
+    ];
     
     public static $orderListBy = 'Number';
     
@@ -26,8 +32,9 @@ class Invoice extends BaseModel{
         if (isset($arr['Id']))   $this->Id = $arr['Id'];
         if (isset($arr['LARPId'])) $this->LARPId = $arr['LARPId'];
         if (isset($arr['ContactPersonId'])) $this->ContactPersonId = $arr['ContactPersonId'];
-        if (isset($arr['Name'])) $this->Name = $arr['Name'];
-        if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        if (isset($arr['Recipient'])) $this->Recipient = $arr['Recipient'];
+        if (isset($arr['RecipientAddress'])) $this->RecipientAddress = $arr['RecipientAddress'];
+        if (isset($arr['Matter'])) $this->Matter = $arr['Matter'];
         if (isset($arr['DueDate'])) $this->DueDate = $arr['DueDate'];
         if (isset($arr['Number'])) $this->Number = $arr['Number'];
         if (isset($arr['PaymentReference'])) $this->PaymentReference = $arr['PaymentReference'];
@@ -47,11 +54,11 @@ class Invoice extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_invoice SET LARPId=?, ContactPersonId=?, Name=?, Description=?, DueDate=?, 
+        $stmt = $this->connect()->prepare("UPDATE regsys_invoice SET LARPId=?, ContactPersonId=?, Recipient=?, RecipientAddress=?, Matter=?, DueDate=?, 
                 Number=?, PaymentReference=?, SentDate=?, AmountPayed=?,
                 PayedDate=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->LARPId, $this->ContactPersonId, $this->Name, $this->Description, $this->DueDate, 
+        if (!$stmt->execute(array($this->LARPId, $this->ContactPersonId, $this->Recipient, $this->RecipientAddress, $this->Matter, $this->DueDate, 
             $this->Number, $this->PaymentReference, $this->SentDate, $this->AmountPayed,
             $this->PayedDate, $this->Id))) {
                 $stmt = null;
@@ -65,16 +72,16 @@ class Invoice extends BaseModel{
     # Create a new object in db
     public function create() {
         $larp = $this->getLarp();
-        $this->PaymentReference = "FAKT" . $larp->PaymentReferencePrefix . $this->LARPId . $this->Id;
         $this->Number = static::getMaxNumberForLarp($this->LARPId) + 1;
+        $this->PaymentReference= "";
         
         $connection = $this->connect();
 
-        $stmt = $connection->prepare("INSERT INTO regsys_invoice (LARPId, ContactPersonId, Name, Description, DueDate, 
+        $stmt = $connection->prepare("INSERT INTO regsys_invoice (LARPId, ContactPersonId, Recipient, RecipientAddress, Matter, DueDate, 
             Number, PaymentReference, SentDate, AmountPayed,
-            PayedDate) VALUES (?,?,?,?,?,?,?,?,?,?);");
+            PayedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->LARPId, $this->ContactPersonId, $this->Name, $this->Description, $this->DueDate, 
+        if (!$stmt->execute(array($this->LARPId, $this->ContactPersonId, $this->Recipient, $this->RecipientAddress, $this->Matter, $this->DueDate, 
             $this->Number, $this->PaymentReference, $this->SentDate, $this->AmountPayed,
             $this->PayedDate))) {
                 $this->connect()->rollBack();
@@ -85,6 +92,9 @@ class Invoice extends BaseModel{
             
             $this->Id = $connection->lastInsertId();
             $stmt = null;
+            
+            $this->PaymentReference = "FAKT" . $larp->PaymentReferencePrefix . $this->LARPId . $this->Id;
+            $this->update();
     }
     
     public static function getMaxNumberForLarp($LarpId) {
@@ -112,8 +122,9 @@ class Invoice extends BaseModel{
         return static::countQuery($sql, array($this->Id));
     }
     
-    public function hasPayed() {
-        if ($this->Amount() <= $this->AmountPayed) {
+    public function isPayed() {
+        $amount = $this->Amount();
+        if (($amount > 0) && ($amount <= $this->AmountPayed)) {
             return true;
         }
         return false;
@@ -212,5 +223,18 @@ class Invoice extends BaseModel{
     }
     
     
+    public function markFeesPayed() {
+        $registrations = $this->getConcerendRegistrations();
+        foreach ($registrations as $registration) {
+            $registration->AmountPayed = $registration->AmountToPay;
+            $registration->Payed = $this->PayedDate;
+            $registration->update();
+        }
+    }
     
+    public static function getInvoiceForRegistration(Registration $registration) {
+        $sql = "SELECT * FROM regsys_invoice WHERE Id IN (".
+            "SELECT InvoiceId FROM regsys_invoice_participant WHERE RegistrationId=?)";
+        return static::getOneObjectQuery($sql, array($registration->Id));
+    }
 }

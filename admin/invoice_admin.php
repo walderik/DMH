@@ -19,23 +19,28 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Fakturor</h1>
+        <p>Man kan lägga upp en faktura och redigera den så mycket man vill fram tills dess den är skickad. <br>
+        När den är skickad, eller markerad som skickad går den inte längre att redigera utan bara markera som betalad.<br>
+        När den är makerad som betalad kommer det att finnas ett kvitto på den.</p>
+        
             <a href="invoice_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a><br>
         
        <?php
     
        $invoice_array = Invoice::allBySelectedLARP($current_larp);
-       if (!empty($invoice_array)) {
+       if (!empty($invoice_array)) {   
             echo "<table class='data'>";
-            echo "<tr><th>Nummer</th><th>Mottagare</th><th>Kontaktperson<br>Skicka</th><th>Belopp</th><th>Referens</th><th>Betalad</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Nummer</th><th>Mottagare</th><th>Kontaktperson<br>Skicka</th><th>Belopp</th><th>Referens</th><th>Betalad</th><th>Faktura<br>pdf</th><th></th></tr>\n";
             foreach ($invoice_array as $invoice) {
+                $amount = $invoice->Amount();
                 echo "<tr>\n";
                 echo "<td>$invoice->Number</td>\n";
-                echo "<td>$invoice->Name</td>\n";
+                echo "<td>$invoice->Recipient</td>\n";
                 echo "<td>";
                 if ($invoice->hasContactPerson()) {
                     $name = $invoice->getContactPerson()->Name;
                     echo $name;
-                    if (!$invoice->isSent()) {
+                    if (!$invoice->isSent() && isset($amount)) {
                         echo "<form action='logic/invoice_save.php' class='fabutton' method='post'>\n".
                         "<input type=hidden name='operation' value='send_invoice'>\n".
                         "<input type=hidden name='Id' value='$invoice->Id'>\n".
@@ -44,7 +49,7 @@ include 'navigation.php';
                         "</button>\n".
                         "</form>\n";
                     }
-                } else {
+                } elseif (isset($amount)) {
                     if (!$invoice->isSent()) {
                         echo "<form action='logic/invoice_save.php' class='fabutton' method='post'>\n".
                             "<input type=hidden name='operation' value='mark_invoice_sent'>\n".
@@ -58,18 +63,23 @@ include 'navigation.php';
                 }
                 echo "</td>\n";
                 echo "<td>";
-                $amount = $invoice->Amount();
+
                 if (isset($amount)) echo $invoice->Amount() . " SEK";
                 echo "</td>\n";
-                echo "<td>" . $invoice->PaymentReference . " SEK</td>\n";
+                echo "<td>" . $invoice->PaymentReference . "</td>\n";
                 echo "<td>";
                 if ($invoice->isSent()) {
-                    if (!$invoice->hasPayed() && $invoice->isPastDueDate()) {
+                    echo "<a href='invoice_payment.php?id=$invoice->Id'>";
+                    if (!$invoice->isPayed() && $invoice->isPastDueDate()) {
                         echo showStatusIcon(false);
                         echo showStatusIcon(false);
                     } else {
-                        echo showStatusIcon($invoice->hasPayed());
+                        echo showStatusIcon($invoice->isPayed());
                     }
+                    echo "</a>";
+                } 
+                if($invoice->isPayed()) {
+                    echo " <a href='economy_receipt_pdf.php?invoiceId=$invoice->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Visa kvitto'></i></a>";
                 }
                 echo "</td>\n";
                 

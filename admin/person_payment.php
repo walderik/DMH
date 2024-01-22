@@ -54,6 +54,15 @@ include 'navigation.php';
 		    <?php 
 		    }
 		    ?>
+		    
+		    <?php 
+		    $invoice = $registration->getInvoice();
+		    if (!empty($invoice)) {
+		        echo "<tr><td></td><td><strong>OBS! Avgiften är del av faktura $invoice->Number</strong></td></tr>";
+		    }
+		    
+		    ?>
+		    
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
 			<tr><td valign="top" class="header">Belopp att betala</td><td><input type="number" id="AmountToPay" name="AmountToPay" value="<?php echo $registration->AmountToPay; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
 			<tr><td valign="top" class="header">Belopp betalat</td><td><input type="number" id="AmountPayed" name="AmountPayed" value="<?php echo $registration->AmountPayed; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>

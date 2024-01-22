@@ -32,6 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == 'mark_invoice_sent') {
         $invoice=Invoice::loadById($_POST['Id']);
         $invoice->setSent();
+    } elseif ($operation == 'invoice_payment') {
+        $invoice=Invoice::loadById($_POST['Id']);
+        if (isset($_POST['AmountPayed'])) $invoice->AmountPayed = $_POST['AmountPayed'];
+        if (isset($_POST['PayedDate'])) $invoice->PayedDate = $_POST['PayedDate'];
+        $invoice->update();
+        if($invoice->isPayed()) $invoice->markFeesPayed(); 
     }
     
 }

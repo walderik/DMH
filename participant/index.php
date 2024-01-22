@@ -130,10 +130,16 @@ include "navigation.php";
                         }
                         echo "<tr><td>Godkända karaktärer</td><td>" . showStatusIcon($person->isApprovedCharacters($current_larp)). "</td></tr>\n";
                         echo "<tr><td>Betalat</td><td>" . showStatusIcon($person->hasPayed($current_larp));
+                        
+                       
                         if (!$person->hasPayed($current_larp)) {
-
-                            $campaign = $current_larp->getCampaign();
-                            echo "</td><td>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. Betalas senast ".$registration->paymentDueDate();
+                            $invoice = $registration->getInvoice();
+                            if (!empty($invoice)) {
+                                echo "</td><td>Avgiften är del av en faktura som betalas av $invoice->Recipient";
+                            } else {
+                                $campaign = $current_larp->getCampaign();
+                                echo "</td><td>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. Betalas senast ".$registration->paymentDueDate();
+                            }
                         }
                         echo "</td></tr>\n";
  

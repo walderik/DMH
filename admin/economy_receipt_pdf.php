@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
+
 if (isset($_GET['bookkeepingId'])) {
     $bookkeepingId = $_GET['bookkeepingId'];
     $bookkeeping = Bookkeeping::loadById($bookkeepingId);
@@ -21,7 +22,7 @@ if (isset($_GET['bookkeepingId'])) {
         header('Location: index.php'); // Posten finns inte
         exit;
     } elseif ($bookkeeping->LarpId != $current_larp->Id) {
-        header('Location: index.php'); // Tillhr inte aktuellt lajv
+        header('Location: index.php'); // Tillhör inte aktuellt lajv
         exit;
     }
     $pdf = new Receipt_PDF();
@@ -39,7 +40,7 @@ if (isset($_GET['bookkeepingId'])) {
         header('Location: index.php'); // Posten finns inte
         exit;
     } elseif ($registration->LARPId != $current_larp->Id) {
-        header('Location: index.php'); // Tillhr inte aktuellt lajv
+        header('Location: index.php'); // Tillhör inte aktuellt lajv
         exit;
     }
     $pdf = new Receipt_PDF();
@@ -49,6 +50,24 @@ if (isset($_GET['bookkeepingId'])) {
     $pdf->AddFont('SpecialElite','');
     $pdf->SetSubject('Kvitto');
     $pdf->nytt_kvitto_avgift($registration);
+    
+} elseif (isset($_GET['invoiceId'])) {
+    $invoiceId = $_GET['invoiceId'];
+    $invoice = Invoice::loadById($invoiceId);
+    if (empty($invoice)) {
+        header('Location: index.php'); // Posten finns inte
+        exit;
+    } elseif ($invoice->LARPId != $current_larp->Id) {
+        header('Location: index.php'); // Tillhör inte aktuellt lajv
+        exit;
+    }
+    $pdf = new Receipt_PDF();
+    $pdf->SetTitle('Kvitto');
+    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetCreator('Omnes Mundi');
+    $pdf->AddFont('SpecialElite','');
+    $pdf->SetSubject('Kvitto');
+    $pdf->receipt_invoice($invoice);
     
 }
 

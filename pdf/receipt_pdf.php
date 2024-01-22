@@ -45,8 +45,8 @@ class Receipt_PDF extends FPDF {
         
         
         $y += 25;
-        $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Rubrik'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        //$this->SetXY($left, $y);
+        //$this->Cell(80,10,utf8_decode('Rubrik'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
         $this->Cell(80,10,utf8_decode($matter),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $y += 3;
@@ -59,7 +59,7 @@ class Receipt_PDF extends FPDF {
         $this->SetXY($left2, $y);
         $this->Cell(80,10,utf8_decode($who),0,1);
         
-        if (!empty($bookkeeping->Text)) {
+        if (!empty($specification)) {
             $y += 7;
             $this->SetXY($left, $y);
             $this->Cell(80,10,utf8_decode('Specifikation'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
@@ -103,6 +103,14 @@ class Receipt_PDF extends FPDF {
         $person = $registration->getPerson();
         $larp = $registration->getLARP();
         $this->SetText("Kvitto", "Avgift för ".$larp->Name, $person->Name, "Avgift för deltagande på ".$larp->Name, $registration->AmountPayed, $registration->Payed, $larp);
+    }
+
+    function receipt_invoice(Invoice $invoice)
+    {
+        $this->AddPage('L','A5',0);
+        
+        $larp = $invoice->getLARP();
+        $this->SetText("Kvitto", "Faktura $invoice->Number", $invoice->Recipient, $invoice->Matter, $invoice->AmountPayed, $invoice->PayedDate, $larp);
     }
     
 }

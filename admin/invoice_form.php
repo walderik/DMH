@@ -72,18 +72,23 @@ img {
 	<form action="logic/invoice_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
-    			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		
 		<table>
 			<tr>
 				<td><label for="Name">Mottagare</label></td>
-				<td><textarea type="text" id="Name" name="Name"  rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($invoice->Name); ?></textarea></td>
+				<td><input type="text" id="Recipient" name="Recipient"  maxlength="250" value='<?php echo htmlspecialchars($invoice->Recipient); ?>' required></td>
+
+			</tr>
+			<tr>
+				<td><label for="Name">Adressering<br>inkludera mottagarens namn</label></td>
+				<td><textarea type="text" id="RecipientAddress" name="RecipientAddress"  rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($invoice->RecipientAddress); ?></textarea></td>
 
 			</tr>
 			<tr>
 
 				<td><label for="Description">Fakturatext</label></td>
-				<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($invoice->Description); ?></textarea></td>
+				<td><textarea id="Matter" name="Matter" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($invoice->Matter); ?></textarea></td>
 			</tr>
 			<tr>
 

@@ -452,5 +452,7 @@ class Registration extends BaseModel{
         
     }
     
-    
+    public function getInvoice() {
+        return Invoice::getInvoiceForRegistration($this);
+    }
 }

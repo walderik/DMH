@@ -1,11 +1,12 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-global $root;
+global $root, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
-require_once $root . '/includes/fpdf185/fpdf.php';
-require_once $root . '/includes/init.php';
 
+require_once $root . '/includes/fpdf185/fpdf.php';
+require_once $root . '/includes/fpdf185/script/mem_image.php';
+require_once $root . '/includes/all_includes.php';
 
 class Invoice_PDF extends FPDF {
     
@@ -57,7 +58,11 @@ class Invoice_PDF extends FPDF {
         $this->Cell(80,10,utf8_decode('Mottagare'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $y += 7;
         $this->SetXY($left_header, $y);
-        $this->MultiCell(0,8,utf8_decode($invoice->Name),1,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        if (!empty($invoice->RecipientAddress)) {
+            $this->MultiCell(0,8,utf8_decode($invoice->RecipientAddress),1,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        } else {
+            $this->MultiCell(0,8,utf8_decode($invoice->Recipient),1,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        }
         $y = $this->GetY();
         
         
@@ -96,8 +101,8 @@ class Invoice_PDF extends FPDF {
         
         $y += 14;
         $this->SetXY($left, $y);
-        //$this->Cell(80,10,utf8_decode($invoice->Description),0,1);
-        $this->MultiCell(0,8,utf8_decode($invoice->Description."\n\nSumma ".$invoice->Amount()." kr"),1,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        //$this->Cell(80,10,utf8_decode($invoice->Matter),0,1);
+        $this->MultiCell(0,8,utf8_decode($invoice->Matter."\n\nSumma ".$invoice->Amount()." kr"),1,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         $y = $this->GetY();    
         
         $y += 7;
