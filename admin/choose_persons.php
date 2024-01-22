@@ -60,6 +60,7 @@ $multiple=false;
  include 'navigation.php';
 ?>
 
+<script src="../javascript/table_sort.js"></script>
 
     <div class="content">   
         <h1>Lägg till <?php echo $purpose;?></h1>
@@ -75,15 +76,35 @@ $multiple=false;
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
     		    <input type='hidden' id='Id' name='Id' value='<?php echo $id ?>'>
    
-    		    <table class='data'>
-    		    <tr><th></th><th>Namn</th><th>Ålder på lajvet</th></tr>
-    		    <?php 
-    		    foreach ($persons as $person)  {
+   
+               <?php 
+               
+               $tableId = "persons";
+               $colnum = 1;
+               echo "<table id='$tableId' class='data'>";
+               echo "<tr>".
+                   "<th></th>".
+                   "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
+                   "<th onclick='sortTableNumbers(". $colnum++ .", \"$tableId\");'>Ålder på lajvet</th>";
+               echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Grupp</th>".
+                   "</tr>";
+               
+     		    foreach ($persons as $person)  {
+    		        if ($operation == "invoice_add_concerns") {
+    		            $registration = $person->getRegistration($current_larp);
+    		            if ($registration->hasPayed()) continue;
+    		        }
     		        echo "<tr>\n";
     		        
     		        echo "<td><input type='$type' id='Person$person->Id' name='PersonId$array' value='$person->Id'></td>";
-    		        echo "<td>" . $person->Name . "</td>\n";
+    		        echo "<td>$person->Name</td>\n";
     		        echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>\n";
+    		        
+    		        $role = $person->getMainRole($current_larp);
+    		        $group = $role->getGroup();
+    		        if (isset($group)) $groupName = $group->Name;
+    		        else $groupName = "";
+    		        echo "<td>" . $groupName . "</td>\n";
     		        
     		        echo "</tr>\n";
     		    }
