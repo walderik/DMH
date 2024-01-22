@@ -136,7 +136,9 @@ img {
 				<td>
 				<?php 
 					if ($operation=='update') {
-					    echo "<a href='choose_persons.php?operation=invoice_add_concerns&Id=$invoice->Id'<i class='fa-solid fa-plus' title='Lägg till deltagare som fakturan gäller'></i><i class='fa-solid fa-user' title='Lägg till deltagare som fakturan gäller'></i></a>";
+					    echo "<a class='no_underline' href='choose_persons.php?operation=invoice_add_concerns&Id=$invoice->Id'>".
+                           "<i class='fa-solid fa-plus' title='Lägg till deltagare som fakturan gäller'></i>".
+				           "<i class='fa-solid fa-user' title='Lägg till deltagare som fakturan gäller'></i></a>";
                         echo "<br>";
 					    
 					    
@@ -144,7 +146,7 @@ img {
 					    foreach ($concerns_array as $registration) {
 					        $person = $registration->getPerson();
 					        echo "$person->Name $registration->AmountToPay SEK";
-					        echo "<a href='invoice_form.php?operation=delete_concerns?invoiceId=$invoice->Id&registrationId=$registration->Id'><i class='fa-solid fa-trash' title='Ta bort från fakturan'></i></a>";
+					        echo "<a href='logic/invoice_save.php?operation=delete_concerns&Id=$invoice->Id&registrationId=$registration->Id'><i class='fa-solid fa-trash' title='Ta bort från fakturan'></i></a>";
                             echo "<br>";
 					    }
 					} else {

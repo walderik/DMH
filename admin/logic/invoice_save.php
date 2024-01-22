@@ -42,5 +42,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    
+    $operation = $_GET['operation'];
+
+    if ($operation == 'delete_concerns') {
+        $invoice=Invoice::loadById($_GET['Id']);
+        $invoice->removeConcernedRegistration($_GET['registrationId']);
+        header('Location: ../invoice_form.php?operation=update&id='.$invoice->Id);
+        exit;
+    }
+    
+}
 
 header('Location: ../invoice_admin.php');

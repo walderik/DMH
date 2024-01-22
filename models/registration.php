@@ -452,6 +452,12 @@ class Registration extends BaseModel{
         
     }
     
+    public function isPartOfInvoice() {
+        $invoice = $this->getInvoice();
+        if (isset($invoice)) return true;
+        return false;
+    }
+    
     public function getInvoice() {
         return Invoice::getInvoiceForRegistration($this);
     }

@@ -92,7 +92,7 @@ $multiple=false;
      		    foreach ($persons as $person)  {
     		        if ($operation == "invoice_add_concerns") {
     		            $registration = $person->getRegistration($current_larp);
-    		            if ($registration->hasPayed()) continue;
+    		            if ($registration->hasPayed() || $registration->isPartOfInvoice()) continue;
     		        }
     		        echo "<tr>\n";
     		        
