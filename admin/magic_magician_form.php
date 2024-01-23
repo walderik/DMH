@@ -1,4 +1,4 @@
-<?php
+Rm<?php
 include_once 'header.php';
 
 
@@ -74,7 +74,8 @@ $magician = Magic_Magician::newWithDefault();;
 			</tr>
 			<tr>
 				<td><label for="Description">Magiskolan</label></td>
-				<td><?php selectionDropDownByArray("MagicSchoolId", $schools, false, $magician->MagicSchoolId)?></td>
+				<td><?php 
+				if (!empty($shools)) selectionDropDownByArray("MagicSchoolId", $schools, false, $magician->MagicSchoolId)?></td>
 			</tr>
 			<tr>
 				<td><label for="Level">Nivå</label></td>

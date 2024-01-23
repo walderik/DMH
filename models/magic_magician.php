@@ -36,8 +36,8 @@ class Magic_Magician extends BaseModel{
         if (isset($this->MagicSchoolId) && $this->MagicSchoolId=='null') $this->MagicSchoolId = null;
         if (isset($this->MasterMagicianId) && $this->MasterMagicianId=='null') $this->MasterMagicianId = null;
         
-        if (isset($this->StaffApproved) && $this->StaffApproved=='0000-00-00') $this->StaffApproved = null;
-        if (isset($this->Workshop) && $this->Workshop=='0000-00-00') $this->Workshop = null;
+        if (isset($this->StaffApproved) && ($this->StaffApproved=='0000-00-00' || $this->StaffApproved=='')) $this->StaffApproved = null;
+        if (isset($this->Workshop) && ($this->Workshop=='0000-00-00' || $this->Workshop=='')) $this->Workshop = null;
     }
     
     
