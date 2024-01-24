@@ -12,9 +12,9 @@ class Receipt_PDF extends FPDF {
     
     function Header()
     {
-         global $root, $current_larp;
-         $omlogo = "../images/omnes_mundi_rund.jpg";
-         $this->Image($omlogo, 10, 10, -300);
+        global $root, $current_larp;
+        $omlogo = $root . '/images/'.$current_larp->getCampaign()->Abbreviation.'_logo_vit.jpg';
+        $this->Image($omlogo, 10, 10, -200);
     }
     
     function Footer()
@@ -24,7 +24,7 @@ class Receipt_PDF extends FPDF {
         // Select Arial italic 8
         $this->SetFont('Arial', 'I', 8);
         // Print centered page number
-        $this->Cell(0, 10, 'Genererad av Omnes Mundi', 0, 0, 'C');
+        $this->Cell(0, 10, utf8_decode('Genererad av Omnes Mundi för Berghems Vänner'), 0, 0, 'C');
     }
     
     function SetText(string $headline, $matter, $who, $specification, $amount, $date, $larp) {
@@ -44,7 +44,7 @@ class Receipt_PDF extends FPDF {
         
         
         
-        $y += 25;
+        $y += 45;
         //$this->SetXY($left, $y);
         //$this->Cell(80,10,utf8_decode('Rubrik'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
@@ -63,8 +63,9 @@ class Receipt_PDF extends FPDF {
             $y += 7;
             $this->SetXY($left, $y);
             $this->Cell(80,10,utf8_decode('Specifikation'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
-            $this->SetXY($left2, $y);
-            $this->Cell(80,10,utf8_decode($specification),0,1);
+            $this->SetXY($left2, $y+1);
+            $this->MultiCell(0,8,utf8_decode($specification),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+            $y = $this->GetY();
             
         }
         
@@ -90,7 +91,7 @@ class Receipt_PDF extends FPDF {
     
     function nytt_kvitto(Bookkeeping $bookkeeping)
     {
-        $this->AddPage('L','A5',0);
+        $this->AddPage();
         
         $this->SetText("Kvitto", $bookkeeping->Headline, $bookkeeping->Who, $bookkeeping->Text, $bookkeeping->Amount, $bookkeeping->Date, $bookkeeping->getLarp());
     }
@@ -98,7 +99,7 @@ class Receipt_PDF extends FPDF {
 
     function nytt_kvitto_avgift(Registration $registration)
     {
-        $this->AddPage('L','A5',0);
+        $this->AddPage();
         
         $person = $registration->getPerson();
         $larp = $registration->getLARP();
@@ -107,7 +108,7 @@ class Receipt_PDF extends FPDF {
 
     function receipt_invoice(Invoice $invoice)
     {
-        $this->AddPage('L','A5',0);
+        $this->AddPage();
         
         $larp = $invoice->getLARP();
         $this->SetText("Kvitto", "Faktura $invoice->Number", $invoice->Recipient, $invoice->Matter, $invoice->AmountPayed, $invoice->PayedDate, $larp);
