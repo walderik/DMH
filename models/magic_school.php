@@ -125,5 +125,10 @@ class Magic_School extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
+    public function isInIse() {
+        if (!empty($this->getAllMagicians())) return true;
+        if (!empty($this->getAllSpells())) return true;
+        return false;
+    }
     
 }

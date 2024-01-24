@@ -38,7 +38,9 @@ include 'navigation.php';
                 echo "<td>" . $school->OrganizerNotes . "</td>\n";
                 
                 echo "<td>" . "<a href='magic_school_form.php?operation=update&Id=" . $school->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='magic_school_form.php?operation=delete&Id=" . $school->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>";
+                if (!$school->isInIse()) echo "<a href='magic_schools_admin.php?operation=delete&Id=" . $school->Id . "'><i class='fa-solid fa-trash'></i>";
+                echo "</td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
