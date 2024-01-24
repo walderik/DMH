@@ -14,7 +14,7 @@ class Invoice_PDF extends FPDF {
     function Header()
     {
         global $root, $current_larp;
-         $omlogo = $root . '/images/'.$current_larp->getCampaign()->Abbreviation.'_logo.jpg';
+         $omlogo = $root . '/images/'.$current_larp->getCampaign()->Abbreviation.'_logo_vit.jpg';
          $this->Image($omlogo, 10, 10, -200);
     }
     
