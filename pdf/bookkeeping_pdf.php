@@ -135,9 +135,64 @@ class Bookkeeping_PDF extends PDF_MemImage {
             $this->MultiCell($mitten-$left2, 5.5, utf8_decode($bookkeeping->Text));
             
         }
-        
-        
     }
+    
+    
+    function SetTextInvoice(Invoice $invoice) {
+        global $y, $mitten;
+        $txt_font='Helvetica';
+        $left = 11;
+        //$page_height = $this->GetPageHeight();
+        $left2 = $left + 30;
+        
+        $this->SetFont($txt_font,'',16);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
+        
+        $y += 3;
+        
+        
+        $this->SetXY($left, $y);
+        $this->Cell(80,10,utf8_decode("Faktura ".$invoice->Number." "),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left2, $y);
+        $this->Cell(80,10,utf8_decode($invoice->Recipient),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        
+        $this->SetFont($txt_font,'',12);
+        
+        $y += 7;
+        $this->SetXY($left2, $y);
+        $typetxt = '';
+        $typetxt = "Inkomst";
+        $this->Cell(80,10,utf8_decode($typetxt),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        
+        $y += 3;
+        
+        
+        $y += 7;
+        $this->SetXY($left, $y);
+        $this->Cell(80,10,utf8_decode('Summa'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left2, $y);
+        $this->Cell(80,10,utf8_decode($invoice->FixedAmount),0,1);
+        
+        $y += 7;
+        $this->SetXY($left, $y);
+        $this->Cell(80,10,utf8_decode('Datum'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left2, $y);
+        $this->Cell(80,10,utf8_decode($invoice->PayedDate),0,1);
+        
+        $y += 7;
+        $this->SetXY($left, $y);
+        $this->Cell(80,10,utf8_decode(''),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left2, $y+2.1);
+        $this->MultiCell($mitten-$left2, 5.5, "Kvitto finns i separat pdf");
+        
+        $y += 7;
+        $this->SetXY($left, $y);
+        $this->Cell(80,10,utf8_decode('Specifikation'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left2, $y+2.1);
+        $this->MultiCell($mitten-$left2, 5.5, utf8_decode($invoice->Matter));
+            
+    }
+    
+    
     
     function printBookkeepings($bookkeepings) {
         global $mitten;
@@ -149,6 +204,18 @@ class Bookkeeping_PDF extends PDF_MemImage {
             $this->SetText($bookkeeping);
         }
     }
+ 
+    function printInvoices($invoices) {
+        global $mitten;
+        $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
+        
+        foreach($invoices as $invoice) {
+            $y=0;
+            $this->AddPage();
+            $this->SetTextInvoice($invoice);
+        }
+    }
+    
     
 }
 

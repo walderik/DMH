@@ -7,6 +7,7 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 include_once 'header.php';
 
 require_once $root . '/pdf/invoice_pdf.php';
+require_once $root . '/pdf/invoice_payed_pdf.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] != "GET") {
@@ -24,7 +25,12 @@ if (isset($_GET['invoiceId'])) {
         header('Location: index.php'); // Tillhör inte aktuellt lajv
         exit;
     }
-    $pdf = new Invoice_PDF();
+    if ($invoice->isPayed() && isset($_GET['showPayed'])) {
+        $pdf = new Invoice_payed_PDF();
+    } else {
+        $pdf = new Invoice_PDF();
+    }
+
     $pdf->SetTitle('Faktura');
     $pdf->SetAuthor(utf8_decode($current_larp->Name));
     $pdf->SetCreator('Omnes Mundi');

@@ -12,6 +12,11 @@ $pdf->SetTitle(utf8_decode('Alla verifikationer'));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator(utf8_decode('Omnes Mundi'));
 $pdf->SetSubject(utf8_decode('Alla verifikatoner'));
+
 $pdf->printBookkeepings($bookkeepings);
+
+$invoices = Invoice::getAllNormalInvoices($current_larp);
+$pdf->printInvoices($invoices);
+
 
 $pdf->Output();

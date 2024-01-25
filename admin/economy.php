@@ -97,7 +97,7 @@ include 'navigation.php';
            }
            if ($bookkeeping->Amount > 0) {
                echo " <a href='economy_form.php?operation=update_income&id=$bookkeeping->Id'><i class='fa-solid fa-pen' title='Ändra inkomst'></i></a>";
-               echo " <a href='economy_receipt_pdf.php?bookkeepingId=$bookkeeping->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i></a>";
+               echo " <a href='economy_receipt_pdf.php?bookkeepingId=$bookkeeping->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Visa kvitto'></i></a>";
            } else {
                echo " <a href='economy_form.php?operation=update_expense&id=$bookkeeping->Id'><i class='fa-solid fa-pen' title='Ändra utgift'></i></a>";
                
@@ -108,6 +108,20 @@ include 'navigation.php';
            $sum += $bookkeeping->Amount;
            echo "</tr>\n";
        }
+       $invoices = Invoice::getAllNormalInvoices($current_larp);
+       foreach ($invoices as $invoice) {
+           echo "<tr>\n";
+           echo "<td>Faktura $invoice->Number </td>\n";
+           echo "<td>$invoice->PayedDate</td>\n";
+           echo "<td>$invoice->Recipient";
+           echo " <a href='invoice_pdf.php?invoiceId=$invoice->Id&showPayed=1' target='_blank'><i class='fa-solid fa-file-pdf' title='Visa faktura'></i></a>";
+           echo "</td>\n";
+           echo "<td>Fakturor</td>";
+           echo "<td class='amount'>" .number_format((float)$invoice->FixedAmount, 2, ',', '')."</td>";
+           $sum += $invoice->FixedAmount;
+           echo "</tr>\n";
+       }
+       
        $registration_fees = Registration::totalFeesPayed($current_larp);
        $sum += $registration_fees;
        echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Deltagaravgifter</td><td></td><td class='amount'>".number_format((float)$registration_fees, 2, ',', '')."</td></tr>";

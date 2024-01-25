@@ -9,6 +9,7 @@ include_once 'header.php';
             $operation = $_GET['operation'];
         }
         if ($operation == 'new') {
+            $invoice->InvoiceType = $_GET['InvoiceType'];
         } elseif ($operation == 'update') {
             $invoice = Invoice::loadById($_GET['id']);            
         } else {
@@ -73,6 +74,7 @@ img {
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+		<input type="hidden" id="InvoiceType" name="InvoiceType" value="<?php echo $invoice->InvoiceType?>">
 		
 		<table>
 			<tr>
@@ -90,6 +92,12 @@ img {
 				<td><label for="Description">Fakturatext</label></td>
 				<td><textarea id="Matter" name="Matter" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($invoice->Matter); ?></textarea></td>
 			</tr>
+			<?php if ($invoice->InvoiceType == Invoice::NORMAL_INVOICE) {?>
+			<tr>
+				<td>Summa</td>
+				<td><input type="number" step="1" id="FixedAmount" name="FixedAmount"  min="0" maxlength="250" value='<?php echo $invoice->FixedAmount ?>' required></td>
+			</tr>
+			<?php }?>
 			<tr>
 
 				<td><label for="StorageLocation">Betalningsdatum</label></td>
@@ -129,6 +137,8 @@ img {
 					
 				</td>
 			</tr>
+			
+			<?php if ($invoice->InvoiceType == Invoice::FEE_INVOICE) {?>
 			<tr>
 				<td>
 					Fakturan gäller avgifter för
@@ -156,10 +166,9 @@ img {
 				
 				
 				
-					<?php 
-					?>
 				</td>
 			</tr>
+			<?php }?>
 			
 			
 		</table>

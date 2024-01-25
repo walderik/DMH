@@ -32,9 +32,16 @@ foreach($bookkeepings as $bookkeeping) {
     $rows[] = array($bookkeeping->Number, $bookkeeping->Date, 
         $bookkeeping->Headline, $bookkeeping->getBookkeepingAccount()->Name, number_format((float)$bookkeeping->Amount, 2, ',', ''));
     $sum += $bookkeeping->Amount;
-    
-
 }
+
+
+$invoices = Invoice::getAllNormalInvoices($current_larp);
+foreach ($invoices as $invoice) {
+    $rows[] = array("Faktura ".$invoice->Number, $invoice->PayedDate,
+        $invoice->Recipient, "Fakturor", number_format((float)$invoice->FixedAmount, 2, ',', ''));
+    $sum += $invoice->FixedAmount;
+}
+
 $registration_fees = Registration::totalFeesPayed($current_larp);
 $sum += $registration_fees;
 

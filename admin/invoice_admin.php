@@ -23,7 +23,8 @@ include 'navigation.php';
         När den är skickad, eller markerad som skickad går den inte längre att redigera utan bara markera som betalad.<br>
         När den är makerad som betalad kommer det att finnas ett kvitto på den.</p>
         
-            <a href="invoice_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a><br>
+            <a href="invoice_form.php?operation=new&InvoiceType=<?php echo Invoice::FEE_INVOICE?>"><i class="fa-solid fa-file-circle-plus"></i>Ny faktura för deltagaravgifter</a><br>
+            <a href="invoice_form.php?operation=new&InvoiceType=<?php echo Invoice::NORMAL_INVOICE?>"><i class="fa-solid fa-file-circle-plus"></i>Ny faktura på fast summa</a><br>
         
        <?php
     
@@ -64,7 +65,7 @@ include 'navigation.php';
                 echo "</td>\n";
                 echo "<td>";
 
-                if (isset($amount)) echo $invoice->Amount() . " SEK";
+                if (isset($amount)) echo $amount . " SEK";
                 echo "</td>\n";
                 echo "<td>" . $invoice->PaymentReference . "</td>\n";
                 echo "<td>";

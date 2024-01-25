@@ -4,6 +4,7 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 
 require_once $root . '/pdf/bookkeeping_pdf.php';
+require_once $root . '/pdf/invoice_payed_pdf.php';
 include_once '../header.php';
 
 
@@ -24,6 +25,10 @@ $pdf->SetCreator(utf8_decode('Omnes Mundi'));
 $pdf->SetSubject(utf8_decode('Alla verifikatoner'));
 $pdf->printBookkeepings($bookkeepings);
 
+$invoices = Invoice::getAllNormalInvoices($current_larp);
+$pdf->printInvoices($invoices);
+
+
 $zip->addFromString('Alla verifikatoner.pdf',$pdf->Output('S'));
 
 
@@ -31,6 +36,18 @@ $zip->addFromString('Alla verifikatoner.pdf',$pdf->Output('S'));
 $pdf_images = Image::getAllPDFVerifications($current_larp);
 foreach ($pdf_images as $pdf_image) {
     $zip->addFromString($pdf_image->file_name, $pdf_image->file_data);
+}
+
+foreach ($invoices as $invoice) {
+    $pdf = new Invoice_payed_PDF();
+    $pdf->SetTitle('Faktura');
+    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetCreator('Omnes Mundi');
+    $pdf->AddFont('SpecialElite','');
+    $pdf->SetSubject('Faktura');
+    $pdf->ny_faktura($invoice);
+
+    $zip->addFromString('Faktura '.$invoice->Number.'.pdf',$pdf->Output('S'));
 }
 
 $zip->close();
