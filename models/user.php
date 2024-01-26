@@ -180,6 +180,12 @@ class User extends BaseModel{
         return true;
     }
     
+    public static function getAllWithAccessToLarp(LARP $larp) {
+        $campaingUsers = User::getAllWithAccessToCampaign($larp->getCampaign());
+        $onlyLarp = User::getAllWithAccessOnlyToLarp($larp);
+        return array_merge($campaingUsers, $onlyLarp);
+    }
+    
     public static function getAllWithAccessToCampaign(Campaign $campaign) {
         if (is_null($campaign)) return null;
         

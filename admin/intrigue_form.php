@@ -104,8 +104,8 @@ include 'navigation.php';
 
 				<td><label for="Notes">Ansvarig arrangör</label></td>
 			<td><?php 
-			     $campaign = $current_larp->getCampaign();
-			     $organizers = User::getAllWithAccessToCampaign($campaign);
+			     
+			     $organizers = User::getAllWithAccessToLarp($current_larp);
 			     selectionByArray('ResponsibleUser', $organizers, false, true, $intrigue->ResponsibleUserId) ?></td>
 			</tr>
 		</table>
