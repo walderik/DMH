@@ -16,7 +16,7 @@ class TITLEDEED_PDF extends FPDF {
 //         $this->Image($root . '/images/telegram.png',null,null,200);
     }
     
-    function SetText(Titledeed $titledeed, Campaign $campaign, bool $odd) {
+    function SetTextDMH(Titledeed $titledeed, Campaign $campaign, bool $odd) {
         
         $left = 11;
         $page_height = $this->GetPageHeight();
@@ -124,6 +124,92 @@ class TITLEDEED_PDF extends FPDF {
         $y = $this->GetY();
     }
     
+    function SetTextDOH(Titledeed $titledeed, Campaign $campaign, bool $odd) {
+        
+        $page_height = $this->GetPageHeight();
+        $y = $odd ? 0 : ($page_height/2);
+        
+        $page_width = $this->GetPageWidth();
+        
+        $left_1_1 = 10;
+        $left_1_2 = $left_1_1 + 11;
+        
+        $left_2_1 = $page_width/2 + 11;
+        $left_2_2 = $left_2_1 + 10;
+        
+        if ($odd) $this->Line(0, ($page_height/2), $this->GetPageWidth(), ($page_height/2));
+        
+        $font1 = 'KaiserzeitGotisch';
+        $font2 = 'ComicRunes';
+
+        
+        
+        $y += 13;
+        $this->SetXY($left_1_1, $y);
+        $size = 40;
+        $this->SetFont($font1,'',$size);
+        
+        $txt = $titledeed->Name;
+        $slen = $this->GetStringWidth($txt,0);
+        while ($slen > ($page_width/2-15)) {
+            $size -= 1;
+            $this->SetFont($font1,'',$size);
+            $slen = $this->GetStringWidth($txt,0);
+        }
+        
+        $this->Cell(0,10,utf8_decode($txt),0,1);
+        
+
+        $this->SetXY($left_2_1, $y);
+        $size = 40;
+        $this->SetFont($font2,'',$size);
+        
+        $txt = $titledeed->Name;
+        $slen = $this->GetStringWidth($txt,0);
+        while ($slen > ($page_width/2-15)) {
+            $size -= 1;
+            $this->SetFont($font2,'',$size);
+            $slen = $this->GetStringWidth($txt,0);
+        }
+        $this->Cell(0,10,utf8_decode($txt),0,1);
+        
+        
+        $y += 14;
+        $this->SetFont($font1,'',20);
+        $this->SetXY($left_1_1, $y);
+        $this->Cell(80,7,utf8_decode('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+
+        $this->SetXY($left_1_2, $y+7);
+        $this->MultiCell($page_width/2-20, 7, utf8_decode($titledeed->RequiresString()), 0, 'L');
+        $y1 = $this->GetY();
+
+        $this->SetFont($font2,'',20);
+        $this->SetXY($left_2_1, $y);
+        $this->Cell(80,7,utf8_decode('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left_2_2, $y+7);
+        $this->MultiCell($page_width/2-20, 7, utf8_decode($titledeed->RequiresString()), 0, 'L');
+        $y2 = $this->GetY();
+        
+        $y = max($y1, $y2);
+        
+        $y += 7;
+        $this->SetFont($font1,'',20);
+        $this->SetXY($left_1_1, $y);
+        $this->Cell(80,7,utf8_decode('Utveckling'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left_1_2, $y+7);
+        $this->MultiCell($page_width/2-20, 7, utf8_decode($titledeed->RequiresForUpgradeString()), 0, 'L');
+        $y1 = $this->GetY();
+
+        $this->SetFont($font2,'',20);
+        $this->SetXY($left_2_1, $y);
+        $this->Cell(80,7,utf8_decode('Utveckling'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->SetXY($left_2_2, $y+7);
+        $this->MultiCell($page_width/2-20, 7, utf8_decode($titledeed->RequiresForUpgradeString()), 0, 'L');
+        $y2 = $this->GetY();
+        
+        $y = max($y1, $y2);
+    }
+    
     
     
     function new_titledeed(Titledeed $titledeed, LARP $larp)
@@ -137,7 +223,7 @@ class TITLEDEED_PDF extends FPDF {
         $this->SetText($titledeed, $campaigne, true);
 	}
 	
-	function all_titledeeds(Array $titledeeds, LARP $larp)
+	function all_titledeedsDMH(Array $titledeeds, LARP $larp)
 	{
 	    $campaign = $larp->getCampaign();
 	    $this->AddFont('Smokum','');
@@ -151,9 +237,28 @@ class TITLEDEED_PDF extends FPDF {
 	        } else {
 	            $odd = true;
 	        }
-	    $this->SetText($titledeed, $campaign, !$odd);
+	    $this->SetTextDMH($titledeed, $campaign, !$odd);
 	    }
 	}
+
+	function all_titledeedsDOH(Array $titledeeds, LARP $larp)
+	{
+	    $campaign = $larp->getCampaign();
+	    $this->AddFont('KaiserzeitGotisch');
+	    $this->AddFont('ComicRunes');
+	    //         $this->AddPage('L','A5',270);
+	    $odd = true;
+	    foreach ($titledeeds as $titledeed) {
+	        if ($odd) {
+	            $this->AddPage();
+	            $odd = false;
+	        } else {
+	            $odd = true;
+	        }
+	        $this->SetTextDOH($titledeed, $campaign, !$odd);
+	    }
+	}
+	
 }
 
 // Money = 0;

@@ -12,6 +12,6 @@ $pdf->SetTitle(utf8_decode('Ägarbevisen'));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->SetSubject(utf8_decode('Alla ägarbevis'));
-$pdf->all_titledeeds($arrayOfTitledeeds, $current_larp);
+$pdf->all_titledeedsDMH($arrayOfTitledeeds, $current_larp);
 
 $pdf->Output();

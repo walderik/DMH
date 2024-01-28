@@ -24,7 +24,8 @@ include 'navigation.php';
         <a href="groups_money.php">Pengar till grupper i början på lajvet</a><br>
         <br>
         <br>
-        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna</a><br>
+        <a href="logic/all_titledeeds_dmh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Död mans hand)</a><br>
+        <a href="logic/all_titledeeds_doh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Domen över Hjorvard)</a><br>
         <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till verksamheterna</a> 
         <br>
         <br>

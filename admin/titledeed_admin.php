@@ -49,8 +49,9 @@ th {
         <i class='fa-solid fa-house'></i> - Handelsstation
         </p>
         <p>
-        <a href="titledeed_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a> &nbsp;
-        <a href="logic/all_titledeeds_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna</a> &nbsp; 
+        <a href="titledeed_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a><br>
+        <a href="logic/all_titledeeds_dmh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Död mans hand)</a><br>
+        <a href="logic/all_titledeeds_doh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Domen över Hjorvard)</a><br>
         <a href="logic/all_resources_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till verksamheterna</a> 
         <br><br>
         <a href="resource_titledeed_overview_normal.php">Översikt - normala resurser</a> &nbsp; 
