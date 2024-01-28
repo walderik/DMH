@@ -7,7 +7,7 @@ require $root . '/includes/fpdf185/fpdf.php';
 require $root . '/includes/init.php';
 
 
-class RESOURCE_PDF extends FPDF {
+class RESOURCE_PDF extends PDF_MemImage {
     
     
     public $margin = 10;
@@ -63,6 +63,9 @@ class RESOURCE_PDF extends FPDF {
         $rut_width  = ($width  - 2*$this->margin) / 3;
         $rut_height = ($height - 2*$this->margin) / 7;
         
+        $max_image_width = 25;
+        $max_image_height = 18;
+        
         # Header på sidan
         $this->SetXY($this->margin, 0);
         $this->SetFont('Arial','B',11);
@@ -79,9 +82,12 @@ class RESOURCE_PDF extends FPDF {
             if ($resource_titledeed->Quantity <= 0) continue;
             
             $resource = $resource_titledeed->getResource();
+            if ($resource->hasImage()) $image = Image::loadById($resource->ImageId);
+            else $image=null;
             
             for ($i = 0; $i < $resource_titledeed->Quantity; $i++){
-                
+                $squareX = $this->margin+($x_nr * $rut_width);
+                $squareY = $y_nr * $rut_height;
                 
 //                 # Rubriken
 //                 $this->SetFont('specialelite','',12);
@@ -91,6 +97,22 @@ class RESOURCE_PDF extends FPDF {
                 
                 # Resursnamnet
 
+                if (isset($image)) {
+                    $v = 'img'.md5($image->file_data);
+                    $GLOBALS[$v] = $image->file_data;
+                    list($imageWidth, $imageHeight) =  getimagesize('var://'.$v);
+                    
+                    if ($imageWidth > $imageHeight) {
+                        $this->MemImage($image->file_data, $rut_width-$max_image_width - 3 + $squareX, 3*($rut_height/4) + $squareY, $max_image_width);
+                    } else {
+                        $realWidth = round(($imageWidth / $imageHeight) * $max_image_height);
+                        $this->MemImage($image->file_data, $rut_width - $realWidth - 3 + $squareX, 3*($rut_height/4) + $squareY, 0, $max_image_height);
+                    }
+                }
+                
+                
+                
+                
                 $font = $this->handfonts[array_rand($this->handfonts, 1)];
 
                 $size = 44;
@@ -108,7 +130,7 @@ class RESOURCE_PDF extends FPDF {
                 # Fix för font som alltid blir för stor
                 if ($font == 'simplyglamorous' || $font == 'cherish') $this->SetFont($font,'',$size-2);
                 
-                $this->SetXY($this->margin+($x_nr * $rut_width), ($rut_height/2)-2 + ($y_nr * $rut_height));
+                $this->SetXY($squareX, ($rut_height/2)-2 + $squareY);
                 $this->Cell($rut_width,10,utf8_decode(ucfirst($txt)),0,1,'C');
                 
                 # Undertext
@@ -130,18 +152,18 @@ class RESOURCE_PDF extends FPDF {
                         $first_chars = substr($titledeed->Name, 0, 19);
                         $rest_max_30_chars = substr($titledeed->Name, 19, 30);
                         $this->SetFont('specialelite','',11);
-                        $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
+                        $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
                         $this->Cell($rut_width,10,utf8_decode(ucfirst("Från $first_chars-")),0,1,'L');
                         $this->SetFont('specialelite','',10);
-                        $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
+                        $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
                         $this->Cell($rut_width,10,utf8_decode($rest_max_30_chars),0,1,'L');
                         
                     } else {
                         $this->SetFont('specialelite','',11);
-                        $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
+                        $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
                         $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
                         $this->SetFont('specialelite','',10);
-                        $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
+                        $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
                         $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
                     }
                 }
