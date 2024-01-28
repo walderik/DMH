@@ -147,25 +147,44 @@ class RESOURCE_PDF extends PDF_MemImage {
 //                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
 //                 }
 
-                if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
-                    if (strlen($titledeed->Name) > 28) {
-                        $first_chars = substr($titledeed->Name, 0, 19);
-                        $rest_max_30_chars = substr($titledeed->Name, 19, 30);
-                        $this->SetFont('specialelite','',11);
-                        $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
-                        $this->Cell($rut_width,10,utf8_decode(ucfirst("Från $first_chars-")),0,1,'L');
-                        $this->SetFont('specialelite','',10);
-                        $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
-                        $this->Cell($rut_width,10,utf8_decode($rest_max_30_chars),0,1,'L');
-                        
-                    } else {
+                if ($campaign->is_dmh()) {
+
+                    if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
                         $this->SetFont('specialelite','',11);
                         $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
                         $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
-                        $this->SetFont('specialelite','',10);
+                        
+                        $size=10;
+                        $this->SetFont('specialelite','',$size);
+                        
+                        $txt = $titledeed->Name;
+                        $slen = $this->GetStringWidth($txt,0);
+                        while ($slen > $rut_width-3) {
+                            $size -= 1;
+                            $this->SetFont('specialelite','',$size);
+                            $slen = $this->GetStringWidth($txt,0);
+                        }
                         $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
                         $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
                     }
+                } elseif ($campaign->is_domen()) {
+                    $this->SetFont($font,'',11);
+                    $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
+                    $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
+                    
+                    $size=10;
+                    $this->SetFont($font,'',$size);
+                    
+                    $txt = $titledeed->Name;
+                    $slen = $this->GetStringWidth($txt,0);
+                    while ($slen > $rut_width-3) {
+                        $size -= 1;
+                        $this->SetFont($font,'',$size);
+                        $slen = $this->GetStringWidth($txt,0);
+                    }
+                    $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
+                    $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
+                    
                 }
                 
                 
