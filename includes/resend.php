@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 send_change_password($user);
                 header("location: ../index.php?message=email_sent");
             } else { # Icke aktiverade konton får inte byta lösenord 
-                header("location: ../index.php?error=noSubmit");
+                header("location: ../index.php?error=notActivated");
             }
             exit();
         } else {

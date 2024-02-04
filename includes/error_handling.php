@@ -100,6 +100,9 @@ function getErrorText($code) {
         case "noSubmit":
             $output = "Försök igen";
             break;
+        case "notActivated":
+            $output = "Kontot är inte aktiverat";
+            break;
         case "no_person":
             $output = "Du måste registrera en deltagare först";
             break;
