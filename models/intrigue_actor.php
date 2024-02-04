@@ -59,6 +59,11 @@ class IntrigueActor extends BaseModel{
         $stmt = null;
     }
     
+    public function isRoleActor() {
+        if (empty($this->RoleId)) return false;
+        return true;
+    }
+    
     public function getRole() {
         if (empty($this->RoleId)) return null;
         return Role::loadById($this->RoleId);
@@ -396,6 +401,26 @@ class IntrigueActor extends BaseModel{
      public function removeKnownPdf($intriguePdfId) {
          $known_pdf=IntrigueActor_KnownPdf::loadByIds($intriguePdfId, $this->Id);
          IntrigueActor_KnownPdf::delete($known_pdf->Id);
+     }
+     
+     public function getPrevious() {
+         if ($this->isRoleActor()) {
+             $sql = "SELECT * FROM regsys_intrigueactor WHERE Id IN (".
+                 "SELECT old_actor.Id FROM regsys_intrigueactor as old_actor, regsys_intrigue as new_intrigue WHERE ".
+                 "new_intrigue.Id = ? AND ".
+                 "new_intrigue.PreviousInstanceId = old_actor.IntrigueId AND ".
+                 "old_actor.RoleId = ?)";
+             return static::getOneObjectQuery($sql, array($this->IntrigueId, $this->RoleId));
+         } else {
+             $sql = "SELECT * FROM regsys_intrigueactor WHERE Id IN (".
+                 "SELECT old_actor.Id FROM regsys_intrigueactor as old_actor, regsys_intrigue as new_intrigue WHERE ".
+                 "new_intrigue.Id = ? AND ".
+                 "new_intrigue.PreviousInstanceId = old_actor.IntrigueId AND ".
+                 "old_actor.GroupId = ?)";
+             
+             return static::getOneObjectQuery($sql, array($this->IntrigueId, $this->GroupId));         
+         }
+
      }
      
      

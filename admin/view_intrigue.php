@@ -24,13 +24,24 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo "$name</a> <a href='actor_intrigue_form.php?IntrigueActorId=$intrgueActor->Id&name=$name'><i class='fa-solid fa-pen'></i></a></h2>\n";
     echo "<table width='100%''>\n";
     
-    echo "<tr><td width='10%'>Intrigtext</td><td>";
-    echo "<textarea id='IntrigueText:$intrgueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
-        htmlspecialchars($intrgueActor->IntrigueText)."</textarea>";
-    echo "</td></tr>\n";
-    echo "<tr><td>Off-info<br>till deltagaren</td><td>".nl2br(htmlspecialchars($intrgueActor->OffInfo))."</td></tr>\n";
+    
+    echo "<tr><td width='10%'>Intrigtext</td>";
+    $previousActor = $intrgueActor->getPrevious();
+    if (!empty($previousActor)) {
+        echo "<td><textarea id='IntrigueText:$intrgueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
+            htmlspecialchars($intrgueActor->IntrigueText)."</textarea></td>";
+            echo "<td><strong>Intrigtext förra lajvet</strong><br>".nl2br(htmlspecialchars($previousActor->IntrigueText));
+            if (!empty($previousActor->WhatHappened)) echo "<br><br><strong>Vad hände?</strong><br>".nl2br(htmlspecialchars($previousActor->WhatHappened));
+            "</td>";
+            
+    } else {
+        echo "<td colspan='2'><textarea id='IntrigueText:$intrgueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
+            htmlspecialchars($intrgueActor->IntrigueText)."</textarea></td>";
+    }
+    echo "</tr>\n";
+    echo "<tr><td>Off-info<br>till deltagaren</td><td colspan='2'>".nl2br(htmlspecialchars($intrgueActor->OffInfo))."</td></tr>\n";
     echo "<tr><td>Ska ha vid incheck</td>\n";
-    echo "<td>";
+    echo "<td colspan='2'>";
     echo "<a href='choose_intrigue_checkin.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $checkinProps = $intrgueActor->getAllPropsForCheckin();
     printAllProps($checkinProps, $intrgueActor, true);
@@ -40,14 +51,14 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     printAllTelegrams($checkinTelegrams, $intrgueActor);
     
     echo "</td></tr>\n";
-    echo "<tr><td>Rekvisita och PDF aktören känner till</td><td>\n";
+    echo "<tr><td>Rekvisita och PDF aktören känner till</td><td colspan='2'>\n";
     echo "<a href='choose_intrigue_props.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownProps = $intrgueActor->getAllPropsThatAreKnown();
     printAllProps($knownProps, $intrgueActor, false);
     $knownPdfs = $intrgueActor->getAllPdfsThatAreKnown();
     printAllPdfs($knownPdfs, $intrgueActor);
     echo "</td></tr>\n";
-    echo "<tr><td>Karaktärer aktören känner till</td><td>\n";
+    echo "<tr><td>Karaktärer aktören känner till</td><td colspan='2'>\n";
     echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrgueActor->Id'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownActors = $intrgueActor->getAllKnownActors();
     printAllKnownActors($knownActors, $intrgueActor);
