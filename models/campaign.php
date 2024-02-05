@@ -100,7 +100,7 @@ class Campaign extends BaseModel{
     }
 
     # Är det här Domen Över Hjorvard
-    public function is_domen() {
+    public function is_doh() {
         return ($this->Abbreviation=='DÖH');
     }
     

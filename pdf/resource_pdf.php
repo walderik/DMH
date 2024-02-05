@@ -3,8 +3,8 @@
 
 global $root;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
-require $root . '/includes/fpdf185/fpdf.php';
-require $root . '/includes/init.php';
+require_once $root . '/includes/fpdf185/fpdf.php';
+require_once $root . '/includes/init.php';
 
 
 class RESOURCE_PDF extends PDF_MemImage {
@@ -14,6 +14,12 @@ class RESOURCE_PDF extends PDF_MemImage {
     public $title;
     public $handfonts = ['cherish','dancingscript','daniel','dawningofanewday','ekologiehand','homemadeapple','mynerve',
                          'reeniebeanie','simplyglamorous','splash','sueellenfrancisco','zeyada'];
+    
+    public $calligraphyfonts = ['BelweGotisch', 'AliceInWonderland', 'DSCaslonGotisch', 'eaglelake', 'UncialAntiqua'];
+    
+    public const Handwriting = 0;
+    public const Calligraphy = 1;
+
     
     function Header()
     {
@@ -44,7 +50,13 @@ class RESOURCE_PDF extends PDF_MemImage {
         $this->Cell(0, 10, 'Sidan '.$this->PageNo(), 0, 0, 'R');
     }
     
-    function SetText(Titledeed $titledeed, Campaign $campaign) {
+    function SetText(Titledeed $titledeed, $type) {
+        if ($type == RESOURCE_PDF::Calligraphy) {
+            $font = $this->calligraphyfonts[array_rand($this->calligraphyfonts, 1)];
+        } else {
+            $font = $this->handfonts[array_rand($this->handfonts, 1)];
+        }
+        $size = 44;
         
         $resources = $titledeed->Produces();
         
@@ -113,8 +125,6 @@ class RESOURCE_PDF extends PDF_MemImage {
                 
                 
                 
-                $font = $this->handfonts[array_rand($this->handfonts, 1)];
-
                 $size = 44;
                 $txt = "$resource->UnitSingular";
 //                 $txt = "Bal ull eller ".$font;
@@ -147,7 +157,7 @@ class RESOURCE_PDF extends PDF_MemImage {
 //                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
 //                 }
 
-                if ($campaign->is_dmh()) {
+                if ($type == RESOURCE_PDF::Handwriting) {
 
                     if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
                         $this->SetFont('specialelite','',11);
@@ -167,7 +177,7 @@ class RESOURCE_PDF extends PDF_MemImage {
                         $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
                         $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
                     }
-                } elseif ($campaign->is_domen()) {
+                } elseif ($type == RESOURCE_PDF::Calligraphy) {
                     $this->SetFont($font,'',11);
                     $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
@@ -212,16 +222,17 @@ class RESOURCE_PDF extends PDF_MemImage {
     }
     
 	
-    function all_resources(Array $titledeeds, LARP $larp)
+    function all_resources(Array $titledeeds, $type)
 	{
-	    $campaign = $larp->getCampaign();
+
 	    $this->SetAutoPageBreak(true , 1.5);
 	    $this->AddFont('Smokum','');
 	    $this->AddFont('specialelite','');
-	    foreach ($this->handfonts as $font) $this->AddFont($font,'');
+	    if ($type == RESOURCE_PDF::Handwriting) foreach ($this->handfonts as $font) $this->AddFont($font,'');
+	    elseif ($type == RESOURCE_PDF::Calligraphy) foreach ($this->calligraphyfonts as $font) $this->AddFont($font,'');
 	    //         $this->AddPage('L','A5',270);
 	    foreach ($titledeeds as $titledeed) {
-    	    $this->SetText($titledeed, $campaign);
+    	    $this->SetText($titledeed, $type);
 	    }
 	}
 }
