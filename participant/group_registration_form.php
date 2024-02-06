@@ -143,6 +143,14 @@ include 'navigation.php';
   			<label for="rules">Jag lovar</label> 
 			</div>
 
+
+			<div class="question">
+			Efter att gruppen är anmäld kommer den att godkännas av arrangörerna innan den blir möjlig att välja för karaktärer. Du kommer att få ett mail när gruppen är godkänd.
+			
+			 
+			</div>
+
+
 			<?php 
 			if ($admin) {
 			    //Om bara tittar på formuläret som arrangör får man inte lyckas skicka in
