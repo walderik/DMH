@@ -74,14 +74,18 @@ include_once 'header.php';
 				<td><input type="text" id="Type" name="Type" value="<?php echo htmlspecialchars($titledeed->Type); ?>" size="100" maxlength="250"></td>
 			</tr>
 			<tr>
-				<td><label for="Size">Storlek</label></td>
+				<td><label for="Size">Storlek (fritext)</label></td>
 				<td><input type="text" id="Size" name="Size" value="<?php echo htmlspecialchars($titledeed->Size); ?>" size="100" maxlength="250"></td>
+			</tr>
+			<tr>
+				<td><label for="Size">Nivå</label></td>
+				<td><input type="number" id="Level" name="Level" value="<?php echo $titledeed->Level; ?>" min='0' step='1'></td>
 			</tr>
 			<tr>
 
 				<td><label for="Location">Plats fritext</label></td>
 				<td><input type="text" id="Location" name="Location"
-					 value="<?php echo htmlspecialchars($titledeed->Location); ?>" size="100" maxlength="250" required></td>
+					 value="<?php echo htmlspecialchars($titledeed->Location); ?>" size="100" maxlength="250"></td>
 			</tr>
 			<?php if (TitledeedPlace::isInUse($current_larp)) {?>
 			<tr>

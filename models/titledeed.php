@@ -7,6 +7,7 @@ class Titledeed extends BaseModel{
     public $Location;
     public $Tradeable = 1;
     public $IsTradingPost = 0;
+    public $Level;
     public $CampaignId;
     public $Money = 0;
     public $MoneyForUpgrade = 0;
@@ -35,6 +36,7 @@ class Titledeed extends BaseModel{
         if (isset($arr['Location'])) $this->Location = $arr['Location'];
         if (isset($arr['Tradeable'])) $this->Tradeable = $arr['Tradeable'];
         if (isset($arr['IsTradingPost'])) $this->IsTradingPost = $arr['IsTradingPost'];
+        if (isset($arr['Level'])) $this->Level = $arr['Level'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['Money'])) $this->Money = $arr['Money'];
         if (isset($arr['MoneyForUpgrade'])) $this->MoneyForUpgrade = $arr['MoneyForUpgrade'];
@@ -61,11 +63,11 @@ class Titledeed extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_titledeed SET Name=?, Location=?, Tradeable=?, IsTradingPost=?,
-                  CampaignId=?, Money=?, MoneyForUpgrade=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=?, 
+                  Level=?, CampaignId=?, Money=?, MoneyForUpgrade=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=?, 
                   `Type`=?, Size=?, IsInUse=?, TitledeedPlaceId=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
-            $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes, 
+            $this->Level, $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes, 
             $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -78,10 +80,10 @@ class Titledeed extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_titledeed (Name, Location, Tradeable, IsTradingPost, 
-            CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements, `Type`, Size, IsInUse, TitledeedPlaceId) VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?);");
+            Level, CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements, `Type`, Size, IsInUse, TitledeedPlaceId) VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
-            $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes,
+            $this->Level, $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes,
             $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId))) {
                 $this->connect()->rollBack();
                 $stmt = null;
@@ -450,7 +452,7 @@ class Titledeed extends BaseModel{
         }
         $stmt = null;
                 
-        parent::delete($id);
+        parent::delete($titledeedId);
         
     }
     

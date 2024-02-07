@@ -68,12 +68,13 @@ th {
             $tableId = "titledeeds";
             echo "<table id='$tableId' class='data'>";
             echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-                "<th onclick='sortTable(1, \"$tableId\")'>Plats</th>".
-                "<th onclick='sortTable(2, \"$tableId\")'>Ägare</th>".
-                "<th onclick='sortTable(3, \"$tableId\")'>I spel</th>".
-                "<th onclick='sortTable(4, \"$tableId\")'>Normal<br>Tillgång/Behov</th>".
-                "<th onclick='sortTable(5, \"$tableId\")'>Nu<br>Tillgång/Behov</th>".
-                "<th onclick='sortTable(6, \"$tableId\")'>Resultat</th>".
+                "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
+                "<th onclick='sortTable(2, \"$tableId\")'>Plats</th>".
+                "<th onclick='sortTable(3, \"$tableId\")'>Ägare</th>".
+                "<th onclick='sortTable(4, \"$tableId\")'>I spel</th>".
+                "<th onclick='sortTable(5, \"$tableId\")'>Normal<br>Tillgång/Behov</th>".
+                "<th onclick='sortTable(6, \"$tableId\")'>Nu<br>Tillgång/Behov</th>".
+                "<th onclick='sortTable(7, \"$tableId\")'>Resultat</th>".
                 "<th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
                 echo "<tr>\n";
@@ -88,6 +89,7 @@ th {
                 if (!empty($titledeed->Type)) echo "$titledeed->Type ";
                 if (!empty($titledeed->Size)) echo "($titledeed->Size)";
                 "</small></td>\n";
+                echo "<td>$titledeed->Level</td>\n";
                 echo "<td>$titledeed->Location</td>\n";
                 
                 echo "<td>";
