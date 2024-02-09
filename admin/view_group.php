@@ -48,7 +48,7 @@ function print_role($role, $group) {
     echo "<td>$role->Profession</td>";
 
     $person = $role->getPerson();
-    echo "<td><a href ='view_person.php?id=$person->Id'>$person->Name</a></td>";
+    echo "<td><a href ='view_person.php?id=$person->Id'>$person->Name</a> </td>";
         
     
     echo "<td>";
@@ -96,7 +96,10 @@ include 'navigation.php';
 		
 		<div>
 		<table>
-			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $current_group->getPerson()->Name;?></a></td>
+		<?php 
+		$groupleader = $current_group->getPerson();
+		?>
+			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $groupleader->Name;?></a> <?php echo contactEmailIcon($groupleader->Name,$groupleader->Email) ?></td>
 					<?php 
 					if ($current_group->hasImage()) {
             		    echo "<td rowspan='20' valign='top'>";
