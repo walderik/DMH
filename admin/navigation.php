@@ -111,6 +111,7 @@ function changePart() {
             <a href="roles.php">Karaktärer</a>
             <a href="intrigue_admin.php">Intrigspår</a>
             <a href="commerce.php">Handel</a>
+            <a href="alchemy.php">Alkemi</a>
             <a href="magic.php">Magi</a>
             <a href="timeline_admin.php">Körschema</a>
 			
