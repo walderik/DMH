@@ -132,7 +132,7 @@ class Magic_Magician extends BaseModel{
     }
 
     public function hasDoneWorkshop() {
-        if (empty($this->StaffApproved)) return false;
+        if (empty($this->Workshop)) return false;
         return true;
     }
     
