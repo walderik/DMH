@@ -64,6 +64,10 @@ elseif ($operation == "add_titledeed_owner_role") {
     $purpose = "Lägg till karaktärer som magiker";
     $url = "logic/view_magician_logic.php";
     $multiple=true;
+} elseif ($operation == "add_alchemy_supplier") {
+    $purpose = "Lägg till karaktärer som löjverist";
+    $url = "logic/view_alchemy_supplier_logic.php";
+    $multiple=true;
 }
 
 if ($multiple) {

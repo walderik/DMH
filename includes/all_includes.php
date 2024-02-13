@@ -20,6 +20,7 @@ include_once $root . '/models/advertisment.php';
 include_once $root . '/models/advertisment_type.php';
 include_once $root . '/models/alchemy_essence.php';
 include_once $root . '/models/alchemy_ingredient.php';
+include_once $root . '/models/alchemy_supplier.php';
 include_once $root . '/models/bookkeeping.php';
 include_once $root . '/models/bookkeeping_account.php';
 include_once $root . '/models/campaign.php';
