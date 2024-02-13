@@ -90,10 +90,17 @@ img {
 			<td><?php 
 			     
 			     $essences = Alchemy_Essence::allByCampaign($current_larp);
-			     selectionByArray('OppositeEssence', $essences, false, false, $essence->OppositeEssenceId) ?></td>
-			</tr>
+			     selectionByArray('OppositeEssence', $essences, false, false, $essence->OppositeEssenceId) ?>
+		     </td>
+			<tr>
+
+				<td><label for="OrganizerNotes">Anteckningar<br>för arrangörer</label></td>
+				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
+						cols="100"><?php echo htmlspecialchars($essence->OrganizerNotes); ?></textarea></td>
 
 			</tr>
+			</tr>
+
 		</table>
 
 		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">

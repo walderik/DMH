@@ -17,7 +17,7 @@ include 'navigation.php';
 
  
     <div class="content">
-        <h1>Essenser <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till magi"></i></a></h1>
+        <h1>Essenser <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
 
             <a href="alchemy_essence_form.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Lägg till essens</a>  
        <?php
