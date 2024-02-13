@@ -68,8 +68,9 @@ class Alchemy_Essence extends BaseModel{
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
                 exit();
-            }
-            $stmt = null;
+        }
+        $this->Id = $connection->lastInsertId();
+        $stmt = null;
     }
     
     public static function allByCampaign(LARP $larp) {

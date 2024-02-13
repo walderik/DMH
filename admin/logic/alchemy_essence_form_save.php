@@ -18,5 +18,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
 }
-$referer = (isset($_POST['Referer'])) ? $_POST['Referer'] : '../prop_admin.php';
+$referer = (isset($_POST['Referer'])) ? $_POST['Referer'] : '../alchemy_essence_admin.php';
 header('Location: ' . $referer);

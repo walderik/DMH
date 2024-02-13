@@ -99,7 +99,6 @@ img {
 						cols="100"><?php echo htmlspecialchars($essence->OrganizerNotes); ?></textarea></td>
 
 			</tr>
-			</tr>
 
 		</table>
 
