@@ -6,7 +6,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
     
-    if ($operation == "add_alchemy_supplier") {
+    if ($operation == 'update') {
+        $supplier=Alchemy_Supplier::loadById($_POST['Id']);
+        $supplier->setValuesByArray($_POST);
+        $supplier->update();
+    } elseif ($operation == "add_alchemy_supplier") {
         if (isset($_POST['RoleId'])) Alchemy_Supplier::createSuppliers($_POST['RoleId'], $current_larp);
     }
 }

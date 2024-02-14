@@ -9,7 +9,6 @@ class Alchemy_Ingredient extends BaseModel{
     public $Level;
     public $IsCatalyst = 0;
     public $ActualIngredient;
-    public $Price;
     public $Info;
     public $IsApproved = 0;
     public $OrganizerNotes;
@@ -32,7 +31,6 @@ class Alchemy_Ingredient extends BaseModel{
         if (isset($arr['Level'])) $this->Level = $arr['Level'];
         if (isset($arr['IsCatalyst'])) $this->IsCatalyst = $arr['IsCatalyst'];
         if (isset($arr['ActualIngredient'])) $this->ActualIngredient = $arr['ActualIngredient'];
-        if (isset($arr['Price'])) $this->Price = $arr['Price'];
         if (isset($arr['Info'])) $this->Info = $arr['Info'];
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
@@ -51,10 +49,10 @@ class Alchemy_Ingredient extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_ingredient SET Name=?, Description=?, Level=?, IsCatalyst=?, ActualIngredient=?,
-                    Price=?, Info=?, IsApproved=?, OrganizerNotes=? WHERE Id = ?");
+                    Info=?, IsApproved=?, OrganizerNotes=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Description, $this->Level, $this->IsCatalyst, $this->ActualIngredient,
-            $this->Price, $this->Info, $this->IsApproved, $this->OrganizerNotes, $this->Id))) {
+            $this->Info, $this->IsApproved, $this->OrganizerNotes, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -68,11 +66,11 @@ class Alchemy_Ingredient extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_alchemy_ingredient (CampaignId, Name, Description, Level,
-            IsCatalyst, ActualIngredient, Price, Info, IsApproved, OrganizerNotes) VALUES (?,?,?,?,?, ?,?,?,?,?);");
+            IsCatalyst, ActualIngredient, Info, IsApproved, OrganizerNotes) VALUES (?,?,?,?,?, ?,?,?,?);");
         
         if (!$stmt->execute(array($this->CampaignId, $this->Name, $this->Description, $this->Level,
             $this->IsCatalyst, $this->ActualIngredient,
-            $this->Price, $this->Info, $this->IsApproved, $this->OrganizerNotes))) {
+            $this->Info, $this->IsApproved, $this->OrganizerNotes))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");

@@ -85,12 +85,14 @@ class Alchemy_Supplier extends BaseModel{
         return true;
     }
     
-    public function numberOfIngredientsApproved(LARP $larp) {
-        //TODO kolla att antalet ingredienser är godkända
-        return false;
+    public function allAmountOfIngredientsApproved(LARP $larp) {
+        $sql = "SELECT Count(Id) as Num FROM regsys_alchemy_supplier_ingredient WHERE SupplierId=? and LARPId=? AND IsApproved=0;";
+        return !static::existsQuery($sql, array($this->Id, $larp->Id));
     }
     
-    
+    public function getIngredientAmounts(LARP $larp) {
+        return Alchemy_Supplier_Ingredient::getIngredientAmountsForSupplier($this, $larp);
+    }
 
     public static function delete($id)
     {

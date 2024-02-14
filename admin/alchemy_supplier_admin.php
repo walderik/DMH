@@ -30,9 +30,8 @@ include 'navigation.php';
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                "<th onclick='sortTable(1, \"$tableId\")'>Antal ingredienser<br>per nivå</th>".
-               "<th onclick='sortTable(2, \"$tableId\")'>Summa ingredienser</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Alla ingredienser<br>godkända</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Workshop<br>deltagit</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Alla ingredienser<br>godkända</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Workshop<br>deltagit</th>".
                "<th></th>";
            
            foreach ($suppliers as $supplier) {
@@ -41,8 +40,7 @@ include 'navigation.php';
                 echo "<tr>\n";
                 echo "<td><a href ='view_alchemy_supplier.php?id=$supplier->Id'>$role->Name</a> ".contactEmailIcon($person->Name,$person->Email)."</td>\n";
                 echo "<td></td>\n";
-                echo "<td></td>\n";
-                echo "<td>". showStatusIcon($supplier->numberOfIngredientsApproved($current_larp)) ."</td>\n";
+                echo "<td>". showStatusIcon($supplier->allAmountOfIngredientsApproved($current_larp)) ."</td>\n";
                 echo "<td>" . showStatusIcon($supplier->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='alchemy_supplier_admin.php?operation=delete&Id=" . $supplier->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";

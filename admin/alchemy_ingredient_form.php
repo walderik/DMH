@@ -119,10 +119,6 @@ img {
 				<td><input type="text" id="ActualIngredient" name="ActualIngredient" value="<?php echo htmlspecialchars($ingredient->ActualIngredient); ?>" size="100" maxlength="250" required></td>
 			</tr>
 			<tr>
-				<td><label for="Price">Pris</label></td>
-				<td><input type="number" id="Price" name="Price" value="<?php echo $ingredient->Price; ?>" min="0" step="1" size="10" maxlength="250" required> <?php echo $current_larp->getCampaign()->Currency?></td>
-			</tr>
-			<tr>
 
 				<td><label for="IsApproved">Godkänd</label></td>
     			<td>
