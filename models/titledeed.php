@@ -480,4 +480,8 @@ class Titledeed extends BaseModel{
         return true; 
     }
     
+    public function getResult(LARP $larp) {
+        return TitledeedResult::getResultForTitledeed($this, $larp);
+    }
+    
 }
