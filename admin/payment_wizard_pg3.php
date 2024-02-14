@@ -70,8 +70,10 @@ div.cost {
 			<input type="hidden" id="number_of_age_groups" name="number_of_age_groups" value="<?php echo $number_of_age_groups; ?>">
 			<input type="hidden" id="number_of_food_options" name="number_of_food_options" value="<?php echo $number_of_food_options; ?>">
 			<?php 
-			foreach ($food_descriptionArr as $food_description) {
-			    echo "<input type='hidden' id='food_description[]' name='food_description[]' value='$food_description'>";
+			if (!empty($food_descriptionArr)) {
+    			foreach ($food_descriptionArr as $food_description) {
+    			    echo "<input type='hidden' id='food_description[]' name='food_description[]' value='$food_description'>";
+    			}
 			}
 			?>
         
