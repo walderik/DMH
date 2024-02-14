@@ -52,7 +52,7 @@ include 'navigation.php';
 				foreach ($amounts as $amount) {
 				    $ingredient = $amount->getIngredient();
 				    echo "<tr>";
-				    echo "<td>$amounts->Amount</td>";
+				    echo "<td>$amount->Amount</td>";
 				    echo "<td>$ingredient->Level</td>\n";
 				    echo "<td>";
 				    if ($ingredient->isCatalyst()) echo "Katalysator";

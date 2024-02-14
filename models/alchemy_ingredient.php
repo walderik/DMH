@@ -150,8 +150,6 @@ class Alchemy_Ingredient extends BaseModel{
         foreach($essenceIds as $essenceId) {
             if (is_null($essenceId) || !is_numeric($essenceId) || in_array($essenceId, $setEssences)) continue;
             $setEssences[] = $essenceId;
-            echo "Spara essens: $essenceId<br>";
-            echo "this id = $this->Id<br>";
             $stmt = $this->connect()->prepare("INSERT INTO regsys_alchemy_ingredient_essence (IngredientId, EssenceId) VALUES (?,?);");
             if (!$stmt->execute(array($this->Id, $essenceId))) {
                 $stmt = null;
