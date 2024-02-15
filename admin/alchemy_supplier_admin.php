@@ -10,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+$currency = $current_larp->getCampaign()->Currency;
 
 include 'navigation.php';
 ?>
@@ -41,8 +42,14 @@ include 'navigation.php';
                 echo "<tr>\n";
                 echo "<td><a href ='view_alchemy_supplier.php?id=$supplier->Id'>$role->Name</a> ".contactEmailIcon($person->Name,$person->Email)."</td>\n";
                 //TODO implentera nedanstående
-                echo "<td>(Kommer snart)</td>\n";
-                echo "<td>(Kommer snart)</td>\n";
+                echo "<td>";
+                $amount_per_level = $supplier->numberOfIngredientsPerLevel($current_larp);
+                foreach ($amount_per_level as $level => $amount) {
+                    if ($amount == 0) continue;
+                    echo "Nivå $level: $amount st<br>";
+                }
+                echo "</td>\n";
+                echo "<td>".$supplier->appoximateValue($current_larp)." $currency</td>\n";
                 echo "<td>". showStatusIcon($supplier->allAmountOfIngredientsApproved($current_larp)) ."</td>\n";
                 echo "<td>" . showStatusIcon($supplier->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='alchemy_supplier_admin.php?operation=delete&Id=" . $supplier->Id . "'><i class='fa-solid fa-trash'></i></td>\n";

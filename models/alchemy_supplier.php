@@ -147,4 +147,31 @@ class Alchemy_Supplier extends BaseModel{
         }
     }
     
+    public function numberOfIngredientsPerLevel(LARP $larp) {
+        $supplier_ingredients = $this->getIngredientAmounts($larp);
+        $amount_per_level = array(1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 'k1' => 0, 'k2' => 0, 'k3' => 0, 'k4' => 0, 'k5' => 0);
+        foreach($supplier_ingredients as $supplier_ingredient) {
+            $ingredient = $supplier_ingredient->getIngredient();
+            if ($ingredient->isCatalyst()) $amount_per_level['k'.$ingredient->Level] += $supplier_ingredient->Amount;
+            else $amount_per_level[$ingredient->Level] += $supplier_ingredient->Amount;
+        }
+        return $amount_per_level;
+    }
+    
+    public function appoximateValue(LARP $larp) {
+        $amount_per_level = $this->numberOfIngredientsPerLevel($larp);
+        $sum = 0;
+        $sum += $amount_per_level[1]*2;
+        $sum += $amount_per_level[2]*6;
+        $sum += $amount_per_level[3]*25;
+        $sum += $amount_per_level[4]*100;
+        $sum += $amount_per_level[5]*225;
+        $sum += $amount_per_level['k1']*5;
+        $sum += $amount_per_level['k2']*18;
+        $sum += $amount_per_level['k3']*75;
+        $sum += $amount_per_level['k4']*200;
+        $sum += $amount_per_level['k5']*1250;
+        return $sum;
+    }
+    
 }
