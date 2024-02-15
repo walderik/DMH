@@ -71,7 +71,7 @@ include 'navigation.php';
 				    echo "</td>\n";
 				    
 				    echo "<td>";
-				    echo "<a href='alchemy_supplier_ingredient.php?operation=delete&id=$amount->Id&supplierId=$amount->SupplierId'><i class='fa-solid fa-trash'></i>";
+				    echo "<a href='logic/alchemy_supplier_ingredient.php?operation=delete&id=$amount->Id&supplierId=$amount->SupplierId'><i class='fa-solid fa-trash'></i>";
 				    
 				    echo "</td>\n";
 				    echo "</tr>";
