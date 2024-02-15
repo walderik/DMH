@@ -14,7 +14,7 @@ class Alchemy_Ingredient extends BaseModel{
     public $OrganizerNotes;
     
     
-    public static $orderListBy = 'Name';
+    public static $orderListBy = 'IsCatalyst, Name';
     
     
     public static function newFromArray($post){

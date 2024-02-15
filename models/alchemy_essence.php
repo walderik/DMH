@@ -28,6 +28,9 @@ class Alchemy_Essence extends BaseModel{
         if (isset($arr['Element'])) $this->Element = $arr['Element'];
         if (isset($arr['OppositeEssenceId'])) $this->OppositeEssenceId = $arr['OppositeEssenceId'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
+        
+        if (isset($this->OppositeEssenceId) && $this->OppositeEssenceId=='null') $this->OppositeEssenceId = null;
+        
     }
     
     
