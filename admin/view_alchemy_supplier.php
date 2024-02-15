@@ -41,17 +41,18 @@ include 'navigation.php';
     		</table>
 
 			<h2>Ingredienser på <?php echo $current_larp->Name?></h2>
-
+			Klicka på det röda utropstecknet för att godkänna. 
 			<?php 
 			$amounts = $supplier->getIngredientAmounts($current_larp);
 			if (empty($amounts)) {
 			    echo "Inga ingredienser, än.";
 			} else {
 				echo "<table class='small_data'>";
-				echo "<tr><th>Antal</th><th>Ingrediens</th><th>Nivå</th><th>Ingrediens/Katalysator</th><th>Essenser</th><th></th></tr>";
+				echo "<tr><th>Antal</th><th>Ingrediens</th><th>Nivå</th><th>Ingrediens/Katalysator</th><th>Essenser</th><th></th><th></th></tr>";
 				foreach ($amounts as $amount) {
 				    $ingredient = $amount->getIngredient();
 				    echo "<tr>";
+				    echo "<td>$ingredient->Name</td>";
 				    echo "<td>$amount->Amount</td>";
 				    echo "<td>$ingredient->Level</td>\n";
 				    echo "<td>";
@@ -65,7 +66,12 @@ include 'navigation.php';
 				    echo "</td>\n";
 				    
 				    echo "<td>";
-				    echo showStatusIcon($amount->isApproved());
+				    echo showStatusIcon($amount->isApproved(), "logic/alchemy_supplier_approve_amount.php?id=$amount->Id&supplierId=$amount->SupplierId");
+				    
+				    echo "</td>\n";
+				    
+				    echo "<td>";
+				    echo "<a href='alchemy_supplier_ingredient.php?operation=delete&id=$amount->Id&supplierId=$amount->SupplierId'><i class='fa-solid fa-trash'></i>";
 				    
 				    echo "</td>\n";
 				    echo "</tr>";

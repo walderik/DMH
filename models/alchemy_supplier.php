@@ -126,4 +126,25 @@ class Alchemy_Supplier extends BaseModel{
     }
     
     
+    public function addIngredientsForLARP($ingredientIds, LARP $larp) {
+        //Ta reda på vilka som inte redan är kopplade till lövjeristen
+        $exisitingIngredientIds = array();
+        $supplier_ingredients = $this->getIngredientAmounts($larp);
+        foreach ($supplier_ingredients as $supplier_ingredient) {
+            $exisitingIngredientIds[] = $supplier_ingredient->IngredientId;
+        }
+        
+        $newIngredientIds = array_diff($ingredientIds,$exisitingIngredientIds);
+        //Koppla ingrediensen till lövjeristen
+        foreach ($newIngredientIds as $ingredientId) {
+            $supplier_ingredient = Alchemy_Supplier_Ingredient::newWithDefault();
+            $supplier_ingredient->SupplierId = $this->Id;
+            $supplier_ingredient->IngredientId = $ingredientId;
+            $supplier_ingredient->LARPId = $larp->Id;
+            $supplier_ingredient->Amount = 0;
+            $supplier_ingredient->IsApproved=0;
+            $supplier_ingredient->create();
+        }
+    }
+    
 }

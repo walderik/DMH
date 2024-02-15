@@ -281,6 +281,11 @@ include "navigation.php";
         		                echo "<a href='view_magician.php?id=$role->Id'>Magiker</a>";
         		                echo " ".showStatusIcon($magician->StaffApproved && $magician->hasDoneWorkshop());
         		            }
+        		            if (Alchemy_Supplier::isSupplier($role)) {
+        		                $supplier = Alchemy_Supplier::getForRole($role);
+        		                echo "<a href='view_alchemy_supplier.php?id=$role->Id'>Löjverist</a>";
+        		                echo " ".showStatusIcon($supplier->allAmountOfIngredientsApproved($current_larp) && $supplier->hasDoneWorkshop());
+        		            }
         		            echo "</td>";
         		            
         		            
