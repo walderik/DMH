@@ -118,7 +118,7 @@ img {
 			</tr>
 			<tr>
 				<td><label for="Level">Nivå</label></td>
-				<td><input type="number" id="Level" name="Level" value="<?php echo $ingredient->Level; ?>" min="1" step="1" size="10" maxlength="250" required></td>
+				<td><input type="number" id="Level" name="Level" value="<?php echo $ingredient->Level; ?>" min="1" max="5" step="1" size="10" maxlength="250" required></td>
 			</tr>
 				<?php if ($ingredient->isIngredient()) { ?>
 			<tr>
