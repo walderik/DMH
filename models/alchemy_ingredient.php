@@ -170,6 +170,11 @@ class Alchemy_Ingredient extends BaseModel{
         $stmt = null;
     }
     
+    public static function getAllToApprove(Larp $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_alchemy_ingredient WHERE CampaignId=? AND IsApproved=0 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
     
     
 }

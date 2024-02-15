@@ -174,4 +174,13 @@ class Alchemy_Supplier extends BaseModel{
         return $sum;
     }
     
+    public static function getAllToApprove(Larp $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_alchemy_supplier WHERE Id IN (".
+            "SELECT SupplierId FROM regsys_alchemy_supplier_ingredient WHERE LARPId=? AND IsApproved=0) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
+    
 }

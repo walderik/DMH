@@ -62,6 +62,13 @@ include "navigation.php";
 
 		$approval_r_count = count (Rumour::getAllToApprove($current_larp));
 		if ($approval_r_count>0) echo "$approval_r_count rykten väntar på <a href='rumour_admin.php'>godkännande</a>.<br>"; 
+		
+		$approval_count = count (Alchemy_Supplier::getAllToApprove($current_larp));
+		if ($approval_count>0) echo "$approval_count lövjerister har ingredienslistor som väntar på <a href='alchemy_supplier_admin.php'>godkännande</a>.<br>";
+
+		$approval_count = count (Alchemy_Ingredient::getAllToApprove($current_larp));
+		if ($approval_count>0) echo "$approval_count alkemiska ingredienser väntar på <a href='alchemy_ingredient_admin.php'>godkännande</a>.<br>";
+		
 		?>
 		</div>
 		

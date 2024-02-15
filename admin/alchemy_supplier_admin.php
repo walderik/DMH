@@ -41,7 +41,6 @@ include 'navigation.php';
                $person = $role->getPerson();
                 echo "<tr>\n";
                 echo "<td><a href ='view_alchemy_supplier.php?id=$supplier->Id'>$role->Name</a> ".contactEmailIcon($person->Name,$person->Email)."</td>\n";
-                //TODO implentera nedanstående
                 echo "<td>";
                 $amount_per_level = $supplier->numberOfIngredientsPerLevel($current_larp);
                 foreach ($amount_per_level as $level => $amount) {
