@@ -9,6 +9,10 @@ class Ability extends SelectionData{
         return static::getSeveralObjectsqQuery($sql, array($roleId));
     }
     
+    public function mayDelete() {
+        $sql = "select count(RoleId) AS Num FROM regsys_ability_role WHERE AbilityId=?";
+        return !static::existsQuery($sql, array($this->Id));
+    }
     
     
     

@@ -216,5 +216,8 @@ class SelectionData extends BaseModel{
         
     }
     
+    public function mayDelete() {
+        return false;
+    }
     
 }

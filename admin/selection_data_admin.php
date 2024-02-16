@@ -47,6 +47,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         
     }
     $objectType = getObjectType($type);
+    if (isset($_GET['operation']) && $_GET['operation']=='delete') {
+        call_user_func($objectType . '::delete', $_GET['id']);
+    }
+    
 }
 
 include 'navigation.php';
@@ -59,16 +63,18 @@ include 'navigation.php';
         $data_array = call_user_func($objectType . '::allForLarp', $current_larp);
         if (count($data_array) > 0) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</th><th>Namn</th><th>Beskrivning</th><th>Valbar</th><th>Sortering</th><th></th></tr>\n";
+            echo "<tr><th>Namn</th><th>Beskrivning</th><th>Valbar</th><th>Sortering</th><th></th><th></th></tr>\n";
             foreach ($data_array as $data) {
                 echo "<tr>\n";
-                echo "<td>" . $data->Id . "</td>\n";
                 echo "<td>" . $data->Name . "</td>\n";
                 echo "<td>" . nl2br($data->Description) . "</td>\n";
                 echo "<td>" . $data->Active . "</td>\n";
                 echo "<td>" . $data->SortOrder . "</td>\n";
               
                 echo "<td>" . "<a href='selection_data_form.php?type=".$type."&operation=update&id=" . $data->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                echo "<td>";
+                if ($data->mayDelete()) echo "<a href='selection_data_admin.php?type=".$type."&operation=delete&id=" . $data->Id . "'><i class='fa-solid fa-trash'></i>";
+                echo "</td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
