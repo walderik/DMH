@@ -70,12 +70,12 @@ class Group extends BaseModel{
        
         $stmt = $this->connect()->prepare("UPDATE regsys_group SET Name=?, Friends=?, Enemies=?,
                     Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?, WealthId=?, PlaceOfResidenceId=?, 
-                    PersonId=?, GroupTypeId=?, ShipTypeId=?, ColourId=?, 
+                    GroupTypeId=?, ShipTypeId=?, ColourId=?, PersonId=?, 
                     CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, IsApproved=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
             $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, 
-            $this->PersonId, $this->GroupTypeId, $this->ShipTypeId, $this->ColourId,
+            $this->GroupTypeId, $this->ShipTypeId, $this->ColourId, $this->PersonId, 
             $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -97,7 +97,7 @@ class Group extends BaseModel{
         
         if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
-            $this->PlaceOfResidenceId, $this->PersonId, $this->GroupTypeId, $this->ShipTypeId, $this->ColourId, $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved))) {
+            $this->PlaceOfResidenceId, $this->GroupTypeId, $this->ShipTypeId, $this->ColourId, $this->PersonId, $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
