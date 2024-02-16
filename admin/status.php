@@ -4,6 +4,10 @@ include_once 'header.php';
 
 include 'navigation.php';
 
+if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) && !isset($_SESSION['admin'])) {
+    exit;
+}
+
 $param = date_format(new Datetime(),"suv");
 
 ?>

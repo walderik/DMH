@@ -49,7 +49,7 @@ function changePart() {
 
 	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
 	  
-	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) { ?>
+	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) && !isset($_SESSION['admin'])) { ?>
 	  
 	  <div class="dropdown">
 	    <button class="dropbtn">Kampanj 
@@ -65,7 +65,6 @@ function changePart() {
             <a href="larp_admin.php">Lajv i kampanjen</a>
  	    </div>
 	  </div>
-	  <?php } ?> 
 	  <div class="dropdown">
 	    <button class="dropbtn">Lajvinställningar 
 	      <i class="fa fa-caret-down"></i>
@@ -77,6 +76,7 @@ function changePart() {
 	      	<a href="payment_information_admin.php">Avgifter, inklusive mat</a>
 	    </div>
 	  </div> 
+	  <?php } ?> 
 
 
 	  <div class="dropdown">
