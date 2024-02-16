@@ -30,6 +30,10 @@ $param = date_format(new Datetime(),"suv");
 			    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål för deltagare och grupper</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=wealth">Rikedom för karaktärer och grupper</a><br>
 			    <a href="selection_data_admin.php?type=placeofresidence">Var karaktärer / grupper bor</a><br>
+
+			    <a href="selection_data_admin.php?type=grouptype">Typ av grupp</a><br>
+			    <a href="selection_data_admin.php?type=shiptype">Typ av skepp</a><br>
+			    <a href="selection_data_admin.php?type=colour">Färg</a><br>
 		    			
     		    <a href="selection_data_admin.php?type=typesoffood">Matalternativ för deltagare</a><br>
 			    <a href="selection_data_admin.php?type=officialtypes">Typ av funktionärer för deltagare</a>	<br>		    			

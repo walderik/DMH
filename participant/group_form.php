@@ -129,6 +129,40 @@ include 'navigation.php';
 				<textarea class="input_field" id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Enemies); ?></textarea>
 			</div>
 
+
+			<?php if (GroupType::isInUse($current_larp)) { ?>
+			<div class="question">
+			<label for="GroupType">Typ av grupp</label>&nbsp;<font style="color:red">*</font>
+			<div class="explanation">Vad är ni för typ av grupp? Vad är det som gör att ni är en enhet?</div>
+			
+            <?php
+            GroupType::selectionDropdown($current_larp, false, true, $group->GroupTypeId);
+            ?> 
+			</div>
+			<?php } ?>
+			
+			<?php if (ShipType::isInUse($current_larp)) { ?>
+			<div class="question">
+			<label for="ShipType">Typ av skepp</label>&nbsp;<font style="color:red">*</font>
+			<div class="explanation">Vilken typ av skepp seglar ni?</div>
+			
+            <?php
+            ShipType::selectionDropdown($current_larp, false, true, $group->ShipTypeId);
+            ?> 
+			</div>
+			<?php } ?>
+
+			<?php if (Colour::isInUse($current_larp)) { ?>
+			<div class="question">
+			<label for="Colour">Färg</label>&nbsp;<font style="color:red">*</font>
+			<div class="explanation">Vilken färg har gruppen? Färgen används för att dekorera kläder och saker. Färgen används dessutom av arrangörerna i olika sammanhang för att symbolisera gruppen.</div>
+			
+            <?php
+            Colour::selectionDropdown($current_larp, false, true, $group->ColourId);
+            ?> 
+			</div>
+			<?php } ?>
+
 			<?php if (Wealth::isInUse($current_larp)) { ?>
 			<div class="question">
 			<label for="Wealth">Hur rik är gruppen?</label>&nbsp;<font style="color:red">*</font>

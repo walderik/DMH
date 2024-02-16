@@ -19,6 +19,9 @@ function getObjectName($name) {
         case "religon" : return "Religion";
         case "advertismenttypes" : return "Annonstyper";
         case "titledeedplace" : return "Platser för verksamheter";
+        case "grouptype" : return "Typ av grupp";
+        case "shiptype" : return "Typ av skepp";
+        case "colour" : return "Färg";
     }
 }
 
@@ -41,5 +44,8 @@ function getObjectType($name) {
         case "religion" : return "Religion";
         case "advertismenttypes" : return "AdvertismentType";
         case "titledeedplace" : return "TitledeedPlace";
+        case "grouptype" : return "GroupType";
+        case "shiptype" : return "ShipType";
+        case "colour" : return "Colour";
     }
 }

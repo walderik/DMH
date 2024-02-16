@@ -12,6 +12,9 @@ class Group extends BaseModel{
     public $OtherInformation;
     public $WealthId;
     public $PlaceOfResidenceId;
+    public $GroupTypeId;
+    public $ShipTypeId;
+    public $ColourId;
     public $PersonId; # Gruppansvarig
     public $CampaignId;
     public $IsDead = 0;
@@ -39,6 +42,9 @@ class Group extends BaseModel{
         if (isset($arr['OtherInformation'])) $this->OtherInformation = $arr['OtherInformation'];
         if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
         if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
+        if (isset($arr['GroupTypeId'])) $this->GroupTypeId = $arr['GroupTypeId'];
+        if (isset($arr['ShipTypeId'])) $this->ShipTypeId = $arr['ShipTypeId'];
+        if (isset($arr['ColourId'])) $this->ColourId = $arr['ColourId'];
         if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['IsDead'])) $this->IsDead = $arr['IsDead'];
@@ -63,11 +69,13 @@ class Group extends BaseModel{
     public function update() {
        
         $stmt = $this->connect()->prepare("UPDATE regsys_group SET Name=?, Friends=?, Enemies=?,
-                                                                  Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?,
-                                                                  WealthId=?, PlaceOfResidenceId=?, PersonId=?, CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, IsApproved=? WHERE Id = ?");
+                    Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?, WealthId=?, PlaceOfResidenceId=?, 
+                    PersonId=?, GroupTypeId=?, ShipTypeId=?, ColourId=?, 
+                    CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, IsApproved=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
-            $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, $this->PersonId, 
+            $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, 
+            $this->PersonId, $this->GroupTypeId, $this->ShipTypeId, $this->ColourId,
             $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -84,12 +92,12 @@ class Group extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_group (Name,  
                          Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
-                         WealthId, PlaceOfResidenceId, PersonId, CampaignId, IsDead, OrganizerNotes, ImageId, IsApproved) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
+                         WealthId, PlaceOfResidenceId, GroupTypeId, ShipTypeId, ColourId, PersonId, CampaignId, IsDead, OrganizerNotes, ImageId, IsApproved) 
+                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
-            $this->PlaceOfResidenceId, $this->PersonId, $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved))) {
+            $this->PlaceOfResidenceId, $this->PersonId, $this->GroupTypeId, $this->ShipTypeId, $this->ColourId, $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -105,6 +113,11 @@ class Group extends BaseModel{
         return Wealth::loadById($this->WealthId);
      }
     
+     public function getGroupType() {
+         if (is_null($this->GroupTypeId)) return null;
+         return GroupType::loadById($this->GroupTypeId);
+     }
+     
      public function hasImage() {
          if (isset($this->ImageId)) return true;
          return false;
