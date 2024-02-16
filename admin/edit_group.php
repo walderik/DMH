@@ -110,8 +110,25 @@ include 'navigation.php';
 			<td><?php Wealth::selectionDropdown($current_larp, false, true, $group->WealthId);?></td></tr>
 			<?php } ?>
 
+			<?php if (PlaceOfResidence::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Var bor gruppen?&nbsp;<font style="color:red">*</font></td>
 			<td><?php PlaceOfResidence::selectionDropdown($current_larp, false, true, $group->PlaceOfResidenceId);?></td></tr>
+			<?php } ?>
+
+			<?php if (GroupType::isInUse($current_larp)) { ?>
+			<tr><td valign="top" class="header">Typ av grupp&nbsp;<font style="color:red">*</font></td>
+			<td><?php GroupType::selectionDropdown($current_larp, false, true, $group->GroupTypeId);?></td></tr>
+			<?php } ?>
+			<?php if (ShipType::isInUse($current_larp)) { ?>
+			<tr><td valign="top" class="header">Typ av skepp&nbsp;<font style="color:red">*</font></td>
+			<td><?php ShipType::selectionDropdown($current_larp, false, true, $group->ShipTypeId);?></td></tr>
+			<?php } ?>
+			<?php if (Colour::isInUse($current_larp)) { ?>
+			<tr><td valign="top" class="header">Färg&nbsp;<font style="color:red">*</font></td>
+			<td><?php Colour::selectionDropdown($current_larp, false, true, $group->ColourId);?></td></tr>
+			<?php } ?>
+
+
 
 			<tr><td valign="top" class="header">Intrig&nbsp;<font style="color:red">*</font></td>
 			<td>

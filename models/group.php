@@ -118,6 +118,16 @@ class Group extends BaseModel{
          return GroupType::loadById($this->GroupTypeId);
      }
      
+     public function getShipType() {
+         if (is_null($this->ShipTypeId)) return null;
+         return ShipType::loadById($this->ShipTypeId);
+     }
+     
+     public function getColour() {
+         if (is_null($this->ColourId)) return null;
+         return Colour::loadById($this->ColourId);
+     }
+     
      public function hasImage() {
          if (isset($this->ImageId)) return true;
          return false;

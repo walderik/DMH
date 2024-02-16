@@ -119,6 +119,16 @@ include 'navigation.php';
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Var bor gruppen?</td><td><?php echo $current_group->getPlaceOfResidence()->Name;?></td></tr>
 			<?php } ?>
+			<?php if (GroupType::isInUse($current_larp)) { ?>
+			<tr><td valign="top" class="header">Typ av grupp</td><td><?php echo $current_group->getGroupType()->Name; ?></td></tr>
+			<?php }?>
+			<?php if (ShipType::isInUse($current_larp)) { ?>
+			<tr><td valign="top" class="header">Typ av skepp</td><td><?php echo $current_group->getShipType()->Name; ?></td></tr>
+			<?php }?>
+			<?php if (Colour::isInUse($current_larp)) { ?>
+			<tr><td valign="top" class="header">Färg</td><td><?php echo $current_group->getColour()->Name; ?></td></tr>
+			<?php }?>
+
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
 			<?php if (IntrigueType::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($current_group->getIntrigueTypes());?></td></tr>
