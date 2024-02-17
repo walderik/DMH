@@ -41,14 +41,13 @@ include 'navigation.php';
     
         <h1>Karaktärer i kampanjen som inte är anmälda (än) i år</h1>
         <p>
-        Om man anmäler någon härifrån kommer de att välja "<?php echo HousingRequest::allActive($current_larp)[0]->Name ?>" som boende och 
-        "<?php echo TypeOfFood::allActive($current_larp)[0]->Name ?>" som mat. Du får redigera det på personen efteråt om det behövs.
+        Om man anmäler någon härifrån kommer de att få stanadrdvärden på tex boendeönskemål och matönskemål. Du får redigera det på personen efteråt om det behövs.
 		<br><br>Deltagare som finns på reservlistan visas inte här.</p>
      		<?php 
     		$roles = Role::getAllUnregisteredRoles($current_larp);
     		$reserve_persons = Person::getAllReserves($current_larp);
     		if (empty($roles)) {
-    		    echo "Inga anmälda Karaktärer";
+    		    echo "Inga anmälda karaktärer";
     		} else {
     		    echo "<table class='data'>";
     		    echo "<tr><th>Namn</th><th>Yrke</th><th>Grupp</th><th>Spelare</th><th>Senast spelad</th><th>Lägg till</th></tr>\n";
