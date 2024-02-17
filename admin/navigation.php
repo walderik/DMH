@@ -49,7 +49,7 @@ function changePart() {
 
 	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
 	  
-	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) && !isset($_SESSION['admin'])) { ?>
+	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) || isset($_SESSION['admin'])) { ?>
 	  
 	  <div class="dropdown">
 	    <button class="dropbtn">Kampanj 
