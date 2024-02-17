@@ -139,7 +139,7 @@ include 'navigation.php';
 
 			<?php if (IntrigueType::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Intrigtyper</td>
-			<td><?php selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
+			<td><?php IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
 			<?php }?>
 			
 			<tr><td valign="top" class="header">Intrigidéer</td>

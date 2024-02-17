@@ -90,7 +90,17 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
 				<td><input type="text" id="SortOrder" name="SortOrder"
 					 value="<?php echo $object->SortOrder; ?>"></td>
 			</tr>
+
+			<?php if ($objectType == 'IntrigueType') {?>
 			<tr>
+
+				<td>För vilka ska<br>alternativet finnas?</label></td>
+				<td>
+				<input type="checkbox" id="ForRole" name="ForRole" <?php if ($object->ForRole == 1) {echo "checked";} ?> ><label for="ForRole">Karaktärer</label>
+				<input type="checkbox" id="ForGroup" name="ForGroup" <?php if ($object->ForGroup == 1) {echo "checked";} ?> ><label for="ForGroup">Grupper</label>
+				</td>
+			</tr>
+			<?php } ?>
  
 		</table>
 

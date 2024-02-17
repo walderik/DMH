@@ -1,7 +1,64 @@
 <?php
 
 class IntrigueType extends SelectionData{
-      
+    public $ForRole = 1;
+    public $ForGroup = 1;
+    
+    
+    public function setValuesByArray($arr) {
+        parent::setValuesByArray($arr);
+
+        if (isset($arr['ForRole'])) {
+            if ($arr['ForRole'] == "on" || $arr['ForRole'] == 1) {
+                $this->ForRole = 1;
+            }
+            else {
+                $this->ForRole = 0;
+            }
+        }
+        else {
+            $this->ForRole = 0;
+        }
+        
+        if (isset($arr['ForGroup'])) {
+            if ($arr['ForGroup'] == "on" || $arr['ForGroup'] == 1) {
+                $this->ForGroup = 1;
+            }
+            else {
+                $this->ForGroup = 0;
+            }
+        }
+        else {
+            $this->ForGroup = 0;
+        }
+    }
+    
+    
+    # Update an existing object in db
+    public function update() {
+        parent::update();
+        $this->setSpecial();
+    }
+    
+    # Create a new object in db
+    public function create() {
+        parent::create();
+        $this->setSpecial();
+    }
+    
+    private function setSpecial() {
+
+        $stmt = $this->connect()->prepare("UPDATE regsys_".strtolower(static::class)." SET ForRole=?, ForGroup=? WHERE id = ?");
+        
+        if (!$stmt->execute(array($this->ForRole, $this->ForGroup, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    
 
     public static function getIntrigeTypesForRole($roleId) {
         if (is_null($roleId)) return array();
@@ -115,7 +172,51 @@ class IntrigueType extends SelectionData{
         if ($exists) return false;
         return true;
     }
+   
+    public function getForString() {
+        $for = array();
+        if ($this->ForRole == 1) $for[] = "Karaktärer";
+        if ($this->ForGroup == 1) $for[] = "Grupper";
+        return implode(", ", $for);
+    }
     
+    public static function allActiveForGroup(LARP $larp) {
+        $sql = "SELECT * FROM regsys_".strtolower(static::class)." WHERE active = 1 AND ForGroup=1 AND CampaignId=? ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    public static function allActiveForRole(LARP $larp) {
+        $sql = "SELECT * FROM regsys_".strtolower(static::class)." WHERE active = 1 AND ForRole=1 AND CampaignId=? ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    
+    
+    # En dropdown där man kan välja den här
+    public static function selectionDropdownGroup(LARP $larp, ?bool $multiple=false, ?bool $required=true, $selected=null) {
+        $selectionDatas = static::allActiveForGroup($larp);
+        if (empty($selectionDatas)) return;
+        selectionByArray(static::class , $selectionDatas, $multiple, $required, $selected);
+    }
+    
+    # En dropdown där man kan välja den här
+    public static function selectionDropdownRole(LARP $larp, ?bool $multiple=false, ?bool $required=true, $selected=null) {
+        $selectionDatas = static::allActiveForRole($larp);
+        if (empty($selectionDatas)) return;
+        selectionByArray(static::class , $selectionDatas, $multiple, $required, $selected);
+    }
+    
+    # Används den här tabellen
+    public static function isInUseForGroup(LARP $larp) {
+         $sql ="SELECT Count(Id) as Num FROM regsys_".strtolower(static::class)." WHERE active = 1 AND ForGroup=1 AND CampaignId = ? ORDER BY SortOrder LIMIT 1;";
+        return static::existsQuery($sql, array($larp->CampaignId));
+    }
+ 
+    # Används den här tabellen
+    public static function isInUseForRole(LARP $larp) {
+        $sql ="SELECT Count(Id) as Num FROM regsys_".strtolower(static::class)." WHERE active = 1 AND ForRole=1 AND CampaignId = ? ORDER BY SortOrder LIMIT 1;";
+        return static::existsQuery($sql, array($larp->CampaignId));
+    }
     
     
 }

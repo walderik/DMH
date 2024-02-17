@@ -413,14 +413,15 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 				<div class="explanation">Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar". </div>
 				<textarea class="input_field" id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->IntrigueSuggestions); ?></textarea>
 			</div>
-			<?php if (IntrigueType::isInUse($current_larp)) {?>
+			<?php if (IntrigueType::isInUseForRole($current_larp)) {?>
 			<div class="question intrigue">
 				<label for="IntrigueTypeId">Intrigtyper</label><br> 
 				<div class="explanation">Vilken typ av intriger vill du ha?
 				
 				</div>
 				<?php 
-				selectionByArray('IntrigueType' , IntrigueType::allActive($current_larp), true, false, $role->getSelectedIntrigueTypeIds());
+				IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds());
+				
 				?>
 			</div>
 			<?php } ?>

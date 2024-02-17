@@ -184,13 +184,13 @@ include 'navigation.php';
 			</div>
 			<?php } ?>
 			
-			<?php if (IntrigueType::isInUse($current_larp)) { ?>
+			<?php if (IntrigueType::isInUseForGroup($current_larp)) { ?>
 			<div class="question">
     			<label for="IntrigueType">Intrigtyper</label>
     			<div class="explanation">Vilken typ av intriger vill gruppen helst ha? </div>
                 <?php
     
-                IntrigueType::selectionDropdown($current_larp, true, false, $group->getSelectedIntrigueTypeIds());
+                IntrigueType::selectionDropdownGroup($current_larp, true, false, $group->getSelectedIntrigueTypeIds());
                 
                 ?>
             </div>

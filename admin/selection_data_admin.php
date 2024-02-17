@@ -63,15 +63,21 @@ include 'navigation.php';
         $data_array = call_user_func($objectType . '::allForLarp', $current_larp);
         if (count($data_array) > 0) {
             echo "<table class='data'>";
-            echo "<tr><th>Namn</th><th>Beskrivning</th><th>Valbar</th><th>Sortering</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Namn</th><th>Beskrivning</th><th>Valbar</th><th>Sortering</th>";
+            if ($objectType == 'IntrigueType') {
+                echo "<th>För vilka<br>finns typen</th>";
+            }
+            echo "<th></th></tr>\n";
             foreach ($data_array as $data) {
                 echo "<tr>\n";
-                echo "<td>" . $data->Name . "</td>\n";
+                echo "<td><a href='selection_data_form.php?type=".$type."&operation=update&id=" . $data->Id . "'>$data->Name</a></td>\n";
                 echo "<td>" . nl2br($data->Description) . "</td>\n";
                 echo "<td>" . $data->Active . "</td>\n";
                 echo "<td>" . $data->SortOrder . "</td>\n";
-              
-                echo "<td>" . "<a href='selection_data_form.php?type=".$type."&operation=update&id=" . $data->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                if ($objectType == 'IntrigueType') {
+                    echo "<td>".$data->getForString()."</td>";
+                }
+                
                 echo "<td>";
                 if ($data->mayDelete()) echo "<a href='selection_data_admin.php?type=".$type."&operation=delete&id=" . $data->Id . "'><i class='fa-solid fa-trash'></i>";
                 echo "</td>\n";
