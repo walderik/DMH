@@ -62,7 +62,7 @@ include 'navigation.php';
                 echo "<td>" . $larp->StartTimeLARPTime . "</td>\n";
                 echo "<td>" . $larp->EndTimeLARPTime . "</td>\n";
                 echo "<td>" . $larp->PaymentReferencePrefix . "</td>\n";
-                echo "<td>" . $larp->NetDays . "</td>\n";
+                echo "<td>" . $larp->NetDays . "<br>$larp->LastPaymentDate</td>\n";
                 
                 echo "<td>" . "<a href='larp_form.php?operation=update&id=" . $larp->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 if (!$larp->hasRegistrations()) {

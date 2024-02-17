@@ -111,6 +111,11 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     					name="NetDays" value="<?php echo $larp->NetDays; ?>" size="15" maxlength="10" required></td>
     			</tr>
     			<tr>
+    				<td><label for="StartDate">Absolut sista dag för betalning</label><br>Om antal dagar för betalning ger ett senare datum än detta så sätts detta som sista betal-datum för deltagaren.</td>
+    				<td><input type="date" id="LastPaymentDate"
+    					name="LastPaymentDate" value="<?php echo $larp->LastPaymentDate; ?>" size="50" required></td>
+    			</tr>
+    			<tr>
     				<td><label for=HasTelegrams>Telegram</label><br>Ska stöd för telegram visas i systemet?</td>
     				<td>
 						<input type="radio" id="HasTelegrams_yes" name="HasTelegrams" value="1" <?php if ($larp->hasTelegrams()) echo 'checked="checked"'?>> 

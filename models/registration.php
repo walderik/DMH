@@ -402,17 +402,22 @@ class Registration extends BaseModel{
         $larp = LARP::loadById($this->LARPId);
 
         $date=date_create($this->RegisteredAt);
+        $dateLastPaymentDate = date_create($larp->LastPaymentDate);
+        
         date_add($date,date_interval_create_from_date_string("$larp->NetDays days"));
-        return date_format($date,"Y-m-d");
+        if ($date < $dateLastPaymentDate) return date_format($date,"Y-m-d");
+        return date_format($dateLastPaymentDate,"Y-m-d");
     }
     
     public function isPastPaymentDueDate() {
         $larp = LARP::loadById($this->LARPId);
         
-        $date1=date_create($this->RegisteredAt);
-        $date2=date_create();
-        $diff=date_diff($date1,$date2);
-        if ($diff->days > $larp->NetDays) return true;
+        $dateRegistration=date_create($this->RegisteredAt);
+        $today=date_create();
+        $diffRegistration=date_diff($dateRegistration,$today);
+        $dateLastPaymentDate = date_create($larp->LatestRegistrationDate);
+        
+        if ($diffRegistration->days > $larp->NetDays || $dateLastPaymentDate < $today) return true;
         return false;
     }
     
