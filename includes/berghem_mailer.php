@@ -85,8 +85,12 @@ class BerghemMailer {
     
     public static function send_registration_information_mail_to_group(Role $role, Group $group, Larp $larp) {
         $admin_person = $group->getPerson();
-        
-        $text  = "$role->Name är anmäld till $group->Name.<br>\n";
+        $player = $role->getPerson();
+        $text  = "$role->Name ";
+        if ($player->hasPermissionShowName()) {
+            $text .= "spelad av $player->Name ";
+        }
+        $text .= "är anmäld till $group->Name.<br>\n";
         $text .= "Det gäller lajvet $larp->Name.<br>\n";
         $text .= "<br>\n";
         $text .= "Du kan manuellt ta bort karaktären ur gruppen om det är fel.";
