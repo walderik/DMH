@@ -88,7 +88,6 @@ include 'navigation.php';
 			</td></tr>
 			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td><td><?php echo $role->TypeOfLarperComment;?></td></tr>
 			<?php } ?>
-			<tr><td valign="top" class="header">Tidigare lajv</td><td><?php echo $role->PreviousLarps;?></td></tr>
 			<tr><td valign="top" class="header">Varför befinner sig karaktären på platsen?</td><td><?php echo $role->ReasonForBeingInSlowRiver;?></td></tr>
 			
 			
@@ -347,7 +346,7 @@ include 'navigation.php';
 		</div>
 		<?php 
 		$previous_larps = $role->getPreviousLarps();
-		if (isset($previous_larps) && count($previous_larps) > 0) {
+		if (isset($previous_larps) && count($previous_larps) > 0 || !empty($role->PreviousLarps)) {
 		    
 		    echo "<h2>Historik</h2>";
 		    foreach ($previous_larps as $prevoius_larp) {
@@ -382,6 +381,11 @@ include 'navigation.php';
 	                else echo "Inget rapporterat";
 	            echo "</div>";
 		                
+		    }
+		    
+		    if (!empty($role->PreviousLarps)) {
+		        echo "<div class='border'><h3>Tidigare</h3>";
+		        echo "<p>".nl2br(htmlspecialchars($role->PreviousLarps))."</p></div>";
 		    }
 		}
 			    
