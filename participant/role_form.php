@@ -338,6 +338,7 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 				<textarea class="input_field requiredIntrigueField" id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea>
 			</div>
 				
+			<?php if (!($campaign->is_dmh() || $campaign->is_me())) { ?>
 			<div class="question intrigue">
 				<label for="PreviousLarps">Tidigare lajv</label><br> 
 				<div class="explanation"><?php echo $campaign->Name ?> är en kampanj. Det innebär att allt din karaktär gör ett år och andra gör mot den ska påverka det här lajvet.    
@@ -347,6 +348,8 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 				</div>
 				<textarea class="input_field" id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo htmlspecialchars($role->PreviousLarps); ?></textarea>
 			</div>
+			<?php }?>
+			
 			<?php if (Religion::isInUse($current_larp)) {?>
 			<div class="question intrigue">
 				<label for="ReligionId">Vilken religion har karaktären?</label>&nbsp;<font style="color:red">*</font><br>
