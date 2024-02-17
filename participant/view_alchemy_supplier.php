@@ -56,13 +56,9 @@ include 'navigation.php';
     		</table>
 
 			<h2>Ingredienser till <?php echo $current_larp->Name?></h2>
-			<p>Lägg till de ingredienser som du tänker ta med till lajvet. Arrangörerna godkänner sedan att du får ta med ingrediensen och hur många du får ta med.<br>
-			Om någon eller några ingredienser du har tänkt ta med inte finns i listan med ingredienser så får du skapa upp det du har tänkt ta med dig. Tänk på att det ska matcha på alla punkter, även off-ingrediens. 
-			Efter att du har skapat en ingrediens måste arrangörerna godkänna den innan du kan välja att ta med den till lajvet.</p>
+			<p>Lägg till de ingredienser som du tänker ta med till lajvet. Arrangörerna godkänner sedan att du får ta med ingrediensen och hur många du får ta med.</p>
 				<a href='alchemy_all_ingredients.php?RoleId=<?php echo $role->Id?>'>Visa alla ingredienser som finns / Välj ingredienser att ta med</a><br><br>
 
-			    <a href='alchemy_ingredient_form.php?operation=insert&RoleId=<?php echo $role->Id?>'><i class='fa-solid fa-file-circle-plus'></i>Skapa ny ingrediens</a>&nbsp;&nbsp;
-			    <a href='alchemy_ingredient_form.php?operation=insert&type=katalysator&RoleId=<?php echo $role->Id?>'><i class='fa-solid fa-file-circle-plus'></i>Skapa ny katalysator</a><br><br>
 			<?php 
 			$amounts = $supplier->getIngredientAmounts($current_larp);
 			if (empty($amounts)) {
