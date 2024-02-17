@@ -7,6 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
         Alchemy_Essence::delete($_GET['Id']);
+        header('Location: alchemy_essence_admin.php');
+        exit;
     }
 }
 
