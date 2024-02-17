@@ -129,10 +129,10 @@ img {
 				
 				<?php 
 				$all_essences = Alchemy_Essence::allByCampaign($current_larp);
-				$chosen_essences = $ingredient->getThreeEssences();
-				selectionDropDownByArray('essence1', $all_essences, false, $chosen_essences[0]); 
-				selectionDropDownByArray('essence2', $all_essences, false, $chosen_essences[1]); 
-				selectionDropDownByArray('essence3', $all_essences, false, $chosen_essences[2]); 
+				
+				selectionDropDownByArray('essence1', $all_essences, false, null); 
+				selectionDropDownByArray('essence2', $all_essences, false, null); 
+				selectionDropDownByArray('essence3', $all_essences, false, null); 
 				
 				
 				?>

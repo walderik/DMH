@@ -130,7 +130,18 @@ class Alchemy_Ingredient extends BaseModel{
         return implode(", ", $essenceNames);
     }
 
-    public function getThreeEssences() {
+    public function getEssenceIds() {
+        $essences = $this->getThreeEssences();
+        $essenceIds = array(null, null, null);
+        foreach ($essences as $key => $essence) {
+            if (is_null($essence)) continue;
+            $essenceIds[$key] = $essence->Id;
+        }
+        return $essenceIds;
+        
+    }
+    
+    private function getThreeEssences() {
         $three_essences = array(null, null, null);
         
         $sql = "SELECT * FROM regsys_alchemy_essence WHERE Id In (".
