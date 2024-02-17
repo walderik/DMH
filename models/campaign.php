@@ -109,6 +109,11 @@ class Campaign extends BaseModel{
         return ($this->Abbreviation=='KIR');
     }
     
+    # Är det här Mareld
+    public function is_me() {
+        return ($this->Abbreviation=='ME');
+    }
+    
     public function hasLarps() {
 
         $sql = "SELECT COUNT(*) AS Num FROM regsys_larp WHERE CampaignId=?;";

@@ -152,14 +152,13 @@ include 'navigation.php';
 			</div>
 			<?php } ?>
 
-			<?php if (Colour::isInUse($current_larp)) { ?>
+			<?php if ($current_larp->getCampaign()->is_me()) { ?>
 			<div class="question">
 			<label for="Colour">Färg</label>&nbsp;<font style="color:red">*</font>
-			<div class="explanation">Vilken färg har gruppen? Färgen används för att dekorera kläder och saker. Färgen används dessutom av arrangörerna i olika sammanhang för att symbolisera gruppen.</div>
+			<div class="explanation">Vilken färg har gruppen? Färgen används för att dekorera kläder och saker. Färgen används dessutom av arrangörerna i olika sammanhang för att symbolisera gruppen.<br>Tänk på detsom en "gängsymbol" som stolt visas upp.</div>
+			<input class="input_field" type="text" id="Colour" name="Colour" value="<?php echo htmlspecialchars($group->Colour); ?>" maxlength="20" required>
 			
-            <?php
-            Colour::selectionDropdown($current_larp, false, true, $group->ColourId);
-            ?> 
+
 			</div>
 			<?php } ?>
 

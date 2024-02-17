@@ -21,7 +21,6 @@ function getObjectName($name) {
         case "titledeedplace" : return "Platser för verksamheter";
         case "grouptype" : return "Typ av grupp";
         case "shiptype" : return "Typ av skepp";
-        case "colour" : return "Färg";
     }
 }
 
@@ -46,6 +45,5 @@ function getObjectType($name) {
         case "titledeedplace" : return "TitledeedPlace";
         case "grouptype" : return "GroupType";
         case "shiptype" : return "ShipType";
-        case "colour" : return "Colour";
     }
 }

@@ -123,9 +123,9 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Typ av skepp&nbsp;<font style="color:red">*</font></td>
 			<td><?php ShipType::selectionDropdown($current_larp, false, true, $group->ShipTypeId);?></td></tr>
 			<?php } ?>
-			<?php if (Colour::isInUse($current_larp)) { ?>
+			<?php if ($current_larp->getCampaign()->is_me()) { ?>
 			<tr><td valign="top" class="header">Färg&nbsp;<font style="color:red">*</font></td>
-			<td><?php Colour::selectionDropdown($current_larp, false, true, $group->ColourId);?></td></tr>
+			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($group->Colour); ?>"></td></tr>
 			<?php } ?>
 
 
