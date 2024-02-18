@@ -15,7 +15,7 @@ th {
 
     <div class="content">   
         <h1>Reservlistan</h1>
-        Detta är listan med deltagare som har gjort en anmälan efter att lajvet är fullt. De har fått meddelande om att de står på reservplats.<br><br>
+        Detta är listan med deltagare som har gjort en anmälan efter att lajvet är fullt. De har fått meddelande om att de står på reservplats. Listan tar inte hänsyn till i vilken ordning de har komit in på den.<br><br>
         Genom att klicka på "Gör till en anmälan" omvandlas deltagare på reservlistan till en vanlig anmälan. Den får sedan hanteras i vanlig ordning med eventuella godkännanden.
      		<?php 
     		$persons = Person::getAllReserves($current_larp);
