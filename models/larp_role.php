@@ -119,6 +119,25 @@ class LARP_Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larpId));
     }
 
+    # returnera en array med alla karaktärer som är anmälda till lajvet
+    public static function getRegisteredRolesForPerson($larpId, $personId) {
+        if (is_null($larpId)) return Array();
+        $sql = "SELECT * FROM regsys_larp_role WHERE LARPId = ? AND RoleId IN ".
+            "(SELECT Id FROM regsys_role WHERE PersonId =?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larpId, $personId));
+    }
+    
+    public static function deleteByIds($larpId, $roleId) {
+        $connection = static::connectStatic();
+        $stmt = $connection->prepare("DELETE FROM ".
+            "regsys_larp_role WHERE LARPId = ? AND RoleId = ?;");
+        if (!$stmt->execute(array($larpId, $roleId))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
     
     
    

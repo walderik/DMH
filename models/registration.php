@@ -466,4 +466,49 @@ class Registration extends BaseModel{
     public function getInvoice() {
         return Invoice::getInvoiceForRegistration($this);
     }
+    
+    public function changeRegistrationToReserve() {
+        //Skapa en registration
+        $reserve_registration = Reserve_Registration::newWithDefault();
+        $reserve_registration->LARPId = $this->LARPId;
+        $reserve_registration->PersonId = $this->PersonId;
+        $reserve_registration->NPCDesire = $this->NPCDesire;
+        $reserve_registration->HousingRequestId = $this->HousingRequestId;
+        $reserve_registration->LarpHousingComment = $this->LarpHousingComment;
+        $reserve_registration->TentType = $this->TentType;
+        $reserve_registration->TentSize = $this->TentSize;
+        $reserve_registration->TentHousing = $this->TentHousing;
+        $reserve_registration->TentPlace = $this->TentPlace;
+        $reserve_registration->GuardianId = $this->GuardianId;
+        $reserve_registration->TypeOfFoodId = $this->TypeOfFoodId;
+        $reserve_registration->RegisteredAt = $this->RegisteredAt;
+        
+        $reserve_registration->create();
+        
+        //Official types
+        $officialTypeIds = $this->getSelectedOfficialTypeIds();
+        $reserve_registration->saveAllOfficialTypes($officialTypeIds);
+        
+        //Gör Reserve_Larp_Role av alla LARP_Role
+        $larp_roles = LARP_Role::getRegisteredRolesForPerson($this->LARPId, $this->PersonId);
+        foreach($larp_roles as $larp_role) {
+            $reserve_role = Reserve_LARP_Role::newWithDefault();
+            $reserve_role->LARPId = $larp_role->LARPId;
+            $reserve_role->RoleId = $larp_role->RoleId;
+            $reserve_role->IsMainRole = $larp_role->IsMainRole;
+            $reserve_role->create();
+        }
+        
+        
+        //Ta bort allt kring reservationen
+        $this->deleteAllOfficialTypes();
+        Registration::delete($this->Id);
+        foreach($larp_roles as $larp_role) {
+            LARP_Role::deleteByIds($larp_role->LARPId, $larp_role->RoleId);
+        }
+        
+        
+        
+    }
+    
 }

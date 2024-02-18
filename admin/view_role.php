@@ -313,7 +313,7 @@ include 'navigation.php';
 		    echo "<br>";
 		    
 		}
-		echo "Pengar vid lajvets start $larp_role->StartingMoney $currency";
+		if (isset($larp_role)) echo "Pengar vid lajvets start $larp_role->StartingMoney $currency";
 		
 		
 		

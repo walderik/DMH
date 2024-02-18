@@ -97,7 +97,7 @@ class Reserve_Registration extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_reserve_registration (LARPId, PersonId, RegisteredAt,
-            NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, TypeOfFoodId) VALUES (?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, TypeOfFoodId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, 
             $this->NPCDesire, $this->HousingRequestId, 
@@ -220,6 +220,7 @@ class Reserve_Registration extends BaseModel{
         
         return $resultArray;
     }
+    
     
 
     public function turnIntoRegistration() {
