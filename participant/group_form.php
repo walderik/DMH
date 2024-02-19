@@ -155,7 +155,12 @@ include 'navigation.php';
 			<?php if ($current_larp->getCampaign()->is_me()) { ?>
 			<div class="question">
 			<label for="Colour">Färg</label>&nbsp;<font style="color:red">*</font>
-			<div class="explanation">Vilken färg har gruppen? Färgen används för att dekorera kläder och saker. Färgen används dessutom av arrangörerna i olika sammanhang för att symbolisera gruppen.<br>Tänk på detsom en "gängsymbol" som stolt visas upp.</div>
+			<div class="explanation">
+			Som besättning kommer ni tilldelas en färg som skall symboliserar er både fysiskt i dräkt och på ert skepp. 
+			Färgen kan ses som ”gängsymbol” och bärs med stolthet. Färgen följer med er besättning så länge ni är aktiva i kampanjen. <br>
+			<br>
+			Här anmäler du vilken färg besättningen önskar. Rangordna dem i 1-3. Tex: 1.röd 2. Blå 3. Rostbrun. Vi kommer göra en första utdelning av färger i slutet av varje månad.<br><br>
+			Har ni en färg sedan tidigare lajv låter ni den stå kvar utan att ändra. </div>
 			<input class="input_field" type="text" id="Colour" name="Colour" value="<?php echo htmlspecialchars($group->Colour); ?>" maxlength="20" required>
 			
 

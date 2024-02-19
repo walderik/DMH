@@ -247,11 +247,9 @@ Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste<
 				
 				
 			<div class="question">
-				<label for="NoIntrigue">Vill du vara myslajvare?</label><br>
-       			<div class="explanation">Du vill bara sitta vid elden och dricka te, hantverka och småprata om minnen från förr. 
-       			Du får inga intriger och är inte inblandad i någon annans intriger. Du får heller ingen handel.<br>
-       			Du är mest på lajvet för att njuta av stämningen och för att bidra till bra stämning.<br>
-       			Detta rekommenderas inte för nybörjare eller barn.
+				<label for="NoIntrigue">Vill du hålla dig i bakgrunden?</label><br>
+       			<div class="explanation">Vill du lajva i bakgrunden, alltså inte få några skrivna intriger eller bli involverad i andras intriger? 
+       			Du åker främst för att uppleva stämningen och finnas i bakgrunden, utan att vara en aktiv del av lajvet.
 			</div>
 
         	<input type="radio" id="myslajvare_yes" name="NoIntrigue" value="1" onclick="handleRadioClick()" <?php if ($role->isMysLajvare()) echo 'checked="checked"'?>>
