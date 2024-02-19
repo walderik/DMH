@@ -76,7 +76,7 @@ Det är <?php echo Statistics::countParticipantHasSpot($current_larp)?> helt kla
 
 	
 	<br>
-	I nedanstående tabell finns huvudkaraktärer i första kolumnen och sidokaraktärer i andra. Myslajvare är inte medräknade.
+	I nedanstående tabell finns huvudkaraktärer i första kolumnen och sidokaraktärer i andra. Bakgrundslajvare är inte medräknade.
     	
     	<table>
 

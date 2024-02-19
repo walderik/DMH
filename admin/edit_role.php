@@ -76,7 +76,7 @@ include 'navigation.php';
 
 
 
-			<tr><td valign="top" class="header">Myslajvare&nbsp;<font style="color:red">*</font></td>
+			<tr><td valign="top" class="header">Bakgrundslajvare&nbsp;<font style="color:red">*</font></td>
 			<td>
 				<input type="radio" id="NoIntrigue_yes" name="NoIntrigue" value="1" <?php if ($role->isMysLajvare()) echo 'checked="checked"'?>> 
     			<label for="NoIntrigue_yes">Ja</label><br> 

@@ -15,7 +15,7 @@ $person = $role->getPerson();
 <table>
 <?php
 if ($role->isMysLajvare()) {
-    echo "<tr><td></td><td><strong>Myslajvare</strong></td></tr>";
+    echo "<tr><td></td><td><strong>Bakgrundslajvare</strong></td></tr>";
 }?>
 		
 			<tr>
