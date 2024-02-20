@@ -621,9 +621,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	}
 	
 	protected function erfarenhet($left) {
-	    //TODO vet inte om detta ska vara valbart på lajvet
-	    //if (!Experience::isInUse($this->larp)) return false;
-	    
 	    $this->set_header($left, 'Erfarenhet');
 	    if (empty($this->person)) return true;
 	    $this->set_text($left, $this->person->getExperience()->Name);
@@ -636,7 +633,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    if ($this->isMyslajvare) return false;
 	    
 	    $this->set_header($left, 'Rikedom');
-	    $text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
+	    //$text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
 	    $this->set_text($left, $this->role->getWealth()->Name . $text);
 	    return true;
 	}
@@ -730,6 +727,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	}
 	
 	protected function bor($left) {
+	    if (!PlaceOfResidence::isInUse($this->larp)) return false;
 	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Bor');
 	    $this->set_text($left, $this->role->getPlaceOfResidence()->Name);
