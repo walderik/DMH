@@ -415,7 +415,7 @@ class Registration extends BaseModel{
         $dateRegistration=date_create($this->RegisteredAt);
         $today=date_create();
         $diffRegistration=date_diff($dateRegistration,$today);
-        $dateLastPaymentDate = date_create($larp->LatestRegistrationDate);
+        $dateLastPaymentDate = date_create($larp->LastPaymentDate);
         
         if ($diffRegistration->days > $larp->NetDays || $dateLastPaymentDate < $today) return true;
         return false;
