@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $email = Email::loadById($emailId); 
 $attachements = $email->attachments();
 
-if ($current_larp->Id != $email->LarpId) {
+if ($current_larp->Id != $email->LarpId && !is_null($email->LarpId)) {
     header('Location: index.php'); //Emailet är inte för detta lajvet
     exit;
 }
@@ -38,7 +38,13 @@ include 'navigation.php';
     		    $to = implode(", ", $to_array);
     		}
     		?>
-			<tr><td>Skickat av</td><td><?php echo $user->Name ?></td></tr>
+    		<?php 
+    		if (isset($user)) {
+			 echo "<tr><td>Skickat av</td><td>$user->Name</td></tr>";
+			} else {
+			    echo "<tr><td>Skickat av</td><td>Systemet</td></tr>";
+			}
+			?>
 			<tr><td>Till</td><td><?php echo "$email->ToName ($to)"; ?></td></tr>
 			<tr><td>Ämne</td><td><?php echo $email->Subject ?></td></tr>
 			<tr><td>När</td><td><?php echo $email->SentAt ?></td></tr>
