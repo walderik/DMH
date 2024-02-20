@@ -125,7 +125,7 @@ include 'navigation.php';
 			<?php } ?>
 			<?php if ($current_larp->getCampaign()->is_me()) { ?>
 			<tr><td valign="top" class="header">Färg&nbsp;<font style="color:red">*</font></td>
-			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($group->Colour); ?>"></td></tr>
+			<td><input type="text" id="Name" name="Name" maxlength="250" value="<?php echo htmlspecialchars($group->Colour); ?>"></td></tr>
 			<?php } ?>
 
 

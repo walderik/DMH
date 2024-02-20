@@ -161,7 +161,7 @@ include 'navigation.php';
 			<br>
 			Här anmäler du vilken färg besättningen önskar. Rangordna dem i 1-3. Tex: 1.röd 2. Blå 3. Rostbrun. Vi kommer göra en första utdelning av färger i slutet av varje månad.<br><br>
 			Har ni en färg sedan tidigare lajv låter ni den stå kvar utan att ändra. </div>
-			<input class="input_field" type="text" id="Colour" name="Colour" value="<?php echo htmlspecialchars($group->Colour); ?>" maxlength="20" required>
+			<input class="input_field" type="text" id="Colour" name="Colour" value="<?php echo htmlspecialchars($group->Colour); ?>" maxlength="250" required>
 			
 
 			</div>
