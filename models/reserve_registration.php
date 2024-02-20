@@ -17,6 +17,7 @@ class Reserve_Registration extends BaseModel{
     public $TentPlace;
     public $GuardianId;
     public $TypeOfFoodId;
+    public $FoodChoice;
     
     
     public static $orderListBy = 'RegisteredAt';
@@ -42,6 +43,7 @@ class Reserve_Registration extends BaseModel{
         if (isset($arr['TentPlace'])) $this->TentPlace = $arr['TentPlace'];
         if (isset($arr['GuardianId'])) $this->GuardianId = $arr['GuardianId'];
         if (isset($arr['TypeOfFoodId'])) $this->TypeOfFoodId = $arr['TypeOfFoodId'];
+        if (isset($arr['FoodChoice'])) $this->FoodChoice = $arr['FoodChoice'];
         
     }
     
@@ -77,12 +79,12 @@ class Reserve_Registration extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_reserve_registration SET LARPId=?, PersonId=?, 
                 RegisteredAt=?, NPCDesire=?, HousingRequestId=?, 
                 LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?,
-                GuardianId=?, TypeOfFoodId=? WHERE Id = ?");
+                GuardianId=?, TypeOfFoodId=?, FoodChoice=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, 
             $this->RegisteredAt,$this->NPCDesire, $this->HousingRequestId,
             $this->LarpHousingComment, $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace,
-            $this->GuardianId, $this->TypeOfFoodId, $this->Id))) {
+            $this->GuardianId, $this->TypeOfFoodId, $this->FoodChoice, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -97,12 +99,12 @@ class Reserve_Registration extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_reserve_registration (LARPId, PersonId, RegisteredAt,
-            NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, TypeOfFoodId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, TypeOfFoodId, FoodChoice) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, 
             $this->NPCDesire, $this->HousingRequestId, 
             $this->LarpHousingComment, $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace,
-            $this->GuardianId, $this->TypeOfFoodId))) {
+            $this->GuardianId, $this->TypeOfFoodId, $this->FoodChoice))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -240,6 +242,7 @@ class Reserve_Registration extends BaseModel{
         $registration->TentPlace = $this->TentPlace;
         $registration->GuardianId = $this->GuardianId;
         $registration->TypeOfFoodId = $this->TypeOfFoodId;
+        $registration->FoodChoice = $this->FoodChoice;
         
         //Räkna ut hur mycket man ska betala + refnr
         $person = Person::loadById($registration->PersonId);

@@ -82,6 +82,8 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Typ av mat&nbsp;<font style="color:red">*</font></td>
 			<td><?php TypeOfFood::selectionDropdown($current_larp, false, true, $registration->TypeOfFoodId); ?></td></tr>
 			<?php } ?>
+			<tr><td valign="top" class="header">Matalternativ</td><td><input type="text" id="FoodChoice" name="FoodChoice" value="<?php echo htmlspecialchars($registration->FoodChoice); ?>" size="100" maxlength="250"></td></tr>
+			   
 			<tr><td valign="top" class="header">Vanliga allergier</td>
 			<td><?php NormalAllergyType::selectionDropdown(true, false, $person->getSelectedNormalAllergyTypeIds()); ?></td></tr>
 
