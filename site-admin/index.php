@@ -18,6 +18,14 @@ include "navigation.php";
     		    <a href="selection_data_general_admin.php?type=normalallergytypes">Vanliga allergier</a>	<br>
     		    <a href="selection_data_general_admin.php?type=experiences">Erfarenhet som lajvare</a>	<br>
 		    </p>
+		    <?php  if (Dbh::isLocal()) { ?>
+		    <h2>Devtools</h2>
+		    <p>	    			
+    		    <a href="dev-tools/anonymise.php">Anonymisera databasen</a>	
+		    </p>
+
+
+			<?php }?>		    
 		</div>
 	</body>
 </html>
