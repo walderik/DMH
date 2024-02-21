@@ -634,7 +634,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    
 	    $this->set_header($left, 'Rikedom');
 	    //$text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
-	    $this->set_text($left, $this->role->getWealth()->Name . $text);
+	    $this->set_text($left, $this->role->getWealth()->Name);
 	    return true;
 	}
 	
