@@ -150,9 +150,10 @@ div.housing-group {
     <h1>Boende</h1>
     
     <a href="reports/housing_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a><br><br>  
+    Först på sidan kommer information om husförvaltare och önskat boende. Nedanför det görs själva husfördelningen. Den görs genom att man drar och släpper grupper eller karaktärer till hus eller lägerplatser. Den fungerar enbart på dator. På husen/lägerplatserna står information om ungefär hur många som kan bo där och allt eftersom man lägger till grupper och karaktärer som uppdateras siffran med hur många man faktiskt har lagt i huset/lägerplatsen.
     
-    
-    <h2>Husförvaltare</h2>
+    <h2>Översikt husförvaltare</h2>
+    Här är alla husförvaltare som är anmälda till lajvet, vilka hus de förvaltar samt vilken grupp deras huvudkaraktär är med i.
     <?php 
     $caretaking_persons = Person::getPersonsWhoIsHouseCaretakers($current_larp);
     $tableId = "caretakers";
@@ -182,7 +183,7 @@ div.housing-group {
     echo "</table>\n";
     ?>
 
-	<h2>Önskat boende</h2>
+	<h2>Översikt önskat boende</h2>
 	<?php 
 	$count = HousingRequest::countByType($current_larp);
 	foreach($count as $item) {
