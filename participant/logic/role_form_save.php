@@ -11,6 +11,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $operation = $_POST['operation'];
     if ($operation == 'insert') {
         $role = Role::newFromArray($_POST);
+        $person = $role->getPerson();
+        $previous_roles = $person->getAliveRoles($current_larp);
+        if (!empty($previous_roles)) {
+            foreach ($previous_roles as $previous_role) {
+                if ($role->Name == $previous_role->Name) {
+                    header('Location: ../index.php?error=role_already_exists');
+                    exit;
+                }
+            }
+        }
+        
         $role->IsApproved = 0;
         $role->create();
         
