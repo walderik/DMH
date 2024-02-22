@@ -623,6 +623,8 @@ class Group_PDF extends PDF_MemImage {
 
 	
 	protected function bor($left) {
+	    if (!PlaceOfResidence::isInUse($this->larp)) return false;
+	    
 	    $this->set_header($left, 'Bor');
 	    $this->set_text($left, $this->group->getPlaceOfResidence()->Name);
 	    return true;
