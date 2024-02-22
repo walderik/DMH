@@ -154,6 +154,9 @@ function getErrorText($code) {
         case "group_cannot_be_deleted":
             $output = "Gruppen kan inte raderas eftersom den har varit med på ett lajv.";
             break;
+        case "role_already_exists":
+            $output = "Du har redan en karaktär med det namnet. Använd den istället.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }
