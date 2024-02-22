@@ -167,6 +167,26 @@ div.border
     			 
     			 }
     			 
+    			 
+    			 
+    			 if (isset($_SESSION['admin'])) {
+    			     echo "<h3>OM Admin</h3>";
+    			     echo "<p>Eftersom du är OM admin har du tillgång till alla lajv.</p>";
+    			     echo "<form action='../includes/set_larp.php' method='POST'>";
+    			     echo "<label for='larp'>Välj lajv: </label>";
+    			     echo "<select name='larp' id='larp'>";
+    			     $larps = LARP::all();
+    			     foreach ($larps as $larp) {
+    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
+    			     }
+    			     echo "</select>";
+    			     echo '<input type="submit" value="Välj">';
+    			     echo "<br><hr>";
+    			     echo "</form>";
+    			     
+    			 }
+    			 
+    			 
     			 ?>
     			     
   
