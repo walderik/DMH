@@ -89,6 +89,7 @@ include_once $root . '/models/timeline.php';
 include_once $root . '/models/titledeed.php';
 include_once $root . '/models/titledeedplace.php';
 include_once $root . '/models/titledeedresult.php';
+include_once $root . '/models/titledeedresult_upgrade.php';
 include_once $root . '/models/type_of_food.php';
 include_once $root . '/models/user.php';
 include_once $root . '/models/wealth.php';

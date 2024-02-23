@@ -68,6 +68,10 @@ class TitledeedResult extends BaseModel{
             $this->Id = $connection->lastInsertId();
             $stmt = null;
     }
+    
+    public function getTitledeed() {
+        return Titledeed::loadById($this->TitledeedId);
+    }
 
     public static function getResultForTitledeed(Titledeed $titledeed, LARP $larp) {
         $sql = "SELECT * FROM regsys_titledeedresult WHERE TitledeedId=? AND LARPId = ?";
@@ -79,6 +83,63 @@ class TitledeedResult extends BaseModel{
         return static::getSeveralObjectsqQuery($sql,array($titledeed->Id,));
     }
     
+    public function getAllUpgradeResults() {
+        if (is_null($this->Id)) return array();
+        $stmt = $this->connect()->prepare("SELECT * FROM regsys_titledeedresult_upgrade WHERE TitledeedResultId = ?;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = OfficialType::loadById($row['OfficialTypeId']);
+        }
+        $stmt = null;
+        return $resultArray;
+    }
     
-   
+    public function deleteAllUpgradeResults() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_titledeedresult_upgrade WHERE TitledeedResultId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function createMoneyUpgradeResult($amount, $isMet) {
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_titledeedresult_upgrade (TitledeedResultId, ResourceId, QuantityForUpgrade, NeedsMet) VALUES (?,?,?,?);");
+        if (!$stmt->execute(array($this->id, null, $amount, $isMet))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    
+    }
+
+    public function createUpgradeResult($resouceId, $amount, $isMet) {
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_titledeedresult_upgrade (TitledeedResultId, ResourceId, QuantityForUpgrade, NeedsMet) VALUES (?,?,?,?);");
+        if (!$stmt->execute(array($this->id, $resouceId, $amount, $isMet))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+        
+    }
+    
+    
 }
