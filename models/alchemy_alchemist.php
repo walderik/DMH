@@ -102,7 +102,7 @@ class Alchemy_Alchemist extends BaseModel{
     }
     
     public function getAlchemistType() {
-        if (empty($this->AlchemistType)) return null;
+        if (!isset($this->AlchemistType)) return null;
         return Alchemy_Alchemist::ALCHEMY_TYPES[$this->AlchemistType];
     }
     
