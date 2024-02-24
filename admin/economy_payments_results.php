@@ -4,6 +4,8 @@
 
  $csv = array();
  
+ $file_format = $_POST['file_format'];
+ 
  // check there are no errors
  if($_FILES['csv']['error'] == 0){
      //$name = $_FILES['csv']['name'];
@@ -44,17 +46,28 @@
  
  
  function findPayment($paymentReference) {
-     global $csv;
+     global $csv, $file_format;
      
      $paymentReference = mb_strtolower($paymentReference);
      foreach ($csv as $key => $paymentRow) {
-         if (count($paymentRow) >= 12) {
-             if (str_contains(trim(mb_strtolower($paymentRow[10])),$paymentReference)) {
-                 
-                 $row = $paymentRow;
-                 unset($csv[$key]);
-                 return $row;
+         
+         if ($file_format == "swish") {
+             if (count($paymentRow) >= 12) {
+                 if (str_contains(trim(mb_strtolower($paymentRow[10])),$paymentReference)) {
+                     $row = $paymentRow;
+                     unset($csv[$key]);
+                     return $row;
+                 }
              }
+         } elseif ($file_format == "transaction") {
+             if (count($paymentRow) >= 8) {
+                 if (str_contains(trim(mb_strtolower($paymentRow[8])),$paymentReference)) {
+                     $row = $paymentRow;
+                     unset($csv[$key]);
+                     return $row;
+                 }
+             }
+             
          }
      }
  }
@@ -89,13 +102,13 @@ th {
     		      "<th onclick='sortTableNumbers(3, \"$tableId\")'>Ålder<br>på lajvet</th>".
     		      "<th onclick='sortTable(6, \"$tableId\")'>Betalnings-<br>referens</th>".
     		      "<th onclick='sortTable(6, \"$tableId\")'>Belopp</th>".
-    		      "<th onclick='sortTable(6, \"$tableId\")' colspan='3'>Från Swish</th>".
+    		      "<th onclick='sortTable(6, \"$tableId\")' colspan='3'>Från banken</th>".
     		      "<th onclick='sortTable(7, \"$tableId\")' colspan='2'>Försenad betalning</th>".
     		      "</tr>\n";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        $paymentrow = findPayment($registration->PaymentReference);
-    		        if ($registration->hasPayed()) continue;
+    		        if ($registration->hasPayed() || $registration->isNotComing()) continue;
     		        echo "<tr>\n";
     		        echo "<td>";
     		        echo "<a href='view_person.php?id=$person->Id'>";
@@ -114,10 +127,14 @@ th {
     		            
     		        echo "<td>".$registration->PaymentReference .  "</td>\n";
     		        echo "<td>".$registration->AmountToPay .  "</td>\n";
-    		        if (isset($paymentrow)) {
+    		        if (isset($paymentrow) && ($file_format=="swish")) {
     		            echo "<td>$paymentrow[10]</td>";
     		            echo "<td>$paymentrow[12]</td>";
     		            echo "<td>$paymentrow[9]</td>";
+    		        } elseif (isset($paymentrow) && ($file_format=="transaction")) {
+    		            echo "<td>$paymentrow[8]</td>";
+    		            echo "<td>$paymentrow[10]</td>";
+    		            echo "<td></td>";
     		        } else {
     		            echo "<td></td><td></td><td></td>";
     		        }
@@ -126,7 +143,7 @@ th {
     		        "</td>";
     		        echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-money-check-dollar'></i></a></td>\n";
     		        
-    		        echo "<td>";
+
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";
@@ -136,22 +153,44 @@ th {
         <h2>Betalningar som inte kunde matchas</h2>
         <table class="small_data">
         <?php 
-        foreach($csv as $rownum => $row) {
-            if ($rownum == 0) {
-                echo "<tr>";
-                echo "<td colspan='5'>".trim($row[0])."</td>";
-                echo "</tr>";
-                
-            } else {
-                echo "<tr>";
-                
-                foreach ($row as $key => $item) {
-                    if (in_array($key, [1,2,4,5,6,7,13])) continue;
-                    echo "<td>".trim($item)."</td>";
+        if ($file_format == "swish") {
+        
+            foreach($csv as $rownum => $row) {
+                if ($rownum == 0) {
+                    echo "<tr>";
+                    echo "<td colspan='5'>".trim($row[0])."</td>";
+                    echo "</tr>";
+                    
+                } else {
+                    echo "<tr>";
+                    
+                    foreach ($row as $key => $item) {
+                        if (in_array($key, [1,2,4,5,6,7,13])) continue;
+                        echo "<td>".trim($item)."</td>";
+                    }
+                    
+                    echo "</tr>";
                 }
-                
-                echo "</tr>";
             }
+        } elseif ($file_format == "transaction") {
+            //print_r($csv);
+            foreach($csv as $rownum => $row) {
+                if (isset($row) && is_array($row) && (count($row) > 9) && str_starts_with($row[9], "Swish")) continue;
+                if ($rownum == 0) {
+                    echo "<tr>";
+                    echo "<td colspan='5'>".trim($row[0])."</td>";
+                    echo "</tr>";
+                    
+                } else {
+                    echo "<tr>";
+                    foreach ($row as $key => $item) {
+                        if (in_array($key, [1,2,3,4,6,7,11])) continue;
+                        echo "<td>".trim($item)."</td>";
+                    }
+                    echo "</tr>";
+                }
+            }
+            
         }
         
         
