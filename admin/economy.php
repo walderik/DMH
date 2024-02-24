@@ -76,6 +76,7 @@ include 'navigation.php';
         En varning betyder att det saknas ett kvitto på en utgift.<br><br>
         Konton läggs upp under <a href="settings.php">inställningar</a></p>
         <p>
+        <a href="economy_swish_payments.php">Kontrollera swishfil mot obetalade avgifter</a><br>
         <a href="economy_form.php?operation=add_income"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a> &nbsp; 
         <a href="economy_form.php?påeration=add_expense"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a><br>
         <a href="reports/economy.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Generera rapport till kassör</a> &nbsp; 
