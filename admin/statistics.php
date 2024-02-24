@@ -230,6 +230,35 @@ Det är <?php echo Statistics::countParticipantHasSpot($current_larp)?> helt kla
     ?>
     </td>
     </tr>
+    
+        	<tr><th colspan="2"><h3>Kunskaper</h3></th></tr>
+    	<tr>
+    	<td>
+
+    <?php 
+    
+    $count = Ability::countByTypeOnRoles($current_larp, true);
+    foreach($count as $item) {
+        echo $item['Name'].": ".$item['Num']." st<br>";
+    }
+    
+    
+    ?>
+    	</td>
+    	<td>
+    <?php 
+    
+    $count = Ability::countByTypeOnRoles($current_larp, false);
+    foreach($count as $item) {
+        echo $item['Name'].": ".$item['Num']." st<br>";
+    }
+    
+    
+    ?>
+    </td>
+    </tr>
+    
+    
     </table>
      
     
