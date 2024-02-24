@@ -109,6 +109,13 @@ class Alchemy_Supplier extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
+    public static function RoleIdsByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT RoleId as Id FROM regsys_alchemy_supplier WHERE RoleId In (
+            SELECT Id FROM regsys_role WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getIdArray($sql, array($larp->CampaignId));
+    }
+    
     public static function createSuppliers($roleIds, LARP $larp) {
         //Ta reda på vilka som inte redan är magiker
         $exisitingRoleIds = array();

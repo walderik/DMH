@@ -1,0 +1,232 @@
+<?php
+
+class Alchemy_Alchemist extends BaseModel{
+    
+    const INGREDIENT_ALCHEMY = 0;
+    const ESSENCE_ALCHEMY = 1;
+    
+    const ALCHEMY_TYPES = [
+        0 => "Traditionell",
+        1 => "Experimentell"
+    ];
+    
+    public $Id;
+    public $RoleId;
+    public $Level;
+    public $AlchemistType;
+    public $EquipmentImageId;
+    public $Workshop;
+    public $OrganizerNotes;
+    
+    public static $orderListBy = 'Level';
+    
+
+    
+    
+    public static function newFromArray($post){
+        $object = static::newWithDefault();
+        $object->setValuesByArray($post);
+        return $object;
+    }
+    
+    public function setValuesByArray($arr) {
+        if (isset($arr['Id'])) $this->Id = $arr['Id'];
+        if (isset($arr['RoleId'])) $this->RoleId = $arr['RoleId'];
+        if (isset($arr['Level'])) $this->Level = $arr['Level'];
+        if (isset($arr['AlchemistType'])) $this->AlchemistType = $arr['AlchemistType'];
+        if (isset($arr['EquipmentImageId'])) $this->EquipmentImageId = $arr['EquipmentImageId'];
+        if (isset($arr['Workshop'])) $this->Workshop = $arr['Workshop'];
+        if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
+        
+        if (isset($this->EquipmentImageId) && $this->EquipmentImageId=='null') $this->EquipmentImageId = null;
+        
+        if (isset($this->Workshop) && ($this->Workshop=='0000-00-00' || $this->Workshop=='')) $this->Workshop = null;
+    }
+    
+    
+    
+    # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
+    public static function newWithDefault() {
+        return new self();
+    }
+    
+    # Update an existing object in db
+    public function update() {
+        $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_alchemist SET RoleId=?, AlchemistType=?, EquipmentImageId=?, 
+                Workshop=?, Level=?, OrganizerNotes=? WHERE Id = ?");
+        
+        if (!$stmt->execute(array($this->RoleId, $this->AlchemistType, $this->EquipmentImageId, 
+            $this->Workshop, $this->Level, $this->OrganizerNotes, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
+    }
+    
+    
+    # Create a new object in db
+    public function create() {
+        $connection = $this->connect();
+        $stmt = $connection->prepare("INSERT INTO regsys_alchemy_alchemist (RoleId, AlchemistType, EquipmentImageId, 
+                    Workshop, Level, OrganizerNotes) VALUES (?,?,?,?,?, ?);");
+        
+        if (!$stmt->execute(array($this->RoleId, $this->AlchemistType, $this->EquipmentImageId, $this->Workshop, $this->Level, $this->OrganizerNotes))) {
+                $this->connect()->rollBack();
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            $stmt = null;
+    }
+    
+    public static function getForRole(Role $role) {
+        if (empty($role)) return null;
+        $sql = "SELECT * FROM regsys_alchemy_alchemist WHERE RoleId=?";
+        return static::getOneObjectQuery($sql, array($role->Id));
+        
+    }
+    
+    public static function isAlchemist(Role $role) {
+        if (empty($role)) return null;
+        if (is_null(static::getForRole($role))) return false;
+        return true;
+    }
+    
+    
+    
+    public function getRole() {
+        if (empty($this->RoleId)) return null;
+        return Role::loadById($this->RoleId);
+    }
+    
+    public function getAlchemistType() {
+        if (empty($this->AlchemistType)) return null;
+        return Alchemy_Alchemist::ALCHEMY_TYPES[$this->AlchemistType];
+    }
+    
+    
+
+    public function hasDoneWorkshop() {
+        if (empty($this->Workshop)) return false;
+        return true;
+    }
+    
+    
+    public function getRecipes() {
+        //return Alchemy_Recipe::getRecipesForAlchemist($this);
+    }
+    
+    public function addRecipes($recipeIds, Larp $larp) {
+        //Ta reda på vilka som inte redan är kopplade till alkemisten
+        $exisitingIds = array();
+        $alchemist_recipes = $this->getRecipes();
+        foreach ($alchemist_recipes as $alchemist_recipe) {
+            $exisitingIds[] = $alchemist_recipe->Id;
+        }
+        
+        $newRecipeIds = array_diff($recipeIds,$exisitingIds);
+        //Koppla magier till magiker
+        foreach ($newRecipeIds as $recipeId) {
+            $this->addRecipe($recipeId, $larp);
+        }
+    }
+    
+    
+    private function addRecipe($recipeId, LARP $larp) {
+        
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_alchemy_alchemist_recipe (AlchemyAlchemistId, AlchemyRecipelId, GrantedLarpId) VALUES (?,?,?);");
+        if (!$stmt->execute(array($this->Id, $recipeId, $larp->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
+    }
+    
+    
+    
+    public function removeRecipe($recipeId) {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_alchemy_alchemist_recipe WHERE AlchemyAlchemistId=? AND AlchemyRecipelId=?;");
+        if (!$stmt->execute(array($this->Id, $recipeId))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function getGrantedLarp(Alchemy_Recipe $recipe) {
+        if (empty($recipe)) return null;
+        $sql = "SELECT * FROM regsys_larp WHERE Id IN (".
+            "SELECT GrantedLarpId FROM regsys_alchemy_alchemist_recipe WHERE AlchemyAlchemistId=? AND AlchemyRecipelId=?)";
+        return LARP::getOneObjectQuery($sql, array($this->Id, $recipe->Id));
+    }
+    
+    public static function getAlchemistsThatKnowsRecipe(Alchemy_Recipe $recipe) {
+        $sql = "SELECT * FROM regsys_alchemy_alchemist WHERE Id IN (".
+            "SELECT AlchemyAlchemistId FROM regsys_alchemy_alchemist_recipe WHERE AlchemyRecipelId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($recipe->Id));
+    }
+    
+    
+    public static function allByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_alchemy_alchemist WHERE RoleId In (
+            SELECT Id FROM regsys_role WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    public static function RoleIdsByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT RoleId as Id FROM regsys_alchemy_alchemist WHERE RoleId In (
+            SELECT Id FROM regsys_role WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getIdArray($sql, array($larp->CampaignId));
+    }
+    
+    
+    
+    public static function createAlchemists($roleIds, LARP $larp) {
+        //Ta reda på vilka som inte redan är alkemister
+        $exisitingRoleIds = array();
+        $alchemists = static::allByCampaign($larp);
+        foreach ($alchemists as $alchemist) {
+            $exisitingRoleIds[] = $alchemist->RoleId;
+        }
+        
+        $newRoleIds = array_diff($roleIds,$exisitingRoleIds);
+        foreach ($newRoleIds as $roleId) {
+            $alchemist = Alchemy_Alchemist::newWithDefault();
+            $alchemist->RoleId = $roleId;
+            $alchemist->create();
+        }
+    }
+    
+    public function hasEquipmentImage() {
+        if (isset($this->EquipmentImageId)) return true;
+        return false;
+    }
+    
+ 
+    public static function delete($id)
+    {
+        $alchemist = static::loadById($id);
+        
+        $recipes = $alchemist->getRecipes();
+        foreach($recipes as $recipes) {
+            $alchemist->removeRecipe($recipes->Id);
+        }
+        
+        $imageId=$alchemist->EquipmentImageId;
+        
+        parent::delete($id);
+    
+        //Ta bort den bilden
+        if (isset($imageId)) Image::delete($imageId);
+    }
+    
+    
+}

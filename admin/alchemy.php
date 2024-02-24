@@ -12,7 +12,7 @@ include 'navigation.php';
         <a href="alchemy_ingredient_admin.php">Ingredienser</a><br>
         <a href="alchemy_recipe_admin.php">Recept</a> (Kommer snart)<br>
         <a href="alchemy_supplier_admin.php">Löjverister</a><br>
-        <a href="alchemy_alchemist_admin.php">Alkemister</a> (Kommer snart)<br>
+        <a href="alchemy_alchemist_admin.php">Alkemister</a> (påbörjad)<br>
         </p>
     </div>
 

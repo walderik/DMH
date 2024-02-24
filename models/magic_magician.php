@@ -208,6 +208,13 @@ class Magic_Magician extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
+    public static function RoleIdsByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT RoleId as Id FROM regsys_magic_magician WHERE RoleId In (
+            SELECT Id FROM regsys_role WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getIdArray($sql, array($larp->CampaignId));
+    }
+    
     public static function createMagicians($roleIds, LARP $larp) {
         //Ta reda på vilka som inte redan är magiker
         $exisitingRoleIds = array();

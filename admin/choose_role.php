@@ -32,9 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
 }
 
-
+$mainroles = Role::getAllMainRolesNoMyslajvare($current_larp);
+$nonmainroles = Role::getAllNotMainRolesNoMyslavare($current_larp);
 
 $multiple=false;
+$showAbilityChoice = false;
 
 if ($operation == "set_prop_owner_role") {
     
@@ -63,10 +65,23 @@ elseif ($operation == "add_titledeed_owner_role") {
 } elseif ($operation == "add_magician") {
     $purpose = "Lägg till karaktärer som magiker";
     $url = "logic/view_magician_logic.php";
+    $mainroles = filterAllWithAbilities($mainroles);
+    $nonmainroles= null;
+    $showAbilityChoice = true;
     $multiple=true;
 } elseif ($operation == "add_alchemy_supplier") {
     $purpose = "Lägg till karaktärer som löjverist";
     $url = "logic/view_alchemy_supplier_logic.php";
+    $mainroles = filterAllWithAbilities($mainroles);
+    $nonmainroles= null;
+    $showAbilityChoice = true;
+    $multiple=true;
+} elseif ($operation == "add_alchemist") {
+    $purpose = "Lägg till karaktärer som alkemist";
+    $url = "logic/view_alchemist_logic.php";
+    $mainroles = filterAllWithAbilities($mainroles);
+    $nonmainroles= null;
+    $showAbilityChoice = true;
     $multiple=true;
 }
 
@@ -87,6 +102,27 @@ else {
     $referer = "";
 }
 
+
+function filterAllWithAbilities($roleArray) {
+    global $current_larp;
+    
+    $magicianRoleIds = Magic_Magician::RoleIdsByCampaign($current_larp);
+    $alchemistRoleIds = Alchemy_Alchemist::RoleIdsByCampaign($current_larp);
+    $alchemysupplierRoleIds = Alchemy_Supplier::RoleIdsByCampaign($current_larp);
+    
+    $filtereredRoles = array();
+    
+    foreach ($roleArray as $role) {
+        if (in_array($role->Id, $magicianRoleIds)) continue;
+        if (in_array($role->Id, $alchemistRoleIds)) continue;
+        if (in_array($role->Id, $alchemysupplierRoleIds)) continue;
+        $filtereredRoles[] = $role;
+    }
+    
+    return $filtereredRoles;
+}
+
+
 include 'navigation.php';
 ?>
 <style>
@@ -105,8 +141,7 @@ th {
         <h1><?php echo $purpose;?></h1>
         
      		<?php 
-    		$mainroles = Role::getAllMainRolesNoMyslajvare($current_larp);
-    		$nonmainroles = Role::getAllNotMainRolesNoMyslavare($current_larp);
+
     		if (empty($mainroles) && empty($nonmainroles)) {
     		    echo "Inga anmälda karaktärer";
     		} else {
@@ -141,7 +176,10 @@ th {
     		    if (IntrigueType::isInUse($current_larp)) {   		    
     		          echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Intrigtyper</th>";
     		    }
-    	          echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Grupp</th>".
+    		    if ($showAbilityChoice) {
+    		        echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kunskaps-<br>önskemål</th>";
+    		    }
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Grupp</th>".
     	          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Spelas av</th>".
     	          "</tr>";
  
@@ -161,6 +199,9 @@ th {
     		        if (IntrigueType::isInUse($current_larp)) {
     		          echo "<td>".commaStringFromArrayObject($role->getIntrigueTypes())."</td>";
     		        }
+    		        if ($showAbilityChoice) {
+    		            echo "<td>".commaStringFromArrayObject($role->getAbilities())."</td>";
+    		        }
     		        $group = $role->getGroup();
     		        if (is_null($group)) {
     		            echo "<td>&nbsp;</td>\n";
@@ -177,6 +218,8 @@ th {
     		<br>
     		<input type="submit" value="<?php echo $purpose;?>">
     		
+    		
+    		<?php if (!empty($nonmainroles)) {?>
     		<h2>Sidokaraktärer</h2>
     		    <?php
     		    $tableId = "other_roles";
@@ -227,7 +270,7 @@ th {
 			<input type="submit" value="<?php echo $purpose;?>">
 			</form>
         
-        
+        <?php } ?>
         
 	</div>
 

@@ -82,6 +82,31 @@ class BaseModel extends Dbh{
     {
         static::delete($this->id);
     }
+
+    protected static function getIdArray($sql, $var_array) {
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute($var_array)) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['Id'];
+        }
+        $stmt = null;
+        return $resultArray;
+        
+    }
+    
     
     protected static function getSeveralObjectsqQuery($sql, $var_array) {
         $stmt = static::connectStatic()->prepare($sql);
