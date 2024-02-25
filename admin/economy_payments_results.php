@@ -83,7 +83,9 @@ th {
 
 </style>
 
+
 <script src="../javascript/table_sort.js"></script>
+<script src="../javascript/register_payment_ajax.js"></script>
 
     <div class="content">   
         <h1>Deltagare som kommer och som inte har betalat</h1>
@@ -100,15 +102,16 @@ th {
     		      "<th></th>".
     		      "<th onclick='sortTable(2, \"$tableId\")'>Epost</th>".
     		      "<th onclick='sortTableNumbers(3, \"$tableId\")'>Ålder<br>på lajvet</th>".
-    		      "<th onclick='sortTable(6, \"$tableId\")'>Betalnings-<br>referens</th>".
-    		      "<th onclick='sortTable(6, \"$tableId\")'>Belopp</th>".
-    		      "<th onclick='sortTable(6, \"$tableId\")' colspan='3'>Från banken</th>".
-    		      "<th onclick='sortTable(7, \"$tableId\")' colspan='2'>Försenad betalning</th>".
+    		      "<th onclick='sortTable(4, \"$tableId\")'>Betalnings-<br>referens</th>".
+    		      "<th onclick='sortTable(5, \"$tableId\")'>Belopp</th>".
+    		      "<th onclick='sortTable(6, \"$tableId\")' colspan='4'>Från banken</th>".
+    		      "<th onclick='sortTable(11, \"$tableId\")' colspan='2'>Försenad betalning</th>".
     		      "</tr>\n";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        $paymentrow = findPayment($registration->PaymentReference);
     		        if ($registration->hasPayed() || $registration->isNotComing()) continue;
+    		        $amountToPay = $registration->AmountToPay;
     		        echo "<tr>\n";
     		        echo "<td>";
     		        echo "<a href='view_person.php?id=$person->Id'>";
@@ -126,17 +129,23 @@ th {
 		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år ";
     		            
     		        echo "<td>".$registration->PaymentReference .  "</td>\n";
-    		        echo "<td>".$registration->AmountToPay .  "</td>\n";
+    		        echo "<td>".$amountToPay.  "</td>\n";
     		        if (isset($paymentrow) && ($file_format=="swish")) {
     		            echo "<td>$paymentrow[10]</td>";
     		            echo "<td>$paymentrow[12]</td>";
-    		            echo "<td>$paymentrow[9]</td>";
+    		            echo "<td>$paymentrow[4]</td>";
+    		            if ($amountToPay.".00" == $paymentrow[12])
+    		              echo "<td><button onclick='register_payment($registration->Id, $paymentrow[12], $paymentrow[4], this);'>Markera som betalad</button>";
+    		            else echo "<td>Summan stämmer inte</td>";
     		        } elseif (isset($paymentrow) && ($file_format=="transaction")) {
     		            echo "<td>$paymentrow[8]</td>";
     		            echo "<td>$paymentrow[10]</td>";
-    		            echo "<td></td>";
+    		            echo "<td>$paymentrow[6]</td>";
+    		            if ($amountToPay."00" == $paymentrow[12])
+    		                echo "<td><button onclick='register_payment($registration->Id, $paymentrow[10], $paymentrow[6], this);'>Markera som betalad</button>";
+    		                else echo "<td>Summan stämmer inte</td>";
     		        } else {
-    		            echo "<td></td><td></td><td></td>";
+    		            echo "<td></td><td></td><td></td><td></td>";
     		        }
     		        echo "<td align='center'>";
     		        if (!$registration->hasPayed() && $registration->isPastPaymentDueDate()) echo showStatusIcon(false);
@@ -165,7 +174,7 @@ th {
                     echo "<tr>";
                     
                     foreach ($row as $key => $item) {
-                        if (in_array($key, [1,2,4,5,6,7,13])) continue;
+                        if (in_array($key, [1,2,3,5,6,7,13])) continue;
                         echo "<td>".trim($item)."</td>";
                     }
                     
@@ -173,7 +182,6 @@ th {
                 }
             }
         } elseif ($file_format == "transaction") {
-            //print_r($csv);
             foreach($csv as $rownum => $row) {
                 if (isset($row) && is_array($row) && (count($row) > 9) && str_starts_with($row[9], "Swish")) continue;
                 if ($rownum == 0) {
@@ -184,7 +192,7 @@ th {
                 } else {
                     echo "<tr>";
                     foreach ($row as $key => $item) {
-                        if (in_array($key, [1,2,3,4,6,7,11])) continue;
+                        if (in_array($key, [1,2,3,4,5,7,11])) continue;
                         echo "<td>".trim($item)."</td>";
                     }
                     echo "</tr>";
