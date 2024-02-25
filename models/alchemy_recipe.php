@@ -104,7 +104,7 @@ class Alchemy_Recipe extends BaseModel{
         }
         
         $newAlchemistIds = array_diff($alchemistIds,$exisitingIds);
-        //Koppla skolor till magiker
+        //Koppla recept till alkemist
         foreach ($newAlchemistIds as $alchemistId) {
             $this->addToAlchemist($alchemistId, $larp);
         }

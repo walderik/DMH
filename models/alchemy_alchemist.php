@@ -115,7 +115,7 @@ class Alchemy_Alchemist extends BaseModel{
     
     
     public function getRecipes() {
-        //return Alchemy_Recipe::getRecipesForAlchemist($this);
+        return Alchemy_Recipe::getRecipesForAlchemist($this);
     }
     
     public function addRecipes($recipeIds, Larp $larp) {
