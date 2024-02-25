@@ -47,3 +47,16 @@ function getObjectType($name) {
         case "shiptype" : return "ShipType";
     }
 }
+
+function getAllTypesForRoles() {
+    return ["Wealth" => "Rikedom",
+        "PlaceOfResidence" => "Vad karaktärer bor",
+        "LarperType" => "Typ av lajvare",
+        "IntrigueType" => "Typ av intriger",
+        "Race" => "Ras",
+        "Ability" => "Förmågor",
+        "Council" => "Byråd",
+        "Guard" => "Markvakt",
+        "Religion" => "Religion"];
+}
+
