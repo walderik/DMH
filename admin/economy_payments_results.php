@@ -50,25 +50,29 @@
      
      $paymentReference = mb_strtolower($paymentReference);
      foreach ($csv as $key => $paymentRow) {
-         
+         $message = "";
          if ($file_format == "swish") {
              if (count($paymentRow) >= 10) {
-                 if (str_contains(trim(mb_strtolower($paymentRow[10])),$paymentReference)) {
-                     $row = $paymentRow;
-                     unset($csv[$key]);
-                     return $row;
-                 }
-             }
+                 $message = trim(mb_strtolower($paymentRow[10]));
+              }
          } elseif ($file_format == "transaction") {
              if (count($paymentRow) >= 8) {
-                 if (str_contains(trim(mb_strtolower($paymentRow[8])),$paymentReference)) {
-                     $row = $paymentRow;
-                     unset($csv[$key]);
-                     return $row;
-                 }
+                 $message = trim(mb_strtolower($paymentRow[8]));
              }
-             
          }
+         $match = false;
+         
+         if ($paymentReference == $message) $match = true;
+         if (str_contains($message, $paymentReference." ")) $match = true;
+         if (str_contains($message, $paymentReference.",")) $match = true;
+         if (str_ends_with($message, $paymentReference)) $match = true;
+         
+         if ($match) {
+             $row = $paymentRow;
+             unset($csv[$key]);
+             return $row;
+         }
+         
      }
  }
  
