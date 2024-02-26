@@ -52,7 +52,7 @@
      foreach ($csv as $key => $paymentRow) {
          
          if ($file_format == "swish") {
-             if (count($paymentRow) >= 12) {
+             if (count($paymentRow) >= 10) {
                  if (str_contains(trim(mb_strtolower($paymentRow[10])),$paymentReference)) {
                      $row = $paymentRow;
                      unset($csv[$key]);
@@ -130,20 +130,22 @@ th {
     		            
     		        echo "<td>".$registration->PaymentReference .  "</td>\n";
     		        echo "<td>".$amountToPay.  "</td>\n";
-    		        if (isset($paymentrow) && ($file_format=="swish")) {
-    		            echo "<td>$paymentrow[10]</td>";
-    		            echo "<td>$paymentrow[12]</td>";
-    		            echo "<td>$paymentrow[4]</td>";
-    		            if ($amountToPay.".00" == $paymentrow[12])
-    		              echo "<td><button onclick='register_payment($registration->Id, $paymentrow[12], $paymentrow[4], this);'>Markera som betalad</button>";
-    		            else echo "<td>Summan stämmer inte</td>";
-    		        } elseif (isset($paymentrow) && ($file_format=="transaction")) {
-    		            echo "<td>$paymentrow[8]</td>";
-    		            echo "<td>$paymentrow[10]</td>";
-    		            echo "<td>$paymentrow[6]</td>";
-    		            if ($amountToPay."00" == $paymentrow[12])
-    		                echo "<td><button onclick='register_payment($registration->Id, $paymentrow[10], $paymentrow[6], this);'>Markera som betalad</button>";
-    		                else echo "<td>Summan stämmer inte</td>";
+    		        if (isset($paymentrow)) {
+    		            if ($file_format=="swish") {
+        		            $refence = $paymentrow[10];
+        		            $amount = $paymentrow[12];
+        		            $date = $paymentrow[4];
+    		            } elseif ($file_format=="transaction") {
+    		                $refence = $paymentrow[8];
+    		                $amount = $paymentrow[10];
+    		                $date = $paymentrow[6];
+    		                
+    		            }
+    		            echo "<td>$refence</td><td>$amount</td><td>$date</td>";
+    		            if ($amountToPay.".00" == $amount)
+    		              echo "<td><button onclick='register_payment($registration->Id, $amount, \"$date\", this);'>Markera som betalad</button>";
+		                else echo "<td>Summan stämmer inte</td>";
+		                
     		        } else {
     		            echo "<td></td><td></td><td></td><td></td>";
     		        }
