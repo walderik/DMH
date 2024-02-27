@@ -48,15 +48,28 @@ function getObjectType($name) {
     }
 }
 
-function getAllTypesForRoles() {
-    return ["Wealth" => "Rikedom",
-        "PlaceOfResidence" => "Vad karaktärer bor",
-        "LarperType" => "Typ av lajvare",
-        "IntrigueType" => "Typ av intriger",
-        "Race" => "Ras",
-        "Ability" => "Förmågor",
-        "Council" => "Byråd",
-        "Guard" => "Markvakt",
-        "Religion" => "Religion"];
+function getAllTypesForRoles(Larp $larp) {
+    $types = array();
+    if (Wealth::isInUse($larp)) $types["Wealth"] = "Rikedom";
+    if (PlaceOfResidence::isInUse($larp)) $types["PlaceOfResidence"] = "Vad karaktärer bor";
+    if (LarperType::isInUse($larp)) $types["LarperType"] = "Typ av lajvare";
+    if (IntrigueType::isInUse($larp)) $types["IntrigueType"] = "Typ av intriger";
+    if (Race::isInUse($larp)) $types["Race"] = "Ras";
+    if (Ability::isInUse($larp)) $types["Ability"] = "Förmågor";
+    if (Council::isInUse($larp)) $types["Council"] = "Byråd";
+    if (Guard::isInUse($larp)) $types["Guard"] = "Markvakt";
+    if (Religion::isInUse($larp)) $types["Religion"] = "Religion";
+
+    return $types;
 }
 
+function getAllOptionsForRoles(Larp $larp) {
+    $options = array();
+    $types = getAllTypesForRoles($larp);
+    foreach ($types as $typekey => $typeName) {
+        $options[$typekey] = call_user_func($typekey . '::allForLarp', $larp);
+    }
+    
+    
+    return $options;
+}
