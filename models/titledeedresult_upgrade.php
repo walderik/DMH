@@ -63,28 +63,13 @@ class Titledeedresult_Upgrade extends BaseModel{
     }
     
     public static function getAllUpgradeResults(TitledeedResult $titledeedresult) {
-        $sql = "SELECT * FROM regsys_titledeedresult_upgrade WHERE TitledeedResultId = ?;";
+        $sql = "SELECT * FROM regsys_titledeedresult_upgrade WHERE TitledeedResultId = ? ORDER BY ResourceId;";
         return static::getSeveralObjectsqQuery($sql, array($titledeedresult->Id));
     }
     
-    public static function createMoneyUpgradeResult($titledeedresultId, $amount, $isMet) {
-        $upgradeResult = Titledeedresult_Upgrade::newWithDefault();
-        $upgradeResult->TitledeedResultId = $titledeedresultId;
-        $upgradeResult->ResourceId = null;
-        $upgradeResult->QuantityForUpgrade = $amount;
-        $upgradeResult->NeedsMet = $isMet;
-        $upgradeResult->create();
+    public function getResource() {
+        if (empty($this->ResourceId)) return null;
+        return Resource::loadById($this->ResourceId);
     }
-    
-    public static function createUpgradeResult($titledeedresultId, $resouceId, $amount, $isMet) {
-        $upgradeResult = Titledeedresult_Upgrade::newWithDefault();
-        $upgradeResult->TitledeedResultId = $titledeedresultId;
-        $upgradeResult->ResourceId = $resouceId;
-        $upgradeResult->QuantityForUpgrade = $amount;
-        $upgradeResult->NeedsMet = $isMet;
-        $upgradeResult->create();
-    }
-    
-    
    
 }

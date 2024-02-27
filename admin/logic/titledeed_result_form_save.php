@@ -1,8 +1,6 @@
 <?php
 include_once '../header.php';
 
-print_r($_POST);
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
@@ -10,11 +8,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $titledeed_result = TitledeedResult::newFromArray($_POST);
         $titledeed_result->create();
+        $titledeed = $titledeed_result->getTitledeed();
+        
+        $upgradeDoneResouceIds = array();
+        if (isset($_POST['resouceId'])) $upgradeDoneResouceIds = $_POST['resouceId'];
+        
+        $upgradeRequirements = $titledeed->RequiresForUpgrade();
+        foreach ($upgradeRequirements as $upgradeRequirement) {
+            $upgrade = Titledeedresult_Upgrade::newWithDefault();
+            $upgrade->TitledeedResultId = $titledeed_result->Id;
+            $upgrade->ResourceId = $upgradeRequirement->ResourceId;
+            $upgrade->QuantityForUpgrade = $upgradeRequirement->QuantityForUpgrade;
+            if (in_array($upgradeRequirement->ResourceId, $upgradeDoneResouceIds)) $upgrade->NeedsMet = true;
+            $upgrade->NeedsMet = false;
+            $upgrade->create();
+        }
+        if ($titledeed->MoneyForUpgrade > 0) {
+            $upgrade = Titledeedresult_Upgrade::newWithDefault();
+            $upgrade->TitledeedResultId = $titledeed_result->Id;
+            $upgrade->ResourceId = null;
+            $upgrade->QuantityForUpgrade = $titledeed->MoneyForUpgrade;
+            if (isset($_POST['MoneyForUpgradeMet'])) $upgrade->NeedsMet = true;
+            else $upgrade->NeedsMet = false;
+            $upgrade->create();
+        }
+        
+        
+        
     } elseif ($operation == 'update') {
         $titledeed_result = TitledeedResult::loadById($_POST['Id']);
         $titledeed_result->setValuesByArray($_POST);
         $titledeed_result->update();
-        $titledeed_result->deleteAllUpgradeResults();
+        
+        $upgradeDoneResouceIds = array();
+        if (isset($_POST['resouceId'])) $upgradeDoneResouceIds = $_POST['resouceId'];
+        
+        $upgrade_results = Titledeedresult_Upgrade::getAllUpgradeResults($titledeed_result);
+        foreach ($upgrade_results as $upgrade_result) {
+
+            if (isset($upgrade_result->ResourceId)) {
+                $upgrade_result->NeedsMet = in_array($upgrade_result->ResourceId, $upgradeDoneResouceIds);
+                $upgrade_result->update();
+            } else {
+                $upgrade_result->NeedsMet = isset($_POST['MoneyForUpgradeMet']);
+                $upgrade_result->update();
+            }
+            
+        }
+        
+        
     } else {
         header('Location: ../index.php');
         exit;
@@ -25,18 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $titledeed->OrganizerNotes = $_POST['OrganizerNotes'];
         $titledeed->update();
     }
-    if ($titledeed->MoneyForUpgrade > 0) {
-        if (isset($_POST['MoneyForUpgradeMet'])) $titledeed_result->createMoneyUpgrade($titledeed->MoneyForUpgrade, true);
-        else $titledeed_result->createMoneyUpgrade($titledeed->MoneyForUpgrade, false);
-    }
     
-    $upgradeDoneResouceIds = array();
-    if (isset($_POST['resouceId'])) $upgradeDoneResouceIds = $_POST['resouceId'];
+
     
-    $upgradeRequirements = $titledeed->RequiresForUpgrade();
-    foreach ($upgradeRequirements as $upgradeRequirement) {
-        
-    }
     
     
 }

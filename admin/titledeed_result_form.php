@@ -7,10 +7,14 @@ include_once 'header.php';
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $titledeed = Titledeed::loadById($_GET['id']);  
+
         $tmpresult = $titledeed->getResult($current_larp);
         if (isset($tmpresult)) {
             $titledeedresult = $tmpresult;
-        }     }
+        } else {
+            $titledeedresult ->TitledeedId = $titledeed->Id;
+        }
+    }
       
     function default_value($field) {
         GLOBAL $titledeedresult;
@@ -55,10 +59,11 @@ include_once 'header.php';
 
     <div class="content"> 
     <h1><?php echo default_value('action');?> resultat på <?php echo $titledeed->Name ?> <a href="<?php echo $referer?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-	<form action="logic/titledeed_form_save.php" method="post">
+	<form action="logic/titledeed_result_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+		<input type="hidden" id="TitledeedId" name="TitledeedId" value="<?php echo $titledeed->Id;?>">
 		<table>
 			<tr>
 				<td><label for="Name">Klarade behov</label></td>
@@ -72,24 +77,57 @@ include_once 'header.php';
 			<tr>
 				<td><label for="Type">Uppgradering<br>Bocka i de krav som uppfylldes</label></td>
 				<td>
+				
 					<?php 
-					   $resource_titledeeds = $titledeed->RequiresForUpgrade();
+					if (is_null($titledeedresult->Id)) {
+					    $resource_titledeeds = $titledeed->RequiresForUpgrade();
 					   if ($titledeed->MoneyForUpgrade > 0) {
-					       echo "<input type='checkbox' id='MoneyForUpgradeMet' name='MoneyForUpgradeMet' value='MoneyForUpgradeMet' checked='checked'> ";
+					       echo "<input type='checkbox' id='MoneyForUpgradeMet' name='MoneyForUpgradeMet' value='MoneyForUpgradeMet' > ";
 					       echo "$titledeed->MoneyForUpgrade $currency<br>";
 					   }
+					   
+
 					   foreach ($resource_titledeeds as $resource_titledeed) {
 					       $resource = $resource_titledeed->getResource();
 					       $quantity = abs($resource_titledeed->QuantityForUpgrade);
-					       echo "<input type='checkbox' id='resouceId$resource->Id' name='resouceId[]' value='$resource->Id' checked='checked'> ";
+					       echo "<input type='checkbox' id='resouceId$resource->Id' name='resouceId[]' value='$resource->Id' > ";
 					       if ($quantity == 1) {
 					           echo "1 $resource->UnitSingular<br>";
 					       } else {
 					           echo "$quantity $resource->UnitPlural<br>";
 					       }
 					   }
-					   
+					} else {
+					    $upgrade_results = $titledeedresult->getAllUpgradeResults();
+					    foreach ($upgrade_results as $upgrade_result) {
+					        $checked = "";
+					        if ($upgrade_result->NeedsMet) $checked = "checked='checked'";
+					        if (empty($upgrade_result->ResourceId)) {
+					            echo "<input type='checkbox' id='MoneyForUpgradeMet' name='MoneyForUpgradeMet' value='MoneyForUpgradeMet' $checked> ";
+					            echo "$upgrade_result->QuantityForUpgrade $currency<br>";
+					        } else {
+					            $resource = $upgrade_result->getResource();
+					            $quantity = $upgrade_result->QuantityForUpgrade;
+					            echo "<input type='checkbox' id='resouceId$upgrade_result->ResourceId' name='resouceId[]' value='$upgrade_result->ResourceId' $checked> ";
+					            if ($quantity == 1) {
+					                echo "1 $resource->UnitSingular<br>";
+					            } else {
+					                echo "$quantity $resource->UnitPlural<br>";
+					            }
+					            
+					        }
+					    }
+					    
+					}
+					
+					
+					if ($titledeed->SpecialUpgradeRequirements) {
+					    
+					    echo nl2br(htmlspecialchars($titledeed->SpecialUpgradeRequirements));
+					}
+					
 					?>
+					
 				
 				
 			</tr>
