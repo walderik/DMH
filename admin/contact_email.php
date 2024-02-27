@@ -82,13 +82,15 @@ include 'navigation.php';
     	
 		<form action="logic/send_contact_email.php" method="post" enctype="multipart/form-data">
 		<?php 
-		if (is_array($email)) {
-		    foreach ($email as $emailStr)  {
-		        echo "<input type='hidden' name='email[]' value='$emailStr'>\n";
-		    }
-		    
-		} else {
-		    echo "<input type='hidden' id='email' name='email' value='$email'>";
+		if (isset($email)) {
+    		if (is_array($email)) {
+    		    foreach ($email as $emailStr)  {
+    		        echo "<input type='hidden' name='email[]' value='$emailStr'>\n";
+    		    }
+    		    
+    		} else {
+    		    echo "<input type='hidden' id='email' name='email' value='$email'>";
+    		}
 		}
 		
 		if (isset($subject)) {
