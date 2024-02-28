@@ -72,7 +72,7 @@ input[type=checkbox]+label {
   padding: 8px 20px;
   font-family: Arial;
   border-radius: 25px;
-  background-color: #2196F3;
+  background-color: #cccccc;
   margin-top: 8px;
   margin-right: 2px;
  }
@@ -88,16 +88,10 @@ input[type=checkbox]:checked+label {
   margin-right: 2px;
 }
 
-
-.tag-cloud {
-  display: inline-block;
-  color: white;
-  padding: 8px 20px;
-  font-family: Arial;
-  border-radius: 25px;
-  background-color: #2196F3;
-  margin-top: 8px;
-  margin-right: 2px;
+.ingredient-area {
+    border: 1px solid #ccc !important;
+    border-radius: 25px;
+    padding: 5px;
 }
 
 </style>
@@ -144,15 +138,15 @@ function mousemove(event) {
 				<td><input type="number" id="Level" name="Level" value="<?php echo $recipe->Level; ?>" min="1" max="5" step="1" size="10" maxlength="250" required></td>
 			</tr>
 			<tr>
-				<td><label for="Description">Tillverkas av</label></td>
+				<td>Tillverkas av</td>
  				<td>
- 				<?php 
+  				<?php 
  				if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
- 				    //echo "Välj ingredienser";
+ 				    echo "Markera de ingredienser som ingår<br>";
                     for ($i = 1; $i <= 5; $i++) {
                         $ingredients = Alchemy_Ingredient::getIngredientsByLevel($i, $current_larp);
                         echo "Nivå $i<br>";
-                        echo "<div>";
+                        echo "<div class='ingredient-area'>";
 
                         foreach ($ingredients as $ingredient) {
                             $id = "ingredient_".$ingredient->Id;
@@ -164,7 +158,7 @@ function mousemove(event) {
                     }
                     $catalysts = Alchemy_Ingredient::getAllCatalysts($current_larp);
                     echo "Katalysatorer<br>";
-                    echo "<div>";
+                    echo "<div class='ingredient-area'>";
 
                     foreach ($catalysts as $ingredient) {
                         $id = "ingredient_".$ingredient->Id;
@@ -176,7 +170,30 @@ function mousemove(event) {
                     
     
  				} elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
- 				    echo "Välj essenser";
+ 				    echo "Markera de essenser som ingår<br>";
+ 				    $essences = Alchemy_Essence::allByCampaign($current_larp);
+ 				    for ($i = 1; $i <= 5; $i++) {
+ 				        echo "Nivå $i<br>";
+ 				        echo "<div class='ingredient-area'>";
+ 				        
+ 				        foreach ($essences as $essence) {
+ 				            $id = "essence_".$essence->Id;
+ 				            echo "<input type='checkbox' class='hidden' name='$id' id='$id'>";
+ 				            echo "<label for='$id'>$essence->Name</label>";
+ 				        }
+ 				        
+ 				        echo "</div><br>";
+ 				    }
+ 				    echo "Katalysatorer<br>";
+ 				    echo "<div class='ingredient-area'>";
+ 				    
+ 				    for ($i=1; $i <= 5; $i++) {
+ 				        $id = "catalyst_$i";
+ 				        echo "<input type='checkbox' class='hidden' name='$id' id='$id'>";
+ 				        echo "<label for='$id'>Katalysator nivå $i</label>";
+ 				    }
+ 				    
+ 				    echo "</div><br>";
  				}
  				
  				
