@@ -42,13 +42,14 @@ class Alchemy_Recipe extends BaseModel{
         global $current_larp;
         $object = new self();
         $object->CampaignId = $current_larp->CampaignId;
+        $object->AlchemistType = Alchemy_Alchemist::INGREDIENT_ALCHEMY;
         return $object;
     }
     
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_recipe SET Name=?, AlchemistType=?, Preparation=?, Effect=?, SideEffect=?, 
-                IsApproved, Level=?, OrganizerNotes=? WHERE Id = ?");
+                IsApproved=?, Level=?, OrganizerNotes=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->AlchemistType, $this->Preparation, $this->Effect, $this->SideEffect, 
             $this->IsApproved, $this->Level, $this->OrganizerNotes, $this->Id))) {
@@ -79,6 +80,25 @@ class Alchemy_Recipe extends BaseModel{
     
     public function getAllAlchemists() {
         return Alchemy_Alchemist::getAlchemistsThatKnowsRecipe($this);
+    }
+    
+    public function isApproved() {
+        if ($this->IsApproved == 1) return true;
+        return false;
+    }
+    
+    public function mayDelete() {
+        //$sql = "SELECT * FROM regsys_alchemy_essence WHERE OppositeEssenceId=?";
+        //$res = static::getSeveralObjectsqQuery($sql, array($this->Id));
+        //if (!empty($res)) return false;
+        
+        //TODO lägg på fler kontroller här när det blir fler kopplingar
+        return true;
+    }
+    
+    public function getRecipeType() {
+        if (!isset($this->AlchemistType)) return null;
+        return Alchemy_Alchemist::ALCHEMY_TYPES[$this->AlchemistType];
     }
     
     
@@ -123,6 +143,9 @@ class Alchemy_Recipe extends BaseModel{
         $stmt = null;
     }
     
-    
+    public function getComponentNames() {
+        //TODO hämta lista på ingredienser/essenser
+        return "";
+    }
     
 }
