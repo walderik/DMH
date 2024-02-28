@@ -301,7 +301,7 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
 
 			<div class="question intrigue">
 				<label for="Birthplace">Var är karaktären född?</label>&nbsp;<font style="color:red">*</font><br>
-				<div class="explanation">Beskriv noggrannare ju längre bortifrån du kommer.</div>
+				<div class="explanation">Beskriv platsen om den inte är känd eller om den är relevant för rollen.</div>
 				<input class="input_field requiredIntrigueField" type="text" id="Birthplace" name="Birthplace" value="<?php echo htmlspecialchars($role->Birthplace); ?>"  size="100" maxlength="100" required>
 			</div>
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
@@ -330,9 +330,7 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
 				
 			<div class="question intrigue">
 				<label for="ReasonForBeingInSlowRiver">Varför befinner sig karaktären på platsen?</label>&nbsp;<font style="color:red">*</font><br> 
-				<div class="explanation">Självklart har din karaktär en anledning att vara i just den här hålan. Om din karaktär bor här så finns det en anledning att bo kvar.    
-Är du besökande så lär det finnas en bra anledning att inte bara åka vidare efter en natts vila, utan stanna till ett par nätter.    
-Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</div>
+				<div class="explanation">Varför är din roll på plats? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?</div>
 				<textarea class="input_field requiredIntrigueField" id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea>
 			</div>
 				
@@ -428,21 +426,19 @@ Kommer du tillbaka år efter år så är det säkert en riktigt bra anledning.</
 			<?php } ?>
 			<div class="question intrigue">
 				<label for="NotAcceptableIntrigues">Saker karaktären absolut inte vill spela på</label><br>
-				<div class="explantion">Är det något den här karaktären aldrig skulle göra? Vill du helst undvika farligt spel är det också bra att ange.</div>
+				<div class="explantion">Är det något du som deltagare inte vill spela på? Du kommer inte få intriger som berör detta, även om vi inte kan garantera att du slipper det helt på lajvet. Detta då vi inte kan kontrollera allt som händer på lajvet.</div>
 				<input class="input_field" type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo htmlspecialchars($role->NotAcceptableIntrigues); ?>"  size="100" maxlength="200">
 			</div>
 
 
 			<div class="question intrigue">
-				<label for="DarkSecret">Mörk hemlighet</label>&nbsp;<font style="color:red">*</font><br> 
-				<div class="explanation">Alla har någonting de inte vill berätta så gärna för andra. Vad har din karaktär för mörk hemlighet?    
-Du måste ange en mörk hemlighet.    
-Det kan kännas svårt att göra karaktären sårbar på det här sättet, men försök. Det ger mer spännande spel.</div>
+				<label for="DarkSecret">Karaktärens (mörka) baksida</label>&nbsp;<font style="color:red">*</font><br> 
+				<div class="explanation">Har din karaktär någon mörk hemlighet eller något personlighetsdrag som är till dennes nackdel? Har hen en hemlig skuld, ett hetsigt humör som sätter den i problem eller har hen kanske begått något brott? Det kan kännas svårt att göra karaktären sårbar på det här sättet, men försök. En mer nyanserad karaktär är ofta roligare och mer spännande att spela. </div>
 				<textarea class="input_field requiredIntrigueField" id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($role->DarkSecret); ?> </textarea>
 			</div>
 			<div class="question intrigue">
-				<label for="DarkSecretIntrigueIdeas">Mörk hemlighet - intrig idéer</label>&nbsp;<font style="color:red">*</font><br>
-				<div class="explanation">Hur kan vi spela på din mörka hemlighet?</div>
+				<label for="DarkSecretIntrigueIdeas">Karaktärens (mörka) baksida - intrigidéer</label>&nbsp;<font style="color:red">*</font><br>
+				<div class="explanation">Hur kan vi spela på karaktärens mörka baksida?</div>
 				<input class="input_field requiredIntrigueField" type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo htmlspecialchars($role->DarkSecretIntrigueIdeas); ?>"  size="100" maxlength="200" required>
 			</div>
 
