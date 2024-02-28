@@ -164,7 +164,7 @@ class Email extends BaseModel{
     }
     
     public function receiverName() {
-        if (empty($this->ToName)) return "Stranger";
+        if (empty($this->ToName)) return "kära deltagare";
         return trim(str_replace( array( '\'', '"', ',' , ';', '<', '>' ), ' ', $this->ToName));
 //         return $this->ToName;
     }

@@ -22,7 +22,7 @@ if (!isset($_POST['text'])) {
     exit;
 }
 
-$name = (isset($_POST['name'])) ? $_POST['name'] : 'Stranger';
+$name = (isset($_POST['name'])) ? $_POST['name'] : 'kära deltagare';
 $referer = (isset($_POST['referer'])) ? $_POST['referer'] : '../../index.php';
 $referer .= "?message=contact_email_sent";
 
