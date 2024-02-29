@@ -4,7 +4,7 @@ include_once 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
-        $magicianId = $_GET['id'];
+        $alchemistId = $_GET['id'];
     }
     else {
         header('Location: index.php');
@@ -12,11 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-$magician = Magic_Magician::loadById($magicianId);
-$role = $magician->getRole();
-$master = $magician->getMaster();
-if (isset($master)) $masterRole = $master->getRole();
-$school = $magician->getMagicSchool();
+$alchemist = Alchemy_Alchemist::loadById($alchemistId);
+$role = $alchemist->getRole();
+
 
 
 
@@ -24,11 +22,11 @@ include 'navigation.php';
 ?>
 
 	<div class="content">
-		<h1><?php echo "Magiker ".$role->Name;?>&nbsp;
+		<h1><?php echo "Alkemist ".$role->Name;?>&nbsp;
 
 		
-		<a href='magic_magician_form.php?Id=<?php echo $magician->Id;?>&operation=update'>
-		<i class='fa-solid fa-pen'></i></a> <a href="magic_magician_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till magiker"></i></a> 
+		<a href='alchemy_alchemist_form.php?Id=<?php echo $alchemist->Id;?>&operation=update'>
+		<i class='fa-solid fa-pen'></i></a> <a href="alchemy_alchemist_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a> 
 		</h1>
 		
 
@@ -37,58 +35,29 @@ include 'navigation.php';
 
     		<table>
     			<tr>
-    				<td>Magiskola 
+    				<td>Typ 
     				</td>
-    				<td>
-    					<?php if (!empty($school)) {
-    					    echo "<a href='view_magicschool.php?id=$magician->MagicSchoolId'>";
-    					    echo $school->Name; 
-    					    echo "</a>";
-    					}?>
+    				<td><?php echo $alchemist->getAlchemistType() ?>
                     </td>
     			</tr>
     			<tr>
     				<td>Nivå 
     				</td>
     				<td>
-    					<?php echo nl2br(htmlspecialchars($magician->Level)); ?>
+    					<?php echo nl2br(htmlspecialchars($alchemist->Level)); ?>
                     </td>
     			</tr>
-    			<tr>
-    				<td>Mästare</td>
-    				<td><?php if (isset($masterRole)) echo "<a href ='view_magician.php?id=$master->Id'>$masterRole->Name</a>"; ?></td>
-    			</tr>
-
-    			<?php 
-    			$apprentices = $magician->getApprentices();
-    			if (isset($apprentices)) {?>
-    			<tr>
-    				<td>Lärlingar</td>
-    				<td><?php 
-    				    $apprenticeLinks = array();
-    				    foreach($apprentices as $apprentice) {
-    				        $apprenticeSchool = $apprentice->getMagicSchool();
-    				        $str = "<a href ='view_magician.php?id=$apprentice->Id'>".$apprentice->getRole()->Name."</a> (";
-    				        if (isset($apprenticeSchool)) $str.=$apprentice->getMagicSchool()->Name.", ";
-    				        $str.="nivå $apprentice->Level)";
-    				        $apprenticeLinks[] = $str;
-    				    }
-    				    echo implode("<br>", $apprenticeLinks); 
-    				    
-    				    ?></td>
-    			</tr>
-    			<?php }?>
 
 				<tr>
-    				<td>Stav</td>
+    				<td>Utrustning</td>
     				<td>
     					<?php 
-    					echo "<a href='upload_image.php?id=$magician->Id&type=magician'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
-    					if ($magician->hasStaffImage()) {
+    					echo "<a href='upload_image.php?id=$alchemist->Id&type=alchemist'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+    					if ($alchemist->hasEquipmentImage()) {
     					    echo "<br>";
-    					    $image = Image::loadById($magician->ImageId);
+    					    $image = Image::loadById($alchemist->ImageId);
     
-    					        echo "<img width='300' src='../includes/display_image.php?id=$magician->ImageId'/>\n";
+    					        echo "<img width='300' src='../includes/display_image.php?id=$alchemist->ImageId'/>\n";
     					        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
     
     					}
@@ -96,43 +65,45 @@ include 'navigation.php';
     					
     				</td>
     			</tr>
-    			<tr>
-    				<td>Stav godkänd datum</td>
-    				<td><?php echo $magician->StaffApproved; ?></td>
-    			</tr>
-    			<tr>
+     			<tr>
     				<td>Workshop datum</td>
-    				<td><?php echo $magician->Workshop; ?></td>
+    				<td><?php echo $alchemist->Workshop; ?></td>
     			</tr>
     			
     			
     			
     			<tr>
     				<td>Anteckningar</td>
-    				<td><?php echo nl2br(htmlspecialchars($magician->OrganizerNotes)); ?></td>
+    				<td><?php echo nl2br(htmlspecialchars($alchemist->OrganizerNotes)); ?></td>
     			</tr>
     			<tr><td></td></tr>
     		</table>
 
-			<h2>Magier</h2>
+			<h2>Recept</h2>
 
 			<?php 
-			$spells = $magician->getSpells();
-			if (empty($spells)) {
-			    echo "Inga magier, än.";
+			$recepies = $alchemist->getRecipes();
+			if (empty($recepies)) {
+			    echo "Inga recept, än.";
 			} else {
 				echo "<table class='small_data'>";
-				echo "<tr><th>Magi</th><th>Nivå</th><th>Typ</th><th>Beskrivning</th><th></th></tr>";
-				foreach ($spells as $spell) {
-				    echo "<tr><td><a href='view_magicspell.php?id=$spell->Id'>$spell->Name</td><td>$spell->Level</td><td>".Magic_Spell::TYPES[$spell->Type]."</td><td>$spell->Description</td>";
-				    echo "<td><a href='logic/view_magician_logic.php?operation=remove_spell&SpellId=$spell->Id&Id=$magician->Id'><i class='fa-solid fa-xmark' title='Ta bort magi från magiskolan'></i></a></td>";
+				echo "<tr><th>Namn</th><th>Nivå</th><th>Typ</th><th>Effekt</th><th>Fick på/till<br>lajvet</th><th></th></tr>";
+				foreach ($recepies as $recepie) {
+				    echo "<tr><td><a href='view_alchemyrecepie.php?id=$recepie->Id'>$recepie->Name</td><td>$recepie->Level</td><td>$recepie->getRecipeType()</td><td>$recepie$recepie->Effect</td>";
+				    echo "<td>";
+				    //TODO skriv vilket lajv de fick receptet och kunna lägga till /godkänna att någon ha ett recept.
+				    
+				    echo "</td>\n";
+				    
+				    
+				    echo "<td><a href='logic/view_magician_logic.php?operation=remove_recepi&RecepieId=$recepie->Id&Id=$alchemist->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a></td>";
 				    echo "</tr>";
 				}
 				echo "</table>";
 			}
 			?>
 			<p>
-			<a href='choose_magic_spell.php?id=<?php echo $magician->Id ?>&operation=add_magician_spell'>Lägg till magier</a>
+			<a href='choose_alchemy_recepie.php?id=<?php echo $alchemist->Id ?>&operation=add_alchemist_recipe'>Lägg till recept</a>
 
 
 		</div>

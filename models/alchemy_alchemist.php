@@ -14,7 +14,7 @@ class Alchemy_Alchemist extends BaseModel{
     public $RoleId;
     public $Level;
     public $AlchemistType;
-    public $EquipmentImageId;
+    public $ImageId;
     public $Workshop;
     public $OrganizerNotes;
     
@@ -34,11 +34,11 @@ class Alchemy_Alchemist extends BaseModel{
         if (isset($arr['RoleId'])) $this->RoleId = $arr['RoleId'];
         if (isset($arr['Level'])) $this->Level = $arr['Level'];
         if (isset($arr['AlchemistType'])) $this->AlchemistType = $arr['AlchemistType'];
-        if (isset($arr['EquipmentImageId'])) $this->EquipmentImageId = $arr['EquipmentImageId'];
+        if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         if (isset($arr['Workshop'])) $this->Workshop = $arr['Workshop'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         
-        if (isset($this->EquipmentImageId) && $this->EquipmentImageId=='null') $this->EquipmentImageId = null;
+        if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         
         if (isset($this->Workshop) && ($this->Workshop=='0000-00-00' || $this->Workshop=='')) $this->Workshop = null;
     }
@@ -52,10 +52,10 @@ class Alchemy_Alchemist extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_alchemist SET RoleId=?, AlchemistType=?, EquipmentImageId=?, 
+        $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_alchemist SET RoleId=?, AlchemistType=?, ImageId=?, 
                 Workshop=?, Level=?, OrganizerNotes=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->RoleId, $this->AlchemistType, $this->EquipmentImageId, 
+        if (!$stmt->execute(array($this->RoleId, $this->AlchemistType, $this->ImageId, 
             $this->Workshop, $this->Level, $this->OrganizerNotes, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -69,10 +69,10 @@ class Alchemy_Alchemist extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_alchemy_alchemist (RoleId, AlchemistType, EquipmentImageId, 
+        $stmt = $connection->prepare("INSERT INTO regsys_alchemy_alchemist (RoleId, AlchemistType, ImageId, 
                     Workshop, Level, OrganizerNotes) VALUES (?,?,?,?,?, ?);");
         
-        if (!$stmt->execute(array($this->RoleId, $this->AlchemistType, $this->EquipmentImageId, $this->Workshop, $this->Level, $this->OrganizerNotes))) {
+        if (!$stmt->execute(array($this->RoleId, $this->AlchemistType, $this->ImageId, $this->Workshop, $this->Level, $this->OrganizerNotes))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -206,7 +206,7 @@ class Alchemy_Alchemist extends BaseModel{
     }
     
     public function hasEquipmentImage() {
-        if (isset($this->EquipmentImageId)) return true;
+        if (isset($this->ImageId)) return true;
         return false;
     }
     
@@ -220,7 +220,7 @@ class Alchemy_Alchemist extends BaseModel{
             $alchemist->removeRecipe($recipes->Id);
         }
         
-        $imageId=$alchemist->EquipmentImageId;
+        $imageId=$alchemist->ImageId;
         
         parent::delete($id);
     

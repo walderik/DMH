@@ -45,6 +45,10 @@ switch ($type) {
         $object = Magic_Magician::loadById($id);
         $name = "stav";
         break;
+    case "alchemist":
+        $object = Alchemy_Alchemist::loadById($id);
+        $name = "utrustning";
+        break;
     case "resource":
         $object = Resource::loadById($id);
         $name = $object->Name;
