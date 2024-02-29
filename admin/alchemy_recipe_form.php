@@ -96,22 +96,6 @@ input[type=checkbox]:checked+label {
 
 </style>
 
-<script>
-
-function mousedown(event) {
-    //this == event.target
-    event.preventDefault();
-    var scroll_offset= this.parentElement.scrollTop;
-    this.selected= !this.selected;
-    this.parentElement.scrollTop= scroll_offset;
-}
-function mousemove(event) {
-    event.preventDefault();
-}
-
-
-
-</script>
 
     <div class="content"> 
     <h1><?php echo default_value('action');?> recept <a href="alchemy_recipe_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
@@ -120,6 +104,7 @@ function mousemove(event) {
 	<form action="logic/alchemy_recipe_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
+		<input type="hidden" id="AlchemistType" name="AlchemistType" value="<?php echo $recipe->AlchemistType ?>">
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
  		<table>
 			<tr>
@@ -143,6 +128,7 @@ function mousemove(event) {
   				<?php 
  				if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
  				    echo "Markera de ingredienser som ingår<br>";
+ 				    $selectedIngredientIds = $recipe->getSelectedIngredientIds();
                     for ($i = 1; $i <= 5; $i++) {
                         $ingredients = Alchemy_Ingredient::getIngredientsByLevel($i, $current_larp);
                         echo "Nivå $i<br>";
@@ -150,7 +136,11 @@ function mousemove(event) {
 
                         foreach ($ingredients as $ingredient) {
                             $id = "ingredient_".$ingredient->Id;
-                            echo "<input type='checkbox' class='hidden' name='$id' id='$id'>";
+                            $checked="";
+                            if (in_array($ingredient->Id, $selectedIngredientIds)) {
+                                $checked="checked='checked'";
+                            }
+                            echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id' $checked>";
                             echo "<label for='$id'>$ingredient->Name</label>";
                          }
  				    
@@ -162,7 +152,7 @@ function mousemove(event) {
 
                     foreach ($catalysts as $ingredient) {
                         $id = "ingredient_".$ingredient->Id;
-                        echo "<input type='checkbox' class='hidden' name='$id' id='$id'>";
+                        echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id'>";
                         echo "<label for='$id'>$ingredient->Name (Nivå $ingredient->Level)</label>";
                     }
                     
@@ -177,8 +167,8 @@ function mousemove(event) {
  				        echo "<div class='ingredient-area'>";
  				        
  				        foreach ($essences as $essence) {
- 				            $id = "essence_".$essence->Id;
- 				            echo "<input type='checkbox' class='hidden' name='$id' id='$id'>";
+ 				            $id = "essence_L".$i."_".$essence->Id;
+ 				            echo "<input type='checkbox' class='hidden' name='Essences[]' id='$id' value='$i"."_"."$essence->Id'>";
  				            echo "<label for='$id'>$essence->Name</label>";
  				        }
  				        
@@ -189,7 +179,7 @@ function mousemove(event) {
  				    
  				    for ($i=1; $i <= 5; $i++) {
  				        $id = "catalyst_$i";
- 				        echo "<input type='checkbox' class='hidden' name='$id' id='$id'>";
+ 				        echo "<input type='checkbox' class='hidden' name='Essences[]' id='$id'value='K$i"."_"."$essence->Id'>";
  				        echo "<label for='$id'>Katalysator nivå $i</label>";
  				    }
  				    
@@ -207,21 +197,23 @@ function mousemove(event) {
 			<tr>
 
 				<td><label for="Description">Beredning</label></td>
- 				<td><textarea id="Preparation" name="Preparation" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($recipe->Preparation); ?></textarea></td>
+ 				<td><textarea id="Preparation" name="Preparation" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($recipe->Preparation); ?></textarea></td>
 					 
 			</tr>
 			<tr>
 
 				<td><label for="Description">Effekt</label></td>
- 				<td><textarea id="Effect" name="Effect" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($recipe->Effect); ?></textarea></td>
+ 				<td><textarea id="Effect" name="Effect" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($recipe->Effect); ?></textarea></td>
 					 
 			</tr>
+			<?php if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { ?>
 			<tr>
 
 				<td><label for="Description">Bieffekt</label></td>
- 				<td><textarea id="SideEffect" name="SideEffect" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($recipe->SideEffect); ?></textarea></td>
+ 				<td><textarea id="SideEffect" name="SideEffect" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($recipe->SideEffect); ?></textarea></td>
 					 
 			</tr>
+			<?php }?>
 			<tr>
 
 				<td><label for="IsApproved">Godkänd</label></td>

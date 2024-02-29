@@ -75,6 +75,7 @@ class Alchemy_Recipe extends BaseModel{
                 header("location: ../participant/index.php?error=stmtfailed");
                 exit();
             }
+            $this->Id = $connection->lastInsertId();
             $stmt = null;
     }
     
@@ -144,8 +145,60 @@ class Alchemy_Recipe extends BaseModel{
     }
     
     public function getComponentNames() {
+        $str = implode(", ", $this->getSelectedIngredientIds());
         //TODO hämta lista på ingredienser/essenser
-        return "";
+        return $str;
     }
+    
+    public function getSelectedIngredientIds() {
+        $stmt = $this->connect()->prepare("SELECT IngredientId FROM  regsys_alchemy_recipe_ingredient WHERE RecipeId = ? ORDER BY IngredientId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['IngredientId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function saveAllIngredients($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_alchemy_recipe_ingredient (IngredientId, RecipeId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllIngredients() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_alchemy_recipe_ingredient WHERE RecipeId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    
     
 }

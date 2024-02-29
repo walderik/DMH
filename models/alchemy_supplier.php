@@ -57,6 +57,7 @@ class Alchemy_Supplier extends BaseModel{
                 header("location: ../participant/index.php?error=stmtfailed");
                 exit();
             }
+            $this->Id = $connection->lastInsertId();
             $stmt = null;
     }
     
