@@ -804,35 +804,35 @@ class Role extends BaseModel{
         
         switch ($typeName) {
             case "Wealth":
-                $sql = "SELECT * FROM regsys_role WHERE WealthId = ? and CampaignId = ? ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE WealthId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
                 break;
             case "PlaceOfResidence":
-                $sql = "SELECT * FROM regsys_role WHERE PlaceOfResidenceId = ? and CampaignId = ? ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE PlaceOfResidenceId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
                 break;
             case "LarperType":
-                $sql = "SELECT * FROM regsys_role WHERE LarperTypeId = ? and CampaignId = ? ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE LarperTypeId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
                 break;
             case "IntrigueType":
-                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_intriguetype_role WHERE IntrigueTypeId = ?) AND CampaignId = ? ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_intriguetype_role WHERE IntrigueTypeId = ?) AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
                 break;
             case "Race":
-                $sql = "SELECT * FROM regsys_role WHERE RaceId = ? and CampaignId = ? ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE RaceId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
                 break;
             case "Ability":
-                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_ability_role WHERE AbilityId = ?) AND CampaignId = ? ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_ability_role WHERE AbilityId = ?) AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
                 break;
             case "Council":
-                $sql = "SELECT * FROM regsys_role WHERE CouncilId = ? and CampaignId = ? ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE CouncilId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
                 break;
             case "Guard":
-                $sql = "SELECT * FROM regsys_role WHERE GuardId = ? and CampaignId = ? ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE GuardId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
                 break;
             case "Religion":
-                $sql = "SELECT * FROM regsys_role WHERE ReligionId = ? and CampaignId = ? ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE ReligionId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
                 break;
         }
          
-        return static::getSeveralObjectsqQuery($sql, array($valueId, $larp->CampaignId));
+        return static::getSeveralObjectsqQuery($sql, array($valueId, $larp->Id));
     }
     
     
