@@ -613,4 +613,8 @@ class Person extends BaseModel{
         if (!empty($registration->LarpHousingComment)) $comments[] = $registration->LarpHousingComment;
         return implode(' ', $comments);
     }
+    
+    public function getHouseAtLarp(Larp $larp) {
+        return House::getHouseAtLarp($this, $larp);
+    }
 }
