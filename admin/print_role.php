@@ -85,6 +85,25 @@ if ($role->isMysLajvare()) {
 			<?php }?>
 
 
+			<?php 
+			$magician = Magic_Magician::getForRole($role);
+			$alchemist = Alchemy_Alchemist::getForRole($role);
+			$alchemy_supplier = Alchemy_Supplier::getForRole($role);
+			
+			if (isset($magician) || isset($alchemist) || isset($alchemy_supplier)) {
+			     echo "<td  valign='top' class='header'>Tilldelad förmåga</td>";
+			     echo "<td>";
+			     if (isset($magician)) echo "<a href='view_magician.php?id=$magician->Id'>Magiker</a>";
+			     if (isset($alchemist)) echo "<a href='view_alchemist.php?id=$alchemist->Id'>Alkemist</a>";
+			     if (isset($alchemy_supplier)) echo "<a href='view_alchemy_supplier.php?id=$alchemy_supplier->Id'>Lövjerist</a>";
+			     echo "</td>";
+			
+			}
+			
+			
+			
+			?>
+
 
 
 			<?php if (Religion::isInUse($current_larp)) {?>
