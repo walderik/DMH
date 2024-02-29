@@ -17,7 +17,7 @@ include 'navigation.php';
 
  
     <div class="content">
-        <h1>Alkemister <a href="magic.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
+        <h1>Alkemister <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
         Först lägger man till en eller flera karaktärer som alkemister och sedan kan man redigera deras alkemi-egenskaper.
         <br><br>
             <a href="choose_role.php?operation=add_alchemist"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som alkemister</a>  
@@ -28,9 +28,10 @@ include 'navigation.php';
            $tableId = "alchemists";
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-               "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
-               "<th onclick='sortTable(1, \"$tableId\")'>Alkemisttyp</th>".
-               "<th onclick='sortTable(2, \"$tableId\")'>Antal recept</th>".
+               "<th onclick='sortTable(1, \"$tableId\")'>Grupp</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Nivå</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Alkemisttyp</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Antal recept</th>".
                "<th onclick='sortTable(5, \"$tableId\")'>Workshop<br>deltagit</th>".
                "<th></th><th></th>";
            
@@ -39,6 +40,10 @@ include 'navigation.php';
 
                 echo "<tr>\n";
                 echo "<td><a href ='view_alchemist.php?id=$alchemist->Id'>$role->Name</a></td>\n";
+                echo "<td>";
+                $group = $role->getGroup();
+                if (isset($group)) echo $group->Name;
+                echo "</td>";
                 echo "<td>" . $alchemist->Level . "</td>\n";
                 echo "<td>" . $alchemist->getAlchemistType() . "</td>\n";
                 echo "<td>";

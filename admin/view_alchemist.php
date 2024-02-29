@@ -22,7 +22,7 @@ include 'navigation.php';
 ?>
 
 	<div class="content">
-		<h1><?php echo "Alkemist ".$role->Name;?>&nbsp;
+		<h1>Alkemist <a href='view_role.php?id=<?php echo $role->Id?>'><?php echo $role->Name?></a>&nbsp;
 
 		
 		<a href='alchemy_alchemist_form.php?Id=<?php echo $alchemist->Id;?>&operation=update'>
