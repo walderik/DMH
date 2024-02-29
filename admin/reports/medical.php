@@ -35,13 +35,13 @@ function cmp($a, $b)
 $persons = Person::getAllRegistered($current_larp, false);
 usort($persons, "cmp");
 $rows = array();
-$rows[] = array("Namn", "Kommentar                              ", "Anhörig", "Boende");
+$rows[] = array("Namn", "Personnummer", "Kommentar                              ", "Anhörig", "Boende");
 foreach ($persons as $person) {
     if (!empty($person->HealthComment) && (trim($person->HealthComment) != "Inget")) {
         $house = $person->getHouseAtLarp($current_larp);
         $houseText = "";
         if (isset($house)) $houseText = $house->Name;
-        $rows[] = array($person->Name, $person->HealthComment, $person->EmergencyContact, $houseText);
+        $rows[] = array($person->Name, $person->SocialSecurityNumber, $person->HealthComment, $person->EmergencyContact, $houseText);
     }
 }
 $pdf->new_report($current_larp, $name, $rows);
