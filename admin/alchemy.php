@@ -10,9 +10,9 @@ include 'navigation.php';
         <p>
         <a href="alchemy_essence_admin.php">Essenser</a><br>
         <a href="alchemy_ingredient_admin.php">Ingredienser</a><br>
-        <a href="alchemy_recipe_admin.php">Recept</a> (Kommer snart)<br>
+        <a href="alchemy_recipe_admin.php">Recept</a><br>
         <a href="alchemy_supplier_admin.php">Löjverister</a><br>
-        <a href="alchemy_alchemist_admin.php">Alkemister</a> (påbörjad)<br>
+        <a href="alchemy_alchemist_admin.php">Alkemister</a><br>
         </p>
     </div>
 
