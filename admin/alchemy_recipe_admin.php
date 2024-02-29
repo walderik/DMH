@@ -33,7 +33,7 @@ include 'navigation.php';
                "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
                "<th onclick='sortTable(2, \"$tableId\")'>Typ</th>".
                "<th onclick='sortTable(3, \"$tableId\")'>Effekt</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Ingredienser/Essenser</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Ingredienser/Essenser<br>Nivån anges inom parentes</th>".
                "<th onclick='sortTable(5, \"$tableId\")'>Godkänd</th>".
                "<th></th>";
            

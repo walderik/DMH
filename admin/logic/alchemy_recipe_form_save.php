@@ -20,15 +20,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
     
-    //TODO Spara ingredienser/essenser
-    //print_r($_POST);
-    
     if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
         $recipe->deleteAllIngredients();
         $recipe->saveAllIngredients($_POST['IngredientId']);
     } elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
-        
-    }
+        $recipe->deleteAllEssences();
+        $recipe->saveAllEssences($_POST['Essences']);}
     
 }
 $referer = (isset($_POST['Referer'])) ? $_POST['Referer'] : '../alchemy_recipe_admin.php';

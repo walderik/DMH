@@ -145,9 +145,34 @@ class Alchemy_Recipe extends BaseModel{
     }
     
     public function getComponentNames() {
-        $str = implode(", ", $this->getSelectedIngredientIds());
-        //TODO hämta lista på ingredienser/essenser
-        return $str;
+        $names = array();
+        if ($this->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
+            $ingredients = Alchemy_Ingredient::getIngredientsForRecipe($this);
+
+            
+            foreach ($ingredients as $ingredient) {
+                if ($ingredient->isCatalyst()) $names[] = "$ingredient->Name (Katalysator $ingredient->Level)";
+                else $names[] = "$ingredient->Name ($ingredient->Level)";
+            }
+        } elseif ($this->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
+            $essences = Alchemy_Essence::all();
+            
+            $selectedEssences = $this->getSelectedEssenceIds();
+            foreach($selectedEssences as $selectedEssenceArr) {
+                $selectedEssence = null;
+                foreach ($essences as $essence) {
+                    if ($essence->Id == $selectedEssenceArr[0]) {
+                        $selectedEssence = $essence;
+                        break;
+                    }
+                }
+                
+                $names[] = "$selectedEssence->Name (".$selectedEssenceArr[1].")";
+            }
+            $names[] = "Katalysator ($this->Level)";
+        }
+        
+        return implode(", ", $names);
     }
     
     public function getSelectedIngredientIds() {
@@ -199,6 +224,87 @@ class Alchemy_Recipe extends BaseModel{
         $stmt = null;
     }
     
+    
+    public function getSelectedEssencesPerLevelIds($level) {
+        $stmt = $this->connect()->prepare("SELECT EssenceId FROM  regsys_alchemy_recipe_essence WHERE RecipeId = ? AND Level=?");
+        
+        if (!$stmt->execute(array($this->Id, $level))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['EssenceId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+        
+  
+    public function getSelectedEssenceIds() {
+        $stmt = $this->connect()->prepare("SELECT EssenceId, Level FROM  regsys_alchemy_recipe_essence WHERE RecipeId = ? ORDER BY Level");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = array($row['EssenceId'], $row['Level']);
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    
+    
+     public function saveAllEssences($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $info = explode("_", $Id);
+            $this->saveEssence($info[1], $info[0]);
+         }
+    }
+    
+    private function saveEssence($essenceId, $level) {
+        $stmt = $this->connect()->prepare("INSERT INTO regsys_alchemy_recipe_essence (RecipeId, EssenceId, Level) VALUES (?,?,?);");
+        if (!$stmt->execute(array($this->Id, $essenceId, $level))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllEssences() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_alchemy_recipe_essence WHERE RecipeId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
     
     
 }

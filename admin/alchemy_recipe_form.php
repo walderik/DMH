@@ -147,12 +147,16 @@ input[type=checkbox]:checked+label {
 			            echo "</div><br>";
                     }
                     $catalysts = Alchemy_Ingredient::getAllCatalysts($current_larp);
-                    echo "Katalysatorer<br>";
+                    echo "Katalysator<br>";
                     echo "<div class='ingredient-area'>";
 
                     foreach ($catalysts as $ingredient) {
                         $id = "ingredient_".$ingredient->Id;
-                        echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id'>";
+                        $checked="";
+                        if (in_array($ingredient->Id, $selectedIngredientIds)) {
+                            $checked="checked='checked'";
+                        }
+                        echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id' $checked>";
                         echo "<label for='$id'>$ingredient->Name (Nivå $ingredient->Level)</label>";
                     }
                     
@@ -160,30 +164,28 @@ input[type=checkbox]:checked+label {
                     
     
  				} elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
- 				    echo "Markera de essenser som ingår<br>";
+ 				    echo "Markera de essenser som ingår och på vilken nivå de ska vara.<br>";
  				    $essences = Alchemy_Essence::allByCampaign($current_larp);
  				    for ($i = 1; $i <= 5; $i++) {
+ 				        $selectedEssences = $recipe->getSelectedEssencesPerLevelIds($i);
+ 				        
  				        echo "Nivå $i<br>";
  				        echo "<div class='ingredient-area'>";
  				        
  				        foreach ($essences as $essence) {
+ 				            $checked="";
+ 				            if (in_array($essence->Id, $selectedEssences)) {
+ 				                $checked="checked='checked'";
+ 				            }
  				            $id = "essence_L".$i."_".$essence->Id;
- 				            echo "<input type='checkbox' class='hidden' name='Essences[]' id='$id' value='$i"."_"."$essence->Id'>";
+ 				            echo "<input type='checkbox' class='hidden' name='Essences[]' id='$id' value='$i"."_"."$essence->Id' $checked>";
  				            echo "<label for='$id'>$essence->Name</label>";
  				        }
  				        
  				        echo "</div><br>";
  				    }
- 				    echo "Katalysatorer<br>";
- 				    echo "<div class='ingredient-area'>";
- 				    
- 				    for ($i=1; $i <= 5; $i++) {
- 				        $id = "catalyst_$i";
- 				        echo "<input type='checkbox' class='hidden' name='Essences[]' id='$id'value='K$i"."_"."$essence->Id'>";
- 				        echo "<label for='$id'>Katalysator nivå $i</label>";
- 				    }
- 				    
- 				    echo "</div><br>";
+ 				    echo "Katalysator<br>";
+ 				    echo "Katalysator med samma nivå som receptet.";
  				}
  				
  				

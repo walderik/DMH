@@ -202,5 +202,11 @@ class Alchemy_Ingredient extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
+    public static function getIngredientsForRecipe(Alchemy_Recipe $recipe) {
+        $sql = "SELECT * FROM regsys_alchemy_ingredient WHERE Id IN (".
+        "SELECT IngredientId FROM regsys_alchemy_recipe_ingredient WHERE RecipeId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($recipe->Id));
+    }
+    
     
 }
