@@ -21,7 +21,7 @@ if ($operation == "search") {
     $resSearch = "Sökning på alla karaktärer med värde $valueText för ".$typeTexts[$type]."<br>";
     
     $emailArr = array();
-    $resTable = "<table class='data'><tr><th>Namn</th><th>Yrke</th>";
+    $resTable = "<table class='data'><tr><th>Namn</th><th>Yrke</th><th>Grupp</th>";
     
     if ($type == "Religion") $resTable .="<th>Kommentar till religion</th>";
     if ($type == "LarperType") $resTable .="<th>Kommentar till typ av lajvare</th>";
@@ -32,7 +32,12 @@ if ($operation == "search") {
     
     $resTable .= "</tr>";
     foreach ($roles as $role) {
-        $resTable .= "<tr><td><a href='view_role.php?id=$role->Id'>$role->Name</a></td><td>$role->Profession</td>";
+        $resTable .= "<tr><td><a href='view_role.php?id=$role->Id'>$role->Name</a></td><td>$role->Profession</td><td>";
+
+        $group = $role->getGroup();
+        if (isset($group)) $resTable .= $group->Name;
+        $resTable .= "</td>";
+        
         if ($type == "Religion") $resTable .="<td>$role->Religion</td>";
         if ($type == "LarperType") $resTable .="<td>$role->TypeOfLarperComment</td>";
         if ($type == "IntrigueType") $resTable .="<td>$role->IntrigueSuggestions</td>";
