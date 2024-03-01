@@ -15,6 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $alchemist = Alchemy_Alchemist::loadById($alchemistId);
 $role = $alchemist->getRole();
 
+if (isset($_GET['operation']) && $_GET['operation']=='remove_recipe') {
+    $alchemist->removeRecipe($_GET['RecipeId']);
+}
 
 
 
@@ -82,21 +85,28 @@ include 'navigation.php';
 			<h2>Recept</h2>
 
 			<?php 
-			$recepies = $alchemist->getRecipes();
-			if (empty($recepies)) {
+			$recipes = $alchemist->getRecipes();
+			if (empty($recipes)) {
 			    echo "Inga recept, än.";
 			} else {
 				echo "<table class='small_data'>";
 				echo "<tr><th>Namn</th><th>Nivå</th><th>Typ</th><th>Effekt</th><th>Fick på/till<br>lajvet</th><th></th></tr>";
-				foreach ($recepies as $recepie) {
-				    echo "<tr><td><a href='view_alchemyrecepie.php?id=$recepie->Id'>$recepie->Name</td><td>$recepie->Level</td><td>$recepie->getRecipeType()</td><td>$recepie$recepie->Effect</td>";
+				foreach ($recipes as $recipe) {
+				    echo "<tr><td><a href='view_alchemyrecepie.php?id=$recipe->Id'>$recipe->Name</td><td>$recipe->Level</td><td>".$recipe->getRecipeType()."</td><td>$recipe->Effect</td>";
 				    echo "<td>";
-				    //TODO skriv vilket lajv de fick receptet och kunna lägga till /godkänna att någon ha ett recept.
-				    
+				    $approvedLarpId = $alchemist->recipeApprovedLarp($recipe);
+				    if (isset($approvedLarpId)) {
+				        $larp = LARP::loadById($approvedLarpId);
+				        echo $larp->Name;
+				    } else {
+				        echo showStatusIcon(false,  "logic/approve_alchemist_recipe.php?recipeId=$recipe->Id&alchemistId=$alchemist->Id");
+				    }
 				    echo "</td>\n";
 				    
+				    echo "<td>";
+				    echo "<a href='view_alchemist.php?operation=remove_recipe&RecipeId=$recipe->Id&id=$alchemist->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a></td>";
+				    echo "</td>\n";
 				    
-				    echo "<td><a href='logic/view_magician_logic.php?operation=remove_recepi&RecepieId=$recepie->Id&Id=$alchemist->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a></td>";
 				    echo "</tr>";
 				}
 				echo "</table>";

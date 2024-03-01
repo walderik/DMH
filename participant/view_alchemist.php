@@ -107,9 +107,9 @@ include 'navigation.php';
 				    }
 				    echo "</td>\n";
 				    echo "<td>";
-				    //if (!isset($approvedLarpId)) {
-				    echo "<a href='view_alchemist.php?operation=remove_recipe&RecipeId=$recipe->Id&id=$role->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a></td>";
-				    //}
+				    if (!isset($approvedLarpId)) {
+				        echo "<a href='view_alchemist.php?operation=remove_recipe&RecipeId=$recipe->Id&id=$role->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a></td>";
+				    }
 				    echo "</tr>";
 				}
 				echo "</table>";

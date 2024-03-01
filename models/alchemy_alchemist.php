@@ -131,6 +131,18 @@ class Alchemy_Alchemist extends BaseModel{
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rows[0]['GrantedLarpId'];
     }
+ 
+    public function grantRecipe($recipeId, LARP $larp) {
+        $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_alchemist_recipe SET GrantedLarpId=? WHERE AlchemyAlchemistId=? AND AlchemyRecipelId = ?;");
+        
+        if (!$stmt->execute(array($larp->Id, $this->Id, $recipeId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        $stmt = null;
+    }
     
     
     public function getRecipes() {
