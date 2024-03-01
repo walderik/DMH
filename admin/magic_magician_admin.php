@@ -20,11 +20,23 @@ include 'navigation.php';
         <h1>Magiker <a href="magic.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till magi"></i></a></h1>
         Först lägger man till en eller flera karaktärer som magiker och sedan kan man redigera deras magi-egenskaper.
         <br><br>
-            <a href="choose_role.php?operation=add_magician"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som magiker</a>  
+            <a href="choose_role.php?operation=add_magician"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som magiker</a>&nbsp;&nbsp;  
        <?php
     
+       
+       
+       
        $magicians = Magic_Magician::allByCampaign($current_larp);
        if (!empty($magicians)) {
+           $emailArr = array();
+           foreach ($magicians as $magician) {
+               $person = $magician->getRole()->getPerson();
+               $emailArr[] = $person->Email;
+           }
+           
+           echo contactSeveralEmailIcon('Skicka mail till alla magiker', $emailArr, 'Magiker', "Meddelande till alla magiker i $current_larp->Name");
+           
+           
            $tableId = "magicians";
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".

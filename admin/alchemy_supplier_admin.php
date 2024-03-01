@@ -24,11 +24,19 @@ include 'navigation.php';
         Först lägger man till en eller flera karaktärer som lövjerister. Sedan kan man maila dem och be den dels lägga upp nya ingredienser för godkännande och dels ange hur mycket de kommer att ha med sig av godkända ingredienser.<br>
         Antalet ingredienser lövjeristen har med sig kan sedan godkännas. 
         <br><br>
-            <a href="choose_role.php?operation=add_alchemy_supplier"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som lövjerister.</a>  
+            <a href="choose_role.php?operation=add_alchemy_supplier"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som lövjerister.</a>&nbsp;&nbsp;  
        <?php
     
        $suppliers = Alchemy_Supplier::allByCampaign($current_larp);
        if (!empty($suppliers)) {
+           $emailArr = array();
+           foreach ($suppliers as $supplier) {
+               $person = $supplier->getRole()->getPerson();
+               $emailArr[] = $person->Email;
+           }
+           
+           echo contactSeveralEmailIcon('Skicka mail till alla lövjerister', $emailArr, 'Lövjerist', "Meddelande till alla lövjerister i $current_larp->Name");
+           
            $tableId = "suppliers";
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".

@@ -20,11 +20,19 @@ include 'navigation.php';
         <h1>Alkemister <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
         Först lägger man till en eller flera karaktärer som alkemister och sedan kan man redigera deras alkemi-egenskaper.
         <br><br>
-            <a href="choose_role.php?operation=add_alchemist"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som alkemister</a>  
+            <a href="choose_role.php?operation=add_alchemist"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som alkemister</a>&nbsp;&nbsp;  
        <?php
     
        $alchemists = Alchemy_Alchemist::allByCampaign($current_larp);
        if (!empty($alchemists)) {
+           $emailArr = array();
+           foreach ($alchemists as $alchemist) {
+               $person = $alchemist->getRole()->getPerson();
+               $emailArr[] = $person->Email;
+           }
+           
+           echo contactSeveralEmailIcon('Skicka mail till alla alkemister', $emailArr, 'Alkemist', "Meddelande till alla alkemister i $current_larp->Name");
+           
            $tableId = "alchemists";
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
