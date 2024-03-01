@@ -286,6 +286,11 @@ include "navigation.php";
         		                echo "<a href='view_alchemy_supplier.php?id=$role->Id'>Löjverist</a>";
         		                echo " ".showStatusIcon($supplier->allAmountOfIngredientsApproved($current_larp) && $supplier->hasDoneWorkshop());
         		            }
+        		            if (Alchemy_Alchemist::isAlchemist($role)) {
+        		                $alchemist = Alchemy_Alchemist::getForRole($role);
+        		                echo "<a href='view_alchemist.php?id=$role->Id'>Alkemist</a>";
+        		                echo " ".showStatusIcon($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop());
+        		            }
         		            echo "</td>";
         		            
         		            

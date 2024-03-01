@@ -175,6 +175,10 @@ class Alchemy_Recipe extends BaseModel{
         return implode(", ", $names);
     }
     
+    public function getSelectedIngredients() {
+        return Alchemy_Ingredient::getIngredientsForRecipe($this);
+    }
+    
     public function getSelectedIngredientIds() {
         $stmt = $this->connect()->prepare("SELECT IngredientId FROM  regsys_alchemy_recipe_ingredient WHERE RecipeId = ? ORDER BY IngredientId;");
         

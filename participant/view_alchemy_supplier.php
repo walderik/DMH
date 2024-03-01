@@ -64,7 +64,7 @@ include 'navigation.php';
 			if (empty($amounts)) {
 			    echo "Inga valda ingredenser, än.";
 			} else {
-			    echo "Så länge arrangörerna inte har godkänt att du får ta med dig ingrediensen och hur många du tar med dig, så kan du ändra hur många du vill ha med dig och du kan öven ta bort den helt från din lista. Om du vill ändra efter att den är godkänd behöver du kontakta arrangörerna.";
+			    echo "Så länge arrangörerna inte har godkänt att du får ta med dig ingrediensen och hur många du tar med dig, så kan du ändra hur många du vill ha med dig och du kan även ta bort den helt från din lista. Om du vill ändra efter att den är godkänd behöver du kontakta arrangörerna.";
 				echo "<table class='data'>";
 				echo "<tr><th>Ingrediens</th><th>Antal</th><th>Nivå</th><th>Ingrediens/<br>Katalysator</th><th>Essenser</th><th>Off-ingrediens</th><th>Godkänd/<br>Ännu inte godkänd</th><th></th></tr>";
 				foreach ($amounts as $amount) {

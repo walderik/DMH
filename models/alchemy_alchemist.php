@@ -114,11 +114,30 @@ class Alchemy_Alchemist extends BaseModel{
     }
     
     
+    public function recipeApprovedLarp(Alchemy_Recipe $recipe) {
+        $stmt = $this->connect()->prepare("SELECT GrantedLarpId FROM  regsys_alchemy_alchemist_recipe WHERE AlchemyAlchemistId=? AND AlchemyRecipelId = ?;");
+        
+        if (!$stmt->execute(array($this->Id, $recipe->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows[0]['GrantedLarpId'];
+    }
+    
+    
     public function getRecipes() {
         return Alchemy_Recipe::getRecipesForAlchemist($this);
     }
     
-    public function addRecipes($recipeIds, Larp $larp) {
+    public function addRecipes($recipeIds, Larp $larp, $isApproved) {
         //Ta reda på vilka som inte redan är kopplade till alkemisten
         $exisitingIds = array();
         $alchemist_recipes = $this->getRecipes();
@@ -129,22 +148,32 @@ class Alchemy_Alchemist extends BaseModel{
         $newRecipeIds = array_diff($recipeIds,$exisitingIds);
         //Koppla magier till magiker
         foreach ($newRecipeIds as $recipeId) {
-            $this->addRecipe($recipeId, $larp);
+            $this->addRecipe($recipeId, $larp, $isApproved);
         }
     }
     
     
-    private function addRecipe($recipeId, LARP $larp) {
-        
-        $stmt = $this->connect()->prepare("INSERT INTO ".
-            "regsys_alchemy_alchemist_recipe (AlchemyAlchemistId, AlchemyRecipelId, GrantedLarpId) VALUES (?,?,?);");
-        if (!$stmt->execute(array($this->Id, $recipeId, $larp->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
+    private function addRecipe($recipeId, LARP $larp, $isApproved) {
+        if ($isApproved) {
+            $stmt = $this->connect()->prepare("INSERT INTO ".
+                "regsys_alchemy_alchemist_recipe (AlchemyAlchemistId, AlchemyRecipelId, GrantedLarpId) VALUES (?,?,?);");
+            if (!$stmt->execute(array($this->Id, $recipeId, $larp->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
+        } else {
+            $stmt = $this->connect()->prepare("INSERT INTO ".
+                "regsys_alchemy_alchemist_recipe (AlchemyAlchemistId, AlchemyRecipelId) VALUES (?,?);");
+            if (!$stmt->execute(array($this->Id, $recipeId))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+            
         }
-        
-        $stmt = null;
+         $stmt = null;
     }
     
     
@@ -227,6 +256,13 @@ class Alchemy_Alchemist extends BaseModel{
         //Ta bort den bilden
         if (isset($imageId)) Image::delete($imageId);
     }
+    
+    public function recipeListApproved() {
+        $sql = "SELECT Count(Id) as Num FROM regsys_alchemy_alchemist_recipe WHERE GrantedLarpId IS NULL AND AlchemyAlchemistId=?;";
+        return !static::existsQuery($sql, array($this->Id));
+    }
+    
+    
     
     
 }

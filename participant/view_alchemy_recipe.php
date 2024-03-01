@@ -1,0 +1,127 @@
+<?php
+
+include_once 'header.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if (isset($_GET['id'])) {
+        $RoleId = $_GET['id'];
+        $RecipeId = $_GET['recipeId'];
+    }
+    else {
+        header('Location: index.php');
+        exit;
+    }
+}
+
+$role = Role::loadById($RoleId);
+$person = $role->getPerson();
+
+if ($person->UserId != $current_user->Id) {
+    header('Location: index.php'); //Inte din karaktär
+    exit;
+}
+
+if (!$role->isRegistered($current_larp)) {
+    header('Location: index.php'); // karaktären är inte anmäld
+    exit;
+}
+if (!Alchemy_Alchemist::isAlchemist($role)) {
+    header('Location: index.php'); // karaktären är inte alkemist
+    exit;
+}
+
+
+$recipe = Alchemy_Recipe::loadById($RecipeId);
+
+if ($recipe->CampaignId != $current_larp->CampaignId) {
+    header('Location: index.php'); // fel kampanj
+    exit;
+    
+}
+
+
+include 'navigation.php';
+?>
+
+	<div class="content">
+		<h1>Recept för <?php echo $recipe->Name?></a>
+		</h1>
+		
+
+		<div>
+		
+
+    		<table>
+    			<tr>
+    				<td>Typ 
+    				</td>
+    				<td><?php echo $recipe->getRecipeType() ?>
+                    </td>
+    			</tr>
+    			<tr>
+    				<td>Nivå 
+    				</td>
+    				<td>
+    					<?php echo $recipe->Level; ?>
+                    </td>
+    			</tr>
+
+				<tr>
+    				<td>Tillverkas av</td>
+    				<td>
+    				
+					<?php 
+					if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { 
+					    $ingredients = $recipe->getSelectedIngredients();
+					    foreach ($ingredients as $ingredient) {
+					        echo "$ingredient->Name (Nivå $ingredient->Level)<br>";
+					    }
+					} elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
+
+					    $essences = Alchemy_Essence::all();
+					    
+					    $selectedEssences = $recipe->getSelectedEssenceIds();
+					    foreach($selectedEssences as $selectedEssenceArr) {
+					        $selectedEssence = null;
+					        foreach ($essences as $essence) {
+					            if ($essence->Id == $selectedEssenceArr[0]) {
+					                $selectedEssence = $essence;
+					                break;
+					            }
+					        }
+					        
+					        echo "$selectedEssence->Name (Nivå ".$selectedEssenceArr[1].")<br>";
+					    }
+					    echo "Katalysator (Nivå $recipe->Level)";
+					    
+					    
+					}
+
+
+    					?>
+    					
+    				</td>
+    			</tr>
+     			<tr>
+    				<td>Beredning</td>
+    				<td><?php echo nl2br(htmlspecialchars($recipe->Preparation)); ?></td>
+    			</tr>
+     			<tr>
+    				<td>Effekt</td>
+    				<td><?php echo nl2br(htmlspecialchars($recipe->Effect)); ?></td>
+    			</tr>
+			<?php if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { ?>
+     			<tr>
+    				<td>Bieffekt</td>
+    				<td><?php echo nl2br(htmlspecialchars($recipe->SideEffect)); ?></td>
+    			</tr>
+			<?php } ?>
+    			<tr><td></td></tr>
+    		</table>
+
+		</div>
+		
+
+
+</body>
+</html>
