@@ -274,6 +274,17 @@ class Alchemy_Alchemist extends BaseModel{
         return !static::existsQuery($sql, array($this->Id));
     }
     
+ 
+    public static function getAllToApprove(Larp $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT regsys_alchemy_alchemist.* from regsys_alchemy_alchemist, regsys_larp_role WHERE regsys_alchemy_alchemist.Id IN (".
+            "SELECT AlchemyAlchemistId FROM regsys_alchemy_alchemist_recipe WHERE GrantedLarpId IS NULL) AND ".
+            "regsys_larp_role.RoleId = regsys_alchemy_alchemist.RoleId AND ".
+            "regsys_larp_role.LarpId=? ".
+            "ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
     
     
     

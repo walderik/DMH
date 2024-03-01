@@ -31,7 +31,7 @@ include 'navigation.php';
                "<th onclick='sortTable(1, \"$tableId\")'>Grupp</th>".
                "<th onclick='sortTable(2, \"$tableId\")'>Nivå</th>".
                "<th onclick='sortTable(3, \"$tableId\")'>Alkemisttyp</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Antal recept</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Antal recept<br>Godkänd / Icke godkänd</th>".
                "<th onclick='sortTable(5, \"$tableId\")'>Workshop<br>deltagit</th>".
                "<th></th><th></th>";
            
@@ -48,7 +48,10 @@ include 'navigation.php';
                 echo "<td>" . $alchemist->getAlchemistType() . "</td>\n";
                 echo "<td>";
                 $recipes = $alchemist->getRecipes();
-                if (!empty($recipes)) echo count($recipes);
+                if (!empty($recipes)) {
+                    echo count($recipes)." ";
+                    echo showStatusIcon($alchemist->recipeListApproved());
+                }
                 echo "</td>\n";
                 echo "<td>" . showStatusIcon($alchemist->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='alchemy_alchemist_form.php?operation=update&Id=" . $alchemist->Id . "'><i class='fa-solid fa-pen'></i></td>\n";

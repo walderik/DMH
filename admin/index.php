@@ -69,6 +69,12 @@ include "navigation.php";
 		$approval_count = count (Alchemy_Ingredient::getAllToApprove($current_larp));
 		if ($approval_count>0) echo "$approval_count alkemiska ingredienser väntar på <a href='alchemy_ingredient_admin.php'>godkännande</a>.<br>";
 		
+		$approval_count = count (Alchemy_Alchemist::getAllToApprove($current_larp));
+		if ($approval_count>0) echo "$approval_count alkemister har receptlistor som väntar på <a href='alchemy_alchemist_admin.php'>godkännande</a>.<br>";
+		
+		$approval_count = count (Alchemy_Recipe::getAllToApprove($current_larp));
+		if ($approval_count>0) echo "$approval_count alkemiska recept väntar på <a href='alchemy_recipe_admin.php'>godkännande</a>.<br>";
+		
 		?>
 		</div>
 		
