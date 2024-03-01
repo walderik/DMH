@@ -29,20 +29,24 @@ include 'navigation.php';
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                "<th onclick='sortTable(1, \"$tableId\")'>Grupp</th>".
-               "<th onclick='sortTable(2, \"$tableId\")'>Nivå</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Alkemisttyp</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Antal recept<br>Godkänd / Icke godkänd</th>".
-               "<th onclick='sortTable(5, \"$tableId\")'>Workshop<br>deltagit</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Spelas av</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Nivå</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Alkemisttyp</th>".
+               "<th onclick='sortTable(5, \"$tableId\")'>Antal recept<br>Godkänd / Icke godkänd</th>".
+               "<th onclick='sortTable(6, \"$tableId\")'>Workshop<br>deltagit</th>".
                "<th></th><th></th>";
            
            foreach ($alchemists as $alchemist) {
                $role = $alchemist->getRole();
-
+                $person = $role->getPerson();
                 echo "<tr>\n";
                 echo "<td><a href ='view_alchemist.php?id=$alchemist->Id'>$role->Name</a></td>\n";
                 echo "<td>";
                 $group = $role->getGroup();
                 if (isset($group)) echo $group->Name;
+                echo "</td>";
+                echo "<td>";
+                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email);
                 echo "</td>";
                 echo "<td>" . $alchemist->Level . "</td>\n";
                 echo "<td>" . $alchemist->getAlchemistType() . "</td>\n";

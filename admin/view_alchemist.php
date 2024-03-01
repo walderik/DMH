@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $alchemist = Alchemy_Alchemist::loadById($alchemistId);
 $role = $alchemist->getRole();
+$person = $role->getPerson();
 
 if (isset($_GET['operation']) && $_GET['operation']=='remove_recipe') {
     $alchemist->removeRecipe($_GET['RecipeId']);
@@ -38,6 +39,13 @@ include 'navigation.php';
 
     		<table>
     			<tr>
+    				<td>Spelas av 
+    				</td>
+    				<td>
+                		<?php echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email); ?>
+                    </td>
+                </tr>
+     			<tr>
     				<td>Typ 
     				</td>
     				<td><?php echo $alchemist->getAlchemistType() ?>

@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $supplier = Alchemy_Supplier::loadById($supplierId);
 $role = $supplier->getRole();
+$person = $role->getPerson();
 
 include 'navigation.php';
 ?>
@@ -29,6 +30,13 @@ include 'navigation.php';
 
 		<div>
     		<table>
+    			<tr>
+    				<td>Spelas av 
+    				</td>
+    				<td>
+                		<?php echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email); ?>
+                    </td>
+                </tr>
     			<tr>
     				<td>Workshop datum</td>
     				<td><?php echo $supplier->Workshop; ?></td>

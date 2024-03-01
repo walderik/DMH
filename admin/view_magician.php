@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $magician = Magic_Magician::loadById($magicianId);
 $role = $magician->getRole();
+$person = $role->getPerson();
 $master = $magician->getMaster();
 if (isset($master)) $masterRole = $master->getRole();
 $school = $magician->getMagicSchool();
@@ -24,7 +25,7 @@ include 'navigation.php';
 ?>
 
 	<div class="content">
-		<h1><?php echo "Magiker ".$role->Name;?>&nbsp;
+		<h1><?php echo "Magiker <a href='view_role.php?id=$role->Id'>$role->Name</a>" ?>&nbsp;
 
 		
 		<a href='magic_magician_form.php?Id=<?php echo $magician->Id;?>&operation=update'>
@@ -36,6 +37,13 @@ include 'navigation.php';
 		
 
     		<table>
+   			<tr>
+    				<td>Spelas av 
+    				</td>
+    				<td>
+                		<?php echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email); ?>
+                    </td>
+                </tr>
     			<tr>
     				<td>Magiskola 
     				</td>

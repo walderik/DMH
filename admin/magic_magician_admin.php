@@ -28,19 +28,29 @@ include 'navigation.php';
            $tableId = "magicians";
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-               "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
-               "<th onclick='sortTable(2, \"$tableId\")'>Skola</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Mästare</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Stav<br>godkänd</th>".
-               "<th onclick='sortTable(5, \"$tableId\")'>Workshop<br>deltagit</th>".
+               "<th onclick='sortTable(1, \"$tableId\")'>Grupp</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Spelas av</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Nivå</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Skola</th>".
+               "<th onclick='sortTable(5, \"$tableId\")'>Mästare</th>".
+               "<th onclick='sortTable(6, \"$tableId\")'>Stav<br>godkänd</th>".
+               "<th onclick='sortTable(7, \"$tableId\")'>Workshop<br>deltagit</th>".
                "<th></th><th></th>";
            
            foreach ($magicians as $magician) {
                $role = $magician->getRole();
+               $person = $role->getPerson();
                $master = $magician->getMaster();
                $school = $magician->getMagicSchool();
                 echo "<tr>\n";
                 echo "<td><a href ='view_magician.php?id=$magician->Id'>$role->Name</a></td>\n";
+                echo "<td>";
+                $group = $role->getGroup();
+                if (isset($group)) echo $group->Name;
+                echo "</td>";
+                echo "<td>";
+                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email);
+                echo "</td>";
                 echo "<td>" . $magician->Level . "</td>\n";
                 echo "<td>"; 
                 if (!empty($school)) echo $school->Name;

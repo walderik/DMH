@@ -33,10 +33,11 @@ include 'navigation.php';
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                "<th onclick='sortTable(1, \"$tableId\")'>Grupp</th>".
-               "<th onclick='sortTable(2, \"$tableId\")'>Antal ingredienser<br>per nivå</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Ungefärligt värde<br>på ingredienser</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Ingredienslistan<br>är godkänd</th>".
-               "<th onclick='sortTable(5, \"$tableId\")'>Workshop<br>deltagit</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Spelas av</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Antal ingredienser<br>per nivå</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Ungefärligt värde<br>på ingredienser</th>".
+               "<th onclick='sortTable(5, \"$tableId\")'>Ingredienslistan<br>är godkänd</th>".
+               "<th onclick='sortTable(6, \"$tableId\")'>Workshop<br>deltagit</th>".
                "<th></th>";
            
            foreach ($suppliers as $supplier) {
@@ -47,6 +48,9 @@ include 'navigation.php';
                 echo "<td>";
                 $group = $role->getGroup();
                 if (isset($group)) echo $group->Name;
+                echo "</td>";
+                echo "<td>";
+                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email);
                 echo "</td>";
                 echo "<td>";
                 $amount_per_level = $supplier->numberOfIngredientsPerLevel($current_larp);
