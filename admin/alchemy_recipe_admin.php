@@ -39,7 +39,10 @@ include 'navigation.php';
            
            foreach ($recipes as $recipe) {
                 echo "<tr>\n";
-                echo "<td><a href ='alchemy_recipe_form.php?operation=update&id=$recipe->Id'>$recipe->Name</a></td>\n";
+                echo "<td>";
+                echo "<a href ='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</a> ";
+                echo "<a href ='alchemy_recipe_form.php?operation=update&id=$recipe->Id'><i class='fa-solid fa-pen'></a>";
+                echo "</td>\n";
                 echo "<td>$recipe->Level</td>\n";
                 echo "<td>";
                 echo $recipe->getRecipeType();

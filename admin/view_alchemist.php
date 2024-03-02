@@ -16,9 +16,6 @@ $alchemist = Alchemy_Alchemist::loadById($alchemistId);
 $role = $alchemist->getRole();
 $person = $role->getPerson();
 
-if (isset($_GET['operation']) && $_GET['operation']=='remove_recipe') {
-    $alchemist->removeRecipe($_GET['RecipeId']);
-}
 
 
 
@@ -100,7 +97,7 @@ include 'navigation.php';
 				echo "<table class='small_data'>";
 				echo "<tr><th>Namn</th><th>Nivå</th><th>Typ</th><th>Effekt</th><th>Fick på/till<br>lajvet</th><th></th></tr>";
 				foreach ($recipes as $recipe) {
-				    echo "<tr><td><a href='view_alchemyrecepie.php?id=$recipe->Id'>$recipe->Name</td><td>$recipe->Level</td><td>".$recipe->getRecipeType()."</td><td>$recipe->Effect</td>";
+				    echo "<tr><td><a href='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</td><td>$recipe->Level</td><td>".$recipe->getRecipeType()."</td><td>$recipe->Effect</td>";
 				    echo "<td>";
 				    $approvedLarpId = $alchemist->recipeApprovedLarp($recipe);
 				    if (isset($approvedLarpId)) {
@@ -112,7 +109,7 @@ include 'navigation.php';
 				    echo "</td>\n";
 				    
 				    echo "<td>";
-				    echo "<a href='view_alchemist.php?operation=remove_recipe&RecipeId=$recipe->Id&id=$alchemist->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a></td>";
+				    echo "<a href='logic/view_alchemist_logic.php?operation=remove_recipe&RecipeId=$recipe->Id&id=$alchemist->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a></td>";
 				    echo "</td>\n";
 				    
 				    echo "</tr>";
