@@ -106,11 +106,13 @@ input[type=checkbox]:checked+label {
 				<td><label for="Level">Nivå</label></td>
 				<td>
 					<select id="Level" name="Level">
-					<option value='1'>Nivå 1: 2 p Katalysator nivå 1</option>
-					<option value='2'>Nivå 2: 6 p, minst en ingrediens på nivå 2, Katalysator nivå 2</option>
-					<option value='3'>Nivå 3: 12 p, minst en ingrediens på nivå 3, Katalysator nivå 3</option>
-					<option value='4'>Nivå 4: 24 p, minst en ingrediens på nivå 4, Katalysator nivå 4</option>
-					<option value='5'>Nivå 5: 60 p, minst en ingrediens på nivå 5, Katalysator nivå 5</option>
+					<?php 
+					for ($i=1; $i<=5; $i++) {
+					    echo "<option value='$i'>Nivå $i: ";
+					    echo Alchemy_Recipe::LEVEL_REQUIREMENTS[$i];
+					    echo "</option>";
+					}
+					?>
 					</select>
 				</td>
 			</tr>
