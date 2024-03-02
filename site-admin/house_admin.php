@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
         
         $house=House::loadById($_POST['Id']);
-        $caretakers = $house->getHousecaretaker();
+        $caretakers = $house->getHousecaretakers();
         foreach ($caretakers as $caretaker) {
             $caretaker->destroy();
         }
@@ -72,7 +72,7 @@ include "navigation.php";
                 
                 echo "<td nowrap>";
                 
-                $caretakers = $house->getHousecaretaker();
+                $caretakers = $house->getHousecaretakers();
                 foreach ($caretakers as $house_caretaker) {
                     $person = $house_caretaker->getPerson();
                     echo "$person->Name ";
