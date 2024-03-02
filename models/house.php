@@ -116,9 +116,17 @@ class House extends BaseModel{
         return static::getOneObjectQuery($sql, array($larp->Id, $person->Id));
     }
     
-    public function getHousecaretaker() {
+    # Vilka är caretakers för det här huset? 
+    # Från dessa kan personer plockas fram
+    public function getHousecaretakers() {
         $sql = "SELECT * FROM regsys_housecaretaker WHERE HouseId=? ORDER BY ".Housecaretaker::$orderListBy.";";
         return Housecaretaker::getSeveralObjectsqQuery($sql, array($this->Id));
+    }
+    
+    # Plocka fram housecaretaker-objektet för en person i ett hus. Nil om det inte finns
+    public function getHousecaretakerForPerson(Person $person) {
+        $sql = "SELECT * FROM regsys_housecaretaker WHERE HouseId=? and PersonId=? ORDER BY ".Housecaretaker::$orderListBy.";";
+        return Housecaretaker::getOneObjectQuery($sql, array($this->Id, $person->Id));
     }
 
     public function getCaretakerPersons() {

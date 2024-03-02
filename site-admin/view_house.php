@@ -5,6 +5,9 @@ $house = House::newWithDefault();
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $house = House::loadById($_GET['id']);
+} else {
+    header('Location: index.php');
+    exit;
 }
 
 
@@ -68,15 +71,15 @@ ul.list {
         			<tr>
         				<td colspan = '2'><h2>Husförvaltare är:</h2><br>
         					<table id='caretakers' class='data'>
-            				<th>Namn</th><th>Medlem</th><th>&nbsp;</th>
+            				<th>Namn</th><th>Medlem</th><th>&nbsp;</th><th>&nbsp;</th>
             				<?php 
-            				$caretakers = $house->getHousecaretaker();
+            				$caretakers = $house->getHousecaretakers();
             				foreach ($caretakers as $caretaker) {
             				    $person = $caretaker->getPerson();
             				    echo "<tr>\n";
-            				    echo "  <td>$person->Name</td>\n";
+            				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
             				    echo "  <td>".showStatusIcon($caretaker->isMember())."</td>\n";
-            				    echo "  <td>".contactEmailIcon($person->Name,$person->Email)."</td>\n";
+            				    echo "  <td>".contactEmailIcon($person->Name, $person->Email)."</td>\n";
             				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
             				    $confirm = "onclick='return confirm($txt)'";
             				    echo "  <td><a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
