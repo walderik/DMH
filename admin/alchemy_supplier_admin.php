@@ -52,7 +52,7 @@ include 'navigation.php';
                $role = $supplier->getRole();
                $person = $role->getPerson();
                 echo "<tr>\n";
-                echo "<td><a href ='view_alchemy_supplier.php?id=$supplier->Id'>$role->Name</a> ".contactEmailIcon($person->Name,$person->Email)."</td>\n";
+                echo "<td><a href ='view_alchemy_supplier.php?id=$supplier->Id'>$role->Name</a></td>\n";
                 echo "<td>";
                 $group = $role->getGroup();
                 if (isset($group)) echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>";;
