@@ -95,7 +95,7 @@ include "navigation.php";
     		                echo "Avbokad";
     		            }
     		            else {
-    		                echo showStatusIcon($person->isRegistered($current_larp), "person_registration_form.php?PersonId=$person->Id");
+    		                echo showParticipantStatusIcon($person->isRegistered($current_larp), "Du är inte anmäld");
     		            }
     		            if ($person->isRegistered($current_larp)) echo "</td><td><a href='view_registration.php?id=$person->Id'>Visa anmälan</a>";
     		            echo "</td></tr>\n";
