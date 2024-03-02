@@ -172,7 +172,8 @@ th {
     		    echo "<tr>".
     		          "<th></th>".
     		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
-    		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Yrke</th>";
+    		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Yrke</th>".
+    		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Ålder</th>";
     		    if (IntrigueType::isInUse($current_larp)) {   		    
     		          echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Intrigtyper</th>";
     		    }
@@ -184,6 +185,7 @@ th {
     	          "</tr>";
  
     		    foreach ($mainroles as $role)  {
+    		        $person = $role->getPerson();
     		        $show = true;
     		        if (!empty($intrigueTypes)) {
     		            $role_intrigueTypeIds = $role->getSelectedIntrigueTypeIds();
@@ -196,6 +198,7 @@ th {
     		        echo "<td><input id ='Role$role->Id' type='$type' name='RoleId$array' value='$role->Id'></td>";
     		        echo "<td>$role->Name</td>\n";
     		        echo "<td>" . $role->Profession . "</td>\n";
+    		        echo "<td>" . $person->getAgeAtLarp($current_larp)."</td>\n";
     		        if (IntrigueType::isInUse($current_larp)) {
     		          echo "<td>".commaStringFromArrayObject($role->getIntrigueTypes())."</td>";
     		        }
@@ -208,7 +211,7 @@ th {
     		        } else {
     		            echo "<td>$group->Name</td>\n";
     		        }
-                    $person = $role->getPerson();
+
                     echo "<td>$person->Name</td>";
     		        echo "</tr>\n";
     		    }
