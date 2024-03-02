@@ -6,8 +6,8 @@ class Alchemy_Alchemist extends BaseModel{
     const ESSENCE_ALCHEMY = 1;
     
     const ALCHEMY_TYPES = [
-        0 => "Traditionell",
-        1 => "Experimentell"
+        Alchemy_Alchemist::INGREDIENT_ALCHEMY => "Traditionell",
+        Alchemy_Alchemist::ESSENCE_ALCHEMY => "Experimentell"
     ];
     
     public $Id;

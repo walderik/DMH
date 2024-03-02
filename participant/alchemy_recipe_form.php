@@ -121,10 +121,9 @@ input[type=checkbox]:checked+label {
   				if ($type == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
  				    echo "Markera de ingredienser som ingår<br>";
  				    
- 				    $points = [ 1=>1, 2=>2, 3=>4, 4=>8, 5=>20];
                     for ($i = 1; $i <= 5; $i++) {
                         $ingredients = Alchemy_Ingredient::getIngredientsByLevel($i, $current_larp);
-                        echo "Nivå $i, ".$points[$i]." poäng<br>";
+                        echo "Nivå $i, ".Alchemy_Ingredient::POINTS[$i]." poäng<br>";
                         echo "<div class='ingredient-area'>";
 
                         foreach ($ingredients as $ingredient) {
@@ -154,7 +153,7 @@ input[type=checkbox]:checked+label {
  				    $essences = Alchemy_Essence::allByCampaign($current_larp);
  				    for ($i = 1; $i <= 5; $i++) {
  				        
- 				        echo "Nivå $i<br>";
+ 				        echo "Nivå $i, ".Alchemy_Ingredient::POINTS[$i]." poäng<br>";
  				        echo "<div class='ingredient-area'>";
  				        
  				        foreach ($essences as $essence) {

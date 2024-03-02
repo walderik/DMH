@@ -13,6 +13,7 @@ class Alchemy_Ingredient extends BaseModel{
     public $IsApproved = 0;
     public $OrganizerNotes;
     
+    const POINTS = [ 1=>1, 2=>2, 3=>4, 4=>8, 5=>20];
     
     public static $orderListBy = 'IsCatalyst, Name';
     

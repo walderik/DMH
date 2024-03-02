@@ -312,6 +312,25 @@ class Alchemy_Recipe extends BaseModel{
         $sql = "SELECT * from regsys_alchemy_recipe WHERE CampaignId=? AND IsApproved=0 ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
+   
     
+    public function calculatePoints() {
+        $sum = 0;
+        if ($this->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
+            $ingredients = $this->getSelectedIngredients();
+            if (empty($ingredients)) return 0;
+            foreach($ingredients as $ingredient) {
+                $sum += Alchemy_Ingredient::POINTS[$ingredient->Level];
+            }
+        } elseif ($this->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
+            $essences = $this->getSelectedEssenceIds();
+            if (empty($essences)) return 0;
+            $sum = 0;
+            foreach($essences as $essence) {
+                $sum += Alchemy_Ingredient::POINTS[$essence[1]];
+            }
+        }
+        return $sum;
+    }
     
 }

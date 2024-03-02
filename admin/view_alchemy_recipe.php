@@ -47,6 +47,13 @@ include 'navigation.php';
     					<?php echo $recipe->Level; ?>
                     </td>
     			</tr>
+   			<tr>
+    				<td>Poäng 
+    				</td>
+    				<td>
+    					<?php echo $recipe->calculatePoints(); ?>
+                    </td>
+    			</tr>
 
 				<tr>
     				<td>Tillverkas av</td>

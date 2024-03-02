@@ -84,7 +84,7 @@ $alchemist = Alchemy_Alchemist::newWithDefault();;
 				<td>
 					<?php 
 					if ($alchemist->hasEquipmentImage()) {
-					    $image = Image::loadById($alchemist->EquipmentImageId);
+					    $image = Image::loadById($alchemist->ImageId);
 
 					        echo "<img width='300' src='../includes/display_image.php?id=$alchemist->ImageId'/>\n";
 					        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
