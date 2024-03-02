@@ -38,7 +38,7 @@ class Email extends BaseModel{
         if (isset($arr['CreatedAt'])) $this->CreatedAt = $arr['CreatedAt'];
         if (isset($arr['SentAt'])) $this->SentAt = $arr['SentAt'];
         if (isset($arr['DeletesAt'])) $this->DeletesAt = $arr['DeletesAt'];
-        if (isset($arr['$ErrorMessage'])) $this->ErrorMessage = $arr['$ErrorMessage'];
+        if (isset($arr['ErrorMessage'])) $this->ErrorMessage = $arr['ErrorMessage'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];  
     }
     
@@ -99,7 +99,7 @@ class Email extends BaseModel{
             foreach ($attachments as $filename => $attachment) {
                 if (is_null($filename) || is_numeric($filename)) {
                     if (is_null($email->larp())) {
-                        $filename = scrub("Berghemsvänner");
+                        $filename = scrub("Berghems Vänner");
                     } else {
                         $filename = scrub($larp->Name);
                     }

@@ -83,7 +83,7 @@ th {
     	    echo "</td>";
     	    
     	    echo "<td>";
-    	    if (!empty($email->LarpId)) {
+    	    if (!is_null($email->LarpId)) {
     	        $larp = LARP::loadById($email->LarpId);
     	        echo $larp->Name;
     	    }

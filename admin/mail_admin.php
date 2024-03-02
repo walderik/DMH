@@ -65,7 +65,7 @@ th {
     	    echo "<td>$sendUserName</td>";
     	    echo "<td>$email->SentAt</td>";
     	    echo "<td>";
-    	    if (!empty($email->ErrorMessage)) {
+    	    if (!is_null($email->ErrorMessage)) {
     	        echo showStatusIcon(false);
     	    }
     	    echo "</td>";

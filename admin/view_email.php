@@ -50,8 +50,7 @@ include 'navigation.php';
 			<tr><td>När</td><td><?php echo $email->SentAt ?></td></tr>
 			<?php 
 			if (!empty($email->ErrorMessage)) {
-			    echo "<tr><td>Felmeddelande</td><td>$email->ErrorMessage</td></tr>";
-
+			    echo "<tr><td>Felmeddelande</td><td><b>$email->ErrorMessage</b></td></tr>";
 			}
 			?>
 			<tr><td colspan = '2' style='font-weight: normal'>
