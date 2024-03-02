@@ -59,7 +59,9 @@
 
 			<p>
 
-			Vi behöver veta en del saker om dig som person som är skilt från de karaktärer du spelar.</p>
+			Vi behöver veta en del saker om dig som person som är skilt från de karaktärer du spelar.<br>
+			Du kan sjäv redigera de här uppgifterna när något ändrar sig eller om det är något du inte vill att Berghems Vänner ska veta om dig längre. Det enda du inte kan ändra är ditt personnummer. Om du behöver ändra det får du kontakta Berghems Vänner så löser vi det.<br>
+			Kontrollera gärna inför varje lajv att uppgiftera fortfarande stämmer. </p>
 			<h2>Personuppgifter</h2>
 			
 			<div class="question">
