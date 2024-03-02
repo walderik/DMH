@@ -74,7 +74,7 @@ include 'navigation.php';
 				    echo "<td>";
 				    if ($amount->isApproved()) echo $amount->Amount;
 				    else {
-				        echo "<input type='number' id='$amount->Id' value='$amount->Amount' onchange='saveAmount(this)'>";
+				        echo "<input type='number' id='$amount->Id' min='1' value='$amount->Amount' onchange='saveAmount(this)'>";
 				    }
 				    echo "</td>";
 				    echo "<td>$ingredient->Level</td>\n";

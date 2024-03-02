@@ -1,5 +1,5 @@
 <?php
-include_once 'header.php';
+include_once 'header_participant.php';
 
 // get the parameters from URL
 
