@@ -89,12 +89,9 @@ class Alchemy_Recipe extends BaseModel{
     }
     
     public function mayDelete() {
-        //$sql = "SELECT * FROM regsys_alchemy_essence WHERE OppositeEssenceId=?";
-        //$res = static::getSeveralObjectsqQuery($sql, array($this->Id));
-        //if (!empty($res)) return false;
-        
-        //TODO lägg på fler kontroller här när det blir fler kopplingar
-        return true;
+        $alchemists = $this->getAllAlchemists();
+        if (empty($alchemists)) return true;
+        return false;
     }
     
     public function getRecipeType() {

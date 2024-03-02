@@ -10,9 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $alchemist=Alchemy_Alchemist::loadById($_POST['Id']);
         $alchemist->setValuesByArray($_POST);
         $alchemist->update();
-    } elseif ($operation == "add_alchemsit_recipe") {
+    } elseif ($operation == "add_alchemist_recipe") {
         $alchemist=Alchemy_Alchemist::loadById($_POST['Id']);
-        if (isset($_POST['RecipeId'])) $alchemist->addRecipes($_POST['RecipeId'], $current_larp);
+        if (isset($_POST['RecipeId'])) $alchemist->addRecipes($_POST['RecipeId'], $current_larp, true);
     } elseif ($operation == "add_alchemist") {
         if (isset($_POST['RoleId'])) Alchemy_Alchemist::createAlchemists($_POST['RoleId'], $current_larp);
     }

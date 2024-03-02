@@ -121,7 +121,7 @@ include 'navigation.php';
 			}
 			?>
 			<p>
-			<a href='choose_alchemy_recepie.php?id=<?php echo $alchemist->Id ?>&operation=add_alchemist_recipe'>Lägg till recept</a>
+			<a href='choose_alchemy_recipe.php?id=<?php echo $alchemist->Id ?>&operation=add_alchemist_recipe'>Lägg till recept</a>
 
 
 		</div>
