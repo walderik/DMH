@@ -120,7 +120,15 @@ input[type=checkbox]:checked+label {
 			</tr>
 			<tr>
 				<td><label for="Level">Nivå</label></td>
-				<td><input type="number" id="Level" name="Level" value="<?php echo $recipe->Level; ?>" min="1" max="5" step="1" size="10" maxlength="250" required></td>
+				<td>
+					<select id="Level" name="Level">
+					<option value='1'>Nivå 1: 2 p Katalysator nivå 1</option>
+					<option value='2'>Nivå 2: 6 p, minst en ingrediens på nivå 2, Katalysator nivå 2</option>
+					<option value='3'>Nivå 3: 12 p, minst en ingrediens på nivå 3, Katalysator nivå 3</option>
+					<option value='4'>Nivå 4: 24 p, minst en ingrediens på nivå 4, Katalysator nivå 4</option>
+					<option value='5'>Nivå 5: 60 p, minst en ingrediens på nivå 5, Katalysator nivå 5</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td>Tillverkas av</td>
@@ -128,10 +136,11 @@ input[type=checkbox]:checked+label {
   				<?php 
  				if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
  				    echo "Markera de ingredienser som ingår<br>";
+ 				    $points = [ 1=>1, 2=>2, 3=>4, 4=>8, 5=>20];
  				    $selectedIngredientIds = $recipe->getSelectedIngredientIds();
                     for ($i = 1; $i <= 5; $i++) {
                         $ingredients = Alchemy_Ingredient::getIngredientsByLevel($i, $current_larp);
-                        echo "Nivå $i<br>";
+                        echo "Nivå $i, ".$points[$i]." poäng<br>";
                         echo "<div class='ingredient-area'>";
 
                         foreach ($ingredients as $ingredient) {
