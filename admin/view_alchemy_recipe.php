@@ -47,13 +47,6 @@ include 'navigation.php';
     					<?php echo $recipe->Level; ?>
                     </td>
     			</tr>
-   			<tr>
-    				<td>Poäng 
-    				</td>
-    				<td>
-    					<?php echo $recipe->calculatePoints(); ?>
-                    </td>
-    			</tr>
 
 				<tr>
     				<td>Tillverkas av</td>
@@ -90,6 +83,22 @@ include 'navigation.php';
     					?>
     					
     				</td>
+    			</tr>
+   			<tr>
+    				<td>Summa poäng<br>ingredienser 
+    				</td>
+    				<td>
+    					<?php 
+    					
+    					echo $recipe->calculatePoints(); 
+    					echo " poäng<br>";
+    					echo "Receptets nivå kräver ";
+    					echo Alchemy_Recipe::LEVEL_REQUIREMENTS[$recipe->Level];
+     					
+    					?>
+    				
+    				
+                    </td>
     			</tr>
      			<tr>
     				<td>Beredning</td>

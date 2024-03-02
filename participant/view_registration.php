@@ -82,6 +82,20 @@ include 'navigation.php';
 			<?php if (OfficialType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Funktionärsönskemål</td><td><?php echo commaStringFromArrayObject($registration->getOfficialTypes());?></td></tr>
 			<?php } ?>
+
+			<tr><td valign="top" class="header">Anmälda karaktärer</td>
+			<td>
+				<?php 
+				$roles = $person->getRolesAtLarp($current_larp);
+				foreach($roles as $role) {
+				    echo "<a href='view_role.php?id=$role->Id'>$role->Name</a>";
+				    if ($role->isMain($current_larp)) echo " (Huvudkaraktär)";
+				    echo "<br>";
+				}
+				
+				 ?>
+			</td>
+			</tr>
 		</table>	
 		</div>	
 	</div>

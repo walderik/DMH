@@ -13,6 +13,12 @@ class Alchemy_Recipe extends BaseModel{
     public $Level;
     public $CampaignId;
     
+    const LEVEL_REQUIREMENTS = [    1=>"2 p Katalysator nivå 1", 
+                                    2=>"6 p, minst en ingrediens på nivå 2, Katalysator nivå 2", 
+                                    3=>"12 p, minst en ingrediens på nivå 3, Katalysator nivå 3",
+                                    4=>"24 p, minst en ingrediens på nivå 4, Katalysator nivå 4",
+                                    5=>"60 p, minst en ingrediens på nivå 5, Katalysator nivå 5"
+    ];
     
     public static $orderListBy = 'Name';
     
