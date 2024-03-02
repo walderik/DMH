@@ -126,6 +126,7 @@ include 'navigation.php';
 				<div class="explanation">Vilka karaktärer vill du spela på lajvet? Avmarkera checkboxen för de karaktärer som inte ska vara med.<br>
 				     En av dina karaktärer är din huvudkaraktär. Vi måste veta vilken.<br>
 				     Andra karaktärer är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
+				     Om du vill spela flera karaktärer så behöver de vara registrerade, så att de finns med i den här listan, innan du gör din anmälan.
 				</div>
 				<table class="list">
         			<?php 
