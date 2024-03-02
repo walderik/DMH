@@ -56,7 +56,7 @@ include 'navigation.php';
 			    echo "Inga ingredienser, än.";
 			} else {
 				echo "<table class='small_data'>";
-				echo "<tr><th>Antal</th><th>Ingrediens</th><th>Nivå</th><th>Ingrediens/Katalysator</th><th>Essenser</th><th></th><th></th></tr>";
+				echo "<tr><th>Ingrediens</th><th>Antal</th><th>Nivå</th><th>Ingrediens/Katalysator</th><th>Essenser</th><th></th><th></th></tr>";
 				foreach ($amounts as $amount) {
 				    $ingredient = $amount->getIngredient();
 				    echo "<tr>";
