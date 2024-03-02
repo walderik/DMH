@@ -155,6 +155,11 @@ class Alchemy_Supplier extends BaseModel{
         }
     }
     
+    public function hasIngredientList(Larp $larp) {
+        $sql = "SELECT Count(*) as Num FROM regsys_alchemy_supplier_ingredient WHERE SupplierId=? AND LARPId=?";
+        return static::existsQuery($sql, array($this->Id, $larp->Id));
+    }
+    
     public function numberOfIngredientsPerLevel(LARP $larp) {
         $supplier_ingredients = $this->getIngredientAmounts($larp);
         $amount_per_level = array(1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 'k1' => 0, 'k2' => 0, 'k3' => 0, 'k4' => 0, 'k5' => 0);

@@ -244,3 +244,24 @@ div.question > label:first-child {
 	font-weight: bold;
 }
 
+div.errorbutton {
+	    position: relative;
+  display: inline-block;
+  color: white;
+  padding: 4px 4px;
+  font-family: Arial;
+  border-radius: 10px;
+  background-color: rgb(255, 128, 128);
+  margin-top: 0px;
+  margin-right: 2px;
+  white-space: nowrap;
+}
+
+div.errorbutton > img {
+    position: absolute;
+    top: 5px;
+}
+div.errorbutton > div {
+    margin-left:25px;
+}
+

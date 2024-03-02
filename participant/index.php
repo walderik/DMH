@@ -86,7 +86,7 @@ include "navigation.php";
     		        echo "Mobilnummer: " . $person->PhoneNumber. "<br>\n";
     		        echo "<table  class='checks'>";
     		        if (isset($roles) && count($roles) > 0) {
-    		            echo "<tr><td>Anmäld</td><td>";
+    		            echo "<tr><td valign='baseline'>Anmäld</td><td>";
 
     		            if ($person->isReserve($current_larp)) {
     		                echo "Reservlista";
@@ -103,13 +103,13 @@ include "navigation.php";
     		        if ($person->isRegistered($current_larp) && !$person->isNotComing($current_larp)) {
                         $registration = $person->getRegistration($current_larp);
                         if ($current_larp->isEnded()) {
-                            echo "<tr><td>Utvärdering</td><td>";
+                            echo "<tr><td valign='baseline'>Utvärdering</td><td>";
                             if ($registration->hasDoneEvaluation()) {
                                 echo showStatusIcon(true);
                                 echo "</td><td>Utvärderingen är inlämnad";
                             }
                             else {
-                                echo showStatusIcon(false);
+                                echo showParticipantStatusIcon(false, "Utvärderingen är inte gjord");
                                 echo "</td><td><a href='evaluation.php?PersonId=$person->Id'>Gör utvärdering";
                             }
                             echo "</td></tr>\n";
@@ -117,9 +117,9 @@ include "navigation.php";
                         }
                         
                         if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
-                            echo "<tr><td>Ansvarig vuxen</td><td>";
+                            echo "<tr><td valign='middle'>Ansvarig vuxen</td><td>";
                             if (empty($registration->GuardianId)) {
-                                echo showStatusIcon(false);
+                                echo showParticipantStatusIcon(false, "Du saknar ansvarig vuxen");
                                 echo "</td><td><a href='input_guardian.php?PersonId=$person->Id'>Ange ansvarig vuxen</a>";
                             }
                             else {
@@ -128,8 +128,8 @@ include "navigation.php";
                             }
                             echo "</td></tr>\n";                            
                         }
-                        echo "<tr><td>Godkända karaktärer</td><td>" . showStatusIcon($person->isApprovedCharacters($current_larp)). "</td></tr>\n";
-                        echo "<tr><td>Betalat</td><td>" . showStatusIcon($person->hasPayed($current_larp));
+                        echo "<tr><td valign='baseline'>Godkända karaktärer</td><td>" . showParticipantStatusIcon($person->isApprovedCharacters($current_larp), "Karaktärerna är inte godkända"). "</td></tr>\n";
+                        echo "<tr><td valign='baseline'>Betalat</td><td>" . showParticipantStatusIcon($person->hasPayed($current_larp), "Du har inte betalat");
                         
                        
                         if (!$person->hasPayed($current_larp)) {
@@ -144,7 +144,7 @@ include "navigation.php";
                         echo "</td></tr>\n";
  
                         
-                        echo "<tr><td>Medlem</td><td>".showStatusIcon($registration->isMember(), "https://ebas.sverok.se/signups/index/5915")."</a>";
+                        echo "<tr><td>Medlem</td><td>".showParticipantStatusIcon($registration->isMember(), "Du är inte medlem i Berghems Vänner")."</a>";
                         echo "</td>";
                         if (!$registration->isMember()) {
                             $currentYear = date("Y");
@@ -158,7 +158,7 @@ include "navigation.php";
                         }
 
                         echo "</tr>\n";
-                        echo "<tr><td>Säker plats på lajvet</td><td>".showStatusIcon(($registration->hasSpotAtLarp()))."</a></td></tr>";
+                        echo "<tr><td>Säker plats på lajvet</td><td>".showParticipantStatusIcon($registration->hasSpotAtLarp(), "Du har inte fått en plats på lajvet")."</a></td></tr>";
                         echo "<tr><td>Boende</td>";
                         if ($current_larp->isHousingReleased()) {
                             $house = House::getHouseAtLarp($person, $current_larp);
@@ -200,7 +200,7 @@ include "navigation.php";
     		                 
     		            }
     		            echo "</td>";
-    		            echo "<td>Anmäld&nbsp;&nbsp;" . showStatusIcon($group->isRegistered($current_larp), "group_registration_form.php?new_group=$group->Id") . "</td>\n";
+    		            echo "<td>Anmäld&nbsp;&nbsp;" . showParticipantStatusIcon($group->isRegistered($current_larp), "Gruppen är inte anmäld") . "</td>\n";
     		            if ($group->hasImage()) {
     		                echo "<td>";
     		                echo "<img width='30' src='../includes/display_image.php?id=$group->ImageId'/>\n";
@@ -225,7 +225,11 @@ include "navigation.php";
     		            echo "<table class='roles'>\n";   		            
         		        foreach ($roles as $role)  {
         		            echo "<tr>";
-        		            
+        		            if ($person->isRegistered($current_larp)) {
+        		                echo "<td style='font-weight: normal; padding-right: 0px;'>";
+        		                if ($role->isRegistered($current_larp)) echo "Anmäld till lajvet";
+        		                else echo "Inte med på lajvet";
+        		            }
         		            //Eventuell bild
         		            echo "<td style='font-weight: normal; padding-right: 0px;'>";
         		            if ($role->hasImage()) {
@@ -278,18 +282,38 @@ include "navigation.php";
         		            echo "<td>";
         		            if (Magic_Magician::isMagician($role)) {
         		                $magician = Magic_Magician::getForRole($role);
-        		                echo "<a href='view_magician.php?id=$role->Id'>Magiker</a>";
-        		                echo " ".showStatusIcon($magician->StaffApproved && $magician->hasDoneWorkshop());
+        		                echo "<a href='view_magician.php?id=$role->Id'>Magiker</a> ";
+        		                if ($magician->StaffApproved && $magician->hasDoneWorkshop())  echo showStatusIcon(true);
+        		                else {
+        		                    if (!$magician->StaffApproved) echo showParticipantStatusIcon(false, "Staven är inte godkänd");
+        		                    if (!$magician->hasDoneWorkshop()) echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi");
+        		                }
         		            }
         		            if (Alchemy_Supplier::isSupplier($role)) {
         		                $supplier = Alchemy_Supplier::getForRole($role);
-        		                echo "<a href='view_alchemy_supplier.php?id=$role->Id'>Löjverist</a>";
-        		                echo " ".showStatusIcon($supplier->allAmountOfIngredientsApproved($current_larp) && $supplier->hasDoneWorkshop());
+        		                echo "<a href='view_alchemy_supplier.php?id=$role->Id'>Löjverist</a> ";
+        		                echo " ";
+        		                if ($supplier->allAmountOfIngredientsApproved($current_larp) &&
+        		                    $supplier->hasDoneWorkshop() &&
+        		                    $supplier->hasIngredientList($current_larp)) echo showStatusIcon(true);
+    		                    else {
+    		                        if (!$supplier->hasIngredientList($current_larp)) echo showParticipantStatusIcon(false,"Du har ingen ingredienslista");
+    		                        if (!$supplier->allAmountOfIngredientsApproved($current_larp)) echo showParticipantStatusIcon(false,"Antalet ingredienser är ännu inte godkänt");
+    		                        if (!$supplier->hasDoneWorkshop()) echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om lövjeri");
+    		                    }
         		            }
         		            if (Alchemy_Alchemist::isAlchemist($role)) {
         		                $alchemist = Alchemy_Alchemist::getForRole($role);
-        		                echo "<a href='view_alchemist.php?id=$role->Id'>Alkemist</a>";
-        		                echo " ".showStatusIcon($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop());
+        		                echo "<a href='view_alchemist.php?id=$role->Id'>Alkemist</a> ";
+        		                echo " ";
+        		                $recipes = $alchemist->getRecipes();
+        		                if ($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop() && 
+        		                    !empty($recipes)) echo showStatusIcon(true);
+        		                else {
+            		                if (empty($recipes)) echo showParticipantStatusIcon(false, "Din receptlist är tom");
+            		                if (!$alchemist->recipeListApproved()) echo showParticipantStatusIcon(false,"Din receptlista är inte godkänd, än");
+            		                if (!$alchemist->hasDoneWorkshop()) echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om alkemi");
+        		                }
         		            }
         		            echo "</td>";
         		            
@@ -304,7 +328,7 @@ include "navigation.php";
         		        echo "</table>";
     		        }
     		        else {
-    		            echo "<br><b>Har ännu ingen karaktär</b>&nbsp;&nbsp;<a href='role_form.php'>".showStatusIcon(false)."</a><br>\n";
+    		            echo "<br><b>Har ännu ingen karaktär</b>&nbsp;&nbsp;<a href='role_form.php'>".showParticipantStatusIcon(false, "Du har inte registrerat någon karaktär")."</a><br>\n";
     		        }
         		          
     		        

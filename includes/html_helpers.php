@@ -138,6 +138,15 @@ function showStatusIcon($value, ?string $fix_url = NULL) {
     }
 }
 
+function showParticipantStatusIcon($value, $message) {
+    if ($value == true or $value == 1) {
+        return '<img src="../images/ok-icon.png" alt="OK" width="20" height="20">';
+    }
+    if ($value == false or $value == 0) {
+        return "<div class='errorbutton'><img src='../images/alert-icon.png' alt='$message' width='20' height='20'><div> $message</div></div>";
+    }
+}
+
 function contactEmailIcon($name,$email) {
     $param = date_format(new Datetime(),"suv");
     return "<form action='contact_email.php'  class='fabutton' method='post'>\n".
