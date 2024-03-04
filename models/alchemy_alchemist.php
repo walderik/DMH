@@ -257,10 +257,11 @@ class Alchemy_Alchemist extends BaseModel{
         $alchemist = static::loadById($id);
         
         $recipes = $alchemist->getRecipes();
-        foreach($recipes as $recipes) {
-            $alchemist->removeRecipe($recipes->Id);
+        if (isset($recipes)) {
+            foreach($recipes as $recipes) {
+                $alchemist->removeRecipe($recipes->Id);
+            }
         }
-        
         $imageId=$alchemist->ImageId;
         
         parent::delete($id);
