@@ -67,7 +67,7 @@ include 'navigation.php';
                 echo "</td>\n";
                 echo "<td>" . showStatusIcon($alchemist->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='alchemy_alchemist_form.php?operation=update&Id=" . $alchemist->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='logic/view_alchemist_logic.php?operation=delete&Id=" . $alchemist->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>" . "<a href='logic/view_alchemist_logic.php?operation=delete&id=" . $alchemist->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
