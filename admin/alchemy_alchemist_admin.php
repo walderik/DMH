@@ -54,7 +54,7 @@ include 'navigation.php';
                 if (isset($group)) echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>";;
                 echo "</td>";
                 echo "<td>";
-                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email);
+                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> (".$person->getAgeAtLarp($current_larp)." år)".contactEmailIcon($person->Name, $person->Email);
                 echo "</td>";
                 echo "<td>" . $alchemist->Level . "</td>\n";
                 echo "<td>" . $alchemist->getAlchemistType() . "</td>\n";
