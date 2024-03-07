@@ -53,6 +53,16 @@ include 'navigation.php';
 
     		<table>
     			<tr>
+    				<td>Skapat av 
+    				</td>
+    				<td>
+    					<?php 
+    					$author = $recipe->getAuthorRole();
+    					if (isset($author)) echo $author->Name;
+    					?>
+                    </td>
+    			</tr>
+    			<tr>
     				<td>Typ 
     				</td>
     				<td><?php echo $recipe->getRecipeType() ?>

@@ -86,9 +86,10 @@ input[type=checkbox]:checked+label {
 	<form action="logic/alchemy_recipe_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="insert"> 
 		<input type="hidden" id="AlchemistType" name="AlchemistType" value="<?php echo $type ?>">
-		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer ?>">
 		<input type="hidden" id="IsApproved" name="IsApproved" value="0">
-		<input type="hidden" id="RoleId" name="RoleId" value="<?php echo $role->Id?>"> 
+		<input type="hidden" id="RoleId" name="RoleId" value="<?php echo $role->Id?>">
+		<input type="hidden" id="AuthorRoleId" name="AuthorRoleId" value="<?php echo $role->Id ?>"> 
  
  		<table>
 			<tr>

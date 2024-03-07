@@ -12,6 +12,7 @@ class Alchemy_Recipe extends BaseModel{
     public $OrganizerNotes;
     public $Level;
     public $CampaignId;
+    public $AuthorRoleId;
     
     const LEVEL_REQUIREMENTS = [    1=>"2 p Katalysator nivå 1", 
                                     2=>"6 p, minst en ingrediens på nivå 2, Katalysator nivå 2", 
@@ -40,6 +41,7 @@ class Alchemy_Recipe extends BaseModel{
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['Level'])) $this->Level = $arr['Level'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+        if (isset($arr['AuthorRoleId'])) $this->AuthorRoleId = $arr['AuthorRoleId'];
     }
     
     
@@ -55,10 +57,10 @@ class Alchemy_Recipe extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_recipe SET Name=?, AlchemistType=?, Preparation=?, Effect=?, SideEffect=?, 
-                IsApproved=?, Level=?, OrganizerNotes=? WHERE Id = ?");
+                IsApproved=?, Level=?, OrganizerNotes=?, AuthorRoleId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->AlchemistType, $this->Preparation, $this->Effect, $this->SideEffect, 
-            $this->IsApproved, $this->Level, $this->OrganizerNotes, $this->Id))) {
+            $this->IsApproved, $this->Level, $this->OrganizerNotes, $this->AuthorRoleId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -72,10 +74,10 @@ class Alchemy_Recipe extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_alchemy_recipe (Name, AlchemistType, Preparation, Effect, SideEffect, 
-            IsApproved, Level, OrganizerNotes, CampaignId) VALUES (?,?,?,?,?, ?,?,?,?);");
+            IsApproved, Level, OrganizerNotes, CampaignId, AuthorRoleId) VALUES (?,?,?,?,?, ?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->AlchemistType, $this->Preparation, $this->Effect, $this->SideEffect,
-            $this->IsApproved, $this->Level, $this->OrganizerNotes, $this->CampaignId))) {
+            $this->IsApproved, $this->Level, $this->OrganizerNotes, $this->CampaignId, $this->AuthorRoleId))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -103,6 +105,11 @@ class Alchemy_Recipe extends BaseModel{
     public function getRecipeType() {
         if (!isset($this->AlchemistType)) return null;
         return Alchemy_Alchemist::ALCHEMY_TYPES[$this->AlchemistType];
+    }
+    
+    public function getAuthorRole() {
+        if (!isset($this->AuthorRoleId)) return null;
+        return Role::loadById($this->AuthorRoleId);
     }
     
     

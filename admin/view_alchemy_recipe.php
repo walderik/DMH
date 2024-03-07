@@ -35,6 +35,16 @@ include 'navigation.php';
 
     		<table>
     			<tr>
+    				<td>Skapat av 
+    				</td>
+    				<td>
+    					<?php 
+    					$author = $recipe->getAuthorRole();
+    					if (isset($author)) echo "<a href='view_role.php?id=$author->Id'>$author->Name</a>";
+    					?>
+                    </td>
+    			</tr>
+    			<tr>
     				<td>Typ 
     				</td>
     				<td><?php echo $recipe->getRecipeType() ?>
