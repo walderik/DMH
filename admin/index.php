@@ -75,6 +75,11 @@ include "navigation.php";
 		$approval_count = count (Alchemy_Recipe::getAllToApprove($current_larp));
 		if ($approval_count>0) echo "$approval_count alkemiska recept väntar på <a href='alchemy_recipe_admin.php'>godkännande</a>.<br>";
 		
+		if ($current_larp->chooseParticipationDates()) {
+		    $approval_count = count (Registration::getAllToApprove($current_larp));
+		    if ($approval_count>0) echo "$approval_count deltagare som inte är med hela tiden väntar på att deras avgifter ska <a href='registered_persons_parttime.php'>kontrolleras</a>.<br>";
+		}
+		
 		?>
 		</div>
 		

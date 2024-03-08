@@ -31,6 +31,8 @@ class Registration extends BaseModel{
     public $SpotAtLARP = 0;
     public $TypeOfFoodId;
     public $FoodChoice;
+    public $LarpPartNotAttending;
+    public $LarpPartAcknowledged = 1;
     public $EvaluationDone = 0;
     
     public static $orderListBy = 'RegisteredAt';
@@ -70,6 +72,8 @@ class Registration extends BaseModel{
         if (isset($arr['SpotAtLARP'])) $this->SpotAtLARP = $arr['SpotAtLARP'];
         if (isset($arr['TypeOfFoodId'])) $this->TypeOfFoodId = $arr['TypeOfFoodId'];
         if (isset($arr['FoodChoice'])) $this->FoodChoice = $arr['FoodChoice'];
+        if (isset($arr['LarpPartNotAttending'])) $this->LarpPartNotAttending = $arr['LarpPartNotAttending'];
+        if (isset($arr['LarpPartAcknowledged'])) $this->LarpPartAcknowledged = $arr['LarpPartAcknowledged'];
         if (isset($arr['EvaluationDone'])) $this->EvaluationDone = $arr['EvaluationDone'];
         
     }
@@ -106,14 +110,15 @@ class Registration extends BaseModel{
                 Payed=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?, 
                 GuardianId=?, NotComingReason=?,
-                SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, EvaluationDone=? WHERE Id = ?");
+                SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, LarpPartNotAttending=?, LarpPartAcknowledged=?, EvaluationDone=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId,  
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment, 
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
-            $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->EvaluationDone, $this->Id))) {
+            $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, 
+            $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -130,15 +135,16 @@ class Registration extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, IsMember,
             MembershipCheckedAt, NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, 
-            NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, NotComingReason, SpotAtLARP, TypeOfFoodId, FoodChoice, EvaluationDone) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?)");
+            NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, NotComingReason, 
+            SpotAtLARP, TypeOfFoodId, FoodChoice, LarpPartNotAttending, LarpPartAcknowledged, EvaluationDone) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment,
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason,
-            $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->EvaluationDone))) {
+            $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -482,6 +488,8 @@ class Registration extends BaseModel{
         $reserve_registration->TentPlace = $this->TentPlace;
         $reserve_registration->GuardianId = $this->GuardianId;
         $reserve_registration->TypeOfFoodId = $this->TypeOfFoodId;
+        $reserve_registration->FoodChoice = $this->FoodChoice;
+        $reserve_registration->LarpPartNotAttending = $this->LarpPartNotAttending;
         $reserve_registration->RegisteredAt = $this->RegisteredAt;
         
         $reserve_registration->create();
@@ -511,5 +519,27 @@ class Registration extends BaseModel{
         
         
     }
+    
+    public static function calculateDaysNotComing(LARP $larp, $daysComingArr) {
+        $daysNotComingsArr = array();
+        $begin = new DateTime(substr($larp->StartDate,0,10));
+        $end   = new DateTime(substr($larp->EndDate,0,10));
+        
+        for($i = $begin; $i <= $end; $i->modify('+1 day')){
+            $datestr = $i->format("Y-m-d");
+            if (in_array($datestr, $daysComingArr)) continue;
+            $daysNotComingsArr[] = $datestr;
+        }
+        
+        return implode(", ",$daysNotComingsArr);
+    }
+    
+    public static function getAllToApprove(Larp $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_registration WHERE LarpId=? AND LarpPartAcknowledged=0 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
     
 }

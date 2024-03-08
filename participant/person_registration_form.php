@@ -77,14 +77,14 @@ include 'navigation.php';
 	<div class="content">
 		<h1>Anmälan av <?php echo $current_person->Name;?> till <?php echo $current_larp->Name;?></h1>
 		<form action="logic/person_registration_form_save.php" method="post"  
-		   onsubmit="return confirm('Är allt rätt inmatat? Om du fortsätter kommer du inte längre att kunna redigera deltagaren eller någon av de anmälda karaktärerna.')">
+		   onsubmit="return confirm('Är allt rätt inmatat? Om du fortsätter kommer du inte längre att kunna redigera någon av de anmälda karaktärerna.')">
     		<input type="hidden" id="operation" name="operation" value="insert"> 
     		<input type="hidden" id="LARPId" name="LARPId" value="<?php echo $current_larp->Id ?>">
     		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $current_person->Id ?>">
 
 
 			<p>
-			<strong>När anmälan är gjord går det varken att redigera deltagaren eller någon av de anmälda karaktärerna.</strong>
+			<strong>När anmälan är gjord går det inte att redigera någon av de anmälda karaktärerna.</strong>
 			</p>
 				
 		    <?php 
@@ -110,7 +110,7 @@ include 'navigation.php';
 			?>
 			<div class="question">
 					Lajvets innehåll&nbsp;<font style="color:red">*</font><br>
-    			<div class="explanation"><?php echo $current_larp->ContentDescription ?></div>
+    			<div class="explanation"><?php echo nl2br(htmlspecialchars($current_larp->ContentDescription)) ?></div>
 
 			<input type="checkbox" id="Content" name="Content" value="Ja" required>
   			<label for="Content">Jag är införstådd med vad det är för typ av lajv</label> 
@@ -173,6 +173,34 @@ include 'navigation.php';
 			    foreach ($paymentInformation->FoodDescription as $i => $description) {
 			        echo "<input type='radio' id='FoodChoice_$description' name='FoodChoice' value='$description' required>";
 			        echo "<label for='FoodChoice_$description'>$description, ".$paymentInformation->FoodCost[$i]." SEK</label><br>";
+			    }
+			    echo "</div>";
+			}
+			?>
+			
+			<?php 
+			if ($current_larp->chooseParticipationDates()) {
+			    echo "<div class='question'>";
+			    echo "<label for='ChooseParticipationDates'>Vilka dagar kommer du att närvara?</label>";
+			    echo "<div class='explanation'>Informationen används både för matplanering och intrigskapande.</div>";
+			    
+			    
+			    $formatter = new IntlDateFormatter(
+			        'sv-SE',
+			        IntlDateFormatter::FULL,
+			        IntlDateFormatter::FULL,
+			        'Europe/Stockholm',
+			        IntlDateFormatter::GREGORIAN,
+			        'EEEE d MMMM'
+			        );
+			    
+			    $begin = new DateTime(substr($current_larp->StartDate,0,10));
+			    $end   = new DateTime(substr($current_larp->EndDate,0,10));
+			    
+			    for($i = $begin; $i <= $end; $i->modify('+1 day')){
+			        $datestr = $i->format("Y-m-d");
+			        echo "<input type='checkbox' id='day$datestr' name='ChooseParticipationDates[]' value='$datestr' checked='checked'>";
+			        echo "<label for='day$datestr'> ".$formatter->format($i)."</label><br>";
 			    }
 			    echo "</div>";
 			}

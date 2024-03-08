@@ -142,6 +142,15 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
             			<label for="HasRumours_no">Nej</label>
 					</td>
     			</tr>
+    			<tr>
+    				<td><label for=ChooseParticipationDates>Välja dagar?</label><br>Ska deltagarna få markera i anmälan vilka dagar de kommer att närvara?</td>
+    				<td>
+						<input type="radio" id="ChooseParticipationDates_yes" name="ChooseParticipationDates" value="1" <?php if ($larp->chooseParticipationDates()) echo 'checked="checked"'?>> 
+            			<label for="ChooseParticipationDates_yes">Ja</label><br> 
+            			<input type="radio" id="ChooseParticipationDates_no" name="ChooseParticipationDates" value="0" <?php if (!$larp->chooseParticipationDates()) echo 'checked="checked"'?>> 
+            			<label for="ChooseParticipationDates_no">Nej</label>
+					</td>
+    			</tr>
     		</table>
     
     		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">

@@ -39,6 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //Sätt på reservlistan
             $reserve_registration = Reserve_Registration::newFromArray($_POST);
 
+            //TODO Spara dagar man inte kommer att vara med
+            $reserve_registration->LarpPartNotAttending = Registration::calculateDaysNotComing($current_larp, $_POST['ChooseParticipationDates']);
+            
             $now = new Datetime();
             $reserve_registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
             
@@ -111,6 +114,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
             $registration->PaymentReference = $registration->createPaymentReference();
     
+            
+            //Spara vilka dagar man inte kommer att vara med
+            $registration->LarpPartNotAttending = Registration::calculateDaysNotComing($current_larp, $_POST['ChooseParticipationDates']);
+            if (isset($registration->LarpPartNotAttending)) $registration->LarpPartAcknowledged = 0;
+            
             $now = new Datetime();
             $registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
     
@@ -177,6 +185,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header('Location: ../index.php');
     exit;
 }
+
+
 
 
 
