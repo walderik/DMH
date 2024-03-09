@@ -12,7 +12,7 @@ require_once $root . '/includes/all_includes.php';
 
 class Report_PDF extends FPDF {
     
-    public static $debug=false;
+    public static $debug = false; 
     
     public static $Margin = 1;
     
@@ -22,6 +22,9 @@ class Report_PDF extends FPDF {
     public static $cell_y = 5;
     
     public static $header_fontsize = 9;
+    
+    public static $max_font_size = 20; # Så stor font som rapporten kan få om allt får plats jättebra
+    public static $min_font_size = 8;  # Mindre än så kan man inte läsa
     
     public $text_fontsize;
     public $x_max;
@@ -69,7 +72,6 @@ class Report_PDF extends FPDF {
     # Det som står längst ner på varje sida
     function Footer()
     {
-       
         // Select Arial italic 8
         $this->SetFont('Arial','I', static::$header_fontsize);
         
@@ -95,7 +97,7 @@ class Report_PDF extends FPDF {
 //         $text = $this->GetPageWidth() . " - $text"; # 210 för A4 Portrait
 //         $text = strlen(utf8_decode($text)) . " - $text"; # Antalet tecken
 
-        $font_size = 90; # Så det inte blir för stort i X-led
+        $font_size = 85; # Så det inte blir för stort i X-led
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
         $field_with = $this->x_max - static::$x_min - (2*static::$Margin); # Bredden på rutan som kan fyllas med rubriken
@@ -115,14 +117,14 @@ class Report_PDF extends FPDF {
     
     function new_report(LARP $larp, String $name, Array $rows, bool $is_sensitive = false) {
         global $x, $y;
-        if (static::$debug)
+        if (static::$debug) {
+            echo "<hr>";
             echo "<br><br>New Report - $name<br>";
+        }
         
         $this->AliasNbPages();
         
         $this->is_sensitive = $is_sensitive;
-        
-        $this->text_fontsize = 10;
         
         $this->x_max = $this->GetPageWidth()  - static::$x_min;
         $this->y_max = $this->GetPageHeight() - static::$y_min;
@@ -143,63 +145,86 @@ class Report_PDF extends FPDF {
         
         $this->left_positions[0] = $current_left; # Vänstraste vänstermarginalen
 
-        $this->SetFont('Helvetica', '', $this->text_fontsize);
+        # Hur mycket text får det max plats på en rad mätt i punkter
+        $total_width_for_text = $this->x_max - static::$x_min - (2*$this->num_cols*static::$Margin);
         
-        if (static::$debug) {
-            echo "<br>ROWS in report:<br>\n";
-            print_r($this->rows);
-        }
+        $total_with_all_max_widths = 10000;
         
-        # Markera extra breda kolumner
-        # Beräkna också maxvidden på en rad text.
-        $max_length = [];
-        $max_col_text_width = [];
-        foreach($this->rows as $row){
-            $column = 0;
-            foreach($row as $cell_text){
-                if (!isset($max_length[$column]))         $max_length[$column] = 0;
-                if (!isset($max_col_text_width[$column])) $max_col_text_width[$column] = 0;
-                if (strlen($cell_text) > $max_length[$column]) $max_length[$column] = strlen($cell_text);
-                $text_rows_in_cell = explode("\n", $cell_text);
-                foreach($text_rows_in_cell as $text_row_in_cell) {
-                    $text_width = $this->GetStringWidth($text_row_in_cell);
-                    if ($text_width > $max_col_text_width[$column]) {
-                        $max_col_text_width[$column] = $text_width;
-                    }
-                }
-                $column++;
-            }
-        }
+        $this->text_fontsize = static::$max_font_size + 1;
         
-        if (static::$debug) {
-            echo "<br><br>MAX TEXT WIDTHS in report<br>\n";
-            print_r($max_col_text_width);
-        }
-        
-        $with_part = [];
-        $total_with_all_max_widths = 0;
-        $avg_part = 0;
-        for ($column = 0; $column < $this->num_cols; $column++){
-            $total_with_all_max_widths += $max_col_text_width[$column];
-        }
-        
-        if (static::$debug)
-            echo "<br><br>Total max with : $total_with_all_max_widths <br>\n";
-        
-        for ($column = 0; $column < $this->num_cols; $column++){
-            if ($max_length[$column] > $this->text_max_length*3) {
-                $with_part[$column] = 2;
-            } elseif ($max_length[$column] > $this->text_max_length*2) {
-                $with_part[$column] = 1.6;
-            } elseif ($max_length[$column] > $this->text_max_length) {
-                $with_part[$column] = 1.3;
-            } elseif ($max_length[$column] < $this->text_max_length) {
-                $with_part[$column] = 0.05*$max_length[$column];
-            } else {
-                $with_part[$column] = 1;
+        while ($total_with_all_max_widths > $total_width_for_text && $this->text_fontsize > static::$min_font_size) {
+            $this->text_fontsize -= 1;
+            if (static::$debug) {
+                echo "Fontsize: $this->text_fontsize<br>";
             }
             
-            $avg_part += $with_part[$column];
+            if (static::$debug) {
+                echo "<br>ROWS in report:<br>\n";
+                print_r($this->rows);
+            }
+            
+            # Markera extra breda kolumner
+            # Beräkna också maxvidden på en rad text.
+            $max_length = [];
+            $max_col_text_width = [];
+            $row_nr = 0;
+            $this->SetFont('Helvetica', 'B', $this->text_fontsize);
+            foreach($this->rows as $row){
+                $column_nr = 0;
+                foreach($row as $cell_text){
+                    if (!isset($max_length[$column_nr]))         $max_length[$column_nr] = 0;
+                    if (!isset($max_col_text_width[$column_nr])) $max_col_text_width[$column_nr] = 0;
+                    if (strlen($cell_text) > $max_length[$column_nr]) $max_length[$column_nr] = strlen($cell_text);
+                    $text_rows_in_cell = explode("\n", $cell_text);
+                    foreach($text_rows_in_cell as $text_row_in_cell) {
+                        $text_width = $this->GetStringWidth($text_row_in_cell);
+//                         if (($text_width > $max_col_text_width[$column]) && ($text_width < ($total_width_for_text / 2 ))) {
+                        if ($text_width > $max_col_text_width[$column_nr]) { 
+                            # Om vi har en ny längstatext i en kolumn och kolumnen inte tar upp mer än halva bredden på rapporten
+                            if (static::$debug) {
+                              echo "New Max for col $column_nr : Nytt max $text_width : Old Max $max_col_text_width[$column_nr] : $text_row_in_cell<br>";
+                            }
+                            $max_col_text_width[$column_nr] = $text_width;
+                        }
+                    }
+                    $column_nr++;
+                }
+                $this->SetFont('Helvetica', '', $this->text_fontsize);
+            }
+            
+            if (static::$debug) {
+                echo "<br><br>MAX TEXT WIDTHS in report<br>\n";
+                print_r($max_col_text_width);
+            }
+            
+            $with_part = [];
+            $total_with_all_max_widths = 0;
+            $avg_part = 0;
+            for ($column_nr = 0; $column_nr < $this->num_cols; $column_nr++){
+                $total_with_all_max_widths += $max_col_text_width[$column_nr];
+            }
+            
+            if (static::$debug) {
+                echo "<br><br>Total max with : $total_with_all_max_widths <br>\n";
+                echo "Total text area is : $total_width_for_text <br>\n";
+            }
+            
+        }
+        
+        for ($column_nr = 0; $column_nr < $this->num_cols; $column_nr++){
+            if ($max_length[$column_nr] > $this->text_max_length*3) {
+                $with_part[$column_nr] = 2;
+            } elseif ($max_length[$column_nr] > $this->text_max_length*2) {
+                $with_part[$column_nr] = 1.6;
+            } elseif ($max_length[$column_nr] > $this->text_max_length) {
+                $with_part[$column_nr] = 1.3;
+            } elseif ($max_length[$column_nr] < $this->text_max_length) {
+                $with_part[$column_nr] = 0.05*$max_length[$column_nr];
+            } else {
+                $with_part[$column_nr] = 1;
+            }
+            
+            $avg_part += $with_part[$column_nr];
         }
         $avg_part = $avg_part / $this->num_cols;
         
@@ -209,8 +234,8 @@ class Report_PDF extends FPDF {
 //         echo "AVG: $avg_part <br>\n";
         
         # Sätt alla kolumnbredder
-        for ($column = 0; $column < $this->num_cols; $column++){
-            $this->cell_widths[$column] = round($this->default_cell_width * ($with_part[$column] / $avg_part ));
+        for ($column_nr = 0; $column_nr < $this->num_cols; $column_nr++){
+            $this->cell_widths[$column_nr] = round($this->default_cell_width * ($with_part[$column_nr] / $avg_part ));
 //             $this->cell_widths[$col] = $this->default_cell_width;
         }
 
@@ -218,9 +243,9 @@ class Report_PDF extends FPDF {
 //         echo "Cell widths --<br>\n";
         
         # Beräkna vänster-marginaler
-        for ($column = 1; $column < $this->num_cols; $column++){
-            $this->left_positions[$column] = $current_left + $this->cell_widths[$column-1] + static::$Margin*2;
-            $current_left = $this->left_positions[$column];
+        for ($column_nr = 1; $column_nr < $this->num_cols; $column_nr++){
+            $this->left_positions[$column_nr] = $current_left + $this->cell_widths[$column_nr-1] + static::$Margin*2;
+            $current_left = $this->left_positions[$column_nr];
         }
         
 //         print_r($this->lefts);
