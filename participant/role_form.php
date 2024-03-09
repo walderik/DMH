@@ -385,8 +385,8 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
 
 			<?php  if (RoleFunction::isInUse($current_larp)) {?>	
 			<div class="question intrigue">
-				<label for="RoleFunctionId">Vilken/vilka funktioner har din karaktär?</label>&nbsp;<font style="color:red">*</font><br>
-       			<div class="explanation">?   
+				<label for="RoleFunctionId">Har din karaktär någon särskild funktion eller syssla på lajvet?</label>&nbsp;<font style="color:red">*</font><br>
+       			<div class="explanation">   
        			</div>
                 <?php 
                 selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedAbilityIds());
