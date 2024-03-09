@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = 'Hälsoinformation till sjukvårdare/trygghetsvärdar';
 
-$pdf = new Report_PDF();
+$pdf = new Report_PDF('L');
 
 $pdf->SetTitle(utf8_decode($name));
 $pdf->SetAuthor(utf8_decode($current_user->Name));
