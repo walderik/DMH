@@ -40,7 +40,7 @@ th {
     		      "<th onclick='sortTable(5, \"$tableId\")'>Medlem</th>".
     		      "<th onclick='sortTable(6, \"$tableId\")'>Betalnings-<br>referens</th>".
     		      "<th onclick='sortTable(7, \"$tableId\")' colspan='2'>Betalat</th>".
-    		      "<th onclick='sortTable(9, \"$tableId\")' colspan='2'>Plats på lajvet</th></tr>\n";
+    		      "<th onclick='sortTable(9, \"$tableId\")' >Plats på lajvet</th></tr>\n";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<tr>\n";
@@ -87,7 +87,7 @@ th {
     		            "</td>";
     		            echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-money-check-dollar'></i></a></td>\n";
     		            
-    		            echo "<td colspan='2'>Avbokad</td>";
+    		            echo "<td>Avbokad</td>";
     		        }
     		        else {
     		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år ";
