@@ -52,7 +52,7 @@ if (NormalAllergyType::isInUse()){
                                 $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
             }
     
-            $pdf->new_report($current_larp, "Enbart $allergy->Name", $rows);
+            $pdf->new_report($current_larp, "Enbart $allergy->Name", $rows, true);
         }
     }
     
@@ -70,7 +70,7 @@ if (NormalAllergyType::isInUse()){
             else $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email, commaStringFromArrayObject($person->getNormalAllergyTypes()),
                             $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
         }
-        $pdf->new_report($current_larp, "Multipla vanliga allergier", $rows);
+        $pdf->new_report($current_larp, "Multipla vanliga allergier", $rows, true);
     }
 }
 
@@ -89,7 +89,7 @@ if (!empty($persons) && count($persons) > 0) {
         else $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email, 
                         $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
     }
-    $pdf->new_report($current_larp, "Special", $rows);
+    $pdf->new_report($current_larp, "Special", $rows, true);
 }
 
 $pdf->Output();
