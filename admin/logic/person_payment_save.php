@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $registration->NotComingReason = $_POST['NotComingReason'];
         $registration->IsToBeRefunded = $_POST['IsToBeRefunded'];
         $registration->RefundAmount = $_POST['RefundAmount'];
-        $registration->LarpPartAcknowledged = $_POST['LarpPartAcknowledged'];
+        if (isset($_POST['LarpPartAcknowledged'])) $registration->LarpPartAcknowledged = $_POST['LarpPartAcknowledged'];
         
         $refundDate = $_POST['RefundDate'];
         if (isset ($refundDate) && $refundDate != "") {
