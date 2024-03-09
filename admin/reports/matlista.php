@@ -48,7 +48,7 @@ if (isset($persons) && count($persons) > 0) {
         if (isset($housing)) $housingStr=$housing->Name;
         $allergyStr = 'Nej';
         if (!empty($person->getNormalAllergyTypes()) || !empty($person->FoodAllergiesOther)) $allergyStr = 'Ja';
-        if ($hasFoodChoices) $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $housingStrl,
+        if ($hasFoodChoices) $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $housingStr,
             $registration->getTypeOfFood()->Name, $registration->FoodChoice, $allergyStr);
         else $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $housingStr, 
             $registration->getTypeOfFood()->Name, $allergyStr);
