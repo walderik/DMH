@@ -34,62 +34,26 @@ $pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $pdf->SetSubject(utf8_decode($name));
 
-if (NormalAllergyType::isInUse()){
-    $allAllergies = NormalAllergyType::all();
-    
-    foreach($allAllergies as $allergy) {
-        $persons = Person::getAllWithSingleAllergy($allergy, $current_larp);
-        if (isset($persons) && count($persons) > 0) {
-            $rows = array();
-            if ($hasFoodChoices) $rows[] = array('Namn','Ålder', 'Epost','Övrigt','Vald Mat', 'Matalternativ');
-            else $rows[] = array('Namn','Ålder', 'Epost','Övrigt','Vald Mat');
-    
-            foreach($persons as $person) {
-                $registration=$person->getRegistration($current_larp);
-                if ($hasFoodChoices) $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email,
-                    $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name, $registration->FoodChoice);
-                else $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email, 
-                                $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
-            }
-    
-            $pdf->new_report($current_larp, "Enbart $allergy->Name", $rows);
-        }
-    }
-    
-    //Multipla allergier
-    $persons = Person::getAllWithMultipleAllergies($current_larp);
-    if (!empty($persons) && count($persons) > 0) {
-        $rows = array();
-        if ($hasFoodChoices) $rows[] = array('Namn','Ålder', 'Epost','Allergier','Övrigt','Vald Mat', 'Matalternativ');
-        else $rows[] = array('Namn','Ålder','Epost','Allergier','Övrigt','Vald Mat');
-        
-        foreach($persons as $person) {
-            $registration=$person->getRegistration($current_larp);
-            if ($hasFoodChoices) $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email, commaStringFromArrayObject($person->getNormalAllergyTypes()),
-                $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name, $registration->FoodChoice);
-            else $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email, commaStringFromArrayObject($person->getNormalAllergyTypes()),
-                            $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
-        }
-        $pdf->new_report($current_larp, "Multipla vanliga allergier", $rows);
-    }
-}
-
-//Hitta alla som inte har någon vald allergi, men som har en kommentar
-$persons = Person::getAllWithoutAllergiesButWithComment($current_larp);
-if (!empty($persons) && count($persons) > 0) {
+$persons = Person::getAllRegistered($current_larp, false);
+if (isset($persons) && count($persons) > 0) {
     $rows = array();
-    if ($hasFoodChoices) $rows[] = array('Namn','Ålder','Epost','Övrigt','Vald Mat','Matalternativ');
-    else $rows[] = array('Namn','Ålder','Epost','Övrigt','Vald Mat');
+    if ($hasFoodChoices) $rows[] = array('Namn','Ålder', 'Boende','Vald Mat', 'Matalternativ', 'Allergi');
+    else $rows[] = array('Namn','Ålder', 'Boende','Vald Mat','Allergi');
+
     
     foreach($persons as $person) {
         $registration=$person->getRegistration($current_larp);
-        
-        if ($hasFoodChoices) $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email,
-            $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name, $registration->FoodChoice);
-        else $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email, 
-                        $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
+        $housingStr = "";
+        $housing = $person->getHouseAtLarp($current_larp);
+        if (isset($housing)) $housingStr=$housing->Name;
+        $allergyStr = 'Nej';
+        if (!empty($person->getNormalAllergyTypes()) || !empty($person->FoodAllergiesOther)) $allergyStr = 'Ja';
+        if ($hasFoodChoices) $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $housingStrl,
+            $registration->getTypeOfFood()->Name, $registration->FoodChoice, $allergyStr);
+        else $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $housingStr, 
+            $registration->getTypeOfFood()->Name, $allergyStr);
     }
-    $pdf->new_report($current_larp, "Special", $rows);
-}
 
+    $pdf->new_report($current_larp, $name, $rows);
+}
 $pdf->Output();

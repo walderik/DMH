@@ -37,7 +37,8 @@ include 'navigation.php';
 	<h2>Praktiskt</h2>
 	<div>
     <h3>Kök</h3>
-    <a href="reports/matlista.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Allergier & typ av mat</a><br>  
+    <a href="reports/matlista.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla deltagares matval</a><br>  
+    <a href="reports/allergy_list.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Allergier & typ av mat</a><br>  
     <h3>Boende</h3>
             <a href="reports/housing_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Boende per deltagare och per hus/lägerplats</a><br>
     <h3>Ekonomi</h3>
