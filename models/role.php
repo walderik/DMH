@@ -831,8 +831,14 @@ class Role extends BaseModel{
     
     public static function getAllToApprove($larp) {
         if (is_null($larp)) return array();
-        $sql = "SELECT * from regsys_role WHERE Id in (SELECT RoleId FROM ".
-            "regsys_larp_role WHERE LarpId = ?) AND IsApproved = 0 ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * from regsys_role WHERE Id IN ".
+        "(SELECT RoleId FROM regsys_role, regsys_larp_role, regsys_registration WHERE ".
+        "regsys_larp_role.LarpId = ? AND ".
+        "regsys_larp_role.RoleId = regsys_role.Id AND ".
+        "regsys_role.PersonId = regsys_registration.PersonId AND ".
+        "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
+        "regsys_registration.NotComing=0".
+        ") AND IsApproved = 0 ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
