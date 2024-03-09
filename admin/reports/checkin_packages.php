@@ -46,7 +46,8 @@ foreach ($roles as $role) {
     $package = "";
     
     //Pengar
-    $package .= "$larp_role->StartingMoney $currency\n";
+    $start_money = (isset($larp_role->StartingMoney)) ? $larp_role->StartingMoney : '0';
+    $package .= "$start_money $currency\n";
     
     
     //Lagfarter
@@ -54,10 +55,10 @@ foreach ($roles as $role) {
     $titledeeds = Titledeed::getAllForRole($role);
     foreach ($titledeeds as $titledeed) {
         if ($titledeed->IsFirstOwnerRole($role)) {
-           $titlededsArr[] = $titledeed->Name;
+           $titlededsArr[] = "  $titledeed->Name";
         }
     }
-    if (!empty($titlededsArr)) $package .= "Lagfarter:\n".implode("\n", $titlededsArr)."\n";
+    if (!empty($titlededsArr)) $package .= "Verksamheter:\n".implode("\n", $titlededsArr)."\n";
     
     
     
@@ -68,7 +69,7 @@ foreach ($roles as $role) {
         $intrgueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
         $intrigue_Pdfs = $intrgueActor->getAllPdfsThatAreKnown();
         foreach($intrigue_Pdfs as $intrigue_Pdf) {
-            $docuumentsArr[] = $intrigue_Pdf->Filename;
+            $docuumentsArr[] = "  $intrigue_Pdf->Filename";
         }
     }
     
@@ -76,13 +77,13 @@ foreach ($roles as $role) {
     //Brev
     foreach($checkin_letters as $checkin_letter) {
         $letter = $checkin_letter->getIntrigueLetter()->getLetter();   
-        $docuumentsArr[] = "Brev från: $letter->Signature till: $letter->Recipient";
+        $docuumentsArr[] = "  Brev från: $letter->Signature till: $letter->Recipient";
     }
     
     //Telegram
     foreach($checkin_telegrams as $checkin_telegram) {
         $telegram = $checkin_telegram->getIntrigueTelegram()->getTelegram();
-        $docuumentsArr[] = "Telegram från: $telegram->Sender till: $telegram->Reciever";
+        $docuumentsArr[] = "  Telegram från: $telegram->Sender till: $telegram->Reciever";
     }
     if (!empty($docuumentsArr)) $package .= "Dokument:\n".implode("\n", $docuumentsArr)."\n";
 
@@ -94,7 +95,7 @@ foreach ($roles as $role) {
     
     $rows[] = array($role->Name, $package);
 }
-$pdf->new_report($current_larp, "Karaktärer", $rows);
+$pdf->new_report($current_larp, "Karaktärer ska ha vid lajvstart", $rows);
 
 
 
@@ -110,7 +111,8 @@ foreach ($groups as $group) {
     $package = "";
     
     //Pengar
-    $package .= "$larp_group->StartingMoney $currency\n";
+    $start_money = (isset($larp_group->StartingMoney)) ? $larp_group->StartingMoney : '0';
+    $package .= "$start_money $currency\n";
     
     
     //Lagfarter
@@ -118,10 +120,10 @@ foreach ($groups as $group) {
     $titledeeds = Titledeed::getAllForGroup($group);
     foreach ($titledeeds as $titledeed) {
         if ($titledeed->IsFirstOwnerGroup($group)) {
-            $titlededsArr[] = $titledeed->Name;
+            $titlededsArr[] = "  $titledeed->Name";
         }
     }
-    if (!empty($titlededsArr)) $package .= "Lagfarter:\n".implode("\n", $titlededsArr)."\n";
+    if (!empty($titlededsArr)) $package .= "Verksamheter:\n".implode("\n", $titlededsArr)."\n";
     
     
     
@@ -132,7 +134,7 @@ foreach ($groups as $group) {
         $intrgueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $group);
         $intrigue_Pdfs = $intrgueActor->getAllPdfsThatAreKnown();
         foreach($intrigue_Pdfs as $intrigue_Pdf) {
-            $docuumentsArr[] = $intrigue_Pdf->Filename;
+            $docuumentsArr[] = "  $intrigue_Pdf->Filename";
         }
     }
     
@@ -140,13 +142,13 @@ foreach ($groups as $group) {
     //Brev
     foreach($checkin_letters as $checkin_letter) {
         $letter = $checkin_letter->getIntrigueLetter()->getLetter();
-        $docuumentsArr[] = "Brev från: $letter->Signature till: $letter->Recipient";
+        $docuumentsArr[] = "  Brev från: $letter->Signature till: $letter->Recipient";
     }
     
     //Telegram
     foreach($checkin_telegrams as $checkin_telegram) {
         $telegram = $checkin_telegram->getIntrigueTelegram()->getTelegram();
-        $docuumentsArr[] = "Telegram från: $telegram->Sender till: $telegram->Reciever";
+        $docuumentsArr[] = "  Telegram från: $telegram->Sender till: $telegram->Reciever";
     }
     if (!empty($docuumentsArr)) $package .= "Dokument:\n".implode("\n", $docuumentsArr)."\n";
     
@@ -158,7 +160,7 @@ foreach ($groups as $group) {
     
     $rows[] = array($group->Name, $package);
 }
-$pdf->new_report($current_larp, "Grupper", $rows);
+$pdf->new_report($current_larp, "Grupper ska ha vid lajvstart", $rows);
 
 
 $pdf->Output();
