@@ -63,6 +63,17 @@ include 'navigation.php';
 		    
 		    ?>
 		    
+            <?php if ($current_larp->chooseParticipationDates()) {         ?>
+			<tr><td valign="top" class="header">Avgiften kontrollerad</td>
+			<td>
+    			<input type="radio" id="LarpPartAcknowledged_yes" name="LarpPartAcknowledged" value="1" <?php if ($registration->LarpPartAcknowledged == 1) echo 'checked="checked"'?>> 
+    			<label for="NotComing_yes">Ja</label><br> 
+    			<input type="radio" id="LarpPartAcknowledged_no" name="LarpPartAcknowledged" value="0" <?php if ($registration->LarpPartAcknowledged == 0) echo 'checked="checked"'?>> 
+    			<label for="NotComing_no">Nej</label>
+			</td></tr>
+        	<?php } ?>
+		    
+		    
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
 			<tr><td valign="top" class="header">Belopp att betala</td><td><input type="number" id="AmountToPay" name="AmountToPay" value="<?php echo $registration->AmountToPay; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
 			<tr><td valign="top" class="header">Belopp betalat</td><td><input type="number" id="AmountPayed" name="AmountPayed" value="<?php echo $registration->AmountPayed; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>

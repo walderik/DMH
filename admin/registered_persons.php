@@ -18,6 +18,12 @@ th {
         Genom att klicka på rubrikerna i tabellen kan du sortera tabellen. Klicka en gång till för att få omvänd ordning.
         <br><br>
         Om betalningskolumnen har två röda utropstecken har man gått över tiden för betalningen.<br>
+        <?php if ($current_larp->chooseParticipationDates()) {         ?>
+        <a href='registered_persons_parttime.php'>Lista med deltagare som bara är med del av lajvet.</a>    
+        <?php } ?>
+        
+
+        
         <br>
      		<?php 
     		$persons = Person::getAllRegistered($current_larp, true);
