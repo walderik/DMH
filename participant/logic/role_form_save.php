@@ -32,6 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['AbilityId'])) {
             $role->saveAllAbilities($_POST['AbilityId']);
         }
+        if (isset($_POST['RoleFunctionId'])) {
+            $role->saveAllRoleFunctions($_POST['RoleFunctionId']);
+        }
         
     } elseif ($operation == 'update') {
         $role = Role::loadById($_POST['Id']);
@@ -59,6 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role->deleteAllAbilities();
         if (isset($_POST['AbilityId'])) {
             $role->saveAllAbilities($_POST['AbilityId']);
+        }
+        $role->deleteAllRoleFunctions();
+        if (isset($_POST['RoleFunctionId'])) {
+            $role->saveAllRoleFunctions($_POST['RoleFunctionId']);
         }
         
         

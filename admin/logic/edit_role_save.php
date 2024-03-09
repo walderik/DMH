@@ -18,7 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['AbilityId'])) {
         $role->saveAllAbilities($_POST['AbilityId']);
     }
-        
+    $role->deleteAllRoleFunctions();
+    if (isset($_POST['RoleFunctionId'])) {
+        $role->saveAllRoleFunctions($_POST['RoleFunctionId']);
+    }
+    
         
     if (isset($_POST['Referer']) && $_POST['Referer'] != "") {
         header('Location: ' . $_POST['Referer']);

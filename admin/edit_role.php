@@ -108,6 +108,13 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Religion förklaring</td><td><input type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="250"></td></tr>
 			<?php }?>
 
+			<?php if (Belief::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Hur troende</td><td>
+			<?php Belief::selectionDropdown($current_larp, false, true, $role->BeliefId); ?>
+			</td></tr>
+			<?php }?>
+
+
 			<?php if (Council::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Byrådet</td><td>
 			<?php Council::selectionDropdown($current_larp, false, true, $role->CouncilId); ?>
@@ -129,6 +136,11 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Kunskap förklaring</td><td><input type="text" id="AbilityComment" name="AbilityComment" value="<?php echo htmlspecialchars($role->AbilityComment); ?>"  size="100" maxlength="250"></td></tr>
 			<?php }?>
 			
+			<?php if (RoleFunction::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Funktioner</td>
+			<td><?php selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedRoleFunctionIds());?></td></tr>
+			<tr><td valign="top" class="header">Funktioner förklaring</td><td><input type="text" id="RoleFunctionComment" name="RoleFunctionComment" value="<?php echo htmlspecialchars($role->RoleFunctionComment); ?>"  size="100" maxlength="400"></td></tr>
+			<?php }?>
 
 
 			<tr><td valign="top" class="header">Mörk hemlighet&nbsp;<font style="color:red">*</font></td>

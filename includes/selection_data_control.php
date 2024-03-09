@@ -21,6 +21,8 @@ function getObjectName($name) {
         case "titledeedplace" : return "Platser för verksamheter";
         case "grouptype" : return "Typ av grupp";
         case "shiptype" : return "Typ av skepp";
+        case "belief" : return "Hur troende";
+        case "rolefunction" : return "Karaktärens funktion";
     }
 }
 
@@ -45,6 +47,8 @@ function getObjectType($name) {
         case "titledeedplace" : return "TitledeedPlace";
         case "grouptype" : return "GroupType";
         case "shiptype" : return "ShipType";
+        case "belief" : return "Belief";
+        case "rolefunction" : return "RoleFunction";
     }
 }
 
@@ -59,7 +63,9 @@ function getAllTypesForRoles(Larp $larp) {
     if (Council::isInUse($larp)) $types["Council"] = "Byråd";
     if (Guard::isInUse($larp)) $types["Guard"] = "Markvakt";
     if (Religion::isInUse($larp)) $types["Religion"] = "Religion";
-
+    if (Belief::isInUse($larp)) $types["Belief"] = "Hur troende";
+    if (RoleFunction::isInUse($larp)) $types["RoleFunction"] = "Karaktärens funktion";
+    
     return $types;
 }
 

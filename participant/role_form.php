@@ -360,6 +360,14 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
 			</div>
 
 			<?php } ?>	
+
+			<?php if (Belief::isInUse($current_larp)) {?>
+			<div class="question intrigue">
+				<label for="BeliefId">Hur troende är karaktären?</label>&nbsp;<font style="color:red">*</font><br>
+       			<div class="explanation">För vissa är religionen viktigare än andra. Hur är det för din karaktär?</div>
+                <?php Belief::selectionDropdown($current_larp, false,true, $role->BeliefId); ?>
+            </div>
+			<?php } ?>	
 				
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
@@ -374,6 +382,27 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
                 <?php Wealth::selectionDropdown($current_larp, false,true, $role->WealthId); ?>
             </div>
 			<?php } ?>	
+
+			<?php  if (RoleFunction::isInUse($current_larp)) {?>	
+			<div class="question intrigue">
+				<label for="RoleFunctionId">Vilken/vilka funktioner har din karaktär?</label>&nbsp;<font style="color:red">*</font><br>
+       			<div class="explanation">?   
+       			</div>
+                <?php 
+                selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedAbilityIds());
+                ?>
+            </div>
+            
+			<div class="question intrigue">
+				<label for="RoleFunctionComment">Funktioner förklaring</label><br>
+				<div class="explanation">?</div>
+				<input class="input_field" type="text" id="RoleFunctionComment" name="RoleFunctionComment" value="<?php echo htmlspecialchars($role->RoleFunctionComment); ?>"  size="100" maxlength="400">
+			</div>
+            
+            
+            
+			<?php } ?>	
+
 				
 			<?php  if (Council::isInUse($current_larp)) {?>	
 			<div class="question intrigue">

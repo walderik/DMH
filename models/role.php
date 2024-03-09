@@ -12,6 +12,7 @@ class Role extends BaseModel{
     public $ReasonForBeingInSlowRiver;
     public $ReligionId;
     public $Religion;
+    public $BeliefId;
     public $DarkSecret;
     public $DarkSecretIntrigueIdeas;
     public $IntrigueSuggestions;
@@ -25,6 +26,7 @@ class Role extends BaseModel{
     public $CouncilId;
     public $Council;
     public $GuardId;
+    public $RoleFunctionComment;
     public $Photo;
     public $Birthplace;
     public $CharactersWithRelations;
@@ -61,6 +63,7 @@ class Role extends BaseModel{
         if (isset($arr['ReasonForBeingInSlowRiver'])) $this->ReasonForBeingInSlowRiver = $arr['ReasonForBeingInSlowRiver'];
         if (isset($arr['ReligionId'])) $this->ReligionId = $arr['ReligionId'];
         if (isset($arr['Religion'])) $this->Religion = $arr['Religion'];
+        if (isset($arr['BeliefId'])) $this->BeliefId = $arr['BeliefId'];
         if (isset($arr['DarkSecret'])) $this->DarkSecret = $arr['DarkSecret'];
         if (isset($arr['DarkSecretIntrigueIdeas'])) $this->DarkSecretIntrigueIdeas = $arr['DarkSecretIntrigueIdeas'];
         if (isset($arr['IntrigueSuggestions'])) $this->IntrigueSuggestions = $arr['IntrigueSuggestions'];
@@ -74,6 +77,7 @@ class Role extends BaseModel{
         if (isset($arr['CouncilId'])) $this->CouncilId = $arr['CouncilId'];
         if (isset($arr['Council'])) $this->Council = $arr['Council'];
         if (isset($arr['GuardId'])) $this->GuardId = $arr['GuardId'];
+        if (isset($arr['RoleFunctionComment'])) $this->RoleFunctionComment = $arr['RoleFunctionComment'];
         if (isset($arr['Birthplace'])) $this->Birthplace = $arr['Birthplace'];
         if (isset($arr['CharactersWithRelations'])) $this->CharactersWithRelations = $arr['CharactersWithRelations'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
@@ -112,18 +116,18 @@ class Role extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_role SET Name=?, Profession=?, Description=?,
                               DescriptionForGroup=?, DescriptionForOthers=?,
-                              PreviousLarps=?, ReasonForBeingInSlowRiver=?, ReligionId=?, Religion=?, DarkSecret=?,
+                              PreviousLarps=?, ReasonForBeingInSlowRiver=?, ReligionId=?, Religion=?, BeliefId=?, DarkSecret=?,
                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
-                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, CouncilId=?, Council=?, GuardId=?, Birthplace=?, 
+                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, CouncilId=?, Council=?, GuardId=?, RoleFunctionComment=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
                               NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
-            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
+            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, $this->CouncilId, $this->Council, $this->GuardId, 
-            $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
+            $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
             $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
             $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->Id))) {
                 $stmt = null;
@@ -141,16 +145,16 @@ class Role extends BaseModel{
                                                             ReasonForBeingInSlowRiver, ReligionId, Religion, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId, CouncilId, Council, GuardId, 
-                                                            Birthplace, CharactersWithRelations, CampaignId, ImageId, 
+                                                            RoleFunctionComment, Birthplace, CharactersWithRelations, CampaignId, ImageId, 
                                     IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, IsApproved) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
-            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
+            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
-            $this->CouncilId, $this->Council, $this->GuardId, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
+            $this->CouncilId, $this->Council, $this->GuardId, $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
             $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
             $this->RaceComment, $this->AbilityComment, $this->IsApproved
         ))) {
@@ -190,6 +194,11 @@ class Role extends BaseModel{
     public function getReligion() {
         if (is_null($this->ReligionId)) return null;
         return Religion::loadById($this->ReligionId);
+    }
+    
+    public function getBelief() {
+        if (is_null($this->BeliefId)) return null;
+        return Belief::loadById($this->BeliefId);
     }
     
     public function getWealth() {
@@ -697,6 +706,60 @@ class Role extends BaseModel{
     
     public function deleteAllAbilities() {
         $stmt = $this->connect()->prepare("DELETE FROM regsys_ability_role WHERE RoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    
+    public function getRoleFunctions(){
+        return RoleFunction::getRoleFunctionsForRole($this->Id);
+    }
+    
+    public function getSelectedRoleFunctionIds() {
+        $stmt = $this->connect()->prepare("SELECT RoleFunctionId FROM  regsys_rolefunction_role WHERE RoleId = ? ORDER BY RoleFunctionId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['RoleFunctionId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function saveAllRoleFunctions($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_rolefunction_role (RoleFunctionId, RoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllRoleFunctions() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_rolefunction_role WHERE RoleId = ?;");
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");

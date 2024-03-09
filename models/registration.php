@@ -402,7 +402,7 @@ class Registration extends BaseModel{
     public function createPaymentReference() {
         $larp = LARP::loadById($this->LARPId);
         $numberStr = $this->LARPId . $this->PersonId;
-        return  $larp->PaymentReferencePrefix . "-".implode("-",str_split($numberStr,3));
+        return  $larp->PaymentReferencePrefix . $numberStr;
     }
     
     public function paymentDueDate() {

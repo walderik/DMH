@@ -84,6 +84,11 @@ if ($role->isMysLajvare()) {
 			<tr><td valign="top" class="header">Kunskaper förklaring</td><td><?php echo $role->AbilityComment;?></td></tr>
 			<?php }?>
 
+			<?php if (RoleFunction::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Funktioner</td><td><?php echo commaStringFromArrayObject($role->getRoleFunctions());?></td></tr>
+			<tr><td valign="top" class="header">Funktioner förklaring</td><td><?php echo $role->RoleFunctionComment;?></td></tr>
+			<?php }?>
+
 
 			<?php 
 			$magician = Magic_Magician::getForRole($role);
@@ -114,6 +119,16 @@ if ($role->isMysLajvare()) {
 			?>
 			</td></tr>
 			<tr><td valign="top" class="header">Religion förklaring</td><td><?php echo $role->Religion;?></td></tr>
+			<?php }?>
+
+
+			<?php if (Belief::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Hur troende</td><td>
+			<?php 
+			$belief = $role->getBelief();
+			if (!empty($belief)) echo $belief->Name;
+			?>
+			</td></tr>
 			<?php }?>
 
 			<?php if (Council::isInUse($current_larp)) {?>
