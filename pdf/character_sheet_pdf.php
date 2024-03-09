@@ -840,6 +840,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    $this->Line($mitten, $y, $mitten, $down);
 	}
 	
+	# En rad med överstrykning Används för att visa att något inte gäller längre, som för döda.
 	private function cross_over() {
 	    global $y, $mitten;
 	    $this->Line($this->current_left, $y+static::$Margin*1.5, ($this->current_left+$mitten-(3*static::$Margin)), $y+static::$Margin*1.5);

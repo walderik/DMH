@@ -77,13 +77,19 @@ class Report_PDF extends FPDF {
         global $y;
 
         # Bra ställe lägga ut debuginfo i början på rapporten
-//         $text = $this->GetPageHeight() . " - $text";
-        
-        $font_size = (600 / strlen(utf8_decode($text)));
-        if ($font_size > 90) $font_size = 90;
+//         $text = $this->GetPageWidth() . " - $text"; # 210 för A4 Portrait
+//         $text = strlen(utf8_decode($text)) . " - $text"; # Antalet tecken
+
+        $font_size = 90; # Så det inte blir för stort i X-led
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
-        $this->SetXY($this->lefts[0], $y-2);
+        $field_with = $this->x_max - static::$x_min - (2*static::$Margin); # Bredden på rutan som kan fyllas med rubriken
+        while ($this->GetStringWidth($text) > $field_with*0.9) { # Se till så inte rubrik-rutan får för lång text.
+            $font_size -=1;
+            $this->SetFont('Helvetica','B', $font_size);
+        }
+
+        $this->SetXY($this->lefts[0], $y-1);
         $this->Cell(0, static::$cell_y*6, utf8_decode($text),0,0,'C');
         
         $y = static::$y_min + (static::$cell_y*6) + (static::$Margin);
@@ -202,10 +208,10 @@ class Report_PDF extends FPDF {
 	    $this->Line($x_pos, $y, $x_pos, $down);
 	}
 	
-	private function cross_over() {
-	    global $y, $mitten;
-	    $this->Line($this->current_left, $y+static::$Margin*1.5, ($this->current_left+$mitten-(3*static::$Margin)), $y+static::$Margin*1.5);
-	}
+// 	private function cross_over() {
+// 	    global $y, $mitten;
+// 	    $this->Line($this->current_left, $y+static::$Margin*1.5, ($this->current_left+$mitten-(3*static::$Margin)), $y+static::$Margin*1.5);
+// 	}
 
 	
 	# Gemensam funktion för all logik för att skriva ut ett fält
