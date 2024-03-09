@@ -1,5 +1,6 @@
 <?php
 # Läs mer på http://www.fpdf.org/
+# Testa orientation med $this->CurOrientation ger 'P' eller 'L'
 
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
@@ -14,16 +15,15 @@ class Report_PDF extends FPDF {
     public static $Margin = 1;
     
     public static $x_min = 5;
-    public static $x_max = 205;
     public static $y_min = 5;
-    public static $y_max = 291;
     
     public static $cell_y = 5;
     
     public static $header_fontsize = 6;
     public static $text_fontsize = 10;
     
-    
+    public $x_max;
+    public $y_max;
     public $larp;
     public $name;
     public $rows;
@@ -38,19 +38,19 @@ class Report_PDF extends FPDF {
     function Header() {
         global $root, $y;
         $this->SetLineWidth(0.6);
-        $this->Line(static::$x_min, static::$y_min, static::$x_max, static::$y_min);
-        $this->Line(static::$x_min, static::$y_min, static::$x_min, static::$y_max);
-        $this->Line(static::$x_min, static::$y_max, static::$x_max, static::$y_max);
-        $this->Line(static::$x_max, static::$y_min, static::$x_max, static::$y_max);
+        $this->Line(static::$x_min, static::$y_min, $this->x_max, static::$y_min);
+        $this->Line(static::$x_min, static::$y_min, static::$x_min, $this->y_max);
+        $this->Line(static::$x_min, $this->y_max, $this->x_max, $this->y_max);
+        $this->Line($this->x_max, static::$y_min, $this->x_max, $this->y_max);
         
         $space = 1.2;
-        $this->Line(static::$x_min-$space, static::$y_min-$space, static::$x_max+$space, static::$y_min-$space);
-        $this->Line(static::$x_min-$space, static::$y_min-$space, static::$x_min-$space, static::$y_max+$space);
-        $this->Line(static::$x_min-$space, static::$y_max+$space, static::$x_max+$space, static::$y_max+$space);
-        $this->Line(static::$x_max+$space, static::$y_min-$space, static::$x_max+$space, static::$y_max+$space);
+        $this->Line(static::$x_min-$space, static::$y_min-$space, $this->x_max+$space, static::$y_min-$space);
+        $this->Line(static::$x_min-$space, static::$y_min-$space, static::$x_min-$space, $this->y_max+$space);
+        $this->Line(static::$x_min-$space, $this->y_max+$space, $this->x_max+$space, $this->y_max+$space);
+        $this->Line($this->x_max+$space, static::$y_min-$space, $this->x_max+$space, $this->y_max+$space);
         
         $mini_header_with = 46;
-        $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
+        $mitten = static::$x_min + ($this->x_max - static::$x_min) / 2 ;
         
         $this->SetXY($mitten-($mini_header_with/2), 3);
         $this->SetFont('Helvetica','',static::$text_fontsize/1.1);
@@ -72,9 +72,13 @@ class Report_PDF extends FPDF {
     }
     
     # Skriv ut Rapportnamnet högst upp.
+    # Används på första sidan
     function title($text) {
         global $y;
 
+        # Bra ställe lägga ut debuginfo i början på rapporten
+//         $text = $this->GetPageHeight() . " - $text";
+        
         $font_size = (600 / strlen(utf8_decode($text)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
@@ -93,6 +97,9 @@ class Report_PDF extends FPDF {
         
         $this->AliasNbPages();
         
+        $this->x_max = $this->GetPageWidth()  - static::$x_min;
+        $this->y_max = $this->GetPageHeight() - static::$y_min;
+        
         $this->lefts = [];
         $this->cell_widths = [];
         
@@ -103,7 +110,7 @@ class Report_PDF extends FPDF {
         $this->text_max_length = 94 / $this->num_cols; #  (Empiriskt testat för vad som ser bra ut)
         
         $this->cell_height = static::$cell_y + (2*static::$Margin);
-        $this->default_cell_width = (static::$x_max - static::$x_min) / $this->num_cols - (2*static::$Margin);
+        $this->default_cell_width = ($this->x_max - static::$x_min) / $this->num_cols - (2*static::$Margin);
         
         $current_left = static::$x_min ;
         
@@ -165,7 +172,7 @@ class Report_PDF extends FPDF {
 //         print_r($this->lefts);
 //         echo "Lefts 2 --<br>\n";
         
-        $this->AddPage();
+        $this->AddPage($this->CurOrientation);
         
         $this->title($this->name);
         
@@ -185,7 +192,7 @@ class Report_PDF extends FPDF {
 	# Dra en linje tvärs över arket på höjd $y
 	private function bar() {
 	    global $y;
-	    $this->Line(static::$x_min, $y, static::$x_max, $y);
+	    $this->Line(static::$x_min, $y, $this->x_max, $y);
 	}
 	
 	private function mittlinje($col) {
@@ -265,7 +272,7 @@ class Report_PDF extends FPDF {
             $y += $this->current_cell_height;
             $this->bar();
             if ($y > 270) { 
-                $this->AddPage(); # Ny sidan om vi är längst ner
+                $this->AddPage($this->CurOrientation); # Ny sidan om vi är längst ner
                 $y += 5;
             }
             
@@ -274,45 +281,5 @@ class Report_PDF extends FPDF {
 	    
 	    return;
 	}
-	
-	private function set_full_page($header, $text) {
-	    global  $y, $left;
-	    
-	    $this->AddPage();
-	    
-	    $text = utf8_decode($text);
-	    $this->set_header($left, $header);
-	    $this->SetXY($left, $y + static::$Margin+1);
-	    
-	    if (strlen($text)>3500){
-	        $this->SetFont('Helvetica','',static::$header_fontsize);
-	        $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y-2.5, $text, 0,'L'); # Mindre radavstånd
-	        return;
-	    }
-	    if (strlen($text)>2900){
-	        $this->SetFont('Helvetica','',static::$text_fontsize-1);
-	        $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y-1.5, $text, 0,'L'); # Mindre radavstånd
-	        return;
-	    }
-	    $this->SetFont('Helvetica','',static::$text_fontsize);
-	    $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
-	}
-	
-	private function set_rest_of_page($header, $text) {
-	    global  $y, $left;
-	    
-	    $text = utf8_decode($text);
-	    $this->set_header($left, $header);
-	    $this->SetXY($left, $y + static::$Margin+1);
-	    
-	    if (strlen($text)>1800){
-	        $this->SetFont('Helvetica','',static::$text_fontsize/1.5); # Hantering för riktigt långa texter
-	        $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y-1.3, $text, 0,'L');
-	        return;
-	    }
-	    $this->SetFont('Helvetica','',static::$text_fontsize);
-	    $this->MultiCell(($this->default_cell_width * $this->num_cols)+(2*static::$Margin), static::$cell_y+0.5, $text, 0,'L');
-	}
-	
 	
 }

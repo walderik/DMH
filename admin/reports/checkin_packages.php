@@ -15,7 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = 'Paketering';
 
-$pdf = new Report_PDF();
+// $pdf = new Report_PDF('L'); # Argument som är gilltiga är 'P' och 'L'
+$pdf = new Report_PDF('P'); # Argument som är gilltiga är 'P' och 'L'
 
 $pdf->SetTitle(utf8_decode($name));
 $pdf->SetAuthor(utf8_decode($current_user->Name));
