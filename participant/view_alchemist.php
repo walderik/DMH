@@ -83,7 +83,7 @@ include 'navigation.php';
     			<tr><td></td></tr>
     		</table>
 
-			<h2>Recept</h2>
+			<h2>Recept du kan</h2>
 			Här är en lista på de recept du kan. Om något saknas kan du titta på listan med alla recept. Där kan du markera, blad de godkända recepten vilka du skulle vilja kunna. Och du kan även lägga till nya recept. 
 			Dessa kommer att godkännas av arrangörerna innan du får möjlighet att önska att du kan dem.<br>
 				<a href='alchemy_all_recipes.php?RoleId=<?php echo $role->Id?>'>Visa alla recept som finns / Önska recept du vill kunna / Skapa nya recept</a><br><br>
@@ -115,7 +115,59 @@ include 'navigation.php';
 				echo "</table>";
 			}
 			?>
-			
+
+
+			<h2>Recept du har skapat</h2>
+			Här är alla recept du har skapat. När receptet är godkänt av arrangör går det inte längre att redigera.<br>
+			Om du vill skapa ett nytt recept får du gå till sidan med alla recept, för att se så att det inte redan finns ett sådant recept.
+       <?php
+    
+       $recipes = Alchemy_Recipe::allByRole($role);
+       if (!empty($recipes)) {
+           $tableId = "recipes";
+           echo "<table id='$tableId' class='data'>";
+           echo "<tr>".
+               "<th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
+               "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Typ</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Effekt</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Ingredienser / Essenser<br>Nivån anges inom parentes</th>".
+               "<th onclick='sortTable(5, \"$tableId\")'>Godkänd/<br>Ännu inte godkänd</th>".
+               "";
+           
+           foreach ($recipes as $recipe) {
+                echo "<tr>\n";
+                echo "<td><a href='view_alchemy_recipe.php?recipeId=$recipe->Id&id=$role->Id'>$recipe->Name</a> ";
+                if (!$recipe->IsApproved()) {
+                    echo "<a href='alchemy_recipe_form.php?RoleId=$role->Id&recipeId=$recipe->Id'><i class='fa-solid fa-pen'></i></a>";
+                }
+                
+                echo "</td>\n";
+                echo "<td>$recipe->Level</td>\n";
+                echo "<td>";
+                if ($alchemist->AlchemistType == $recipe->AlchemistType) echo "<strong>";
+                echo $recipe->getRecipeType();
+                if ($alchemist->AlchemistType == $recipe->AlchemistType) echo "</strong>";
+                echo "</td>\n";
+                echo "<td>".nl2br(htmlspecialchars($recipe->Effect))."</td>";
+                echo "<td>";
+                echo $recipe->getComponentNames();
+                echo "</td>\n";
+                
+                echo "<td>";
+                echo showStatusIcon($recipe->isApproved());
+                echo "</td>\n";
+                echo "</tr>\n";
+            }
+            echo "</table>";
+            echo "<br>";
+            echo "<input type='submit' value='Välj recept'></form>";
+            
+        }
+        else {
+            echo "<p>Inga registrerade ännu</p>";
+        }
+        ?>
 
 		</div>
 		
