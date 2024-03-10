@@ -31,6 +31,8 @@ if (isset($_GET['operation']) && $_GET['operation']=='remove_recipe') {
     $alchemist->removeRecipe($_GET['RecipeId']);
 }
 
+$teacher = $alchemist->getTeacher();
+if (isset($teacher)) $teacherRole = $teacher->getRole();
 
 
 include 'navigation.php';
@@ -58,8 +60,32 @@ include 'navigation.php';
     					<?php echo nl2br(htmlspecialchars($alchemist->Level)); ?>
                     </td>
     			</tr>
-
-				<tr>
+    			<?php if (isset($teacherRole)) { ?>
+   				<tr>
+    				<td>Lärare</td>
+    				<td><?php echo "$teacherRole->Name"; ?></td>
+    			</tr>
+    			<?php }?>
+    			<?php 
+    			$students = $alchemist->getStudents();
+    			if (isset($students)) {?>
+    			<tr>
+    				<td>Elever</td>
+    				<td><?php 
+    				    $studentLinks = array();
+    				    foreach($students as $student) {
+    				        $studenttype = $student->getAlchemistType();
+    				        $str = $student->getRole()->Name." (";
+    				        $str.=$studenttype.", ";
+    				        $str.="nivå $student->Level)";
+    				        $apprenticeLinks[] = $str;
+    				    }
+    				    echo implode("<br>", $apprenticeLinks); 
+    				    
+    				    ?></td>
+    			</tr>
+    			<?php }?>
+    							<tr>
     				<td>Utrustning</td>
     				<td>
     					<?php 

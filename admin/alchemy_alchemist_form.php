@@ -79,6 +79,21 @@ $alchemist = Alchemy_Alchemist::newWithDefault();;
 				<td><label for="Level">Nivå</label></td>
 				<td><input type="number" id="Level" name="Level" value="<?php echo htmlspecialchars($alchemist->Level); ?>" maxlength="5" min="0" required></td>
 			</tr>
+
+			<tr>
+				<td><label for="Level">Lärare</label></td>
+				<td>
+				<?php 
+					$teacher = $alchemist->getTeacher();
+					
+					$teacherId = null;
+					if (isset($author)) $teacherId = $teacher->Id;
+					$alchemistRoles = Alchemy_Alchemist::getRolesByCampaign($current_larp);
+					selectionDropDownByArray("TeacherRoleId", $alchemistRoles, false, $teacherId);
+
+					?>
+			</tr>
+
 			<tr>
 				<td>Utrustning</td>
 				<td>

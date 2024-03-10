@@ -16,6 +16,8 @@ $alchemist = Alchemy_Alchemist::loadById($alchemistId);
 $role = $alchemist->getRole();
 $person = $role->getPerson();
 
+$teacher = $alchemist->getTeacher();
+if (isset($teacher)) $teacherRole = $teacher->getRole();
 
 
 
@@ -56,6 +58,29 @@ include 'navigation.php';
                     </td>
     			</tr>
 
+    			<tr>
+    				<td>Lärare</td>
+    				<td><?php if (isset($teacherRole)) echo "<a href ='view_alchemist.php?id=$teacher->Id'>$teacherRole->Name</a>"; ?></td>
+    			</tr>
+    			<?php 
+    			$students = $alchemist->getStudents();
+    			if (isset($students)) {?>
+    			<tr>
+    				<td>Elever</td>
+    				<td><?php 
+    				    $studentLinks = array();
+    				    foreach($students as $student) {
+    				        $studenttype = $student->getAlchemistType();
+    				        $str = "<a href ='view_alchemist.php?id=$student->Id'>".$student->getRole()->Name."</a> (";
+    				        $str.=$studenttype.", ";
+    				        $str.="nivå $student->Level)";
+    				        $apprenticeLinks[] = $str;
+    				    }
+    				    echo implode("<br>", $apprenticeLinks); 
+    				    
+    				    ?></td>
+    			</tr>
+    			<?php }?>
 				<tr>
     				<td>Utrustning</td>
     				<td>

@@ -9,6 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'update') {
         $alchemist=Alchemy_Alchemist::loadById($_POST['Id']);
         $alchemist->setValuesByArray($_POST);
+        
+        if (isset($_POST["TeacherRoleId"])) {
+            $teacherRole = Role::loadById($_POST["TeacherRoleId"]);
+            if (isset($teacherRole)) $teacherAlchemist = Alchemy_Alchemist::getForRole($teacherRole);
+            if (isset($teacherAlchemist)) $alchemist->AlchemistTeacherId = $teacherAlchemist->Id;
+        }
+        
+        
         $alchemist->update();
     } elseif ($operation == "add_alchemist_recipe") {
         $alchemist=Alchemy_Alchemist::loadById($_POST['Id']);

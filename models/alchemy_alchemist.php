@@ -15,6 +15,7 @@ class Alchemy_Alchemist extends BaseModel{
     public $Level;
     public $AlchemistType;
     public $ImageId;
+    public $AlchemistTeacherId;
     public $Workshop;
     public $OrganizerNotes;
     
@@ -35,6 +36,7 @@ class Alchemy_Alchemist extends BaseModel{
         if (isset($arr['Level'])) $this->Level = $arr['Level'];
         if (isset($arr['AlchemistType'])) $this->AlchemistType = $arr['AlchemistType'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
+        if (isset($arr['AlchemistTeacherId'])) $this->AlchemistTeacherId = $arr['AlchemistTeacherId'];
         if (isset($arr['Workshop'])) $this->Workshop = $arr['Workshop'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         
@@ -53,10 +55,10 @@ class Alchemy_Alchemist extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_alchemist SET RoleId=?, AlchemistType=?, ImageId=?, 
-                Workshop=?, Level=?, OrganizerNotes=? WHERE Id = ?");
+                AlchemistTeacherId=?, Workshop=?, Level=?, OrganizerNotes=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->RoleId, $this->AlchemistType, $this->ImageId, 
-            $this->Workshop, $this->Level, $this->OrganizerNotes, $this->Id))) {
+            $this->AlchemistTeacherId, $this->Workshop, $this->Level, $this->OrganizerNotes, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -70,9 +72,9 @@ class Alchemy_Alchemist extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_alchemy_alchemist (RoleId, AlchemistType, ImageId, 
-                    Workshop, Level, OrganizerNotes) VALUES (?,?,?,?,?, ?);");
+                    AlchemistTeacherId, Workshop, Level, OrganizerNotes) VALUES (?,?,?,?,?, ?,?);");
         
-        if (!$stmt->execute(array($this->RoleId, $this->AlchemistType, $this->ImageId, $this->Workshop, $this->Level, $this->OrganizerNotes))) {
+        if (!$stmt->execute(array($this->RoleId, $this->AlchemistType, $this->ImageId, $this->AlchemistTeacherId, $this->Workshop, $this->Level, $this->OrganizerNotes))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -114,6 +116,16 @@ class Alchemy_Alchemist extends BaseModel{
     }
     
     
+    public function getTeacher() {
+        if (empty($this->AlchemistTeacherId)) return null;
+        return Alchemy_Alchemist::loadById($this->AlchemistTeacherId);
+    }
+    
+    public function getStudents() {
+        $sql = "SELECT * FROM regsys_alchemy_alchemist WHERE AlchemistTeacherId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($this->Id));
+        
+    }
     public function recipeApprovedLarp(Alchemy_Recipe $recipe) {
         $stmt = $this->connect()->prepare("SELECT GrantedLarpId FROM  regsys_alchemy_alchemist_recipe WHERE AlchemyAlchemistId=? AND AlchemyRecipelId = ?;");
         
