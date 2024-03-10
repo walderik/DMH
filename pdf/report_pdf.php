@@ -223,12 +223,11 @@ class Report_PDF extends FPDF {
         $with_part = [];
         for ($column_nr = 0; $column_nr < $this->num_cols; $column_nr++){
             $with_part[$column_nr] = $max_col_text_width[$column_nr] / $total_with_all_max_widths; # Hur stor andel utgör den av all text
-            if ($with_part[$column_nr] > 0.4) $with_part[$column_nr] = 0.4;
+            if ($this->num_cols > 3 && $with_part[$column_nr] > 0.4) $with_part[$column_nr] = 0.4;
         }
         
         # Minska bredaste kolumnen om andra inte får plats
         $avg_part = 0;
-        $text_fit_in_column = [];
         for ($column_nr = 0; $column_nr < $this->num_cols; $column_nr++){
             $this_cell_widths = round($total_width_for_text * $with_part[$column_nr]);
             $text_fit_in_column_before[] = ($this_cell_widths > $max_col_text_width[$column_nr]) ? 'Ja' : 'NEJ';
@@ -275,16 +274,16 @@ class Report_PDF extends FPDF {
             echo "Cell widths --<br>\n";
         }
         
-//         $this->rows[] = ["TOT: $total_width_for_text", "Total text $total_with_all_max_widths", "AVG $avg_part", "widest $widest_column", "widest width " . $max_col_text_width[$widest_column]];
-//         $this->rows[] = ["Max col text width",'','','',''];
+//         $this->rows[] = ["TOT: $total_width_for_text", "widest $widest_column"];
+//         $this->rows[] = ["Max col text width",''];
 //         $this->rows[] = $max_col_text_width;
-//         $this->rows[] = ["with_part",'','','',''];
+//         $this->rows[] = ["with_part",''];
 //         $this->rows[] = $with_part;
-//         $this->rows[] = ["Cell text width",'','','',''];
+//         $this->rows[] = ["Cell text width",''];
 //         $this->rows[] = $this->cell_widths;
-//         $this->rows[] = ["Får rum före",'','','',''];
+//         $this->rows[] = ["Får rum före",''];
 //         $this->rows[] = $text_fit_in_column_before;
-//         $this->rows[] = ["Får rum efter",'','','',''];
+//         $this->rows[] = ["Får rum efter",''];
 //         $this->rows[] = $text_fit_in_column_after;
         
         
@@ -335,7 +334,12 @@ class Report_PDF extends FPDF {
 	    $bold_char = $bold ? 'B' : '';
 	   
 	    # Specialbehandling för väldigt långa strängar så dom blir lite mindre och får lite, lite bättre plats
-	    if ($this->GetStringWidth($text) > $this->cell_widths[$this->current_col]){
+	    $to_long = false;
+	    $text_rows_in_cell = explode("\n", $text);
+	    foreach($text_rows_in_cell as $text_row_in_cell) {
+	        if ($this->GetStringWidth($text_row_in_cell) > $this->cell_widths[$this->current_col]) $to_long = true;
+	    }
+	    if ($to_long){
  	        $this->SetFont('Arial', $bold_char, ($this->text_fontsize-1));
  	    } else {
  	        $this->SetFont('Helvetica', $bold_char, $this->text_fontsize);
@@ -355,8 +359,7 @@ class Report_PDF extends FPDF {
         if ($current_y > $this->current_y + $this->current_cell_height) {
             $new_height = $current_y - $this->current_y;
             $this->current_cell_height = $new_height;
-            # Efterjustera mittlinjen om det behövs
-            
+            # Efterjustera mittlinjen om det behövs            
         }
             
         # Räkna upp en cell i bredd
