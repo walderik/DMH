@@ -74,9 +74,9 @@ include 'navigation.php';
     				        $str = "<a href ='view_alchemist.php?id=$student->Id'>".$student->getRole()->Name."</a> (";
     				        $str.=$studenttype.", ";
     				        $str.="nivå $student->Level)";
-    				        $apprenticeLinks[] = $str;
+    				        $studentLinks[] = $str;
     				    }
-    				    echo implode("<br>", $apprenticeLinks); 
+    				    echo implode("<br>", $studentLinks); 
     				    
     				    ?></td>
     			</tr>

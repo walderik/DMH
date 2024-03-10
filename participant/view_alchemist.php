@@ -78,9 +78,9 @@ include 'navigation.php';
     				        $str = $student->getRole()->Name." (";
     				        $str.=$studenttype.", ";
     				        $str.="nivå $student->Level)";
-    				        $apprenticeLinks[] = $str;
+    				        $studentLinks[] = $str;
     				    }
-    				    echo implode("<br>", $apprenticeLinks); 
+    				    echo implode("<br>", $studentLinks); 
     				    
     				    ?></td>
     			</tr>
