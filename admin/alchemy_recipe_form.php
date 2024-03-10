@@ -112,6 +112,19 @@ input[type=checkbox]:checked+label {
 				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($recipe->Name); ?>" size="100" maxlength="250" required></td>
 
 			</tr>
+   			<tr>
+				<td>Skapat av</td>
+				<td>
+					<?php 
+					$author = $recipe->getAuthorRole();
+					$authorId = null;
+					if (isset($author)) $authorId = $author->Id;
+					$alchemistRoles = Alchemy_Alchemist::getRolesByCampaign($current_larp);
+					selectionDropDownByArray("AuthorRoleId", $alchemistRoles, false, $authorId);
+
+					?>
+                </td>
+			</tr>
 			<tr>
 
 				<td>Typ</td>

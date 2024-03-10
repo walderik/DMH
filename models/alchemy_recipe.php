@@ -126,6 +126,13 @@ class Alchemy_Recipe extends BaseModel{
     }
     
     
+    public static function allByRole(Role $role) {
+        if (is_null($role)) return Array();
+        $sql = "SELECT * FROM regsys_alchemy_recipe WHERE AuthorRoleId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($role->Id));
+    }
+    
+    
     public function addToAlchemists($alchemistIds, LARP $larp) {
         //Ta reda på vilka som inte redan är kopplade till receptet
         $exisitingIds = array();

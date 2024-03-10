@@ -26,7 +26,7 @@ include 'navigation.php';
 ?>
 
 	<div class="content">
-		<h1>Recept för <?php echo $recipe->Name?></a>
+		<h1>Recept för <?php echo $recipe->Name?> <a href ='alchemy_recipe_form.php?operation=update&id=<?php echo $recipe->Id?>'><i class='fa-solid fa-pen'></i></a>
 		</h1>
 		
 

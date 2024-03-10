@@ -2,11 +2,21 @@
 include_once 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $type = $_GET['type'];
     $RoleId = $_GET['RoleId'];
+    $role = Role::loadById($RoleId);
+
+    if (isset($_GET['recipeId'])) {
+        $recipe = Alchemy_Recipe::loadById($_GET['recipeId']);
+        $type = $recipe->AlchemistType;
+    } else {
+        $recipe = Alchemy_Recipe::newWithDefault();
+        $recipe->AuthorRoleId = $RoleId;
+        $recipe->AlchemistType = $_GET['type'];
+    }
+
 }
 
-$role = Role::loadById($RoleId);
+
 $person = $role->getPerson();
 
 if ($person->UserId != $current_user->Id) {
@@ -23,7 +33,47 @@ if (!Alchemy_Alchemist::isAlchemist($role)) {
     exit;
 }
 
+if ($role->Id != $recipe->AuthorRoleId) {
+    header('Location: index.php'); // inte ditt recept
+    exit;
+}
+
+if ($recipe->isApproved()) {
+    header('Location: index.php'); // receptet får inte redigeras
+    exit;
+    
+}
+
 $alchemist = Alchemy_Alchemist::getForRole($role);
+
+
+function default_value($field) {
+    GLOBAL $recipe;
+    $output = "";
+    
+    switch ($field) {
+        case "operation":
+            if (is_null($recipe->Id)) {
+                $output = "insert";
+                break;
+            }
+            $output = "update";
+            break;
+        case "id":
+            $output = $recipe->Id;
+            break;
+        case "action":
+            if (is_null($recipe->Id)) {
+                $output = "Skapa";
+                break;
+            }
+            $output = "Uppdatera";
+            break;
+    }
+    
+    echo $output;
+}
+
 
 
 if (isset($_SERVER['HTTP_REFERER'])) {
@@ -80,12 +130,13 @@ input[type=checkbox]:checked+label {
 
 
     <div class="content"> 
-    <h1>Skapa recept <a href="alchemy_recipe_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1><?php echo default_value('action');?> recept <a href="alchemy_recipe_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
     
    
 	<form action="logic/alchemy_recipe_form_save.php" method="post">
-		<input type="hidden" id="operation" name="operation" value="insert"> 
-		<input type="hidden" id="AlchemistType" name="AlchemistType" value="<?php echo $type ?>">
+		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
+		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
+		<input type="hidden" id="AlchemistType" name="AlchemistType" value="<?php echo $recipe->AlchemistType ?>">
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer ?>">
 		<input type="hidden" id="IsApproved" name="IsApproved" value="0">
 		<input type="hidden" id="RoleId" name="RoleId" value="<?php echo $role->Id?>">
@@ -94,7 +145,7 @@ input[type=checkbox]:checked+label {
  		<table>
 			<tr>
 				<td><label for="Name">Namn</label></td>
-				<td><input type="text" id="Name" name="Name" value="" size="100" maxlength="250" required></td>
+				<td><input type="text" id="Name" name="Name" value="<?php echo $recipe->Name ?>" size="100" maxlength="250" required></td>
 
 			</tr>
 			<tr>
@@ -109,7 +160,9 @@ input[type=checkbox]:checked+label {
 					<select id="Level" name="Level">
 					<?php 
 					for ($i=1; $i<=5; $i++) {
-					    echo "<option value='$i'>Nivå $i: ";
+					    echo "<option value='$i' ";
+					    if ($recipe->Level==$i) echo "selected";
+					    echo ">Nivå $i: ";
 					    echo Alchemy_Recipe::LEVEL_REQUIREMENTS[$i];
 					    echo "</option>";
 					}
@@ -121,9 +174,9 @@ input[type=checkbox]:checked+label {
 				<td>Tillverkas av</td>
  				<td>
   				<?php 
-  				if ($type == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
+ 				if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
  				    echo "Markera de ingredienser som ingår<br>";
- 				    
+ 				    $selectedIngredientIds = $recipe->getSelectedIngredientIds();
                     for ($i = 1; $i <= 5; $i++) {
                         $ingredients = Alchemy_Ingredient::getIngredientsByLevel($i, $current_larp);
                         echo "Nivå $i, ".Alchemy_Ingredient::POINTS[$i]." poäng<br>";
@@ -131,8 +184,11 @@ input[type=checkbox]:checked+label {
 
                         foreach ($ingredients as $ingredient) {
                             $id = "ingredient_".$ingredient->Id;
-                           
-                            echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id'>";
+                            $checked="";
+                            if (in_array($ingredient->Id, $selectedIngredientIds)) {
+                                $checked="checked='checked'";
+                            }
+                            echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id' $checked>";
                             echo "<label for='$id'>$ingredient->Name</label>";
                          }
  				    
@@ -144,24 +200,33 @@ input[type=checkbox]:checked+label {
 
                     foreach ($catalysts as $ingredient) {
                         $id = "ingredient_".$ingredient->Id;
-                        echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id'>";
+                        $checked="";
+                        if (in_array($ingredient->Id, $selectedIngredientIds)) {
+                            $checked="checked='checked'";
+                        }
+                        echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id' $checked>";
                         echo "<label for='$id'>$ingredient->Name (Nivå $ingredient->Level)</label>";
                     }
                     
                     echo "</div><br>";
                     
     
- 				} elseif ($type == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
+ 				} elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
  				    echo "Markera de essenser som ingår och på vilken nivå de ska vara.<br>";
  				    $essences = Alchemy_Essence::allByCampaign($current_larp);
  				    for ($i = 1; $i <= 5; $i++) {
+ 				        $selectedEssences = $recipe->getSelectedEssencesPerLevelIds($i);
  				        
  				        echo "Nivå $i, ".Alchemy_Ingredient::POINTS[$i]." poäng<br>";
  				        echo "<div class='ingredient-area'>";
  				        
  				        foreach ($essences as $essence) {
+ 				            $checked="";
+ 				            if (in_array($essence->Id, $selectedEssences)) {
+ 				                $checked="checked='checked'";
+ 				            }
  				            $id = "essence_L".$i."_".$essence->Id;
- 				            echo "<input type='checkbox' class='hidden' name='Essences[]' id='$id' value='$i"."_"."$essence->Id'>";
+ 				            echo "<input type='checkbox' class='hidden' name='Essences[]' id='$id' value='$i"."_"."$essence->Id' $checked>";
  				            echo "<label for='$id'>$essence->Name</label>";
  				        }
  				        
@@ -182,26 +247,26 @@ input[type=checkbox]:checked+label {
 			<tr>
 
 				<td><label for="Description">Beredning</label></td>
- 				<td><textarea id="Preparation" name="Preparation" rows="4" cols="100" maxlength="60000" required></textarea></td>
+ 				<td><textarea id="Preparation" name="Preparation" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($recipe->Preparation); ?></textarea></td>
 					 
 			</tr>
 			<tr>
 
 				<td><label for="Description">Effekt</label></td>
- 				<td><textarea id="Effect" name="Effect" rows="4" cols="100" maxlength="60000" required></textarea></td>
+ 				<td><textarea id="Effect" name="Effect" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($recipe->Effect); ?></textarea></td>
 					 
 			</tr>
-			<?php if ($type == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { ?>
+			<?php if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { ?>
 			<tr>
 
 				<td><label for="Description">Bieffekt</label></td>
- 				<td><textarea id="SideEffect" name="SideEffect" rows="4" cols="100" maxlength="60000" required></textarea></td>
+ 				<td><textarea id="SideEffect" name="SideEffect" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($recipe->SideEffect); ?></textarea></td>
 					 
 			</tr>
 			<?php }?>
 		</table>
 
-		<input id="submit_button" type="submit" value="Skapa">
+		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
 	</form>
 	</div>
     </body>
