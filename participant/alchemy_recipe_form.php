@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $recipe = Alchemy_Recipe::newWithDefault();
         $recipe->AuthorRoleId = $RoleId;
         $recipe->AlchemistType = $_GET['type'];
+        $type = $recipe->AlchemistType;
     }
 
 }
