@@ -9,6 +9,7 @@ class Alchemy_Recipe extends BaseModel{
     public $Effect;
     public $SideEffect;
     public $IsApproved = 0;
+    public $IsSecret = 0;
     public $OrganizerNotes;
     public $Level;
     public $CampaignId;
@@ -38,6 +39,7 @@ class Alchemy_Recipe extends BaseModel{
         if (isset($arr['Effect'])) $this->Effect = $arr['Effect'];
         if (isset($arr['SideEffect'])) $this->SideEffect = $arr['SideEffect'];
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
+        if (isset($arr['IsSecret'])) $this->IsSecret = $arr['IsSecret'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['Level'])) $this->Level = $arr['Level'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
@@ -57,10 +59,10 @@ class Alchemy_Recipe extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_recipe SET Name=?, AlchemistType=?, Preparation=?, Effect=?, SideEffect=?, 
-                IsApproved=?, Level=?, OrganizerNotes=?, AuthorRoleId=? WHERE Id = ?");
+                IsApproved=?, IsSecret=?, Level=?, OrganizerNotes=?, AuthorRoleId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->AlchemistType, $this->Preparation, $this->Effect, $this->SideEffect, 
-            $this->IsApproved, $this->Level, $this->OrganizerNotes, $this->AuthorRoleId, $this->Id))) {
+            $this->IsApproved, $this->IsSecret, $this->Level, $this->OrganizerNotes, $this->AuthorRoleId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -74,10 +76,10 @@ class Alchemy_Recipe extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_alchemy_recipe (Name, AlchemistType, Preparation, Effect, SideEffect, 
-            IsApproved, Level, OrganizerNotes, CampaignId, AuthorRoleId) VALUES (?,?,?,?,?, ?,?,?,?,?);");
+            IsApproved, IsSecret, Level, OrganizerNotes, CampaignId, AuthorRoleId) VALUES (?,?,?,?,?, ?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->AlchemistType, $this->Preparation, $this->Effect, $this->SideEffect,
-            $this->IsApproved, $this->Level, $this->OrganizerNotes, $this->CampaignId, $this->AuthorRoleId))) {
+            $this->IsApproved, $this->IsSecret, $this->Level, $this->OrganizerNotes, $this->CampaignId, $this->AuthorRoleId))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -93,6 +95,11 @@ class Alchemy_Recipe extends BaseModel{
     
     public function isApproved() {
         if ($this->IsApproved == 1) return true;
+        return false;
+    }
+    
+    public function isSecret() {
+        if ($this->IsSecret == 1) return true;
         return false;
     }
     
@@ -122,6 +129,13 @@ class Alchemy_Recipe extends BaseModel{
     public static function allByCampaign(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_alchemy_recipe WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    
+    public static function allNotSecretByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_alchemy_recipe WHERE CampaignId = ? AND IsSecret=0 ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     

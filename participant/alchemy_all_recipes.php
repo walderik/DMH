@@ -50,7 +50,7 @@ include 'navigation.php';
 
        <?php
     
-       $recipes = Alchemy_Recipe::allByCampaign($current_larp);
+       $recipes = Alchemy_Recipe::allNotSecretByCampaign($current_larp);
        if (!empty($recipes)) {
            $tableId = "recipes";
            echo "<table id='$tableId' class='data'>";

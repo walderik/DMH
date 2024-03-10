@@ -253,6 +253,16 @@ input[type=checkbox]:checked+label {
 			</tr>
 			<tr>
 
+				<td><label for="IsSecret">Hemligt</label></td>
+    			<td>
+    				<input type="radio" id="IsApproved_yes" name="IsSecret" value="1" <?php if ($recipe->isSecret()) echo 'checked="checked"'?>> 
+        			<label for="IsApproved_yes">Ja</label><br> 
+        			<input type="radio" id="IsApproved_no" name="IsSecret" value="0" <?php if (!$recipe->isSecret()) echo 'checked="checked"'?>> 
+        			<label for="IsApproved_no">Nej</label>
+    			</td>
+			</tr>
+			<tr>
+
 				<td><label for="OrganizerNotes">Anteckningar<br>för arrangörer</label></td>
 				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
 						cols="100"><?php echo htmlspecialchars($recipe->OrganizerNotes); ?></textarea></td>
