@@ -97,9 +97,7 @@ class Alchemy_Supplier extends BaseModel{
 
     public static function delete($id)
     {
-        //$supplier = static::loadById($id);
-        
-        //TODO ta bort hur mycket de har haft med på tidigare lajv
+        Alchemy_Supplier_Ingredient::deleteAllForSupplier($id);
         parent::delete($id);
     }
     

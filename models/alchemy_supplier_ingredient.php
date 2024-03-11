@@ -85,6 +85,18 @@ class Alchemy_Supplier_Ingredient extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($supplier->Id, $larp->Id));
     }
     
+    public static function deleteAllForSupplier($supplierId) {
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_alchemy_supplier_ingredient WHERE SupplierId=?");
+        
+        if (!$stmt->execute(array($supplierId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+        
+    }
+    
     
     
 }
