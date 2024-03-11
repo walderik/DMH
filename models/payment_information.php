@@ -52,11 +52,16 @@ class PaymentInformation extends BaseModel{
     
     # Update an existing object in db
     public function update() {
+        $foodDescription = "";
+        $foodCost = "";
+        if (is_array($this->FoodDescription)) $foodDescription = implode(";", $this->FoodDescription);
+        if (is_array($this->FoodCost)) $foodCost = implode(";", $this->FoodCost);
+        
         $stmt = $this->connect()->prepare("UPDATE regsys_paymentinformation SET LARPId=?, FromDate=?, ToDate=?, FromAge=?, ToAge=?,
                                                                   Cost=?, FoodDescription=?, FoodCost=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->LARPId, $this->FromDate, $this->ToDate, $this->FromAge, $this->ToAge,
-            $this->Cost, implode(";", $this->FoodDescription), implode(";", $this->FoodCost), $this->Id))) {
+            $this->Cost, $foodDescription, $foodCost, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -68,12 +73,16 @@ class PaymentInformation extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
+        $foodDescription = "";
+        $foodCost = "";
+        if (is_array($this->FoodDescription)) $foodDescription = implode(";", $this->FoodDescription);
+        if (is_array($this->FoodCost)) $foodCost = implode(";", $this->FoodCost);
 
         $stmt = $connection->prepare("INSERT INTO regsys_paymentinformation (LARPId, FromDate, ToDate, FromAge, ToAge,
             Cost, FoodDescription, FoodCost) VALUES (?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->LARPId, $this->FromDate, $this->ToDate, $this->FromAge, $this->ToAge,
-            $this->Cost, implode(";", $this->FoodDescription), implode(";", $this->FoodCost)))) {
+            $this->Cost, $foodDescription, $foodCost))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
