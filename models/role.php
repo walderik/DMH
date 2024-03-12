@@ -414,7 +414,7 @@ class Role extends BaseModel{
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
             "regsys_larp_role.larpid=?) AND ".
-            "CampaignId = ? ORDER BY PersonId, Name;";
+            "CampaignId = ? AND IsDead=0 ORDER BY PersonId, Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $larp->CampaignId));
     }
     
