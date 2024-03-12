@@ -18,6 +18,8 @@ $person = $role->getPerson();
 
 include 'navigation.php';
 ?>
+<script src="../javascript/setringredientamount_ajax.js"></script>
+
 
 	<div class="content">
 		<h1><?php echo "Lövjerist <a href='view_role.php?id=$role->Id'>$role->Name</a>";?>&nbsp;
@@ -49,11 +51,11 @@ include 'navigation.php';
     		</table>
 
 			<h2>Ingredienser på <?php echo $current_larp->Name?></h2>
-			Klicka på det röda utropstecknet för att godkänna. 
+			Klicka på det röda utropstecknet för att godkänna. <br>
 			<?php 
 			$amounts = $supplier->getIngredientAmounts($current_larp);
 			if (empty($amounts)) {
-			    echo "Inga ingredienser, än.";
+			    echo "Inga ingredienser, än.<br>";
 			} else {
 				echo "<table class='small_data'>";
 				echo "<tr><th>Ingrediens</th><th>Antal</th><th>Nivå</th><th>Ingrediens/Katalysator</th><th>Essenser</th><th></th><th></th></tr>";
@@ -61,7 +63,12 @@ include 'navigation.php';
 				    $ingredient = $amount->getIngredient();
 				    echo "<tr>";
 				    echo "<td>$ingredient->Name</td>";
-				    echo "<td>$amount->Amount</td>";
+				    echo "<td>";
+				    if ($amount->isApproved()) echo $amount->Amount;
+				    else {
+				        echo "<input type='number' id='$amount->Id' min='1' value='$amount->Amount' onchange='saveAmount(this)'>";
+				    }
+				    echo "</td>";
 				    echo "<td>$ingredient->Level</td>\n";
 				    echo "<td>";
 				    if ($ingredient->isCatalyst()) echo "Katalysator";
@@ -87,6 +94,8 @@ include 'navigation.php';
 				echo "</table>";
 			}
 			?>
+			<br>
+			<a href='choose_alchemy_ingredient.php?id=<?php echo $supplier->Id ?>&operation=add_supplier_ingredient'>Lägg till ingredienser</a>
 
 			<h2>Ingredienser på tidigare lajv</h2>
 <?php //TODO hämta upp ingredienser på tidigare lajv ?>
