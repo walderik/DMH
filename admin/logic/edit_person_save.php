@@ -24,6 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registration = Registration::loadById($registrationId);
 
     $registration->setValuesByArray($registrationArr);
+    
+    //Spara dagar man inte kommer att vara med
+    if (isset($_POST['ChooseParticipationDates'])) $registration->LarpPartNotAttending = Registration::calculateDaysNotComing($current_larp, $_POST['ChooseParticipationDates']);
+    
+    
     $registration->update();
     
     $registration->deleteAllOfficialTypes();
