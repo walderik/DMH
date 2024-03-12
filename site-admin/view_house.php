@@ -94,7 +94,7 @@ ul.list {
         				<td colspan = '2'><h2>Historik Boende</h2>
         					<?php 
         					$larps = $house->getAllLarpsWithHousing();
-            				foreach ($larps as $larp) {
+        					foreach (array_reverse($larps) as $larp) {
             				    echo "<h3>$larp->Name</h3>";
             				    echo substr($larp->StartDate, 2, 8) .' -> '.substr($larp->EndDate, 2, 8)."<br><br>\n";
             					echo "<table id='caretakers' class='data'>";
