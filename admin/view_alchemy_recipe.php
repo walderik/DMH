@@ -45,6 +45,15 @@ include 'navigation.php';
                     </td>
     			</tr>
     			<tr>
+    				<td>Hemligt 
+    				</td>
+    				<td>
+    					<?php 
+    					echo ja_nej($recipe->isSecret());
+    					?>
+                    </td>
+    			</tr>
+    			<tr>
     				<td>Typ 
     				</td>
     				<td><?php echo $recipe->getRecipeType() ?>
