@@ -56,9 +56,9 @@ $supplier = Alchemy_Supplier::newWithDefault();;
 
     include 'navigation.php';
     
+    include 'alchemy_navigation.php';
     ?>
     
-
     <div class="content"> 
     <h1><?php echo default_value('action');?> löjverist <a href="<?php echo $referer?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 	<form action="logic/view_alchemy_supplier_logic.php" method="post">

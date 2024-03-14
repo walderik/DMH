@@ -16,6 +16,7 @@ $spell = Magic_Spell::loadById($spellId);
 
 
 include 'navigation.php';
+include 'magic_navigation.php';
 ?>
 
 	<div class="content">

@@ -23,6 +23,7 @@ if ($recipe->CampaignId != $current_larp->CampaignId) {
 
 
 include 'navigation.php';
+include 'alchemy_navigation.php';
 ?>
 
 	<div class="content">

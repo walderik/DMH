@@ -3,15 +3,15 @@ include_once 'header.php';
 
 
 include 'navigation.php';
+include 'magic_navigation.php';
 ?>
 
     <div class="content">
         <h1>Magi</h1>
         <p>
-        <a href="magic_schools_admin.php">Magiskolor</a><br>
-        <a href="magic_spells_admin.php">Magier</a><br>
-        <a href="magic_magician_admin.php">Magiker</a><br>
-        </p>
+ 		Totalt kommer 
+		<?php echo count(Magic_Magician::allByComingToLarp($current_larp)); ?> 
+		magiker på lajvet.        </p>
     </div>
 
 </body>

@@ -57,6 +57,7 @@ $magician = Magic_Magician::newWithDefault();;
     if (isset($master)) $masterRole = $master->getRole();
     $schools = Magic_School::allByCampaign($current_larp);
     include 'navigation.php';
+    include 'magic_navigation.php';
     
     ?>
     

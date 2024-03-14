@@ -16,6 +16,7 @@ $school = Magic_School::loadById($schoolId);
 
 
 include 'navigation.php';
+include 'magic_navigation.php';
 ?>
 
 	<div class="content">

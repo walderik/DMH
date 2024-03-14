@@ -15,7 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $currency = $current_larp->getCampaign()->Currency;
 
 include 'navigation.php';
+include 'alchemy_navigation.php';
 ?>
+
 <script src="../javascript/table_sort.js"></script>
 
  

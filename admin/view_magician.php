@@ -22,6 +22,7 @@ $school = $magician->getMagicSchool();
 
 
 include 'navigation.php';
+include 'magic_navigation.php';
 ?>
 
 	<div class="content">

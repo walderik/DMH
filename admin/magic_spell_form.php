@@ -53,6 +53,7 @@ $spell = Magic_Spell::newWithDefault();;
     
     
     include 'navigation.php';
+    include 'magic_navigation.php';
     
     ?>
     

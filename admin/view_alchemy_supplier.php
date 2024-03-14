@@ -17,6 +17,7 @@ $role = $supplier->getRole();
 $person = $role->getPerson();
 
 include 'navigation.php';
+include 'alchemy_navigation.php';
 ?>
 <script src="../javascript/setringredientamount_ajax.js"></script>
 

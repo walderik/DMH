@@ -53,6 +53,7 @@ $school = Magic_School::newWithDefault();;
     
     
     include 'navigation.php';
+    include 'magic_navigation.php';
     
     ?>
     

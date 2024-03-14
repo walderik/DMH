@@ -22,6 +22,7 @@ if (isset($teacher)) $teacherRole = $teacher->getRole();
 
 
 include 'navigation.php';
+include 'alchemy_navigation.php';
 ?>
 
 	<div class="content">

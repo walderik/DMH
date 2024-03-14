@@ -254,5 +254,17 @@ class Magic_Magician extends BaseModel{
         if (isset($imageId)) Image::delete($imageId);
     }
     
+    public static function allByComingToLarp(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_magic_magician WHERE RoleId In (".
+            "SELECT regsys_role.Id FROM regsys_role, regsys_larp_role, regsys_registration WHERE ".
+            "regsys_role.Id = regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.LARPId = ? AND ".
+            "regsys_larp_role.LARPId = regsys_registration.LarpId AND ".
+            "regsys_registration.PersonId = regsys_role.PersonId AND ".
+            "regsys_registration.NotComing = 0".
+            ") ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
     
 }

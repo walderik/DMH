@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 
 include 'navigation.php';
+include 'magic_navigation.php';
 ?>
 <script src="../javascript/table_sort.js"></script>
 

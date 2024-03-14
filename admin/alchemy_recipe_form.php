@@ -52,8 +52,8 @@ else {
 }
 
 include 'navigation.php';
+include 'alchemy_navigation.php';
 ?>
-    
 <style>
 
 img {

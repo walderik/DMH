@@ -55,6 +55,7 @@ $alchemist = Alchemy_Alchemist::newWithDefault();;
     $role = $alchemist->getRole();
     include 'navigation.php';
     
+    include 'alchemy_navigation.php';
     ?>
     
 
