@@ -6,6 +6,9 @@
   	-moz-osx-font-smoothing: grayscale;
 }
 
+
+
+
 body {
 	background-color: #f3f4f7;
 }
@@ -74,6 +77,14 @@ a.no_underline {
 	padding: 25px;
 	background-color: #fff;
 }
+
+
+.content > div.nomargin {
+	margin: 0px;	
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
 .content > p table td, .content > div table td {
 	padding: 10px;
 }

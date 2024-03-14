@@ -16,21 +16,21 @@ include "navigation.php";
         	  }
         	  
         	  if ($current_larp->isEnded()) {
-        	      echo "<div><b style='color: green'>Lajvet är över. Hoppas att du hade roligt.<br>Gå gärna och och skriv vad som hände.</b>";
+        	      echo "<div class='nomargin'><b style='color: green'>Lajvet är över. Hoppas att du hade roligt.<br>Gå gärna och och skriv vad som hände.</b>";
         	      echo "</div>";
         	  }elseif ($current_larp->isPastLatestRegistrationDate() && !$current_larp->mayRegister()) {        	      
-        	      echo "<div><b style='color: red'>Sista anmälningsdag har passerat</b>";
+        	      echo "<div class='nomargin'><b style='color: red'>Sista anmälningsdag har passerat</b>";
         	      echo "</div>";
         	  } elseif ($current_larp->isPastLatestRegistrationDate()) {       	      
-        	      echo "<div><b style='color: red'>Sista anmälningsdag har passerat</b>, men du kan göra en anmälan så att du hamnar på reservlistan.<br>Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.";
+        	      echo "<div class='nomargin'><b style='color: red'>Sista anmälningsdag har passerat</b>, men du kan göra en anmälan så att du hamnar på reservlistan.<br>Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.";
         	      echo "</div>";
         	  } elseif ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
 
-                echo "<div><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b> Om någon annan avbokar kan du kanske få en plats.<br>Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.";
+                echo "<div class='nomargin'><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b> Om någon annan avbokar kan du kanske få en plats.<br>Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.";
                 echo "</div>";
             } elseif ($current_larp->RegistrationOpen == 0) {
 
-                echo "<div><b style='color: red'>Anmälan inte öppen</b>";
+                echo "<div class='nomargin'><b style='color: red'>Anmälan inte öppen</b>";
                 echo "<br><br>Du kan registrera deltagare, grupper och karaktärer i väntan på att anmälan ska öppna. <br><br>"; 
                 echo "OBS! En karaktär kan bara bli medlem i en grupp om den är anmäld. Så det får du editera efter att anmälan har öppnat. Men övrig information kan du fylla i så länge.";
                 echo "</div>";
@@ -38,24 +38,9 @@ include "navigation.php";
             ?>
 			
 
-			<div>
-			Så här använder du anmälningssystemet:
-				<ol>
-			 	<li>Börja med att <a href="person_form.php">registrera en deltagare.</a></li>
-			 	<li>Om du är gruppansvarig, <a href="group_form.php">registrera en grupp</a> och <a href="group_registration_form.php">anmäl den till lajvet</a>.</li>
-			 	<li><a href="role_form.php">Registrera karaktärer</a>, om du ska ha flera karaktärer ska du registrera alla innan du går vidare till anmälan.</li>
-			 	<li><a href="select_person.php">Anmäl deltagaren</a> till lajvet.</li>
-			 	</ol>
-			 	Det går att hantera flera deltagare från ett konto, tex om ni är en familj.<br><br>
-			 	Till nästa lajv kommer alla registrerade deltagare, grupper och karaktärer att finnas kvar. Så då kan du bara kontrollera att allt ser rätt och sedan skicka in anmälan.
-			 	<br><br>
-			 	<strong>Symboler</strong><br>
-			 	<?php echo showStatusIcon(false); ?> - Något behöver göras<br>
-			 	<?php echo showStatusIcon(true); ?> - Allt klart på den här punkten<br>
-			 	<i class='fa-solid fa-pen'></i> - Ändra<br>
-			 	<i class='fa-solid fa-trash'></i> - Ta bort<br>
-			 	<i class='fa-solid fa-image-portrait'></i> - Ladda upp bild (går bara efter anmälan). Om du vill byta bild får du först ta bort den gamla.<br>
-			 	<i class='fa-solid fa-skull-crossbones'></i> - Död	
+			<div class='nomargin'>
+			Läs gärna <a href='help.php'>hjälpen</a> om du vill veta hur du använder systemet.
+			
 			 	
 			 </div>
 		</div>
