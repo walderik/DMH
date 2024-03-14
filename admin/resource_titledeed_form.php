@@ -213,6 +213,13 @@ function updateResult() {
 
 		<input id="submit_button" type="submit" value="Uppdatera">
 	</form>
+	
+	<?php 
+	include 'print_titledeed_results.php';
+	?>
+
+	
+	
 	</div>
     </body>
 

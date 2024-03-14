@@ -72,6 +72,10 @@ class TitledeedResult extends BaseModel{
     public function getTitledeed() {
         return Titledeed::loadById($this->TitledeedId);
     }
+    
+    public function getLarp() {
+        return LARP::loadById($this->LARPId);
+    }
 
     public static function getResultForTitledeed(Titledeed $titledeed, LARP $larp) {
         $sql = "SELECT * FROM regsys_titledeedresult WHERE TitledeedId=? AND LARPId = ?";
