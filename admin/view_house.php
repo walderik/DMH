@@ -48,6 +48,12 @@ img {
     				<td>Beskrivning</td>
     				<td><?php echo nl2br(htmlspecialchars($house->Description)); ?></td>
     			</tr>
+    			<?php if ($house->IsHouse() && isset($house->NotesToUsers)) {?>
+    			<tr>
+    				<td>Information till deltagare som ska bo i huset</td>
+    				<td><?php echo nl2br(htmlspecialchars($house->NotesToUsers)); ?></td>
+    			</tr>
+    			<?php }?>
     			<tr><td></td></tr>
     			<tr>
     				<td colspan = '2'><b>De som bor i huset under <?php echo $current_larp->Name ?> är:</b><br>

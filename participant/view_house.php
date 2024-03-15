@@ -51,6 +51,12 @@ ul.list {
     				<td>Beskrivning</td>
     				<td><?php echo nl2br(htmlspecialchars($house->Description)); ?></td>
     			</tr>
+    			<?php if ($house->IsHouse() && isset($house->NotesToUsers)) {?>
+    			<tr>
+    				<td>Information om att bo i huset</td>
+    				<td><?php echo nl2br(htmlspecialchars($house->NotesToUsers)); ?></td>
+    			</tr>
+    			<?php }?>
     			<tr>
     				<td colspan = '2'><b>De som bor i huset under <?php echo $current_larp->Name ?> är:</b><br>
     				<p>

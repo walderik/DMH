@@ -13,7 +13,10 @@ class House extends BaseModel{
     public $History;
     public $DeletedAt;
     public $InspectionNotes;
-    public $Position;
+    public $Lat;
+    public $Lon;
+    
+    //SELECT ST_X(MY_POINT) as latitude,  ST_Y(MY_POINT) as longitude  FROM MY_TABLE;
         
     public static $orderListBy = 'IsHouse, Name';
     
@@ -35,8 +38,9 @@ class House extends BaseModel{
         if (isset($arr['History'])) $this->History = $arr['History'];
         if (isset($arr['DeletedAt'])) $this->DeletedAt = $arr['DeletedAt'];
         if (isset($arr['InspectionNotes'])) $this->InspectionNotes = $arr['InspectionNotes'];
-        if (isset($arr['Position'])) $this->Position = $arr['Position'];
-   
+        if (isset($arr['Lat'])) $this->Lat = $arr['Lat'];
+        if (isset($arr['Lon'])) $this->Lon = $arr['Lon'];
+        
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         if (isset($this->DeletedAt) && $this->DeletedAt=='null') $this->DeletedAt = null;
     }
@@ -49,10 +53,10 @@ class House extends BaseModel{
     # Update an existing house in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_house SET Name=?, NumberOfBeds=?, PositionInVillage=?, Description=?, 
-                ImageId=?, IsHouse=?, NotesToUsers=?, History=?, DeletedAt=?, InspectionNotes=?, Position=? WHERE Id = ?");
+                ImageId=?, IsHouse=?, NotesToUsers=?, History=?, DeletedAt=?, InspectionNotes=?, Lat=?, Lon=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, 
-            $this->ImageId, $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Position, $this->Id))) {
+            $this->ImageId, $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Lat, $this->Lon, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -65,10 +69,10 @@ class House extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_house (Name, NumberOfBeds, PositionInVillage, Description, 
-            IsHouse, NotesToUsers, History, DeletedAt, InspectionNotes, Position) VALUES (?,?,?,?,?,?,?,?,?,?)");
+            IsHouse, NotesToUsers, History, DeletedAt, InspectionNotes, Lat, Lon) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, 
-            $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Position))) {
+            $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Lat, $this->Lon))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

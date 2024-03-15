@@ -66,7 +66,7 @@ img {
             		<table>
             			<tr>
             				<td><label for="Name" class="header" style="width:10%">Namn</label></td>
-            				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($house->Name); ?>" required style="width:20%"></td>
+            				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($house->Name); ?>" required ></td>
             			</tr>
         				<tr>
         					<td valign="top" class="header">Typ</td>
@@ -93,6 +93,21 @@ img {
             					<textarea id="Description" name="Description" rows="6" cols="50" maxlength="60000" required><?php echo htmlspecialchars($house->Description); ?></textarea>
             				</td>
             			</tr>
+            			<?php if ($house->IsHouse()) {?>
+            			<tr>
+            				<td><label for="NotesToUsers" class="header">Information till deltagare som ska bo i huset</label></td>
+            				<td>
+            					<textarea id="NotesToUsers" name="NotesToUsers" rows="6" cols="50" maxlength="60000" required><?php echo htmlspecialchars($house->NotesToUsers); ?></textarea>
+            				</td>
+            			</tr>
+
+            			<tr>
+            				<td><label for="InspectionNotes" class="header">Noteringar från besiktning</label></td>
+            				<td>
+            					<textarea id="InspectionNotes" name="InspectionNotes" rows="6" cols="50" maxlength="60000" required><?php echo htmlspecialchars($house->InspectionNotes); ?></textarea>
+            				</td>
+            			</tr>
+            			<?php }?>
             			<tr>
             				<td></td><td><input id="submit_button" type="submit" value="<?php default_value('action'); ?>"></td>
             			</tr>
