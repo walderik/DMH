@@ -1,29 +1,13 @@
 <?php
 include_once 'header.php';
 
-$house = House::loadById($_GET['id']);
- 
+$house = House::newWithDefault();
+
 
 include "navigation.php";
 
 ?>
-    
-<style>
 
-#osm-map {
-	cursor: crosshair;
-	}
-
-
-
-img {
-  float: right;
-}
-
-ul.list {
-    list-style-type: disc;
-}
-</style>
 
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
@@ -31,7 +15,7 @@ ul.list {
 
 
     <div class="content"> 
-    	<h1>Sätt position för <?php echo $house->Name; ?>
+    	<h1>Alla hus och lägerplatser
     	</h1>
     	<table width='90%'>
     			<tr><td c>
@@ -57,28 +41,35 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-// Target's GPS coordinates.
-<?php if (isset($house->Lat) && isset($house->Lon)) { 
-    echo "var target = L.latLng('$house->Lat', '$house->Lon');";
-    // Place a marker on the same location.
-    echo "L.marker(target).addTo(map);";
-} else {
-    echo "var target = L.latLng('57.47008', '13.93714');";
+
+<?php 
+$houses = House::all();
+foreach ($houses as $house) {
+    if (isset($house->Lat) && isset($house->Lon)) {
+        //echo "var popup = L.popup()".
+        //".setLatLng([$house->Lat, $house->Lon])".
+        //".setContent('$house->Name')".
+        //".openOn(map);";
+        
+        
+        echo "var target = L.latLng('$house->Lat', '$house->Lon');";
+        
+        echo "marker = L.marker(target).addTo(map);";
+        echo "marker.bindPopup('$house->Name').openPopup();";
+
+    }
 }
-    
-    
+
 ?>
+
+// Target's GPS coordinates.
+var target = L.latLng('57.47008', '13.93714');
+
 
 
 // Set map's center to target with zoom 20.
 map.setView(target, 20);
-map.on('click', onMapClick);
 
-function onMapClick(e) {
-    var lat  = e.latlng.lat.toFixed(8);
-    var lon  = e.latlng.lng.toFixed(8);
-    window.location.href ="view_house.php?id=<?php echo $house->Id?>&operation=position&lat="+lat+"&lon="+lon;
-}
 </script>
 
     </body>

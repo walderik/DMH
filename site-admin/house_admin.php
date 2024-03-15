@@ -48,6 +48,8 @@ include "navigation.php";
 
 <div class="content">   
     <h1>Hus och lägerplatser</h1>
+    <a href='all_houses.php'><i class='fa fa-map' aria-hidden='true'></i>Karta med alla hus</a><br> 
+    <a href='all_housing.php'><i class='fa fa-map' aria-hidden='true'></i>Karta med alla hus och lägerplatser</a>
     <p><a href="house_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i> Lägg till</a></p>  <br>
     
     <?php
