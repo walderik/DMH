@@ -139,6 +139,7 @@ class Report_PDF extends FPDF {
         $this->name     = $name;
         $this->rows     = $rows;
         $this->num_cols = sizeof($this->rows[0]);
+        $this->num_rows = sizeof($this->rows);
         $this->text_max_length = 94 / $this->num_cols; # Max antal tecken per kolumn (Empiriskt testat för vad som ser bra ut)
         
         $this->cell_height = static::$cell_y + (2*static::$Margin);
@@ -228,14 +229,26 @@ class Report_PDF extends FPDF {
         
         # Minska bredaste kolumnen om andra inte får plats
         $avg_part = 0;
+        $column_nr = [];
+        $changes = [];
         for ($column_nr = 0; $column_nr < $this->num_cols; $column_nr++){
             $this_cell_widths = round($total_width_for_text * $with_part[$column_nr]);
-            $text_fit_in_column_before[] = ($this_cell_widths > $max_col_text_width[$column_nr]) ? 'Ja' : 'NEJ';
-            # Hantera om små kolumner inte får plats med sitt data
-            if (($this_cell_widths < $max_col_text_width[$column_nr]) && $column_nr != $widest_column) {
-                $change = $with_part[$widest_column] * 0.05;
-                $with_part[$widest_column] -= $change;
-                $with_part[$column_nr] += $change;
+            $how_much_dont_fit[] = $max_col_text_width[$column_nr] - $this_cell_widths;
+            
+            $fits_in_column = $how_much_dont_fit[$column_nr] < 0; # ($this_cell_widths > $max_col_text_width[$column_nr]);
+            $text_fit_in_column_before[] = $fits_in_column ? 'Ja' : 'NEJ';
+            
+            if ($column_nr != $widest_column && !$fits_in_column) {
+                # Gör eventuellt andra kolumner bredare på bredaste kolumnens bekostnad
+                # Hantera om små kolumner inte får plats med sitt data  
+                $change = ($with_part[$widest_column] * 0.1);
+                if (($with_part[$column_nr] + $change) < ($with_part[$widest_column] - $change)) {
+                    $with_part[$widest_column] -= $change;
+                    $with_part[$column_nr] += $change;
+                    $changes[] = $change;
+                }
+            } else {
+                $changes[] = 0;
             }
             $avg_part += $with_part[$column_nr]; 
         }
@@ -275,15 +288,18 @@ class Report_PDF extends FPDF {
         }
         
 //         $this->rows[] = ["TOT: $total_width_for_text", "widest $widest_column"];
-//         $this->rows[] = ["Max col text width",''];
+//         $this->rows[] = ["Max col text width",'','','',''];
 //         $this->rows[] = $max_col_text_width;
-//         $this->rows[] = ["with_part",''];
+//         $this->rows[] = ["with_part",'','','',''];
 //         $this->rows[] = $with_part;
-//         $this->rows[] = ["Cell text width",''];
+//         $this->rows[] = ["Cell text width",'','','',''];
 //         $this->rows[] = $this->cell_widths;
-//         $this->rows[] = ["Får rum före",''];
+//         $this->rows[] = ["Får rum före",'','','',''];
 //         $this->rows[] = $text_fit_in_column_before;
-//         $this->rows[] = ["Får rum efter",''];
+//         $this->rows[] = ["Hur mycket får inte plats",'','','',''];
+//         $this->rows[] = $how_much_dont_fit;
+//         $this->rows[] = $changes;
+//         $this->rows[] = ["Får rum efter",'','','',''];
 //         $this->rows[] = $text_fit_in_column_after;
         
         
@@ -302,12 +318,54 @@ class Report_PDF extends FPDF {
         $this->current_cell_height = $this->cell_height;
         
         # Skriv ut cellerna
+        $max_lines_per_row = [];
         $rubrik = true;
+        $row_nr = 0;
+        $first_row = $this->rows[0];
         foreach($this->rows as $row){
+            $max_lines_per_row[] = 0;
             foreach($row as $cell_text) {
+//                 $cell_text = "$row_nr - $max_lines_per_row[$row_nr] - $cell_text";
+                $number_lines = $this->NbLines($this->cell_widths[$this->current_col], $cell_text);
+                if ($number_lines > $max_lines_per_row[$row_nr]) $max_lines_per_row[$row_nr] = $number_lines;
+//                 $cell_text = "Row $row_nr : $number_lines : MAX $max_lines_per_row[$row_nr] : $cell_text";
                 $this->set_cell($cell_text, $rubrik);
+                # Räkna upp en cell i bredd
+                $this->current_col += 1;
+                
+                if ($this->num_cols == $this->current_col) {
+                    # Sista cellen i en rad
+                    
+                    # Dra alla mellanstrecken
+                    for ($col = 0; $col < $this->num_cols; $col++) $this->mittlinje($col);
+                    
+                    $this->current_col = 0;
+                    $this->current_y += $this->current_cell_height;
+                    $this->bar();
+                    
+                    $predicted_cell_height = ($max_lines_per_row[$row_nr]*static::$cell_y) + (static::$Margin*2);
+                    if ($this->current_y > ($this->PageBreakTrigger - $predicted_cell_height) && (($row_nr+1) < $this->num_rows)) {
+                        $this->AddPage($this->CurOrientation); # Ny sidan om vi är längst ner
+                        $this->current_y += 5;
+                        $this->bar();
+                        # Skriv ut rubrikerna igen
+                        $this->current_cell_height = $this->cell_height;
+                        foreach($first_row as $header_text) {
+                            $this->set_cell($header_text, true);
+                            # Räkna upp en cell i bredd
+                            $this->current_col += 1;
+                        }
+                        for ($col = 0; $col < $this->num_cols; $col++) $this->mittlinje($col);
+                        $this->current_col = 0;
+                        $this->current_y += $this->current_cell_height;
+                        $this->bar();
+                    }
+                    
+                    $this->current_cell_height = $this->cell_height;
+                }
             }
             $rubrik = false;
+            $row_nr += 1;
         }
 	}
 	
@@ -329,7 +387,7 @@ class Report_PDF extends FPDF {
 	    if (empty($text)) $text = ' ';
 	    
 	    $text = trim(utf8_decode($text));
-// 	    $text = "$text - $this->current_col";
+//  	    $text = "$text - $this->PageBreakTrigger";
    
 	    $bold_char = $bold ? 'B' : '';
 	   
@@ -352,40 +410,70 @@ class Report_PDF extends FPDF {
 	    
 	    # Skriv ut texten i cellen
 	    # MultiCell(float w, float h, string txt [, mixed border [, string align [, boolean fill]]])
-	    $this->MultiCell($this->cell_widths[$this->current_col], static::$cell_y-1.5, $text, 0, 'L', false);
+	    $res = $this->MultiCell($this->cell_widths[$this->current_col], static::$cell_y, $text, 0, 'L', false);
 
-	    # Hantering om resultatet av cellen är för stort för att få plats.
+	    # Hantering om resultatet av cellen är för stort för att få plats på en rad
+	    # Beräkna nya cellhöjden för den här raden
         $current_y = $this->GetY();
         if ($current_y > $this->current_y + $this->current_cell_height) {
             $new_height = $current_y - $this->current_y;
             $this->current_cell_height = $new_height;
             # Efterjustera mittlinjen om det behövs            
         }
-            
-        # Räkna upp en cell i bredd
-        $this->current_col += 1;
-        
-        if ($this->num_cols == $this->current_col) { 
-            # Sista cellen i en rad
-            
-            # Dra alla mellanstrecken
-            for ($col = 0; $col < $this->num_cols; $col++) {
-                $this->mittlinje($col);
-            }
-            
-            $this->current_col = 0;
-            $this->current_y += $this->current_cell_height;
-            $this->bar();
-            
-            if ($this->current_y > 270) { 
-                $this->AddPage($this->CurOrientation); # Ny sidan om vi är längst ner
-                $this->current_y += 5;
-            }
-            
-            $this->current_cell_height = $this->cell_height;
-        }
-	    
 	    return;
+	}
+	
+	function NbLines($w, $txt)
+	{
+	    // Compute the number of lines a MultiCell of width w will take
+	    if(!isset($this->CurrentFont)) $this->Error('No font has been set');
+        $cw = $this->CurrentFont['cw'];
+        if($w==0) $w = $this->w-$this->rMargin-$this->x;
+        
+        
+        $wmax = ($w-2*$this->cMargin) * 1000/$this->FontSize;
+        $s = str_replace("\r",'',(string)$txt);
+        $nb = strlen($s);
+        if($nb>0 && $s[$nb-1]=="\n")
+            $nb--;
+            $sep = -1;
+            $i = 0;
+            $j = 0;
+            $l = 0;
+            $nl = 1;
+            while($i<$nb)
+            {
+                $c = $s[$i];
+                if($c=="\n")
+                {
+                    $i++;
+                    $sep = -1;
+                    $j = $i;
+                    $l = 0;
+                    $nl++;
+                    continue;
+                }
+                if($c==' ')
+                    $sep = $i;
+                    $l += $cw[$c];
+                    if($l>$wmax)
+                    {
+                        if($sep==-1)
+                        {
+                            if($i==$j)
+                                $i++;
+                        }
+                        else
+                            $i = $sep+1;
+                            $sep = -1;
+                            $j = $i;
+                            $l = 0;
+                            $nl++;
+                    }
+                    else
+                        $i++;
+            }
+            return $nl;
 	}
 	
 }
