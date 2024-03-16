@@ -19,8 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $upgrade->TitledeedResultId = $titledeed_result->Id;
             $upgrade->ResourceId = $upgradeRequirement->ResourceId;
             $upgrade->QuantityForUpgrade = $upgradeRequirement->QuantityForUpgrade;
-            if (in_array($upgradeRequirement->ResourceId, $upgradeDoneResouceIds)) $upgrade->NeedsMet = true;
-            $upgrade->NeedsMet = false;
+            if (in_array($upgradeRequirement->ResourceId, $upgradeDoneResouceIds)) $upgrade->NeedsMet = 1;
+            $upgrade->NeedsMet = 0;
             $upgrade->create();
         }
         if ($titledeed->MoneyForUpgrade > 0) {
@@ -28,8 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $upgrade->TitledeedResultId = $titledeed_result->Id;
             $upgrade->ResourceId = null;
             $upgrade->QuantityForUpgrade = $titledeed->MoneyForUpgrade;
-            if (isset($_POST['MoneyForUpgradeMet'])) $upgrade->NeedsMet = true;
-            else $upgrade->NeedsMet = false;
+            if (isset($_POST['MoneyForUpgradeMet'])) $upgrade->NeedsMet = 1;
+            else $upgrade->NeedsMet = 0;
             $upgrade->create();
         }
         
