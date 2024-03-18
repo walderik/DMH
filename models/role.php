@@ -142,7 +142,7 @@ class Role extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_role (Name, Profession, Description, 
                                                             DescriptionForGroup, DescriptionForOthers, PreviousLarps,
-                                                            ReasonForBeingInSlowRiver, ReligionId, Religion, DarkSecret, DarkSecretIntrigueIdeas,
+                                                            ReasonForBeingInSlowRiver, ReligionId, Religion, BeliefId, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId, CouncilId, Council, GuardId, 
                                                             RoleFunctionComment, Birthplace, CharactersWithRelations, CampaignId, ImageId, 
