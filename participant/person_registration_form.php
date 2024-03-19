@@ -296,7 +296,7 @@ include 'navigation.php';
 			<div class="explanation">
 			  	Alla karaktärer ska godkännas. Du kommer att får ett mail när någon i arrangörsgruppen har 
 			  	läst igenom din karaktär och godkänt den. Om den inte blir godkänd kommer du att få möjlighet 
-			  	att ändra karaktären i samrbete med arrangörerna. Nu när du skickar in den är den så klart 
+			  	att ändra karaktären i samarbete med arrangörerna. Nu när du skickar in den är den så klart 
 			  	ännu inte godkänd och därför kan du bara välja 'Nej'.
 			  
 			</div>
