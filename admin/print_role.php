@@ -10,7 +10,7 @@ if (isset($role->GroupId)) {
 
 $person = $role->getPerson();
 
-
+$isReserve = Reserve_LARP_Role::isReserve($role->Id, $current_larp->Id);
 ?>
 <table>
 <?php
@@ -21,7 +21,11 @@ if ($role->isMysLajvare()) {
 			<tr>
     			<td valign="top" class="header">Spelas av</td>
     			<td>
-    			<a href ="view_person.php?id=<?php echo $role->PersonId;?>"><?php echo $person->Name; ?></a>&nbsp;
+    			<?php if (!$isReserve) { ?>
+    			
+    			<a href ="view_person.php?id=<?php echo $role->PersonId;?>">
+    			<?php } ?>
+    			<?php echo $person->Name; ?></a>&nbsp;
     			<?php  echo contactEmailIcon($person->Name,$person->Email); ?>&nbsp;
     			
     			(<?php echo $person->getAgeAtLarp($current_larp) ?> år)

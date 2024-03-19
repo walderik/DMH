@@ -270,7 +270,7 @@ include 'navigation.php';
 	    ?>
 		</div>
 		<?php 
-		if ($current_larp->hasRumours()) {
+		if ($current_larp->hasRumours() && !$isReserve) {
 		
 		?>
 		
@@ -295,6 +295,7 @@ include 'navigation.php';
 		</div>
 		<?php }?>
 		
+		<?php if (!$isReserve) {?>
 		<h2>Handel</h2>
 		<div>
 		<?php 
@@ -318,7 +319,7 @@ include 'navigation.php';
 		
 		
 		
-		
+		}
 		
 		?>
 		
