@@ -631,10 +631,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    if (!Wealth::isInUse($this->larp)) return false;
 	    
 	    if ($this->isMyslajvare) return false;
-	    
+	    $wea = $this->role->getWealth();
+	    if (empty($wea)) $txt = "OBS! Rikedom saknas";
+	    else $txt = $wea->Name;
 	    $this->set_header($left, 'Rikedom');
 	    //$text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
-	    $this->set_text($left, $this->role->getWealth()->Name);
+	    $this->set_text($left, $txt);
 	    return true;
 	}
 	
@@ -729,8 +731,11 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	protected function bor($left) {
 	    if (!PlaceOfResidence::isInUse($this->larp)) return false;
 	    if ($this->isMyslajvare) return false;
+	    $por = $this->role->getPlaceOfResidence();
+	    if (empty($por)) $txt = "OBS! Boplats saknas";
+	    else $txt = $por->Name;
 	    $this->set_header($left, 'Bor');
-	    $this->set_text($left, $this->role->getPlaceOfResidence()->Name);
+	    $this->set_text($left, $txt);
 	    return true;
 	}
 	
