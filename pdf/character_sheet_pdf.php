@@ -597,6 +597,17 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	        }
 	    }
 	}
+
+	
+	function selected_character_sheets($roles, LARP $larp_in, bool $bara_intrig, ?bool $all_info=true) {
+	    foreach($roles as $role) {
+	        if ($bara_intrig) {
+	            $this->intrigue_info($role, $larp_in);
+	        } else {
+	            $this->new_character_sheet($role, $larp_in, $all_info);
+	        }
+	    }
+	}
 	
 	
 	

@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 $bara_intrig = false;
 $role = null;
 
+
 if (isset($_GET['id'])) {
     $roleId = $_GET['id'];
     $role = Role::loadById($roleId);
@@ -41,12 +42,21 @@ $pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $subject = (empty($role)) ? 'ALLA' : $role->Name;
 $pdf->SetSubject(utf8_decode($subject));
+
 $all_info = (isset($_GET['all_info'])) ? true : false;
+$only_children = (isset($_GET['children'])) ? true : false;
 
 if (empty($role)) {
-    $pdf->all_character_sheets($current_larp, $bara_intrig, $all_info);
+    if (empty($only_children)) $pdf->all_character_sheets($current_larp, $bara_intrig, $all_info);
+    else {
+        $children = array();
+        $roles = Role::getAllMainRoles($current_larp, false);
+        foreach ($roles as $role) {
+            if ($role->getPerson()->getAgeAtLarp($current_larp) < 16) $children[] = $role;
+        }
+        $pdf->selected_character_sheets($children, $current_larp, $bara_intrig, $all_info);
+    }
 } else {
-    $all_info = (isset($_GET['all_info'])) ? true : false;
     $pdf->new_character_sheet($role, $current_larp, $all_info, false);
 }
 

@@ -19,6 +19,8 @@ th {
         <a href="role_list.php"><i class='fa-solid fa-eye' title='Se alla karaktärer samlat på en sida'></i> En sida med alla</a> &nbsp; &nbsp; &nbsp;
         <a href='character_sheet.php?all_info=true' target='_blank'><i class='fa-solid fa-file-pdf' title='Allt om alla karaktärer som en stor PDF (tar tid att generera)'></i> Allt om alla</a>
          &nbsp; &nbsp; &nbsp;
+        <a href='character_sheet.php?all_info=true&children=true' target='_blank'><i class='fa-solid fa-file-pdf' title='Allt om alla barns karaktärer som en stor PDF (tar tid att generera)'></i> Allt om alla barn (upp till 15 år)</a>
+         &nbsp; &nbsp; &nbsp;
         <a href='character_sheet.php?bara_intrig=japp' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla intriger (tar tid att generera)'></i> Alla intriger</a>
          &nbsp; &nbsp; &nbsp;
         <a href='character_sheet.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla karaktärer så som de ser ut för deltagarna(tar tid att generera)'></i> Alla karaktärer så som de ser ut för deltagarna</a>
