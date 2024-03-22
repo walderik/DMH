@@ -132,9 +132,13 @@ include 'magic_navigation.php';
 			    echo "Inga magier, än.";
 			} else {
 				echo "<table class='small_data'>";
-				echo "<tr><th>Magi</th><th>Nivå</th><th>Typ</th><th>Beskrivning</th><th></th></tr>";
+				echo "<tr><th>Magi</th><th>Nivå</th><th>Typ</th><th>Beskrivning</th><th>Tilldelad</th><th></th></tr>";
 				foreach ($spells as $spell) {
 				    echo "<tr><td><a href='view_magicspell.php?id=$spell->Id'>$spell->Name</td><td>$spell->Level</td><td>".Magic_Spell::TYPES[$spell->Type]."</td><td>$spell->Description</td>";
+				    echo "<td>";
+				    $grated_larp = $magician->getGrantedLarp($spell);
+				    if (isset($grated_larp)) echo $grated_larp->Name;
+				    echo "</td>";
 				    echo "<td><a href='logic/view_magician_logic.php?operation=remove_spell&SpellId=$spell->Id&Id=$magician->Id'><i class='fa-solid fa-xmark' title='Ta bort magi från magiskolan'></i></a></td>";
 				    echo "</tr>";
 				}

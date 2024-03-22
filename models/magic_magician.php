@@ -138,7 +138,12 @@ class Magic_Magician extends BaseModel{
     
     
     public function getSpells() {
-        return Magic_Spell::getSpellsForMagician($this);
+        $granted_spells = Magic_Spell::getSpellsForMagician($this);
+        $shoool_spells = $this->getMagicSchool()->getSpellsUpToLevel($this->Level);
+        $all_spells = array_merge($granted_spells,$shoool_spells);
+        
+        return array_unique($all_spells, SORT_REGULAR);
+        
     }
     
     public function addSpells($spellIds, Larp $larp) {

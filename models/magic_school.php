@@ -107,6 +107,10 @@ class Magic_School extends BaseModel{
         return Magic_Spell::getSpellsForSchool($this);
     }
     
+    public function getSpellsUpToLevel($level) {
+       return Magic_Spell::getSpellsForSchoolUpToLevel($this, $level); 
+    }
+    
     public function getAllMagicians() {
         return Magic_Magician::getMagiciansForSchool($this);
     }

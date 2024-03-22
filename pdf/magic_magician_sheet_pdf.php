@@ -28,6 +28,7 @@ class MagicMagicianSheet_PDF extends PDF_MemImage {
     public static $text_max_length = 50;
     
     public $magician;
+    public $magic_school;
     public $role;
     public $person;
     public $larp;
@@ -91,8 +92,10 @@ class MagicMagicianSheet_PDF extends PDF_MemImage {
         $space = 3;
         
         $this->magician = $magician_in;
+        $this->magic_school = $this->magician->getMagicSchool();
         $this->role = $this->magician->getRole();
         $this->person = $this->role->getPerson();
+        
         $this->larp = $larp_in;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $this->current_cell_height = $this->cell_y_space;
@@ -109,7 +112,7 @@ class MagicMagicianSheet_PDF extends PDF_MemImage {
         
         $this->title($left, $this->role->Name);
          
-        //$y += $this->cell_y_space;
+        $y += 5;
         
         $this->bar();
         
@@ -124,17 +127,21 @@ class MagicMagicianSheet_PDF extends PDF_MemImage {
         if ($this->current_left == $left2) $this->draw_field('empty');
         $y += 3;
         
-        # Att fixa när vi väl har tidigare lajv
+        //Alla spells
         $spells = $this->magician->getSpells();
         if (!empty($spells)) {
             
             foreach ($spells as $spell) {
+                if ($y + 40 > $this->GetPageHeight()) {
+                    $y = 0;
+                    $this->AddPage();
+                }
                 $this->current_left = $left;
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','B',static::$text_fontsize);
                 $this->Cell($this->cell_width, static::$cell_y, utf8_decode($spell->Name),0,0,'L');
                 
-                $y = $this->GetY() + $space*3;
+                $y = $this->GetY() + $space*2;
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','',static::$text_fontsize);
                 $text = trim(utf8_decode("Nivå ".$spell->Level));
@@ -142,16 +149,16 @@ class MagicMagicianSheet_PDF extends PDF_MemImage {
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
                 
-                $y = $this->GetY() + $space*3;
+                $y = $this->GetY() + $space;
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','',static::$text_fontsize);
                 $text = trim(utf8_decode($spell->Description));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                $y = $this->GetY() + $space;
-                $this->SetXY($left, $y);
+                //$y = $this->GetY() + $space;
+                //$this->SetXY($left, $y);
  
                 if (isset($spell->Special)) {
-                    $y = $this->GetY() + $space*3;
+                    $y = $this->GetY() + $space;
                     $this->SetXY($this->current_left, $y);
                     $this->SetFont('Helvetica','',static::$text_fontsize);
                     $text = trim(utf8_decode($spell->Special));
@@ -189,10 +196,9 @@ class MagicMagicianSheet_PDF extends PDF_MemImage {
 	protected function school($left) {
 	    $this->set_header($left, 'Magiskola');
 	    $schoolId = $this->magician->MagicSchoolId;
-	    if (empty($schoolId)) return;
-	    $school = Magic_School::loadById($schoolId);
-
-	    $this->set_text($left, $school->Name);
+	    if (empty($this->magic_school)) return;
+	    
+	    $this->set_text($left, $this->magic_school->Name);
 	    return true;
 	}
 	

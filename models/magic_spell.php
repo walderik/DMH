@@ -98,6 +98,12 @@ class Magic_Spell extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($school->Id));
     }
     
+    public static function getSpellsForSchoolUpToLevel(Magic_School $school, int $level) {
+        $sql = "SELECT * FROM regsys_magic_spell WHERE Id IN (".
+            "SELECT MagicSpellId FROM regsys_magicschool_spell WHERE MagicSchoolId=?) AND Level <= ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($school->Id, $level));
+    }
+    
     public static function allByCampaign(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_magic_spell WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
