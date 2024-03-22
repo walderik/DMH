@@ -6,7 +6,7 @@ require $root . '/includes/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
-    if (isset($_GET['id']) && isset($_GET['type'])) {
+    if (isset($_GET['id'])) {
         $id = $_GET['id'];
         
     }
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    if (isset($_POST['id']) && isset($_POST['type'])) {
+    if (isset($_POST['id'])) {
         $id = $_GET['id'];
         
     }
