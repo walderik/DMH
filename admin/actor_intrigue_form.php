@@ -16,6 +16,11 @@ else {
     $referer = "";
 }
 
+if (isset($_GET['section'])) $section = $_GET['section'];
+else $section = "";
+
+
+
 include 'navigation.php';
 ?>
     
@@ -27,6 +32,7 @@ include 'navigation.php';
 		<input type="hidden" id="Id" name="Id" value="<?php echo $intrigueActor->IntrigueId ?>">
 		<input type="hidden" id="IntrigueActorId" name="IntrigueActorId" value="<?php echo $intrigueActor->Id ?>">
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+		<input type="hidden" id="Section" name="Section" value="<?php echo $section;?>">
 		<table>
 			<tr>
 				<td><label for="IntrigueText">Intrigtext</label></td>

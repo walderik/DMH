@@ -10,6 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $intrigue=$intrigueActor->getIntrigue();
 }
 
+if (isset($_GET['section'])) $section = $_GET['section'];
+else $section = "";
+
 
 include 'navigation.php';
 ?>
@@ -20,6 +23,7 @@ include 'navigation.php';
 	    <form action="logic/view_intrigue_logic.php" method="post">
 	    <input type="hidden" id="operation" name="operation" value="choose_intrigue_checkin">
 	    <input type='hidden' id='IntrigueActorId' name='IntrigueActorId' value='<?php echo $intrigueActor->Id?>'>
+		<input type="hidden" id="Section" name="Section" value="<?php echo $section;?>">
         <h2>Rekvisita</h2>
      		<?php 
      		$intrigue_props = $intrigue->getAllProps();

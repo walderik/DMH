@@ -152,9 +152,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 
+if (isset($_POST['Section'])) $section = "#".$_POST['Section'];
+elseif (isset($_GET['Section'])) $section = "#".$_GET['Section'];
+else $section = "";
+
 if (isset($_POST['Referer']) && $_POST['Referer']!="") {
-    header('Location: ' . $_POST['Referer']);
+    header('Location: ' . $_POST['Referer'].$section);
     exit;
 }
 
-header("location: ../view_intrigue.php?Id=$intrigue->Id");
+header("location: ../view_intrigue.php?Id=$intrigue->Id$section");
