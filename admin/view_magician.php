@@ -27,7 +27,8 @@ include 'magic_navigation.php';
 
 	<div class="content">
 		<h1><?php echo "Magiker <a href='view_role.php?id=$role->Id'>$role->Name</a>" ?>&nbsp;
-
+		<a href='magic_magician_sheet.php?id=<?php echo $magician->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för <?php $role->Name?>'></i></a>&nbsp;
+		
 		
 		<a href='magic_magician_form.php?Id=<?php echo $magician->Id;?>&operation=update'>
 		<i class='fa-solid fa-pen'></i></a> <a href="magic_magician_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till magiker"></i></a> 
