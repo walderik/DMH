@@ -145,13 +145,13 @@ body {margin:0;font-family:Arial}
   background-color: #400000;
     overflow: hidden
 }
-#left {
+.left {
     float:left;
 
 }
 
 @media only screen and (min-width: 600px) {
-#right {
+.right {
 
     float: right
     
