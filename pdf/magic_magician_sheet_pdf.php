@@ -219,6 +219,7 @@ class MagicMagicianSheet_PDF extends PDF_MemImage {
 	
 	protected function apprentices($left) {
 	    $apprentices = $this->magician->getApprentices();
+	    $this->set_header($left, 'Lärlingar');
 	    if (empty($apprentices)) return;
 	    
 	    $apprentice_names = array();
@@ -231,7 +232,6 @@ class MagicMagicianSheet_PDF extends PDF_MemImage {
 	    }
 	    $txt = implode(", ", $apprentice_names);
 
-	    $this->set_header($left, 'Lärlingar');
 	    $this->set_text($left, $txt);
 	    return true;
 	}
