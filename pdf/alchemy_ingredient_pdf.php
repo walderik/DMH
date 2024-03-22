@@ -7,7 +7,7 @@ require_once $root . '/includes/fpdf185/fpdf.php';
 require_once $root . '/includes/init.php';
 
 
-class RESOURCE_PDF extends PDF_MemImage {
+class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
     
     
     public $margin = 10;
@@ -24,7 +24,6 @@ class RESOURCE_PDF extends PDF_MemImage {
     function Header()
     {
         global $root;
-//         $this->Image($root . '/images/telegram.png',null,null,200);
         # Ramen runt sidan
         $height = $this->GetPageHeight();
         $width  = $this->GetPageWidth();
@@ -50,23 +49,24 @@ class RESOURCE_PDF extends PDF_MemImage {
         $this->Cell(0, 10, 'Sidan '.$this->PageNo(), 0, 0, 'R');
     }
     
-    function SetText(Titledeed $titledeed, $type, LARP $larp) {
-        if ($type == RESOURCE_PDF::Calligraphy) {
+    function SetText(Alchemy_Supplier $supplier, $type, Larp $larp) {
+        if ($type == ALCHEMY_INGREDIENT_PDF::Calligraphy) {
             $font = $this->calligraphyfonts[array_rand($this->calligraphyfonts, 1)];
         } else {
             $font = $this->handfonts[array_rand($this->handfonts, 1)];
         }
         $size = 44;
         
-        $resources = $titledeed->Produces();
+        $supplier_ingredients = $supplier->getIngredientAmounts($larp);
         
         $check_total = 0;
-        foreach ($resources as $resource_titledeed) {
-            if ($resource_titledeed->Quantity > 0) $check_total += $resource_titledeed->Quantity;
+        foreach ($supplier_ingredients as $supplier_ingredient) {
+            if ($supplier_ingredient->Amount > 0) $check_total += $supplier_ingredient->Amount;
         }
         if ($check_total <= 0) return;
         
-        $this->title = $titledeed->Name;
+        $name = $supplier->getRole()->Name;
+        $this->title = $name;
         $this->AddPage();
 
         $height = $this->GetPageHeight();
@@ -81,7 +81,7 @@ class RESOURCE_PDF extends PDF_MemImage {
         # Header på sidan
         $this->SetXY($this->margin, 0);
         $this->SetFont('Arial','B',11);
-        $this->Cell(0,10,utf8_decode($titledeed->Name),0,1,'L');
+        $this->Cell(0,10,utf8_decode($name),0,1,'L');
         
         
         # Rita rutor
@@ -89,15 +89,16 @@ class RESOURCE_PDF extends PDF_MemImage {
         $y_nr = 0;
         $this->Line($this->margin, $this->margin+($rut_height), $width-$this->margin, $this->margin+($rut_height)); # Första Horisontell linje under
         
-        foreach ($resources as $resource_titledeed) {
+        foreach ($supplier_ingredients as $supplier_ingredient) {
             
-            if ($resource_titledeed->Quantity <= 0) continue;
+            if ($supplier_ingredient->Amount <= 0) continue;
             
-            $resource = $resource_titledeed->getResource();
-            if ($resource->hasImage()) $image = Image::loadById($resource->ImageId);
-            else $image=null;
+            $ingredient = $supplier_ingredient->getIngredient();
+            //if ($resource->hasImage()) $image = Image::loadById($resource->ImageId);
+            //else $image=null;
+            $image = null;
             
-            for ($i = 0; $i < $resource_titledeed->Quantity; $i++){
+            for ($i = 0; $i < $supplier_ingredient->Amount; $i++){
                 $squareX = $this->margin+($x_nr * $rut_width);
                 $squareY = $y_nr * $rut_height;
                 
@@ -126,8 +127,8 @@ class RESOURCE_PDF extends PDF_MemImage {
                 
                 
                 $size = 44;
-                $txt = "$resource->UnitSingular";
-//                 $txt = "Bal ull eller ".$font;
+                $txt = $ingredient->Name;
+
                 
                 # En bit kod för att säkerställa att inget hamnar utanför kanten på rutan
                 $this->SetFont($font,'',$size);
@@ -157,49 +158,26 @@ class RESOURCE_PDF extends PDF_MemImage {
 //                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
 //                 }
 
-                if ($type == RESOURCE_PDF::Handwriting) {
 
-                    if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
-                        $this->SetFont('specialelite','',11);
-                        $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
-                        $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
-                        
-                        $size=10;
-                        $this->SetFont('specialelite','',$size);
-                        
-                        $txt = $titledeed->Name;
-                        $slen = $this->GetStringWidth($txt,0);
-                        while ($slen > $rut_width-3) {
-                            $size -= 1;
-                            $this->SetFont('specialelite','',$size);
-                            $slen = $this->GetStringWidth($txt,0);
-                        }
-                        $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
-                        $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
-                    }
-                } elseif ($type == RESOURCE_PDF::Calligraphy) {
-                    $this->SetFont($font,'',11);
-                    $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
-                    $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
-                    
-                    $size=10;
-                    $this->SetFont($font,'',$size);
-                    
-                    $txt = $titledeed->Name;
-                    $slen = $this->GetStringWidth($txt,0);
-                    while ($slen > $rut_width-3) {
-                        $size -= 1;
-                        $this->SetFont($font,'',$size);
-                        $slen = $this->GetStringWidth($txt,0);
-                    }
-                    $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
-                    $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
-                    
-                }
+                $this->SetFont($font,'',11);
+                $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
+                $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
                 
+                $size=10;
+                $this->SetFont($font,'',$size);
+                
+                $txt = $name;
+                $slen = $this->GetStringWidth($txt,0);
+                while ($slen > $rut_width-3) {
+                    $size -= 1;
+                    $this->SetFont($font,'',$size);
+                    $slen = $this->GetStringWidth($txt,0);
+                }
+                $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
+                $this->Cell($rut_width,10,utf8_decode($txt),0,1,'L');
+                    
                 $size=5;
-                if ($type == RESOURCE_PDF::Handwriting) $this->SetFont('specialelite','',$size);
-                else $this->SetFont($font,'',$size);
+                $this->SetFont($font,'',$size);
                 
                 $txt = $larp->Name;
                 $slen = $this->GetStringWidth($txt,0);
@@ -208,8 +186,9 @@ class RESOURCE_PDF extends PDF_MemImage {
                     $this->SetFont($font,'',$size);
                     $slen = $this->GetStringWidth($txt,0);
                 }
-                $this->SetXY($squareX + $rut_width - 1 - $slen, ($rut_height+4) + $squareY);
+                $this->SetXY($squareX + $rut_width - 3 - $slen, ($rut_height+3) + $squareY);
                 $this->Cell($rut_width,10,utf8_decode($txt),0,1,'L');
+                
                 
                 
                 $x_nr += 1;
@@ -236,17 +215,17 @@ class RESOURCE_PDF extends PDF_MemImage {
     }
     
 	
-    function all_resources(Array $titledeeds, $type, LARP $larp)
+    function all_resources(Array $alchemy_suppliers, $type, LARP $larp)
 	{
 
 	    $this->SetAutoPageBreak(true , 1.5);
 	    $this->AddFont('Smokum','');
 	    $this->AddFont('specialelite','');
-	    if ($type == RESOURCE_PDF::Handwriting) foreach ($this->handfonts as $font) $this->AddFont($font,'');
-	    elseif ($type == RESOURCE_PDF::Calligraphy) foreach ($this->calligraphyfonts as $font) $this->AddFont($font,'');
+	    if ($type == ALCHEMY_INGREDIENT_PDF::Handwriting) foreach ($this->handfonts as $font) $this->AddFont($font,'');
+	    elseif ($type == ALCHEMY_INGREDIENT_PDF::Calligraphy) foreach ($this->calligraphyfonts as $font) $this->AddFont($font,'');
 	    //         $this->AddPage('L','A5',270);
-	    foreach ($titledeeds as $titledeed) {
-    	    $this->SetText($titledeed, $type, $larp);
+	    foreach ($alchemy_suppliers as $alchemy_supplier) {
+	        $this->SetText($alchemy_supplier, $type, $larp);
 	    }
 	}
 }

@@ -19,7 +19,7 @@ $pdf->SetTitle(utf8_decode('Alla resurser för alla lagfarter'));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->SetSubject(utf8_decode('Alla resurser för alla lagfarter'));
-$pdf->all_resources($arrayOfTitledeeds, $type);
+$pdf->all_resources($arrayOfTitledeeds, $type, $current_larp);
 
 $pdf->Output();
 

@@ -3,6 +3,8 @@ include_once 'header.php';
 
 include 'navigation.php';
 include 'alchemy_navigation.php';
+require_once $root . '/pdf/alchemy_ingredient_pdf.php';
+
 ?>
 
 
@@ -31,6 +33,13 @@ include 'alchemy_navigation.php';
 		lövjerister och 
 		<?php echo count(Alchemy_Alchemist::allByComingToLarp($current_larp)); ?> 
 		 alkemister på lajvet.
+
+		</p>
+		<h3>Utskrifter</h3>
+		<p>
+            <a href="logic/all_alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Handwriting?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ingredienskort till lövjeristerna (Handskrift)</a><br> 
+            <a href="logic/all_alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Calligraphy?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ingredienskort till lövjeristerna (Kalligrafi)</a> <br>
+        
         </p>
     </div>
 
