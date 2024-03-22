@@ -36,7 +36,11 @@ include 'navigation.php';
 ?>
 
 	<div class="content">
-		<h1><?php echo "Magiker $role->Name";?></h1>
+		<h1><?php echo "Magiker $role->Name";?>
+				<a href='magic_magician_sheet.php?id=<?php echo $role->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för <?php $role->Name?>'></i></a>&nbsp;
+		
+		
+		</h1>
 		
 
 		<div>

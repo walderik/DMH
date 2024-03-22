@@ -268,6 +268,7 @@ include "navigation.php";
         		            if (Magic_Magician::isMagician($role)) {
         		                $magician = Magic_Magician::getForRole($role);
         		                echo "<a href='view_magician.php?id=$role->Id'>Magiker</a> ";
+        		                echo "<a href='magic_magician_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
         		                if ($magician->StaffApproved && $magician->hasDoneWorkshop())  echo showStatusIcon(true);
         		                else {
         		                    if (!$magician->StaffApproved) echo showParticipantStatusIcon(false, "Staven är inte godkänd");

@@ -139,7 +139,8 @@ class Magic_Magician extends BaseModel{
     
     public function getSpells() {
         $granted_spells = Magic_Spell::getSpellsForMagician($this);
-        $shoool_spells = $this->getMagicSchool()->getSpellsUpToLevel($this->Level);
+        if (isset($this->MagicSchoolId)) $shoool_spells = $this->getMagicSchool()->getSpellsUpToLevel($this->Level);
+        else $shoool_spells = array();
         $all_spells = array_merge($granted_spells,$shoool_spells);
         
         return array_unique($all_spells, SORT_REGULAR);
