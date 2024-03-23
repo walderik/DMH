@@ -157,11 +157,12 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
             $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Alla alkemister"),0,0,'L');
              
             
-            //Först en lista med alla recept
+
             $list = "";
             foreach ($alchemists as $alchemist) {
                 $alchemist_role = $alchemist->getRole();
-                $list .= $alchemist_role->Name . " (nivå $alchemist->Level)";
+                $list .= $alchemist_role->Name;
+                if (isset($alchemist->Level)) $list .= " (nivå $alchemist->Level)";
                 $group = $alchemist_role->getGroup();
                 if (isset($group)) $list .= " i $group->Name";
                 $housing = $alchemist_role->getPerson()->getHouseAtLarp($this->larp);
