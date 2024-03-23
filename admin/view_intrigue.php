@@ -270,7 +270,11 @@ th, td {
 </style>
 
     <div class="content">
-        <h1>Intrigspår: <?php echo "$intrigue->Number. $intrigue->Name" ?> <a href="intrigue_form.php?operation=update&id=<?php echo $intrigue->Id ?>"><i class='fa-solid fa-pen'></i></a></h1>
+        <h1>Intrigspår: <?php echo "$intrigue->Number. $intrigue->Name" ?> 
+        <a href="intrigue_form.php?operation=update&id=<?php echo $intrigue->Id ?>"><i class='fa-solid fa-pen' title='Redigera intrigen'></i></a>
+        &nbsp; 
+        <a href="reports/intrigues_pdf.php?Id=<?php echo $intrigue->Id;?>" target='_blank'><i class='fa-solid fa-file-pdf' title='Intrigen som PDF'></i></a>
+        </h1>
 <table width='100%'>
 <?php 
 
@@ -302,7 +306,9 @@ th, td {
 <td>
 
 <div class='container'>
-<a href="choose_group.php?operation=add_intrigue_actor_group&Id=<?php echo $intrigue->Id?>&intrigueTypeFilter=1"><i class='fa-solid fa-plus' title="Lägg till grupp"></i><i class='fa-solid fa-users' title="Lägg till grupp"></i></a>
+<a href="choose_group.php?operation=add_intrigue_actor_group&Id=<?php echo $intrigue->Id?>&intrigueTypeFilter=1">
+	<i class='fa-solid fa-plus' title="Lägg till grupp"></i><i class='fa-solid fa-users' title="Lägg till grupp"></i>
+</a>
 <ul class='image-gallery' style='display:table; border-spacing:5px;'>
 	<?php 
 	$groupActors = $intrigue->getAllGroupActors();
@@ -340,7 +346,9 @@ th, td {
 	}
 	?>
 </ul>	
-<a href="choose_role.php?operation=add_intrigue_actor_role&Id=<?php echo $intrigue->Id?>&intrigueTypeFilter=1"><i class='fa-solid fa-plus' title="Lägg till karaktär"></i><i class='fa-solid fa-user' title="Lägg till karaktär"></i></a>
+<a href="choose_role.php?operation=add_intrigue_actor_role&Id=<?php echo $intrigue->Id?>&intrigueTypeFilter=1">
+<i class='fa-solid fa-plus' title="Lägg till karaktär"></i>
+<i class='fa-solid fa-user' title="Lägg till karaktär"></i></a>
 <ul class='image-gallery' style='display:table; border-spacing:5px;'>
 	<?php 
 	$roleActors = $intrigue->getAllRoleActors();

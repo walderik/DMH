@@ -13,10 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
-$one_intrigue = null;
+$one_intrigue_id = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['Id'])) $one_intrigue = Intrigue::loadById($_GET['Id']);
+    if (isset($_GET['Id'])) $one_intrigue_id = $_GET['Id'];
 }
 
 $name = 'Alla intriger';
@@ -36,6 +36,7 @@ $intrigue_array = Intrigue::allByLARP($current_larp);
 
 foreach ($intrigue_array as $intrigue) {
     if (!$intrigue->isActive()) continue;
+    if (isset($one_intrigue_id) && $one_intrigue_id != $intrigue->Id) continue;
     $rows = array();
     $rows[] = array("Ansvarig", $intrigue->getResponsibleUser()->Name);
     $rows[] = array("Anteckningar", $intrigue->Notes);
