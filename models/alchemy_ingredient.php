@@ -209,5 +209,10 @@ class Alchemy_Ingredient extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($recipe->Id));
     }
     
+    public function countAtLarp(LARP $larp) {
+        $sql = "SELECT Sum(Amount) as Num FROM regsys_alchemy_supplier_ingredient WHERE IngredientId=? AND LARPId=? AND IsApproved=1";
+        return static::countQuery($sql, array($this->Id, $larp->Id));
+    }
+    
     
 }

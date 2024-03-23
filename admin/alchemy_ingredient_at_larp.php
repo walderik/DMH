@@ -21,8 +21,8 @@ include 'alchemy_navigation.php';
 
  
     <div class="content">
-        <h1>Ingredienser <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
-			<a href="alchemy_ingredient_at_larp.php">Hur många finns på lajvet</a><br><br>
+        <h1>Hur många ingredienser finns på lajvet <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
+
             <a href="alchemy_ingredient_form.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Lägg till ingrediens</a>&nbsp;&nbsp;  
             <a href="alchemy_ingredient_form.php?operation=insert&type=katalysator"><i class="fa-solid fa-file-circle-plus"></i>Lägg till katalysator</a>  
        <?php
@@ -33,10 +33,10 @@ include 'alchemy_navigation.php';
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
-               "<th onclick='sortTable(2, \"$tableId\")'>Ingrediens/Katalysator</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Essenser</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Godkänd</th>".
-               "<th></th>";
+               "<th onclick='sortTable(2, \"$tableId\")'>Typ</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Antal på lajvet</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Används i recept</th>";
+
            
            foreach ($ingredients as $ingredient) {
                 echo "<tr>\n";
@@ -47,21 +47,16 @@ include 'alchemy_navigation.php';
                 else echo "Ingrediens";
                 echo "</td>\n";
                 echo "<td>";
-                if ($ingredient->isIngredient()) {
-                    echo $ingredient->getEssenceNames();
-                }
+                echo $ingredient->countAtLarp($current_larp);
                 echo "</td>\n";
                 
                 echo "<td>";
-                echo showStatusIcon($ingredient->isApproved());
-                
-                echo "</td>\n";
-                
-                echo "<td>";
-                if ($ingredient->mayDelete()) {
-                    echo "<a href='alchemy_ingredient_admin.php?operation=delete&Id=" . $ingredient->Id . "'><i class='fa-solid fa-trash'></i>";
+                $recipes = Alchemy_Recipe::allContainingIngredient($ingredient, $current_larp);
+                foreach ($recipes as $recipe) {
+                    echo $recipe->Name."<br>";
                 }
                 echo "</td>\n";
+                
                 echo "</tr>\n";
             }
             echo "</table>";

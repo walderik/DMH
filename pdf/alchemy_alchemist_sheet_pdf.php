@@ -131,7 +131,7 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
         # Fixa till om vi skapat ett udda antal fält
         if ($this->current_left == $left2) $this->draw_field('empty');
         
-        $y = $this->GetY() + static::$cell_y + $space*3;
+        $y = $this->GetY() + static::$cell_y + $space*4;
         
         $recipes = $this->alchemist->getRecipes();
         if (!empty($recipes)) {
@@ -144,7 +144,7 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
             //Först en lista med alla recept
             $recipenames = "";
             foreach ($recipes as $recipe) {
-                $recipenames .= $recipe->Name . "(nivå $recipe->Level)\n";
+                $recipenames .= $recipe->Name . " (nivå $recipe->Level)\n\n";
             }
             $y = $this->GetY() + $space*2;
             $this->SetXY($this->current_left, $y);
@@ -178,7 +178,7 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                 if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
                     $ingredients = $recipe->getSelectedIngredients();
                     foreach ($ingredients as $ingredient) {
-                        $txt .= "$ingredient->Name (Nivå $ingredient->Level)\n";
+                        $txt .= "$ingredient->Name (Nivå $ingredient->Level)\n\n";
                     }
                 } elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
                     
@@ -194,7 +194,7 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                             }
                         }
                         
-                        $txt .= "$selectedEssence->Name (Nivå ".$selectedEssenceArr[1].")\n";
+                        $txt .= "$selectedEssence->Name (Nivå ".$selectedEssenceArr[1].")\n\n";
                     }
                     $txt .= "Katalysator (Nivå $recipe->Level)";
                 }

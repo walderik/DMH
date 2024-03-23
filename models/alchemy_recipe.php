@@ -367,4 +367,11 @@ class Alchemy_Recipe extends BaseModel{
         return $sum;
     }
     
+    public static function allContainingIngredient(Alchemy_Ingredient $ingredient, LARP $larp) {
+        if (is_null($ingredient)) return array();
+        $sql = "SELECT * from regsys_alchemy_recipe WHERE CampaignId=? AND IsApproved=1 AND Id IN (".
+                "SELECT RecipeId FROM regsys_alchemy_recipe_ingredient WHERE IngredientId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $ingredient->Id));
+    }
+    
 }
