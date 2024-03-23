@@ -20,11 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 if (isset($_GET['id'])) {
     $magicianId = $_GET['id'];
     $magician = Magic_Magician::loadById($magicianId);
-    $role = $magician->getRole();
     if (empty($magician)) {
         header('Location: index.php'); // Magikern finns inte
         exit;
     }
+    $role = $magician->getRole();
 } 
 
 $pdf = new MagicMagicianSheet_PDF();

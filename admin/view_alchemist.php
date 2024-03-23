@@ -27,6 +27,7 @@ include 'alchemy_navigation.php';
 
 	<div class="content">
 		<h1>Alkemist <a href='view_role.php?id=<?php echo $role->Id?>'><?php echo $role->Name?></a>&nbsp;
+		<a href='alchemy_alchemist_sheet.php?id=<?php echo $alchemist->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Alkemistblad för <?php $role->Name?>'></i></a>&nbsp;
 
 		
 		<a href='alchemy_alchemist_form.php?Id=<?php echo $alchemist->Id;?>&operation=update'>
