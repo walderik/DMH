@@ -32,36 +32,44 @@ include 'alchemy_navigation.php';
        echo "<tr>".
            "<th onclick='sortTable(0, \"$tableId\")'>Nivå</th>".
            "<th onclick='sortTable(1, \"$tableId\")'>Finns i ingrediens<br>(Antal på lajvet)</th>".
+           "<th onclick='sortTable(1, \"$tableId\")'>Saknas</th>".
            "<th onclick='sortTable(2, \"$tableId\")'>Används i recept</th>";
 
        
        for ($level=1; $level <= 5; $level++) {
-                echo "<tr>\n";
-                echo "<td>$level</td>\n";
-                echo "<td>";
-                $ingredients = Alchemy_Ingredient::getIngredientsByCatalystLevel($level, $current_larp);
-                foreach ($ingredients as $ingredient) {
-                    $sum = $ingredient->countAtLarp($current_larp);
-                    if (empty($sum)) $sum = 0;
-                    echo $ingredient->Name."(".$sum.")<br>";
-                }
-                echo "</td>\n";
-                echo "<td>";
-                $all_recipes = array();
-                foreach ($ingredients as $ingredient) {
-                    
-                    $recipes = Alchemy_Recipe::allContainingIngredient($ingredient, $current_larp);
-                    $all_recipes = array_merge($all_recipes, $recipes);
-                }
-                $recipes = Alchemy_Recipe::allContainingCatalystLevel($level, $current_larp);
-                $all_recipes = array_merge($all_recipes, $recipes);
-                
-                foreach ($all_recipes as $recipe) {
-                    echo $recipe->Name."<br>";
-                }
-                echo "</td>\n";
-                
-                echo "</tr>\n";
+           $ingredients = Alchemy_Ingredient::getIngredientsByCatalystLevel($level, $current_larp);
+           $all_recipes = array();
+           foreach ($ingredients as $ingredient) {
+               
+               $recipes = Alchemy_Recipe::allContainingIngredient($ingredient, $current_larp);
+               $all_recipes = array_merge($all_recipes, $recipes);
+           }
+           $recipes = Alchemy_Recipe::allContainingCatalystLevel($level, $current_larp);
+           $all_recipes = array_merge($all_recipes, $recipes);
+           
+           echo "<tr>\n";
+            echo "<td>$level</td>\n";
+            echo "<td>";
+            $sum = 0;
+            foreach ($ingredients as $ingredient) {
+                $count = $ingredient->countAtLarp($current_larp);
+                if (empty($count)) $count = 0;
+                echo $ingredient->Name."(".$count.")<br>";
+                $sum += $count;
+            }
+            echo "</td>\n";
+            echo "<td>";
+            if ($sum == 0) echo "Saknas";
+            if ($sum==0  && !empty($all_recipes)) echo " ".showStatusIcon(false);
+            echo "</td>\n";
+            echo "<td>";
+             
+            foreach ($all_recipes as $recipe) {
+                echo "<a href='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</a><br>";
+            }
+            echo "</td>\n";
+            
+            echo "</tr>\n";
             }
         echo "</table>";
         ?>

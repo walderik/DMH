@@ -386,5 +386,4 @@ class Alchemy_Recipe extends BaseModel{
         $sql = "SELECT * from regsys_alchemy_recipe WHERE CampaignId=? AND IsApproved=1 AND Level=? AND AlchemistType=".Alchemy_Alchemist::ESSENCE_ALCHEMY." ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $level));
     }
-    
 }

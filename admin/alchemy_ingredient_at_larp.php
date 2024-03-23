@@ -51,9 +51,18 @@ include 'alchemy_navigation.php';
                 echo "</td>\n";
                 
                 echo "<td>";
-                $recipes = Alchemy_Recipe::allContainingIngredient($ingredient, $current_larp);
-                foreach ($recipes as $recipe) {
-                    echo $recipe->Name."<br>";
+                
+                $all_recipes = Alchemy_Recipe::allContainingIngredient($ingredient, $current_larp);
+                
+                $essences = $ingredient->getEssences();
+                foreach($essences as $essence) {
+                    $recipes = Alchemy_Recipe::allContainingEssence($essence, $ingredient->Level, $current_larp);
+                    $all_recipes = array_merge($all_recipes, $recipes);
+                }
+                
+
+                foreach ($all_recipes as $recipe) {
+                    echo "<a href='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</a><br>";
                 }
                 echo "</td>\n";
                 

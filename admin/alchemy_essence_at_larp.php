@@ -34,26 +34,33 @@ include 'alchemy_navigation.php';
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
                "<th onclick='sortTable(2, \"$tableId\")'>Finns i ingrediens<br>(Antal på lajvet)</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Används i recept</th>";
+               "<th onclick='sortTable(3, \"$tableId\")'>Saknas</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Används i recept</th>";
 
            
            for ($level=1; $level <= 5; $level++) {
                foreach ($essences as $essence) {
-                    echo "<tr>\n";
+                   $recipes = Alchemy_Recipe::allContainingEssence($essence, $level, $current_larp);
+                   echo "<tr>\n";
                     echo "<td><a href ='alchemy_essence_form.php?operation=update&id=$essence->Id'>$essence->Name</a></td>\n";
                     echo "<td>$level</td>\n";
                     echo "<td>";
                     $ingredients = Alchemy_Ingredient::getIngredientsByEssenceLevel($essence, $level, $current_larp);
+                    $sum = 0;
                     foreach ($ingredients as $ingredient) {
-                        $sum = $ingredient->countAtLarp($current_larp);
-                        if (empty($sum)) $sum = 0;
-                        echo $ingredient->Name."(".$sum.")<br>";
+                        $count = $ingredient->countAtLarp($current_larp);
+                        if (empty($count)) $sum = 0;
+                        echo $ingredient->Name."(".$count.")<br>";
+                        $sum += $count;
                     }
                     echo "</td>\n";
                     echo "<td>";
-                    $recipes = Alchemy_Recipe::allContainingEssence($essence, $level, $current_larp);
+                    if ($sum == 0) echo "Saknas";
+                    if ($sum==0  && !empty($recipes)) echo " ".showStatusIcon(false);
+                    echo "</td>\n";
+                    echo "<td>";
                     foreach ($recipes as $recipe) {
-                        echo $recipe->Name."<br>";
+                        echo "<a href='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</a><br>";
                     }
                     echo "</td>\n";
                     

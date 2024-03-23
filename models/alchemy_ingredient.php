@@ -171,6 +171,13 @@ class Alchemy_Ingredient extends BaseModel{
         return $essenceIds;
         
     }
+
+    public function getEssences() {
+        $sql = "SELECT * FROM regsys_alchemy_essence WHERE Id In (".
+            "SELECT EssenceId FROM regsys_alchemy_ingredient_essence WHERE IngredientId = ?) ORDER BY ".Alchemy_Essence::$orderListBy.";";
+        return Alchemy_Essence::getSeveralObjectsqQuery($sql, array($this->Id));
+    }
+    
     
     private function getThreeEssences() {
         $three_essences = array(null, null, null);

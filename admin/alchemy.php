@@ -35,10 +35,16 @@ require_once $root . '/pdf/alchemy_ingredient_pdf.php';
 		 alkemister på lajvet.
 
 		</p>
+		<h3>Ingrediensöversikter</h3>
+		<p>
+			<a href="alchemy_ingredient_at_larp.php">Vilka ingredienser finns på lajvet</a><br><br>
+			<a href="alchemy_essence_at_larp.php">Vilka essenser finns på lajvet</a><br><br>
+			<a href="alchemy_catalyst_at_larp.php">Vilka katalysatorer finns på lajvet</a>
+		</p>
 		<h3>Utskrifter</h3>
 		<p>
-            <a href="logic/all_alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Handwriting?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ingredienskort till lövjeristerna (Handskrift)</a><br> 
-            <a href="logic/all_alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Calligraphy?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ingredienskort till lövjeristerna (Kalligrafi)</a> <br>
+            <a href="logic/all_alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Handwriting?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ingredienskort till lövjeristerna (Handskrift)</a><br><br> 
+            <a href="logic/all_alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Calligraphy?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ingredienskort till lövjeristerna (Kalligrafi)</a> <br><br>
 			<a href='alchemy_alchemist_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Alkemistblad för alla alkemister'></i>Alkemistblad för alla alkemister</a>&nbsp;
         
         </p>
