@@ -9,10 +9,11 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Intrigspår</h1>
-            <a href="intrigue_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>&nbsp;  
-            <a href="intrigue_continue.php"><i class="fa-solid fa-file-circle-plus"></i>Fortsätt på intrigspår från tidigare lajv</a><br>  
-            <a href="reports/intrigues_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla intrigspår</a>&nbsp;
-            <a href="intrigue_pdfs.php"><i class="fa-solid fa-file-pdf"></i>Alla pdf'er som används i intrigspår</a>  
+            <a href="intrigue_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>&nbsp; &nbsp; 
+            <a href="intrigue_continue.php"><i class="fa-solid fa-file-circle-plus"></i>Fortsätt på intrigspår från tidigare lajv</a><br> 
+            <br>
+            <a href="reports/intrigues_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla intrigspår</a>&nbsp; &nbsp;
+            <a href="intrigue_pdfs.php"><i class="fa-solid fa-file-pdf"></i>Alla pdf'er som används i något intrigspår</a>  
        
        <?php
        echo "<br>";
