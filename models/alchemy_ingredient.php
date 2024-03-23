@@ -100,6 +100,21 @@ class Alchemy_Ingredient extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $level));
     }
     
+    public static function getIngredientsByEssenceLevel(Alchemy_Essence $essence, $level, LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_alchemy_ingredient WHERE CampaignId=? AND IsApproved=1 AND Level=? AND IsCatalyst=0 AND Id IN(".
+            "SELECT IngredientId FROM regsys_alchemy_ingredient_essence WHERE EssenceId=?) ".
+            "ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $level, $essence->Id));
+    }
+    
+    public static function getIngredientsByCatalystLevel($level, LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_alchemy_ingredient WHERE CampaignId=? AND IsApproved=1 AND Level=? AND IsCatalyst=1 ".
+            "ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $level));
+    }
+    
     public static function getAllCatalysts(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_alchemy_ingredient WHERE CampaignId=? AND IsApproved=1 AND IsCatalyst=1 ORDER BY Level, Name";

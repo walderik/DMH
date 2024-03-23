@@ -22,7 +22,9 @@ include 'alchemy_navigation.php';
  
     <div class="content">
         <h1>Ingredienser <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
-			<a href="alchemy_ingredient_at_larp.php">Hur många finns på lajvet</a><br><br>
+			<a href="alchemy_ingredient_at_larp.php">Hur många ingredienser finns på lajvet</a><br>
+			<a href="alchemy_essence_at_larp.php">Vilka essenser finns på lajvet</a><br>
+			<a href="alchemy_catalyst_at_larp.php">Vilka katalysatorer finns på lajvet</a><br><br>
             <a href="alchemy_ingredient_form.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Lägg till ingrediens</a>&nbsp;&nbsp;  
             <a href="alchemy_ingredient_form.php?operation=insert&type=katalysator"><i class="fa-solid fa-file-circle-plus"></i>Lägg till katalysator</a>  
        <?php

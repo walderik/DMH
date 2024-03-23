@@ -373,5 +373,18 @@ class Alchemy_Recipe extends BaseModel{
                 "SELECT RecipeId FROM regsys_alchemy_recipe_ingredient WHERE IngredientId = ?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $ingredient->Id));
     }
+ 
+    public static function allContainingEssence(Alchemy_Essence $essence, $level, LARP $larp) {
+        if (is_null($essence)) return array();
+        $sql = "SELECT * from regsys_alchemy_recipe WHERE CampaignId=? AND IsApproved=1 AND Id IN (".
+            "SELECT RecipeId FROM regsys_alchemy_recipe_essence WHERE EssenceId = ? AND Level=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $essence->Id, $level));
+    }
+
+    
+    public static function allContainingCatalystLevel($level, LARP $larp) {
+        $sql = "SELECT * from regsys_alchemy_recipe WHERE CampaignId=? AND IsApproved=1 AND Level=? AND AlchemistType=".Alchemy_Alchemist::ESSENCE_ALCHEMY." ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $level));
+    }
     
 }
