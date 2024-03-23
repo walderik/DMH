@@ -44,6 +44,8 @@ class Alchemy_Recipe extends BaseModel{
         if (isset($arr['Level'])) $this->Level = $arr['Level'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['AuthorRoleId'])) $this->AuthorRoleId = $arr['AuthorRoleId'];
+        
+        if ($this->AuthorRoleId == 'null' OR $this->AuthorRoleId == '') $this->AuthorRoleId = null;
     }
     
     
