@@ -15,9 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $one_intrigue_id = null;
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['Id'])) $one_intrigue_id = $_GET['Id'];
-}
+if (isset($_GET['Id'])) $one_intrigue_id = $_GET['Id'];
+
 
 $name = 'Alla intriger';
 

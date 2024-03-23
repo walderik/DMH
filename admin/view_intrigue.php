@@ -274,6 +274,9 @@ th, td {
         <a href="intrigue_form.php?operation=update&id=<?php echo $intrigue->Id ?>"><i class='fa-solid fa-pen' title='Redigera intrigen'></i></a>
         &nbsp; 
         <a href="reports/intrigues_pdf.php?Id=<?php echo $intrigue->Id;?>" target='_blank'><i class='fa-solid fa-file-pdf' title='Intrigen som PDF'></i></a>
+        <?php if ($current_larp->isEnded()) { ?>
+       		&nbsp;<a href="reports/intrigues_what_happened_pdf.php?Id=<?php echo $intrigue->Id;?>" target="_blank"><i class="fa-solid fa-file-pdf" title='Vad hände'></i></a>
+       <?php } ?>
         </h1>
 <table width='100%'>
 <?php 

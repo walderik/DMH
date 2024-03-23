@@ -8,17 +8,19 @@ include 'navigation.php';
 <script src="../javascript/show_hide_rows.js"></script>
 
     <div class="content">
-        <h1>Intrigspår</h1>
-            <a href="intrigue_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>&nbsp; &nbsp; 
-            <a href="intrigue_continue.php"><i class="fa-solid fa-file-circle-plus"></i>Fortsätt på intrigspår från tidigare lajv</a><br> 
-            <br>
-            <a href="reports/intrigues_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla intrigspår</a>&nbsp; &nbsp;
-            <a href="intrigue_pdfs.php"><i class="fa-solid fa-file-pdf"></i>Alla pdf'er som används i något intrigspår</a>  
-       
+       <h1>Intrigspår</h1>
+       <a href="intrigue_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>&nbsp; &nbsp; 
+       <a href="intrigue_continue.php"><i class="fa-solid fa-file-circle-plus"></i>Fortsätt på intrigspår från tidigare lajv</a><br> 
+       <br>
+       <a href="reports/intrigues_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla intrigspår</a>&nbsp; &nbsp;
+       <a href="intrigue_pdfs.php"><i class="fa-solid fa-file-pdf"></i>Alla pdf'er som används i något intrigspår</a>  
+       <?php if ($current_larp->isEnded()) { ?>
+       		&nbsp; &nbsp;<a href="reports/intrigues_what_happened_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Vad hände</a>&nbsp; &nbsp;
        <?php
+        }
        echo "<br>";
        echo "<br>";
-       echo "Intrigspår filtrerade på ansvarig (endast akuella).<br>";
+       echo "Intrigspår filtrerade på dig som ansvarig.<br>";
        echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
        echo "<br>";
        echo "<br>";
