@@ -82,16 +82,14 @@ foreach ($intrigue_array as $intrigue) {
     foreach($groupActors as $groupActor) {
         if (empty($groupActor->IntrigueText)) continue;
         $text = $groupActor->IntrigueText;
-        
+        if (!empty($groupActor->WhatHappened)) $text .= "\n\nVAD HÄNDE:\n" . $groupActor->WhatHappened;
         $rows[] = array($groupActor->getGroup()->Name, $text);
     }
     $roleActors = $intrigue->getAllRoleActors();
     foreach($roleActors as $roleActor) {
         if (empty($roleActor->IntrigueText)) continue;
         $text = $roleActor->IntrigueText;
-        if (!empty($roleActor->WhatHappened)) {
-            $text .= "\n\nVAD HÄNDE:\n" . $roleActor->WhatHappened;
-        }
+        if (!empty($roleActor->WhatHappened)) $text .= "\n\nVAD HÄNDE:\n" . $roleActor->WhatHappened;
         $rows[] = array($roleActor->getRole()->Name, $text);
     }
     
