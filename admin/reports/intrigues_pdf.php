@@ -13,6 +13,12 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
+$one_intrigue = null;
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if (isset($_GET['Id'])) $one_intrigue = Intrigue::loadById($_GET['Id']);
+}
+
 $name = 'Alla intriger';
 
 $pdf = new Report_PDF();
@@ -75,12 +81,18 @@ foreach ($intrigue_array as $intrigue) {
     $groupActors = $intrigue->getAllGroupActors();
     foreach($groupActors as $groupActor) {
         if (empty($groupActor->IntrigueText)) continue;
-        $rows[] = array($groupActor->getGroup()->Name, $groupActor->IntrigueText);
+        $text = $groupActor->IntrigueText;
+        
+        $rows[] = array($groupActor->getGroup()->Name, $text);
     }
     $roleActors = $intrigue->getAllRoleActors();
     foreach($roleActors as $roleActor) {
         if (empty($roleActor->IntrigueText)) continue;
-        $rows[] = array($roleActor->getRole()->Name, $roleActor->IntrigueText);
+        $text = $roleActor->IntrigueText;
+        if (!empty($roleActor->WhatHappened)) {
+            $text .= "\n\nVAD HÄNDE:\n" . $roleActor->WhatHappened;
+        }
+        $rows[] = array($roleActor->getRole()->Name, $text);
     }
     
     

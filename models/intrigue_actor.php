@@ -403,6 +403,7 @@ class IntrigueActor extends BaseModel{
          IntrigueActor_KnownPdf::delete($known_pdf->Id);
      }
      
+     # Tidigare lajvs intrigaktörer för rollen eller gruppen.
      public function getPrevious() {
          if ($this->isRoleActor()) {
              $sql = "SELECT * FROM regsys_intrigueactor WHERE Id IN (".
