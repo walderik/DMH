@@ -19,7 +19,7 @@ $param = date_format(new Datetime(),"suv");
 	     }
 	     $organizersLarp = User::getAllWithAccessOnlyToLarp($current_larp);
 	     if (!empty($organizersLarp)) echo "<br><strong>Enbart detta lajv</strong><br>";
-	     $organizersLarp = User::getAllWithAccessOnlyToLarp($current_larp);
+
 	     foreach ($organizersLarp as $organizer) {
 	         echo $organizer->Name;
 	         if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {

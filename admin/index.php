@@ -20,18 +20,11 @@ include "navigation.php";
         <?php
         }
         ?>
-                <div class="content">
+        <div class="content">
         
         
             Anmälan är 
-            <?php if ($current_larp->RegistrationOpen == 1) {
-                echo "öppen";
-            }
-            else {
-                echo "stängd";
-            }
-                  
-                ?>
+            <?php echo ($current_larp->RegistrationOpen == 1) ? "öppen" : "stängd"; ?>
 
         </div>
 		<div class="content">
@@ -93,6 +86,13 @@ include "navigation.php";
 		    <tr><td style='font-weight: normal'>Faktiskta intäkter:</td><td align='right'><?php echo Registration::totalIncomeToday($current_larp)?> SEK</td></tr>
 	    </table>
 		</div>
+		<br>&nbsp;<br>
+		<?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+		    
+		    echo "<a href='https://docs.google.com/document/d/1kcoqIp-dVs_CMS2AyKYlyw8gR9mmQV2KiLpSqfazMBU/edit' target='_blank'>Synpunktsdokumentet</a>";
+		}
+		?>
+
 
 	</body>
 </html>
