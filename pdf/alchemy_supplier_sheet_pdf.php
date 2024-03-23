@@ -125,27 +125,25 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
         
         //Lista alla ingredienser de har med sig
         $ingredient_amounts = $this->supplier->getIngredientAmounts($this->larp);
-        if (!empty($ingredient_amounts)) {
-            $this->current_left = $left;
-            $y = $this->GetY() + $space*10;
-            $this->SetXY($this->current_left, $y);
-            $this->SetFont('Helvetica','B',static::$text_fontsize);
-            $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Dina ingredienser"),0,0,'L');
-            
-            $list = "";
-            foreach ($ingredient_amounts as $ingredient_amount) {
-                if (($ingredient_amount->Amount > 0) && ($ingredient_amount->IsApproved==1)) {
-                    $ingredient = $ingredient_amount->getIngredient();
-                    $list .= $ingredient->Name . " ($ingredient_amount->Amount st)\n\n";
-                }
+        $this->current_left = $left;
+        $y = $this->GetY() + $space*10;
+        $this->SetXY($this->current_left, $y);
+        $this->SetFont('Helvetica','B',static::$text_fontsize);
+        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Dina ingredienser"),0,0,'L');
+        
+        $list = "";
+        foreach ($ingredient_amounts as $ingredient_amount) {
+            if (($ingredient_amount->Amount > 0) && ($ingredient_amount->IsApproved==1)) {
+                $ingredient = $ingredient_amount->getIngredient();
+                $list .= $ingredient->Name . " ($ingredient_amount->Amount st)\n\n";
             }
-            $y = $this->GetY() + $space*2;
-            $this->SetXY($this->current_left, $y);
-            $this->SetFont('Helvetica','',static::$text_fontsize);
-            $text = trim(utf8_decode($list));
-            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-            
         }
+        $y = $this->GetY() + $space*2;
+        $this->SetXY($this->current_left, $y);
+        $this->SetFont('Helvetica','',static::$text_fontsize);
+        $text = trim(utf8_decode($list));
+        $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+            
         
         
         //Lista alla alkemister och var de bor (Namn Grupp, Boende)
