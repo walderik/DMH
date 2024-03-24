@@ -21,7 +21,7 @@ include 'alchemy_navigation.php';
 
  
     <div class="content">
-        <h1>Hur många ingredienser finns på lajvet <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
+        <h1>Vilka ingredienser finns på lajvet <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
 
             <a href="alchemy_ingredient_form.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Lägg till ingrediens</a>&nbsp;&nbsp;  
             <a href="alchemy_ingredient_form.php?operation=insert&type=katalysator"><i class="fa-solid fa-file-circle-plus"></i>Lägg till katalysator</a>  
@@ -39,7 +39,8 @@ include 'alchemy_navigation.php';
 
            
            foreach ($ingredients as $ingredient) {
-                echo "<tr>\n";
+               $traditional_recipes = Alchemy_Recipe::allContainingIngredient($ingredient, $current_larp);
+               echo "<tr>\n";
                 echo "<td><a href ='alchemy_ingredient_form.php?operation=update&id=$ingredient->Id'>$ingredient->Name</a></td>\n";
                 echo "<td>$ingredient->Level</td>\n";
                 echo "<td>";
@@ -47,13 +48,16 @@ include 'alchemy_navigation.php';
                 else echo "Ingrediens";
                 echo "</td>\n";
                 echo "<td>";
-                echo $ingredient->countAtLarp($current_larp);
+                $count = $ingredient->countAtLarp($current_larp);
+                echo $count;
+                if (($count == "" OR $count == 0) AND count($traditional_recipes) > 0) echo showStatusIcon(false);
                 echo "</td>\n";
+                
                 
                 echo "<td>";
                 
-                $all_recipes = Alchemy_Recipe::allContainingIngredient($ingredient, $current_larp);
                 
+                $all_recipes = $traditional_recipes;
                 $essences = $ingredient->getEssences();
                 foreach($essences as $essence) {
                     $recipes = Alchemy_Recipe::allContainingEssence($essence, $ingredient->Level, $current_larp);
@@ -62,7 +66,9 @@ include 'alchemy_navigation.php';
                 
 
                 foreach ($all_recipes as $recipe) {
-                    echo "<a href='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</a><br>";
+                    echo "<a href='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</a>";
+                    if ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) echo " (expermientellt)";
+                    echo "<br>";
                 }
                 echo "</td>\n";
                 
