@@ -395,7 +395,7 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
             
 			<div class="question intrigue">
 				<label for="RoleFunctionComment">Funktioner förklaring</label><br>
-				<div class="explanation">?</div>
+				<div class="explanation">Vill du förtydliga något kring funktioner eller lägga till något?</div>
 				<input class="input_field" type="text" id="RoleFunctionComment" name="RoleFunctionComment" value="<?php echo htmlspecialchars($role->RoleFunctionComment); ?>"  size="100" maxlength="400">
 			</div>
             
