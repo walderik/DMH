@@ -144,19 +144,12 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
                 $this->SetXY($squareX, ($rut_height/2)-2 + $squareY);
                 $this->Cell($rut_width,10,utf8_decode(ucfirst($txt)),0,1,'C');
                 
-                # Undertext
-//                 if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
-//                     $this->SetFont('specialelite','',11);
-//                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
-//                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
-//                     $this->SetFont('specialelite','',10);
-//                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
-//                     $this->Cell($rut_width,10,utf8_decode('för '.ucfirst($titledeed->Name)),0,1,'L');
-//                 } else {
-//                     $this->SetFont('specialelite','',12);
-//                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-3) + ($y_nr * $rut_height));
-//                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
-//                 }
+                //Skriv ut essenser
+                //TODO kolla att det här blev snyggt
+                $essenceNames = $ingredient->getEssenceNames();
+                 $this->SetFont($font,'',8);
+                 $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-3) + ($y_nr * $rut_height));
+                 $this->Cell($rut_width,10,utf8_decode(ucfirst($essenceNames)),0,1,'L');
 
 
                 $this->SetFont($font,'',11);

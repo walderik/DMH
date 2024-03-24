@@ -84,7 +84,9 @@ include 'navigation.php';
 					if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { 
 					    $ingredients = $recipe->getSelectedIngredients();
 					    foreach ($ingredients as $ingredient) {
-					        echo "$ingredient->Name (Nivå $ingredient->Level)<br>";
+					        echo "$ingredient->Name (Nivå $ingredient->Level)";
+					        if ($ingredient->isCatalyst()) echo " - Katalysator";
+					        echo "<br>";
 					    }
 					} elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
 

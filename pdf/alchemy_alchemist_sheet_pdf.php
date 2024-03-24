@@ -178,7 +178,9 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                 if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
                     $ingredients = $recipe->getSelectedIngredients();
                     foreach ($ingredients as $ingredient) {
-                        $txt .= "$ingredient->Name (Nivå $ingredient->Level)\n\n";
+                        $txt .= "$ingredient->Name (Nivå $ingredient->Level)";
+                        if ($ingredient->isCatalyst()) $txt .= " - Katalysator";
+                        $txt .= "\n\n";
                     }
                 } elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
                     
