@@ -278,6 +278,7 @@ include "navigation.php";
         		            if (Alchemy_Supplier::isSupplier($role)) {
         		                $supplier = Alchemy_Supplier::getForRole($role);
         		                echo "<a href='view_alchemy_supplier.php?id=$role->Id'>Löjverist</a> ";
+        		                echo "<a href='alchemy_supplier_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Lövjeristblad för $role->Name'></i></a> ";
         		                echo " ";
         		                if ($supplier->allAmountOfIngredientsApproved($current_larp) &&
         		                    $supplier->hasDoneWorkshop() &&
@@ -291,6 +292,7 @@ include "navigation.php";
         		            if (Alchemy_Alchemist::isAlchemist($role)) {
         		                $alchemist = Alchemy_Alchemist::getForRole($role);
         		                echo "<a href='view_alchemist.php?id=$role->Id'>Alkemist</a> ";
+        		                echo "<a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
         		                echo " ";
         		                $recipes = $alchemist->getRecipes();
         		                if ($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop() && 
