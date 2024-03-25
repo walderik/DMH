@@ -22,6 +22,7 @@ include 'alchemy_navigation.php';
  
     <div class="content">
         <h1>Vilka ingredienser finns på lajvet <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
+			<?php echo showStatusIcon(false); ?> betyder att ingrediensen inte finns med på lajvet, men behövs för ett traditionellt recept.
 
             <a href="alchemy_ingredient_form.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Lägg till ingrediens</a>&nbsp;&nbsp;  
             <a href="alchemy_ingredient_form.php?operation=insert&type=katalysator"><i class="fa-solid fa-file-circle-plus"></i>Lägg till katalysator</a>  
