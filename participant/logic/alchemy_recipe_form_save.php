@@ -31,6 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $recipe = Alchemy_Recipe::newFromArray($_POST);
         $recipe->create();
+        $alchemist = Alchemy_Alchemist::getForRole($role);
+        $alchemist->addRecipes(array($recipe->Id), $current_larp, false);
     } elseif ($operation == 'update') {
         $recipe=Alchemy_Recipe::loadById($_POST['Id']);
         if ($recipe->isApproved() || $role->Id !=$recipe->AuthorRoleId) {

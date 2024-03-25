@@ -131,7 +131,8 @@ include 'alchemy_navigation.php';
 				        $larp = LARP::loadById($approvedLarpId);
 				        echo $larp->Name;
 				    } else {
-				        echo showStatusIcon(false,  "logic/approve_alchemist_recipe.php?recipeId=$recipe->Id&alchemistId=$alchemist->Id");
+				        if ($recipe->isApproved()) echo showStatusIcon(false,  "logic/approve_alchemist_recipe.php?recipeId=$recipe->Id&alchemistId=$alchemist->Id");
+				        else echo "Receptet är inte godkänt";
 				    }
 				    echo "</td>\n";
 				    
