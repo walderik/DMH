@@ -80,6 +80,7 @@ include 'navigation.php';
 		var placeofresidences = document.getElementsByName("PlaceOfResidenceId");
 		var councils = document.getElementsByName("CouncilId");
 		var guards = document.getElementsByName("GuardId");
+		var believes = document.getElementsByName("BeliefId");
         if (isYes) {
     		for (var i = 0; i < intrigueDivs.length; i++) {
         		intrigueDivs[i].style.display = "none";
@@ -105,6 +106,9 @@ include 'navigation.php';
     		for (var i = 0; i < guards.length; i++) {
     			guards[i].required = false;        		
     		}
+    		for (var i = 0; i < believes.length; i++) {
+    			believes[i].required = false;        		
+    		}
         } else {
     		for (var i = 0; i < intrigueDivs.length; i++) {
         		intrigueDivs[i].style.display = "block";
@@ -129,6 +133,9 @@ include 'navigation.php';
     		}
     		for (var i = 0; i < guards.length; i++) {
     			guards[i].required = true;  
+    		}
+       		for (var i = 0; i < believes.length; i++) {
+    			believes[i].required = true;  
     		}
         }
     }

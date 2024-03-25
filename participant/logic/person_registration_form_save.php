@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             //Spara dagar man inte kommer att vara med
             if (isset($_POST['ChooseParticipationDates'])) $reserve_registration->LarpPartNotAttending = Registration::calculateDaysNotComing($current_larp, $_POST['ChooseParticipationDates']);
+            if (empty($reserve_registration->LarpPartNotAttending)) $reserve_registration->LarpPartNotAttending = null;
             
             $now = new Datetime();
             $reserve_registration->RegisteredAt = date_format($now,"Y-m-d H:i:s");
@@ -118,7 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //Spara vilka dagar man inte kommer att vara med
             if (isset($_POST['ChooseParticipationDates'])) {
                 $registration->LarpPartNotAttending = Registration::calculateDaysNotComing($current_larp, $_POST['ChooseParticipationDates']);
-            }
+            } 
+            if (empty($registration->LarpPartNotAttending)) $registration->LarpPartNotAttending = null;
+            
             if (isset($registration->LarpPartNotAttending)) $registration->LarpPartAcknowledged = 0;
             
             $now = new Datetime();
