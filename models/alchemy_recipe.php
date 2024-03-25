@@ -122,9 +122,11 @@ class Alchemy_Recipe extends BaseModel{
     }
     
     
-    public static function getRecipesForAlchemist(Alchemy_Alchemist $alchemist) {
+    public static function getRecipesForAlchemist(Alchemy_Alchemist $alchemist, bool $only_approved) {
         $sql = "SELECT * FROM regsys_alchemy_recipe WHERE Id IN (".
-            "SELECT AlchemyRecipelId FROM regsys_alchemy_alchemist_recipe WHERE AlchemyAlchemistId=?) ORDER BY ".static::$orderListBy.";";
+            "SELECT AlchemyRecipelId FROM regsys_alchemy_alchemist_recipe WHERE AlchemyAlchemistId=?)";
+        if ($only_approved) $sql .= " AND IsApproved=1";
+        $sql .= " ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($alchemist->Id));
     }
  

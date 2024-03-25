@@ -157,14 +157,14 @@ class Alchemy_Alchemist extends BaseModel{
     }
     
     
-    public function getRecipes() {
-        return Alchemy_Recipe::getRecipesForAlchemist($this);
+    public function getRecipes($only_approved) {
+        return Alchemy_Recipe::getRecipesForAlchemist($this, $only_approved);
     }
     
     public function addRecipes($recipeIds, Larp $larp, $isApproved) {
         //Ta reda på vilka som inte redan är kopplade till alkemisten
         $exisitingIds = array();
-        $alchemist_recipes = $this->getRecipes();
+        $alchemist_recipes = $this->getRecipes(false);
         foreach ($alchemist_recipes as $alchemist_recipe) {
             $exisitingIds[] = $alchemist_recipe->Id;
         }
@@ -275,7 +275,7 @@ class Alchemy_Alchemist extends BaseModel{
     {
         $alchemist = static::loadById($id);
         
-        $recipes = $alchemist->getRecipes();
+        $recipes = $alchemist->getRecipes(false);
         if (isset($recipes)) {
             foreach($recipes as $recipes) {
                 $alchemist->removeRecipe($recipes->Id);

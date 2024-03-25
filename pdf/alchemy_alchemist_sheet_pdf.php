@@ -133,7 +133,7 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
         
         $y = $this->GetY() + static::$cell_y + $space*4;
         
-        $recipes = $this->alchemist->getRecipes();
+        $recipes = $this->alchemist->getRecipes(true);
         if (!empty($recipes)) {
             $this->current_left = $left;
             $this->SetXY($this->current_left, $y);

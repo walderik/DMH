@@ -117,7 +117,7 @@ include 'alchemy_navigation.php';
 			<h2>Recept</h2>
 
 			<?php 
-			$recipes = $alchemist->getRecipes();
+			$recipes = $alchemist->getRecipes(false);
 			if (empty($recipes)) {
 			    echo "Inga recept, än.";
 			} else {

@@ -61,7 +61,7 @@ include 'alchemy_navigation.php';
                 echo "<td>" . $alchemist->Level . "</td>\n";
                 echo "<td>" . $alchemist->getAlchemistType() . "</td>\n";
                 echo "<td>";
-                $recipes = $alchemist->getRecipes();
+                $recipes = $alchemist->getRecipes(false);
                 if (!empty($recipes)) {
                     echo count($recipes)." ";
                     echo showStatusIcon($alchemist->recipeListApproved());

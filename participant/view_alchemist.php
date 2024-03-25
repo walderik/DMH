@@ -115,7 +115,7 @@ include 'navigation.php';
 				<a href='alchemy_all_recipes.php?RoleId=<?php echo $role->Id?>'>Visa alla recept som finns / Önska recept du vill kunna / Skapa nya recept</a><br><br>
 
 			<?php 
-			$recipes = $alchemist->getRecipes();
+			$recipes = $alchemist->getRecipes(false);
 			if (empty($recipes)) {
 			    echo "Inga recept, än.";
 			} else {

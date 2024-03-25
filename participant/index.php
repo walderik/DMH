@@ -294,7 +294,7 @@ include "navigation.php";
         		                echo "<a href='view_alchemist.php?id=$role->Id'>Alkemist</a> ";
         		                echo "<a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
         		                echo " ";
-        		                $recipes = $alchemist->getRecipes();
+        		                $recipes = $alchemist->getRecipes(false);
         		                if ($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop() && 
         		                    !empty($recipes)) echo showStatusIcon(true);
         		                else {

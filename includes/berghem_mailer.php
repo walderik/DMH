@@ -8,6 +8,9 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require_once $root . '/pdf/character_sheet_pdf.php';
 require_once $root . '/pdf/group_sheet_pdf.php';
 require_once $root . '/pdf/invoice_pdf.php';
+require_once $root . '/pdf/alchemy_supplier_sheet_pdf.php';
+require_once $root . '/pdf/alchemy_alchemist_sheet_pdf.php';
+require_once $root . '/pdf/magic_magician_sheet_pdf.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -440,9 +443,66 @@ class BerghemMailer {
             $pdf->SetSubject(utf8_decode($role->Name));
             $pdf->new_character_sheet($role, $larp);
             
-            
             $sheets[scrub($role->Name)] = $pdf->Output('S');
+            
+            //Om man är magiker ska det också skickas med
+            $magician = Magic_Magician::getForRole($role);
+            if (!empty($magician)) {
+                $pdf = new MagicMagicianSheet_PDF();
+                $title = 'Magiker '.$role->Name;
+                
+                $pdf->SetTitle(utf8_decode($title));
+                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetCreator('Omnes Mundi');
+                $pdf->AddFont('Helvetica','');
+                $subject = $title;
+                $pdf->SetSubject(utf8_decode($subject));
 
+                $pdf->single_magician_sheet($magician, $larp);
+                
+                $sheets[scrub($title)] = $pdf->Output('S');
+            }
+
+            
+            //Om man är alkemist ska det också skickas med
+            $alchemist = Alchemy_Alchemist::getForRole($role);
+            if (!empty($alchemist)) {
+                $pdf = new AlchemyAlchemistSheet_PDF();
+                $title = 'Alkemist '.$role->Name;
+                
+                $pdf->SetTitle(utf8_decode($title));
+                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetCreator('Omnes Mundi');
+                $pdf->AddFont('Helvetica','');
+                $subject = $title;
+                $pdf->SetSubject(utf8_decode($subject));
+                
+
+                $pdf->single_alchemist_sheet($alchemist, $larp);
+                
+                $sheets[scrub($title)] = $pdf->Output('S');
+            }
+ 
+            //Om man är lövjerist ska det också skickas med
+            $supplier = Alchemy_Supplier::getForRole($role);
+            if (!empty($supplier)) {
+                $pdf = new AlchemySupplierSheet_PDF();
+                $title = 'Lövjerist '.$role->Name;
+                
+                $pdf->SetTitle(utf8_decode($title));
+                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetCreator('Omnes Mundi');
+                $pdf->AddFont('Helvetica','');
+                $subject = $title;
+                $pdf->SetSubject(utf8_decode($subject));
+                
+
+                $pdf->single_supplier_sheet($supplier, $larp);
+                
+                $sheets[scrub($title)] = $pdf->Output('S');
+            }
+            
+            
             if ($larp->isIntriguesReleased()) {
                 $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $larp->Id);
                 foreach ($intrigues as $intrigue) {
