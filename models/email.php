@@ -289,15 +289,17 @@ class Email extends BaseModel{
         $mail->Body = utf8_decode($this->mailContent());
 
         
-        if (!str_contains($this->From, "berghemsvanner.se")) {
+        if (str_contains($this->From, "kontakt@kampeniringen.se")) {
             //Exempel på hur anrop kan se ut.
+            
             $mail->IsSMTP();
             $mail->SMTPAuth = true;
             $mail->SMTPSecure = "tls";
             $mail->Host = "send.one.com";
             $mail->Port = 587;
-            $mail->Username = "dmh@berghemsvanner.se";
-            $mail->Password = "colt1!";            
+            $mail->Username = "kontakt@kampeniringen.se";
+            $mail->Password = "BrestaBresta1125";   
+                     
         }
         
         /*

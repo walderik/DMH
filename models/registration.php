@@ -76,6 +76,8 @@ class Registration extends BaseModel{
         if (isset($arr['LarpPartAcknowledged'])) $this->LarpPartAcknowledged = $arr['LarpPartAcknowledged'];
         if (isset($arr['EvaluationDone'])) $this->EvaluationDone = $arr['EvaluationDone'];
         
+        if (empty($this->LarpPartNotAttending)) $this->LarpPartNotAttending = null;
+        
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
