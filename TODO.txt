@@ -7,6 +7,9 @@ Tips och ticks
 Hur fixa MySQL:
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;
 
+GRANT SELECT, INSERT, UPDATE, DELETE ON `berghemsvanner\_`.* TO 'regsys'@'%';
+Sätt lösenordet på regsys
+
 Tips jag hittade:
 Använd funktionen nl2br($text) om du vill visa text med radbrytningar - Se view_role
 
