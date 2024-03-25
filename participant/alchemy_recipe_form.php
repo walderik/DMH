@@ -265,6 +265,16 @@ input[type=checkbox]:checked+label {
 					 
 			</tr>
 			<?php }?>
+			<tr>
+
+				<td><label for="IsSecret">Hemligt</label></td>
+    			<td>
+    				<input type="radio" id="IsSecret_yes" name="IsSecret" value="1" <?php if ($recipe->isSecret()) echo 'checked="checked"'?>> 
+        			<label for="IsSecret_yes">Ja</label><br> 
+        			<input type="radio" id="IsSecret_no" name="IsSecret" value="0" <?php if (!$recipe->isSecret()) echo 'checked="checked"'?>> 
+        			<label for="IsSecret_no">Nej</label>
+    			</td>
+			</tr>
 		</table>
 
 		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
