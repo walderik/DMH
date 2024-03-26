@@ -290,8 +290,6 @@ class Email extends BaseModel{
 
         
         if (str_contains($this->From, "kontakt@kampeniringen.se")) {
-            //Exempel på hur anrop kan se ut.
-            
             $mail->IsSMTP();
             $mail->SMTPAuth = true;
             $mail->SMTPSecure = "tls";
