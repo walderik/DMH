@@ -101,4 +101,8 @@ class Alchemy_Essence extends BaseModel{
         return true;
     }
    
+    public static function getEssencesInRecipe(Alchemy_Recipe $recipe) {
+        $sql = "SELECT * FROM regsys_alchemy_essence WHERE Id IN (SELECT EssenceId FROM regsys_alchemy_recipe_essence WHERE RecipeId=?)";
+        return static::getSeveralObjectsqQuery($sql, array($recipe->Id));
+    }
 }

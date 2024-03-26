@@ -288,7 +288,10 @@ class Alchemy_Recipe extends BaseModel{
         return $resultArray;
     }
         
-  
+    public function getEssences() {
+        return Alchemy_Essence::getEssencesInRecipe($this);
+    }
+    
     public function getSelectedEssenceIds() {
         $stmt = $this->connect()->prepare("SELECT EssenceId, Level FROM  regsys_alchemy_recipe_essence WHERE RecipeId = ? ORDER BY Level");
         
@@ -390,4 +393,35 @@ class Alchemy_Recipe extends BaseModel{
         $sql = "SELECT * from regsys_alchemy_recipe WHERE CampaignId=? AND IsApproved=1 AND Level=? AND AlchemistType=".Alchemy_Alchemist::ESSENCE_ALCHEMY." ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $level));
     }
+    
+    public function containsOppositeEssences() {
+        function equalsFunction($a,$b)
+        {
+            if ($a->Id == $b->Id)
+            {
+                return 0;
+            }
+            return ($a->Id > $b->Id)?1:-1;
+        }
+        
+        
+        $essencesInRecipe = array();
+        
+        if ($this->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
+            $ingredients = $this->getSelectedIngredients();
+            foreach ($ingredients as $ingredient) {
+                $essencesInRecipe = array_merge($essencesInRecipe, $ingredient->getEssences());
+            }
+        } else {
+            $essencesInRecipe = $this->getEssences();
+        }
+        
+        $oppositeEssences = array();
+        foreach ($essencesInRecipe as $essence) $oppositeEssences[] = $essence->getOppositeEssence();
+        
+        $intersection = array_uintersect($essencesInRecipe, $oppositeEssences,"equalsFunction");
+        if (empty($intersection)) return false;
+        return true;
+    }
+    
 }

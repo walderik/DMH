@@ -144,7 +144,7 @@ include 'navigation.php';
 
 
 			<h2>Recept du har skapat</h2>
-			Här är alla recept du har skapat. När receptet är godkänt av arrangör går det inte längre att redigera.<br>
+			Här är alla recept du har skapat. När receptet är godkänt av arrangör går det inte längre att redigera. Om du vill ändra något på receptet efter att det är godkänt får du kontakta arrangör.<br>
 			Om du vill skapa ett nytt recept får du gå till sidan med alla recept, för att se så att det inte redan finns ett sådant recept.
        <?php
     
