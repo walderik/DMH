@@ -90,12 +90,15 @@ include 'navigation.php';
     				<td>
     				
 					<?php 
+					echo "<table>";
 					if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { 
 					    $ingredients = $recipe->getSelectedIngredients();
 					    foreach ($ingredients as $ingredient) {
-					        echo "$ingredient->Name (Nivå $ingredient->Level)";
-					        if ($ingredient->isCatalyst()) echo " - Katalysator";
-					        echo "<br>";
+					        echo "<tr>";
+					        echo "<td>$ingredient->Name</td><td>Nivå $ingredient->Level</td>";
+					        if ($ingredient->isCatalyst()) echo "<td>Katalysator</td>";
+					        else echo "<td>".$ingredient->getEssenceNames()."</td>";
+					        echo "</tr>";
 					    }
 					} elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
 
@@ -111,13 +114,14 @@ include 'navigation.php';
 					            }
 					        }
 					        
-					        echo "$selectedEssence->Name (Nivå ".$selectedEssenceArr[1].")<br>";
+					        echo "<tr><td>$selectedEssence->Name</td><td>Nivå ".$selectedEssenceArr[1]."</td></tr>";
 					    }
-					    echo "Katalysator (Nivå $recipe->Level)";
-					    
+					    echo "<tr><td>Katalysator</td><td>Nivå $recipe->Level</td></tr>";
+
 					    
 					}
-
+					echo "</table>";
+					if ($recipe->containsOppositeEssences()) echo "<br>".showStatusIcon(false) . " Receptet innehåller motsatta essenser.";
 
     					?>
     					

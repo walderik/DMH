@@ -94,6 +94,10 @@ input[type=checkbox]:checked+label {
     padding: 5px;
 }
 
+.essences {
+    font-size: 8px;
+}
+
 </style>
 
 
@@ -166,8 +170,9 @@ input[type=checkbox]:checked+label {
                                 $checked="checked='checked'";
                             }
                             echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id' $checked>";
-                            echo "<label for='$id'>$ingredient->Name</label>";
+                            echo "<label for='$id'>$ingredient->Name<br><span class='essences'>".$ingredient->getEssenceNames()."</span></label>";
                          }
+
  				    
 			            echo "</div><br>";
                     }
