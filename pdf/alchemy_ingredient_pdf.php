@@ -145,11 +145,10 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
                 $this->Cell($rut_width,10,utf8_decode(ucfirst($txt)),0,1,'C');
                 
                 //Skriv ut essenser
-                //TODO kolla att det här blev snyggt
                 $essenceNames = $ingredient->getEssenceNames();
-                 $this->SetFont($font,'',8);
-                 $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-3) + ($y_nr * $rut_height));
-                 $this->Cell($rut_width,10,utf8_decode(ucfirst($essenceNames)),0,1,'L');
+                 $this->SetFont($font,'',10);
+                 $this->SetXY($squareX, ($rut_height/2)+8 + $squareY);
+                 $this->Cell($rut_width,10,utf8_decode(ucfirst($essenceNames)),0,1,'C');
 
 
                 $this->SetFont($font,'',11);
