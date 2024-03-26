@@ -150,11 +150,17 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
                  $this->SetXY($squareX, ($rut_height/2)+8 + $squareY);
                  $this->Cell($rut_width,10,utf8_decode(ucfirst($essenceNames)),0,1,'C');
 
-
-                $this->SetFont($font,'',11);
+                 //Skriv ut nivå
+                 $txt = "Nivå ".$ingredient->Level;
+                 $this->SetFont($font,'',10);
+                 $this->SetXY($squareX, ($rut_height/2)+13 + $squareY);
+                 $this->Cell($rut_width,10,utf8_decode(ucfirst($txt)),0,1,'C');
+                 
+                 //Skriv ut från 
+                $this->SetFont($font,'',8);
                 $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
                 $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
-                
+
                 $size=10;
                 $this->SetFont($font,'',$size);
                 
