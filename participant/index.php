@@ -3,7 +3,7 @@ require 'header.php';
 include_once '../includes/error_handling.php';
 
 include "navigation.php";
-
+$isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
 ?>
 
 <style>
@@ -293,8 +293,14 @@ line-height: 1.8;
         		                echo "<a href='magic_magician_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
         		                if ($magician->StaffApproved && $magician->hasDoneWorkshop())  echo showStatusIcon(true);
         		                else {
-        		                    if (!$magician->StaffApproved) echo showParticipantStatusIcon(false, "Staven är inte godkänd");
-        		                    if (!$magician->hasDoneWorkshop()) echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi");
+        		                    if (!$magician->StaffApproved) {
+        		                        if ($isMob) echo "<br>";
+        		                        echo showParticipantStatusIcon(false, "Staven är inte godkänd");
+        		                    }
+        		                    if (!$magician->hasDoneWorkshop()) {
+        		                        if ($isMob) echo "<br>";
+        		                        echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi");
+        		                    }
         		                }
         		                echo "<br>";
          		            }
@@ -307,9 +313,18 @@ line-height: 1.8;
         		                    $supplier->hasDoneWorkshop() &&
         		                    $supplier->hasIngredientList($current_larp)) echo showStatusIcon(true);
     		                    else {
-    		                        if (!$supplier->hasIngredientList($current_larp)) echo showParticipantStatusIcon(false,"Du har ingen ingredienslista");
-    		                        if (!$supplier->allAmountOfIngredientsApproved($current_larp)) echo showParticipantStatusIcon(false,"Antalet ingredienser är ännu inte godkänt");
-    		                        if (!$supplier->hasDoneWorkshop()) echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om lövjeri");
+    		                        if (!$supplier->hasIngredientList($current_larp)) {
+    		                            if ($isMob) echo "<br>";
+    		                            echo showParticipantStatusIcon(false,"Du har ingen ingredienslista");
+    		                        }
+    		                        if (!$supplier->allAmountOfIngredientsApproved($current_larp)) {
+    		                            if ($isMob) echo "<br>";
+    		                            echo showParticipantStatusIcon(false,"Antalet ingredienser är ännu inte godkänt");
+    		                        }
+    		                        if (!$supplier->hasDoneWorkshop()) {
+    		                            if ($isMob) echo "<br>";
+    		                            echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om lövjeri");
+    		                        }
     		                    }
     		                    echo "<br>";
         		            }
@@ -322,9 +337,18 @@ line-height: 1.8;
         		                if ($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop() && 
         		                    !empty($recipes)) echo showStatusIcon(true);
         		                else {
-            		                if (empty($recipes)) echo showParticipantStatusIcon(false, "Din receptlist är tom");
-            		                if (!$alchemist->recipeListApproved()) echo showParticipantStatusIcon(false,"Din receptlista är inte godkänd, än");
-            		                if (!$alchemist->hasDoneWorkshop()) echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om alkemi");
+        		                    if (empty($recipes)) {
+        		                        if ($isMob) echo "<br>";
+        		                        echo showParticipantStatusIcon(false, "Din receptlist är tom");
+        		                    }
+        		                    if (!$alchemist->recipeListApproved()) {
+        		                        if ($isMob) echo "<br>";
+        		                        echo showParticipantStatusIcon(false,"Din receptlista är inte godkänd, än");
+        		                    }
+        		                    if (!$alchemist->hasDoneWorkshop()) {
+        		                        if ($isMob) echo "<br>";
+        		                        echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om alkemi");
+        		                    }
         		                }
         		                echo "<br>";
         		            }
