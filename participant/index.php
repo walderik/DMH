@@ -331,15 +331,16 @@ line-height: 1.8;
          		            
         		            
     		                if ($current_larp->isEnded()) {
-    		                    echo "<td><a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a></td>";
-    		                }
- 
-    		                if ($person->isRegistered($current_larp)) {
-    		                    echo "<br>";
-    		                    //echo "<td style='font-weight: normal; padding-right: 0px;'>";
-    		                    if ($role->isRegistered($current_larp)) echo "Anmäld till lajvet";
-    		                    else echo "Inte med på lajvet";
-    		                    echo "<br>";
+    		                    echo "<a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a><br>";
+    		                } else {
+     
+        		                if ($person->isRegistered($current_larp)) {
+        		                    echo "<br>";
+        		                    //echo "<td style='font-weight: normal; padding-right: 0px;'>";
+        		                    if ($role->isRegistered($current_larp)) echo "Anmäld till lajvet";
+        		                    else echo "Inte med på lajvet";
+        		                    echo "<br>";
+        		                }
     		                }
     		                
     		                echo "</td></tr></table>";
