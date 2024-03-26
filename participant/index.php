@@ -6,6 +6,14 @@ include "navigation.php";
 
 ?>
 
+<style>
+.role {
+line-height: 1.8;
+}
+</style>
+
+
+
 		<div class="content">
 			<h1>Anmälan till <?php echo $current_larp->Name;?></h1>
         	  <?php if (isset($error_message) && strlen($error_message)>0) {
@@ -203,56 +211,71 @@ include "navigation.php";
     		        echo "</table>";
     		        
     		        
+    		        
+    		        
+    		        
+    		        
     		        //Karaktärer
     		        if (isset($roles) && count($roles) > 0) {
-    		            echo "<br><b>Karaktärer:</b><br>\n";
-    		    
-    		            echo "<table class='roles'>\n";   		            
+    		            /*
+    		            echo "<div class='tab'>";
+    		            foreach ($roles as $role)  {
+    		              echo "<button class='tablinks' onclick='openRole(event, \"role_$role->Id\")'>$role->Name</button>";
+    		            }
+    		            echo "</div>";
+    		            */
+      		    
+    		            //echo "<table class='roles'>\n";   		            
         		        foreach ($roles as $role)  {
-        		            echo "<tr>";
-        		            if ($person->isRegistered($current_larp)) {
-        		                echo "<td style='font-weight: normal; padding-right: 0px;'>";
-        		                if ($role->isRegistered($current_larp)) echo "Anmäld till lajvet";
-        		                else echo "Inte med på lajvet";
-        		            }
+        		            echo "<div id='role_$role->Id' class='role' style='border-bottom: solid 1px silver; overflow: hidden;'>";
+        		            echo "<table><tr><td style='font-weight: normal; padding-right: 0px;' width='140px'>";
         		            //Eventuell bild
-        		            echo "<td style='font-weight: normal; padding-right: 0px;'>";
+        		            //echo "<td style='font-weight: normal; padding-right: 0px;'>";
+
+
         		            if ($role->hasImage()) {
         		                echo "<a href='view_role.php?id=$role->Id'>";
-        		                echo "<img width='30' src='../includes/display_image.php?id=$role->ImageId'/>\n";
+        		                echo "<img width='100' src='../includes/display_image.php?id=$role->ImageId'/ >\n";
         		                echo "</a>";
-        		                echo "<a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+        		                echo "<br>";
+        		                echo "<a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i>  Ta bort bild</a>\n";
         		            }
         		            else {
-        		                echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+        		                echo "<img width='100' src='../images/man-shape.png' / >\n";
+        		                echo "<br>";
+        		                echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i> Ladda upp bild</a> \n";
         		            }
-        		            echo "</td>";
+        		            echo "</td><td>";
+        		            
+
 
         		            //Namn på karaktären
-        		            echo "<td>";
+        		            //echo "<div style='clear:both;'>";
+        		            echo "<strong>";
         		            if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
         		                echo "<a href='view_role.php?id=$role->Id'>$role->Name</a> ";
         		            }
         		            else {
         		                echo "<a href='role_form.php?operation=update&id=$role->Id'>$role->Name <i class='fa-solid fa-pen'></i></a>";
         		            }
-    		                if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
-    		                if($role->isNeverRegistered()) {
-    		                    echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
-    		                }
-    		                echo "</td>";    
-        		               
+        		            if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
+        		            if($role->isNeverRegistered()) {
+        		                echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
+        		            }
+        		            echo "</strong>";
+        		            echo "<br>";
+        		            
+         		               
         		            //Karaktärsblad
-        		            echo "<td>";
     		                $registration = $person->getRegistration($current_larp);
     		                if (!empty($registration) && $registration->SpotAtLARP==1) {
-    		                    echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
+    		                    echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'>Karaktärsblad <i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
     		                }
-    		                echo "</td>\n";
-        		              
+    		                echo "<br>";
+    		                
     		                //Grupp
     		                $role_group = $role->getGroup();
-    		                $role_group_name = " (Inte med i någon grupp)";
+    		                $role_group_name = "Inte med i någon grupp";
     		                if (isset($role_group) && $role->isRegistered($current_larp)) {
     		                    $role_group_name = "<a href='view_group.php?id=$role_group->Id'>$role_group->Name</a> ".
         		                    "<a href='group_sheet.php?id=" . $role_group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $role_group->Name'></i></a>\n";
@@ -260,12 +283,11 @@ include "navigation.php";
     		                elseif (isset($role_group)) {
     		                    $role_group_name = "$role_group->Name";
     		                }
-    		                echo "<td>";
     		                echo $role_group_name;
-        		            echo "</td>";  		            
-
-        		            echo "<td>";
-        		            if (Magic_Magician::isMagician($role)) {
+    		                echo "<br>";
+    		                
+    		                
+         		            if (Magic_Magician::isMagician($role)) {
         		                $magician = Magic_Magician::getForRole($role);
         		                echo "<a href='view_magician.php?id=$role->Id'>Magiker</a> ";
         		                echo "<a href='magic_magician_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
@@ -274,7 +296,8 @@ include "navigation.php";
         		                    if (!$magician->StaffApproved) echo showParticipantStatusIcon(false, "Staven är inte godkänd");
         		                    if (!$magician->hasDoneWorkshop()) echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi");
         		                }
-        		            }
+        		                echo "<br>";
+         		            }
         		            if (Alchemy_Supplier::isSupplier($role)) {
         		                $supplier = Alchemy_Supplier::getForRole($role);
         		                echo "<a href='view_alchemy_supplier.php?id=$role->Id'>Löjverist</a> ";
@@ -288,6 +311,7 @@ include "navigation.php";
     		                        if (!$supplier->allAmountOfIngredientsApproved($current_larp)) echo showParticipantStatusIcon(false,"Antalet ingredienser är ännu inte godkänt");
     		                        if (!$supplier->hasDoneWorkshop()) echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om lövjeri");
     		                    }
+    		                    echo "<br>";
         		            }
         		            if (Alchemy_Alchemist::isAlchemist($role)) {
         		                $alchemist = Alchemy_Alchemist::getForRole($role);
@@ -302,23 +326,32 @@ include "navigation.php";
             		                if (!$alchemist->recipeListApproved()) echo showParticipantStatusIcon(false,"Din receptlista är inte godkänd, än");
             		                if (!$alchemist->hasDoneWorkshop()) echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om alkemi");
         		                }
+        		                echo "<br>";
         		            }
-        		            echo "</td>";
-        		            
+         		            
         		            
     		                if ($current_larp->isEnded()) {
     		                    echo "<td><a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a></td>";
     		                }
-        		            echo "</tr>\n";
+ 
+    		                if ($person->isRegistered($current_larp)) {
+    		                    echo "<br>";
+    		                    //echo "<td style='font-weight: normal; padding-right: 0px;'>";
+    		                    if ($role->isRegistered($current_larp)) echo "Anmäld till lajvet";
+    		                    else echo "Inte med på lajvet";
+    		                    echo "<br>";
+    		                }
+    		                
+    		                echo "</td></tr></table>";
+    		                echo "</div>\n";
         		            
         		            
         		        }
-        		        echo "</table>";
-    		        }
+     		        }
     		        else {
     		            echo "<br><b>Har ännu ingen karaktär</b>&nbsp;&nbsp;<a href='role_form.php'>".showParticipantStatusIcon(false, "Du har inte registrerat någon karaktär")."</a><br>\n";
     		        }
-        		          
+     
     		        
     		        //NPC'er
     		        $npcs = NPC::getReleasedNPCsForPerson($person, $current_larp);
@@ -487,5 +520,6 @@ include "navigation.php";
 	       
         }
     ?>
+
 	</body>
 </html>

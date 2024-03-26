@@ -256,7 +256,7 @@ div.question > label:first-child {
 }
 
 div.errorbutton {
-	    position: relative;
+  position: relative;
   display: inline-block;
   color: white;
   padding: 4px 4px;
@@ -266,6 +266,7 @@ div.errorbutton {
   margin-top: 0px;
   margin-right: 2px;
   white-space: nowrap;
+  line-height: 1.1;
 }
 
 div.errorbutton > img {
