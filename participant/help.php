@@ -44,13 +44,16 @@ Det finns även en lista på alla funktionärer så att lättare kan hitta rätt
 Efter lajvet kan du fylla i vad som hände dina karaktärer (och om du är gruppledare vad som hände din grupp). Klicka på länken “Vad hände?” bredvid respektive karaktär eller grupp. Denna information kan du uppdatera löpande fall du kommer på något du har glömt. Informationen är viktig för oss för att kunna utvärdera och spinna vidare på intrigerna till nästa lajv.
 <h3>Utvärdering</h3>
 Efter lajvet kan du även göra vår utvärdering av lajvet. Denna utvärdering berör din upplevelse av lajvet. Utvärderingen är anonym och kan endast göras en gång.
+<h2>Bilder</h2>
+Du kan ladda upp en bild på din karaktär. Den måste vara i jpg, gif eller png format. Den får vara max 0.5 MB. <br>
+Om du redan har en bild och vill byta ut den får du börja med att ta bort den gamla och sedan kan du ladda upp en ny bild.
 
 
 
 <h2>Liten ordförklaring</h2>
 
 En <b>deltagare</b> är en fysisk person som tänkt åka på ett lajv. Här fyller du i personuppgifter kopplat till dig själv. 
-Du kan även registrera flera deltagare på samma inloggningskonto. Ett typiskt exempel är en förälder som även registrerar sina barn.
+Du kan även registrera <b>flera deltagare</b> på samma inloggningskonto. Ett typiskt exempel är en förälder som även registrerar sina barn.
 <br>
 <br>
 
@@ -63,11 +66,14 @@ En <b>karaktär</b> är en roll på lajvet. Varje deltagare kan ha flera karakt�
 Man kan också ha backup-karaktärer eller dubbel-karaktärer. 
 <br>
 <br>
+<b>Registrera</b> betyder att man lägger in en deltagare, grupp eller karaktär i systemet. Det är <b>inte</b> samma som att anmäla sig till lajvet.<br>
+Det som är registrerat kommer att ligga kvar till framtida lajv. Deltagare är gemansamt för alla kampanjer som använder systemet, medan grupper och karaktärer hör till en specifik kampanj, men kan anmälas till alla lajv i kampanjen.
+<br>
+<br>
 För att få åka på lajvet behöver du <b>anmäla</b> (och betala för) alla deltagare som ska åka på lajvet. Det räcker inte att bara registrera karaktären.
 Vid anmälan av en deltagare väljer du vilken eller vilka karaktärer du (och andra deltagare du anmäler) vill spela under det aktuella lajvet.
 <br>
 <br>
-Det går att hantera <b>flera deltagare</b> från ett konto, tex om ni är en familj.
 
 	</div>
 

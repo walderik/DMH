@@ -32,6 +32,10 @@ line-height: 1.8;
         	  } elseif ($current_larp->isPastLatestRegistrationDate()) {       	      
         	      echo "<div class='nomargin'><b style='color: red'>Sista anmälningsdag har passerat</b>, men du kan göra en anmälan så att du hamnar på reservlistan.<br>Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.";
         	      echo "</div>";
+        	  } elseif ($current_larp->isFull() && $current_larp->RegistrationOpen == 0) {
+        	      
+        	      echo "<div class='nomargin'><b style='color: red'>Anmälan är stängd</b>";
+         	      echo "</div>";
         	  } elseif ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
 
                 echo "<div class='nomargin'><b style='color: red'>Lajvet är fullt, men du kan göra en anmälan så att du hamnar på reservlistan.</b> Om någon annan avbokar kan du kanske få en plats.<br>Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.";
