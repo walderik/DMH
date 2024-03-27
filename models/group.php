@@ -420,6 +420,17 @@ class Group extends BaseModel{
          return LARP::lastLarpGroup($this);
      }
      
+     public function hasRegisteredWhatHappened(LARP $larp) {
+         $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
+         if (!empty($larp_group->WhatHappened) OR !empty($larp_group->WhatHappendToOthers)) return true;
+         
+         $intrigues = Intrigue::getAllIntriguesForGroup($this->Id, $larp->Id);
+         foreach ($intrigues as $intrigue) {
+             $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this);
+             if (!empty($intrigueActor->WhatHappened)) return true;
+         }
+         return false;
+     }
      
      
      

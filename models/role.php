@@ -904,5 +904,16 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($valueId, $larp->Id));
     }
     
+    public function hasRegisteredWhatHappened(LARP $larp) {
+        $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
+        if (!empty($larp_role->WhatHappened) OR !empty($larp_role->WhatHappendToOthers)) return true;
+        
+        $intrigues = Intrigue::getAllIntriguesForRole($this->Id, $larp->Id);
+        foreach ($intrigues as $intrigue) {
+            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this);
+            if (!empty($intrigueActor->WhatHappened)) return true;
+        }
+        return false;
+    }
     
 }

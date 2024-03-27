@@ -207,7 +207,9 @@ line-height: 1.8;
     		                echo "<td><a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
     		            }
     		            if ($group->isRegistered($current_larp) && $current_larp->isEnded()) {
-    		                echo "<td><a href='larp_report_form.php?groupId=$group->Id'>Vad hände?</a></td>";
+    		                echo "<td><a href='larp_report_form.php?groupId=$group->Id'>Vad hände?</a> ".
+        		                showParticipantStatusIcon($group->hasRegisteredWhatHappened($current_larp), "Inte noterat vad som hände") .
+     		                "</td>";
     		            }
     		            
     		            echo "</tr>";
@@ -221,21 +223,11 @@ line-height: 1.8;
     		        
     		        //Karaktärer
     		        if (isset($roles) && count($roles) > 0) {
-    		            /*
-    		            echo "<div class='tab'>";
-    		            foreach ($roles as $role)  {
-    		              echo "<button class='tablinks' onclick='openRole(event, \"role_$role->Id\")'>$role->Name</button>";
-    		            }
-    		            echo "</div>";
-    		            */
-      		    
-    		            //echo "<table class='roles'>\n";   		            
-        		        foreach ($roles as $role)  {
+         		        foreach ($roles as $role)  {
         		            echo "<div id='role_$role->Id' class='role' style='border-bottom: solid 1px silver; overflow: hidden;'>";
         		            echo "<table><tr><td style='font-weight: normal; padding-right: 0px;' width='140px'>";
         		            //Eventuell bild
-        		            //echo "<td style='font-weight: normal; padding-right: 0px;'>";
-
+ 
 
         		            if ($role->hasImage()) {
         		                echo "<a href='view_role.php?id=$role->Id'>";
@@ -359,7 +351,9 @@ line-height: 1.8;
          		            
         		            
     		                if ($current_larp->isEnded()) {
-    		                    echo "<a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a><br>";
+    		                    echo "<a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a> ".
+        		                    showParticipantStatusIcon($role->hasRegisteredWhatHappened($current_larp), "Inte noterat vad som hände") .
+        		                    "<br>";
     		                } else {
      
         		                if ($person->isRegistered($current_larp)) {
