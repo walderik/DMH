@@ -90,7 +90,13 @@ th {
                 if (!empty($titledeed->Size)) echo "($titledeed->Size)";
                 "</small></td>\n";
                 echo "<td>$titledeed->Level</td>\n";
-                echo "<td>$titledeed->Location</td>\n";
+                
+                echo "<td>";
+                if (isset($titledeed->TitledeedPlaceId)) {
+                    echo $titledeed->getTitledeedPlaceName();
+                    if (!empty($titledeed->Location)) echo "<br>($titledeed->Location)";
+                } else echo $titledeed->Location;
+                echo "</td>\n";
                 
                 echo "<td>";
                 echo "<a href='choose_group.php?operation=add_titledeed_owner_group&Id=$titledeed->Id'><i class='fa-solid fa-plus' title='Lägg till grupp'></i><i class='fa-solid fa-users' title='Lägg till grupp'></i></a><br>";

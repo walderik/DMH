@@ -124,6 +124,11 @@ class Titledeed extends BaseModel{
         if (!empty($role_owners) && $role_owners[0] == $role) return true;
         return false;
     }
+    
+    public function getTitledeedPlaceName() {
+        if (isset($this->TitledeedPlaceId)) return TitledeedPlace::loadById($this->TitledeedPlaceId)->Name;
+        return "";
+    }
 
     
     public function IsFirstOwnerGroup(Group $group) {
