@@ -219,6 +219,20 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                 
                     
                 
+                $y = $this->GetY() + $space*3;
+                $this->current_left = $left;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont($recipefont,'',static::$text_fontsize+2);
+                $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Beskrivning"),0,0,'L');
+                
+                $y = $this->GetY() + $space*2;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont($recipefont,'',static::$text_fontsize);
+                $text = trim(utf8_decode($recipe->Description));
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+                
                 
                 
                 $y = $this->GetY() + $space*3;

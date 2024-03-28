@@ -5,6 +5,7 @@ class Alchemy_Recipe extends BaseModel{
     public $Id;
     public $Name;
     public $AlchemistType;
+    public $Description;
     public $Preparation;
     public $Effect;
     public $SideEffect;
@@ -35,6 +36,7 @@ class Alchemy_Recipe extends BaseModel{
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
         if (isset($arr['AlchemistType'])) $this->AlchemistType = $arr['AlchemistType'];
+        if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['Preparation'])) $this->Preparation = $arr['Preparation'];
         if (isset($arr['Effect'])) $this->Effect = $arr['Effect'];
         if (isset($arr['SideEffect'])) $this->SideEffect = $arr['SideEffect'];
@@ -60,10 +62,10 @@ class Alchemy_Recipe extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_recipe SET Name=?, AlchemistType=?, Preparation=?, Effect=?, SideEffect=?, 
+        $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_recipe SET Name=?, AlchemistType=?, Description=?, Preparation=?, Effect=?, SideEffect=?, 
                 IsApproved=?, IsSecret=?, Level=?, OrganizerNotes=?, AuthorRoleId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->AlchemistType, $this->Preparation, $this->Effect, $this->SideEffect, 
+        if (!$stmt->execute(array($this->Name, $this->AlchemistType, $this->Description, $this->Preparation, $this->Effect, $this->SideEffect, 
             $this->IsApproved, $this->IsSecret, $this->Level, $this->OrganizerNotes, $this->AuthorRoleId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -77,10 +79,10 @@ class Alchemy_Recipe extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_alchemy_recipe (Name, AlchemistType, Preparation, Effect, SideEffect, 
-            IsApproved, IsSecret, Level, OrganizerNotes, CampaignId, AuthorRoleId) VALUES (?,?,?,?,?, ?,?,?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_alchemy_recipe (Name, AlchemistType, Description, Preparation, Effect, SideEffect, 
+            IsApproved, IsSecret, Level, OrganizerNotes, CampaignId, AuthorRoleId) VALUES (?,?,?,?,?, ?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->Name, $this->AlchemistType, $this->Preparation, $this->Effect, $this->SideEffect,
+        if (!$stmt->execute(array($this->Name, $this->AlchemistType, $this->Description, $this->Preparation, $this->Effect, $this->SideEffect,
             $this->IsApproved, $this->IsSecret, $this->Level, $this->OrganizerNotes, $this->CampaignId, $this->AuthorRoleId))) {
                 $this->connect()->rollBack();
                 $stmt = null;

@@ -126,6 +126,10 @@ include 'alchemy_navigation.php';
     				
                     </td>
     			</tr>
+    			<tr>
+    				<td>Beskrivning</td>
+    				<td><?php echo nl2br(htmlspecialchars($recipe->Description)); ?></td>
+    			</tr>
      			<tr>
     				<td>Beredning</td>
     				<td><?php echo nl2br(htmlspecialchars($recipe->Preparation)); ?></td>
