@@ -251,20 +251,20 @@ input[type=checkbox]:checked+label {
 			<tr>
 
 				<td><label for="Description">Beredning</label></td>
- 				<td><textarea id="Preparation" name="Preparation" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($recipe->Preparation); ?></textarea></td>
+ 				<td><textarea id="Preparation" name="Preparation" rows="4" cols="100" maxlength="6000" required><?php echo htmlspecialchars($recipe->Preparation); ?></textarea></td>
 					 
 			</tr>
 			<tr>
 
 				<td><label for="Description">Effekt</label></td>
- 				<td><textarea id="Effect" name="Effect" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($recipe->Effect); ?></textarea></td>
+ 				<td><textarea id="Effect" name="Effect" rows="4" cols="100" maxlength="600" required><?php echo htmlspecialchars($recipe->Effect); ?></textarea></td>
 					 
 			</tr>
 			<?php if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { ?>
 			<tr>
 
 				<td><label for="Description">Bieffekt</label></td>
- 				<td><textarea id="SideEffect" name="SideEffect" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($recipe->SideEffect); ?></textarea></td>
+ 				<td><textarea id="SideEffect" name="SideEffect" rows="4" cols="100" maxlength="600" required><?php echo htmlspecialchars($recipe->SideEffect); ?></textarea></td>
 					 
 			</tr>
 			<?php }?>
