@@ -114,4 +114,16 @@ class Bookkeeping extends BaseModel{
         return Image::loadById($this->ImageId);
     }
     
+    public static function sumRegisteredIncomes(LARP $larp) {
+        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE LarpId = ? AND Amount > 0 ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array($larp->Id));
+        
+    }
+
+    public static function sumRegisteredExpenses(LARP $larp) {
+        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE LarpId = ? AND Amount < 0 ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array($larp->Id));
+        
+    }
+    
 }
