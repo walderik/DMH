@@ -48,7 +48,7 @@ require_once $root . '/pdf/alchemy_ingredient_pdf.php';
 			<a href='alchemy_alchemist_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Alkemistblad för alla alkemister'></i>Alkemistblad för alla alkemister</a><br><br>
 			<a href='alchemy_supplier_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Lövjeristblad för alla lövjerister'></i>Lövjeristblad för alla lövjerister</a><br><br>
  			<a href="reports/alchemy_ingredients_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Ingredienser på lajvet</a><br>
-        
+            <a href="reports/recipe_labels_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Etiketter för alla recept</a><br>
         </p>
     </div>
 

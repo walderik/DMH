@@ -355,6 +355,13 @@ class Alchemy_Recipe extends BaseModel{
     }
    
     
+    public static function getAllApproved(Larp $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_alchemy_recipe WHERE CampaignId=? AND IsApproved=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    
     public function calculatePoints() {
         $sum = 0;
         if ($this->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
