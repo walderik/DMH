@@ -15,7 +15,8 @@ include 'magic_navigation.php';
 		
 		<h3>Utskrifter</h3>
 		<p>
-				<a href='magic_magician_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för alla magiker'></i>Magikerblad för alla magiker</a>&nbsp;
+				<a href='magic_magician_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för alla magiker'></i>Magikerblad för alla magiker</a><br>
+				<a href='reports/magic_scroll_pdf.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla magier som skrollor'></i>Alla magier som skrollor</a>&nbsp;
 		
 		</p>
     </div>
