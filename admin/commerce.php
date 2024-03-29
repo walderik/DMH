@@ -16,6 +16,7 @@ include 'navigation.php';
         <br>
         <a href="resource_titledeed_overview_normal.php">Resursfördelning - normala resurser</a><br>
         <a href="resource_titledeed_overview_rare.php">Resursfördelning - ovanliga resurser</a><br>
+        <a href="resource_titledeed_overview_place.php">Resursöversikt - per plats</a><br>
         <br>
         <a href="commerce_roles.php">Karaktärer med handel</a><br>
         <a href="commerce_groups.php">Grupper med handel</a><br>

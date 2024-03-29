@@ -74,6 +74,12 @@ class Resource_Titledeed extends BaseModel{
         return Resource::loadById($this->ResourceId);
     }
     
+    public static function getResourceAmountForPlace($resourceId, $placeId) {
+        $sql = "SELECT sum(Quantity) as Num FROM regsys_resource_titledeed WHERE ResourceId = ? AND TitledeedId IN (".
+            "SELECT Id FROM regsys_titledeed WHERE TitledeedPlaceId=?)";
+        return static::countQuery($sql, array($resourceId, $placeId));
+    }
+    
     public static function loadByIds($resourceId, $titledeedId) {
         $sql = "SELECT * FROM regsys_resource_titledeed WHERE ResourceId = ? AND TitledeedId = ?";
         return static::getOneObjectQuery($sql, array($resourceId, $titledeedId));
