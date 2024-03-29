@@ -44,7 +44,7 @@ if ($operation == "set_prop_owner_role") {
     $url = "prop_owner_form.php";
 }
 elseif ($operation == "add_titledeed_owner_role") {
-    $purpose = "Sätt som ägare av lagfart";
+    $purpose = "Sätt som ägare av verksamhet";
     $url = "logic/titledeed_form_save.php";
     $multiple=true;
 } elseif ($operation == "add_intrigue_actor_role") {

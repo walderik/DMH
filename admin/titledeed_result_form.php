@@ -140,7 +140,7 @@ include_once 'header.php';
 				<td><textarea id="Notes" name="Notes" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($titledeedresult->Notes); ?></textarea></td>
 			</tr>
 			<tr>
-				<td><label for="OrganizerNotes">Anteckningar om lagfarten<br>för arrangörer</label></td>
+				<td><label for="OrganizerNotes">Anteckningar om verksamheten<br>för arrangörer</label></td>
 				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($titledeed->OrganizerNotes); ?></textarea></td>
 			</tr>
  

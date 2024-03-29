@@ -51,7 +51,7 @@ foreach ($roles as $role) {
     $package .= "$start_money $currency\n";
     
     
-    //Lagfarter
+    //Verksamheter
     $titlededsArr = array();
     $titledeeds = Titledeed::getAllForRole($role);
     foreach ($titledeeds as $titledeed) {
@@ -116,7 +116,7 @@ foreach ($groups as $group) {
     $package .= "$start_money $currency\n";
     
     
-    //Lagfarter
+    //Verksamheter
     $titlededsArr = array();
     $titledeeds = Titledeed::getAllForGroup($group);
     foreach ($titledeeds as $titledeed) {

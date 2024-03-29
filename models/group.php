@@ -146,7 +146,7 @@ class Group extends BaseModel{
          if ($this->WealthId > 2) return true;
          $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
          
-         //Äger lagfart
+         //Äger verksamhet
          $titledeeds = Titledeed::getAllForGroup($this);
          if (!empty($titledeeds)) return true;
          

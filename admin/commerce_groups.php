@@ -20,7 +20,7 @@ th {
 
     <div class="content">   
         <h1>Grupper med handel</h1>
-                <p>Alla grupper som har rikedom 3 eller högre eller som äger en lagfart visas här. Det gäller alla grupper i kampanjen, även de som inte kommer på ett visst lajv.</p>
+                <p>Alla grupper som har rikedom 3 eller högre eller som äger en verksamhet visas här. Det gäller alla grupper i kampanjen, även de som inte kommer på ett visst lajv.</p>
         
      		<?php 
      		$groups = Group::getAllInCampaign($current_larp->CampaignId);
@@ -32,12 +32,12 @@ th {
     		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
         		    "<th onclick='sortTable(1, \"$tableId\")'>Kommer<br>på lajvet</th>".
         		    "<th onclick='sortTable(2, \"$tableId\")'>Rikedom</th>".
-        		    "<th onclick='sortTable(3, \"$tableId\")'>Lagfarter</th>".
+        		    "<th onclick='sortTable(3, \"$tableId\")'>Verksamheter</th>".
         		    "<th onclick='sortTable(4, \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>\n";
     		    foreach ($groups as $group)  {
     		        //Man vill se alla grupper som kommer på lajvet och har handel och 
-    		        //alla grupper som äger lagfart oavsett om de kommer eller inte
+    		        //alla grupper som äger verksamhet oavsett om de kommer eller inte
     		        $titledeeds = Titledeed::getAllForGroup($group);
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     		        $isComing = !empty($larp_group);

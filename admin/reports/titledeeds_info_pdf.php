@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 $all_info = false;
 if (isset($_GET["all_info"])) $all_info = true;
 
-$name = 'Lagfarter';
+$name = 'Verksamheter';
 
 $pdf = new Report_PDF();
 

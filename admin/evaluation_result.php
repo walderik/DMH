@@ -136,7 +136,7 @@ $campaign = $current_larp->getCampaign();
 
 		<h2>Speltekniska system</h2>
 		<?php chart("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_dmh_q1")?>
-		<?php chart("Handelssystemet med resurskort och lagfarter var ett bra system","game_dmh_q2")?>
+		<?php chart("Handelssystemet med resurskort och verksamheter var ett bra system","game_dmh_q2")?>
 		<?php chart("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_dmh_q3")?>
 		<?php comments("Övrigt/kommentarer", "game_comment")?>
 	

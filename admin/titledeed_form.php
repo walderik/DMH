@@ -59,7 +59,7 @@ include_once 'header.php';
     
 
     <div class="content"> 
-    <h1><?php echo default_value('action');?> lagfart <a href="<?php echo $referer?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1><?php echo default_value('action');?> verksamhet <a href="<?php echo $referer?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 	<form action="logic/titledeed_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
@@ -140,11 +140,11 @@ include_once 'header.php';
     			</td>
 			</tr>
 			<tr>
-				<td><label for="PublicNotes">Anteckingar om lagfarten<br>som visas på lagfarten</label></td>
+				<td><label for="PublicNotes">Anteckingar om verksamheten<br>som visas på verksamheten</label></td>
 				<td><textarea id="PublicNotes" name="PublicNotes" rows="4" cols="100" maxlength="60000" ><?php echo nl2br(htmlspecialchars($titledeed->PublicNotes)); ?></textarea></td>
 			</tr>
 			<tr>
-				<td><label for="OrganizerNotes">Anteckningar om lagfarten<br>för arrangörer</label></td>
+				<td><label for="OrganizerNotes">Anteckningar om verksamheten<br>för arrangörer</label></td>
 				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" cols="100" maxlength="60000" ><?php echo nl2br(htmlspecialchars($titledeed->OrganizerNotes)); ?></textarea></td>
 			</tr>
  

@@ -45,7 +45,7 @@ th {
         <h1>Resursfördelning - normala resurser <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till handel"></i></a></h1>
 		<input type="hidden" id="Currency" value="<?php echo $currency ?>">
         <?php if (empty($resources) || empty($titledeeds)) {
-            echo "Översikten kräver att det finns både resurder och lagfarter.";
+            echo "Översikten kräver att det finns både resurser och verksamheter.";
             
         }
         else {
@@ -53,11 +53,11 @@ th {
         <p>Här ställer du in vad alla har eller behöver av olika vanliga resurser. 
         Vill du ange att de har något anger du en positiv siffra, om du vill att de 
         behöver något anger du en negativ siffra.<br>
-        Om du anger en positiv siffra på pengarna, så är det pengar som följer med lagfarten vid lajvstart, att handla resurser för.<br>
+        Om du anger en positiv siffra på pengarna, så är det pengar som följer med verksamheten vid lajvstart, att handla resurser för.<br>
         På balans kan du se hur mycket överskott/underskott det finns av en viss resurs på lajvet.<br>
         Antal kort är så många kort som kommer att behöva skrivas ut.</p>
-        <p>Rutor med grön bakgrund är resurser som lagfarten normalt har och bör därför innehålla en positiv siffra.<br>
-        Rutor med röd bakgrund är resurser som lagfarten normalt behöver och bör därför innehålla en negativ siffra.</p>
+        <p>Rutor med grön bakgrund är resurser som verksamheten normalt har och bör därför innehålla en positiv siffra.<br>
+        Rutor med röd bakgrund är resurser som verksamheten normalt behöver och bör därför innehålla en negativ siffra.</p>
         <p>Om man ändrar siffrorna sparas det direkt.</p>
         <table>
     	<tr>

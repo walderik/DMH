@@ -89,7 +89,7 @@ include_once 'header.php';
 			</tr>
 			<tr>
 
-				<td><label for="IsRare">Ovanlig</label><br>används vid förbättring<br>av lagfart</td>
+				<td><label for="IsRare">Ovanlig</label><br>används vid förbättring<br>av verksamheter</td>
     			<td>
     				<input type="radio" id="IsRare_yes" name="IsRare" value="1" <?php if ($resource->IsRare == 1) echo 'checked="checked"'?>> 
         			<label for="IsRare_yes">Ja</label><br> 

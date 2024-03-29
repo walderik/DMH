@@ -591,7 +591,7 @@ class Role extends BaseModel{
         if ($this->isMysLajvare()) return false;
         if ($this->WealthId > 2) return true;
         
-        //Äger lagfart
+        //Äger verksamhet
         $titledeeds = Titledeed::getAllForRole($this);
         if (!empty($titledeeds)) return true;
         

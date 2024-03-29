@@ -200,7 +200,7 @@ label::before {
 
 		<h2>Speltekniska system</h2>
 			<?php slider("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_dmh_q1",1,10,5)?>
-			<?php slider("Handelssystemet med resurskort och lagfarter var ett bra system","game_dmh_q2",1,10,5)?>
+			<?php slider("Handelssystemet med resurskort och verksamheter var ett bra system","game_dmh_q2",1,10,5)?>
 			<?php slider("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_dmh_q3",1,10,5)?>
 			<div class="question">
     			<label for="game_comment">Övrigt/kommentarer</label><br>

@@ -15,10 +15,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $arrayOfTitledeeds = Titledeed::allByCampaign($current_larp, false);
 $pdf = new RESOURCE_PDF();
-$pdf->SetTitle(utf8_decode('Alla resurser för alla lagfarter'));
+$pdf->SetTitle(utf8_decode('Alla resurser för alla verksamheter'));
 $pdf->SetAuthor(utf8_decode($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
-$pdf->SetSubject(utf8_decode('Alla resurser för alla lagfarter'));
+$pdf->SetSubject(utf8_decode('Alla resurser för alla verksamheter'));
 $pdf->all_resources($arrayOfTitledeeds, $type, $current_larp);
 
 $pdf->Output();

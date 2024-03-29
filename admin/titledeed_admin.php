@@ -44,7 +44,7 @@ th {
     <div class="content">
         <h1>Verksamheter <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
         <p>Verksamheter går bara att ta bort om det inte finns några ägare eller inställningar för produktion/behov. 
-        Detta för att man inte ska råka ta bort lagfarter som är i spel av misstag.</p>
+        Detta för att man inte ska råka ta bort verksamheter som är i spel av misstag.</p>
         <p>Ikoner:<br>
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
         <i class='fa-solid fa-house'></i> - Handelsstation

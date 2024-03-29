@@ -20,7 +20,7 @@ th {
 
     <div class="content">   
         <h1>Karaktärer med handel</h1>
-        <p>Alla karaktärer som har <?php if (Wealth::isInUse($current_larp)) echo "rikedom 3 eller högre eller"?> som äger en lagfart visas här. Det gäller alla karaktärer i kampanjen, även de som inte kommer på ett visst lajv.</p>
+        <p>Alla karaktärer som har <?php if (Wealth::isInUse($current_larp)) echo "rikedom 3 eller högre eller"?> som äger en verksamhet visas här. Det gäller alla karaktärer i kampanjen, även de som inte kommer på ett visst lajv.</p>
         <p>Sidokaraktärer markeras med en * efter namnet. De är gömda från början.</p>
 		    <?php 
 	        echo "Karaktärer filtrerade på om de är sidokaraktär eller inte.<br>";
@@ -39,12 +39,12 @@ th {
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Kommer<br>på lajvet</th>";
     		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
     		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
-        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Lagfarter</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Verksamheter</th>".
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Pengar ($currency)</th>".
         		    "</tr>\n";
     		    foreach ($roles as $role)  {
     		        //Man vill se alla roller som kommer på lajvet och har handel och 
-    		        //alla roller som äger lagfart oavsett om de kommer eller inte
+    		        //alla roller som äger verksamhet oavsett om de kommer eller inte
     		        $titledeeds = Titledeed::getAllForRole($role);
     		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
     		        $person = $role->getPerson();

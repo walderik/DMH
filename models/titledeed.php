@@ -160,7 +160,7 @@ class Titledeed extends BaseModel{
     }
     
     public function addRoleOwners($roleIds) {
-        //Ta reda på vilka som inte redan är kopplade till lagfarten
+        //Ta reda på vilka som inte redan är kopplade till verksamheten
         $exisitingRoleIds = array();
         $role_owners = $this->getRoleOwners();
         foreach ($role_owners as $role_owner) {
@@ -181,7 +181,7 @@ class Titledeed extends BaseModel{
     }
     
     public function addGroupOwners($groupIds) {
-        //Ta reda på vilka som inte redan är kopplade till lagfarten
+        //Ta reda på vilka som inte redan är kopplade till verksamheten
         $exisitingGroupIds = array();
         $group_owners = $this->getGroupOwners();
         foreach ($group_owners as $group_owner) {
