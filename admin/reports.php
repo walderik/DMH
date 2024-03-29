@@ -1,6 +1,7 @@
 <?php
 include_once 'header.php';
 require_once $root . '/pdf/resource_pdf.php';
+require_once $root . '/pdf/alchemy_ingredient_pdf.php';
 
 include 'navigation.php';
 ?>
