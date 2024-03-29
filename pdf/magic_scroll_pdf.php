@@ -31,15 +31,19 @@ class MagicScroll_PDF extends FPDF {
         $font = 'rocksalt';
         
         $this->AddFont($font);
-        $size = 20;
+        $size = 24;
         $this->SetFont($font,'',$size);
         $this->SetXY(30, 115);
         $this->MultiCell(150,6,utf8_decode($spell->Name),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
         
-        $size = 14;
+        $size = 20;
+        if (strlen($spell->Description) > 300) $size = 18;
+        if (strlen($spell->Description) > 400) $size = 14;
+        if (strlen($spell->Description) > 500) $size = 12;
+        if (strlen($spell->Description) > 700) $size = 10;
         $this->SetFont($font,'',$size);
-        $this->SetXY(30, 140);
-        $this->MultiCell(150,6,utf8_decode($spell->Description),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->SetXY(30, 135);
+        $this->MultiCell(150,10,utf8_decode($spell->Description),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         
 
         $size = 8;
