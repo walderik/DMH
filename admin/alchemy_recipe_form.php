@@ -229,7 +229,7 @@ input[type=checkbox]:checked+label {
 			<tr>
 
 				<td><label for="Description">Beskrivning</label></td>
- 				<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="6000" required><?php echo htmlspecialchars($recipe->Description); ?></textarea></td>
+ 				<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="6000"><?php echo htmlspecialchars($recipe->Description); ?></textarea></td>
 					 
 			</tr>
 			<tr>
