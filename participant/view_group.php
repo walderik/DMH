@@ -48,7 +48,9 @@ function print_role(Role $role, Group $group) {
     echo "Spelas av ".$role->getPerson()->Name."<br>";
     
     if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-        echo "Ansvarig vuxen är " . $role->getRegistration($current_larp)->getGuardian()->Name;
+        $guardian = $role->getRegistration($current_larp)->getGuardian();
+        if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
+        else echo "Ansvarig vuxen är inte utpekad.";
     }
     
     echo "<div class='description'>$role->DescriptionForGroup</div>\n";
