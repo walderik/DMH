@@ -124,7 +124,7 @@ input[type=checkbox]:checked+label {
 					$authorId = null;
 					if (isset($author)) $authorId = $author->Id;
 					$alchemistRoles = Alchemy_Alchemist::getRolesByCampaign($current_larp);
-					selectionDropDownByArray("AuthorRoleId", $alchemistRoles, false, $authorId);
+					if (!empty($alchemistRoles)) selectionDropDownByArray("AuthorRoleId", $alchemistRoles, false, $authorId);
 
 					?>
                 </td>
