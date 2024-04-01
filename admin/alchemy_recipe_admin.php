@@ -34,9 +34,10 @@ include 'alchemy_navigation.php';
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
                "<th onclick='sortTable(2, \"$tableId\")'>Typ</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Effekt</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Ingredienser/Essenser<br>Nivån anges inom parentes</th>".
-               "<th onclick='sortTable(5, \"$tableId\")'>Godkänd</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Hemligt</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Effekt</th>".
+               "<th onclick='sortTable(5, \"$tableId\")'>Ingredienser/Essenser<br>Nivån anges inom parentes</th>".
+               "<th onclick='sortTable(6, \"$tableId\")'>Godkänd</th>".
                "<th></th>";
            
            foreach ($recipes as $recipe) {
@@ -49,6 +50,11 @@ include 'alchemy_navigation.php';
                 echo "<td>";
                 echo $recipe->getRecipeType();
                 echo "</td>\n";
+                
+                echo "<td>";
+                echo $recipe->IsSecret() ? 'JA' : '';
+                echo "</td>\n";
+                
                 echo "<td>".nl2br(htmlspecialchars($recipe->Effect))."</td>";
                 echo "<td>";
                 echo $recipe->getComponentNames();
