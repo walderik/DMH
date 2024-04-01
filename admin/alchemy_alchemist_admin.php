@@ -22,7 +22,7 @@ include 'alchemy_navigation.php';
         <h1>Alkemister <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
         Först lägger man till en eller flera karaktärer som alkemister och sedan kan man redigera deras alkemi-egenskaper.
         <br><br>
-            <a href="choose_role.php?operation=add_alchemist"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som alkemister</a>&nbsp;&nbsp;  <br />
+            <a href="choose_role.php?operation=add_alchemist"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som alkemister</a>&nbsp;&nbsp; 
        <?php
     
        $alchemists = Alchemy_Alchemist::allByCampaign($current_larp);
@@ -34,6 +34,8 @@ include 'alchemy_navigation.php';
            }
            
            echo contactSeveralEmailIcon('Skicka mail till alla alkemister', $emailArr, 'Alkemist', "Meddelande till alla alkemister i $current_larp->Name");
+           
+           echo "<br>";
            
            $tableId = "alchemists";
            echo "<table id='$tableId' class='data'>";
