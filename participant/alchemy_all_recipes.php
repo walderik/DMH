@@ -72,15 +72,21 @@ include 'navigation.php';
                 echo "</td>\n";
                 
                 echo "<td><a href='view_alchemy_recipe.php?recipeId=$recipe->Id&id=$role->Id'>$recipe->Name</a>";
-                if ($recipe->AuthorRoleId == $role->Id) echo "<br><b>(Ditt egna)</b>";
+                if ($recipe->AuthorRoleId == $role->Id) {
+                    echo "<br><b>(Ditt egna)</b>";
+                    if ($recipe->IsSecret) echo " HEMLIGT!";
+                }
+                
                 echo "</td>\n";
                 
                 echo "<td>$recipe->Level</td>\n";
+                
                 echo "<td>";
                 if ($alchemist->AlchemistType == $recipe->AlchemistType) echo "<strong>";
                 echo $recipe->getRecipeType();
                 if ($alchemist->AlchemistType == $recipe->AlchemistType) echo "</strong>";
                 echo "</td>\n";
+                
                 echo "<td>".nl2br(htmlspecialchars($recipe->Effect))."</td>";
                 echo "<td>";
                 echo $recipe->getComponentNames();
