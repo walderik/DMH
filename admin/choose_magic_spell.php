@@ -55,6 +55,7 @@ else {
 }
 
 include 'navigation.php';
+include 'magic_navigation.php';
 ?>
 
 
