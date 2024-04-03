@@ -3,14 +3,35 @@ include_once 'header.php';
 include 'navigation.php';
 
 
+
+
 function print_group(Group $group,$group_members, $house) {
     global $current_larp;
     $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     $group_housing_requestId = $larp_group->HousingRequestId;
     $comments = array();
+    $firstPaymentDate = null;
+    $lastPaymentDate = date_create(substr($current_larp->StartDate,0,10));
+    $lastPaymentDate->modify('-1 year');
+    
+
+    
     foreach($group_members as $group_member) {
         $comment = $group_member->getFullHousingComment($current_larp);
         if (!empty($comment)) $comments[] = $comment;
+        $registration = $group_member->getRegistration($current_larp);
+        if (isset($registration->Payed)) {
+            $payedDate = new DateTime($registration->Payed);
+             if (empty($firstPaymentDate) OR ($firstPaymentDate > $payedDate)) {
+                $firstPaymentDate = $payedDate;
+            }
+            if (isset($lastPaymentDate) && $lastPaymentDate < $payedDate) {
+                $lastPaymentDate = $payedDate;
+            }
+        } else {
+            $lastPaymentDate = null;
+        }
+        
     }
     $id="group_$group->Id";
     if (isset($house)) $id = $id."_$house->Id";
@@ -26,6 +47,11 @@ function print_group(Group $group,$group_members, $house) {
     }
     echo "</div>\n";
     echo "  <div>".HousingRequest::loadById($group_housing_requestId)->Name."</div>\n";
+    echo "<div>";
+    if (empty($firstPaymentDate)) echo "Betalning saknas";
+    elseif (empty($lastPaymentDate)) echo "Första betalade ".date_format($firstPaymentDate,"Y-m-d").", alla har inte betalat";
+    else echo "Betalat ".date_format($firstPaymentDate,"Y-m-d")." - ".date_format($lastPaymentDate,"Y-m-d")."";
+    echo "</div>";
     echo "  <div class='hidden' id='members_$id'>\n";
     echo "    <div class='group_members clearfix' style='display:table; border-spacing:5px;'>\n";
     foreach($group_members as $person) {
@@ -38,6 +64,7 @@ function print_group(Group $group,$group_members, $house) {
 
 function print_individual(Person $person, $group, $house) {
     global $current_larp;
+    $registration = $person->getRegistration($current_larp);
     $id="person_$person->Id";
     if (isset($group)) $id = $id."_$group->Id";
     else  $id = $id."_X";
@@ -45,7 +72,7 @@ function print_individual(Person $person, $group, $house) {
     
     echo "<div class='person' id='$id' draggable='true' ondragstart='drag(event)'>\n";
     echo "  <div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>";
-    if ($person->isNotComing($current_larp)) echo "<s>$person->Name</s>";
+    if ($registration->isNotComing()) echo "<s>$person->Name</s>";
     else echo "$person->Name";
     echo "</a>\n";
     
@@ -56,8 +83,13 @@ function print_individual(Person $person, $group, $house) {
     echo "  </div>\n";
 
     echo "  <div>".HousingRequest::loadById($person->getRegistration($current_larp)->HousingRequestId)->Name."</div>\n";
-
+    echo "<div>";
+    if (empty($registration->Payed)) echo "Betalning saknas";
+    else echo "Betalat $registration->Payed";
     echo "</div>\n";
+    
+    echo "</div>\n";
+    
     
 }
 
