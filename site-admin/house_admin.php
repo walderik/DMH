@@ -21,21 +21,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
 //     $operation = $_GET['operation'];
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
-        
-        $house=House::loadById($_POST['Id']);
-        $caretakers = $house->getHousecaretakers();
-        foreach ($caretakers as $caretaker) {
-            $caretaker->destroy();
-        }
-        if ($house->hasImage()) {
-            $image = $house->getImage();
-            $image->destroy();
-        }
-        
-        if ($house->hasHousing()) {
+
+        $house=House::loadById($_GET['id']);
+        if ($house->mayDelete()) {
+            $caretakers = $house->getHousecaretakers();
+            foreach ($caretakers as $caretaker) {
+                $caretaker->destroy();
+            }
+            if ($house->hasImage()) {
+                $image = $house->getImage();
+                $image->destroy();
+            }
             
-        } else {
-            $house->destroy();
+            if ($house->hasHousing()) {
+                
+            } else {
+                $house->destroy();
+            }
         }
         
         header('Location: house_admin.php');
@@ -98,7 +100,9 @@ include "navigation.php";
                 
                 $txt = '"Är du säker att du helt vill ta bort '.$house->Name.'?"';
                 $confirm = "onclick='return confirm($txt)'";
-                echo "<td><a href='house_admin.php?operation=delete&id=$house->Id' $confirm><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>";
+                if ($house->mayDelete()) echo "<a href='house_admin.php?operation=delete&id=$house->Id' $confirm><i class='fa-solid fa-trash'></i>";
+                echo "</td>\n";
                 
                 echo "</tr>\n";
             }

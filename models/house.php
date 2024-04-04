@@ -163,5 +163,10 @@ class House extends BaseModel{
         return LARP::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
+    public function mayDelete() {
+        if ($this->hasHousing()) return false;
+        return true;
+    }
+    
 }
     

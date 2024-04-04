@@ -80,7 +80,7 @@ class BaseModel extends Dbh{
     
     public function destroy()
     {
-        static::delete($this->id);
+        static::delete($this->Id);
     }
 
     protected static function getIdArray($sql, $var_array) {
