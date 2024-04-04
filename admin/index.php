@@ -86,6 +86,8 @@ include "navigation.php";
 
 			<tr><td style='font-weight: normal'>Förväntade intäkter:<br>deltagaravgifter för alla anmälda</td>			
 			<td align='right'><?php echo number_format((float)Registration::totalIncomeToBe($current_larp), 2, ',', '');?> SEK</td></tr>
+			<tr><td style='font-weight: normal'>Förväntade återbetalningar:<br>deltagaravgifter markerade för återbetalning</td>			
+			<td align='right'><?php echo number_format((float)Registration::totalRefundsToBe($current_larp), 2, ',', '');?> SEK</td></tr>
 			<tr><td  style='font-weight: normal' colspan='2'><hr></td></tr>
 			<?php 
 			$income = Registration::totalIncomeToday($current_larp) + Bookkeeping::sumRegisteredIncomes($current_larp);
