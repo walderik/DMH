@@ -365,7 +365,12 @@ class Registration extends BaseModel{
         $registrationArr = static::allBySelectedLARP($larp);
         $income = 0;
         foreach($registrationArr as $registration) {
-            if (!$registration->isToBeRefunded()) $income = $income + $registration ->AmountToPay;
+            if ($registration->isNotComing()) {
+                $income = $income + $registration->AmountPayed;
+                
+            } else {
+                $income = $income + $registration->AmountToPay;
+            }
         }
         return $income;
     }
@@ -376,12 +381,14 @@ class Registration extends BaseModel{
         $refunds = 0;
         foreach($registrationArr as $registration) {
             if ($registration->isToBeRefunded()) {
-                if (isset($registration->RefundAmount)) {
+                if (!empty($registration->RefundAmount)) {
                     $refunds = $refunds - $registration->RefundAmount;
                 } else {
                     $refunds = $refunds - $registration ->AmountToPay;
                     
                 }
+            } elseif (isset($registration->RefundAmount) && isset($registration->RefundDate)) {
+                $refunds = $refunds - $registration->RefundAmount;
             }
         }
         return $refunds;
