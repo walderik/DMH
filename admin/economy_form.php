@@ -102,7 +102,7 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 			<?php if ((default_value('sort')=="utgift") && !$bookkeeping->hasImage()) {?>
 			<tr>
 				<td><label for="upload">Kvitto</label></td>
-				<td><input type="file" name="upload"> (Enbart pdf, png, jpg och gif)</td>
+				<td><input type="file" name="upload"> (Max 0,5 Mb. Enbart pdf, png, jpg och gif)</td>
 			</tr>
 			<?php } ?>
 		</table>

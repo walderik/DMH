@@ -143,7 +143,7 @@ include 'navigation.php';
 			    echo "<tr>";
 			    echo "<td><label for='upload'>Ladda upp kvitto</label></td>";
 			    echo "<td><input type='file' name='upload' required>";
-			    echo "<input type='submit' name='submit' value='Ladda upp kvitto'>  (Enbart pdf, png, jpg och gif)";
+			    echo "<input type='submit' name='submit' value='Ladda upp kvitto'>  (Max 0,5 Mb. Enbart pdf, png, jpg och gif)";
                 echo "</td>";
 			    echo "</tr>";
 			    echo "</form>";
