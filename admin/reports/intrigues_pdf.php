@@ -78,6 +78,23 @@ foreach ($intrigue_array as $intrigue) {
         $rows[] = array("Rykten", "* ".implode("\n\n* ", $rumour_text_array));
     }
     
+    //Syner
+    $intrigue_visions = $intrigue->getAllVisions();
+    if (!empty($intrigue_visions)) {
+        $vision_text_array = array();
+        foreach ($intrigue_visions as $intrigue_vision) {
+            $vision = $intrigue_vision->getVision();
+            $has_vision = $vision->getHas();
+            $has_vision_array = array();
+            foreach($has_vision as $has) $has_vision_array[] = "$has->Name";
+            $visionTxt = $vision->WhenDate .", ". $vision->getTimeOfDayStr() . ": ". $vision->VisionText;
+            $has_txt = "Kommmer att ha synen: ". implode(", ", $has_vision_array);
+            $vision_text_array[] = $visionTxt . "\n". $has_txt;
+        }
+        
+        $rows[] = array("Syner", "* ".implode("\n\n* ", $vision_text_array));
+    }
+    
     $groupActors = $intrigue->getAllGroupActors();
     foreach($groupActors as $groupActor) {
         if (empty($groupActor->IntrigueText)) continue;
