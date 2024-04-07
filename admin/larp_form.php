@@ -182,7 +182,7 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
 					</td>
     			</tr>
     			<tr>
-    				<td><label for=HasCommerce>Rykten</label></td>
+    				<td><label for=HasCommerce>Handel</label></td>
     				<td>
 						<input type="radio" id="HasCommerce_yes" name="HasCommerce" value="1" <?php if ($larp->hasCommerce()) echo 'checked="checked"'?>> 
             			<label for="HasCommerce_yes">Ja</label><br> 
