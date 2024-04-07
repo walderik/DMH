@@ -116,7 +116,19 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     					name="LastPaymentDate" value="<?php echo $larp->LastPaymentDate; ?>" size="50" required></td>
     			</tr>
     			<tr>
-    				<td><label for=HasTelegrams>Telegram</label><br>Ska stöd för telegram visas i systemet?</td>
+    				<td><label for=ChooseParticipationDates>Välja dagar?</label><br>Ska deltagarna få markera i anmälan vilka dagar de kommer att närvara?</td>
+    				<td>
+						<input type="radio" id="ChooseParticipationDates_yes" name="ChooseParticipationDates" value="1" <?php if ($larp->chooseParticipationDates()) echo 'checked="checked"'?>> 
+            			<label for="ChooseParticipationDates_yes">Ja</label><br> 
+            			<input type="radio" id="ChooseParticipationDates_no" name="ChooseParticipationDates" value="0" <?php if (!$larp->chooseParticipationDates()) echo 'checked="checked"'?>> 
+            			<label for="ChooseParticipationDates_no">Nej</label>
+					</td>
+    			</tr>
+    		</table>
+			<h2>Speltekniker</h2><br>Vilka speltekniker ska det finnas stöd för i systemet för detta lajv?
+			<table class="smalldata">
+    			<tr>
+    				<td><label for=HasTelegrams>Telegram</label></td>
     				<td>
 						<input type="radio" id="HasTelegrams_yes" name="HasTelegrams" value="1" <?php if ($larp->hasTelegrams()) echo 'checked="checked"'?>> 
             			<label for="HasTelegrams_yes">Ja</label><br> 
@@ -125,7 +137,7 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
 					</td>
     			</tr>
     			<tr>
-    				<td><label for=HasLetters>Brev</label><br>Ska stöd för brev visas i systemet?</td>
+    				<td><label for=HasLetters>Brev</label></td>
     				<td>
 						<input type="radio" id="HasLetters_yes" name="HasLetters" value="1" <?php if ($larp->hasLetters()) echo 'checked="checked"'?>> 
             			<label for="HasLetters_yes">Ja</label><br> 
@@ -134,7 +146,7 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
 					</td>
     			</tr>
     			<tr>
-    				<td><label for=HasRumours>Rykten</label><br>Ska stöd för rykten visas i systemet?</td>
+    				<td><label for=HasRumours>Rykten</label></td>
     				<td>
 						<input type="radio" id="HasRumours_yes" name="HasRumours" value="1" <?php if ($larp->hasRumours()) echo 'checked="checked"'?>> 
             			<label for="HasRumours_yes">Ja</label><br> 
@@ -143,12 +155,39 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
 					</td>
     			</tr>
     			<tr>
-    				<td><label for=ChooseParticipationDates>Välja dagar?</label><br>Ska deltagarna få markera i anmälan vilka dagar de kommer att närvara?</td>
+    				<td><label for=HasAlchemy>Alkemi</label></td>
     				<td>
-						<input type="radio" id="ChooseParticipationDates_yes" name="ChooseParticipationDates" value="1" <?php if ($larp->chooseParticipationDates()) echo 'checked="checked"'?>> 
-            			<label for="ChooseParticipationDates_yes">Ja</label><br> 
-            			<input type="radio" id="ChooseParticipationDates_no" name="ChooseParticipationDates" value="0" <?php if (!$larp->chooseParticipationDates()) echo 'checked="checked"'?>> 
-            			<label for="ChooseParticipationDates_no">Nej</label>
+						<input type="radio" id="HasAlchemy_yes" name="HasAlchemy" value="1" <?php if ($larp->hasAlchemy()) echo 'checked="checked"'?>> 
+            			<label for="HasAlchemy_yes">Ja</label><br> 
+            			<input type="radio" id="HasAlchemy_no" name="HasAlchemy" value="0" <?php if (!$larp->hasAlchemy()) echo 'checked="checked"'?>> 
+            			<label for="HasAlchemy_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=HasMagic>Magi</label></td>
+    				<td>
+						<input type="radio" id="HasMagic_yes" name="HasMagic" value="1" <?php if ($larp->hasMagic()) echo 'checked="checked"'?>> 
+            			<label for="HasMagic_yes">Ja</label><br> 
+            			<input type="radio" id="HasMagic_no" name="HasMagic" value="0" <?php if (!$larp->hasMagic()) echo 'checked="checked"'?>> 
+            			<label for="HasMagic_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=HasVisions>Syner</label></td>
+    				<td>
+						<input type="radio" id="HasVisions_yes" name="HasVisions" value="1" <?php if ($larp->hasVisions()) echo 'checked="checked"'?>> 
+            			<label for="HasVisions_yes">Ja</label><br> 
+            			<input type="radio" id="HasVisions_no" name="HasVisions" value="0" <?php if (!$larp->hasVisions()) echo 'checked="checked"'?>> 
+            			<label for="HasVisions_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=HasCommerce>Rykten</label></td>
+    				<td>
+						<input type="radio" id="HasCommerce_yes" name="HasCommerce" value="1" <?php if ($larp->hasCommerce()) echo 'checked="checked"'?>> 
+            			<label for="HasCommerce_yes">Ja</label><br> 
+            			<input type="radio" id="HasCommerce_no" name="HasCommerce" value="0" <?php if (!$larp->hasCommerce()) echo 'checked="checked"'?>> 
+            			<label for="HasCommerce_no">Nej</label>
 					</td>
     			</tr>
     		</table>

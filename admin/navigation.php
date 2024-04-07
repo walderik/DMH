@@ -111,11 +111,21 @@ function changePart() {
             <a href="roles.php">Karaktärer</a>
             <a href="search_role_selectiondata.php">Sökning på karaktärer</a>
             <a href="intrigue_admin.php">Intrigspår</a>
-            <a href="commerce.php">Handel</a>
-            <a href="alchemy.php">Alkemi</a>
-            <a href="magic.php">Magi</a>
             <a href="timeline_admin.php">Körschema</a>
-			
+            <a href="commerce.php">Handel</a>
+            
+			<?php if ($current_larp->hasAlchemy()) {?>
+            <a href="alchemy.php">Alkemi</a>
+            <?php }?>
+            
+			<?php if ($current_larp->hasMagic()) {?>
+            <a href="magic.php">Magi</a>
+            <?php }?>
+            
+			<?php if ($current_larp->hasVisions()) {?>
+            <a href="vision_admin.php">Syner</a>
+            <?php }?>
+            			
 			<?php if ($current_larp->hasTelegrams()) {?>
             <a href="telegram_admin.php">Telegram</a>
             <?php }?>
