@@ -68,7 +68,7 @@ class Vision extends BaseModel{
     
     
     
-    public static function allKnownByRole(Larp $larp, Role $role) {
+    public static function allVisionsByRole(Larp $larp, Role $role) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_vision WHERE LARPid = ? AND Id IN (".
             "SELECT VisionId FROM regsys_vision_has WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";

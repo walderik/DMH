@@ -62,7 +62,11 @@ include 'navigation.php';
         </p>
          -->
 		<form action="vision_admin.php" method="post">
+            <a href="reports/visions_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf med alla syner, för deltagare</a> <br><br> 
+            <a href="reports/vision_times_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf när var och en ska ha sina syner</a> <br><br> 
+            <a href="reports/visions_organizer_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf med alla syner, för arrangör</a> <br><br><br> 
             <a href="vision_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
+            
 		<?php
 		if ($short_text) {
 		    echo "<input type='hidden' id='long_text' name='long_text' value='1'>";
