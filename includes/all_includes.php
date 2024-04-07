@@ -96,6 +96,7 @@ include_once $root . '/models/titledeedresult.php';
 include_once $root . '/models/titledeedresult_upgrade.php';
 include_once $root . '/models/type_of_food.php';
 include_once $root . '/models/user.php';
+include_once $root . '/models/vision.php';
 include_once $root . '/models/wealth.php';
 
 include_once $root . '/models/LARP.php';

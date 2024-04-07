@@ -62,6 +62,16 @@ elseif ($operation == "add_titledeed_owner_role") {
     $purpose = "Lägg till karaktär(er) som känner till ryktet";
     $url = "rumour_form.php";
     $multiple=true;
+} elseif ($operation == "add_has_role") {
+    $purpose = "Lägg till karaktär(er) som ska ha synen";
+    $url = "vision_form.php";
+    $showAbilityChoice = true;
+    $multiple=true;
+} elseif ($operation == "add_has_role_admin") {
+    $purpose = "Lägg till karaktär(er) som ska ha synen";
+    $url = "vision_admin.php";
+    $showAbilityChoice = true;
+    $multiple=true;
 } elseif ($operation == "add_magician") {
     $purpose = "Lägg till karaktärer som magiker";
     $url = "logic/view_magician_logic.php";
