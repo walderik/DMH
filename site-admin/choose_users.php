@@ -30,14 +30,15 @@
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
     		<input type ="hidden" id=CampaignId" name="CampaignId" value ="<?php echo $_GET['campaignId'] ?>">
     		    <table class='data'>
-    		    <tr><th></th><th>Namn</th></tr>
+    		    <tr><th></th><th>Namn</th><th>Epost</th></tr>
     		    <?php 
     		    $users = User::all();
     		    foreach ($users as $user)  {
     		        echo "<tr>\n";
     		        echo "<td><input type='checkbox' id='UserId$user->Id' name='UserId[]' value='$user->Id'></td>";
     		        echo "<td>" . $user->Name . "</td>\n";
-
+    		        echo "<td>" . $user->Email . "</td>\n";
+    		        
     		        
     		        echo "</tr>\n";
     		    }
