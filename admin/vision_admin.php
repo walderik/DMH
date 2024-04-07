@@ -116,12 +116,12 @@ include 'navigation.php';
                 }
                 echo "</td>\n";
                 echo "<td>";
-                /*
-                if (isset($vision->IntrigueId)) {
-                    $intrigue = $vision->getIntrigue();
-                    echo "<a href='view_intrigue.php?Id=$intrigue->Id'>$intrigue->Number. $intrigue->Name</a>";
+                $intrigues = $vision->getAllIntriguesForVision();
+                if (!empty($intrigues)) {
+                    foreach ($intrigues as $intrigue) {
+                        echo "<a href='view_intrigue.php?Id=$intrigue->Id'>$intrigue->Number. $intrigue->Name</a><br>";
+                    }
                 }
-                */
                 echo "</td>";
                 
                 echo "<td>";

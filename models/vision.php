@@ -61,6 +61,13 @@ class Vision extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
     }
     
+    public function getAllIntriguesForVision() {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (SELECT IntrigueId FROM regsys_intrigue_vision WHERE VisionId=?) ORDER BY ".Intrigue::$orderListBy.";";
+        return Intrigue::getSeveralObjectsqQuery($sql, array($this->Id));
+    }
+    
+    
+    
     public static function allKnownByRole(Larp $larp, Role $role) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_vision WHERE LARPid = ? AND Id IN (".
@@ -167,17 +174,19 @@ class Vision extends BaseModel{
     public static function delete($id)
     {
         $vision = static::loadById($id);
+        
         if (empty($vision)) return; 
+        if (!$vision->mayDelete()) return;
+ 
         $vision_has = $vision->getHas();
         foreach ($vision_has as $has) $vision->removeRoleHas($has);
  
-        //TODO disconnect from Intrigues
-        
         parent::delete($id);
     }
     
     public function mayDelete() {
-        //TODO stoppa ifall det finns koppling till intrig
+        $intrigues = $this->getAllIntriguesForVision();
+        if (!empty($intrigues)) return false;
         return true;
     }
     

@@ -594,7 +594,7 @@ foreach ($timeline_array as $timeline) {
 
 <?php if ($current_larp->hasRumours()) {?>
 <tr><td>Rykten</td><td>
-  <a href="rumour_form.php?operation=insert&IntrigueId=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Skapa rykte under lajvet"></i></a>
+  <a href="rumour_form.php?operation=insert&IntrigueId=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Skapa rykte"></i></a>
   <br>
 <?php 
 $rumour_array = $intrigue->getRumours();
@@ -615,6 +615,31 @@ foreach ($rumour_array as $rumour) {
 ?>
 </td></tr>
 <?php }?>
+
+<?php if ($current_larp->hasVisions()) {?>
+<tr><td>Syner</td><td>
+  <a href="choose_vision.php?operation=add_intrigue_vision&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till syner"></i></a>
+  <br>
+<?php 
+$intrigue_visions = $intrigue->getAllVisions();
+foreach ($intrigue_visions as $intrigue_vision) {
+    $vision=$intrigue_vision->getVision();
+    $has_vision = $vision->getHas();
+    $has_vision_array = array();
+    foreach($has_vision as $has) $has_vision_array[] = "<a href='view_role.php?id=$has->Id'>$has->Name</a>";
+    $has_txt = "Kommmer att ha synen: ". implode(", ", $has_vision_array);
+    
+    echo $vision->WhenDate .", ". $vision->getTimeOfDayStr() . ": ". $vision->VisionText;
+    echo " <a href='vision_form.php?operation=update&id=$vision->Id'><i class='fa-solid fa-pen'></i></a>";
+    echo "<a href='logic/view_intrigue_logic.php?operation=remove_vision&IntrigueVisionId=$intrigue_vision->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort vision'></i></a>";
+    echo "<br>";
+    echo $has_txt."<br><br>";
+}
+?>
+</td></tr>
+<?php }?>
+
+
 </table>
 
 <?php 

@@ -351,6 +351,25 @@ class Intrigue extends BaseModel{
         }
     }
 
+    public function addVisions($visionIds) {
+        //Ta reda på vilka som inte redan är kopplade till intrigen
+        $exisitingIds = array();
+        $visions = $this->getVisions();
+        foreach ($visions as $vision) {
+            $exisitingIds[] = $vision->Id;
+        }
+        
+        $newVisionIds = array_diff($visionIds,$exisitingIds);
+        //Koppla rekvisitan till intrigen
+        foreach ($newVisionIds as $visionId) {
+            
+            $intrigue_vision = Intrigue_Vision::newWithDefault();
+            $intrigue_vision->IntrigueId = $this->Id;
+            $intrigue_vision->VisionId = $visionId;
+            $intrigue_vision->create();
+        }
+    }
+    
     public function addPdf() {
         if ($_FILES["bilaga"]["size"] > 5242880) return array();
         
@@ -510,6 +529,10 @@ class Intrigue extends BaseModel{
         return Intrigue_Telegram::getAllTelegramsForIntrigue($this);
     }
 
+    public function getAllVisions() {
+        return Intrigue_Vision::getAllIntrigueVisionsForIntrigue($this);
+    }
+    
     public function getAllPdf() {
         return Intrigue_Pdf::getAllPDFsForIntrigue($this);
     }
@@ -603,6 +626,10 @@ class Intrigue extends BaseModel{
     
     public function getRumours() {
         return Rumour::getAllForIntrigue($this);
+    }
+
+    public function getVisions() {
+        return Vision::getAllForIntrigue($this);
     }
     
 }

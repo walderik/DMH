@@ -48,6 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_POST['TelegramId'])) $intrigue->addTelegrams($_POST['TelegramId']);
         if (isset($_POST['LetterId'])) $intrigue->addLetters($_POST['LetterId']);
+    } elseif ($operation == "add_intrigue_vision") {
+        $intrigue=Intrigue::loadById($_POST['Id']);
+        if (isset($_POST['VisionId'])) $intrigue->addVisions($_POST['VisionId']);
     } elseif ($operation == "add_intrigue_pdf") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_FILES['bilaga'])) $intrigue->addPdf();
@@ -106,6 +109,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         Intrigue_Letter::delete($_GET['IntrigueLetterId']);
     } elseif ($operation == "remove_telegram") {
         Intrigue_Telegram::delete($_GET['IntrigueTelegramId']);        
+    } elseif ($operation == "remove_vision") {
+        Intrigue_Vision::delete($_GET['IntrigueVisionId']);
     } elseif ($operation == "remove_intrigue_relation") {
         Intrigue::removeRelation($_GET['IntrigueRelationId'], $_GET['Id']);
     } elseif ($operation == "remove_letter_checkin") {
