@@ -13,7 +13,7 @@ class AlchemyRecipeLabels extends FPDF {
     function Header()
     {
         global $root;
-        $this->Image($root . '/images/alkemi_preparat_standing_3.jpg',null,null,208);
+        $this->Image($root . '/images/alkemi_preparat_standing_3_2.jpg',null,null,208);
     }
     
  
@@ -39,16 +39,16 @@ class AlchemyRecipeLabels extends FPDF {
         $this->MultiCell(39,4,utf8_decode($recipe->SideEffect),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         
         $this->SetFont('Times','',14);
-        $this->SetXY($x+40, $y);
+        $this->SetXY($x+40, $y-5);
         $this->MultiCell(40,5,utf8_decode($recipe->Name),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
 
         $this->SetFont('Times','',18);
-        $this->SetXY($x+57, $y+29);
+        $this->SetXY($x+72, $y+29);
         $this->MultiCell(29,3,utf8_decode($recipe->Level),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
 
         
         $this->SetFont('Times','',8);
-        $this->SetXY($x+40, $y+58);
+        $this->SetXY($x+40, $y+57);
         $this->MultiCell(40,3,utf8_decode($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
         
         /*
