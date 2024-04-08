@@ -5,8 +5,10 @@ include 'navigation.php';
 
 <div class="content">
     <h1>Köket</h1>
+    <div class='linklist'>
     <a href="reports/matlista.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla deltagares matval</a><br>  
-    <a href="reports/allergy_list.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla allergier</a><br><br>  
+    <a href="reports/allergy_list.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla allergier</a><br>
+    </div> 
     
     Totalt är det <?php echo count(Registration::allBySelectedLARP($current_larp)); ?> anmälda deltagare.<br>
     <h2>Vald mat</h2>

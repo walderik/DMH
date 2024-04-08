@@ -61,12 +61,13 @@ include 'navigation.php';
           <a href="vision_wizard_pg1.php">Fördela en eller flera syner, som ingen redan kommer att ha, slumpmässigt <i class="fa-solid fa-wand-sparkles"></i></a>
         </p>
          -->
-		<form action="vision_admin.php" method="post">
-            <a href="reports/visions_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf med alla syner, för deltagare</a> <br><br> 
-            <a href="reports/vision_sheet.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf när var och en ska ha sina syner</a><br><br> 
-            <a href="reports/all_visions_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf med alla syner, för arrangör</a> <br><br><br> 
+		<div class='linklist'>
+            <a href="reports/visions_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf med alla syner, för deltagare</a> <br> 
+            <a href="reports/vision_sheet.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf när var och en ska ha sina syner</a><br> 
+            <a href="reports/all_visions_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf med alla syner, för arrangör</a>
+            </div>
             <a href="vision_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
-            
+		<form action="vision_admin.php" method="post">            
 		<?php
 		if ($short_text) {
 		    echo "<input type='hidden' id='long_text' name='long_text' value='1'>";

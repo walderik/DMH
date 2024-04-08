@@ -277,3 +277,7 @@ div.errorbutton > div {
     margin-left:25px;
 }
 
+div.linklist {
+	  line-height: 2;
+}
+
