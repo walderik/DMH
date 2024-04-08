@@ -87,7 +87,7 @@ foreach ($intrigue_array as $intrigue) {
             $has_vision = $vision->getHas();
             $has_vision_array = array();
             foreach($has_vision as $has) $has_vision_array[] = "$has->Name";
-            $visionTxt = $vision->WhenDate .", ". $vision->getTimeOfDayStr() . ": ". $vision->VisionText;
+            $visionTxt = $vision->getWhenStr() . ": ". $vision->VisionText;
             $has_txt = "Kommmer att ha synen: ". implode(", ", $has_vision_array);
             $vision_text_array[] = $visionTxt . "\n". $has_txt;
         }

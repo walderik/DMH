@@ -132,7 +132,7 @@ class VisionSheet_PDF extends PDF_MemImage {
         
         $list = "";
         foreach ($visions as $vision) {
-                $list .= $vision->WhenDate . ", " .$vision->getTimeOfDayStr() . "\n\n";
+                $list .= $vision->getWhenStr() . "\n\n";
         }
         $y = $this->GetY() + $space*2;
         $this->SetXY($this->current_left, $y);

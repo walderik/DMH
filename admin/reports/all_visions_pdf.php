@@ -44,7 +44,7 @@ foreach ($visions as $vision) {
         
     }
     
-    $rows[] = array($vision->WhenDate . ", " . $vision->getTimeOfDayStr(), 
+    $rows[] = array($vision->getWhenStr(), 
         $vision->VisionText, $vision->Source, 
         $vision->SideEffect, 
         implode(", ", $has_roles_arr),

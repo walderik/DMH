@@ -118,7 +118,7 @@ class Vision_PDF extends FPDF {
         $y = $this->GetY() + $space*2;
         $this->SetXY($this->current_left, $y);
         $this->SetFont($visionfont,'',static::$text_fontsize);
-        $text = trim(utf8_decode("När ".$vision->WhenDate . ", " . $vision->getTimeOfDayStr()));
+        $text = trim(utf8_decode("När ".$vision->getWhenStr()));
         $this->Cell($this->cell_width, static::$cell_y,$text,0,0,'L');
         $y = $this->GetY() + $space;
         $this->SetXY($left, $y);

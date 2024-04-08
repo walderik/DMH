@@ -348,7 +348,11 @@ line-height: 1.8;
         		                }
         		                echo "<br>";
         		            }
-         		            
+        		            if (Vision::hasVisions($current_larp, $role)) {
+        		                echo "<a href='view_visions.php?id=$role->Id'>Syner</a> ";
+        		                echo "<br>";
+        		            }
+        		            
         		            
     		                if ($current_larp->isEnded()) {
     		                    echo "<a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a> ".

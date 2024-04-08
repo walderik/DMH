@@ -75,6 +75,13 @@ class Vision extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
     }
     
+    public static function hasVisions(Larp $larp, Role $role) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT count(*) as Num FROM regsys_vision WHERE LARPid = ? AND Id IN (".
+            "SELECT VisionId FROM regsys_vision_has WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
+        return static::existsQuery($sql, array($larp->Id, $role->Id));
+    }
+    
     public static function allRolesWithVisions(Larp $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN (
@@ -90,6 +97,18 @@ class Vision extends BaseModel{
         return Vision::TIME_OF_DAY[$this->WhenSpec];
     }
     
+    public function getWhenStr() {
+        $formatter = new IntlDateFormatter(
+            'sv-SE',
+            IntlDateFormatter::FULL,
+            IntlDateFormatter::FULL,
+            'Europe/Stockholm',
+            IntlDateFormatter::GREGORIAN,
+            'EEEE d MMMM'
+            );
+        $date = new DateTime(substr($this->WhenDate,0,10));
+        return $formatter->format($date) . ", " . $this->getTimeOfDayStr();
+    }
     
     
     # Update an existing object in db

@@ -97,7 +97,7 @@ include 'navigation.php';
             "<th></th></tr>\n";
             foreach ($vision_array as $vision) {
                 echo "<tr>\n";
-                echo "<td>$vision->WhenDate, " . $vision->getTimeOfDayStr() . "</td>\n";
+                echo "<td>" . $vision->getWhenStr() . "</td>\n";
 
                 if ($short_text) {
                     echo "<td>" . mb_strimwidth(nl2br(htmlspecialchars($vision->VisionText)), 0, 100, "...") . "</td>\n";

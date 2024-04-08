@@ -79,7 +79,7 @@ include 'navigation.php';
     		        echo "<tr>\n";
     		        echo "<td><input type='$type' id='Vision$vision->Id' name='VisionId$array' value='$vision->Id'>";
     		        
-    		        echo "<td>$vision->WhenDate, " . $vision->getTimeOfDayStr() . "</td>\n";
+    		        echo "<td>".$vision->getWhenStr() . "</td>\n";
     		        
 
 		            echo "<td>" . nl2br(htmlspecialchars($vision->VisionText)) . "</td>\n";

@@ -629,7 +629,7 @@ foreach ($intrigue_visions as $intrigue_vision) {
     foreach($has_vision as $has) $has_vision_array[] = "<a href='view_role.php?id=$has->Id'>$has->Name</a>";
     $has_txt = "Kommmer att ha synen: ". implode(", ", $has_vision_array);
     
-    echo $vision->WhenDate .", ". $vision->getTimeOfDayStr() . ": ". $vision->VisionText;
+    echo $vision->getWhenStr() . ": ". $vision->VisionText;
     echo " <a href='vision_form.php?operation=update&id=$vision->Id'><i class='fa-solid fa-pen'></i></a>";
     echo "<a href='logic/view_intrigue_logic.php?operation=remove_vision&IntrigueVisionId=$intrigue_vision->Id&Id=$intrigue->Id'><i class='fa-solid fa-xmark' title='Ta bort vision'></i></a>";
     echo "<br>";
