@@ -56,11 +56,11 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Syner</h1>
-        <!--
+       
         <p>
-          <a href="vision_wizard_pg1.php">Fördela en eller flera syner, som ingen redan kommer att ha, slumpmässigt <i class="fa-solid fa-wand-sparkles"></i></a>
+          <a href="vision_random.php">Fördela en eller flera syner, som ingen redan kommer att ha, slumpmässigt <i class="fa-solid fa-wand-sparkles"></i></a>
         </p>
-         -->
+        
 		<div class='linklist'>
             <a href="reports/visions_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf med alla syner, för deltagare</a> <br> 
             <a href="reports/vision_sheet.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf när var och en ska ha sina syner</a><br> 

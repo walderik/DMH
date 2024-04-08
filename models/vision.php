@@ -56,6 +56,14 @@ class Vision extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function allNotHas(Larp $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_vision WHERE LARPid = ? AND Id NOT IN (SELECT VisionId from regsys_vision_has) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
+    
     public static function getAllForIntrigue(Intrigue $intrigue) {
         $sql = "SELECT * FROM regsys_vision WHERE Id IN (SELECT VisionId FROM regsys_intrigue_vision WHERE IntrigueId=?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
