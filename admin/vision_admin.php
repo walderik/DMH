@@ -63,7 +63,7 @@ include 'navigation.php';
          -->
 		<form action="vision_admin.php" method="post">
             <a href="reports/visions_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf med alla syner, för deltagare</a> <br><br> 
-            <a href="reports/vision_times_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf när var och en ska ha sina syner</a> Inte gjord än, kanske borde vara i karaktärsbladet?<br><br> 
+            <a href="reports/vision_sheet.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf när var och en ska ha sina syner</a><br><br> 
             <a href="reports/all_visions_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf med alla syner, för arrangör</a> <br><br><br> 
             <a href="vision_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
             

@@ -75,6 +75,16 @@ class Vision extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $role->Id));
     }
     
+    public static function allRolesWithVisions(Larp $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_role WHERE Id IN (
+            SELECT RoleId FROM regsys_vision_has, regsys_vision WHERE 
+            regsys_vision_has.VisionId=regsys_vision.Id AND
+            regsys_vision.LarpId = ?) ORDER BY ".Role::$orderListBy.";";
+        return Role::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
     public function getTimeOfDayStr() {
         if (!isset($this->WhenSpec)) return null;
         return Vision::TIME_OF_DAY[$this->WhenSpec];
