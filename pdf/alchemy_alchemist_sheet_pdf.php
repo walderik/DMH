@@ -132,6 +132,7 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
         if ($this->current_left == $left2) $this->draw_field('empty');
         
         $y = $this->GetY() + static::$cell_y + $space*4;
+ 
         
         $recipes = $this->alchemist->getRecipes(true);
         if (!empty($recipes)) {
@@ -139,7 +140,7 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
             $this->SetXY($this->current_left, $y);
             $this->SetFont('Helvetica','B',static::$text_fontsize);
             $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Dina recept"),0,0,'L');
-             
+            
             
             //Först en lista med alla recept
             $recipenames = "";
@@ -152,22 +153,59 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
             $text = trim(utf8_decode($recipenames));
             $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
             
-            $recipefont = 'eaglelake';
-            $this->AddFont($recipefont);
+        }
+        
+        //Lista alla lövjeristerna och var de bor (Namn Grupp, Boende)
+        $suppliers = Alchemy_Supplier::allByComingToLarp($this->larp);
+        
+        if (!empty($suppliers)) {
+            $this->current_left = $left;
+            $y = $this->GetY() + $space*5;
+            $this->SetXY($this->current_left, $y);
+            $this->SetFont('Helvetica','B',static::$text_fontsize);
+            $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Alla lövjerister"),0,0,'L');
             
+            
+            
+            $list = "";
+            foreach ($suppliers as $supplier) {
+                $supplier_role = $supplier->getRole();
+                $list .= $supplier_role->Name;
+                $group = $supplier_role->getGroup();
+                if (isset($group)) $list .= " i $group->Name";
+                $housing = $supplier_role->getPerson()->getHouseAtLarp($this->larp);
+                if (isset($housing) && ($this->larp->DisplayHousing==1)) $list .= " Bor: $housing->Name";
+                $list .= "\n\n";
+            }
+            $y = $this->GetY() + $space*2;
+            $this->SetXY($this->current_left, $y);
+            $this->SetFont('Helvetica','',static::$text_fontsize);
+            $text = trim(utf8_decode($list));
+            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+            
+        }
+        
+        
+        
+         if (!empty($recipes)) {
         //Sen alla recept i detalj
-            foreach ($recipes as $recipe) {
+             $recipefont = 'eaglelake';
+             $this->AddFont($recipefont);
+             
+             foreach ($recipes as $recipe) {
                 $y = 0;
                 $this->AddPage();
+                
+                $recipe_fontsize = static::$text_fontsize-2;
 
                 $this->current_left = $left;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize+2);
+                $this->SetFont($recipefont,'',$recipe_fontsize+2);
                 $this->Cell($this->cell_width, static::$cell_y, utf8_decode($recipe->Name),0,0,'L');
                 
                 $y = $this->GetY() + $space*2;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize);
+                $this->SetFont($recipefont,'',$recipe_fontsize);
                 $text = trim(utf8_decode("Nivå ".$recipe->Level));
                 $this->Cell($this->cell_width, static::$cell_y,$text,0,0,'L');
                 $y = $this->GetY() + $space;
@@ -204,14 +242,14 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                 $y = $this->GetY() + $space*3;
                 $this->current_left = $left;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize+2);
+                $this->SetFont($recipefont,'',$recipe_fontsize+2);
                 $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Tillverkas av"),0,0,'L');
                 
                 
                 
                 $y = $this->GetY() + $space*2;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize);
+                $this->SetFont($recipefont,'',$recipe_fontsize);
                 $text = trim(utf8_decode($txt));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
@@ -222,12 +260,12 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                 $y = $this->GetY() + $space*3;
                 $this->current_left = $left;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize+2);
+                $this->SetFont($recipefont,'',$recipe_fontsize+2);
                 $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Beskrivning"),0,0,'L');
                 
                 $y = $this->GetY() + $space*2;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize);
+                $this->SetFont($recipefont,'',$recipe_fontsize);
                 $text = trim(utf8_decode($recipe->Description));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
@@ -238,12 +276,12 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                 $y = $this->GetY() + $space*3;
                 $this->current_left = $left;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize+2);
+                $this->SetFont($recipefont,'',$recipe_fontsize+2);
                 $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Beredning"),0,0,'L');
                 
                 $y = $this->GetY() + $space*2;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize);
+                $this->SetFont($recipefont,'',$recipe_fontsize);
                 $text = trim(utf8_decode($recipe->Preparation));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
@@ -252,12 +290,12 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                 $y = $this->GetY() + $space*3;
                 $this->current_left = $left;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize+2);
+                $this->SetFont($recipefont,'',$recipe_fontsize+2);
                 $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Effekt"),0,0,'L');
                 
                 $y = $this->GetY() + $space*2;
                 $this->SetXY($this->current_left, $y);
-                $this->SetFont($recipefont,'',static::$text_fontsize);
+                $this->SetFont($recipefont,'',$recipe_fontsize);
                 $text = trim(utf8_decode($recipe->Effect));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
@@ -268,12 +306,12 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                     $y = $this->GetY() + $space*3;
                     $this->current_left = $left;
                     $this->SetXY($this->current_left, $y);
-                    $this->SetFont($recipefont,'',static::$text_fontsize+2);
+                    $this->SetFont($recipefont,'',$recipe_fontsize+2);
                     $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Bieffekt"),0,0,'L');
                     
                     $y = $this->GetY() + $space*2;
                     $this->SetXY($this->current_left, $y);
-                    $this->SetFont($recipefont,'',static::$text_fontsize);
+                    $this->SetFont($recipefont,'',$recipe_fontsize);
                     $text = trim(utf8_decode($recipe->SideEffect));
                     $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                     $y = $this->GetY() + $space;
@@ -285,6 +323,11 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                     
             }
         }
+        
+         
+
+        
+            
                 
  	}
 	

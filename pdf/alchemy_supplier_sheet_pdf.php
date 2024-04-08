@@ -146,7 +146,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
             
         
         
-        //Lista alla alkemister och var de bor (Namn Grupp, Boende)
+        //Lista alla alkemister och var de bor (Namn Grupp)
         $alchemists = Alchemy_Alchemist::allByComingToLarp($this->larp);
 
         if (!empty($alchemists)) {
@@ -165,8 +165,6 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
                 if (isset($alchemist->Level)) $list .= " (nivå $alchemist->Level)";
                 $group = $alchemist_role->getGroup();
                 if (isset($group)) $list .= " i $group->Name";
-                $housing = $alchemist_role->getPerson()->getHouseAtLarp($this->larp);
-                if (isset($housing) && ($this->larp->DisplayHousing==1)) $list .= " Bor: $housing->Name";
                 $list .= "\n\n";
             }
             $y = $this->GetY() + $space*2;
