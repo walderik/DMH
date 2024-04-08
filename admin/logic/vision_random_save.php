@@ -26,6 +26,7 @@ foreach ($visionIdArr as $visionId) {
     
     foreach ($roles as $role) {
         if ($role->isMysLajvare()) continue;
+        if (!$role->isApproved()) continue;
 
         if (rand(1,100) <= $percent) {
             $vision->addRolesHas(array($role->Id));

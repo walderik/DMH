@@ -6,7 +6,7 @@ include 'navigation.php';
 
     <div class="content">
         <h1>Slumpmässig fördelning av syner</h1>
-        
+
         <?php 
         $vision_array = Vision::allNotHas($current_larp);
          
@@ -17,7 +17,7 @@ include 'navigation.php';
         <?php 
         exit;
         }?>
-         
+        <p>Syner fördelas inte till karaktärer som inte är godkända och inte till karaktärer som är bakgrundslajvare.</p>
         <form action="logic/vision_random_save.php" method="post" >
 	        <h2>Välj vilka syner som ska slumpas ut</h2>
 		    <table class='data'>
