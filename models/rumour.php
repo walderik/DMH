@@ -68,15 +68,15 @@ class Rumour extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
-    /*
-    public static function allApprovedUnknownBySelectedLARP(Larp $larp) {
+    
+    public static function allApprovedUnknown(Larp $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT regsys_rumour.* FROM regsys_rumour WHERE LARPid = ? AND Approved=1 AND ".
             "Id NOT IN (Select RumourId FROM regsys_rumour_knows) ".
             "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
-    */
+    
     
     
     public static function getAllForIntrigue(Intrigue $intrigue) {
