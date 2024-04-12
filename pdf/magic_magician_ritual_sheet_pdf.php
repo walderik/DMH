@@ -316,7 +316,6 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
 	    $magicians = Magic_Magician::allByComingToLarp($larp_in);
 	    foreach($magicians as $magician) {
 	        $this->single_magician_sheet($magician, $larp_in);
-	        return;
 	    }
 	}
 

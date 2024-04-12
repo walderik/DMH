@@ -40,7 +40,9 @@ include 'navigation.php';
 	<?php if ($current_larp->hasMagic()) {?>
 	<h3>Magi</h3>
 		<div class='linklist'>
-				<a href='magic_magician_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för alla magiker'></i>Magikerblad för alla magiker</a>&nbsp;
+				<a href='magic_magician_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för alla magiker'></i>Magikerblad för alla magiker</a><br>
+				<a href='reports/magic_magician_ritual_sheet_pdf.php' target='_blank'><i class='fa-solid fa-file-pdf' title='ID-kort för alla magiker'></i>ID-kort för alla magiker</a><br>
+				<a href='reports/magic_scroll_pdf.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla magier som skrollor'></i>Alla magier som skrollor</a>&nbsp;
 		
 		</div>
 	<?php } ?>
