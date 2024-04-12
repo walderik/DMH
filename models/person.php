@@ -155,6 +155,15 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getAllWithGuardians($larp) {
+        if (is_null($larp)) return array();
+
+        $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
+            "regsys_registration WHERE LarpId = ? AND GuardianId IS NOT NULL) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
     public static function getAllRegisteredPartTime($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
@@ -221,6 +230,14 @@ class Person extends BaseModel{
             "regsys_registration WHERE LarpId = ? AND GuardianId = ?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $this->Id));
     }
+    
+    public function getGuardian(LARP $larp) {
+        $sql = "SELECT * from regsys_person WHERE Id in (SELECT GuardianId FROM ".
+            "regsys_registration WHERE LarpId = ? AND PersonId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getOneObjectQuery($sql, array($larp->Id, $this->Id));
+    }
+    
+    
     
     public static function getAllInterestedNPC($larp) {
         if (is_null($larp)) return array();
