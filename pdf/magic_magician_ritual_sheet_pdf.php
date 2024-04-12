@@ -93,6 +93,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
     
     function print_mage_info() {
         global $y, $left, $left2, $middle;
+        $line_spacing = 10;
         
         $space = 3;
         
@@ -120,10 +121,10 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         $y = $this->GetY();
         $this->Line($this->GetStringWidth($text)+$this->current_left+2, $y, $middle-10, $y);
 
-        $y += +7;
+        $y += +$line_spacing;
         $this->Line($left, $y, $middle-10, $y);
         
-        $y += +7;
+        $y += +$line_spacing;
         $this->Line($left, $y, $middle-10, $y);
         
         $this->SetY($y);
@@ -159,6 +160,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
     
     
     function print_ritual_info() {
+        $line_spacing = 10;
         global $y;
         $this->SetXY($this->current_left, $this->GetY());
         $this->SetFont('Helvetica','B',static::$text_fontsize);
@@ -173,17 +175,17 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         $y = $this->GetY();
         $this->Line($this->GetStringWidth($text)+$this->current_left+2, $y, $this->current_right-10, $y);
         
-        $y += +8;
+        $y += +$line_spacing;
         $this->Line($this->current_left, $y, $this->current_right-10, $y);
         
-        $y += +8;
+        $y += +$line_spacing;
         $this->Line($this->current_left, $y, $this->current_right-10, $y);
         
         $this->SetY($y);
 
     
         //Godkänd ritual
-        $y = $this->GetY() + 3;
+        $y = $this->GetY() + 7;
         $this->SetXY($this->current_left, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
         $text = trim(utf8_decode("Godkänd"));
@@ -209,16 +211,16 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         $y = $this->GetY();
         $this->Line(70 + $this->GetStringWidth($text)+$this->current_left+2, $y, $this->current_right-10, $y);
         
-        $y += +8;
+        $y += +$line_spacing;
         $this->Line($this->current_left, $y, $this->current_right-10, $y);
         
-        $y += +8;
+        $y += +$line_spacing;
         $this->Line($this->current_left, $y, $this->current_right-10, $y);
         
-        $y += +8;
+        $y += +$line_spacing;
         $this->Line($this->current_left, $y, $this->current_right-10, $y);
         
-        $y += +8;
+        $y += +$line_spacing;
         $this->Line($this->current_left, $y, $this->current_right-10, $y);
         
         $this->SetY($y);
