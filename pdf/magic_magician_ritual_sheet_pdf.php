@@ -181,6 +181,12 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         $y += +$line_spacing;
         $this->Line($this->current_left, $y, $this->current_right-10, $y);
         
+        $y += +$line_spacing;
+        $this->Line($this->current_left, $y, $this->current_right-10, $y);
+        
+        $y += +$line_spacing;
+        $this->Line($this->current_left, $y, $this->current_right-10, $y);
+        
         $this->SetY($y);
 
     
@@ -210,12 +216,6 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         
         $y = $this->GetY();
         $this->Line(70 + $this->GetStringWidth($text)+$this->current_left+2, $y, $this->current_right-10, $y);
-        
-        $y += +$line_spacing;
-        $this->Line($this->current_left, $y, $this->current_right-10, $y);
-        
-        $y += +$line_spacing;
-        $this->Line($this->current_left, $y, $this->current_right-10, $y);
         
         $y += +$line_spacing;
         $this->Line($this->current_left, $y, $this->current_right-10, $y);
