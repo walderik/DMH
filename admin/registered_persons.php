@@ -38,9 +38,10 @@ th {
     		      "<th onclick='sortTableNumbers(3, \"$tableId\")'>Ålder<br>på lajvet</th>".
     		      "<th onclick='sortTable(4, \"$tableId\")'>Godkända<br>karaktärer</th>".
     		      "<th onclick='sortTable(5, \"$tableId\")'>Medlem</th>".
-    		      "<th onclick='sortTable(6, \"$tableId\")'>Betalnings-<br>referens</th>".
-    		      "<th onclick='sortTable(7, \"$tableId\")' colspan='2'>Betalat</th>".
-    		      "<th onclick='sortTable(9, \"$tableId\")' >Plats på lajvet</th></tr>\n";
+    		      "<th onclick='sortTable(6, \"$tableId\")'>Anmäld</th>".
+    		      "<th onclick='sortTable(7, \"$tableId\")'>Betalnings-<br>referens</th>".
+    		      "<th onclick='sortTable(8, \"$tableId\")' colspan='2'>Betalat</th>".
+    		      "<th onclick='sortTable(10, \"$tableId\")' >Plats på lajvet</th></tr>\n";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<tr>\n";
@@ -82,6 +83,7 @@ th {
     		            echo "<td></td>";
     		            echo "<td></td>";
     		            echo "<td></td>";
+    		            echo "<td></td>";
     		            echo "<td align='center'>";
     		            if ($registration->isToBeRefunded()) echo showStatusIcon(false);
     		            "</td>";
@@ -103,6 +105,7 @@ th {
     		            
     		            echo "<td align='center'>" . showStatusIcon($person->isApprovedCharacters($current_larp)) . "</td>\n";
         		        echo "<td align='center'>" . showStatusIcon($registration->isMember()) . "</td>\n";
+        		        echo "<td>" . $registration->RegisteredAt . "</td>";
         		        echo "<td>".$registration->PaymentReference .  "</td>\n";
         		        echo "<td align='center'>" . showStatusIcon($registration->hasPayed());
         		        if (!$registration->hasPayed() && $registration->isPastPaymentDueDate()) echo " ".showStatusIcon(false);
