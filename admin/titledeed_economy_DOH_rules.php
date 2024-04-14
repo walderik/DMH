@@ -13,7 +13,7 @@ th {
 
     <div class="content">
         <h1>Regler för nivåer för verksamheter för DÖH. <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-        <table>
+        <table  class="smalldata">
         <tr>
         <th>Nivå</th><th>Tillgångar</th><th>Behöver</th><th>Utveckling</th>
         </tr>
@@ -41,7 +41,15 @@ th {
 		</tr>
 
         </table>
-        
+        <h1>Startkapital för grupper</h1>
+        <table class="smalldata">
+        <tr><th>Nivå</th><th>Grund</th><th>Km/deltagare</th></tr>
+        <tr><td>1</td><td>30 km</td><td>2 km</td></tr>
+        <tr><td>2</td><td>60 km</td><td>5 km</td></tr>
+        <tr><td>3</td><td>120 km</td><td>10 km</td></tr>
+        <tr><td>4</td><td>240 km</td><td>15 km</td></tr>
+        <tr><td>5</td><td>500 km</td><td>20 km</td></tr>
+        </table>
 	
 </body>
 

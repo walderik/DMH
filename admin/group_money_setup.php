@@ -39,10 +39,18 @@ $larps_in_campaign=LARP::getPreviousLarpsInCampaign($current_larp);
         	<?php 
         	$wealths = Wealth::allActive($current_larp);
         	foreach ($wealths as $wealth) {
+        	    
         	    echo "<div class='question'>";
         	    echo "<label for='wealth_$wealth->Id'>$wealth->Name</label>&nbsp;<font style='color:red'>*</font>";
-        	    echo "<br>";
+        	    //echo "<br>";
         	    echo "<input type='number' id='wealth_$wealth->Id' name='wealth_$wealth->Id' value='0' min='0' required> $currency";
+                echo ", ";
+        	    echo "<label for='wealth_".$wealth->Id."_per_member'>per deltagare i gruppen</label>&nbsp;<font style='color:red'>*</font>";
+        	    //echo "<br>";
+        	    echo "<input type='number' id='wealth_".$wealth->Id."_per_member' name='wealth_".$wealth->Id."_per_member' value='0' min='0' required> $currency";
+        	    
+        	    
+        	    
         	    echo "</div>";
         	}
         	

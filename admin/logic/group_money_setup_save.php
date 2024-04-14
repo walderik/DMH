@@ -14,6 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $key = "wealth_".$wealth->Id;
         $wealth_values[$wealth->Id] = $_POST[$key];
     }
+
+    $wealth_values_per_member = array();
+    foreach ($wealths as $wealth) {
+        $key = "wealth_".$wealth->Id."_per_member";
+        $wealth_values_per_member[$wealth->Id] = $_POST[$key];
+    }
     
     if (isset($_POST['larp'])) $larpId = $_POST['larp'];
     $percent_min=$_POST['percent_min'];
@@ -38,7 +44,8 @@ foreach ($groups as $group) {
     $sum = 0;
     
     $sum += $wealth_values[$group->WealthId];
-    
+    $main_characters_in_group = Role::getAllMainRolesInGroup($group, $current_larp);
+    if (isset($main_characters_in_group)) $sum += $wealth_values_per_member[$group->WealthId] * count($main_characters_in_group);
     if (isset($larpId)) {
         $old_larp_group = LARP_Group::loadByIds($group->Id, $larpId);
         if (isset($old_larp_role)) {
