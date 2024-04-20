@@ -131,6 +131,7 @@ input[type=checkbox]:checked+label {
     font-size: 8px;
 }
 </style>
+<script src="../javascript/recipe_calc.js"></script>
 
 
     <div class="content"> 
@@ -174,6 +175,22 @@ input[type=checkbox]:checked+label {
 					</select>
 				</td>
 			</tr>
+   			<tr>
+				<td>Summa poäng<br>ingredienser 
+				</td>
+				<td>
+				
+					<?php 
+					echo "<span id='points'>";
+					echo $recipe->calculatePoints(); 
+					echo "</span>";
+					echo " poäng<br>";
+					?>
+				
+				
+                </td>
+			</tr>
+
 			<tr>
 				<td>Tillverkas av</td>
  				<td>
@@ -192,8 +209,8 @@ input[type=checkbox]:checked+label {
                             if (in_array($ingredient->Id, $selectedIngredientIds)) {
                                 $checked="checked='checked'";
                             }
-                            echo "<input type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id' $checked>";
-                            echo "<label for='$id'>$ingredient->Name<br><span class='essences'>".$ingredient->getEssenceNames()."</span></label>";
+                            echo "<input onchange='calc_points(this, ".Alchemy_Ingredient::POINTS[$i].")' type='checkbox' class='hidden' name='IngredientId[]' id='$id' value='$ingredient->Id' $checked>";
+                            echo "<label for='$id' >$ingredient->Name<br><span class='essences'>".$ingredient->getEssenceNames()."</span></label>";
                         }
  				    
 			            echo "</div><br>";
@@ -289,6 +306,10 @@ input[type=checkbox]:checked+label {
 		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
 	</form>
 	</div>
+	
+	
+	
+
     </body>
 
 </html>

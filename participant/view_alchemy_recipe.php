@@ -127,6 +127,22 @@ include 'navigation.php';
     					
     				</td>
     			</tr>
+   			<tr>
+    				<td>Summa poäng<br>ingredienser 
+    				</td>
+    				<td>
+    					<?php 
+    					
+    					echo $recipe->calculatePoints(); 
+    					echo " poäng<br>";
+    					echo "Receptets nivå kräver ";
+    					echo Alchemy_Recipe::LEVEL_REQUIREMENTS[$recipe->Level];
+     					
+    					?>
+    				
+    				
+                    </td>
+    			</tr>
     			<tr>
     				<td>Beskrivning</td>
     				<td><?php echo nl2br(htmlspecialchars($recipe->Description)); ?></td>
