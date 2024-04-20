@@ -32,7 +32,20 @@ include 'alchemy_navigation.php';
 		
 
 		<div>
-		
+		<?php 
+		if ($recipe->isApproved()) {
+		  echo "<strong>Godkänd</strong>";
+		  $editButton = "Ta bort godkännandet";
+		  $text = "När man tar bort godkännandet på ett recept blir det också möjligt för den som skapade det att redigera det.";
+		}
+		else {
+		    echo "<strong>Ej godkänd</strong>";
+		    $editButton = "Godkänn";
+		    $text = "Ett godkänt recept kan inte längre redigeras av den som skapade det.";
+		}		
+		?>
+        <form action="logic/toggle_approve_recipe.php" method="post"><input type="hidden" id="recipeId" name="recipeId" value="<?php echo $recipe->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
+		<?php echo $text; ?>
 
     		<table>
     			<tr>

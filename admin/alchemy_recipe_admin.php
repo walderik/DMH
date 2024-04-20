@@ -61,7 +61,7 @@ include 'alchemy_navigation.php';
                 echo "</td>\n";
                 
                 echo "<td>";
-                echo showStatusIcon($recipe->isApproved());
+                echo showStatusIcon($recipe->isApproved(),  "logic/toggle_approve_recipe.php?recipeId=$recipe->Id") . "\n";
                 
                 echo "</td>\n";
                 
