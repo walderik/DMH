@@ -527,7 +527,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
                         $this->SetFont('Helvetica','',static::$text_fontsize);
                         
                         
-                        $text = (isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat";
+                        $text = utf8_decode((isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat");
                         $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                         $y = $this->GetY() + $space;
                         $this->SetXY($left, $y);
@@ -548,7 +548,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','',static::$text_fontsize);
                 
-                $text = (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "") ? $previous_larp_role->WhatHappened : "Inget rapporterat";
+                $text = utf8_decode((isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "") ? $previous_larp_role->WhatHappened : "Inget rapporterat");
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
@@ -563,7 +563,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','',static::$text_fontsize);
                 
-                $text = (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "") ? $previous_larp_role->WhatHappendToOthers : "Inget rapporterat";
+                $text = utf8_decode((isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "") ? $previous_larp_role->WhatHappendToOthers : "Inget rapporterat");
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
