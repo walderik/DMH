@@ -370,7 +370,7 @@ class Alchemy_Recipe extends BaseModel{
             $ingredients = $this->getSelectedIngredients();
             if (empty($ingredients)) return 0;
             foreach($ingredients as $ingredient) {
-                $sum += Alchemy_Ingredient::POINTS[$ingredient->Level];
+                if ($ingredient->isIngredient()) $sum += Alchemy_Ingredient::POINTS[$ingredient->Level];
             }
         } elseif ($this->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
             $essences = $this->getSelectedEssenceIds();
