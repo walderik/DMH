@@ -37,7 +37,7 @@ class RESOURCE_PDF extends PDF_MemImage {
         # Header på sidan
         $this->SetXY($this->margin, 0);
         $this->SetFont('Arial','B',11);
-        $this->Cell(0,10,utf8_decode($this->title),0,1,'L');
+        $this->Cell(0,10,encode_utf_to_iso($this->title),0,1,'L');
     }
     
     function Footer()
@@ -81,7 +81,7 @@ class RESOURCE_PDF extends PDF_MemImage {
         # Header på sidan
         $this->SetXY($this->margin, 0);
         $this->SetFont('Arial','B',11);
-        $this->Cell(0,10,utf8_decode($titledeed->Name),0,1,'L');
+        $this->Cell(0,10,encode_utf_to_iso($titledeed->Name),0,1,'L');
         
         
         # Rita rutor
@@ -105,7 +105,7 @@ class RESOURCE_PDF extends PDF_MemImage {
 //                 $this->SetFont('specialelite','',12);
 //                 $this->SetXY( 3+$this->margin+($x_nr * $rut_width), $this->margin+($y_nr * $rut_height));
 //                 $txt = ucfirst("Kvitto för");
-//                 $this->Cell($rut_width,10,utf8_decode($txt),0,1,'L');
+//                 $this->Cell($rut_width,10,encode_utf_to_iso($txt),0,1,'L');
                 
                 # Resursnamnet
 
@@ -141,20 +141,20 @@ class RESOURCE_PDF extends PDF_MemImage {
                 if ($font == 'simplyglamorous' || $font == 'cherish') $this->SetFont($font,'',$size-2);
                 
                 $this->SetXY($squareX, ($rut_height/2)-2 + $squareY);
-                $this->Cell($rut_width,10,utf8_decode(ucfirst($txt)),0,1,'C');
+                $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'C');
                 
                 # Undertext
 //                 if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
 //                     $this->SetFont('specialelite','',11);
 //                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-4) + ($y_nr * $rut_height));
-//                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+//                     $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst("Finns i marknadslagret")),0,1,'L');
 //                     $this->SetFont('specialelite','',10);
 //                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height+1) + ($y_nr * $rut_height));
-//                     $this->Cell($rut_width,10,utf8_decode('för '.ucfirst($titledeed->Name)),0,1,'L');
+//                     $this->Cell($rut_width,10,encode_utf_to_iso('för '.ucfirst($titledeed->Name)),0,1,'L');
 //                 } else {
 //                     $this->SetFont('specialelite','',12);
 //                     $this->SetXY( 3+$this->margin+($x_nr * $rut_width), ($rut_height-3) + ($y_nr * $rut_height));
-//                     $this->Cell($rut_width,10,utf8_decode(ucfirst("Finns i marknadslagret")),0,1,'L');
+//                     $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst("Finns i marknadslagret")),0,1,'L');
 //                 }
 
                 if ($type == RESOURCE_PDF::Handwriting) {
@@ -162,7 +162,7 @@ class RESOURCE_PDF extends PDF_MemImage {
                     if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
                         $this->SetFont('specialelite','',11);
                         $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
-                        $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
+                        $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst("Från")),0,1,'L');
                         
                         $size=10;
                         $this->SetFont('specialelite','',$size);
@@ -175,12 +175,12 @@ class RESOURCE_PDF extends PDF_MemImage {
                             $slen = $this->GetStringWidth($txt,0);
                         }
                         $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
-                        $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
+                        $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($titledeed->Name)),0,1,'L');
                     }
                 } elseif ($type == RESOURCE_PDF::Calligraphy) {
                     $this->SetFont($font,'',11);
                     $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
-                    $this->Cell($rut_width,10,utf8_decode(ucfirst("Från")),0,1,'L');
+                    $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst("Från")),0,1,'L');
                     
                     $size=10;
                     $this->SetFont($font,'',$size);
@@ -193,7 +193,7 @@ class RESOURCE_PDF extends PDF_MemImage {
                         $slen = $this->GetStringWidth($txt,0);
                     }
                     $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
-                    $this->Cell($rut_width,10,utf8_decode(ucfirst($titledeed->Name)),0,1,'L');
+                    $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($titledeed->Name)),0,1,'L');
                     
                 }
                 
@@ -209,7 +209,7 @@ class RESOURCE_PDF extends PDF_MemImage {
                     $slen = $this->GetStringWidth($txt,0);
                 }
                 $this->SetXY($squareX + $rut_width - 1 - $slen, ($rut_height+4) + $squareY);
-                $this->Cell($rut_width,10,utf8_decode($txt),0,1,'L');
+                $this->Cell($rut_width,10,encode_utf_to_iso($txt),0,1,'L');
                 
                 
                 $x_nr += 1;

@@ -67,7 +67,7 @@ class VisionSheet_PDF extends PDF_MemImage {
        
         
 
-        $this->MultiCell(30, 4, utf8_decode($txt), 0, 'C', true);
+        $this->MultiCell(30, 4, encode_utf_to_iso($txt), 0, 'C', true);
         
         $this->SetXY($mitten-15,  static::$y_min + 2*static::$Margin);
         $y = $this->GetY();
@@ -81,12 +81,12 @@ class VisionSheet_PDF extends PDF_MemImage {
 
         if (empty($text)) $text =  $this->larp->Name;
         
-        $font_size = (850 / strlen(utf8_decode($text)));
+        $font_size = (850 / strlen(encode_utf_to_iso($text)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
         $this->SetXY($left, $y-2);
-        $this->Cell(0, static::$cell_y*5, utf8_decode($text),0,0,'C');
+        $this->Cell(0, static::$cell_y*5, encode_utf_to_iso($text),0,0,'C');
         
         $y = static::$y_min + (static::$cell_y*5) + (static::$Margin);
         
@@ -128,7 +128,7 @@ class VisionSheet_PDF extends PDF_MemImage {
         $y = $this->GetY() + $space*10;
         $this->SetXY($this->current_left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Tider du ska ha syner"),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Tider du ska ha syner"),0,0,'L');
         
         $list = "";
         foreach ($visions as $vision) {
@@ -137,13 +137,13 @@ class VisionSheet_PDF extends PDF_MemImage {
         $y = $this->GetY() + $space*2;
         $this->SetXY($this->current_left, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode($list));
+        $text = trim(encode_utf_to_iso($list));
         $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
             
         $y = $this->GetY() + $space*5;
         $this->SetXY($this->current_left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Gå till sekretariatet och hämta ut synen vid den anvisade tiden."),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Gå till sekretariatet och hämta ut synen vid den anvisade tiden."),0,0,'L');
         
         
  	}

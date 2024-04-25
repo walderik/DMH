@@ -37,12 +37,12 @@ if (!$role->isRegistered($current_larp)) {
 
 $pdf = new CharacterSheet_PDF();
 $title = 'Karaktärsblad '.$role->Name;
-$pdf->SetTitle(utf8_decode($title));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
+$pdf->SetTitle(encode_utf_to_iso($title));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $subject = $role->Name;
-$pdf->SetSubject(utf8_decode($subject));
+$pdf->SetSubject(encode_utf_to_iso($subject));
 
 $pdf->new_character_sheet($role, $current_larp);
 

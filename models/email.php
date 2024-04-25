@@ -251,18 +251,18 @@ class Email extends BaseModel{
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
         //Set who the message is to be sent from
-        $mail->setFrom($this->From, utf8_decode($this->myName()),0);
-//         $mail->setFrom($from, utf8_decode($myName)); # Tror faktiskt det ska vara så här
+        $mail->setFrom($this->From, encode_utf_to_iso($this->myName()),0);
+//         $mail->setFrom($from, encode_utf_to_iso($myName)); # Tror faktiskt det ska vara så här
         //Set an alternative reply-to address
-        $mail->addReplyTo($this->From, utf8_decode($this->myName()));
+        $mail->addReplyTo($this->From, encode_utf_to_iso($this->myName()));
         //Set who the message is to be sent to
         
         if (!($to_array = @unserialize($this->To))) {
-            $mail->addAddress($this->To, utf8_decode($this->receiverName()));
+            $mail->addAddress($this->To, encode_utf_to_iso($this->receiverName()));
         } elseif (!empty($to_array)) {
             foreach($to_array as $to) {
 //                 echo "<h1>TO = $to</h1>";
-                $mail->addAddress($to, utf8_decode($this->receiverName()));
+                $mail->addAddress($to, encode_utf_to_iso($this->receiverName()));
             }
         }
 
@@ -270,8 +270,8 @@ class Email extends BaseModel{
             $mail->addCC($this->CC);
         }
 
-        $mail->Subject = utf8_decode($this->Subject);
-        $mail->AltBody = utf8_decode($this->Text);
+        $mail->Subject = encode_utf_to_iso($this->Subject);
+        $mail->AltBody = encode_utf_to_iso($this->Text);
         //Attach an image file
         // $mail->addAttachment('images/phpmailer_mini.png');
         
@@ -286,7 +286,7 @@ class Email extends BaseModel{
         
         $mail->isHTML(true);
 
-        $mail->Body = utf8_decode($this->mailContent());
+        $mail->Body = encode_utf_to_iso($this->mailContent());
 
         
         if (str_contains($this->From, "kontakt@kampeniringen.se")) {

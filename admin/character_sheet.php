@@ -36,12 +36,12 @@ if (isset($_GET['id'])) {
 $pdf = new CharacterSheet_PDF();
 $title = (empty($role)) ? 'Alla Karaktärer' : ('Karaktärsblad '.$role->Name) ;
 
-$pdf->SetTitle(utf8_decode($title));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
+$pdf->SetTitle(encode_utf_to_iso($title));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $subject = (empty($role)) ? 'ALLA' : $role->Name;
-$pdf->SetSubject(utf8_decode($subject));
+$pdf->SetSubject(encode_utf_to_iso($subject));
 
 $all_info = (isset($_GET['all_info'])) ? true : false;
 $only_children = (isset($_GET['children'])) ? true : false;

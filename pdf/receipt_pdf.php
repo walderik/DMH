@@ -24,7 +24,7 @@ class Receipt_PDF extends FPDF {
         // Select Arial italic 8
         $this->SetFont('Arial', 'I', 8);
         // Print centered page number
-        $this->Cell(0, 10, utf8_decode('Genererad av Omnes Mundi för Berghems Vänner'), 0, 0, 'C');
+        $this->Cell(0, 10, encode_utf_to_iso('Genererad av Omnes Mundi för Berghems Vänner'), 0, 0, 'C');
     }
     
     function SetText(string $headline, $matter, $who, $specification, $amount, $date, $larp) {
@@ -38,7 +38,7 @@ class Receipt_PDF extends FPDF {
         
         $y += 13;
         $this->SetXY($left, $y);
-        $this->Cell(0,10,utf8_decode($headline),0,1,'C');
+        $this->Cell(0,10,encode_utf_to_iso($headline),0,1,'C');
         
         $this->SetFont($txt_font,'',20);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
         
@@ -46,25 +46,25 @@ class Receipt_PDF extends FPDF {
         
         $y += 45;
         //$this->SetXY($left, $y);
-        //$this->Cell(80,10,utf8_decode('Rubrik'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        //$this->Cell(80,10,encode_utf_to_iso('Rubrik'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($matter),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso($matter),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $y += 3;
         
         $this->SetFont($txt_font,'',12);
                 
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Betalare'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Betalare'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($who),0,1);
+        $this->Cell(80,10,encode_utf_to_iso($who),0,1);
         
         if (!empty($specification)) {
             $y += 7;
             $this->SetXY($left, $y);
-            $this->Cell(80,10,utf8_decode('Specifikation'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+            $this->Cell(80,10,encode_utf_to_iso('Specifikation'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
             $this->SetXY($left2, $y+1);
-            $this->MultiCell(0,8,utf8_decode($specification),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+            $this->MultiCell(0,8,encode_utf_to_iso($specification),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
             $y = $this->GetY();
             
         }
@@ -73,19 +73,19 @@ class Receipt_PDF extends FPDF {
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Summa'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Summa'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($amount." kr"),0,1);
+        $this->Cell(80,10,encode_utf_to_iso($amount." kr"),0,1);
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Datum'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Datum'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($date),0,1);
+        $this->Cell(80,10,encode_utf_to_iso($date),0,1);
         
          $y += 28;
          $this->SetXY($left, $y);
-         $this->Cell(80,10,utf8_decode('Kvittot skapat för '.$larp->Name),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+         $this->Cell(80,10,encode_utf_to_iso('Kvittot skapat för '.$larp->Name),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         
     }
     

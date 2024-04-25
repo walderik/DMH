@@ -8,10 +8,10 @@ include_once '../header.php';
 
 $bookkeepings = Bookkeeping::allByLARP($current_larp);
 $pdf = new Bookkeeping_PDF();
-$pdf->SetTitle(utf8_decode('Alla verifikationer'));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator(utf8_decode('Omnes Mundi'));
-$pdf->SetSubject(utf8_decode('Alla verifikatoner'));
+$pdf->SetTitle(encode_utf_to_iso('Alla verifikationer'));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
+$pdf->SetCreator(encode_utf_to_iso('Omnes Mundi'));
+$pdf->SetSubject(encode_utf_to_iso('Alla verifikatoner'));
 
 $pdf->printBookkeepings($bookkeepings);
 

@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     $pdf = new Letter_PDF();
     $pdf->SetTitle('Brev');
-    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
     $pdf->SetCreator('Omnes Mundi');
     $pdf->SetSubject('Brev');
     $pdf->nytt_brev($letter);

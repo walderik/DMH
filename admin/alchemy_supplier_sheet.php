@@ -30,12 +30,12 @@ if (isset($_GET['id'])) {
 $pdf = new AlchemySupplierSheet_PDF();
 $title = (empty($role)) ? 'Alla lövjerister' : ('Lövjerist '.$role->Name) ;
 
-$pdf->SetTitle(utf8_decode($title));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
+$pdf->SetTitle(encode_utf_to_iso($title));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $subject = $title;
-$pdf->SetSubject(utf8_decode($subject));
+$pdf->SetSubject(encode_utf_to_iso($subject));
 
 if (empty($supplier)) {
     $pdf->all_supplier_sheets($current_larp);

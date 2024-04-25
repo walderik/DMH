@@ -26,7 +26,7 @@ class AlchemyRecipeLabels extends FPDF {
         else $size = 6;
         $this->SetFont('Times','',$size);
         $this->SetXY($x, $y);
-        $this->MultiCell(37,4,utf8_decode($recipe->Effect),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(37,4,encode_utf_to_iso($recipe->Effect),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         
         if (strlen($recipe->SideEffect)<100) $size = 14;
         elseif (strlen($recipe->SideEffect)<200) $size = 12;
@@ -36,20 +36,20 @@ class AlchemyRecipeLabels extends FPDF {
         else $size = 6;
         $this->SetFont('Times','',$size);
         $this->SetXY($x+133, $y);
-        $this->MultiCell(39,4,utf8_decode($recipe->SideEffect),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(39,4,encode_utf_to_iso($recipe->SideEffect),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         
         $this->SetFont('Times','',14);
         $this->SetXY($x+40, $y-5);
-        $this->MultiCell(40,5,utf8_decode($recipe->Name),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(40,5,encode_utf_to_iso($recipe->Name),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
 
         $this->SetFont('Times','',18);
         $this->SetXY($x+72, $y+29);
-        $this->MultiCell(29,3,utf8_decode($recipe->Level),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(29,3,encode_utf_to_iso($recipe->Level),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
 
         
         $this->SetFont('Times','',8);
         $this->SetXY($x+40, $y+57);
-        $this->MultiCell(40,3,utf8_decode($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(40,3,encode_utf_to_iso($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
         
         /*
         $left = 21;
@@ -60,10 +60,10 @@ class AlchemyRecipeLabels extends FPDF {
         $this->SetXY($left, 68);
         # http://www.fpdf.org/en/doc/cell.htm
         # https://stackoverflow.com/questions/3514076/special-characters-in-fpdf-with-php
-        $this->Cell(80,10,utf8_decode($sender),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso($sender),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         
         $this->SetXY($left, 88);
-        $this->Cell(80,10,utf8_decode($receiver),0,1);
+        $this->Cell(80,10,encode_utf_to_iso($receiver),0,1);
         */
     }
      

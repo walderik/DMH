@@ -34,9 +34,9 @@ class our_fonts_pdf extends FPDF {
         }
         foreach(OurFonts::fontArray() as $font) {
             $this->SetFont('Helvetica','',12);
-            $this->Cell(40,10,utf8_decode("$font"),0,0);
+            $this->Cell(40,10,encode_utf_to_iso("$font"),0,0);
             $this->SetFont($font,'',15);
-            $this->Cell(80,10,utf8_decode("$font - Små bäckasiner häckar i vassen."),0,1);
+            $this->Cell(80,10,encode_utf_to_iso("$font - Små bäckasiner häckar i vassen."),0,1);
             
         }
 	}

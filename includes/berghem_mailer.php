@@ -373,7 +373,7 @@ class BerghemMailer {
         
         $pdf = new Invoice_PDF();
         $pdf->SetTitle('Faktura');
-        $pdf->SetAuthor(utf8_decode($larp->Name));
+        $pdf->SetAuthor(encode_utf_to_iso($larp->Name));
         $pdf->SetCreator('Omnes Mundi');
         $pdf->AddFont('SpecialElite','');
         $pdf->SetSubject('Faktura');
@@ -436,11 +436,11 @@ class BerghemMailer {
         $sheets = Array();
         foreach($roles as $role) {
             $pdf = new CharacterSheet_PDF();
-            $pdf->SetTitle(utf8_decode('Karaktärsblad '.$role->Name));
-            $pdf->SetAuthor(utf8_decode($larp->Name));
+            $pdf->SetTitle(encode_utf_to_iso('Karaktärsblad '.$role->Name));
+            $pdf->SetAuthor(encode_utf_to_iso($larp->Name));
             $pdf->SetCreator('Omnes Mundi');
             $pdf->AddFont('Helvetica','');
-            $pdf->SetSubject(utf8_decode($role->Name));
+            $pdf->SetSubject(encode_utf_to_iso($role->Name));
             $pdf->new_character_sheet($role, $larp);
             
             $sheets[scrub($role->Name)] = $pdf->Output('S');
@@ -451,12 +451,12 @@ class BerghemMailer {
                 $pdf = new MagicMagicianSheet_PDF();
                 $title = 'Magiker '.$role->Name;
                 
-                $pdf->SetTitle(utf8_decode($title));
-                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetTitle(encode_utf_to_iso($title));
+                $pdf->SetAuthor(encode_utf_to_iso($larp->Name));
                 $pdf->SetCreator('Omnes Mundi');
                 $pdf->AddFont('Helvetica','');
                 $subject = $title;
-                $pdf->SetSubject(utf8_decode($subject));
+                $pdf->SetSubject(encode_utf_to_iso($subject));
 
                 $pdf->single_magician_sheet($magician, $larp);
                 
@@ -470,12 +470,12 @@ class BerghemMailer {
                 $pdf = new AlchemyAlchemistSheet_PDF();
                 $title = 'Alkemist '.$role->Name;
                 
-                $pdf->SetTitle(utf8_decode($title));
-                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetTitle(encode_utf_to_iso($title));
+                $pdf->SetAuthor(encode_utf_to_iso($larp->Name));
                 $pdf->SetCreator('Omnes Mundi');
                 $pdf->AddFont('Helvetica','');
                 $subject = $title;
-                $pdf->SetSubject(utf8_decode($subject));
+                $pdf->SetSubject(encode_utf_to_iso($subject));
                 
 
                 $pdf->single_alchemist_sheet($alchemist, $larp);
@@ -489,12 +489,12 @@ class BerghemMailer {
                 $pdf = new AlchemySupplierSheet_PDF();
                 $title = 'Lövjerist '.$role->Name;
                 
-                $pdf->SetTitle(utf8_decode($title));
-                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetTitle(encode_utf_to_iso($title));
+                $pdf->SetAuthor(encode_utf_to_iso($larp->Name));
                 $pdf->SetCreator('Omnes Mundi');
                 $pdf->AddFont('Helvetica','');
                 $subject = $title;
-                $pdf->SetSubject(utf8_decode($subject));
+                $pdf->SetSubject(encode_utf_to_iso($subject));
                 
 
                 $pdf->single_supplier_sheet($supplier, $larp);
@@ -518,12 +518,12 @@ class BerghemMailer {
             if (!empty($group)) {
                 $pdf = new Group_PDF();
                 $title = 'Gruppblad '.$group->Name ;
-                $pdf->SetTitle(utf8_decode($title));
-                $pdf->SetAuthor(utf8_decode($larp->Name));
+                $pdf->SetTitle(encode_utf_to_iso($title));
+                $pdf->SetAuthor(encode_utf_to_iso($larp->Name));
                 $pdf->SetCreator('Omnes Mundi');
                 $pdf->AddFont('Helvetica','');
                 $subject = $group->Name;
-                $pdf->SetSubject(utf8_decode($subject));
+                $pdf->SetSubject(encode_utf_to_iso($subject));
                 $pdf->new_group_sheet($group, $larp, false);
                 $sheets[scrub($group->Name)] = $pdf->Output('S');
             }

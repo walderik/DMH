@@ -32,7 +32,7 @@ if (isset($_GET['invoiceId'])) {
     }
 
     $pdf->SetTitle('Faktura');
-    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
     $pdf->SetCreator('Omnes Mundi');
     $pdf->AddFont('SpecialElite','');
     $pdf->SetSubject('Faktura');

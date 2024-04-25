@@ -26,3 +26,7 @@ function isOmAdmin(?String $url = NULL) {
     if (is_null($url)) $url = $_SERVER['REQUEST_URI'];
     return (strpos($url, "/site-admin/")!=false);
 }
+
+function encode_utf_to_iso($string) {
+    return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
+}

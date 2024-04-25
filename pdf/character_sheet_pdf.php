@@ -62,7 +62,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $txt = 'Karaktärsblad';
         }
 
-        $this->MultiCell(30, 4, utf8_decode($txt), 0, 'C', true);
+        $this->MultiCell(30, 4, encode_utf_to_iso($txt), 0, 'C', true);
         
         $this->SetXY($mitten-15,  static::$y_min + 2*static::$Margin);
         $y = $this->GetY();
@@ -76,12 +76,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
 
         if (empty($text)) $text =  $this->larp->Name;
         
-        $font_size = (850 / strlen(utf8_decode($text)));
+        $font_size = (850 / strlen(encode_utf_to_iso($text)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
         $this->SetXY($left, $y-2);
-        $this->Cell(0, static::$cell_y*5, utf8_decode($text),0,0,'C');
+        $this->Cell(0, static::$cell_y*5, encode_utf_to_iso($text),0,0,'C');
         
         $y = static::$y_min + (static::$cell_y*5) + (static::$Margin);
         
@@ -116,13 +116,13 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $type = ($this->role->isMain($this->larp)) ? 'Huvudkaraktär' : 'Sidokaraktär';
         }
          
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode($type),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($type),0,0,'L');
         
         $font_size = (strlen($this->role->Name)>20) ? 14 : 24;
         $this->SetXY($left2, $y + static::$Margin + 1);
         $this->SetFont('Helvetica','B', $font_size); # Extra stora bokstäver på karaktärens namn
        
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode($this->role->Name),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($this->role->Name),0,0,'L');
     }
 
     
@@ -153,7 +153,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         if ($new_page) $this->AddPage();
         $this->SetXY($left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Intriger'),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intriger'),0,0,'L');
         $y = $this->GetY()+$space*3;
         $this->SetXY($left, $y);
         
@@ -177,21 +177,21 @@ class CharacterSheet_PDF extends PDF_MemImage {
             }
             
             if (!empty($intrigue->CommonText)) {
-                $text = trim(utf8_decode($intrigue->CommonText));
+                $text = trim(encode_utf_to_iso($intrigue->CommonText));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
             }
             
             if (!empty($intrigueActor->IntrigueText)) {
-                $text = trim(utf8_decode($intrigueActor->IntrigueText));
+                $text = trim(encode_utf_to_iso($intrigueActor->IntrigueText));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
             }
             
             if (!empty($intrigueActor->OffInfo)) {
-                $text = trim(utf8_decode("OFF_INFORMATION: " . $intrigueActor->OffInfo));
+                $text = trim(encode_utf_to_iso("OFF_INFORMATION: " . $intrigueActor->OffInfo));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
@@ -210,7 +210,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $y = $this->GetY()+$space;
             $this->SetXY($left, $y);
             $this->SetFont('Arial','',static::$text_fontsize-3);
-            $text = utf8_decode("Intrignummer: " . implode(', ', $intrigue_numbers).".\nDet/dem kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet");
+            $text = encode_utf_to_iso("Intrignummer: " . implode(', ', $intrigue_numbers).".\nDet/dem kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet");
             $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
             $this->SetFont('Arial','',static::$text_fontsize);
             $y = $this->GetY() + $space;
@@ -232,7 +232,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $this->current_left = $left;
             $this->SetXY($this->current_left, $y);
             $this->SetFont('Helvetica','B',static::$text_fontsize);
-            $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Känner till'),0,0,'L');
+            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Känner till'),0,0,'L');
             
             $y = $this->GetY() + $space*3;
             $this->SetXY($this->current_left, $y);
@@ -302,7 +302,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $this->SetXY($this->current_left + 25, $y); # Skjut texten till höger
         }
         
-        $this->MultiCell(0, static::$cell_y-1, trim(utf8_decode($text)), 0, 'L');
+        $this->MultiCell(0, static::$cell_y-1, trim(encode_utf_to_iso($text)), 0, 'L');
         $new_y = $this->GetY() + $space;
         if (($new_y) > $lovest_y) $lovest_y = $new_y + $rowImageHeight;
         
@@ -333,16 +333,16 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->SetXY($left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
         $name = $this->role->Name;
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Rykten $name känner till "),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Rykten $name känner till "),0,0,'L');
         $this->SetFont('Arial','',static::$text_fontsize-3);
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("(Hjälp gärna till att sprida och reagera på dom) "),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("(Hjälp gärna till att sprida och reagera på dom) "),0,0,'L');
         
         $this->SetFont('Arial','',static::$text_fontsize);
         $y = $this->GetY()+$space*3;
         $this->SetXY($left, $y);
         
         foreach($rumours as $rumour) {
-            $this->MultiCell(0, static::$cell_y-1, trim(utf8_decode($rumour->Text)), 0, 'L');
+            $this->MultiCell(0, static::$cell_y-1, trim(encode_utf_to_iso($rumour->Text)), 0, 'L');
             $y = $this->GetY()+$space;
             $this->SetXY($left, $y);
         }
@@ -479,14 +479,14 @@ class CharacterSheet_PDF extends PDF_MemImage {
                     $this->current_left = $left;
                     $this->SetXY($this->current_left, $y);
                     $this->SetFont('Helvetica','B',static::$text_fontsize);
-                    $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Intrig'),0,0,'L');
+                    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intrig'),0,0,'L');
                     
                     $y = $this->GetY() + $space*3;
                     $this->SetXY($this->current_left, $y);
                     $this->SetFont('Helvetica','',static::$text_fontsize);
                     
                     
-                    $text = trim(utf8_decode($previous_larp_role->Intrigue));
+                    $text = trim(encode_utf_to_iso($previous_larp_role->Intrigue));
                     $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                     $y = $this->GetY() + $space;
                     $this->SetXY($left, $y);
@@ -503,14 +503,14 @@ class CharacterSheet_PDF extends PDF_MemImage {
                         $this->current_left = $left;
                         $this->SetXY($this->current_left, $y);
                         $this->SetFont('Helvetica','B',static::$text_fontsize);
-                        $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Intrig'),0,0,'L');
+                        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intrig'),0,0,'L');
                         
                         $y = $this->GetY() + $space*3;
                         $this->SetXY($this->current_left, $y);
                         $this->SetFont('Helvetica','',static::$text_fontsize);
                         
                         
-                        $text = trim(utf8_decode($intrigueActor->IntrigueText));
+                        $text = trim(encode_utf_to_iso($intrigueActor->IntrigueText));
                         $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                         $y = $this->GetY() + $space;
                         $this->SetXY($left, $y);
@@ -520,14 +520,14 @@ class CharacterSheet_PDF extends PDF_MemImage {
                         $this->current_left = $left;
                         $this->SetXY($this->current_left, $y);
                         $this->SetFont('Helvetica','B',static::$text_fontsize);
-                        $this->Cell($this->cell_width, static::$cell_y, utf8_decode('Vad hände?'),0,0,'L');
+                        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Vad hände?'),0,0,'L');
                         
                         $y = $this->GetY() + $space*3;
                         $this->SetXY($this->current_left, $y);
                         $this->SetFont('Helvetica','',static::$text_fontsize);
                         
                         
-                        $text = utf8_decode((isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat");
+                        $text = encode_utf_to_iso((isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat");
                         $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                         $y = $this->GetY() + $space;
                         $this->SetXY($left, $y);
@@ -542,13 +542,13 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $this->current_left = $left;
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','B',static::$text_fontsize);
-                $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Vad hände för ".$this->role->Name."?"),0,0,'L');
+                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för ".$this->role->Name."?"),0,0,'L');
                 
                 $y = $this->GetY() + $space*3;
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','',static::$text_fontsize);
                 
-                $text = utf8_decode((isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "") ? $previous_larp_role->WhatHappened : "Inget rapporterat");
+                $text = encode_utf_to_iso((isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "") ? $previous_larp_role->WhatHappened : "Inget rapporterat");
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
@@ -557,13 +557,13 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $this->current_left = $left;
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','B',static::$text_fontsize);
-                $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Vad hände för andra?"),0,0,'L');
+                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för andra?"),0,0,'L');
                 
                 $y = $this->GetY() + $space*3;
                 $this->SetXY($this->current_left, $y);
                 $this->SetFont('Helvetica','',static::$text_fontsize);
                 
-                $text = utf8_decode((isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "") ? $previous_larp_role->WhatHappendToOthers : "Inget rapporterat");
+                $text = encode_utf_to_iso((isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "") ? $previous_larp_role->WhatHappendToOthers : "Inget rapporterat");
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
@@ -867,7 +867,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    global $y;
 	    $this->SetXY($venster, $y);
 	    $this->SetFont('Helvetica','',static::$header_fontsize);
-	    $this->Cell($this->cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
+	    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($text),0,0,'L');
 	}
 	
 	# Gemensam funktion för all logik för att skriva ut ett fält
@@ -876,7 +876,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    
 	    if (empty($text)) return;
 	    
-	    $text = trim(utf8_decode($text));
+	    $text = trim(encode_utf_to_iso($text));
 	    
 	    $this->SetXY($venster, $y + static::$Margin + 1);
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
@@ -902,7 +902,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    
 	    $this->AddPage();
 	    
-	    $text = utf8_decode($text);
+	    $text = encode_utf_to_iso($text);
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    
@@ -923,7 +923,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	private function set_rest_of_page($header, $text) {
 	    global  $y, $left;
 	    
-	    $text = utf8_decode($text);
+	    $text = encode_utf_to_iso($text);
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    

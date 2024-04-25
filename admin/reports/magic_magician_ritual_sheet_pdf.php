@@ -30,12 +30,12 @@ if (isset($_GET['id'])) {
 $pdf = new MagicMagicianRitualSheet_PDF('L');
 $title = (empty($role)) ? 'Alla magiker' : ('Magiker '.$role->Name) ;
 
-$pdf->SetTitle(utf8_decode($title));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
+$pdf->SetTitle(encode_utf_to_iso($title));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $subject = (empty($role)) ? 'Alla magiker' : 'Magiker '.$role->Name;
-$pdf->SetSubject(utf8_decode($subject));
+$pdf->SetSubject(encode_utf_to_iso($subject));
 
 if (empty($magician)) {
     $pdf->all_magician_sheets($current_larp);

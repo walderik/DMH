@@ -71,7 +71,7 @@ class Vision_PDF extends FPDF {
         
         
         
-        $this->MultiCell($slen+4, 4, utf8_decode($txt), 0, 'C', true);
+        $this->MultiCell($slen+4, 4, encode_utf_to_iso($txt), 0, 'C', true);
         
         
         $this->SetXY($mitten-15,  static::$y_min + 2*static::$Margin);
@@ -86,12 +86,12 @@ class Vision_PDF extends FPDF {
 
         if (empty($text)) $text =  $this->larp->Name;
         
-        $font_size = (850 / strlen(utf8_decode($text)));
+        $font_size = (850 / strlen(encode_utf_to_iso($text)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
         $this->SetXY($left, $y-2);
-        $this->Cell(0, static::$cell_y*5, utf8_decode($text),0,0,'C');
+        $this->Cell(0, static::$cell_y*5, encode_utf_to_iso($text),0,0,'C');
         
         $y = static::$y_min + (static::$cell_y*5) + (static::$Margin);
         
@@ -113,12 +113,12 @@ class Vision_PDF extends FPDF {
         $this->current_left = $left;
         $this->SetXY($this->current_left, $y);
         $this->SetFont($visionfont,'',static::$text_fontsize+2);
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode($role->Name),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($role->Name),0,0,'L');
         
         $y = $this->GetY() + $space*2;
         $this->SetXY($this->current_left, $y);
         $this->SetFont($visionfont,'',static::$text_fontsize);
-        $text = trim(utf8_decode("När ".$vision->getWhenStr()));
+        $text = trim(encode_utf_to_iso("När ".$vision->getWhenStr()));
         $this->Cell($this->cell_width, static::$cell_y,$text,0,0,'L');
         $y = $this->GetY() + $space;
         $this->SetXY($left, $y);
@@ -128,12 +128,12 @@ class Vision_PDF extends FPDF {
         $this->current_left = $left;
         $this->SetXY($this->current_left, $y);
         $this->SetFont($visionfont,'',static::$text_fontsize+2);
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Syn"),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Syn"),0,0,'L');
         
         $y = $this->GetY() + $space*2;
         $this->SetXY($this->current_left, $y);
         $this->SetFont($visionfont,'',static::$text_fontsize);
-        $text = trim(utf8_decode($vision->VisionText));
+        $text = trim(encode_utf_to_iso($vision->VisionText));
         $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
         $y = $this->GetY() + $space;
         $this->SetXY($left, $y);
@@ -143,12 +143,12 @@ class Vision_PDF extends FPDF {
             $this->current_left = $left;
             $this->SetXY($this->current_left, $y);
             $this->SetFont($visionfont,'',static::$text_fontsize+2);
-            $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Källa"),0,0,'L');
+            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Källa"),0,0,'L');
             
             $y = $this->GetY() + $space*2;
             $this->SetXY($this->current_left, $y);
             $this->SetFont($visionfont,'',static::$text_fontsize);
-            $text = trim(utf8_decode($vision->Source));
+            $text = trim(encode_utf_to_iso($vision->Source));
             $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
             $y = $this->GetY() + $space;
             $this->SetXY($left, $y);
@@ -159,12 +159,12 @@ class Vision_PDF extends FPDF {
             $this->current_left = $left;
             $this->SetXY($this->current_left, $y);
             $this->SetFont($visionfont,'',static::$text_fontsize+2);
-            $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Bieffekt"),0,0,'L');
+            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Bieffekt"),0,0,'L');
             
             $y = $this->GetY() + $space*2;
             $this->SetXY($this->current_left, $y);
             $this->SetFont($visionfont,'',static::$text_fontsize);
-            $text = trim(utf8_decode($vision->SideEffect));
+            $text = trim(encode_utf_to_iso($vision->SideEffect));
             $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
             $y = $this->GetY() + $space;
             $this->SetXY($left, $y);
@@ -266,7 +266,7 @@ class Vision_PDF extends FPDF {
 	    global $y;
 	    $this->SetXY($venster, $y);
 	    $this->SetFont('Helvetica','',static::$header_fontsize);
-	    $this->Cell($this->cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
+	    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($text),0,0,'L');
 	}
 	
 	# Gemensam funktion för all logik för att skriva ut ett fält
@@ -275,7 +275,7 @@ class Vision_PDF extends FPDF {
 	    
 	    if (empty($text)) return;
 	    
-	    $text = trim(utf8_decode($text));
+	    $text = trim(encode_utf_to_iso($text));
 	    
 	    $this->SetXY($venster, $y + static::$Margin + 1);
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
@@ -301,7 +301,7 @@ class Vision_PDF extends FPDF {
 	    
 	    $this->AddPage();
 	    
-	    $text = utf8_decode($text);
+	    $text = encode_utf_to_iso($text);
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    
@@ -322,7 +322,7 @@ class Vision_PDF extends FPDF {
 	private function set_rest_of_page($header, $text) {
 	    global  $y, $left;
 	    
-	    $text = utf8_decode($text);
+	    $text = encode_utf_to_iso($text);
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    

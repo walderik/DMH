@@ -50,7 +50,7 @@ class Bookkeeping_PDF extends PDF_MemImage {
         $txt_width = $this->GetStringWidth($txt);
         
         $this->SetXY($mitten-$txt_width/2, 3);
-        $this->MultiCell($txt_width, 4, utf8_decode($txt), 0, 'C', true);
+        $this->MultiCell($txt_width, 4, encode_utf_to_iso($txt), 0, 'C', true);
         
         $y = static::$y_min + static::$Margin;
     }
@@ -75,9 +75,9 @@ class Bookkeeping_PDF extends PDF_MemImage {
         
         
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode($bookkeeping->Number." "),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso($bookkeeping->Number." "),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($bookkeeping->Headline),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso($bookkeeping->Headline),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         
         $this->SetFont($txt_font,'',12);
 
@@ -86,7 +86,7 @@ class Bookkeeping_PDF extends PDF_MemImage {
         $typetxt = '';
         if ($bookkeeping->Amount > 0) $typetxt = "Inkomst";
         else $typetxt = "Utgift";
-        $this->Cell(80,10,utf8_decode($typetxt),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso($typetxt),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         
         $y += 3;
         
@@ -96,32 +96,32 @@ class Bookkeeping_PDF extends PDF_MemImage {
         $whotxt = '';
         if ($bookkeeping->Amount > 0) $whotxt = "Från";
         else $whotxt = "Till";
-        $this->Cell(80,10,utf8_decode($whotxt),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso($whotxt),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($bookkeeping->Who),0,1);
+        $this->Cell(80,10,encode_utf_to_iso($bookkeeping->Who),0,1);
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Konto'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Konto'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($bookkeeping->getBookkeepingAccount()->Name),0,1);
+        $this->Cell(80,10,encode_utf_to_iso($bookkeeping->getBookkeepingAccount()->Name),0,1);
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Summa'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Summa'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($bookkeeping->Amount),0,1);
+        $this->Cell(80,10,encode_utf_to_iso($bookkeeping->Amount),0,1);
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Datum'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Datum'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($bookkeeping->Date),0,1);        
+        $this->Cell(80,10,encode_utf_to_iso($bookkeeping->Date),0,1);        
 
         if (isset($image) && ($image->file_mime == "application/pdf")) {
             $y += 7;
             $this->SetXY($left, $y);
-            $this->Cell(80,10,utf8_decode(''),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+            $this->Cell(80,10,encode_utf_to_iso(''),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
             $this->SetXY($left2, $y+2.1);
             $this->MultiCell($mitten-$left2, 5.5, "Kvitto finns i separat pdf");
             
@@ -130,9 +130,9 @@ class Bookkeeping_PDF extends PDF_MemImage {
         if (!empty($bookkeeping->Text)) {
             $y += 7;
             $this->SetXY($left, $y);
-            $this->Cell(80,10,utf8_decode('Beskrivning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+            $this->Cell(80,10,encode_utf_to_iso('Beskrivning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
             $this->SetXY($left2, $y+2.1);
-            $this->MultiCell($mitten-$left2, 5.5, utf8_decode($bookkeeping->Text));
+            $this->MultiCell($mitten-$left2, 5.5, encode_utf_to_iso($bookkeeping->Text));
             
         }
     }
@@ -151,9 +151,9 @@ class Bookkeeping_PDF extends PDF_MemImage {
         
         
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode("Faktura ".$invoice->Number." "),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso("Faktura ".$invoice->Number." "),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($invoice->Recipient),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso($invoice->Recipient),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         
         $this->SetFont($txt_font,'',12);
         
@@ -161,34 +161,34 @@ class Bookkeeping_PDF extends PDF_MemImage {
         $this->SetXY($left2, $y);
         $typetxt = '';
         $typetxt = "Inkomst";
-        $this->Cell(80,10,utf8_decode($typetxt),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso($typetxt),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         
         $y += 3;
         
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Summa'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Summa'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($invoice->FixedAmount),0,1);
+        $this->Cell(80,10,encode_utf_to_iso($invoice->FixedAmount),0,1);
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Datum'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Datum'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,utf8_decode($invoice->PayedDate),0,1);
+        $this->Cell(80,10,encode_utf_to_iso($invoice->PayedDate),0,1);
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode(''),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso(''),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y+2.1);
         $this->MultiCell($mitten-$left2, 5.5, "Kvitto finns i separat pdf");
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Specifikation'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Specifikation'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y+2.1);
-        $this->MultiCell($mitten-$left2, 5.5, utf8_decode($invoice->Matter));
+        $this->MultiCell($mitten-$left2, 5.5, encode_utf_to_iso($invoice->Matter));
             
     }
     

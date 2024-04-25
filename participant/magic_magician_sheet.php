@@ -39,12 +39,12 @@ if (!$role->isRegistered($current_larp)) {
 $pdf = new MagicMagicianSheet_PDF();
 $title = 'Magiker '.$role->Name;
 
-$pdf->SetTitle(utf8_decode($title));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
+$pdf->SetTitle(encode_utf_to_iso($title));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
 $subject = $title;
-$pdf->SetSubject(utf8_decode($subject));
+$pdf->SetSubject(encode_utf_to_iso($subject));
 
 $magician=Magic_Magician::getForRole($role);
 $pdf->single_magician_sheet($magician, $current_larp);

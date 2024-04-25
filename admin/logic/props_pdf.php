@@ -8,10 +8,10 @@ include_once '../header.php';
 
 $props = Prop::allByCampaign($current_larp);
 $pdf = new Props_PDF();
-$pdf->SetTitle(utf8_decode('Rekvisita'));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator(utf8_decode('Omnes Mundi'));
-$pdf->SetSubject(utf8_decode('Rekvisita'));
+$pdf->SetTitle(encode_utf_to_iso('Rekvisita'));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
+$pdf->SetCreator(encode_utf_to_iso('Omnes Mundi'));
+$pdf->SetSubject(encode_utf_to_iso('Rekvisita'));
 $pdf->printProps($props);
 
 $pdf->Output();

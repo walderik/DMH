@@ -8,11 +8,11 @@ include_once '../header.php';
 
 $arrayOfRecipes = Alchemy_Recipe::getAllApproved($current_larp);
 $pdf = new AlchemyRecipeLabels();
-$pdf->SetTitle(utf8_decode('Alkemietiketter'));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator(utf8_decode('Omnes Mundi'));
+$pdf->SetTitle(encode_utf_to_iso('Alkemietiketter'));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
+$pdf->SetCreator(encode_utf_to_iso('Omnes Mundi'));
 $pdf->AddFont('SpecialElite','');
-$pdf->SetSubject(utf8_decode('Alkemietiketter'));
+$pdf->SetSubject(encode_utf_to_iso('Alkemietiketter'));
 
 //$pdf->PrintRecipeLabels($arrayOfRecipes[0]);
 

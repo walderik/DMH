@@ -17,11 +17,11 @@ $name = 'Tider för syner';
 
 $pdf = new Report_PDF('L');
 
-$pdf->SetTitle(utf8_decode($name));
-$pdf->SetAuthor(utf8_decode($current_user->Name));
+$pdf->SetTitle(encode_utf_to_iso($name));
+$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
-$pdf->SetSubject(utf8_decode($name));
+$pdf->SetSubject(encode_utf_to_iso($name));
 
 
 function cmp($a, $b)

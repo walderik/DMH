@@ -54,7 +54,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         $this->SetFillColor(255,255,255);
         
         $txt = "ID-kort för ritualer";
-        $this->MultiCell(60, 4, utf8_decode($txt), 0, 'C', true);
+        $this->MultiCell(60, 4, encode_utf_to_iso($txt), 0, 'C', true);
         
         $y = $this->GetY();
         
@@ -64,7 +64,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         $this->SetFillColor(255,255,255);
         
         $txt = $this->larp->Name;
-        $this->MultiCell(60, 4, utf8_decode($txt), 0, 'C', true);
+        $this->MultiCell(60, 4, encode_utf_to_iso($txt), 0, 'C', true);
         
         
         
@@ -79,12 +79,12 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
 
         if (empty($text)) $text =  $this->larp->Name;
         
-        $font_size = (850 / strlen(utf8_decode($text)));
+        $font_size = (850 / strlen(encode_utf_to_iso($text)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
         $this->SetXY($left, $y-2);
-        $this->Cell(0, static::$cell_y*5, utf8_decode($text),0,0,'C');
+        $this->Cell(0, static::$cell_y*5, encode_utf_to_iso($text),0,0,'C');
         
         $y = static::$y_min + (static::$cell_y*5) + (static::$Margin);
         
@@ -115,7 +115,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         $y = $this->GetY() + 3*$space;
         $this->SetXY($left, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode("Annat viktigt"));
+        $text = trim(encode_utf_to_iso("Annat viktigt"));
         $this->Cell(0, static::$cell_y-1, $text, 0, 'L');
         
         $y = $this->GetY();
@@ -133,7 +133,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         $y = $this->GetY() + $space;
         $this->SetXY($this->current_left, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode("Godkänd workshop"));
+        $text = trim(encode_utf_to_iso("Godkänd workshop"));
         $this->Cell(0, static::$cell_y-1, $text, 0, 'L');
         
 
@@ -142,7 +142,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         
         $this->SetXY(50, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode("Ja"));
+        $text = trim(encode_utf_to_iso("Ja"));
         $this->Cell(0, static::$cell_y-1, $text, 0, 'L');
 
         $this->SetXY(65, $y);
@@ -150,7 +150,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         
         $this->SetXY(70, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode("Nej"));
+        $text = trim(encode_utf_to_iso("Nej"));
         $this->Cell(0, static::$cell_y-1, $text, 0, 'L');
         
         //$y += +7;
@@ -164,12 +164,12 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         global $y;
         $this->SetXY($this->current_left, $this->GetY());
         $this->SetFont('Helvetica','B',static::$text_fontsize);
-        $text = trim(utf8_decode("Ritualer utförda"));
+        $text = trim(encode_utf_to_iso("Ritualer utförda"));
         $this->Cell(0, static::$cell_y-1, $text, 0, 'L');
         
         $this->SetXY($this->current_left, $this->GetY());
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode("Mycket kort beskrivning:"));
+        $text = trim(encode_utf_to_iso("Mycket kort beskrivning:"));
         $this->Cell(0, static::$cell_y-1, $text, 0, 'L');
         
         $y = $this->GetY();
@@ -194,7 +194,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         $y = $this->GetY() + 7;
         $this->SetXY($this->current_left, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode("Godkänd"));
+        $text = trim(encode_utf_to_iso("Godkänd"));
         $this->Cell(0, static::$cell_y-1, $text, 0, 'L');
         
         
@@ -203,7 +203,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         
         $this->SetXY($this->current_left+50, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode("Ja"));
+        $text = trim(encode_utf_to_iso("Ja"));
         $this->Cell(0, static::$cell_y-1, $text, 0, 'L');
         
         $this->SetXY($this->current_left+65, $y);
@@ -211,7 +211,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
         
         $this->SetXY($this->current_left+70, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode("Nej; varför inte:"));
+        $text = trim(encode_utf_to_iso("Nej; varför inte:"));
         $this->Cell(0, static::$cell_y-1, $text, 0, 'L');
         
         $y = $this->GetY();
@@ -452,7 +452,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
 	    global $y;
 	    $this->SetXY($venster, $y);
 	    $this->SetFont('Helvetica','',static::$header_fontsize);
-	    $this->Cell($this->cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
+	    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($text),0,0,'L');
 	}
 	
 	# Gemensam funktion för all logik för att skriva ut ett fält
@@ -461,7 +461,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
 	    
 	    if (empty($text)) return;
 	    
-	    $text = trim(utf8_decode($text));
+	    $text = trim(encode_utf_to_iso($text));
 	    
 	    $this->SetXY($venster, $y + static::$Margin + 1);
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
@@ -487,7 +487,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
 	    
 	    $this->AddPage();
 	    
-	    $text = utf8_decode($text);
+	    $text = encode_utf_to_iso($text);
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    
@@ -508,7 +508,7 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
 	private function set_rest_of_page($header, $text) {
 	    global  $y, $left;
 	    
-	    $text = utf8_decode($text);
+	    $text = encode_utf_to_iso($text);
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    

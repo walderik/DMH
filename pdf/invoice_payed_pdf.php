@@ -21,7 +21,7 @@ class Invoice_payed_PDF extends Invoice_PDF {
          $this->SetTextColor(255,192,203);
          $this->SetDrawColor(255,192,203);
          $this->SetXY(70, 35);
-         $this->MultiCell(70,20,utf8_decode("Betalad"),1,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
+         $this->MultiCell(70,20,encode_utf_to_iso("Betalad"),1,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
     }
     
 }

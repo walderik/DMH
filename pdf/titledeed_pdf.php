@@ -37,13 +37,13 @@ class TITLEDEED_PDF extends FPDF {
         $y += 13;
         $this->SetXY($left, $y);
         $txt = $titledeed->Tradeable ? 'ÄGARBEVIS' : 'Ägarinformation';
-        $this->Cell(0,10,utf8_decode($txt),0,1,'C');
+        $this->Cell(0,10,encode_utf_to_iso($txt),0,1,'C');
         if (!$titledeed->Tradeable) {
             $this->SetXY($left, $y);
             $y += 10;
             $this->SetXY($left, $y);
             $this->SetFont('Helvetica','',10); 
-            $this->Cell(0,10,utf8_decode('(Kan inte säljas)'),0,1,'C');
+            $this->Cell(0,10,encode_utf_to_iso('(Kan inte säljas)'),0,1,'C');
             $y -= 10;
         }
         
@@ -53,9 +53,9 @@ class TITLEDEED_PDF extends FPDF {
         
         $y += 25;
         $this->SetXY($left, $y);
-		$this->Cell(80,10,utf8_decode('Namn'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+		$this->Cell(80,10,encode_utf_to_iso('Namn'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
 		$this->SetXY($left2, $y);
-		$this->Cell(80,10,utf8_decode($titledeed->Name),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+		$this->Cell(80,10,encode_utf_to_iso($titledeed->Name),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
 		$y += 3;
         
 		$this->SetFont($txt_font,'',12); 
@@ -63,7 +63,7 @@ class TITLEDEED_PDF extends FPDF {
 		if (!empty($titledeed->Location)) {
 		    $y += 3;
 		    $this->SetXY($left2, $y);
-		    $this->Cell(80,10,utf8_decode($titledeed->Location),0,1);
+		    $this->Cell(80,10,encode_utf_to_iso($titledeed->Location),0,1);
 		}
 		    
 		
@@ -73,23 +73,23 @@ class TITLEDEED_PDF extends FPDF {
         if (!empty($titledeed->Size)) {
             $y += 7;
 //     		$this->SetXY($left, $y);
-//     		$this->Cell(80,10,utf8_decode('Typ'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+//     		$this->Cell(80,10,encode_utf_to_iso('Typ'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
     		$this->SetXY($left2, $y);
-    		$this->Cell(80,10,utf8_decode($txt),0,1);
+    		$this->Cell(80,10,encode_utf_to_iso($txt),0,1);
         }
         
         if (!empty($titledeed->PublicNotes)) {
             $y += 7;
 //             $this->SetXY($left, $y);
-//             $this->Cell(80,10,utf8_decode('Beskrivning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+//             $this->Cell(80,10,encode_utf_to_iso('Beskrivning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
             $this->SetXY($left2, $y);
-            $this->Cell(80,10,utf8_decode($titledeed->PublicNotes),0,1);
+            $this->Cell(80,10,encode_utf_to_iso($titledeed->PublicNotes),0,1);
             
         }
         
         $y += 14;
         $this->SetXY($left, $y);
-        $this->Cell(80,10,utf8_decode('Ägare'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,10,encode_utf_to_iso('Ägare'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $owners = array();
         foreach ($titledeed->getGroupOwners() as $owner_group) $owners[] = $owner_group->Name;
         foreach ( $titledeed->getRoleOwners() as $owner_role)  $owners[] = $owner_role->Name;
@@ -99,28 +99,28 @@ class TITLEDEED_PDF extends FPDF {
             $txt = 'Ingen';
         }
         $this->SetXY($left2, $y+1);
-        $this->MultiCell(0,8,utf8_decode($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(0,8,encode_utf_to_iso($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
 
         $y += 14;
         $this->SetXY($left, $y);
-        $this->Cell(80,7,utf8_decode('Tillgångar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,encode_utf_to_iso('Tillgångar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
 
-        $this->MultiCell(0, 7, utf8_decode($titledeed->ProducesString()), 0, 'L');
+        $this->MultiCell(0, 7, encode_utf_to_iso($titledeed->ProducesString()), 0, 'L');
         $y = $this->GetY();
         
         //$y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,7,utf8_decode('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,encode_utf_to_iso('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->MultiCell(0, 7, utf8_decode($titledeed->RequiresString()), 0, 'L');
+        $this->MultiCell(0, 7, encode_utf_to_iso($titledeed->RequiresString()), 0, 'L');
         $y = $this->GetY();
         
         $y += 7;
         $this->SetXY($left, $y);
-        $this->Cell(80,7,utf8_decode('Förbättring'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,encode_utf_to_iso('Förbättring'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->MultiCell(0, 7, utf8_decode($titledeed->RequiresForUpgradeString()), 0, 'L');
+        $this->MultiCell(0, 7, encode_utf_to_iso($titledeed->RequiresForUpgradeString()), 0, 'L');
         $y = $this->GetY();
     }
     
@@ -157,7 +157,7 @@ class TITLEDEED_PDF extends FPDF {
             $slen = $this->GetStringWidth($txt,0);
         }
         
-        $this->Cell(0,10,utf8_decode($txt),0,1);
+        $this->Cell(0,10,encode_utf_to_iso($txt),0,1);
         
 
         $this->SetXY($left_2_1, $y);
@@ -171,23 +171,23 @@ class TITLEDEED_PDF extends FPDF {
             $this->SetFont($font2,'',$size);
             $slen = $this->GetStringWidth($txt,0);
         }
-        $this->Cell(0,10,utf8_decode($txt),0,1);
+        $this->Cell(0,10,encode_utf_to_iso($txt),0,1);
         
         
         $y += 14;
         $this->SetFont($font1,'',20);
         $this->SetXY($left_1_1, $y);
-        $this->Cell(80,7,utf8_decode('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,encode_utf_to_iso('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
 
         $this->SetXY($left_1_2, $y+7);
-        $this->MultiCell($page_width/2-20, 7, utf8_decode($titledeed->RequiresString()), 0, 'L');
+        $this->MultiCell($page_width/2-20, 7, encode_utf_to_iso($titledeed->RequiresString()), 0, 'L');
         $y1 = $this->GetY();
 
         $this->SetFont($font2,'',20);
         $this->SetXY($left_2_1, $y);
-        $this->Cell(80,7,utf8_decode('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,encode_utf_to_iso('Behöver'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left_2_2, $y+7);
-        $this->MultiCell($page_width/2-20, 7, utf8_decode($titledeed->RequiresString()), 0, 'L');
+        $this->MultiCell($page_width/2-20, 7, encode_utf_to_iso($titledeed->RequiresString()), 0, 'L');
         $y2 = $this->GetY();
         
         $y = max($y1, $y2);
@@ -195,16 +195,16 @@ class TITLEDEED_PDF extends FPDF {
         $y += 7;
         $this->SetFont($font1,'',20);
         $this->SetXY($left_1_1, $y);
-        $this->Cell(80,7,utf8_decode('Utveckling'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,encode_utf_to_iso('Utveckling'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left_1_2, $y+7);
-        $this->MultiCell($page_width/2-20, 7, utf8_decode($titledeed->RequiresForUpgradeString()), 0, 'L');
+        $this->MultiCell($page_width/2-20, 7, encode_utf_to_iso($titledeed->RequiresForUpgradeString()), 0, 'L');
         $y1 = $this->GetY();
 
         $this->SetFont($font2,'',20);
         $this->SetXY($left_2_1, $y);
-        $this->Cell(80,7,utf8_decode('Utveckling'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        $this->Cell(80,7,encode_utf_to_iso('Utveckling'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left_2_2, $y+7);
-        $this->MultiCell($page_width/2-20, 7, utf8_decode($titledeed->RequiresForUpgradeString()), 0, 'L');
+        $this->MultiCell($page_width/2-20, 7, encode_utf_to_iso($titledeed->RequiresForUpgradeString()), 0, 'L');
         $y2 = $this->GetY();
         
         $y = max($y1, $y2);

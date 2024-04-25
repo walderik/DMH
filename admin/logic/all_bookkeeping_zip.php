@@ -19,10 +19,10 @@ $zip->open($file, ZipArchive::OVERWRITE);
 //Skapa pdf med alla vanliga verifikationer
 $bookkeepings = Bookkeeping::allByLARP($current_larp);
 $pdf = new Bookkeeping_PDF();
-$pdf->SetTitle(utf8_decode('Alla verifikationer'));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator(utf8_decode('Omnes Mundi'));
-$pdf->SetSubject(utf8_decode('Alla verifikatoner'));
+$pdf->SetTitle(encode_utf_to_iso('Alla verifikationer'));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
+$pdf->SetCreator(encode_utf_to_iso('Omnes Mundi'));
+$pdf->SetSubject(encode_utf_to_iso('Alla verifikatoner'));
 $pdf->printBookkeepings($bookkeepings);
 
 $invoices = Invoice::getAllNormalInvoices($current_larp);
@@ -41,7 +41,7 @@ foreach ($pdf_images as $pdf_image) {
 foreach ($invoices as $invoice) {
     $pdf = new Invoice_payed_PDF();
     $pdf->SetTitle('Faktura');
-    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
     $pdf->SetCreator('Omnes Mundi');
     $pdf->AddFont('SpecialElite','');
     $pdf->SetSubject('Faktura');

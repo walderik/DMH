@@ -29,11 +29,11 @@ foreach($persons as $person) {
 
 $pdf = new Report_PDF();
 
-$pdf->SetTitle(utf8_decode($name));
-$pdf->SetAuthor(utf8_decode($current_user->Name));
+$pdf->SetTitle(encode_utf_to_iso($name));
+$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->AddFont('Helvetica','');
-$pdf->SetSubject(utf8_decode($name));
+$pdf->SetSubject(encode_utf_to_iso($name));
 
 $pdf->new_report($current_larp, $name, $rows);
 

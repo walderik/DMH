@@ -27,7 +27,7 @@ if (isset($_GET['bookkeepingId'])) {
     }
     $pdf = new Receipt_PDF();
     $pdf->SetTitle('Kvitto');
-    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
     $pdf->SetCreator('Omnes Mundi');
     $pdf->AddFont('SpecialElite','');
     $pdf->SetSubject('Kvitto');
@@ -45,7 +45,7 @@ if (isset($_GET['bookkeepingId'])) {
     }
     $pdf = new Receipt_PDF();
     $pdf->SetTitle('Kvitto');
-    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
     $pdf->SetCreator('Omnes Mundi');
     $pdf->AddFont('SpecialElite','');
     $pdf->SetSubject('Kvitto');
@@ -63,7 +63,7 @@ if (isset($_GET['bookkeepingId'])) {
     }
     $pdf = new Receipt_PDF();
     $pdf->SetTitle('Kvitto');
-    $pdf->SetAuthor(utf8_decode($current_larp->Name));
+    $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
     $pdf->SetCreator('Omnes Mundi');
     $pdf->AddFont('SpecialElite','');
     $pdf->SetSubject('Kvitto');

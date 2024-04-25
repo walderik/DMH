@@ -15,10 +15,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $arrayOfAlcheySuppliers = Alchemy_Supplier::allByCampaign($current_larp, false);
 $pdf = new ALCHEMY_INGREDIENT_PDF();
-$pdf->SetTitle(utf8_decode('Alla ingredienser för alla lövjerister'));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
+$pdf->SetTitle(encode_utf_to_iso('Alla ingredienser för alla lövjerister'));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
-$pdf->SetSubject(utf8_decode('Alla ingredienser för alla lövjerister'));
+$pdf->SetSubject(encode_utf_to_iso('Alla ingredienser för alla lövjerister'));
 $pdf->all_resources($arrayOfAlcheySuppliers, $type, $current_larp);
 
 $pdf->Output();

@@ -8,11 +8,11 @@ include_once '../header.php';
 
 $arrayOfSpells = Magic_Spell::allByCampaign($current_larp);
 $pdf = new MagicScroll_PDF();
-$pdf->SetTitle(utf8_decode('Skrollor'));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
-$pdf->SetCreator(utf8_decode('Omnes Mundi'));
+$pdf->SetTitle(encode_utf_to_iso('Skrollor'));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
+$pdf->SetCreator(encode_utf_to_iso('Omnes Mundi'));
 $pdf->AddFont('SpecialElite','');
-$pdf->SetSubject(utf8_decode('Skrollor'));
+$pdf->SetSubject(encode_utf_to_iso('Skrollor'));
 
 $pdf->PrintScroll($arrayOfSpells[0], $current_larp->Name);
 

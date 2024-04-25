@@ -8,10 +8,10 @@ include_once '../header.php';
 
 $arrayOfTitledeeds = Titledeed::allByCampaign($current_larp, false);
 $pdf = new TITLEDEED_PDF();
-$pdf->SetTitle(utf8_decode('Verksamheter'));
-$pdf->SetAuthor(utf8_decode($current_larp->Name));
+$pdf->SetTitle(encode_utf_to_iso('Verksamheter'));
+$pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
-$pdf->SetSubject(utf8_decode('Alla verksamheter'));
+$pdf->SetSubject(encode_utf_to_iso('Alla verksamheter'));
 $pdf->all_titledeedsDOH($arrayOfTitledeeds, $current_larp);
 
 $pdf->Output();

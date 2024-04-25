@@ -27,12 +27,12 @@ class TELEGRAM_PDF extends FPDF {
 		$this->SetXY($left, 68);
 		# http://www.fpdf.org/en/doc/cell.htm
 		# https://stackoverflow.com/questions/3514076/special-characters-in-fpdf-with-php
-        $this->Cell(80,10,utf8_decode($sender),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad	
+        $this->Cell(80,10,encode_utf_to_iso($sender),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad	
         
 		$this->SetXY($left, 88);
-		$this->Cell(80,10,utf8_decode($receiver),0,1);
+		$this->Cell(80,10,encode_utf_to_iso($receiver),0,1);
 		$this->SetXY($left, 112);
-		$this->MultiCell(0,8,utf8_decode($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+		$this->MultiCell(0,8,encode_utf_to_iso($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
     }
     
     function nytt_telegram(Telegram $telegram)

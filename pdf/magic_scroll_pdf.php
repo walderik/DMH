@@ -34,7 +34,7 @@ class MagicScroll_PDF extends FPDF {
         $size = 24;
         $this->SetFont($font,'',$size);
         $this->SetXY(30, 115);
-        $this->MultiCell(150,6,utf8_decode($spell->Name),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(150,6,encode_utf_to_iso($spell->Name),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
         
         $size = 20;
         if (strlen($spell->Description) > 300) $size = 18;
@@ -43,13 +43,13 @@ class MagicScroll_PDF extends FPDF {
         if (strlen($spell->Description) > 700) $size = 10;
         $this->SetFont($font,'',$size);
         $this->SetXY(30, 135);
-        $this->MultiCell(150,10,utf8_decode($spell->Description),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(150,10,encode_utf_to_iso($spell->Description),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         
 
         $size = 8;
         $this->SetFont($font,'',$size);
         $this->SetXY(30, 250);
-        $this->MultiCell(150,6,utf8_decode($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(150,6,encode_utf_to_iso($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
         
     }
      

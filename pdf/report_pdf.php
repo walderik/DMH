@@ -69,7 +69,7 @@ class Report_PDF extends FPDF {
         $this->SetFont('Helvetica','', static::$header_fontsize);
         $this->SetFillColor(255,255,255);
         $txt = $this->larp->Name;
-        $this->MultiCell($mini_header_with, 4, utf8_decode($txt), 0, 'C', true);
+        $this->MultiCell($mini_header_with, 4, encode_utf_to_iso($txt), 0, 'C', true);
         
         $this->current_y = static::$y_min + static::$Margin;
     }
@@ -84,7 +84,7 @@ class Report_PDF extends FPDF {
         if ($this->is_sensitive) {
             // Go to 1.5 cm from bottom
             $this->SetY(-15); 
-            $this->Cell(0, 10, utf8_decode('Det här dokumentet innehåller känsliga personuppgifter. Förstör det efter lajvet.'), 0, 0, 'L');
+            $this->Cell(0, 10, encode_utf_to_iso('Det här dokumentet innehåller känsliga personuppgifter. Förstör det efter lajvet.'), 0, 0, 'L');
         }
 
         // Go to 1.5 cm from bottom
@@ -98,7 +98,7 @@ class Report_PDF extends FPDF {
     function title($text) {
         # Bra ställe lägga ut debuginfo i början på rapporten
 //         $text = $this->GetPageWidth() . " - $text"; # 210 för A4 Portrait
-//         $text = strlen(utf8_decode($text)) . " - $text"; # Antalet tecken
+//         $text = strlen(encode_utf_to_iso($text)) . " - $text"; # Antalet tecken
 
         $font_size = 85; # Så det inte blir för stort i X-led
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
@@ -110,7 +110,7 @@ class Report_PDF extends FPDF {
         }
 
         $this->SetXY($this->left_positions[0], $this->current_y-1);
-        $this->Cell(0, static::$cell_y*6, utf8_decode($text),0,0,'C');
+        $this->Cell(0, static::$cell_y*6, encode_utf_to_iso($text),0,0,'C');
         
         $this->current_y = static::$y_min + (static::$cell_y*6) + (static::$Margin);
         
@@ -386,7 +386,7 @@ class Report_PDF extends FPDF {
 	private function set_cell($text, $bold) {
 	    if (empty($text)) $text = ' ';
 	    
-	    $text = trim(utf8_decode($text));
+	    $text = trim(encode_utf_to_iso($text));
 //  	    $text = "$text - $this->PageBreakTrigger";
    
 	    $bold_char = $bold ? 'B' : '';

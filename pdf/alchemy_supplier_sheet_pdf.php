@@ -67,7 +67,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
        
         
 
-        $this->MultiCell(30, 4, utf8_decode($txt), 0, 'C', true);
+        $this->MultiCell(30, 4, encode_utf_to_iso($txt), 0, 'C', true);
         
         $this->SetXY($mitten-15,  static::$y_min + 2*static::$Margin);
         $y = $this->GetY();
@@ -81,12 +81,12 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
 
         if (empty($text)) $text =  $this->larp->Name;
         
-        $font_size = (850 / strlen(utf8_decode($text)));
+        $font_size = (850 / strlen(encode_utf_to_iso($text)));
         if ($font_size > 90) $font_size = 90;
         $this->SetFont('Helvetica','B', $font_size);    # OK är Times, Arial, Helvetica
         
         $this->SetXY($left, $y-2);
-        $this->Cell(0, static::$cell_y*5, utf8_decode($text),0,0,'C');
+        $this->Cell(0, static::$cell_y*5, encode_utf_to_iso($text),0,0,'C');
         
         $y = static::$y_min + (static::$cell_y*5) + (static::$Margin);
         
@@ -129,7 +129,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
         $y = $this->GetY() + $space*10;
         $this->SetXY($this->current_left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
-        $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Dina ingredienser"),0,0,'L');
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Dina ingredienser"),0,0,'L');
         
         $list = "";
         foreach ($ingredient_amounts as $ingredient_amount) {
@@ -141,7 +141,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
         $y = $this->GetY() + $space*2;
         $this->SetXY($this->current_left, $y);
         $this->SetFont('Helvetica','',static::$text_fontsize);
-        $text = trim(utf8_decode($list));
+        $text = trim(encode_utf_to_iso($list));
         $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
             
         
@@ -154,7 +154,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
             $y = $this->GetY() + $space*10;
             $this->SetXY($this->current_left, $y);
             $this->SetFont('Helvetica','B',static::$text_fontsize);
-            $this->Cell($this->cell_width, static::$cell_y, utf8_decode("Alla alkemister"),0,0,'L');
+            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Alla alkemister"),0,0,'L');
              
             
 
@@ -170,7 +170,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
             $y = $this->GetY() + $space*2;
             $this->SetXY($this->current_left, $y);
             $this->SetFont('Helvetica','',static::$text_fontsize);
-            $text = trim(utf8_decode($list));
+            $text = trim(encode_utf_to_iso($list));
             $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
             
         }
@@ -247,7 +247,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
 	    global $y;
 	    $this->SetXY($venster, $y);
 	    $this->SetFont('Helvetica','',static::$header_fontsize);
-	    $this->Cell($this->cell_width, static::$cell_y, utf8_decode($text),0,0,'L');
+	    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($text),0,0,'L');
 	}
 	
 	# Gemensam funktion för all logik för att skriva ut ett fält
@@ -256,7 +256,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
 	    
 	    if (empty($text)) return;
 	    
-	    $text = trim(utf8_decode($text));
+	    $text = trim(encode_utf_to_iso($text));
 	    
 	    $this->SetXY($venster, $y + static::$Margin + 1);
 	    $this->SetFont('Helvetica','',static::$text_fontsize);
@@ -282,7 +282,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
 	    
 	    $this->AddPage();
 	    
-	    $text = utf8_decode($text);
+	    $text = encode_utf_to_iso($text);
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    
@@ -303,7 +303,7 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
 	private function set_rest_of_page($header, $text) {
 	    global  $y, $left;
 	    
-	    $text = utf8_decode($text);
+	    $text = encode_utf_to_iso($text);
 	    $this->set_header($left, $header);
 	    $this->SetXY($left, $y + static::$Margin+1);
 	    
