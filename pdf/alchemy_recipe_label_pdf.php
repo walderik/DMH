@@ -9,6 +9,14 @@ require $root . '/includes/init.php';
 
 class AlchemyRecipeLabels extends FPDF {
     
+    public static $col_1_x = 18;
+    
+    public static $row_1_y = 32;
+    public static $row_2_y = 127;
+    public static $row_3_y = 222;
+    
+    
+    public $row_y;
     
     function Header()
     {
@@ -17,7 +25,7 @@ class AlchemyRecipeLabels extends FPDF {
     }
     
  
-    function PrintLabel(int $x, int $y, Alchemy_Recipe $recipe, $larpname) {
+    function PrintLabel(int $x, int $y, Alchemy_Recipe $recipe, $alchemistName, $warning, $larpname) {
         if (strlen($recipe->Effect)<100) $size = 14;
         elseif (strlen($recipe->Effect)<200) $size = 12;
         elseif (strlen($recipe->Effect)<300) $size = 10;
@@ -50,48 +58,61 @@ class AlchemyRecipeLabels extends FPDF {
         $this->SetFont('Times','',8);
         $this->SetXY($x+40, $y+57);
         $this->MultiCell(40,3,encode_utf_to_iso($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
-        
-        /*
-        $left = 21;
-        if (!is_null($when)) {
-            $this->SetXY(150,60);
-            $this->Cell(80,10,$when,0,1);
+
+        if (!empty($alchemistName)) {
+            $this->SetFont('Times','',8);
+            $this->SetXY($x, $y+54);
+            $this->MultiCell(40,3,encode_utf_to_iso("Tillverkad av ".$alchemistName),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
         }
-        $this->SetXY($left, 68);
-        # http://www.fpdf.org/en/doc/cell.htm
-        # https://stackoverflow.com/questions/3514076/special-characters-in-fpdf-with-php
-        $this->Cell(80,10,encode_utf_to_iso($sender),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         
-        $this->SetXY($left, 88);
-        $this->Cell(80,10,encode_utf_to_iso($receiver),0,1);
-        */
+        if (!empty($warning)) {
+            $this->SetFont('Times','',8);
+            $this->SetXY($x, $y+57);
+            $this->MultiCell(40,3,encode_utf_to_iso($warning),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
+        }
+        
     }
      
-     function PrintRecipeLabels(Alchemy_Recipe $recipe, LARP $larp) {
-        $this->SetMargins(0, 0);
-        $this->SetAutoPageBreak(false);
-        $this->AddPage();
-        
-        $col_1_x = 18;
-        
-        $row_1_y = 32;
-        $row_2_y = 127;
-        $row_3_y = 222;
-        
-
-        //Ruta 1 
-        $this->PrintLabel($col_1_x,$row_1_y,$recipe, $larp->Name);
-
-        //Ruta 2 
-        $this->PrintLabel($col_1_x,$row_2_y,$recipe, $larp->Name);
-        
-        //Ruta 3
-        $this->PrintLabel($col_1_x,$row_3_y,$recipe, $larp->Name);
+    function PrintRecipeLabel(Alchemy_Recipe  $recipe, $alchemistName, $warning, LARP $larp) {
+        global $row_y;
+        if (!isset($row_y) || $row_y <= 0 || $row_y > 3) {
+            $this->SetMargins(0, 0);
+            $this->SetAutoPageBreak(false);
+            $this->AddPage();
+            $row_y = 1;
+         }
         
         
-        
-         
+        switch ($row_y) {
+            case 1:
+                //Ruta 1
+                $this->PrintLabel(static::$col_1_x,static::$row_1_y,$recipe, $alchemistName, $warning, $larp->Name);
+                break;
+            case 2:
+                //Ruta 2
+                $this->PrintLabel(static::$col_1_x,static::$row_2_y,$recipe, $alchemistName, $warning, $larp->Name);
+                break;
+            case 3:
+                //Ruta 3
+                $this->PrintLabel(static::$col_1_x,static::$row_3_y,$recipe, $alchemistName, $warning, $larp->Name);
+                break;
+        }
+        $row_y ++;
     }
+    
+     function PrintRecipeLabels(Alchemy_Recipe $recipe, LARP $larp) {
+         $this->PrintRecipeLabel($recipe, "", "", $larp);
+         $this->PrintRecipeLabel($recipe, "", "", $larp);
+         $this->PrintRecipeLabel($recipe, "", "", $larp);
+    }
+    
+    function PrintRecipeLabelsAmount(Alchemy_Recipe $recipe, int $amount, $alchemistName, $warning, LARP $larp) {
+        for ($x = 0; $x < $amount; $x++) {
+            $this->PrintRecipeLabel($recipe, $alchemistName, $warning, $larp);
+        }
+    }
+    
+    
     
 
 	
