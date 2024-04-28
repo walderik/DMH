@@ -50,6 +50,7 @@ require_once $root . '/pdf/alchemy_ingredient_pdf.php';
  			<a href="reports/alchemy_ingredients_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Ingredienser på lajvet</a><br>
             <a href="reports/recipe_labels_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Etiketter för alla recept</a><br>
             <a href="alchemy_print_labels_for_alchemist.php"><i class="fa-solid fa-file-pdf"></i>Etiketter för en alkemist</a><br>
+			<a href='reports/alchemy_recipe_pdf.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla recept som skrollor'></i>Alla recept som skrollor</a>&nbsp;
         </div>
     </div>
 

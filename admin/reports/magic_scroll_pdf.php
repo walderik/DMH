@@ -14,8 +14,6 @@ $pdf->SetCreator(encode_utf_to_iso('Omnes Mundi'));
 $pdf->AddFont('SpecialElite','');
 $pdf->SetSubject(encode_utf_to_iso('Skrollor'));
 
-$pdf->PrintScroll($arrayOfSpells[0], $current_larp->Name);
-
 
 foreach ($arrayOfSpells as $spell)  {
     $pdf->PrintScroll($spell, $current_larp->Name);
