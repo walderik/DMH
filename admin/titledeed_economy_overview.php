@@ -53,7 +53,7 @@ th {
                     echo "<td>$titledeed->Size</td>\n";
                     
                     echo "<td>" . $titledeed->calculateProduces() ." $currency</td>";
-                    echo "<td>" . $titledeed->calculateProduces() ." $currency</td>";
+                    echo "<td>" . $titledeed->calculateNeeds() ." $currency</td>";
                     echo "<td>" . $titledeed->calculateUpgrade() ." $currency</td>";
                     echo "</tr>\n";
                 }
