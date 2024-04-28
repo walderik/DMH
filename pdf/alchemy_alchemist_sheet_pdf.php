@@ -317,9 +317,6 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                     $y = $this->GetY() + $space;
                     $this->SetXY($left, $y);
                 }
-                
-                $this->bar();
-                $y += 3;
                     
             }
         }
