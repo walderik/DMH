@@ -259,15 +259,15 @@ line-height: 1.8;
         		                echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
         		            }
         		            echo "</strong>";
+        		            //Karaktärsblad
+        		            $registration = $person->getRegistration($current_larp);
+        		            if (!empty($registration) && $registration->SpotAtLARP==1) {
+        		                echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
+        		            }
         		            echo "<br>";
         		            
+        		            
          		               
-        		            //Karaktärsblad
-    		                $registration = $person->getRegistration($current_larp);
-    		                if (!empty($registration) && $registration->SpotAtLARP==1) {
-    		                    echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'>Karaktärsblad <i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
-    		                }
-    		                echo "<br>";
     		                
     		                //Grupp
     		                $role_group = $role->getGroup();
