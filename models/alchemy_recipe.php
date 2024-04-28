@@ -146,6 +146,13 @@ class Alchemy_Recipe extends BaseModel{
     }
     
     
+    public static function allApprovedByCampaign(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_alchemy_recipe WHERE CampaignId = ? AND IsApproved=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    
     public static function allByRole(Role $role) {
         if (is_null($role)) return Array();
         $sql = "SELECT * FROM regsys_alchemy_recipe WHERE AuthorRoleId = ? ORDER BY ".static::$orderListBy.";";

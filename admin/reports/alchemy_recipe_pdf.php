@@ -6,7 +6,7 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require_once $root . '/pdf/alchemy_recipe_pdf.php';
 include_once '../header.php';
 
-$arrayOfRecipes = Alchemy_Recipe::allByCampaign($current_larp);
+$arrayOfRecipes = Alchemy_Recipe::allApprovedByCampaign($current_larp);
 $pdf = new AlchemyRecipe_PDF();
 $pdf->SetTitle(encode_utf_to_iso('Recept'));
 $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
