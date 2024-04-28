@@ -55,10 +55,11 @@ if (!isset($object)) {
 }
 
 
-$image = $object->ImageId;
+$imageId = $object->ImageId;
 $object->ImageId = null;
 $object->update();
-$image->destroy();
+if (!empty($imageId)) Image::delete($imageId);
+
 
 header('Location: ../index.php?message=image_deleted');
 exit;
