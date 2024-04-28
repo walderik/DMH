@@ -433,4 +433,14 @@ class Alchemy_Recipe extends BaseModel{
         return true;
     }
     
+    
+    public static function delete($id) {
+        $recipe = Alchemy_Recipe::loadById($id);
+        if ($recipe->mayDelete()) {
+            $recipe->deleteAllEssences();
+            $recipe->deleteAllIngredients();
+            parent::delete($id);
+        }
+    }
+    
 }

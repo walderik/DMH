@@ -6,7 +6,8 @@ include_once 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
-        Alchemy_Recipe::delete($_GET['Id']);
+        $recipe = Alchemy_Recipe::loadById($_GET['Id']);
+        if ($recipe->mayDelete()) Alchemy_Recipe::delete($_GET['Id']);
         header('Location: alchemy_recipe_admin.php');
         exit;
     }
