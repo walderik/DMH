@@ -871,33 +871,39 @@ class Role extends BaseModel{
     public static function getAllWithTypeValue($larpId, $typeName, $valueId) {
         $larp = LARP::loadById($larpId);
         
+        $roles_at_larp_SQL = "SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE regsys_larp_role.LarpId=? AND ".
+            "regsys_registration.NotComing = 0 AND ".
+            "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
+            "regsys_larp_role.RoleId = regsys_role.Id AND ".
+            "regsys_role.PersonId = regsys_registration.PersonId";
+        
         switch ($typeName) {
             case "Wealth":
-                $sql = "SELECT * FROM regsys_role WHERE WealthId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE WealthId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "PlaceOfResidence":
-                $sql = "SELECT * FROM regsys_role WHERE PlaceOfResidenceId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE PlaceOfResidenceId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "LarperType":
-                $sql = "SELECT * FROM regsys_role WHERE LarperTypeId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE LarperTypeId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "IntrigueType":
-                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_intriguetype_role WHERE IntrigueTypeId = ?) AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_intriguetype_role WHERE IntrigueTypeId = ?) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Race":
-                $sql = "SELECT * FROM regsys_role WHERE RaceId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE RaceId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Ability":
-                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_ability_role WHERE AbilityId = ?) AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_ability_role WHERE AbilityId = ?) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Council":
-                $sql = "SELECT * FROM regsys_role WHERE CouncilId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE CouncilId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Guard":
-                $sql = "SELECT * FROM regsys_role WHERE GuardId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE GuardId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Religion":
-                $sql = "SELECT * FROM regsys_role WHERE ReligionId = ? AND Id IN (SELECT RoleId FROM regsys_larp_role WHERE LarpId=?) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE ReligionId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
         }
          
