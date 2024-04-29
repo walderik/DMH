@@ -354,7 +354,7 @@ line-height: 1.8;
         		            }
         		            
         		            
-    		                if ($current_larp->isEnded()) {
+    		                if ($role->isRegistered($current_larp) && $current_larp->isEnded()) {
     		                    echo "<a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a> ".
         		                    showParticipantStatusIcon($role->hasRegisteredWhatHappened($current_larp), "Inte noterat vad som hände") .
         		                    "<br>";
