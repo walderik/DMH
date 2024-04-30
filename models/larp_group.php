@@ -47,8 +47,8 @@ class LARP_Group extends BaseModel{
         if (isset($arr['StartingMoney'])) $this->StartingMoney = $arr['StartingMoney'];
         if (isset($arr['EndingMoney'])) $this->EndingMoney = $arr['EndingMoney'];
         if (isset($arr['Result'])) $this->Result = $arr['Result'];
-        if (isset($post['WhatHappened'])) $larp_role->WhatHappened = $post['WhatHappened'];
-        if (isset($post['WhatHappendToOthers'])) $larp_role->WhatHappendToOthers = $post['WhatHappendToOthers'];
+        if (isset($arr['WhatHappened'])) $this->WhatHappened = $arr['WhatHappened'];
+        if (isset($arr['WhatHappendToOthers'])) $this->WhatHappendToOthers = $arr['WhatHappendToOthers'];
         
     }
     
