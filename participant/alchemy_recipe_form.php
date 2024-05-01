@@ -247,7 +247,7 @@ input[type=checkbox]:checked+label {
  				                $checked="checked='checked'";
  				            }
  				            $id = "essence_L".$i."_".$essence->Id;
- 				            echo "<input type='checkbox' class='hidden' name='Essences[]' id='$id' value='$i"."_"."$essence->Id' $checked>";
+ 				            echo "<input  onchange='calc_points(this, ".Alchemy_Ingredient::POINTS[$i].")' type='checkbox' class='hidden' name='Essences[]' id='$id' value='$i"."_"."$essence->Id' $checked>";
  				            echo "<label for='$id'>$essence->Name</label>";
  				        }
  				        
