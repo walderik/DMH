@@ -22,7 +22,8 @@ include 'alchemy_navigation.php';
  
     <div class="content">
         <h1>Vilka essenser finns på lajvet i form av ingredienser<a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
-
+			<p>Saknas betyder att ingen ingrediens med essensen finns på lajvet. Om det finns ett utropstecken eteråt betyder det att det finns recept som 
+			behöver ingrediensen och som därför inte kommer att kunna tillverkas.<br>
             <a href="alchemy_ingredient_form.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Lägg till ingrediens</a>&nbsp;&nbsp;  
             <a href="alchemy_ingredient_form.php?operation=insert&type=katalysator"><i class="fa-solid fa-file-circle-plus"></i>Lägg till katalysator</a>  
        <?php
@@ -49,8 +50,8 @@ include 'alchemy_navigation.php';
                     $sum = 0;
                     foreach ($ingredients as $ingredient) {
                         $count = $ingredient->countAtLarp($current_larp);
-                        if (empty($count)) $sum = 0;
-                        echo $ingredient->Name."(".$count.")<br>";
+                        if (empty($count)) $count = 0;
+                        echo $ingredient->Name." (".$count.")<br>";
                         $sum += $count;
                     }
                     echo "</td>\n";
