@@ -13,6 +13,7 @@ function recalculate(selectObject, larpId) {
       if (this.readyState == 4 && this.status == 200) {
         var result = this.responseText.split(" ");
         document.getElementById("Balance_"+resourceId).innerHTML = result[1];
+        document.getElementById("BalanceUpgrade_"+resourceId).innerHTML = result[3];
         document.getElementById("Cards_"+resourceId).innerHTML = result[2];
         document.getElementById("Result_"+titledeedId).innerHTML = result[0] + " " + currency;
       }
@@ -36,6 +37,7 @@ function recalculateMoney(selectObject, larpId) {
       if (this.readyState == 4 && this.status == 200) {
         var result = this.responseText.split(" ");
         document.getElementById("Money_sum").innerHTML = result[1];
+        document.getElementById("Money_sum_upgrade").innerHTML = result[2];
         document.getElementById("Result_"+titledeedId).innerHTML = result[0] + " " + currency;
       }
     };

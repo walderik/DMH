@@ -19,7 +19,8 @@ if (empty($resourceId)) {
     //Money
     $titledeed->Money = $value;
     $titledeed->update();
-    echo $titledeed->calculateResult()." ".$titledeed->moneySum($larp);
+    $money_upgrade = $titledeed->moneySum($larp)-$titledeed->moneySumUpgrade($larp);
+    echo $titledeed->calculateResult()." ".$titledeed->moneySum($larp)." ".$money_upgrade;
     
 } else {
    //Resource 
@@ -68,7 +69,7 @@ if (empty($resourceId)) {
             $resource_titledeed->create();
         }
     }
-    
-    echo $titledeed->calculateResult()." ".$resource->countBalance($larp)." ".$resource->countNumberOfCards($larp);
+    $balance_upgrade = $resource->countBalance($larp)-$resource->countUpgrade($larp);
+    echo $titledeed->calculateResult()." ".$resource->countBalance($larp)." ".$resource->countNumberOfCards($larp)." ".$balance_upgrade;
 
 }

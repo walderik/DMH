@@ -105,6 +105,16 @@ th {
 		    echo "<th style='text-align:right' id='Balance_$resource->Id'>".$resource->countBalance($current_larp)."</th>\n";
 		}
 		echo "<td></td>";
+
+		echo "<tr><th style='text-align:left'>Balans<br>inkl uppgradering</th>\n";
+		$money = $titledeed->moneySum($current_larp)-$titledeed->moneySumUpgrade($current_larp);
+		echo "<th style='text-align:right' id='Money_sum_upgrade'>$money</th>\n";
+		foreach ($resources as $resource) {
+		    $balance = $resource->countBalance($current_larp)-$resource->countUpgrade($current_larp);
+		    echo "<th style='text-align:right' id='BalanceUpgrade_$resource->Id'>$balance</th>\n";
+		}
+		echo "<td></td>";
+		
 		echo "<tr><th style='text-align:left'>Antal kort</th>\n";
 		echo "<th></th>\n";
 		foreach ($resources as $resource) {

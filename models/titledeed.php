@@ -48,6 +48,7 @@ class Titledeed extends BaseModel{
         if (isset($arr['IsInUse'])) $this->IsInUse = $arr['IsInUse'];
         if (isset($arr['TitledeedPlaceId'])) $this->TitledeedPlaceId = $arr['TitledeedPlaceId'];
         
+        if (empty($this->Level)) $this->Level = null;
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -430,6 +431,16 @@ class Titledeed extends BaseModel{
         
     }
         
+    public function moneySumUpgrade(LARP $larp) {
+        if (is_null($larp)) return 0;
+        $sql = "SELECT Sum(regsys_titledeed.MoneyForUpgrade) as Num FROM regsys_titledeed WHERE ".
+            "regsys_titledeed.CampaignId = ?";
+        $count = static::countQuery($sql, array($larp->CampaignId));
+        if (isset($count)) return $count;
+        return 0;
+        
+    }
+    
     
     public static function getAllForRole(Role $role) {
         $sql = "SELECT * FROM regsys_titledeed WHERE Id IN (".
