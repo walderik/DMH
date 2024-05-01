@@ -50,6 +50,7 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
     }
     
     function SetText(Alchemy_Supplier $supplier, $type, Larp $larp) {
+        global $root;
         if ($type == ALCHEMY_INGREDIENT_PDF::Calligraphy) {
             $font = $this->calligraphyfonts[array_rand($this->calligraphyfonts, 1)];
         } else {
@@ -94,9 +95,6 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
             if ($supplier_ingredient->Amount <= 0) continue;
             
             $ingredient = $supplier_ingredient->getIngredient();
-            //if ($resource->hasImage()) $image = Image::loadById($resource->ImageId);
-            //else $image=null;
-            $image = null;
             
             for ($i = 0; $i < $supplier_ingredient->Amount; $i++){
                 $squareX = $this->margin+($x_nr * $rut_width);
@@ -110,6 +108,9 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
                 
                 # Resursnamnet
 
+                $this->Image($root . '/images/bytesruna.jpg', $rut_width-10 - 3 + $squareX, 3*($rut_height/4) + $squareY+5, 5);
+
+                /*
                 if (isset($image)) {
                     $v = 'img'.md5($image->file_data);
                     $GLOBALS[$v] = $image->file_data;
@@ -122,7 +123,7 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
                         $this->MemImage($image->file_data, $rut_width - $realWidth - 3 + $squareX, 3*($rut_height/4) + $squareY, 0, $max_image_height);
                     }
                 }
-                
+                */
                 
                 
                 
