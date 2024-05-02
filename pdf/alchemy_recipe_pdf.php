@@ -18,7 +18,7 @@ class AlchemyRecipe_PDF extends FPDF {
     function Header()
     {
         global $root;
-        $this->Image($root . '/images/recipe.jpeg',null,null,208);
+        $this->Image($root . '/images/recipe.png',null,null,208);
     }
     
  
@@ -40,7 +40,7 @@ class AlchemyRecipe_PDF extends FPDF {
         if (strlen($name) > 20) $size = 18;
         if (strlen($name) > 30) $size = 16;
         $this->SetFont($font,'',$size);
-        $this->SetXY(30, 113);
+        $this->SetXY(30, 107);
         $this->MultiCell(150,6,encode_utf_to_iso($name),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
         
         /*
@@ -161,7 +161,7 @@ class AlchemyRecipe_PDF extends FPDF {
         
         $size = 8;
         $this->SetFont($font,'',$size);
-        $this->SetXY(30, 260);
+        $this->SetXY(30, 250);
         $this->MultiCell(150,6,encode_utf_to_iso($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
         
     }
