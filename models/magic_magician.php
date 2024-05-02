@@ -200,9 +200,20 @@ class Magic_Magician extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($school->Id));
     }
     
-    public static function getMagiciansThatKnowsSpell(Magic_Spell $spell) {
+    public static function getMagiciansThatAreAssignedSpell(Magic_Spell $spell) {
         $sql = "SELECT * FROM regsys_magic_magician WHERE Id IN (".
             "SELECT MagicMagicianId FROM regsys_magician_spell WHERE MagicSpellId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($spell->Id));
+    }
+    
+    
+    
+    public static function getMagiciansThatKnowsSpellThroughSchool(Magic_Spell $spell) {
+        $sql = "SELECT regsys_magic_magician.* FROM regsys_magicschool_spell, regsys_magic_magician, regsys_magic_spell WHERE ".
+            "regsys_magicschool_spell.MagicSchoolId = regsys_magic_magician.MagicSchoolId AND ".
+            "regsys_magic_magician.Level >= regsys_magic_spell.Level AND ".
+            "regsys_magicschool_spell.MagicSpellId = regsys_magic_spell.Id AND ".
+            "regsys_magic_spell.Id = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($spell->Id));
     }
     

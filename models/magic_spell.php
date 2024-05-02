@@ -82,8 +82,12 @@ class Magic_Spell extends BaseModel{
         return Magic_School::getSchoolsForSpell($this);
     }
     
-    public function getAllMagicians() {
-        return Magic_Magician::getMagiciansThatKnowsSpell($this);
+    public function getAllAssignedMagicians() {
+        return Magic_Magician::getMagiciansThatAreAssignedSpell($this);
+    }
+    
+    public function getAllMagiciansThroughSchool() {
+        return Magic_Magician::getMagiciansThatKnowsSpellThroughSchool($this);
     }
     
     public static function getSpellsForMagician(Magic_Magician $magician) {

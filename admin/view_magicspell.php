@@ -84,14 +84,14 @@ include 'magic_navigation.php';
 			<p>
 			<a href='choose_magic_school.php?id=<?php echo $spell->Id ?>&operation=add_spell_school'>Lägg till i magiskolor</a>
 
-			<h2>Magiker som har magin</h2>
+			<h2>Magiker som har tilldelats magin</h2>
 			<?php 
-			$magicians = $spell->getAllMagicians();
+			$magicians = $spell->getAllAssignedMagicians();
 
 			if (empty($magicians)) {
-			    echo "Inga magiker har magin, än.";
+			    echo "Inga magiker har tilldelats magin, än.";
 			} else {
-			    echo "Alla magiker som har skolan visas, även de som inte kommer på just det här lajvet.";
+			    echo "Alla magiker som har tilldelats magin visas, även de som inte kommer på just det här lajvet.";
 				echo "<table class='small_data'>";
 				echo "<tr><th>Magiker</th><th>Nivå</th><th>Mästare</th><th>Kommer på lajvet</th><th></th></tr>";
 				foreach ($magicians as $magician) {
@@ -106,8 +106,36 @@ include 'magic_navigation.php';
 				        echo "<a href = view_role.php?id=$masterRole->Id'>$masterRole->Name (nivå $master->Level)</td>";
 				    }
 				    echo "</td>";
-				    echo "<td>".showStatusIcon($isComing)."</td>";
+				    echo "<td align='center'>".showStatusIcon($isComing)."</td>";
 				    echo "<td><a href='logic/view_magicspell_logic.php?operation=remove_magician&MagicianId=$magician->Id&Id=$spell->Id'><i class='fa-solid fa-xmark' title='Ta bort magi från magiker'></i></a></td>";
+				    echo "</tr>";
+				}
+				echo "</table>";
+			}
+			?>
+			<h2>Magiker som har magin genom sin skola</h2>
+			<?php 
+			$magicians = $spell->getAllMagiciansThroughSchool();
+
+			if (empty($magicians)) {
+			    echo "Inga magiker har magin genom skola, än.";
+			} else {
+			    echo "Alla magiker som har skolan visas, även de som inte kommer på just det här lajvet.";
+				echo "<table class='small_data'>";
+				echo "<tr><th>Magiker</th><th>Nivå</th><th>Mästare</th><th>Kommer på lajvet</th></tr>";
+				foreach ($magicians as $magician) {
+				    $role = $magician->getRole();
+				    $master = $magician->getMaster();
+				    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+				    $isComing = !empty($larp_role);
+				    echo "<tr><td><a href = view_role.php?id=$role->Id'>$role->Name</td><td>$magician->Level</td>";
+				    echo "<td>";
+				    if (isset($master)) {
+				        $masterRole = $master->getRole(); 
+				        echo "<a href = view_role.php?id=$masterRole->Id'>$masterRole->Name (nivå $master->Level)</td>";
+				    }
+				    echo "</td>";
+				    echo "<td align='center'>".showStatusIcon($isComing)."</td>";
 				    echo "</tr>";
 				}
 				echo "</table>";
