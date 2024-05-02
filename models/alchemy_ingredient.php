@@ -231,6 +231,17 @@ class Alchemy_Ingredient extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($recipe->Id));
     }
     
+    public static function getMissingIngredientsForRecipe(Alchemy_Recipe $recipe, LARP $larp) {
+        $sql = "SELECT * FROM regsys_alchemy_ingredient WHERE Id IN (".
+            "SELECT regsys_alchemy_recipe_ingredient.IngredientId FROM regsys_alchemy_recipe_ingredient WHERE ".
+            "regsys_alchemy_recipe_ingredient.RecipeId = ? AND ".
+            "regsys_alchemy_recipe_ingredient.IngredientId  NOT IN (SELECT IngredientId FROM regsys_alchemy_supplier_ingredient WHERE ".
+            "regsys_alchemy_supplier_ingredient.Amount > 0 AND ".
+            "regsys_alchemy_supplier_ingredient.LarpId = ? ".
+        ")) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($recipe->Id, $larp->Id));
+    }
+    
     public function countAtLarp(LARP $larp) {
         $sql = "SELECT Sum(Amount) as Num FROM regsys_alchemy_supplier_ingredient WHERE IngredientId=? AND LARPId=? AND IsApproved=1";
         return static::countQuery($sql, array($this->Id, $larp->Id));

@@ -222,6 +222,11 @@ class Alchemy_Recipe extends BaseModel{
     public function getSelectedIngredients() {
         return Alchemy_Ingredient::getIngredientsForRecipe($this);
     }
+ 
+    public function getMissingIngredients(LARP $larp) {
+        return Alchemy_Ingredient::getMissingIngredientsForRecipe($this, $larp);
+    }
+    
     
     public function getSelectedIngredientIds() {
         $stmt = $this->connect()->prepare("SELECT IngredientId FROM  regsys_alchemy_recipe_ingredient WHERE RecipeId = ? ORDER BY IngredientId;");

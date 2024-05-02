@@ -39,6 +39,7 @@ include 'alchemy_navigation.php';
                "<th onclick='sortTable(4, \"$tableId\")'>Effekt</th>".
                "<th onclick='sortTable(5, \"$tableId\")'>Ingredienser/Essenser<br>Nivån anges inom parentes</th>".
                "<th onclick='sortTable(6, \"$tableId\")'>Godkänd</th>".
+               "<th onclick='sortTable(7, \"$tableId\")'>Alla ingredienser finns på lajvet/<br>Vilka ingredienser saknas</th>".
                "<th></th>";
            
            foreach ($recipes as $recipe) {
@@ -65,6 +66,21 @@ include 'alchemy_navigation.php';
                 echo showStatusIcon($recipe->isApproved(),  "logic/toggle_approve_recipe.php?recipeId=$recipe->Id") . "\n";
                 
                 echo "</td>\n";
+                
+                echo "<td>";
+                if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
+                    $ingredients = $recipe->getMissingIngredients($current_larp);
+                    if (empty($ingredients)) {
+                        echo showStatusIcon(true);
+                    } else {
+                        foreach($ingredients as $ingredient) {
+                            echo "<a href='alchemy_ingredient_form.php?operation=update&id=$ingredient->Id'>$ingredient->Name</a>, nivå $ingredient->Level<br>";
+                        }
+                    }
+                } 
+                echo "</td>\n";
+                
+                
                 
                 echo "<td>";
                 if ($recipe->mayDelete()) {
