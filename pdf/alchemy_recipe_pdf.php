@@ -50,7 +50,7 @@ class AlchemyRecipe_PDF extends FPDF {
         $this->MultiCell(150,10,encode_utf_to_iso($recipe->Description),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         */
 
-        $size = 10;
+        $size = 9;
 
         
         //Ingredienser
