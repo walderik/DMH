@@ -161,8 +161,8 @@ class AlchemyRecipe_PDF extends FPDF {
         
         $size = 8;
         $this->SetFont($font,'',$size);
-        $this->SetXY(30, 250);
-        $this->MultiCell(150,6,encode_utf_to_iso($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->SetXY(120, 260);
+        $this->MultiCell(100,6,encode_utf_to_iso($larpname),0); # 1- ger ram runt rutan så vi ser hur stor den är
         
     }
      
