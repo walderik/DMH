@@ -28,6 +28,8 @@ include 'alchemy_navigation.php';
 
 	<div class="content">
 		<h1>Recept för <?php echo $recipe->Name?> <a href ='alchemy_recipe_form.php?operation=update&id=<?php echo $recipe->Id?>'><i class='fa-solid fa-pen'></i></a>
+		 <a href='reports/alchemy_recipe_pdf.php?RecipeId=<?php echo $recipe->Id?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Receptet som skrolla'></i></a>
+		
 		</h1>
 		
 
