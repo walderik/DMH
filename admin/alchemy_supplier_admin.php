@@ -24,7 +24,8 @@ include 'alchemy_navigation.php';
     <div class="content">
         <h1>Lövjerister  <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
         Först lägger man till en eller flera karaktärer som lövjerister. Sedan kan man maila dem och be den dels lägga upp nya ingredienser för godkännande och dels ange hur mycket de kommer att ha med sig av godkända ingredienser.<br>
-        Antalet ingredienser lövjeristen har med sig kan sedan godkännas. 
+        Antalet ingredienser lövjeristen har med sig kan sedan godkännas. <br>
+        Ett överstruket namn indikerar en karaktär som inte kommer på det här lajvet.
         <br><br>
             <a href="choose_role.php?operation=add_alchemy_supplier"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som lövjerister.</a>&nbsp;&nbsp;  
        <?php
@@ -54,19 +55,32 @@ include 'alchemy_navigation.php';
                $role = $supplier->getRole();
                $person = $role->getPerson();
                 echo "<tr>\n";
-                echo "<td><a href ='view_alchemy_supplier.php?id=$supplier->Id'>$role->Name</a></td>\n";
+                $roleNotComing = $person->isNotComing($current_larp);
+                echo "<td>";
+                if ($roleNotComing) echo "<s>";
+                echo "<a href ='view_alchemy_supplier.php?id=$supplier->Id'>$role->Name</a>\n";
+                if ($roleNotComing) echo "</s>";
+                echo "</td>";
                 echo "<td>";
                 $group = $role->getGroup();
-                if (isset($group)) echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>";;
+                if (isset($group)) echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
+
                 echo "</td>";
                 echo "<td>";
                 echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email);
                 echo "</td>";
                 echo "<td>";
+                $hasAmount = false; 
                 $amount_per_level = $supplier->numberOfIngredientsPerLevel($current_larp);
                 foreach ($amount_per_level as $level => $amount) {
                     if ($amount == 0) continue;
+                    $hasAmount = true;
                     echo "Nivå $level: $amount st<br>";
+                }
+                if ($roleNotComing && $hasAmount) {
+                    echo "<form action='logic/clear_supplier_ingredient_list.php' method='post' style='display:inline-block'><input type='hidden' name='SupplierId' value='$supplier->Id'>\n";
+                    echo "<button type='submit'>Töm listan</button>";
+                    echo "</form>\n";
                 }
                 echo "</td>\n";
                 echo "<td>".$supplier->appoximateValue($current_larp)." $currency</td>\n";
