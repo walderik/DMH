@@ -583,7 +583,7 @@ class Group_PDF extends PDF_MemImage {
 	}
 	
 	protected function want_intrigue($left) { 
-	    $this->set_header($left, 'Will gärna ha intrig');
+	    $this->set_header($left, 'Vill gärna ha intrig');
 	    
 	    $text = $this->larp_group->WantIntrigue ? 'Ja' : 'Nej';
 
