@@ -577,8 +577,7 @@ class Group_PDF extends PDF_MemImage {
 	    if (!Wealth::isInUse($this->larp)) return false;
 	    
 	    $this->set_header($left, 'Rikedom');
-	    $text = ($this->group->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
-	    $this->set_text($left, $this->group->getWealth()->Name . $text);
+	    $this->set_text($left, $this->group->getWealth()->Name);
 	    return true;
 	}
 	

@@ -646,7 +646,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    if (empty($wea)) $txt = "OBS! Rikedom saknas";
 	    else $txt = $wea->Name;
 	    $this->set_header($left, 'Rikedom');
-	    //$text = ($this->role->is_trading($this->larp)) ? " (Handel)" : " (Ingen handel)";
 	    $this->set_text($left, $txt);
 	    return true;
 	}
