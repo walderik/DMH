@@ -99,7 +99,9 @@ line-height: 1.8;
     		        }
     		        if ($person->isRegistered($current_larp) && !$person->isNotComing($current_larp)) {
                         $registration = $person->getRegistration($current_larp);
-                        if ($current_larp->isEnded()) {
+                        
+                        //Utvärdering
+                        if ($current_larp->isEnded() && !(AccessControl::hasAccessLarp($current_user, $current_larp) && (sizeof($persons) == 1 || $current_user->Name==$person->Name))) {
                             echo "<tr><td valign='baseline'>Utvärdering</td><td>";
                             if ($registration->hasDoneEvaluation()) {
                                 echo showStatusIcon(true);
@@ -107,12 +109,15 @@ line-height: 1.8;
                             }
                             else {
                                 echo showParticipantStatusIcon(false, "Utvärderingen är inte gjord");
-                                echo "</td><td><a href='evaluation.php?PersonId=$person->Id'>Gör utvärdering";
+                                if ($current_larp->getCampaign()->is_dmh()) {
+                                    echo "</td><td><a href='evaluation.php?PersonId=$person->Id'>Gör utvärdering";
+                                }
                             }
                             echo "</td></tr>\n";
                             
                         }
                         
+                        //Ansvarig vuxen
                         if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
                             echo "<tr><td valign='middle'>Ansvarig vuxen</td><td>";
                             if (empty($registration->GuardianId)) {
