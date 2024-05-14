@@ -92,7 +92,11 @@ line-height: 1.8;
     		                echo "Avbokad";
     		            }
     		            else {
-    		                echo showParticipantStatusIcon($person->isRegistered($current_larp), "Du är inte anmäld");
+    		                if ($current_larp->isEnded()) {
+    		                    if ($person->isRegistered($current_larp)) echo showStatusIcon(true);
+    		                    else echo "Var inte amnäld till lajvet";
+    		                }
+    		                else echo showParticipantStatusIcon($person->isRegistered($current_larp), "Du är inte anmäld");
     		            }
     		            if ($person->isRegistered($current_larp)) echo "</td><td><a href='view_registration.php?id=$person->Id'>Visa anmälan</a>";
     		            echo "</td></tr>\n";
@@ -381,7 +385,10 @@ line-height: 1.8;
         		        }
      		        }
     		        else {
-    		            echo "<br><b>Har ännu ingen karaktär</b>&nbsp;&nbsp;<a href='role_form.php'>".showParticipantStatusIcon(false, "Du har inte registrerat någon karaktär")."</a><br>\n";
+    		            echo "<br><b>Har ännu ingen karaktär</b>&nbsp;&nbsp;<a href='role_form.php'>";
+    		            if (!$current_larp->isEnded()) echo showParticipantStatusIcon(false, "Du har inte registrerat någon karaktär");
+    		            
+    		            echo "</a><br>\n";
     		        }
      
     		        
