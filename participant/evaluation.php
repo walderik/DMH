@@ -43,7 +43,7 @@ function slider($headline, $id, $min, $max, $value, ?String $explanation="") {
     
     echo "<div class='slidecontainer'>\n";
     $value_text = $value;
-    if ($value == 0) $value_text = "Vet inte";
+    if ($value == 0) $value_text = "Vet inte/inte aktuellt";
     echo "<input type='range' min='$min' max='$max' value='$value' class='slider' id='$id' name='$id' oninput='slider_value(\"$id\")'> &nbsp; &nbsp;Värde: <span id='$id"."_val'>$value_text</span>\n";
     echo "</div>\n";
     echo "</div>\n";
@@ -65,7 +65,7 @@ function slider_value(sliderId) {
 
 	let value = slider.value;
 	let value_text = value;
-    if (value == 0) value_text = "Vet inte";
+    if (value == 0) value_text = "Vet inte/inte aktuellt";
 
 	
   	output.innerHTML = value_text;
@@ -128,7 +128,7 @@ label::before {
 
 		<h2>Hur väl stämmer följande påståenden överens med din upplevelse av <?php echo $current_larp->Name ?></h2>
 			<div class="explanation">
-			Om du inte vet eller inte kan svara på frågan lämna värdet på "Vet inte".<br>
+			Om du inte vet eller inte kan svara på frågan lämna värdet på "Vet inte", (0).<br>
 			1: stämmer inte alls<br>
 			10: stämmer mycket väl överens
 			</div>

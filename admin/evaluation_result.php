@@ -134,7 +134,9 @@ $campaign = $current_larp->getCampaign();
 		<?php comments("Övrigt/kommentarer", "org_comment")?>
 
 
-		<?php if ($campaign->is_kir()) { ?>
+		<?php if ($campaign->is_kir()) {
+		} else {
+		    ?>
     		<h2>Speltekniska system</h2>
     		<?php if ($campaign->is_dmh()) { ?>
         		<?php chart("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_q1")?>
