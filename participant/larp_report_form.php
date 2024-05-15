@@ -59,6 +59,13 @@ if (!isset($intrigueActors) or (!isset($larp_role) and !isset($larp_group))) {
 include 'navigation.php';
 ?>
 
+<style>
+
+textarea{
+    
+    width: 100%;
+}
+</style>
 
 
 	<div class="content">
@@ -103,12 +110,12 @@ include 'navigation.php';
 				<div class="explanation">Beskriv allt annat intressant som hände karaktären.  
 				Skriv så mycket du kan. Det kan dessutom vara till hjälp om du ska spela karaktären vid ett 
 				senare tillfälle.</div>
-				<textarea id="WhatHappened" name="WhatHappened" rows="10" cols="100" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappened); ?></textarea>
+				<textarea id="WhatHappened" name="WhatHappened" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappened); ?></textarea>
 				<?php } else {?>
 				<label for="WhatHappened"><strong>Vad hände med/för <?php echo $group->Name; ?>?</strong></label><br> 
 				<div class="explanation">Beskriv allt annat intressant som hände gruppen.  
 				Skriv så mycket du kan. Det kan dessutom vara till hjälp nästa gång gruppen är med på ett lajv och när det kommer nya in i gruppen.</div>
-				<textarea id="WhatHappened" name="WhatHappened" rows="10" cols="100" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappened); ?></textarea>
+				<textarea id="WhatHappened" name="WhatHappened" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappened); ?></textarea>
 				<?php } ?>
 			</div>
 
@@ -118,11 +125,11 @@ include 'navigation.php';
 				?>
 				<label for="WhatHappendToOthers"><strong>Vad såg du hände med andra?</strong></label><br> 
 				<div class="explanation">Var du med om, eller såg något som hände en annan karkatär. Berätta! Vi vill veta allt. :)</div>
-				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappendToOthers); ?></textarea>
+				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappendToOthers); ?></textarea>
 				<?php } else {?>
 				<label for="WhatHappendToOthers"><strong>Vad såg ni hände med andra?</strong></label><br> 
 				<div class="explanation">Var ni med om, eller såg något som hände en annan karkatär eller grupp. Berätta! Vi vill veta allt. :)</div>
-				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappendToOthers); ?></textarea>
+				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappendToOthers); ?></textarea>
 				<?php } ?>
 			</div>
 
