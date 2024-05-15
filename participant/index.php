@@ -113,9 +113,7 @@ line-height: 1.8;
                             }
                             else {
                                 echo showParticipantStatusIcon(false, "Utvärderingen är inte gjord");
-                                if ($current_larp->getCampaign()->is_dmh()) {
-                                    echo "</td><td><a href='evaluation.php?PersonId=$person->Id'>Gör utvärdering";
-                                }
+                                echo "</td><td><a href='evaluation.php?PersonId=$person->Id'>Gör utvärdering";
                             }
                             echo "</td></tr>\n";
                             

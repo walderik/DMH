@@ -141,6 +141,14 @@ $campaign = $current_larp->getCampaign();
         		<?php chart("Handelssystemet med resurskort och verksamheter var ett bra system","game_q2")?>
         		<?php chart("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_q3")?>
     		<?php } elseif ($campaign->is_doh()) { ?>
+				<?php chart("Magisystemet fungerade bra","game_q1")?>
+				<?php chart("Alkemisystemet fungerade bra","game_q2")?>
+				<?php chart("Synerna fungerade bra","game_q3")?>
+				<?php chart("Handelssystemet fungerade bra","game_q4")?>
+				<?php chart("Barnaktiviteterna var bra","game_q5")?>
+				<?php chart("Jag som förälder kände mig trygg med barnaktiviteterna","game_q6")?>
+				<?php chart("Barntältet var bra","game_q7")?>
+
     		<?php } elseif ($campaign->is_me()) { ?>
     		<?php } ?>
     		

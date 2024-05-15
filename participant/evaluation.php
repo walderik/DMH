@@ -192,14 +192,22 @@ label::before {
     			<textarea id='org_comment' name='org_comment' rows="4" cols="100" maxlength="2000"></textarea>
             </div>
 		
-		<?php if ($campaign->is_kir()) { ?>
+		<?php if ($campaign->is_kir()) { 
+		} else {?>
 
 		<h2>Speltekniska system</h2>
 			<?php if ($campaign->is_dmh()) { ?>
-			<?php slider("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_q1",1,10,5)?>
-			<?php slider("Handelssystemet med resurskort och verksamheter var ett bra system","game_q2",1,10,5)?>
-			<?php slider("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_q3",1,10,5)?>
+    			<?php slider("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_q1",1,10,5)?>
+    			<?php slider("Handelssystemet med resurskort och verksamheter var ett bra system","game_q2",1,10,5)?>
+    			<?php slider("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_q3",1,10,5)?>
 			<?php } elseif ($campaign->is_doh()) { ?>
+				<?php slider("Magisystemet fungerade bra","game_q1",0,10,5)?>
+				<?php slider("Alkemisystemet fungerade bra","game_q2",0,10,5)?>
+				<?php slider("Synerna fungerade bra","game_q3",0,10,5)?>
+				<?php slider("Handelssystemet fungerade bra","game_q4",0,10,5)?>
+				<?php slider("Barnaktiviteterna var bra","game_q5",0,10,5)?>
+				<?php slider("Jag som förälder kände mig trygg med barnaktiviteterna","game_q6",0,10,5)?>
+				<?php slider("Barntältet var bra","game_q7",0,10,5)?>
 			
 			<?php } elseif ($campaign->is_me()) { ?>
 			

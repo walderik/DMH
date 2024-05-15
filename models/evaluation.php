@@ -50,6 +50,8 @@ class Evaluation extends BaseModel{
     public $game_q3;
     public $game_q4;
     public $game_q5;
+    public $game_q6;
+    public $game_q7;
     public $game_comment;
     public $finish_positive;
     public $finish_negative;
@@ -117,6 +119,8 @@ class Evaluation extends BaseModel{
         if (isset($arr['game_q3'])) $this->game_q3 = $arr['game_q3'];
         if (isset($arr['game_q4'])) $this->game_q4 = $arr['game_q4'];
         if (isset($arr['game_q5'])) $this->game_q5 = $arr['game_q5'];
+        if (isset($arr['game_q6'])) $this->game_q6 = $arr['game_q6'];
+        if (isset($arr['game_q7'])) $this->game_q7 = $arr['game_q7'];
         if (isset($arr['game_comment'])) $this->game_comment = $arr['game_comment'];
         if (isset($arr['finish_positive'])) $this->finish_positive = $arr['finish_positive'];
         if (isset($arr['finish_negative'])) $this->finish_negative = $arr['finish_negative'];
@@ -142,9 +146,9 @@ class Evaluation extends BaseModel{
             rules_q1, rules_q2, rules_q3, rules_comment, 
             currency_q1, currency_q2, currency_comment,  
             org_q1, org_q2, org_q3, org_q4, org_comment,  
-            game_q1, game_q2, game_q3, game_q4, game_q5, game_comment, 
+            game_q1, game_q2, game_q3, game_q4, game_q5, game_q6, game_q7, game_comment, 
             finish_positive, finish_negative, finish_develop, finish_comment) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,? ?,?,?,?,?)");
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,? ?,?,?,?,?)");
        
         
         if (!$stmt->execute(array($this->LarpId, $this->Age, $this->Number_of_larps, 
@@ -155,7 +159,7 @@ class Evaluation extends BaseModel{
             $this->rules_q1, $this->rules_q2, $this->rules_q3, $this->rules_comment,
             $this->currency_q1, $this->currency_q2, $this->currency_comment,
             $this->org_q1, $this->org_q2, $this->org_q3, $this->org_q4, $this->org_comment, 
-            $this->game_q1, $this->game_q2, $this->game_q3, $this->game_q4, $this->game_q5, $this->game_comment,
+            $this->game_q1, $this->game_q2, $this->game_q3, $this->game_q4, $this->game_q5, $this->game_q6, $this->game_q7, $this->game_comment,
             $this->finish_positive, $this->finish_negative, $this->finish_develop, $this->finish_comment))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
