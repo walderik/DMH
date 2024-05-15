@@ -196,9 +196,9 @@ label::before {
 
 		<h2>Speltekniska system</h2>
 			<?php if ($campaign->is_dmh()) { ?>
-			<?php slider("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_dmh_q1",1,10,5)?>
-			<?php slider("Handelssystemet med resurskort och verksamheter var ett bra system","game_dmh_q2",1,10,5)?>
-			<?php slider("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_dmh_q3",1,10,5)?>
+			<?php slider("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_q1",1,10,5)?>
+			<?php slider("Handelssystemet med resurskort och verksamheter var ett bra system","game_q2",1,10,5)?>
+			<?php slider("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_q3",1,10,5)?>
 			<?php } elseif ($campaign->is_doh()) { ?>
 			
 			<?php } elseif ($campaign->is_me()) { ?>

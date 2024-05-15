@@ -137,9 +137,9 @@ $campaign = $current_larp->getCampaign();
 		<?php if ($campaign->is_kir()) { ?>
     		<h2>Speltekniska system</h2>
     		<?php if ($campaign->is_dmh()) { ?>
-        		<?php chart("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_dmh_q1")?>
-        		<?php chart("Handelssystemet med resurskort och verksamheter var ett bra system","game_dmh_q2")?>
-        		<?php chart("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_dmh_q3")?>
+        		<?php chart("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_q1")?>
+        		<?php chart("Handelssystemet med resurskort och verksamheter var ett bra system","game_q2")?>
+        		<?php chart("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_q3")?>
     		<?php } elseif ($campaign->is_doh()) { ?>
     		<?php } elseif ($campaign->is_me()) { ?>
     		<?php } ?>
