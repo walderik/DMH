@@ -19,7 +19,7 @@ function whatHappenedGroup(Group $group) {
         }
     }
     if ($hasWhatHappened) {
-        echo "<h2>$group->Name</h2>";
+        echo "<h2><a href='view_group.php?id=$group->Id'>$group->Name</a></h2>";
         foreach($intrigueActors as $intrigueActor) {
             $intrigue = $intrigueActor->getIntrigue();
             echo "<h3><a href='view_intrigue.php?Id=$intrigue->Id'>$intrigue->Number. $intrigue->Name</a></h3>";

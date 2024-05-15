@@ -169,13 +169,7 @@ label::before {
             </div>
 		<h2>Regler</h2>
 			<?php slider("Stridssystemet var enkelt att förstå och spela på","rules_q1",1,10,5)?>
-			
-			
-			
-			<?php 
-			if ($campaign->is_dmh()) slider("Det var INTE ett problem att det var tillåtet med alkohol på lajvet","rules_q2",1,10,5);
-			
-			?>
+			<?php slider("Reglerna kring alkohol var bra","rules_q2",1,10,5); ?>
 			<?php slider("Reglerna kring rökning var bra","rules_q3",1,10,5)?>
 			<div class="question">
     			<label for="rules_comment">Övrigt/kommentarer</label><br>
@@ -197,16 +191,25 @@ label::before {
     			<label for="org_comment">Övrigt/kommentarer</label><br>
     			<textarea id='org_comment' name='org_comment' rows="4" cols="100" maxlength="2000"></textarea>
             </div>
+		
+		<?php if ($campaign->is_kir()) { ?>
 
 		<h2>Speltekniska system</h2>
+			<?php if ($campaign->is_dmh()) { ?>
 			<?php slider("Det var ett bra system att man kunde gå till telegrafen för att få hjälp med intrigerna","game_dmh_q1",1,10,5)?>
 			<?php slider("Handelssystemet med resurskort och verksamheter var ett bra system","game_dmh_q2",1,10,5)?>
 			<?php slider("Tjuvsystemet med föremål märkta med grönt band som man fick stjäla var ett roligt inslag på lajvet","game_dmh_q3",1,10,5)?>
+			<?php } elseif ($campaign->is_doh()) { ?>
+			
+			<?php } elseif ($campaign->is_me()) { ?>
+			
+			<?php } ?>
+
 			<div class="question">
     			<label for="game_comment">Övrigt/kommentarer</label><br>
     			<textarea id='game_comment' name='game_comment' rows="4" cols="100" maxlength="2000"></textarea>
             </div>
-
+		<?php } ?>
 
 		<h2>Avslutande</h2>
 			<div class="question">
