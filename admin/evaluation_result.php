@@ -33,16 +33,14 @@ function chart($headline, $id, ?bool $include_dont_know=true, ?String $explanati
             }]
         },
         options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
+          responsive: true,
+          maintainAspectRatio: false
         }
     });";
     echo "</script>";
           
 }
+
 
 
 function comments($headline, $id) {
@@ -67,6 +65,14 @@ $campaign = $current_larp->getCampaign();
 ?>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    .chart {
+        height: 40vh;
+        width:80vw;
+    }
+
+</style>
 
 <div class="content">
 
