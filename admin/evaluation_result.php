@@ -49,6 +49,8 @@ function comments($headline, $id) {
     global $current_larp;
     $question_result = EvaluationCommentsQuestion::get($id, $current_larp);
     
+    sort($question_result->comments);
+    
     echo "<div class='comments'>\n";
     echo "$headline\n";
     
