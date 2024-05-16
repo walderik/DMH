@@ -134,6 +134,13 @@ $campaign = $current_larp->getCampaign();
 		<?php comments("Övrigt/kommentarer", "org_comment")?>
 
 
+		<h2>Trygghet / sjukvård</h2>
+			<?php chart("Trygghetsvärdarna var lättillgängliga","health_q1")?>
+			<?php chart("Jag kände mig trygg på arrangemanget","health_q2")?>
+			<?php chart("Sjukvården fungerade bra","health_q3")?>
+			<?php comments("Övrigt/kommentarer", "health_comment")?>
+
+
 		<?php if ($campaign->is_kir()) {
 		} else {
 		    ?>

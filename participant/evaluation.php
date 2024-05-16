@@ -50,6 +50,14 @@ function slider($headline, $id, $min, $max, $value, ?String $explanation="") {
     
 }
 
+function textQuestion($headline, $id) {
+    echo "<div class='question'>\n";
+    echo "<label for='$id'>$headline</label><br>\n";
+    echo "<textarea id='$id' name='$id' rows='4' cols='100' maxlength='2000'></textarea>\n";
+    echo "</div>\n";
+    
+}
+
 $campaign = $current_larp->getCampaign();
 
 include 'navigation.php';
@@ -120,11 +128,8 @@ label::before {
 			<?php slider("Området","larp_q7",1,10,5)?>
 			<?php slider("Betygsätt din upplevelse/-er under lajvet","larp_q8",1,10,5)?>
 			<?php slider("Lajvets helhetsbetyg","larp_q9",1,10,5)?>
-
-			<div class="question">
-    			<label for="larp_comment">Övrigt/kommentarer</label><br>
-    			<textarea id='larp_comment' name='larp_comment' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
+			
+			<?php textQuestion("Övrigt/kommentarer", "larp_comment")?>
 
 		<h2>Hur väl stämmer följande påståenden överens med din upplevelse av <?php echo $current_larp->Name ?></h2>
 			<div class="explanation">
@@ -140,10 +145,7 @@ label::before {
 			<?php slider("Jag hade roligt på lajvet","exp_q6",0,10,0)?>
 			<?php slider("Jag tänker åka på fler ".$current_larp->getCampaign()->Name."-lajv om det blir några fler","exp_q7",0,10,0)?>
 
-			<div class="question">
-    			<label for="exp_comment">Övrigt/kommentarer</label><br>
-    			<textarea id='exp_comment' name='exp_comment' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
+			<?php textQuestion("Övrigt/kommentarer", "exp_comment")?>
 
 		<h2>Information</h2>
 			<?php slider("Det var en lättnavigerad hemsida","info_q1",1,10,5)?>
@@ -151,46 +153,38 @@ label::before {
 			<?php slider("Uppskatta hur mycket av informationen på hemsidan som du har läst","info_q3",1,10,5, "Siffran 1 = 10% (nästan inget) och siffran 10 = 100% (allt)")?>
 			<?php slider("Uppskatta hur mycket av informationen av utskicket som du har läst","info_q4",1,10,5,"Siffran 1 = 10% (nästan inget) och siffran 10 = 100% (allt)")?>
 
-			<div class="question">
-    			<label for="info_dev">Vad bör vi utveckla på hemsidan till nästa gång?</label><br>
-    			<textarea id='info_dev' name='info_dev' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
-			<div class="question">
-    			<label for="info_comment">Övrigt/kommentarer</label><br>
-    			<textarea id='info_comment' name='info_comment' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
+			<?php textQuestion("Vad bör vi utveckla på hemsidan till nästa gång?", "info_dev")?>
+			<?php textQuestion("Övrigt/kommentarer", "info_comment")?>
 
 		<h2>Maten</h2>
 			<?php slider("Den förbeställda maten var god","food_q1",0,10,0)?>
 			<?php slider("Den förbeställda maten var prisvärd","food_q2",0,10,0)?>
-			<div class="question">
-    			<label for="food_comment">Övrigt/kommentarer</label><br>
-    			<textarea id='food_comment' name='food_comment' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
+			<?php textQuestion("Övrigt/kommentarer", "food_comment")?>
+
 		<h2>Regler</h2>
 			<?php slider("Stridssystemet var enkelt att förstå och spela på","rules_q1",1,10,5)?>
 			<?php slider("Reglerna kring alkohol var bra","rules_q2",1,10,5); ?>
 			<?php slider("Reglerna kring rökning var bra","rules_q3",1,10,5)?>
-			<div class="question">
-    			<label for="rules_comment">Övrigt/kommentarer</label><br>
-    			<textarea id='rules_comment' name='rules_comment' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
+			<?php textQuestion("Övrigt/kommentarer", "rules_comment")?>
+
 		<h2>In-lajv valutan</h2>
 			<?php slider("Valutasystemet var bra","currency_q1",1,10,5)?>
 			<?php slider("Det var lätt att förstå vad man skulle ta betalt för en tjänst","currency_q2",1,10,5)?>
-			<div class="question">
-    			<label for="currency_comment">Övrigt/kommentarer</label><br>
-    			<textarea id='currency_comment' name='currency_comment' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
+			<?php textQuestion("Övrigt/kommentarer", "currency_comment")?>
+
 		<h2>Bemötande</h2>
 			<?php slider("Arrangörerna var trevliga och hjälpsamma","org_q1",1,10,5)?>
 			<?php slider("Arrangörerna var professionella","org_q2",1,10,5)?>
 			<?php slider("Arrangörerna var lätta att få kontakt med innan lajvet","org_q3",1,10,5)?>
 			<?php slider("Arrangörerna var lätta att få kontakt med under lajvet","org_q4",1,10,5)?>
-			<div class="question">
-    			<label for="org_comment">Övrigt/kommentarer</label><br>
-    			<textarea id='org_comment' name='org_comment' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
+			<?php textQuestion("Övrigt/kommentarer", "org_comment")?>
+
+
+		<h2>Trygghet / sjukvård</h2>
+			<?php slider("Trygghetsvärdarna var lättillgängliga","health_q1",1,10,5)?>
+			<?php slider("Jag kände mig trygg på arrangemanget","health_q2",1,10,5)?>
+			<?php slider("Sjukvården fungerade bra","health_q3",1,10,5)?>
+			<?php textQuestion("Övrigt/kommentarer", "health_comment")?>
 		
 		<?php if ($campaign->is_kir()) { 
 		} else {?>
@@ -208,34 +202,21 @@ label::before {
 				<?php slider("Barnaktiviteterna var bra","game_q5",0,10,5)?>
 				<?php slider("Jag som förälder kände mig trygg med barnaktiviteterna","game_q6",0,10,5)?>
 				<?php slider("Barntältet var bra","game_q7",0,10,5)?>
+				<?php slider("Det var bra att starta lajvet med en kicker","game_q8",0,10,5)?>
+				<?php slider("Det var bra att ha ett sekretariat/bank att vända sig till","game_q9",0,10,5)?>
 			
 			<?php } elseif ($campaign->is_me()) { ?>
 			
 			<?php } ?>
 
-			<div class="question">
-    			<label for="game_comment">Övrigt/kommentarer</label><br>
-    			<textarea id='game_comment' name='game_comment' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
+			<?php textQuestion("Övrigt/kommentarer", "game_comment")?>
 		<?php } ?>
 
 		<h2>Avslutande</h2>
-			<div class="question">
-    			<label for="finish_positive">Vad tycker du varit positivt med lajvet?</label><br>
-    			<textarea id='finish_positive' name='finish_positive' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
-			<div class="question">
-    			<label for="finish_negative">Vad tycker du varit negativt med lajvet?</label><br>
-    			<textarea id='finish_negative' name='finish_negative' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
-			<div class="question">
-    			<label for="finish_develop">Vad tycker du att vi ska utveckla till nästa gång?</label><br>
-    			<textarea id='finish_develop' name='finish_develop' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
-			<div class="question">
-    			<label for="finish_comment">Övrigt/kommentarer</label><br>
-    			<textarea id='finish_comment' name='finish_comment' rows="4" cols="100" maxlength="2000"></textarea>
-            </div>
+			<?php textQuestion("Vad tycker du varit positivt med lajvet?", "finish_positive")?>
+			<?php textQuestion("Vad tycker du varit negativt med lajvet?", "finish_negative")?>
+			<?php textQuestion("Vad tycker du att vi ska utveckla till nästa gång?", "finish_develop")?>
+			<?php textQuestion("Övrigt/kommentarer", "finish_comment")?>
             
             <input type="submit" value="Skicka in">
             </form>

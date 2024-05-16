@@ -11,11 +11,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: ../index.php');
         exit;
     }
-    $registration->EvaluationDone = 1;
-    $registration->update();
     
     $evaluation = Evaluation::newFromArray($_POST);
     $evaluation->LarpId = $current_larp->Id;
     $evaluation->create();
+
+    $registration->EvaluationDone = 1;
+    $registration->update();
+    
 }
 header('Location: ../index.php');
