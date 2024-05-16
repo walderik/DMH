@@ -4,7 +4,7 @@ include_once 'header.php';
 include 'navigation.php';
 
 
-function chart($headline, $id, ?bool $include_dont_know=false, ?String $explanation="") {
+function chart($headline, $id, ?bool $include_dont_know=true, ?String $explanation="") {
     global $current_larp;
     $question_result = EvaluationNumberQuestion::get($id, $current_larp);
     $val = $question_result->valuesArr;
@@ -106,8 +106,8 @@ $campaign = $current_larp->getCampaign();
 		<h2>Information</h2>
 		<?php chart("Det var en lättnavigerad hemsida","info_q1")?>
 		<?php chart("Det fanns tillräckligt med information på hemsidan","info_q2")?>
-		<?php chart("Uppskatta hur mycket av informationen på hemsidan som du har läst","info_q3", false, "Siffran 1 = 10% (nästan inget) och siffran 10 = 100% (allt)")?>
-		<?php chart("Uppskatta hur mycket av informationen av utskicket som du har läst","info_q4", false, "Siffran 1 = 10% (nästan inget) och siffran 10 = 100% (allt)")?>
+		<?php chart("Uppskatta hur mycket av informationen på hemsidan som du har läst","info_q3", true, "Siffran 1 = 10% (nästan inget) och siffran 10 = 100% (allt)")?>
+		<?php chart("Uppskatta hur mycket av informationen av utskicket som du har läst","info_q4", true, "Siffran 1 = 10% (nästan inget) och siffran 10 = 100% (allt)")?>
 		<?php comments("Vad bör vi utveckla på hemsidan till nästa gång?", "info_dev")?>
 		<?php comments("Övrigt/kommentarer", "info_comment")?>
 
