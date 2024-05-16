@@ -91,7 +91,10 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 			</tr>
 			<tr>
 				<td><label for="Amount">Summa</label></td>
-				<td><input type="number" id="Amount" name="Amount" step='0.01' value='<?php echo abs($bookkeeping->Amount)?>' min="0" size="100" maxlength="250" style="text-align:right"> kr</td>
+				<?php $value = abs($bookkeeping->Amount);
+				if ($value == 0) $value = "";
+				?>
+				<td><input style="width: 100px;" type="number" id="Amount" name="Amount" step='0.01' value='<?php echo $value;?>' min="0" size="100" maxlength="250" style="text-align:right"> kr</td>
 
 			</tr>
 			<tr>
