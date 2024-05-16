@@ -159,6 +159,8 @@ $campaign = $current_larp->getCampaign();
 				<?php chart("Barnaktiviteterna var bra","game_q5")?>
 				<?php chart("Jag som förälder kände mig trygg med barnaktiviteterna","game_q6")?>
 				<?php chart("Barntältet var bra","game_q7")?>
+				<?php chart("Det var bra att starta lajvet med en kicker","game_q8")?>
+				<?php chart("Det var bra att ha ett sekretariat/bank att vända sig till","game_q9")?>
 
     		<?php } elseif ($campaign->is_me()) { ?>
     		<?php } ?>
