@@ -33,7 +33,12 @@ include 'navigation.php';
     		    $to = implode(", ", $to_array);
     		}
     		?>
-			<tr><td>Skickat av</td><td><?php echo $user->Name ?></td></tr>
+			<tr><td>Skickat av</td><td>
+				<?php 
+				if (!empty($user)) echo $user->Name;
+				else echo "Omnes Mundi";
+				?>
+				</td></tr>
 			<tr><td>Till</td><td><?php echo "$email->ToName ($to)"; ?></td></tr>
 			<tr><td>Ämne</td><td><?php echo $email->Subject ?></td></tr>
 			<tr><td>När</td><td><?php echo $email->SentAt ?></td></tr>
