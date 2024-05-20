@@ -74,4 +74,7 @@ class Attachment  extends BaseModel{
         $stmt = null;
     }
 
+    public function getEmail() {
+        return Email::loadById($this->EmailId);
+    }
 }

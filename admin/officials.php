@@ -22,9 +22,9 @@ include 'navigation.php';
     
     $emailArr = array();
  	foreach ($persons as $person) {
- 	    $emailArr[] = $person->Email;
+ 	    $personIdArr[] = $person->Id;
  	}
-    echo contactSeveralEmailIcon("", $emailArr, "Funktionär på $current_larp->Name", "Meddelande till alla funktionärer i $current_larp->Name");
+ 	echo contactSeveralEmailIcon("", $personIdArr, "Funktionär på $current_larp->Name", "Meddelande till alla funktionärer i $current_larp->Name");
     echo "<a href='officials.php'>Alla funktionärer</a> &nbsp; &nbsp";
     
     
@@ -35,9 +35,9 @@ include 'navigation.php';
             $officials_by_type = Person::getAllOfficialsByType($offical_type, $current_larp);
             $emailArr = array();
             foreach($officials_by_type as $person) {
-                $emailArr[] = $person->Email;
+                $personIdArr[] = $person->Id;
             }
-            $ikon = contactSeveralEmailIcon('', $emailArr, "$offical_type->Name funktionär", "Meddelande till alla $offical_type->Name i $current_larp->Name");
+            $ikon = contactSeveralEmailIcon('', $personIdArr, "$offical_type->Name funktionär", "Meddelande till alla $offical_type->Name i $current_larp->Name");
 
             echo "$ikon<a href='officials.php?id=$offical_type->Id'>$offical_type->Name</a> &nbsp; &nbsp ";
         }
@@ -50,7 +50,7 @@ include 'navigation.php';
         $registration = $person->getRegistration($current_larp);
         echo "<tr><td>\n";
         echo "<a href ='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
-        echo "<td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td><td>$person->PhoneNumber</td><td>\n";
+        echo "<td>$person->Email ".contactEmailIcon($person)."</td><td>$person->PhoneNumber</td><td>\n";
         if (OfficialType::isInUse($current_larp)) echo commaStringFromArrayObject($registration->getOfficialTypes());
         echo "&nbsp;<a href='edit_official.php?id=$registration->Id' title='Redigera vald funktionärstyp'><i class='fa-solid fa-pen'></i></a>\n".
         "&nbsp;<a href='person_payment.php?id=$person->Id' title='Justera betalning till $person->Name'><i class='fa-solid fa-money-check-dollar'></i></a></td><td>\n";
@@ -74,7 +74,7 @@ include 'navigation.php';
         $registration = $person->getRegistration($current_larp);
         echo "<tr><td>";
         echo "<a href ='view_person.php?id=$person->Id'>$person->Name</a>";
-        echo "</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Email)."</td><td>$person->PhoneNumber</td>";
+        echo "</td><td>$person->Email ".contactEmailIcon($person)."</td><td>$person->PhoneNumber</td>";
         if (OfficialType::isInUse($current_larp)) echo "<td>".commaStringFromArrayObject($registration->getOfficialTypes())."</td>";
         echo "<td>";
         ?>

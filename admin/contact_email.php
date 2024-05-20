@@ -12,20 +12,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['send_intrigues'])) {
         $type="intrigues";
         $name = '';
+        $subject = "Intrigutskick för $current_larp->Name";
     } elseif (isset($_POST['send_housing'])) {
         $type="housing";
         $name = '';
+        $subject = "Boende på $current_larp->Name";
     } elseif (isset($_POST['send_one'])) {
         $type="one";
-        $email = $_POST['email'];
-        $name = $_POST['name'];
+        $personId = $_POST['personId'];
+        $person = Person::loadById($personId);
+        $name = $person->Name;
+        $email = $person->Email;
     } elseif (isset($_POST['send_all'])) {
         $type="all";
         $name = '';
     } elseif (isset($_POST['send_several'])) {
         $type="several";
         $subject = $_POST['subject'];
-        $email = $_POST['email'];
+        $personId = $_POST['personId'];
         $name = $_POST['name'];
     }
 }
@@ -82,21 +86,21 @@ include 'navigation.php';
     	
 		<form action="logic/send_contact_email.php" method="post" enctype="multipart/form-data">
 		<?php 
-		if (isset($email)) {
-    		if (is_array($email)) {
-    		    foreach ($email as $emailStr)  {
-    		        echo "<input type='hidden' name='email[]' value='$emailStr'>\n";
+		if (isset($personId)) {
+		    if (is_array($personId)) {
+		        foreach ($personId as $id)  {
+    		        echo "<input type='hidden' name='personId[]' value='$id'>\n";
     		    }
     		    
     		} else {
-    		    echo "<input type='hidden' id='email' name='email' value='$email'>";
+    		    echo "<input type='hidden' id='email' name='personId' value='$personId'>";
     		}
 		}
 		
-		if (isset($subject)) {
-		    echo "<input type='hidden' id='subject' name='subject' value='$subject'>";
+        if (!isset($subject)) $subject = "Meddelande från $campaign->Name";    
+	    echo "Ärende: <input id='subject' size = '70' name='subject' value='$subject' required>";
 		    
-		}
+
 		
 		?>
 
@@ -106,15 +110,12 @@ include 'navigation.php';
     		<p><br />
     		<p>
     		<?php 
-    		if($type=="several") {
-    		    echo "$hej ";
-    		    echo "<input id='name' name='name' value='$name'>";
-    		} else {
-    		    echo "<input type='hidden' id='name' name='name' value='$name;'>";
-    		    echo "$hej $name"; 
-    		}
-    		echo "!";
+
+		      $greeting= "$hej $name!";
+    		  echo "<input id='greeting' size = '50' name='greeting' value='$greeting' required>";
+    		
     		?>
+ 
     		
     		 <br></p>
 			<p><textarea id="text" name="text" rows="8" cols="121" maxlength="60000" required></textarea></p>
@@ -129,7 +130,21 @@ include 'navigation.php';
 			    
 			}?>
 			Med vänliga hälsningar<br /><br />
-			<b>Arrangörerna av <?php echo $current_larp->Name; ?></b><br>
+			<b>
+			
+			<?php 
+			$senderText1 = "$current_user->Name för arrangörsgruppen av $current_larp->Name";
+			$senderText2 = "Arrangörerna av $current_larp->Name";
+			
+			echo "<select name='senderText' id='senderText'>";
+		    echo "<option value=\"$senderText1\">$senderText1</option>";
+		    echo "<option value=\"$senderText2\">$senderText2</option>";
+		    echo "</select>";
+			
+			?>
+			
+			
+			</b><br>
 
 			<?php if ($type == "one" || $type == "all" || $type == "several") {?>
 			<br><hr><br>

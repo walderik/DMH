@@ -99,7 +99,7 @@ include 'navigation.php';
 		<?php 
 		$groupleader = $current_group->getPerson();
 		?>
-			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $groupleader->Name;?></a> <?php echo contactEmailIcon($groupleader->Name,$groupleader->Email) ?></td>
+			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $groupleader->Name;?></a> <?php echo contactEmailIcon($groupleader) ?></td>
 					<?php 
 					if ($current_group->hasImage()) {
             		    echo "<td rowspan='20' valign='top'>";
@@ -154,9 +154,9 @@ include 'navigation.php';
 		
 		$emailArr = array();
 		foreach($persons as $person) {
-		    $emailArr[] = $person->Email;
+		    $personIdArr[] = $person->Id;
 		}
-		$ikon = contactSeveralEmailIcon("", $emailArr, "Medlem i $current_group->Name", "Meddelande till alla medlemmar i $current_group->Name i $current_larp->Name");
+		$ikon = contactSeveralEmailIcon("", $personIdArr, "Medlem i $current_group->Name", "Meddelande till alla medlemmar i $current_group->Name i $current_larp->Name");
 		
 		echo "$ikon &nbsp; &nbsp;";
 		

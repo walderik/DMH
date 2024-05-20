@@ -56,7 +56,7 @@ include 'navigation.php';
 			</td></tr>
 			<tr><td valign="top" class="header">Email&nbsp;<font style="color:red">*</font></td>
 			<td><input type="Email" id="email" name="Email" value="<?php echo htmlspecialchars($person->Email); ?>"  size="100" maxlength="250" required>
-			<?php  echo contactEmailIcon($person->Name,$person->Email); ?>
+			<?php  echo contactEmailIcon($person); ?>
 			</td></tr>
 			<tr><td valign="top" class="header">Mobilnummer</td>
 			<td><input type="text" id="PhoneNumber" name="PhoneNumber" value="<?php echo htmlspecialchars($person->PhoneNumber); ?>"  size="100" maxlength="250"></td></tr>

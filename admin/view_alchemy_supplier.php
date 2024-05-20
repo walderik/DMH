@@ -38,7 +38,7 @@ include 'alchemy_navigation.php';
     				<td>Spelas av 
     				</td>
     				<td>
-                		<?php echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email); ?>
+                		<?php echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person); ?>
                     </td>
                 </tr>
     			<tr>

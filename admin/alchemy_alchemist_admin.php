@@ -30,10 +30,10 @@ include 'alchemy_navigation.php';
            $emailArr = array();
            foreach ($alchemists as $alchemist) {
                $person = $alchemist->getRole()->getPerson();
-               $emailArr[] = $person->Email;
+               $personIdArr[] = $person->Id;
            }
            
-           echo contactSeveralEmailIcon('Skicka mail till alla alkemister', $emailArr, 'Alkemist', "Meddelande till alla alkemister i $current_larp->Name");
+           echo contactSeveralEmailIcon('Skicka mail till alla alkemister', $personIdArr, 'Alkemist', "Meddelande till alla alkemister i $current_larp->Name");
            
            echo "<br>";
            
@@ -58,7 +58,7 @@ include 'alchemy_navigation.php';
                 if (isset($group)) echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>";;
                 echo "</td>";
                 echo "<td>";
-                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> (".$person->getAgeAtLarp($current_larp)." år)".contactEmailIcon($person->Name, $person->Email);
+                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> (".$person->getAgeAtLarp($current_larp)." år)".contactEmailIcon($person);
                 echo "</td>";
                 echo "<td>" . $alchemist->Level . "</td>\n";
                 echo "<td>" . $alchemist->getAlchemistType() . "</td>\n";

@@ -42,7 +42,7 @@ include 'navigation.php';
 		<table>
 			<tr><td valign="top" class="header">Namn</td><td><?php echo $person->Name;?></td></tr>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $person->SocialSecurityNumber;?></td></tr>
-			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email ." ".contactEmailIcon($person->Name,$person->Email);?></td></tr>
+			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email ." ".contactEmailIcon($person);?></td></tr>
 			<tr><td valign="top" class="header">Mobilnummer</td><td><?php echo $person->PhoneNumber;?></td></tr>
 		    <?php 
 		    if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {

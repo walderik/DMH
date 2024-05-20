@@ -128,7 +128,7 @@ ul.list {
                 				    echo "<tr>\n";
                 				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
                 				    echo "  <td>".showStatusIcon($caretaker->isMember())."</td>\n";
-                				    echo "  <td>".contactEmailIcon($person->Name, $person->Email)."</td>\n";
+                				    echo "  <td>".contactEmailIcon($person)."</td>\n";
                 				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
                 				    $confirm = "onclick='return confirm($txt)'";
                 				    echo "  <td><a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
@@ -153,7 +153,7 @@ ul.list {
             				    foreach ($personsInHouse as $person) {
                 				    echo "<tr>\n";
                 				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
-                				    echo "  <td>".contactEmailIcon($person->Name, $person->Email)."</td>\n";
+                				    echo "  <td>".contactEmailIcon($person)."</td>\n";
                 				    echo "</tr>\n";
                 				}
                 				echo "</table><br>\n";

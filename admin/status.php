@@ -40,18 +40,18 @@ $param = date_format(new Datetime(),"suv");
                 echo "<br>Ett mail med alla intriger har skickats ut och deltagarna kan se intrigerna när de loggar in.";
             }
             else {
-                echo "inte släppta.<br>När man skickar ut intrigerna första gången släpps de även inne i systemet så att användare som loggar in kan läsa sina intriger.";
+                echo "inte släppta.<br>När man skickar ut intrigerna första gången släpps de även inne i systemet så att användare som loggar in kan läsa sina intriger.<br>Du kommer att få möjlighet att skriva ett medföljande brev.";
             }
                   
                 ?>
                 </td><td>
 				<form action='contact_email.php'  method="post"  
-			    onsubmit="return confirm('Är du säker?\nEpost kommer att skickas till alla deltagarna med alla intriger som de ser ut just nu.')">
+			    >
 				<input type=hidden name="send_intrigues" value=<?php echo $param ?>>
                 <input type='submit' value='Skicka ut intrigerna'></form>
                 <br>
                 <?php if (!$current_larp->isIntriguesReleased()) { ?>
-				<form action='logic/release_intrigues.php'  method="post">
+				<form action='logic/release_intrigues.php'  method="post"  onsubmit="return confirm('Är du säker på att intrigerna ska vara läsbara för alla deltagare?\nDetta går inte att ångra.')">
                 <input type='submit' value='Släpp intrigerna (utan att skicka ut dem)'></form>
 				<?php }?>
         </td></tr>
@@ -63,14 +63,13 @@ $param = date_format(new Datetime(),"suv");
             }
             else {
                 echo "inte släppt.";
-                echo "<br>När man skickar ut boendet första gången släpps de även inne i systemet så att användare som loggar in kan läsa hur de ska bo.";
+                echo "<br>När man skickar ut boendet första gången släpps de även inne i systemet så att användare som loggar in kan läsa hur de ska bo.<br>Du kommer att få möjlighet att skriva ett medföljande brev.";
             }
                   
                 ?>
         </td>
         <td>
-		<form action='contact_email.php'  method="post" 
-	    onsubmit="return confirm('Är du säker?\nEpost kommer att skickas till alla deltagarna med boendet så som det är fördelat just nu.')">
+		<form action='contact_email.php'  method="post" >
 				<input type=hidden name="send_housing" value=<?php echo $param ?>>
 			
         <input type='submit' value='Skicka ut boendet'>

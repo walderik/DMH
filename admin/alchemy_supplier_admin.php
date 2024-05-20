@@ -35,10 +35,10 @@ include 'alchemy_navigation.php';
            $emailArr = array();
            foreach ($suppliers as $supplier) {
                $person = $supplier->getRole()->getPerson();
-               $emailArr[] = $person->Email;
+               $personIdArr[] = $person->Id;
            }
            
-           echo contactSeveralEmailIcon('Skicka mail till alla lövjerister', $emailArr, 'Lövjerist', "Meddelande till alla lövjerister i $current_larp->Name");
+           echo contactSeveralEmailIcon('Skicka mail till alla lövjerister', $personIdArr, 'Lövjerist', "Meddelande till alla lövjerister i $current_larp->Name");
            
            $tableId = "suppliers";
            echo "<table id='$tableId' class='data'>";
@@ -67,7 +67,7 @@ include 'alchemy_navigation.php';
 
                 echo "</td>";
                 echo "<td>";
-                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Email);
+                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person);
                 echo "</td>";
                 echo "<td>";
                 $hasAmount = false; 

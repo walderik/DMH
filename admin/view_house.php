@@ -63,7 +63,7 @@ img {
     				$emails = array();
     				foreach ($personsInHouse as $personInHouse) {
     				    if ($personInHouse->isNotComing($current_larp)) continue;
-    				    $emails[] = $personInHouse->Email;
+    				    $personIdArr[] = $personInHouse->Id;
     				    echo "<a href='view_person.php?id=$personInHouse->Id'>$personInHouse->Name</a>";
     				    
     				    echo "<br>";
@@ -71,7 +71,7 @@ img {
     				
     				?>
     				</p>
-    				<?php echo contactSeveralEmailIcon("Maila alla som bor i huset", $emails, 
+    				<?php echo contactSeveralEmailIcon("Maila alla som bor i huset", $personIdArr, 
     				                                    "Boende i $house->Name på $current_larp->Name", 
     				                                    "Meddelande till alla som bor i $house->Name på $current_larp->Name"); ?>
     				</td>

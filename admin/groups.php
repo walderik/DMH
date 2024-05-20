@@ -27,10 +27,10 @@ th {
     		    $emailArr = array();
     		    foreach ($groups as $group) {
     		        $person = $group->getPerson();
-    		        $emailArr[] = $person->Email;
+    		        $personIdArr[] = $person->Id;
     		    }
     		    
-    		    echo contactSeveralEmailIcon('Skicka till gruppledarna', $emailArr, 'Gruppledare', "Meddelande till alla gruppledarna i $current_larp->Name");
+    		    echo contactSeveralEmailIcon('Skicka till gruppledarna', $personIdArr, 'Gruppledare', "Meddelande till alla gruppledarna i $current_larp->Name");
     		    
     		    $tableId = "groups";
     		    $colnum=0;
@@ -53,7 +53,7 @@ th {
     		        echo "<a href='group_sheet.php?id=" . $group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $group->Name'></i></a>\n";
     		        echo "</td>\n";
     		        $person = $group->getPerson();
-    		        echo "<td>" . $person->Name . " " . contactEmailIcon($person->Name,$person->Email) . "</td>\n";
+    		        echo "<td>" . $person->Name . " " . contactEmailIcon($person) . "</td>\n";
     		        if (Wealth::isInUse($current_larp)) echo "<td>" . $group->getWealth()->Name . "</td>\n";
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     		        echo "<td>" . showStatusIcon($group->hasIntrigue($current_larp));

@@ -31,7 +31,7 @@ include 'navigation.php';
 		<div>
 		<table>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $person->SocialSecurityNumber;?></td></tr>
-			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email." ".contactEmailIcon($person->Name,$person->Email);?></td></tr>
+			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email." ".contactEmailIcon($person);?></td></tr>
 			<tr><td valign="top" class="header">Mobilnummer</td><td><?php echo $person->PhoneNumber;?></td></tr>
 			<tr><td valign="top" class="header">Närmaste anhörig</td><td><?php echo $person->EmergencyContact;?></td></tr>
 		    <?php 
@@ -176,6 +176,46 @@ include 'navigation.php';
     		        echo "<input type='hidden' id='PersonId' name='PersonId' value='$person->Id'>";
     		        echo "<input type='submit' value='Ändra vilken som är huvudkaraktär'>";
     		        echo "</div>\n";
+    		        
+    		        
+    		        
+    		        //Epost
+    		        $emails = Email::allForPersonAtLarp($person, $current_larp);
+    		        if (!empty($emails)) {
+    		            echo "<div><b>Meddelanden från arrangörer till $person->Name</b><br>\n";
+    		            
+    		            $tableId = "mail";
+    		            echo "<table id='$tableId' class='data'>";
+    		            echo "<tr>".
+        		            "<th onclick='sortTable(0, \"$tableId\")'>Ämne</th>".
+        		            "<th onclick='sortTable(1, \"$tableId\")'>Bilagor</th>".
+        		            "<th onclick='sortTable(2, \"$tableId\")'>Skickat av</th>".
+        		            "<th onclick='sortTable(3, \"$tableId\")'>Skickat</th>".
+        		            "</tr>\n";
+    		            foreach (array_reverse($emails) as $email) {
+    		                $sendUserName = "";
+    		                if (isset($email->SenderUserId)) {
+    		                    $user = User::loadById($email->SenderUserId);
+    		                    $sendUserName = $user->Name;
+    		                }
+    		                
+    		                echo "<tr>";
+    		                echo "<td><a href='view_email.php?id=$email->Id'>$email->Subject</a></td>";
+    		                
+    		                $attachements = $email->attachments();
+    		                echo "<td>";
+    		                if (!empty($attachements)) echo "<i class='fa-solid fa-paperclip'></i>";
+    		                echo "</td>";
+    		                echo "<td>$sendUserName</td>";
+    		                echo "<td>$email->SentAt</td>";
+    		            }
+    		            echo "</table>";
+    		            echo "</div>";
+    		            
+    		            
+    		        }
+    		        
+    		        
     		        
     		        ?>
 	</div>

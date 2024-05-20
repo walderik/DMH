@@ -179,6 +179,44 @@ line-height: 1.8;
                     }
                     echo "</table>";
     		        
+                    //Epost
+                    $emails = Email::allForPersonAtLarp($person, $current_larp);
+                    if (!empty($emails)) {
+                        echo "<br><b>Meddelanden från arrangörer till $person->Name</b><br>\n";
+                        
+                        $tableId = "mail";
+                        echo "<table id='$tableId' class='data'>";
+                        echo "<tr>".
+                            "<th onclick='sortTable(0, \"$tableId\")'>Ämne</th>".
+                            "<th onclick='sortTable(1, \"$tableId\")'>Bilagor</th>".
+                            "<th onclick='sortTable(2, \"$tableId\")'>Skickat av</th>".
+                            "<th onclick='sortTable(3, \"$tableId\")'>Skickat</th>".
+                            "</tr>\n";
+                        foreach (array_reverse($emails) as $email) {
+                            $sendUserName = "";
+                            if (isset($email->SenderUserId)) {
+                                $user = User::loadById($email->SenderUserId);
+                                $sendUserName = $user->Name;
+                            }
+                            
+                            echo "<tr>";
+                            echo "<td><a href='view_email.php?id=$email->Id'>$email->Subject</a></td>";
+                            
+                            $attachements = $email->attachments();
+                            echo "<td>";
+                            if (!empty($attachements)) echo "<i class='fa-solid fa-paperclip'></i>";
+                            echo "</td>";
+                            echo "<td>$sendUserName</td>";
+                            echo "<td>$email->SentAt</td>";
+                         }
+                        echo "</table>";
+                        echo "<br>";
+                        
+                        
+                    }
+                    
+                    
+                    
                     
                     //Grupper
     		        if (!empty($groups)) {

@@ -33,7 +33,7 @@ foreach ($houses as $house) {
 		<table>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $person->SocialSecurityNumber;?></td></tr>
 						<tr><td valign="top" class="header">Medlem i Berghems vänner just nu</td><td><?php echo showStatusIcon($is_member)?></td></tr>
-			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email." ".contactEmailIcon($person->Name,$person->Email);?></td></tr>
+			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email." ".contactEmailIcon($person);?></td></tr>
 			<tr><td valign="top" class="header">Mobilnummer</td><td><?php echo $person->PhoneNumber;?></td></tr>
 			<tr><td valign="top" class="header">Närmaste anhörig</td><td><?php echo $person->EmergencyContact;?></td></tr>
 			<tr><td valign="top" class="header">Erfarenhet</td><td><?php echo Experience::loadById($person->ExperienceId)->Name;?></td></tr>

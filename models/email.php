@@ -12,7 +12,9 @@ class Email extends BaseModel{
     public  $ToName;
     public  $CC;
     public  $Subject;
+    public  $Greeting;
     public  $Text;
+    public  $SenderText;
     public  $CreatedAt;
     public  $SentAt;
     public  $DeletesAt;
@@ -34,7 +36,9 @@ class Email extends BaseModel{
         if (isset($arr['ToName'])) $this->ToName = $arr['ToName'];
         if (isset($arr['CC'])) $this->CC = $arr['CC'];
         if (isset($arr['Subject'])) $this->Subject = $arr['Subject'];
+        if (isset($arr['Greeting'])) $this->Greeting = $arr['Greeting'];
         if (isset($arr['Text'])) $this->Text = $arr['Text'];
+        if (isset($arr['SenderText'])) $this->SenderText = $arr['SenderText'];
         if (isset($arr['CreatedAt'])) $this->CreatedAt = $arr['CreatedAt'];
         if (isset($arr['SentAt'])) $this->SentAt = $arr['SentAt'];
         if (isset($arr['DeletesAt'])) $this->DeletesAt = $arr['DeletesAt'];
@@ -69,12 +73,30 @@ class Email extends BaseModel{
     # Normala sättet att skapa ett mail som kommer skickas vid ett senare tillfälle.
     # Attachments skall vara en array med namnen på filerna som nyckel.
     # Just nu tillåter vi bara pdf:er som bilagor.
-    public static function normalCreate($To, $ToName, $Subject, $Text, $attachments, $noOfDaysKept, $larp) {
+    public static function normalCreate($ToPersonIds, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
         $email = self::newWithDefault();
-        $email->To = $To;
-        $email->ToName = $ToName;
+        
+        if (!is_array($ToPersonIds)) $ToPersonIds = array($ToPersonIds);
+        
+        if (sizeof($ToPersonIds) > 1) {
+            $emailArr = array();
+            foreach ($ToPersonIds as $personId) {
+                $person = Person::loadById($personId);
+                if ($person->isSubscribed()) $emailArr[] = $person->Email;
+            }
+            $email->To = serialize($emailArr);
+            $email->ToName = "";
+        } else {
+            $person = Person::loadById($ToPersonIds[0]);
+            $email->To = $person->Email;
+            $email->ToName = $person->Name;
+        }
+        
+
+        $email->Greeting = $greeting;
         $email->Subject = $Subject;
         $email->Text = $Text; 
+         $email->SenderText = $senderText;
         $now = new Datetime();
         
         if (!is_null($larp)) {
@@ -85,7 +107,7 @@ class Email extends BaseModel{
             }
         }
         $myName = $email->myName();
-        $email->Subject = "Meddelande från $myName";
+        if (empty($email->Subject)) $email->Subject = "Meddelande från $myName";
         
         if (!is_null($attachments) && !empty($attachments)) $email->SentAt = date_format($now,"Y-m-d H:i:s"); # Förhindra att det skickas innan bilagorna sparats färdigt.
         
@@ -94,6 +116,10 @@ class Email extends BaseModel{
         $email->DeletesAt = date_format($now,"Y-m-d H:i:s");
         
         $email->create();
+        
+        $email->connectToPersons($ToPersonIds);
+        
+        
         
         if (!is_null($attachments) && !empty($attachments)) {
             foreach ($attachments as $filename => $attachment) {
@@ -118,6 +144,20 @@ class Email extends BaseModel{
         $sql = "SELECT * FROM regsys_email WHERE LarpId = ? OR LarpId IS NULL ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
+    
+
+    public static function allForPersonAtLarp(Person $person, Larp $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_email WHERE LarpId = ? AND ID IN (SELECT EmailId FROM regsys_email_person WHERE PersonId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $person->Id));
+    }
+    
+    public function isForUser(User $user) {
+        if (is_null($user)) return false;
+        $sql = "SELECT count(*) as Num FROM regsys_email_person WHERE EmailId=? AND PersonId IN (SELECT Id FROM regsys_person WHERE UserId = ?);";
+        return static::existsQuery($sql, array($this->Id, $user->Id));
+    }
+    
     
     # Alla icke skickade mail . Sorteras med det äldsta sist, så att man kan använda array_pop istälet för arra-shift som är långsammare.
     public static function allUnsent() {
@@ -164,7 +204,7 @@ class Email extends BaseModel{
     }
     
     public function receiverName() {
-        if (empty($this->ToName)) return "kära deltagare";
+        if (empty($this->ToName)) return "Kära deltagare";
         return trim(str_replace( array( '\'', '"', ',' , ';', '<', '>' ), ' ', $this->ToName));
 //         return $this->ToName;
     }
@@ -175,10 +215,10 @@ class Email extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_email SET SentAt=?, DeletesAt=?, SenderUserId=?, LarpId=?, `From`=?, `To`=?, `ToName`=?, `CC`=?, Subject=?, Text=?, ErrorMessage=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_email SET SentAt=?, DeletesAt=?, SenderUserId=?, LarpId=?, `From`=?, `To`=?, `Greeting`=?, `CC`=?, Subject=?, Text=?, SenderText=?, ErrorMessage=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->SentAt, $this->DeletesAt, $this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->CC, $this->Subject, 
-                                  $this->Text, $this->ErrorMessage, $this->Id))) {
+        if (!$stmt->execute(array($this->SentAt, $this->DeletesAt, $this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->Greeting, $this->CC, $this->Subject, 
+                                  $this->Text, $this->SenderText, $this->ErrorMessage, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -190,9 +230,9 @@ class Email extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_email (SenderUserId, LarpId, `From`, `To`, ToName, CC, Subject, Text, CreatedAt, DeletesAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_email (SenderUserId, LarpId, `From`, `To`, ToName, Greeting, CC, Subject, Text, SenderText, CreatedAt, DeletesAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->CC, $this->Subject, $this->Text, date_format(new Datetime(),"Y-m-d H:i:s"), $this->DeletesAt))) {
+        if (!$stmt->execute(array($this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->Greeting, $this->CC, $this->Subject, $this->Text, $this->SenderText, date_format(new Datetime(),"Y-m-d H:i:s"), $this->DeletesAt))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -206,48 +246,43 @@ class Email extends BaseModel{
     public function mailContent() {
         $larp = $this->larp();
         
-        $hej = "Hej";
 
         if (!is_null($larp)) {
             $campaign = $larp->getCampaign();
             if (!is_null($campaign))  $hej = $campaign->hej();
         }
         
-        $to_name = $this->receiverName();
+        $greeting = $this->Greeting;
+        if (empty($greeting)) $greeting = $hej." ".$this->receiverName();
         
+        $senderText = $this->SenderText;
         if (is_null($larp)) {
-            return "<!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset='utf-8'>
-                <title>Brev från Berghems vänner</title>
-        	</head>
-        	<body class='loggedin'>
-                $hej $to_name!<br />
-                <p>$this->Text</p>
-                
-                <br />
-                <p>Med vänliga hälsningar<br /><br /><b>Administratörerna</b></p>
-            </body>";
-        } 
+            $title = "Brev från Berghems vänner";
+            if (empty($senderText)) $senderText="Administratörerna";
+        } else {
+            $title = $larp->Name;
+            if (empty($senderText)) $senderText="Arrangörerna av $title";
+        }
         
+     
         return "<!DOCTYPE html>
         <html>
         <head>
             <meta charset='utf-8'>
-            <title>$larp->Name</title>
+            <title>$title</title>
     	</head>
     	<body class='loggedin'>
-            $hej $to_name!<br />
+            $greeting<br />
             <p>$this->Text</p>
             
             <br />
-            <p>Med vänliga hälsningar<br /><br /><b>Arrangörerna av $larp->Name</b></p>
+            <p>Med vänliga hälsningar<br /><br /><b>$senderText</b></p>
         </body>";
     }
     
     # Normalt bör man inte anropa den här direkt utan newWithDefault
     public function sendNow() { 
+        global $current_user;
         //Create a new PHPMailer instance
         $mail = new PHPMailer();
         //Set who the message is to be sent from
@@ -257,17 +292,31 @@ class Email extends BaseModel{
         $mail->addReplyTo($this->From, encode_utf_to_iso($this->myName()));
         //Set who the message is to be sent to
         
-        if (!($to_array = @unserialize($this->To))) {
-            $mail->addAddress($this->To, encode_utf_to_iso($this->receiverName()));
-        } elseif (!empty($to_array)) {
-            foreach($to_array as $to) {
-//                 echo "<h1>TO = $to</h1>";
-                $mail->addAddress($to, encode_utf_to_iso($this->receiverName()));
+        
+        //Om test, skicka bara till inloggad användare
+        if (Dbh::isLocal()) {
+            # Fixa så inga mail går iväg om man utvecklar
+            if (isset($current_user)) {
+                $mail->addAddress($current_user->Email, $current_user->Name);
+            } else {
+                $mail->addAddress("karin@tellen.se", "Karin Rappe");
             }
-        }
-
-        if (!empty($this->CC)) {
-            $mail->addCC($this->CC);
+            
+            
+        } else {
+        
+            if (!($to_array = @unserialize($this->To))) {
+                $mail->addAddress($this->To, encode_utf_to_iso($this->receiverName()));
+            } elseif (!empty($to_array)) {
+                foreach($to_array as $to) {
+    //                 echo "<h1>TO = $to</h1>";
+                    $mail->addAddress($to, encode_utf_to_iso($this->receiverName()));
+                }
+            }
+    
+            if (!empty($this->CC)) {
+                $mail->addCC($this->CC);
+            }
         }
 
         $mail->Subject = encode_utf_to_iso($this->Subject);
@@ -344,6 +393,20 @@ class Email extends BaseModel{
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
+        }
+        $stmt = null;
+        
+    }
+    
+    public function connectToPersons($personIdArr) {
+        foreach($personIdArr as $personId) {
+            $stmt = $this->connect()->prepare("INSERT INTO ".
+                "regsys_email_person (EmailId, PersonId) VALUES (?,?);");
+            if (!$stmt->execute(array($this->Id, $personId))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
         }
         $stmt = null;
         

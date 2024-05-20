@@ -34,7 +34,7 @@ th {
                     echo "<tr>\n";
                 }
                 echo "<td>$user->Name <a href='logic/become_user.php?UserId=$user->Id'>su</a></td>\n";
-                echo "<td>$user->Email ".contactEmailIcon($user->Name,$user->Email)."</td>\n";
+                echo "<td>$user->Email ".contactEmailIconUser($user)."</td>\n";
                 if ($current_user->Email == $user->Email ) {
                     echo "<td>" . showStatusIcon($user->IsAdmin) . "</td>\n";
                 } else {

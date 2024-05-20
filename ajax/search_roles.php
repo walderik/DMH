@@ -45,11 +45,11 @@ if ($operation == "search") {
         if ($type == "Ability") $resTable .="<td>$role->AbilityComment</td>";
         if ($type == "Council") $resTable .="<td>$role->Council</td>";
         $resTable .= "</tr>";
-        $emailArr[] = $role->getPerson()->Email;
+        $personIdArr[] = $role->getPerson()->Id;
     }
     $resTable .="</table>";
     
-    $resMail = contactSeveralEmailIcon('Skicka till deltagarna med dessa roller', $emailArr, $valueText, "Meddelande från $current_larp->Name")."<br>";
+    $resMail = contactSeveralEmailIcon('Skicka till deltagarna med dessa roller', $em$personIdArrailArr, $valueText, "Meddelande från $current_larp->Name")."<br>";
     
     
     echo $resSearch . $resMail. $resTable;

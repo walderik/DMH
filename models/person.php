@@ -642,4 +642,9 @@ class Person extends BaseModel{
     public function getHouseAtLarp(Larp $larp) {
         return House::getHouseAtLarp($this, $larp);
     }
+    
+    public function isSubscribed() {
+        //TODO hantera unsubsribe
+       return true;
+    }
 }

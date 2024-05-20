@@ -34,7 +34,7 @@ th {
     		        $reserve_registration = $person->getReserveRegistration($current_larp);
     		        echo "<tr>\n";
     		        echo "<td>" . $person->Name . "</td>\n";
-    		        echo "<td>" . $person->Email . " ".contactEmailIcon($person->Name,$person->Email)."</td>\n";
+    		        echo "<td>" . $person->Email . " ".contactEmailIcon($person)."</td>\n";
     		        echo "<td>" . $person->getAgeAtLarp($current_larp) . " år ";
 
     		        if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {

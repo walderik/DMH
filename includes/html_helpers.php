@@ -147,17 +147,28 @@ function showParticipantStatusIcon($value, $message) {
     }
 }
 
-function contactEmailIcon($name,$email) {
+function contactEmailIcon(Person $person) {
     $param = date_format(new Datetime(),"suv");
     return "<form action='contact_email.php'  class='fabutton' method='post'>\n".
         "<input type=hidden name='send_one' value=$param>\n".
-        "<input type=hidden name='email' value=$email>\n".
-        "<input type=hidden name='name' value='$name'>\n".
-        "<button type='submit' class='invisible' title='Skicka mail till $name'>".
+        "<input type=hidden name='personId' value=$person->Id>\n".
+        "<button type='submit' class='invisible' title='Skicka mail till $person->Name'>".
         "  <i class='fa-solid fa-envelope-open-text'></i>".
         "</button>\n".
         "</form>\n";
 }
+
+function contactEmailIconUser(User $user) {
+    $param = date_format(new Datetime(),"suv");
+    return "<form action='contact_email.php'  class='fabutton' method='post'>\n".
+        "<input type=hidden name='send_one' value=$param>\n".
+        "<input type=hidden name='email' value=$user->Email>\n".
+        "<button type='submit' class='invisible' title='Skicka mail till $user->Name'>".
+        "  <i class='fa-solid fa-envelope-open-text'></i>".
+        "</button>\n".
+        "</form>\n";
+}
+
 
 
 function contactAllEmailIcon(){
@@ -171,13 +182,13 @@ function contactAllEmailIcon(){
 }
 
 
-function contactSeveralEmailIcon($txt, $emailArr, $greeting, $subject){
+function contactSeveralEmailIcon($txt, $personIdArr, $greeting, $subject){
     $param = date_format(new Datetime(),"suv");
     $retrunStr = "<form action='contact_email.php'  class='fabutton' method='post'>\n".
         "<input type=hidden name='send_several' value=$param>\n";
         
-    foreach ($emailArr as $email)  {
-        $retrunStr .= "<input type='hidden' name='email[]' value='$email'>\n";
+    foreach ($personIdArr as $personId)  {
+        $retrunStr .= "<input type='hidden' name='personId[]' value='$personId'>\n";
     }
     $retrunStr .= "<input type=hidden name='name' value='$greeting'>\n".
         "<input type=hidden name='subject' value='$subject'>\n".
