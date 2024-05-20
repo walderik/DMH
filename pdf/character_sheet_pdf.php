@@ -203,10 +203,14 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $this->SetXY($left, $y);
             }
             */
+            $this->shortbar();
+            $y += 2;
+            $this->SetXY($left, $y);
+            
         }
         
         if (!empty($intrigue_numbers)) {
-            $this->bar();
+            //$this->bar();
             $y = $this->GetY()+$space;
             $this->SetXY($left, $y);
             $this->SetFont('Arial','',static::$text_fontsize-3);
@@ -847,6 +851,11 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	private function bar() {
 	    global $y;
 	    $this->Line(static::$x_min, $y, static::$x_max, $y);
+	}
+
+	private function shortbar() {
+	    global $y;
+	    $this->Line(static::$x_min+static::$Margin, $y, static::$x_max-static::$Margin, $y);
 	}
 	
 	private function mittlinje() {
