@@ -51,8 +51,7 @@ class BerghemMailer {
             }
             return true;
         }
-        
-        Email::normalCreateSimple(array($toEmails), $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+        Email::normalCreateSimple($toEmails, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
         
         return true;
     }
