@@ -175,7 +175,10 @@ include 'navigation.php';
 		                if (!empty($intrigueActor->OffInfo)) {
 		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
 		                }
-		                if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) $intrigue_numbers[] = $intrigue->Number;
+		                if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) {
+		                    $intrigue_numbers[] = $intrigue->Number;
+		                    echo "<hr>";
+		                }
 		            }
 		        }
 		        if (!empty($intrigue_numbers)) {
