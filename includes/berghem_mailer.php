@@ -41,6 +41,21 @@ class BerghemMailer {
 
         return true;   
     }
+ 
+    public static function sendSimpleEmail($larp, $toEmails, $name, string $greeting, string $text, string $subject, string $senderText, int $noOfDaysKept, ?array $attachments=[], ?string $cc="") {
+        if (is_array($toEmails)) {
+            
+            # Om man skickar in en array av epostadresser skapar vi ett mail per 15 adresser.
+            foreach( array_chunk($toEmails,15) as $emails_to) {
+                Email::normalCreateSimple($emails_to, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+            }
+            return true;
+        }
+        
+        Email::normalCreateSimple(array($toEmails), $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+        
+        return true;
+    }
     
     
     public static function send_guardian_mail(Person $guardian, Person $minor, LARP $larp) {
@@ -238,6 +253,10 @@ class BerghemMailer {
         BerghemMailer::send($larp, $personId, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
     
+    public static function sendContactMailToSomeoneUnknown($email, String $greeting, String $subject, String $text, $senderText, $larp) {
+        BerghemMailer::sendSimpleMail($larp, $email, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
+    }
+    
     # Skicka mail till alla deltagare
     public static function sendContactMailToAll(String $greeting, String $subject, String $text, $senderText, $larp) {
         $campaign = $larp->getCampaign();
@@ -261,6 +280,12 @@ class BerghemMailer {
         if (empty($personIdArr)) return;
         
         BerghemMailer::send($larp, $personIdArr, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
+    }
+    
+    public static function sendContactMailToSeveralUnknown($emailArr, String $greeting, String $subject, String $text, $senderText, $larp) {
+        if (empty($emailArr)) return;
+        
+        BerghemMailer::sendSimpleEmail($larp, $emailArr, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
     
     

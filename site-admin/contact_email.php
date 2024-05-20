@@ -11,13 +11,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST['send_one'])) {
         $type="one";
-        $email = $_POST['email'];
-        $name = $_POST['name'];
+        if (isset($_POST['personId'])) {
+            $personId = $_POST['personId'];
+            $person = Person::loadById($personId);
+            $name = $person->Name;
+            $email = $person->Email;
+        } else {
+            $email = $_POST['email'];
+            $name = $_POST['name'];
+        }
     } elseif (isset($_POST['send_several'])) {
         $type="several";
         $subject = $_POST['subject'];
-        $email = $_POST['email'];
         $name = $_POST['name'];
+        if (isset($_POST['personId'])) {
+            $personId = $_POST['personId'];
+        } else {
+            $email = $_POST['email'];
+        }
+
     }
 }
 
@@ -54,15 +66,19 @@ include 'navigation.php';
     	
 		<form action="logic/send_contact_email.php" method="post" enctype="multipart/form-data">
 		<?php 
-		if (isset($email)) {
-    		if (is_array($email)) {
-    		    foreach ($email as $emailStr)  {
-    		        echo "<input type='hidden' name='email[]' value='$emailStr'>\n";
-    		    }
-    		    
-    		} else {
-    		    echo "<input type='hidden' id='email' name='email' value='$email'>";
-    		}
+
+		if (isset($personId)) {
+		    if (is_array($personId)) {
+		        foreach ($personId as $id)  {
+		            echo "<input type='hidden' name='personId[]' value='$id'>\n";
+		        }
+		        
+		    } else {
+		        echo "<input type='hidden' id='personId' name='personId' value='$personId'>";
+		    }
+		} else {
+		    echo "<input type='hidden' id='email' name='email' value='$email'>";
+		    
 		}
 		
 		if (isset($subject)) {
@@ -70,24 +86,24 @@ include 'navigation.php';
 		    
 		}
 		
+		if (!isset($subject)) $subject = "Meddelande från Berghems vänner";
+		echo "Ärende: <input id='subject' size = '70' name='subject' value='$subject' required>";
 		?>
 
     		<input type="hidden" id="type" name="type" value="<?php echo $type; ?>">
     		<input type="hidden" id="referer" name="referer" value="<?php echo $referer; ?>">
+    		<input type="hidden" id="senderText" name="senderText" value="Berghems vänner">
     		
     		<p><br />
     		<p>
-    		<?php 
-    		if($type=="several") {
-    		    echo "$hej ";
-    		    echo "<input id='name' name='name' value='$name'>";
-    		} else {
-    		    echo "<input type='hidden' id='name' name='name' value='$name;'>";
-    		    echo "$hej $name"; 
-    		}
-    		echo "!";
-    		?>
+     		<?php 
+
+		      $greeting= "$hej $name!";
+    		  echo "<input id='greeting' size = '50' name='greeting' value='$greeting' required>";
     		
+    		?>
+ 
+     		
     		 <br></p>
 			<p><textarea id="text" name="text" rows="8" cols="121" maxlength="60000" required></textarea></p>
 			Med vänliga hälsningar<br /><br />

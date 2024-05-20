@@ -132,7 +132,7 @@ class SignupController {
         $text .= "Nu måste du aktivera ditt konto.<br><br>\n";
         $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken.</a><br>\n";
         
-        BerghemMailer::send(null, $email, $name, $text, "Aktiveringsbrev", BerghemMailer::DaysAutomatic);
+        BerghemMailer::sendSimpleEmail(null, $email, $name, "Hej ".$name, $text, "Aktiveringsbrev", "Omnes Mundi", BerghemMailer::DaysAutomatic);
         
     }
     

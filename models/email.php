@@ -74,7 +74,6 @@ class Email extends BaseModel{
     # Attachments skall vara en array med namnen på filerna som nyckel.
     # Just nu tillåter vi bara pdf:er som bilagor.
     public static function normalCreate($ToPersonIds, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
-        $email = self::newWithDefault();
         
         if (!is_array($ToPersonIds)) $ToPersonIds = array($ToPersonIds);
         
@@ -84,19 +83,35 @@ class Email extends BaseModel{
                 $person = Person::loadById($personId);
                 if ($person->isSubscribed()) $emailArr[] = $person->Email;
             }
-            $email->To = serialize($emailArr);
-            $email->ToName = "";
+            $ToEmails = serialize($emailArr);
+            $name = "";
         } else {
             $person = Person::loadById($ToPersonIds[0]);
-            $email->To = $person->Email;
-            $email->ToName = $person->Name;
+            $ToEmails = $person->Email;
+            $name = $person->Name;
         }
         
+        $email = Email::createMail($ToEmails, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
 
+        $email->connectToPersons($ToPersonIds);
+     }
+
+     public static function normalCreateSimple($ToEmails, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
+         if (is_array($ToEmails)) $ToEmails = serialize($ToEmails);
+         Email::createMail($ToEmails, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
+      }
+     
+     
+    private static function createMail($ToEmails, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
+        $email = self::newWithDefault();
+
+        $email->To = $ToEmails;
+        $email->ToName = $name;
+     
         $email->Greeting = $greeting;
         $email->Subject = $Subject;
-        $email->Text = $Text; 
-         $email->SenderText = $senderText;
+        $email->Text = $Text;
+        $email->SenderText = $senderText;
         $now = new Datetime();
         
         if (!is_null($larp)) {
@@ -117,10 +132,6 @@ class Email extends BaseModel{
         
         $email->create();
         
-        $email->connectToPersons($ToPersonIds);
-        
-        
-        
         if (!is_null($attachments) && !empty($attachments)) {
             foreach ($attachments as $filename => $attachment) {
                 if (is_null($filename) || is_numeric($filename)) {
@@ -137,6 +148,8 @@ class Email extends BaseModel{
             $email->SentAt = null;
             $email->update();
         }
+        return $email;
+        
     }
     
     public static function allBySelectedLARPAndCommon(Larp $larp) {

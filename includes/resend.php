@@ -92,7 +92,7 @@ function send_activation(User $user)  {
     $text  = "Du har begärt en ny aktiveringslänk för att kunna aktivera ditt konto.<br>\n";
     $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken och sedan kan du logga in.</a><br>\n";
     
-    BerghemMailer::send(null, $mail, $user->Name, $text, "Aktiveringsbrev", BerghemMailer::DaysAutomatic);
+    BerghemMailer::sendSimpleEmail(null, $mail, $user->Name, "Hej ".$user->Name, $text, "Aktiveringsbrev", "Omnes Mundi", BerghemMailer::DaysAutomatic);
 }
 
 // Skicka mail med en länk för att byta lösenord
@@ -110,5 +110,5 @@ function send_change_password(User $user) {
     $text  = "Du har begärt en länk för att kunna byta lösenord på ditt konto.<br>\n";
     $text .= "<a href='$url'>Allt du behöver göra är att klicka på den här länken och sedan kan du byta lösenord.</a><br>\n";
     
-    BerghemMailer::send(null, $mail, $user->Name, $text, "Byta Lösenord", BerghemMailer::DaysAutomatic);
+    BerghemMailer::sendSimpleEmail(null, $mail, $user->Name, "Hej ".$user->Name, $text, "Byta Lösenord", "Omnes Mundi", BerghemMailer::DaysAutomatic);
 }
