@@ -306,7 +306,6 @@ class Email extends BaseModel{
         global $current_user;
         //Create a new PHPMailer instance
         $mailer = new PHPMailer();
-        $mailer->CharSet = PHPMailer::CHARSET_UTF8;
         //Set who the message is to be sent from
         $mailer->setFrom($this->From, encode_utf_to_iso($this->myName()),0);
 //         $mail->setFrom($from, encode_utf_to_iso($myName)); # Tror faktiskt det ska vara så här
@@ -348,13 +347,14 @@ class Email extends BaseModel{
         $unsubscribeText = "";
         $site = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]";
         if (sizeof($recipients) == 1) {
+            //$mailer->CharSet = 'UTF-8';
             $person = $recipients[0];
             if ($person->Id == 10 || $person->Id == 71) {
             $code = $person->getUnsubscribeCode();
             $unsubLink = "$site/regsys/unsubscribe.php?personId=$person->Id&code=$code";
             $mailer->addCustomHeader(
                 'List-Unsubscribe',
-                '<$unsubLink>'
+                "<$unsubLink>"
                     );
             $mailer->addCustomHeader(
                 'List-Unsubscribe-Post',
@@ -384,7 +384,7 @@ class Email extends BaseModel{
 
         $mailer->Body = encode_utf_to_iso($this->mailContent($unsubscribeText));
 
-        
+        //Om man skickar med SMTP fungerar unsubscribe
         if (str_contains($this->From, "kontakt@kampeniringen.se")) {
             $mailer->IsSMTP();
             $mailer->SMTPAuth = true;
@@ -395,6 +395,17 @@ class Email extends BaseModel{
             $mailer->Password = "BrestaBresta1125";   
                      
         }
+        if (str_contains($this->From, "dmh@berghemsvanner.se")) {
+            $mailer->IsSMTP();
+            $mailer->SMTPAuth = true;
+            $mailer->SMTPSecure = "tls";
+            $mailer->Host = "send.one.com";
+            $mailer->Port = 587;
+            $mailer->Username = "dmh@berghemsvanner.se";
+            $mailer->Password = "Minnekapi1!";
+            
+        }
+        
         
         /*
         Outgoing server name: mailout.one.com
