@@ -17,6 +17,8 @@ class Person extends BaseModel{
     public $HousingComment;
     public $HealthComment;
     public $HasPermissionShowName = 0;
+    public $IsSubscribed = 1;
+    public $UnsubscribeCode;
 
     public static $orderListBy = 'Name';
     
@@ -51,6 +53,8 @@ class Person extends BaseModel{
         if (isset($arr['HousingComment'])) $this->HousingComment = $arr['HousingComment'];
         if (isset($arr['HealthComment'])) $this->HealthComment = $arr['HealthComment'];
         if (isset($arr['HasPermissionShowName'])) $this->HasPermissionShowName = $arr['HasPermissionShowName'];
+        if (isset($arr['IsSubscribed'])) $this->IsSubscribed = $arr['IsSubscribed'];
+        if (isset($arr['UnsubscribeCode'])) $this->UnsubscribeCode = $arr['UnsubscribeCode'];
         
         if (isset($this->HouseId) && $this->HouseId=='null') $this->HouseId = null;
         
@@ -285,11 +289,11 @@ class Person extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_person SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
                                                                   FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
-                                                                  UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, HasPermissionShowName=? WHERE Id = ?;");
+                                                                  UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, HasPermissionShowName=?, IsSubscribed=?, UnsubscribeCode=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId,
-            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->HasPermissionShowName, $this->Id))) {
+            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -303,12 +307,12 @@ class Person extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_person (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                                                                     FoodAllergiesOther, OtherInformation, ExperienceId,
-                                                                    UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, HasPermissionShowName) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
+                                                                    UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, HasPermissionShowName, IsSubscribed, UnsubscribeCode) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId, 
-            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->HasPermissionShowName))) {
+            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -644,7 +648,14 @@ class Person extends BaseModel{
     }
     
     public function isSubscribed() {
-        //TODO hantera unsubsribe
-       return true;
+        return $this->IsSubscribed == 1;
+    }
+    
+    public function getUnsubscribeCode() {
+        if (empty($this->UnsubscribeCode)) {
+            $this->UnsubscribeCode = bin2hex(random_bytes(20));
+            $this->update();
+        }
+        return $this->UnsubscribeCode;
     }
 }

@@ -170,6 +170,12 @@ class Email extends BaseModel{
         $sql = "SELECT count(*) as Num FROM regsys_email_person WHERE EmailId=? AND PersonId IN (SELECT Id FROM regsys_person WHERE UserId = ?);";
         return static::existsQuery($sql, array($this->Id, $user->Id));
     }
+
+    
+    public function getRecipients() {
+        $sql = "SELECT * FROM regsys_person WHERE Id IN (SELECT PersonId FROM regsys_email_person WHERE EmailId=?);";
+        return Person::getSeveralObjectsqQuery($sql, array($this->Id));
+    }
     
     
     # Alla icke skickade mail . Sorteras med det äldsta sist, så att man kan använda array_pop istälet för arra-shift som är långsammare.
@@ -256,7 +262,7 @@ class Email extends BaseModel{
     
     # Skapar ett standardmässigt HTML-meddelande. 
     # Så att alla taggar blir rätt och vi kan skicka ett alt-meddelande utan html-skräp så blilnda lättare kan läsa mailet.
-    public function mailContent() {
+    public function mailContent(?string $unsubscribeText="") {
         $larp = $this->larp();
         
 
@@ -289,7 +295,9 @@ class Email extends BaseModel{
             <p>$this->Text</p>
             
             <br />
-            <p>Med vänliga hälsningar<br /><br /><b>$senderText</b></p>
+            <p>Med vänliga hälsningar<br /><br /><b>$senderText</b>
+            $unsubscribeText
+            </p>
         </body>";
     }
     
@@ -297,43 +305,69 @@ class Email extends BaseModel{
     public function sendNow() { 
         global $current_user;
         //Create a new PHPMailer instance
-        $mail = new PHPMailer();
+        $mailer = new PHPMailer();
+        $mailer->CharSet = PHPMailer::CHARSET_UTF8;
         //Set who the message is to be sent from
-        $mail->setFrom($this->From, encode_utf_to_iso($this->myName()),0);
+        $mailer->setFrom($this->From, encode_utf_to_iso($this->myName()),0);
 //         $mail->setFrom($from, encode_utf_to_iso($myName)); # Tror faktiskt det ska vara så här
         //Set an alternative reply-to address
-        $mail->addReplyTo($this->From, encode_utf_to_iso($this->myName()));
+        $mailer->addReplyTo($this->From, encode_utf_to_iso($this->myName()));
         //Set who the message is to be sent to
+        
         
         
         //Om test, skicka bara till inloggad användare
         if (Dbh::isLocal()) {
             # Fixa så inga mail går iväg om man utvecklar
             if (isset($current_user)) {
-                $mail->addAddress($current_user->Email, $current_user->Name);
+                $mailer->addAddress($current_user->Email, $current_user->Name);
             } else {
-                $mail->addAddress("karin@tellen.se", "Karin Rappe");
+                $mailer->addAddress("karin@tellen.se", "Karin Rappe");
             }
             
             
         } else {
         
             if (!($to_array = @unserialize($this->To))) {
-                $mail->addAddress($this->To, encode_utf_to_iso($this->receiverName()));
+                $mailer->addAddress($this->To, encode_utf_to_iso($this->receiverName()));
+                
+                
             } elseif (!empty($to_array)) {
                 foreach($to_array as $to) {
     //                 echo "<h1>TO = $to</h1>";
-                    $mail->addAddress($to, encode_utf_to_iso($this->receiverName()));
+                    $mailer->addAddress($to, encode_utf_to_iso($this->receiverName()));
                 }
             }
     
             if (!empty($this->CC)) {
-                $mail->addCC($this->CC);
+                $mailer->addCC($this->CC);
             }
         }
+        
+        $recipients = $this->getRecipients();
+        $unsubscribeText = "";
+        $site = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]";
+        if (sizeof($recipients) == 1) {
+            $person = $recipients[0];
+            if ($person->Id == 10 || $person->Id == 71) {
+            $code = $person->getUnsubscribeCode();
+            $unsubLink = "$site/regsys/unsubscribe.php?personId=$person->Id&code=$code";
+            $mailer->addCustomHeader(
+                'List-Unsubscribe',
+                '<$unsubLink>'
+                    );
+            $mailer->addCustomHeader(
+                'List-Unsubscribe-Post',
+                'List-Unsubscribe=One-Click'
+                );
+            }
+            $unsubscribeText = "<br><br>Om du inte vill ha fler mail från oss kan du klicka på den här länken: <a href='$unsubLink'>$unsubLink</a>";
+            
+            
+        }
 
-        $mail->Subject = encode_utf_to_iso($this->Subject);
-        $mail->AltBody = encode_utf_to_iso($this->Text);
+        $mailer->Subject = encode_utf_to_iso($this->Subject);
+        $mailer->AltBody = encode_utf_to_iso($this->Text);
         //Attach an image file
         // $mail->addAttachment('images/phpmailer_mini.png');
         
@@ -341,24 +375,24 @@ class Email extends BaseModel{
         
         if (!is_null($attachments) && !empty($attachments)) {
             foreach ($attachments as $attachment) {
-                $mail->AddStringAttachment($attachment->Attachement, $attachment->Filename, 'base64', 'application/pdf');
+                $mailer->AddStringAttachment($attachment->Attachement, $attachment->Filename, 'base64', 'application/pdf');
             }
         }
         
         
-        $mail->isHTML(true);
+        $mailer->isHTML(true);
 
-        $mail->Body = encode_utf_to_iso($this->mailContent());
+        $mailer->Body = encode_utf_to_iso($this->mailContent($unsubscribeText));
 
         
         if (str_contains($this->From, "kontakt@kampeniringen.se")) {
-            $mail->IsSMTP();
-            $mail->SMTPAuth = true;
-            $mail->SMTPSecure = "tls";
-            $mail->Host = "send.one.com";
-            $mail->Port = 587;
-            $mail->Username = "kontakt@kampeniringen.se";
-            $mail->Password = "BrestaBresta1125";   
+            $mailer->IsSMTP();
+            $mailer->SMTPAuth = true;
+            $mailer->SMTPSecure = "tls";
+            $mailer->Host = "send.one.com";
+            $mailer->Port = 587;
+            $mailer->Username = "kontakt@kampeniringen.se";
+            $mailer->Password = "BrestaBresta1125";   
                      
         }
         
@@ -372,9 +406,9 @@ class Email extends BaseModel{
         */
         
         
-        if (!$mail->send()) {
+        if (!$mailer->send()) {
 //             echo 'Mailer Error: ' . $mail->ErrorInfo;
-            $this->ErrorMessage = $mail->ErrorInfo;
+            $this->ErrorMessage = $mailer->ErrorInfo;
             $this->update();
             return false;
         }

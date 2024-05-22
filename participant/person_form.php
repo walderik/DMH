@@ -189,6 +189,21 @@
 
 
 			<div class="question">
+				<label for="IsSubscribed">Ta emot epost</label> <font style="color:red">*</font><br>
+       			<div class="explanation">Tillåter du att vi skickar epost till dig med meddelanden från arrangörerna och information om lajvet? <br>
+       			Alla meddelanden kommer att finnas inne i Omnes Mundi i vilket fall, men du behöver logga in och kontrollera om någon har skickat något till dig ifall du inte tar emot epost.
+			</div>
+
+    			<input type="radio" id="IsSubscribed_yes" name="IsSubscribed" value="1" <?php if ($person->isSubscribed()) echo 'checked="checked"'?> required> 
+    			<label for="IsSubscribed_yes">Ja</label><br> 
+    			<input type="radio" id="IsSubscribed_no" name="IsSubscribed" value="0" <?php if (!$person->isSubscribed()) echo 'checked="checked"'?>> 
+    			<label for="IsSubscribed_no">Nej</label>
+
+								
+           </div>
+
+
+			<div class="question">
 			<label for="PUL">GDPR</label> <font style="color:red">*</font><br>
 			<div class="explanation">Härmed samtycker jag till att föreningen Berghems
 			Vänner får hantera och lagra mina uppgifter - såsom namn/

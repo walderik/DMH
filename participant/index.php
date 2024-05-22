@@ -191,6 +191,7 @@ line-height: 1.8;
                             "<th onclick='sortTable(1, \"$tableId\")'>Bilagor</th>".
                             "<th onclick='sortTable(2, \"$tableId\")'>Skickat av</th>".
                             "<th onclick='sortTable(3, \"$tableId\")'>Skickat</th>".
+                            "<th onclick='sortTable(3, \"$tableId\")'>Ligger kvar tills</th>".
                             "</tr>\n";
                         foreach (array_reverse($emails) as $email) {
                             $sendUserName = "";
@@ -208,7 +209,8 @@ line-height: 1.8;
                             echo "</td>";
                             echo "<td>$sendUserName</td>";
                             echo "<td>$email->SentAt</td>";
-                         }
+                            echo "<td>$email->DeletesAt</td>";
+                        }
                         echo "</table>";
                         echo "<br>";
                         
