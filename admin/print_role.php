@@ -10,7 +10,8 @@ if (isset($role->GroupId)) {
 
 $person = $role->getPerson();
 
-$isReserve = Reserve_LARP_Role::isReserve($role->Id, $current_larp->Id);
+$isRegistered = $role->isRegistered($current_larp);
+
 ?>
 <table>
 <?php
@@ -21,7 +22,7 @@ if ($role->isMysLajvare()) {
 			<tr>
     			<td valign="top" class="header">Spelas av</td>
     			<td>
-    			<?php if (!$isReserve) { ?>
+    			<?php if ($isRegistered) { ?>
     			
     			<a href ="view_person.php?id=<?php echo $role->PersonId;?>">
     			<?php } ?>
@@ -48,7 +49,7 @@ if ($role->isMysLajvare()) {
 			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a></td></tr>
 		<?php }?>
 		
-		<?php if (!$isReserve) {?>
+		<?php if ($isRegistered) {?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
 		<?php }?>
 

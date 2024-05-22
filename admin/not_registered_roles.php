@@ -18,7 +18,7 @@ include 'navigation.php';
     		    foreach ($groups as $group)  {
     		        $person = $group->getPerson();
     		        echo "<tr>\n";
-    		        echo "<td>" . $group->Name;
+    		        echo "<td><a href='view_group.php?id=$group->Id>$group->Name</a>";
     		        echo "</td>\n";
     		        echo "<td>$person->Name</td>";
     		        $larp = $group->lastLarp();
@@ -55,7 +55,7 @@ include 'navigation.php';
     		        $person = $role->getPerson();
     		        if (!in_array($person, $reserve_persons)) {
         		        echo "<tr>\n";
-        		        echo "<td>" . $role->Name;
+        		        echo "<td><a href='view_role.php?id=$role->Id'>$role->Name</a>";
         		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		        echo "</td>\n";
         		        echo "<td>$role->Profession</td>\n";
@@ -63,7 +63,7 @@ include 'navigation.php';
         		        if (is_null($group)) {
         		            echo "<td>&nbsp;</td>\n";
         		        } else {
-        		            echo "<td>$group->Name</td>\n";
+        		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</a></td>\n";
         		        }
         		        echo "<td>$person->Name</td>";
         		        $larp = $role->lastLarp();
@@ -74,16 +74,20 @@ include 'navigation.php';
         		        else {
         		            echo $larp->Name;
         		        }
-        		        echo "</td>";
+
     
-        		        
-        		        if ($person->isRegistered($current_larp)) {
-        		            echo "<td><a href='logic/add_role.php?id=$role->Id'>Lägg till som sidokaraktär</a></td>";
+        		        echo "<td>";
+        		        if (($role->IsDead !=1)) {
+            		        if ($person->isRegistered($current_larp)) {
+            		            echo "<a href='logic/add_role.php?id=$role->Id'>Lägg till som sidokaraktär</a>";
+            		        }
+                            else {
+                                echo "<a href='logic/register_person.php?id=$role->Id'>Anmäl med denna som huvudkaraktär</a>";
+                            }
         		        }
-                        else {
-                            echo "<td><a href='logic/register_person.php?id=$role->Id'>Anmäl med denna som huvudkaraktär</a></td>";
-                        }
+                        echo "</td>";
                         echo "</tr>\n";
+
     		        }
       		    }
     		    echo "</table>";

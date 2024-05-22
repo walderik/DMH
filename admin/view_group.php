@@ -15,18 +15,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $current_group = Group::loadById($GroupId); 
 
 
-if (!$current_group->isRegistered($current_larp)) {
-    header('Location: index.php'); //Gruppen är inte anmäld
-    exit;
+$isRegistered = $current_group->isRegistered($current_larp);
+
+if ($isRegistered) {
+    $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
+    
+    $persons = Person::getGroupMembers($current_group, $current_larp);
+    $main_characters_in_group = Role::getAllMainRolesInGroup($current_group, $current_larp);
+    $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($current_group, $current_larp);
+    $intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id, $current_larp->Id);
+} else {
+    $intrigues = array();
 }
-
-$larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
-
-$persons = Person::getGroupMembers($current_group, $current_larp);
-$main_characters_in_group = Role::getAllMainRolesInGroup($current_group, $current_larp);
-$non_main_characters_in_group = Role::getAllNonMainRolesInGroup($current_group, $current_larp);
-
-$intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id, $current_larp->Id);
 
 
 function print_role($role, $group) {
@@ -74,15 +74,21 @@ include 'navigation.php';
 	<div class="content">
 		<h1><?php echo $current_group->Name;?>&nbsp;
 		<?php if ($current_group->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
+		<?php if ($isRegistered) {?>	
 		<a href='edit_group.php?id=<?php echo $current_group->Id;?>'><i class='fa-solid fa-pen'></i></a> 
-		</h1>		
+		<?php } ?>
+		</h1>	
+		<?php if ($isRegistered) {?>	
 		<a href='group_sheet.php?id=<?php echo $current_group->Id;?>' target='_blank'>
 		<i class='fa-solid fa-file-pdf' title='Gruppblad för <?php echo $current_group->Name;?>'></i>Gruppblad för <?php echo $current_group->Name;?></a> &nbsp;
 
 		<a href='group_sheet.php?id=<?php echo $current_group->Id;?>&all_info=<?php echo date_format(new Datetime(),"suv") ?>' target='_blank'>
 		<i class='fa-solid fa-file-pdf' title='All info om <?php echo $current_group->Name;?>'></i>All info om <?php echo $current_group->Name;?></a> &nbsp;
 		<br><br>
-        <?php if ($larp_group->UserMayEdit  == 1) {
+		<?php }?>
+        <?php 
+        if ($isRegistered) {
+        if ($larp_group->UserMayEdit  == 1) {
                 echo "Gruppledaren får ändra gruppen " . showStatusIcon(false);
                 $editButton = "Ta bort tillåtelsen att ändra";
             }
@@ -93,13 +99,21 @@ include 'navigation.php';
                   
                 ?>
             <form action="logic/toggle_user_may_edit_group.php" method="post"><input type="hidden" id="groupId" name="groupId" value="<?php echo $current_group->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
-		
+		<?php }?>
 		<div>
 		<table>
 		<?php 
 		$groupleader = $current_group->getPerson();
 		?>
-			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $groupleader->Name;?></a> <?php echo contactEmailIcon($groupleader) ?></td>
+			<tr><td valign="top" class="header">Gruppansvarig</td><td>
+			<?php if ($isRegistered) {?>
+			<a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $groupleader->Name;?></a> 
+			<?php } else {
+			    echo $groupleader->Name;
+			}
+			?>
+			<?php echo contactEmailIcon($groupleader) ?>
+			</td>
 					<?php 
 					if ($current_group->hasImage()) {
             		    echo "<td rowspan='20' valign='top'>";
@@ -129,11 +143,14 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Färg</td><td><?php echo $current_group->Colour; ?></td></tr>
 			<?php }?>
 
-			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
 			<?php if (IntrigueType::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($current_group->getIntrigueTypes());?></td></tr>
 			<?php } ?>
 			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
+
+			<?php if ($isRegistered) {?>
+			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
+
 			<tr><td valign="top" class="header">Kvarvarande intriger</td><td><?php echo $larp_group->RemainingIntrigues; ?></td></tr>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
 			<tr><td valign="top" class="header">Uppskattat<br>antal medlemmar</td><td><?php echo $larp_group->ApproximateNumberOfMembers;?></td></tr>
@@ -145,14 +162,15 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Vilka ska bo i tältet</td><td><?php echo nl2br(htmlspecialchars($larp_group->TentHousing)); ?></td></tr>
 			<tr><td valign="top" class="header">Önskad placering</td><td><?php echo nl2br(htmlspecialchars($larp_group->TentPlace)); ?></td></tr>
 			<tr><td valign="top" class="header">Eldplats</td><td><?php echo ja_nej($larp_group->NeedFireplace);?></td></tr>
+			<?php }?>
 			<tr><td valign="top" class="header">Död/Ej i spel</td><td><?php echo ja_nej($current_group->IsDead);?></td></tr>
 		</table>		
 		</div>
-		
+		<?php if ($isRegistered) { ?>
 		<h2>Anmälda medlemmar 
 		<?php 
 		
-		$emailArr = array();
+		$personIdArr = array();
 		foreach($persons as $person) {
 		    $personIdArr[] = $person->Id;
 		}
@@ -434,7 +452,7 @@ include 'navigation.php';
 		
 		
 		?>
-		
+		<?php } ?>
 		 </div>
 		
 		

@@ -14,14 +14,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $role = Role::loadById($RoleId);
 
-
+/*
 if (!$role->isRegistered($current_larp)) {
     header('Location: index.php'); // karaktären är inte anmäld
     exit;
 }
-$isReserve = Reserve_LARP_Role::isReserve($role->Id, $current_larp->Id);
+*/
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+
+$isRegistered = $role->isRegistered($current_larp);
+
 
 include 'navigation.php';
 ?>
@@ -29,14 +32,19 @@ include 'navigation.php';
 	<div class="content">
 		<h1><?php echo $role->Name;?>&nbsp;
 		<?php if ($role->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
-		
+
+		<?php if ($isRegistered) {?>	
 		<a href='edit_role.php?id=<?php echo $role->Id;?>'>
 		<i class='fa-solid fa-pen'></i></a> 
+		<?php } ?>
 		</h1>
+		
+		<?php if ($isRegistered) {?>	
 		<a href='character_sheet.php?id=<?php echo $role->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för <?php echo $role->Name;?>'></i>Karaktärsblad för <?php echo $role->Name;?></a> &nbsp; 
 		<a href='character_sheet.php?id=<?php echo $role->Id;?>&all_info=<?php echo date_format(new Datetime(),"suv") ?>' target='_blank'>
 		<i class='fa-solid fa-file-pdf' title='All info om <?php echo $role->Name;?>'></i>All info om <?php echo $role->Name;?></a>
 		<br><br>
+		<?php } ?>
 		<?php 
 		if ($role->isApproved()) {
 		  echo "<strong>Godkänd</strong>";
@@ -51,7 +59,7 @@ include 'navigation.php';
 		<br>
 		
             <?php 
-            if (!$isReserve) {
+            if ($isRegistered) {
                 if ($larp_role->UserMayEdit  == 1) {
                     echo "Deltagaren får ändra karaktären " . showStatusIcon(false);
                     $editButton = "Ta bort tillåtelsen att ändra";
@@ -70,7 +78,7 @@ include 'navigation.php';
 		
 		<?php 
 
-		if (!$isReserve) {?>
+		if ($isRegistered) {?>
 		<h2>Intrig <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php    echo nl2br(htmlspecialchars($larp_role->Intrigue)); ?>
@@ -270,7 +278,7 @@ include 'navigation.php';
 	    ?>
 		</div>
 		<?php 
-		if ($current_larp->hasRumours() && !$isReserve) {
+		if ($current_larp->hasRumours() && $isRegistered) {
 		
 		?>
 		
@@ -295,7 +303,7 @@ include 'navigation.php';
 		</div>
 		<?php }?>
 		
-		<?php if (!$isReserve) {?>
+		<?php if ($isRegistered) {?>
 		<h2>Handel</h2>
 		<div>
 		<?php 

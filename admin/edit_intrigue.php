@@ -14,11 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $role = Role::loadById($RoleId);
 
-
-if (!$role->isRegistered($current_larp)) {
-    header('Location: index.php'); // Karaktären är inte anmäld
-    exit;
-}
+$isRegistered = $role->isRegistered($current_larp);
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 
@@ -46,6 +42,7 @@ include 'navigation.php';
 				<?php include 'print_role.php';?>
 		</div>
 		
+		<?php  if ($isRegistered) {?>
 		<h2>Intrig</h2>
 				<?php 
 		$intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
@@ -72,6 +69,7 @@ include 'navigation.php';
 		<input type="submit" value="Spara">
 		</form>
 
+		<?php } ?>
 		<h2>Anteckningar (visas inte för deltagaren)</h2>
 
 		<form action="logic/edit_intrigue_save.php" method="post">
