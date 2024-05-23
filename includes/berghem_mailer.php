@@ -29,11 +29,13 @@ class BerghemMailer {
     # to_email kan vara en sträng med en epostadress eller en array av sådana strängar
     public static function send($larp, $toPersonIds, string $greeting, string $text, string $subject, string $senderText, int $noOfDaysKept, ?array $attachments=[], ?string $cc="") {
         if (is_array($toPersonIds)) {
-            
-            # Om man skickar in en array av epostadresser skapar vi ett mail per 15 adresser.
-            foreach( array_chunk($toPersonIds,15) as $personIds_to) {
-                Email::normalCreate($personIds_to, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+            foreach ($toPersonIds as $toPersonId) {
+                Email::normalCreate($toPersonId, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
             }
+            # Om man skickar in en array av epostadresser skapar vi ett mail per 15 adresser.
+            //foreach( array_chunk($toPersonIds,15) as $personIds_to) {
+            //    Email::normalCreate($personIds_to, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+            //}
             return true;
         }
 
@@ -44,11 +46,13 @@ class BerghemMailer {
  
     public static function sendSimpleEmail($larp, $toEmails, $name, string $greeting, string $text, string $subject, string $senderText, int $noOfDaysKept, ?array $attachments=[], ?string $cc="") {
         if (is_array($toEmails)) {
-            
-            # Om man skickar in en array av epostadresser skapar vi ett mail per 15 adresser.
-            foreach( array_chunk($toEmails,15) as $emails_to) {
-                Email::normalCreateSimple($emails_to, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+            foreach ($toEmails as $toEmail) {
+                Email::normalCreateSimple($toEmail, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
             }
+            # Om man skickar in en array av epostadresser skapar vi ett mail per 15 adresser.
+            //foreach( array_chunk($toEmails,15) as $emails_to) {
+            //    Email::normalCreateSimple($emails_to, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+            //}
             return true;
         }
         Email::normalCreateSimple($toEmails, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);

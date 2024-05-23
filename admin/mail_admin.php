@@ -53,9 +53,10 @@ th {
     	    } elseif (!empty($to_array)) {
     	        $to = implode(", ", $to_array);
     	    }
+    	    if (!empty($to)) $to = "($to)";
     	    
     	    echo "<tr>";
-    	    echo "<td>$email->ToName ($to)</td>";
+    	    echo "<td>$email->ToName $to</td>";
     	    echo "<td><a href='view_email.php?id=$email->Id'>$email->Subject</a></td>";
     	    
     	    $attachements = $email->attachments();

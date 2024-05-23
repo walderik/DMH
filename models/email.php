@@ -73,39 +73,80 @@ class Email extends BaseModel{
     # Normala sättet att skapa ett mail som kommer skickas vid ett senare tillfälle.
     # Attachments skall vara en array med namnen på filerna som nyckel.
     # Just nu tillåter vi bara pdf:er som bilagor.
-    public static function normalCreate($ToPersonIds, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
+    public static function normalCreate($ToPersonId, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
         
-        if (!is_array($ToPersonIds)) $ToPersonIds = array($ToPersonIds);
-        
-        if (sizeof($ToPersonIds) > 1) {
-            $emailArr = array();
-            foreach ($ToPersonIds as $personId) {
-                $person = Person::loadById($personId);
-                if ($person->isSubscribed()) $emailArr[] = $person->Email;
-            }
-            $ToEmails = serialize($emailArr);
-            $name = "";
-        } else {
-            $person = Person::loadById($ToPersonIds[0]);
-            $ToEmails = $person->Email;
-            $name = $person->Name;
-        }
-        
-        $email = Email::createMail($ToEmails, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
 
-        $email->connectToPersons($ToPersonIds);
+        $person = Person::loadById($ToPersonId);
+        $ToEmail = $person->Email;
+        $name = $person->Name;
+        
+        if ($person->isSubscribed()) $email = Email::createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
+        else $email = Email::createMessage($name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
+        
+        $email->connectToPerson($ToPersonId);
      }
 
-     public static function normalCreateSimple($ToEmails, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
-         if (is_array($ToEmails)) $ToEmails = serialize($ToEmails);
-         Email::createMail($ToEmails, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
+     public static function normalCreateSimple($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
+         Email::createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
       }
      
-     
-    private static function createMail($ToEmails, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
+      private static function createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
+          $email = self::newWithDefault();
+          
+          $email->To = $ToEmail;
+          $email->ToName = $name;
+          
+          $email->Greeting = $greeting;
+          $email->Subject = $Subject;
+          $email->Text = $Text;
+          $email->SenderText = $senderText;
+          $now = new Datetime();
+          
+          if (!is_null($larp)) {
+              $email->LarpId = $larp->Id;
+              $campaign = $larp->getCampaign();
+              if (!is_null($campaign)) {
+                  $email->From = scrub($campaign->Email);
+              }
+          }
+          $myName = $email->myName();
+          if (empty($email->Subject)) $email->Subject = "Meddelande från $myName";
+          
+          if (!is_null($attachments) && !empty($attachments)) $email->SentAt = date_format($now,"Y-m-d H:i:s"); # Förhindra att det skickas innan bilagorna sparats färdigt.
+          
+          $now->modify("+$noOfDaysKept day");
+          
+          $email->DeletesAt = date_format($now,"Y-m-d H:i:s");
+          
+          $email->create();
+          
+          if (!is_null($attachments) && !empty($attachments)) {
+              foreach ($attachments as $filename => $attachment) {
+                  if (is_null($filename) || is_numeric($filename)) {
+                      if (is_null($email->larp())) {
+                          $filename = scrub("Berghems Vänner");
+                      } else {
+                          $filename = scrub($larp->Name);
+                      }
+                  }
+                  if (!str_ends_with($filename,'.pdf')) $filename = $filename.'.pdf';
+                  
+                  Attachment::normalCreate($email, $filename, $attachment);
+              }
+              $email->SentAt = null;
+              $email->update();
+          }
+          return $email;
+          
+      }
+      
+      
+      
+    //Ett mail som inte skickas eftersom personen inte vill ha epost 
+    private static function createMessage($name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
         $email = self::newWithDefault();
 
-        $email->To = $ToEmails;
+        $email->To = "";
         $email->ToName = $name;
      
         $email->Greeting = $greeting;
@@ -113,6 +154,7 @@ class Email extends BaseModel{
         $email->Text = $Text;
         $email->SenderText = $senderText;
         $now = new Datetime();
+        $email->SentAt = $now;
         
         if (!is_null($larp)) {
             $email->LarpId = $larp->Id;
@@ -124,7 +166,6 @@ class Email extends BaseModel{
         $myName = $email->myName();
         if (empty($email->Subject)) $email->Subject = "Meddelande från $myName";
         
-        if (!is_null($attachments) && !empty($attachments)) $email->SentAt = date_format($now,"Y-m-d H:i:s"); # Förhindra att det skickas innan bilagorna sparats färdigt.
         
         $now->modify("+$noOfDaysKept day");
         
@@ -145,8 +186,6 @@ class Email extends BaseModel{
                 
                 Attachment::normalCreate($email, $filename, $attachment);
             }
-            $email->SentAt = null;
-            $email->update();
         }
         return $email;
         
@@ -306,11 +345,13 @@ class Email extends BaseModel{
         global $current_user;
         //Create a new PHPMailer instance
         $mailer = new PHPMailer();
+        $mailer->CharSet = 'UTF-8';
+        
         //Set who the message is to be sent from
-        $mailer->setFrom($this->From, encode_utf_to_iso($this->myName()),0);
+        $mailer->setFrom($this->From, $this->myName(),0);
 //         $mail->setFrom($from, encode_utf_to_iso($myName)); # Tror faktiskt det ska vara så här
         //Set an alternative reply-to address
-        $mailer->addReplyTo($this->From, encode_utf_to_iso($this->myName()));
+        $mailer->addReplyTo($this->From, $this->myName());
         //Set who the message is to be sent to
         
         
@@ -328,13 +369,12 @@ class Email extends BaseModel{
         } else {
         
             if (!($to_array = @unserialize($this->To))) {
-                $mailer->addAddress($this->To, encode_utf_to_iso($this->receiverName()));
+                $mailer->addAddress($this->To, $this->receiverName());
                 
                 
             } elseif (!empty($to_array)) {
                 foreach($to_array as $to) {
-    //                 echo "<h1>TO = $to</h1>";
-                    $mailer->addAddress($to, encode_utf_to_iso($this->receiverName()));
+                    $mailer->addAddress($to, $this->receiverName());
                 }
             }
     
@@ -347,9 +387,8 @@ class Email extends BaseModel{
         $unsubscribeText = "";
         $site = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]";
         if (sizeof($recipients) == 1) {
-            //$mailer->CharSet = 'UTF-8';
+            $mailer->CharSet = 'UTF-8';
             $person = $recipients[0];
-            if ($person->Id == 10 || $person->Id == 71) {
             $code = $person->getUnsubscribeCode();
             $unsubLink = "$site/regsys/unsubscribe.php?personId=$person->Id&code=$code";
             $mailer->addCustomHeader(
@@ -360,14 +399,13 @@ class Email extends BaseModel{
                 'List-Unsubscribe-Post',
                 'List-Unsubscribe=One-Click'
                 );
-            }
             $unsubscribeText = "<br><br>Om du inte vill ha fler mail från oss kan du klicka på den här länken: <a href='$unsubLink'>$unsubLink</a>";
             
             
         }
 
-        $mailer->Subject = encode_utf_to_iso($this->Subject);
-        $mailer->AltBody = encode_utf_to_iso($this->Text);
+        $mailer->Subject = $this->Subject;
+        $mailer->AltBody = $this->Text;
         //Attach an image file
         // $mail->addAttachment('images/phpmailer_mini.png');
         
@@ -382,7 +420,7 @@ class Email extends BaseModel{
         
         $mailer->isHTML(true);
 
-        $mailer->Body = encode_utf_to_iso($this->mailContent($unsubscribeText));
+        $mailer->Body = $this->mailContent($unsubscribeText);
 
         //Om man skickar med SMTP fungerar unsubscribe
         if (str_contains($this->From, "kontakt@kampeniringen.se")) {
@@ -456,17 +494,14 @@ class Email extends BaseModel{
         
     }
     
-    public function connectToPersons($personIdArr) {
-        foreach($personIdArr as $personId) {
-            $stmt = $this->connect()->prepare("INSERT INTO ".
-                "regsys_email_person (EmailId, PersonId) VALUES (?,?);");
-            if (!$stmt->execute(array($this->Id, $personId))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
+    public function connectToPerson($personId) {
+        $stmt = $this->connect()->prepare("INSERT INTO ".
+            "regsys_email_person (EmailId, PersonId) VALUES (?,?);");
+        if (!$stmt->execute(array($this->Id, $personId))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
         }
         $stmt = null;
-        
     }
 }

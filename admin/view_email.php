@@ -44,8 +44,11 @@ include 'navigation.php';
 			} else {
 			    echo "<tr><td>Skickat av</td><td>Systemet</td></tr>";
 			}
+			
+			if (!empty($to)) $to = "($to)";
 			?>
-			<tr><td>Till</td><td><?php echo "$email->ToName ($to)"; ?></td></tr>
+			
+			<tr><td>Till</td><td><?php echo "$email->ToName $to"; ?></td></tr>
 			<tr><td>Ämne</td><td><?php echo $email->Subject ?></td></tr>
 			<tr><td>När</td><td><?php echo $email->SentAt ?></td></tr>
 			<?php 
