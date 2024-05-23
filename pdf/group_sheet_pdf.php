@@ -587,8 +587,8 @@ class Group_PDF extends PDF_MemImage {
 	
 	protected function want_intrigue($left) { 
 	    $this->set_header($left, 'Vill gärna ha intrig');
-	    
-	    $text = $this->larp_group->WantIntrigue ? 'Ja' : 'Nej';
+	    if (isset($this->larp_group)) $text = $this->larp_group->WantIntrigue ? 'Ja' : 'Nej';
+	    else $text = "OBS! Inte anmäld";
 
 	    $this->set_text($left, $text);
 	    return true;
@@ -614,7 +614,11 @@ class Group_PDF extends PDF_MemImage {
 	protected function remaining_intrigues($left) {
 	    $this->set_header($left, 'Kvarvarande intriger');
 	    
-	    $this->set_text($left, $this->larp_group->RemainingIntrigues);
+	    if (isset($this->larp_group)) $text = $this->larp_group->RemainingIntrigues;
+	    else $text = "OBS! Inte anmäld";
+	    
+	    
+	    $this->set_text($left, $text);
 	    return true;
 	}
 
