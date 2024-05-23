@@ -39,7 +39,7 @@ class BerghemMailer {
             return true;
         }
 
-        Email::normalCreate(array($toPersonIds), $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+        Email::normalCreate($toPersonIds, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
 
         return true;   
     }
