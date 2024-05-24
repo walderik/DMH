@@ -30,7 +30,7 @@ include 'navigation.php';
 		<h1><?php echo $person->Name;?>&nbsp;<a href='edit_person.php?id=<?php echo $person->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
 		<div>
 		<table>
-			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $person->SocialSecurityNumber;?></td></tr>
+			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $person->SocialSecurityNumber;?>, <?php echo $person->getAgeAtLarp($current_larp) ?> år</td></tr>
 			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email." ".contactEmailIcon($person);?></td></tr>
 			<tr><td valign="top" class="header">Mobilnummer</td><td><?php echo $person->PhoneNumber;?></td></tr>
 			<tr><td valign="top" class="header">Närmaste anhörig</td><td><?php echo $person->EmergencyContact;?></td></tr>
