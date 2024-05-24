@@ -20,7 +20,7 @@ include 'navigation.php';
 
     echo "<h1>$header</h1>";
     
-    $emailArr = array();
+    $personIdArr = array();
  	foreach ($persons as $person) {
  	    $personIdArr[] = $person->Id;
  	}
@@ -33,7 +33,7 @@ include 'navigation.php';
         foreach ($offical_types as $offical_type) {
             
             $officials_by_type = Person::getAllOfficialsByType($offical_type, $current_larp);
-            $emailArr = array();
+            $personIdArr = array();
             foreach($officials_by_type as $person) {
                 $personIdArr[] = $person->Id;
             }
