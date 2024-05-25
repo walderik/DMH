@@ -86,6 +86,18 @@ include 'navigation.php';
 		<i class='fa-solid fa-file-pdf' title='All info om <?php echo $current_group->Name;?>'></i>All info om <?php echo $current_group->Name;?></a> &nbsp;
 		<br><br>
 		<?php }?>
+		<?php 
+		if ($current_group->isApproved()) {
+		  echo "<strong>Godkänd</strong>";
+		  if (!empty($current_group->ApprovedByUserId) && !empty($current_group->ApprovedDate)) {
+		      $approvedUser = User::loadById($current_group->ApprovedByUserId);
+		      echo " av $approvedUser->Name, ".substr($current_group->ApprovedDate,0, 10); 
+		  }
+		}
+		else {
+		    echo "<strong>Ej godkänd</strong>";
+		}		
+		?>
         <?php 
         if ($isRegistered) {
         if ($larp_group->UserMayEdit  == 1) {

@@ -10,7 +10,7 @@ $role = Role::loadById($_POST['roleId']);
 
 
 if ($role->isApproved()) $role->unapprove($current_larp);
-else $role->approve($current_larp);
+else $role->approve($current_larp, $current_user);
 
 if (isset($_SERVER['HTTP_REFERER'])) {
     header('Location: ' . $_SERVER['HTTP_REFERER']);

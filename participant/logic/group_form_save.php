@@ -46,8 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         
         $group->setValuesByArray($_POST);
-        $group->IsApproved = 0;
         $group->update();
+        $group->unapprove($current_larp, false);
         $group->deleteAllIntrigueTypes();
         $group->saveAllIntrigueTypes($_POST);
         

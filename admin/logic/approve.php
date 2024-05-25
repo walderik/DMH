@@ -6,10 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $groupId = $_POST['GroupId'];
         $group = Group::loadById($groupId);
         if (isset($group)) {
-            $group->IsApproved = 1;
-            $group->update();
-    
-            BerghemMailer::send_group_approval_mail($group, $current_larp);
+            $group->approve($current_larp, $current_user);
             header('Location: ../approval.php');
             exit;
         }
@@ -17,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $roleId = $_POST['RoleId'];
         $role = Role::loadById($roleId);
         if (isset($role)) {
-            $role->approve($current_larp);
+            $role->approve($current_larp, $current_user);
             header('Location: ../approval.php');
             exit;
             

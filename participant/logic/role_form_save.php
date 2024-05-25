@@ -51,8 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
  
         $role->setValuesByArray($_POST);
-        $role->IsApproved = 0;
         $role->update();
+        $role->unapprove($current_larp, false);
 
         $role->deleteAllIntrigueTypes();
         if (isset($_POST['IntrigueTypeId'])) {

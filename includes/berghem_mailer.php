@@ -193,10 +193,6 @@ class BerghemMailer {
     
     public static function send_role_unapproval_mail(Role $role, LARP $larp) {
         $person = $role->getPerson();
-        
-        
-        
-        
         $text  = "Din karaktär $role->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din karaktär godkänd.\n";
         
         $sheets = static::getAllSheets(array($role), $larp);
@@ -211,6 +207,14 @@ class BerghemMailer {
         
         BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Godkänd grupp till ".$larp->Name, "", BerghemMailer::DaysAutomatic);
     } 
+    
+    public static function send_group_unapproval_mail(Group $group, LARP $larp) {
+        $person = $group->getPerson();
+        
+        $text  = "Din grupp $group->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din grupp godkänd.\n";
+        
+        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Godkänd grupp till ".$larp->Name, "", BerghemMailer::DaysAutomatic);
+    }
     
     public static function send_spot_at_larp(Registration $registration) {
         $person = $registration->getPerson();
