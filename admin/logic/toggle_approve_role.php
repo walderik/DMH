@@ -9,7 +9,7 @@ if (!isset( $_POST['roleId'])) {
 $role = Role::loadById($_POST['roleId']);
 
 
-if ($role->isApproved()) $role->unapprove($current_larp);
+if ($role->isApproved()) $role->unapprove($current_larp, true);
 else $role->approve($current_larp, $current_user);
 
 if (isset($_SERVER['HTTP_REFERER'])) {

@@ -10,6 +10,8 @@ include 'navigation.php';
 
     <div class="content">   
         <h1>Grupper som ska godkännas</h1>
+        <p>Ett godkännande gäller för kampanjen, inte bara det här lajvet. <br>
+        Inför anmälan till varje lajv har gruppledaren möjlighet att ändra på gruppen. Då förlorar den automatiskt sitt godkännande.</p>
      		<?php 
     		$groups = Group::getAllToApprove($current_larp);
     		if (empty($groups)) {
@@ -34,6 +36,8 @@ include 'navigation.php';
     		}
     		?>    
         <h1>Karaktärer som ska godkännas</h1>
+        <p>Ett godkännande gäller för kampanjen, inte bara det här lajvet. <br>
+        Inför anmälan till varje lajv har deltagare möjlighet att ändra på karaktären. Då förlorar den automatiskt sitt godkännande.</p>
      		<?php 
      		$roles = Role::getAllToApprove($current_larp);
     		//$persons = Person::getAllToApprove($current_larp);
