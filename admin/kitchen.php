@@ -6,7 +6,8 @@ include 'navigation.php';
 <div class="content">
     <h1>Köket</h1>
     <div class='linklist'>
-    <a href="reports/matlista.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla deltagares matval</a><br>  
+    <a href="reports/matlista.php?variant=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla deltagares matval (variant 1)</a><br>  
+    <a href="reports/matlista.php?variant=2" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla deltagares matval (variant 2)</a><br>  
     <a href="reports/allergy_list.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla allergier</a><br>
     </div> 
     

@@ -44,7 +44,7 @@ th {
     		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        echo "<td>";
     		        echo $person->Email;
-    		        echo " ".contactEmailIcon($person->Name,$person->Id)."</td>\n";
+    		        echo " ".contactEmailIcon($person)."</td>\n";
     		        echo "</td>\n";
 
 		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>";
