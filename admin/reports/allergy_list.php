@@ -131,12 +131,12 @@ if (!empty($persons) && count($persons) > 0) {
     $rows = array();
     
     if ($variant == 1) {
-        $header = array('Namn','Ålder', 'Epost','Övrigt','Vald Mat');
+        $header = array('Namn','Ålder', 'Epost','Allergi','Vald Mat');
         if ($hasFoodChoices) $header[] = 'Matalternativ';
     } else {
         $header = array('Namn-in','Namn-off','Grupp','Ålder','Vald Mat');
         if ($hasFoodChoices) $header[] = 'Matalternativ';
-        $header[] = 'Övrigt';
+        $header[] = 'Allergi';
         if ($current_larp->ChooseParticipationDates) $header[] = 'Frånvarande';
     }
     $rows[] = $header;
