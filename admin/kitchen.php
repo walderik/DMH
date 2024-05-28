@@ -8,7 +8,8 @@ include 'navigation.php';
     <div class='linklist'>
     <a href="reports/matlista.php?variant=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla deltagares matval (variant 1)</a><br>  
     <a href="reports/matlista.php?variant=2" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla deltagares matval (variant 2)</a><br>  
-    <a href="reports/allergy_list.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla allergier</a><br>
+    <a href="reports/allergy_list.php?variant=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Allergier & typ av mat (variant 1)</a><br>  
+    <a href="reports/allergy_list.php?variant=2" target="_blank"><i class="fa-solid fa-file-pdf"></i>Allergier & typ av mat (variant 2)</a><br>  
     </div> 
     
     Totalt är det <?php echo count(Registration::allBySelectedLARP($current_larp)); ?> anmälda deltagare.<br>

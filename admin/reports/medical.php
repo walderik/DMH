@@ -44,7 +44,7 @@ foreach ($persons as $person) {
         $rows[] = array($person->Name, $person->SocialSecurityNumber, $person->HealthComment, $person->EmergencyContact, $houseText);
     }
 }
-$pdf->new_report($current_larp, $name, $rows);
+$pdf->new_report($current_larp, $name, $rows, true);
     
     
 $pdf->Output();
