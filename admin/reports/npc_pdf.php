@@ -4,7 +4,8 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/pdf/report_pdf.php';
+require_once $root . '/pdf/report_tcpdf_pdf.php';
+
 
 include_once '../header.php';
 
@@ -16,17 +17,13 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = "NPC'er";
 
-$pdf = new Report_PDF();
+$pdf = new Report_TCP_PDF();
 
-$pdf->SetTitle(encode_utf_to_iso($name));
-$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
-$pdf->SetCreator('Omnes Mundi');
-$pdf->AddFont('Helvetica','');
-$pdf->SetSubject(encode_utf_to_iso($name));
+$pdf->init($current_user->Name, $name, $current_larp->Name, false);
 
 
 $rows = array();
-$rows[] = array("Namn", "Spelas av", "Grupp", "Beskrivning", "När");
+$header = array("Namn", "Spelas av", "Grupp", "Beskrivning", "När");
 
 
 $npc_groups = NPCGroup::getAllForLARP($current_larp);
@@ -41,8 +38,12 @@ foreach ($npcs as $npc) {
     $rows[] = array($npc->Name, $npc->getPerson()->Name, "", mb_strimwidth($npc->Description, 0, 100, '...'), $npc->Time);
 }
 
-$pdf->new_report($current_larp, $name, $rows);
-    
-    
-    
-$pdf->Output();
+// add a page
+$pdf->AddPage();
+// print table
+$pdf->Table($name, $header, $rows);
+
+
+
+// close and output PDF document
+$pdf->Output($name.'.pdf', 'I');

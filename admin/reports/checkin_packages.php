@@ -4,7 +4,7 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/pdf/report_pdf.php';
+require_once $root . '/pdf/report_tcpdf_pdf.php';
 
 include_once '../header.php';
 
@@ -15,14 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = 'Paketering';
 
-// $pdf = new Report_PDF('L'); # Argument som är gilltiga är 'P' och 'L'
-$pdf = new Report_PDF('P'); # Argument som är gilltiga är 'P' och 'L'
+$pdf = new Report_TCP_PDF();
 
-$pdf->SetTitle(encode_utf_to_iso($name));
-$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
-$pdf->SetCreator('Omnes Mundi');
-$pdf->AddFont('Helvetica','');
-$pdf->SetSubject(encode_utf_to_iso($name));
+$pdf->init($current_user->Name, $name, $current_larp->Name, false);
 
 
 function cmp($a, $b)
@@ -37,7 +32,7 @@ $roles = Role::getAllMainRoles($current_larp, false);
 usort($roles, "cmp");
 $currency = $current_larp->getCampaign()->Currency;
 $rows = array();
-$rows[] = array("Namn", "Ska ha                                                                                                                        ");
+$header = array("Namn", "Ska ha                                                                                                                        ");
 foreach ($roles as $role) {
     $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
     $checkin_letters = $role->getAllCheckinLetters($current_larp);
@@ -96,13 +91,15 @@ foreach ($roles as $role) {
     
     $rows[] = array($role->Name, $package);
 }
-$pdf->new_report($current_larp, "Karaktärer ska ha vid lajvstart", $rows);
-
+// add a page
+$pdf->AddPage();
+// print table
+$pdf->Table("Karaktärer ska ha vid lajvstart", $header, $rows);
 
 
 $groups = Group::getAllRegistered($current_larp);
 $rows = array();
-$rows[] = array("Namn", "Ska ha                                                                                                                        ");
+$header = array("Namn", "Ska ha                                                                                                                        ");
 foreach ($groups as $group) {
     $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     $checkin_letters = $group->getAllCheckinLetters($current_larp);
@@ -161,7 +158,12 @@ foreach ($groups as $group) {
     
     $rows[] = array($group->Name, $package);
 }
-$pdf->new_report($current_larp, "Grupper ska ha vid lajvstart", $rows);
+// add a page
+$pdf->AddPage();
+// print table
+$pdf->Table("Grupper ska ha vid lajvstart", $header, $rows);
 
 
-$pdf->Output();
+
+// close and output PDF document
+$pdf->Output($name.'.pdf', 'I');

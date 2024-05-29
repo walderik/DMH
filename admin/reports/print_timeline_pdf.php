@@ -4,7 +4,7 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/pdf/report_pdf.php';
+require_once $root . '/pdf/report_tcpdf_pdf.php';
 
 include_once '../header.php';
 
@@ -25,13 +25,9 @@ $formatter = new IntlDateFormatter(
 
 $name = 'Körschema';
 
-$pdf = new Report_PDF();
+$pdf = new Report_TCP_PDF();
 
-$pdf->SetTitle(encode_utf_to_iso($name));
-$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
-$pdf->SetCreator('Omnes Mundi');
-$pdf->AddFont('Helvetica','');
-$pdf->SetSubject(encode_utf_to_iso($name));
+$pdf->init($current_user->Name, $name, $current_larp->Name, false);
 
 
 function cmp($a, $b)
@@ -60,7 +56,7 @@ $enddate->modify('-1 minute');
 foreach ($period as $dt) {
     $headline = ucfirst($formatter->format($dt));
     $rows = array();
-    $rows[] = array("Tid", "Händelse");
+    $header = array("Tid", "Händelse");
     if ($dt == $startdate) $rows[] = array($starttime, "Lajvstart");
     $this_day = clone $dt;
 
@@ -76,12 +72,19 @@ foreach ($period as $dt) {
     }
     
     if ($dt == $enddate) $rows[] = array($endtime, "Lajvslut");
-    $pdf->new_report($current_larp, $headline, $rows);
+    
+    // add a page
+    $pdf->AddPage();
+    // print table
+    $pdf->Table($headline, $header, $rows);
     
 }
 
-$pdf->Output();
 
+
+
+// close and output PDF document
+$pdf->Output($name.'.pdf', 'I');
 
 
 function whatHappensDay($starttime) {
