@@ -4,7 +4,7 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/pdf/report_pdf.php';
+require_once $root . '/pdf/report_tcpdf_pdf.php';
 
 include_once '../header.php';
 
@@ -29,14 +29,10 @@ foreach($foodChoises as $foodChoise) {
 }
 
 
-if ($variant == 1) $pdf = new Report_PDF();
-else $pdf = new Report_PDF('L');
+if ($variant == 1) $pdf = new Report_TCP_PDF();
+else $pdf = new Report_TCP_PDF('L');
 
-$pdf->SetTitle(encode_utf_to_iso($name));
-$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
-$pdf->SetCreator('Omnes Mundi');
-$pdf->AddFont('Helvetica','');
-$pdf->SetSubject(encode_utf_to_iso($name));
+$pdf->init($current_user->Name, $name, $current_larp->Name, true);
 
 if (NormalAllergyType::isInUse()){
     $allAllergies = NormalAllergyType::all();
@@ -54,7 +50,7 @@ if (NormalAllergyType::isInUse()){
                 if ($hasFoodChoices) $header[] = 'Matalternativ';
                 if ($current_larp->ChooseParticipationDates) $header[] = 'Frånvarande';
             }
-            $rows[] = $header;
+            
     
             foreach($persons as $person) {
                 $registration=$person->getRegistration($current_larp);
@@ -75,7 +71,11 @@ if (NormalAllergyType::isInUse()){
                 $rows[] = $personrow;
             }
     
-            $pdf->new_report($current_larp, "Enbart $allergy->Name", $rows, true);
+            // add a page
+            $pdf->AddPage('s');
+            // print table
+            $pdf->Table("Enbart $allergy->Name", $header, $rows);
+            //$pdf->new_report($current_larp, "Enbart $allergy->Name", $rows, true);
         }
     }
     
@@ -94,7 +94,7 @@ if (NormalAllergyType::isInUse()){
             $header[] = 'Övrigt';
             if ($current_larp->ChooseParticipationDates) $header[] = 'Frånvarande';
         }
-        $rows[] = $header;
+
         
         if ($hasFoodChoices) $rows[] = array('Namn','Ålder', 'Epost','Allergier','Övrigt','Vald Mat', 'Matalternativ');
         else $rows[] = array('Namn','Ålder','Epost','Allergier','Övrigt','Vald Mat');
@@ -121,7 +121,12 @@ if (NormalAllergyType::isInUse()){
             
             $rows[] = $personrow;
         }
-        $pdf->new_report($current_larp, "Multipla vanliga allergier", $rows, true);
+
+        // add a page
+        $pdf->AddPage('s');
+        // print table
+        $pdf->Table("Multipla vanliga allergier", $header, $rows);
+        //$pdf->new_report($current_larp, "Multipla vanliga allergier", $rows, true);
     }
 }
 
@@ -139,7 +144,7 @@ if (!empty($persons) && count($persons) > 0) {
         $header[] = 'Allergi';
         if ($current_larp->ChooseParticipationDates) $header[] = 'Frånvarande';
     }
-    $rows[] = $header;
+    
     
     
     foreach($persons as $person) {
@@ -164,7 +169,12 @@ if (!empty($persons) && count($persons) > 0) {
         
         $rows[] = $personrow;
     }
-    $pdf->new_report($current_larp, "Special", $rows, true);
+    // add a page
+    $pdf->AddPage('s');
+    // print table
+    $pdf->Table("Special", $header, $rows);
+    
+    //$pdf->new_report($current_larp, "Special", $rows, true);
 }
 
 $pdf->Output();
