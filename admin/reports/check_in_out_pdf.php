@@ -4,7 +4,7 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/pdf/report_pdf.php';
+require_once $root . '/pdf/report_tcpdf_pdf.php';
 
 include_once '../header.php';
 
@@ -15,13 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = 'In- och utcheckning';
 
-$pdf = new Report_PDF();
+$pdf = new Report_TCP_PDF();
 
-$pdf->SetTitle(encode_utf_to_iso($name));
-$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
-$pdf->SetCreator('Omnes Mundi');
-$pdf->AddFont('Helvetica','');
-$pdf->SetSubject(encode_utf_to_iso($name));
+$pdf->init($current_user->Name, $name, $current_larp->Name, false);
 
 
 function cmp($a, $b)
@@ -35,7 +31,7 @@ function cmp($a, $b)
 $persons = Person::getAllRegistered($current_larp, false);
 usort($persons, "cmp");
 $rows = array();
-$rows[] = array("Namn", "Incheck", "Utcheck", "Kommentar                              ");
+$header = array("Namn", "Incheck", "Utcheck", "Kommentar                              ");
 foreach ($persons as $person) {
     $props = Prop::getCheckinPropsForPerson($person, $current_larp);
     $letters = Letter::getCheckinLettersForPerson($person, $current_larp);
@@ -51,13 +47,18 @@ foreach ($persons as $person) {
     if (!empty($checkin_txt_Arr)) $comment = "Ska ha vid incheck: ". implode(", ", $checkin_txt_Arr);
     $rows[] = array($person->Name, "", "", $comment);
 }
-$pdf->new_report($current_larp, "In- och utcheckning deltagare", $rows);
+
+// add a page
+$pdf->AddPage();
+// print table
+$pdf->Table("In- och utcheckning deltagare", $header, $rows);
+
     
 
 
 $groups = Group::getAllRegistered($current_larp);
 $rows = array();
-$rows[] = array("Namn", "Incheck", "Utcheck", "Kommentar                              ");
+$header = array("Namn", "Incheck", "Utcheck", "Kommentar                              ");
 foreach ($groups as $group) {
     $props = Prop::getCheckinPropsForGroup($group, $current_larp);
     $letters = Letter::getCheckinLettersForGroup($group, $current_larp);
@@ -69,8 +70,10 @@ foreach ($groups as $group) {
     foreach($telegrams as $telegram) $checkin_txt_Arr[] = "Telegram från: $telegram->Sender till: $telegram->Reciever";
     $rows[] = array($group->Name, "", "", $comment);
 }
-$pdf->new_report($current_larp, "In- och utcheckning grupper", $rows);
-
-
+// add a page
+$pdf->AddPage();
+// print table
+$pdf->Table("In- och utcheckning grupper", $header, $rows);
     
-$pdf->Output();
+// close and output PDF document
+$pdf->Output($name.'.pdf', 'I');

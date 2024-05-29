@@ -50,7 +50,6 @@ foreach ($persons as $person) {
 
 // add a page
 $pdf->AddPage();
-
 // print table
 $pdf->Table("Vem bor var?", $header, $rows);
 
