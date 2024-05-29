@@ -4,7 +4,7 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/pdf/report_pdf.php';
+require_once $root . '/pdf/report_tcpdf_pdf.php';
 
 include_once '../header.php';
 
@@ -15,13 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = 'Hälsoinformation till sjukvårdare/trygghetsvärdar';
 
-$pdf = new Report_PDF('L');
-
-$pdf->SetTitle(encode_utf_to_iso($name));
-$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
-$pdf->SetCreator('Omnes Mundi');
-$pdf->AddFont('Helvetica','');
-$pdf->SetSubject(encode_utf_to_iso($name));
 
 
 function cmp($a, $b)
@@ -35,7 +28,7 @@ function cmp($a, $b)
 $persons = Person::getAllRegistered($current_larp, false);
 usort($persons, "cmp");
 $rows = array();
-$rows[] = array("Namn", "Personnummer", "Kommentar                              ", "Anhörig", "Boende");
+$header = array("Namn", "Personnummer", "Kommentar                              ", "Anhörig", "Boende");
 foreach ($persons as $person) {
     if (!empty($person->HealthComment) && (trim($person->HealthComment) != "Inget")) {
         $house = $person->getHouseAtLarp($current_larp);
@@ -44,7 +37,18 @@ foreach ($persons as $person) {
         $rows[] = array($person->Name, $person->SocialSecurityNumber, $person->HealthComment, $person->EmergencyContact, $houseText);
     }
 }
-$pdf->new_report($current_larp, $name, $rows, true);
-    
-    
-$pdf->Output();
+
+// create new PDF document
+$pdf = new Report_TCP_PDF();
+$pdf->init($current_user->Name, $name, $current_larp->Name, true);
+
+// add a page
+$pdf->AddPage('L');
+
+// print table
+$pdf->Table($name, $header, $rows);
+
+// close and output PDF document
+$pdf->Output($name.'.pdf', 'I');
+
+
