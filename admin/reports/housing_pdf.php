@@ -4,7 +4,7 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/pdf/report_pdf.php';
+require_once $root . '/pdf/report_tcpdf_pdf.php';
 
 include_once '../header.php';
 
@@ -15,13 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = 'Boende';
 
-$pdf = new Report_PDF();
 
-$pdf->SetTitle(encode_utf_to_iso($name));
-$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
-$pdf->SetCreator('Omnes Mundi');
-$pdf->AddFont('Helvetica','');
-$pdf->SetSubject(encode_utf_to_iso($name));
 
 
 function cmp($a, $b)
@@ -32,11 +26,18 @@ function cmp($a, $b)
     return ($a->Name < $b->Name) ? -1 : 1;
 }
 
+$pdf = new Report_TCP_PDF();
+
+$pdf->init($current_user->Name, $name, $current_larp->Name, false);
+
+
+
+
 //Vem bor var?
 $persons = Person::getAllRegistered($current_larp, false);
 usort($persons, "cmp");
 $rows = array();
-$rows[] = array("Namn", "Boende", "Typ");
+$header = array("Namn", "Boende", "Typ");
 foreach ($persons as $person) {
     $house = House::getHouseAtLarp($person, $current_larp);
     if (empty($house)) $rows[] = array($person->Name, "Inget tilldelat", "");
@@ -46,13 +47,18 @@ foreach ($persons as $person) {
         $rows[] = array($person->Name, $house->Name, $type);
     }
 }
-$pdf->new_report($current_larp, "Vem bor var?", $rows);
+
+// add a page
+$pdf->AddPage();
+
+// print table
+$pdf->Table("Vem bor var?", $header, $rows);
 
 
 //Vilka bor i vilket hus?
 $houses = House::all();
 $rows = array();
-$rows[] = array("Boende", "Typ", "Personer");
+$header = array("Boende", "Typ", "Personer");
 foreach ($houses as $house) {
     $type = "hus";
     if ($house->IsCamp()) $type = "lägerplats";
@@ -64,7 +70,12 @@ foreach ($houses as $house) {
    }
    $rows[] = array($house->Name, $type, implode(", ", $names));
 }
-$pdf->new_report($current_larp, "Vilka bor i husen/på lägerplatserna?", $rows);
 
+// add a page
+$pdf->AddPage();
 
-$pdf->Output();
+// print table
+$pdf->Table("Vilka bor i husen/på lägerplatserna?", $header, $rows);
+
+// close and output PDF document
+$pdf->Output($name.'.pdf', 'I');
