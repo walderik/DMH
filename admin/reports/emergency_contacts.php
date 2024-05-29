@@ -31,14 +31,15 @@ function cmp($a, $b)
 $persons = Person::getAllRegistered($current_larp, false);
 usort($persons, "cmp");
 $rows = array();
-$header = array("Namn", "Kontaktperson                              ");
+$header = array("Namn", "Kontaktperson");
+$widths = array(200, 400);
 foreach ($persons as $person) {
     $rows[] = array($person->Name, $person->EmergencyContact);
 }
 // add a page
 $pdf->AddPage();
 // print table
-$pdf->Table($name, $header, $rows);
+$pdf->Table($name, $header, $rows, $widths);
 
 
 

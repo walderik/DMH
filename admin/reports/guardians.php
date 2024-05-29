@@ -32,6 +32,7 @@ $persons = Person::getAllWithGuardians($current_larp, false);
 usort($persons, "cmp");
 $rows = array();
 $header = array("In-namn", "Off-namn", "Vuxens in-namn", "Off-namn", "Telefon", "Boende");
+
 foreach ($persons as $person) {
     $guardian = $person->getGuardian($current_larp);
     $child_roles = $person->getRoles($current_larp);

@@ -4,7 +4,7 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/pdf/report_pdf.php';
+require_once $root . '/pdf/report_tcpdf_pdf.php';
 
 include_once '../header.php';
 
@@ -20,13 +20,9 @@ if (isset($_GET['Id'])) $one_intrigue_id = $_GET['Id'];
 
 $name = 'Alla intriger';
 
-$pdf = new Report_PDF();
+$pdf = new Report_TCP_PDF();
 
-$pdf->SetTitle(encode_utf_to_iso($name));
-$pdf->SetAuthor(encode_utf_to_iso($current_user->Name));
-$pdf->SetCreator('Omnes Mundi');
-$pdf->AddFont('Helvetica','');
-$pdf->SetSubject(encode_utf_to_iso($name));
+$pdf->init($current_user->Name, $name, $current_larp->Name, false);
 
 
 
@@ -37,7 +33,8 @@ foreach ($intrigue_array as $intrigue) {
     if (!$intrigue->isActive()) continue;
     if (isset($one_intrigue_id) && $one_intrigue_id != $intrigue->Id) continue;
     $rows = array();
-    $rows[] = array("Ansvarig", $intrigue->getResponsibleUser()->Name);
+    $header = array("Ansvarig", $intrigue->getResponsibleUser()->Name);
+    $widths = array(100, 500);
     $rows[] = array("Anteckningar", $intrigue->Notes);
 
     //Brev
@@ -110,10 +107,13 @@ foreach ($intrigue_array as $intrigue) {
         $rows[] = array($roleActor->getRole()->Name, $text);
     }
     
-    
-    $pdf->new_report($current_larp, "$intrigue->Number. $intrigue->Name", $rows);
+    // add a page
+    $pdf->AddPage();
+    // print table
+    $pdf->Table("$intrigue->Number. $intrigue->Name", $header, $rows, $widths);
+
 }
     
-    
-    
-$pdf->Output();
+
+// close and output PDF document
+$pdf->Output($name.'.pdf', 'I');

@@ -77,7 +77,7 @@ class Report_TCP_PDF extends Tcpdf {
     
     
     // Colored table
-    public function Table($headline, $header,$data) {
+    public function Table($headline, $header,$data, ?array $colWidths = NULL ) {
 
         // set font
         $this->SetFont('helvetica', 'B', 30);
@@ -86,19 +86,31 @@ class Report_TCP_PDF extends Tcpdf {
         
         $this->SetFont('helvetica', '', 10);
         
+        $setWidth = false;
+        $numberOfCols = sizeof($header);
+        if (isset($colWidths) && is_array($colWidths) && sizeof($colWidths)==$numberOfCols) $setWidth = true;
         
         $html = '<table style="width: 95%;" cellpadding="3" cellspacing="0">';
         $html = $html . '<thead><tr bgcolor="#CCCCCC">';
         
-        foreach($header as $headertext) $html .= '<td  style="font-weight: bold; align: center;">'.$headertext.'</td>';
+        foreach($header as $key=>$headertext) {
+            $html .= '<td ';
+            if ($setWidth && $key<$numberOfCols) $html .= 'width="'.$colWidths[$key].'" ';
+            $html .= 'style="font-weight: bold; align: center;">'.$headertext.'</td>';
+        }
         $html .= '</tr></thead>';
         foreach($data as $row){
             $html .= '<tr nobr="true">';
-            foreach ($row as $item) $html .= '<td style="border: 1px solid #000000;">'.$item.'</td>';
+            foreach ($row as $key=>$item) {
+                $html .= '<td ';
+                if ($setWidth && $key<$numberOfCols) $html .= 'width="'.$colWidths[$key].'" ';
+                $html .= 'style="border: 1px solid #000000;">'.$item.'</td>';
+            }
             $html .= '</tr>';
         }
         $html .= '</table>';
         
+        //print_r($html);
         // output the HTML content
         $this->writeHTML($html, true, false, false, false, '');
         
