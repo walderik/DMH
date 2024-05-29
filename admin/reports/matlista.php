@@ -4,9 +4,9 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/pdf/report_pdf.php';
+
 require_once $root . '/pdf/report_tcpdf_pdf.php';
-//require_once $root . '/pdf/example.php';
+
 
 include_once '../header.php';
 
