@@ -110,7 +110,7 @@ foreach ($intrigue_array as $intrigue) {
     // add a page
     $pdf->AddPage();
     // print table
-    $pdf->Table("$intrigue->Number. $intrigue->Name", $header, $rows, $widths);
+    $pdf->Table("$intrigue->Number. $intrigue->Name", $header, $rows, $widths, true);
 
 }
     
