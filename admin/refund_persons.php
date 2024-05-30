@@ -54,7 +54,7 @@ th {
     		            echo "</s>";
     		        }
     		        
-    		        echo " ".contactEmailIcon($person->Name,$person->Id)."</td>\n";
+    		        echo " ".contactEmailIcon($person)."</td>\n";
     		        echo "</td>\n";
     		        
     		        echo "<td>$registration->AmountPayed</td>";

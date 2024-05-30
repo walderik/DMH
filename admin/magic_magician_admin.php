@@ -62,7 +62,7 @@ include 'magic_navigation.php';
                 if (isset($group)) echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>";;
                 echo "</td>";
                 echo "<td>";
-                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person->Name, $person->Id);
+                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person);
                 echo "</td>";
                 echo "<td>" . $magician->Level . "</td>\n";
                 echo "<td>"; 

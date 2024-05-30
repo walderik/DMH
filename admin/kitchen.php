@@ -84,7 +84,7 @@ include 'navigation.php';
         echo "</tr>";
         foreach($persons as $person) {
             $registration=$person->getRegistration($current_larp);
-            echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person->Name,$person->Id)."</td>";
+            echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person)."</td>";
             echo "<td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>" . $registration->getTypeOfFood()->Name . "</td>";
             if ($hasFoodChoices) echo "<td>$registration->FoodChoice</td>";
             echo "</tr>";
