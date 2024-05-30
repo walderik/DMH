@@ -224,21 +224,24 @@ class Group extends BaseModel{
          
          if (is_null($larp)) return Array();
          if (GroupType::isInUse($larp))
-             $sql = "SELECT DISTINCT  regsys_group.* FROM regsys_group, regsys_grouptype WHERE (GroupTypeId IS NULL OR GroupTypeId = regsys_grouptype.Id) AND IsDead=0 AND regsys_group.Id IN ".
+             $sql = "SELECT DISTINCT regsys_group.* FROM regsys_group, regsys_grouptype WHERE (GroupTypeId IS NULL OR GroupTypeId = regsys_grouptype.Id) AND IsDead=0 AND regsys_group.Id IN ".
                  "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY regsys_grouptype.SortOrder,".static::$orderListBy.";";
          else 
              $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND regsys_group.Id IN ".
              "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
-         echo $sql."<br><br>";    
+   
          return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
      
      public static function getAllRegisteredApproved($larp) {
-         
          if (is_null($larp)) return Array();
-         $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND IsApproved=1 AND Id IN ".
-             "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
-         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+         if (GroupType::isInUse($larp))
+             $sql = "SELECT DISTINCT regsys_group.* FROM regsys_group, regsys_grouptype WHERE (GroupTypeId IS NULL OR GroupTypeId = regsys_grouptype.Id) AND IsDead=0 AND IsApproved=1 AND regsys_group.Id IN ".
+             "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY regsys_grouptype.SortOrder,".static::$orderListBy.";";
+         else
+             $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND IsApproved=1 AND Id IN ".
+                 "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
+             return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
      
      public static function getAllInCampaign($campaignId) {
