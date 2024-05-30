@@ -872,6 +872,8 @@ class Role extends BaseModel{
         $role = static::loadById($id);
         
         $role->deleteAllAbilities();
+        $role->deleteAllIntrigueTypes();
+        $role->deleteAllRoleFunctions();
         
         parent::delete($id);
     }

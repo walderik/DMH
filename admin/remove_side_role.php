@@ -27,21 +27,20 @@ include 'navigation.php';
 
 
 	<div class="content">
-		<h1>Byt huvudkaraktär för <?php echo $person->Name;?></h1>
+		<h1>Ta bort sidokaratärer från anmälan för <?php echo $person->Name;?></h1>
 		<div>
 
-    		    <form action="logic/change_main_role_save.php" method="post">
+    		    <form action="logic/remove_side_role_save.php" method="post">
     		      <input type='hidden' id='PersonId' name='PersonId' value='<?php echo $person->Id; ?>'>
     		        
     		    <table class='data'>
     		    <tr><th>Namn</th><th>Yrke</th><th>Grupp</th></tr>
     		    <?php 
     		    foreach ($roles as $role)  {
+    		        if ($role->isMain($current_larp)) continue;
     		        echo "<tr>\n";
     		        
-    		        echo "<td><input id ='Role$role->Id' type='radio' name='RoleId' value='$role->Id'";
-    		        if ($role->isMain($current_larp)) echo " checked=checked";
-    		        echo ">";
+    		        echo "<td><input id ='Role$role->Id' type='checkbox' name='RoleId[]' value='$role->Id'>";
     		        echo "<label for='Role$role->Id'>$role->Name</label></td>\n";
     		        echo "<td>" . $role->Profession . "</td>\n";
     		        $group = $role->getGroup();
@@ -56,5 +55,5 @@ include 'navigation.php';
     		    echo "</table>";
     		?>
     		<br>
-			<input type="submit" value="Sätt som huvudkaraktär"></form>
+			<input type="submit" value="Ta bort"></form>
         

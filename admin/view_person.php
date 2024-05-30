@@ -172,9 +172,17 @@ include 'navigation.php';
      		            echo "</tr>";
     		        }
     		        echo "</table>";
-    		        echo "<form action='change_main_role.php' method='post'>";
-    		        echo "<input type='hidden' id='PersonId' name='PersonId' value='$person->Id'>";
-    		        echo "<input type='submit' value='Ändra vilken som är huvudkaraktär'>";
+    		        if (sizeof($roles) > 1) {
+    		            echo "<form style='display: inline-block;' action='change_main_role.php' method='post'>";
+        		        echo "<input type='hidden' id='PersonId' name='PersonId' value='$person->Id'>";
+        		        echo "<input type='submit' value='Ändra vilken som är huvudkaraktär'>";
+        		        echo "</form> ";
+
+        		        echo "<form style='display: inline-block;' action='remove_side_role.php' method='post'>";
+        		        echo "<input type='hidden' id='PersonId' name='PersonId' value='$person->Id'>";
+        		        echo "<input type='submit' value='Ta bort sidokaraktär(er)'>";
+        		        echo "</form>";
+    		        }
     		        echo "</div>\n";
     		        
     		        
