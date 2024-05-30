@@ -22,12 +22,12 @@ $pdf->init($current_user->Name, $name, $current_larp->Name, false);
 
 $persons = Person::getAllRefunded($current_larp);
 $rows = array();
-$header = array("Namn", "Betalat", "Återbetalat");
+$header = array("Namn", "Betalat", "Återbetalat", "Datum");
 
 foreach ($persons as $person) {
     $registration = $person->getRegistration($current_larp);
 
-    $rows[] = array($person->Name, $registration->AmountPayed, $registration->RefundAmount);
+    $rows[] = array($person->Name, $registration->AmountPayed, $registration->RefundAmount, $registration->RefundDate);
 
 }
 

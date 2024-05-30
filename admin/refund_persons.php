@@ -83,6 +83,7 @@ th {
     		      "<th onclick='sortTable(1, \"$tableId\")'>Epost</th>".
     		      "<th onclick='sortTable(2, \"$tableId\")'>Betalat</th>".
     		      "<th onclick='sortTable(3, \"$tableId\")' >Återbetalning</th>".
+    		      "<th onclick='sortTable(3, \"$tableId\")' >Datum för<br>återbetalning</th>".
     		      "<th onclick='sortTable(4, \"$tableId\")' >Betalning</th>".
     		      "</tr>\n";
     		    foreach ($persons as $person)  {
@@ -116,6 +117,7 @@ th {
     		        
     		        echo "<td>$registration->AmountPayed</td>";
     		        echo "<td>$registration->RefundAmount</td>";
+    		        echo "<td>$registration->RefundDate</td>";
     		        
 
     		        echo "<td><a href='person_payment.php?id=" . $person->Id . "'><i class='fa-solid fa-money-check-dollar'></i></a></td>\n";
