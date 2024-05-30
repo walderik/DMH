@@ -8,7 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registration = Registration::loadById($registrationId);
     if (isset($registration)) {
         $registration->AmountToPay = $_POST['AmountToPay'];
+        if (empty($registration->AmountToPay)) $registration->AmountToPay=0;
         $registration->AmountPayed = $_POST['AmountPayed'];
+        if (empty($registration->AmountPayed)) $registration->AmountPayed=0;
+        
         
         $payed = $_POST['Payed'];
         if (isset ($payed) && $payed != "") {
@@ -19,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $registration->NotComingReason = $_POST['NotComingReason'];
         $registration->IsToBeRefunded = $_POST['IsToBeRefunded'];
         $registration->RefundAmount = $_POST['RefundAmount'];
+        if (empty($registration->RefundAmount)) $registration->RefundAmount=0;
         if (isset($_POST['LarpPartAcknowledged'])) $registration->LarpPartAcknowledged = $_POST['LarpPartAcknowledged'];
         
         $refundDate = $_POST['RefundDate'];
