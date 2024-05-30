@@ -78,7 +78,7 @@ if (isset($persons) && count($persons) > 0) {
             if (!empty($normalAllergies)) $allergyArr[] = $normalAllergies;
             if (!empty($person->FoodAllergiesOther)) $allergyArr[] = $person->FoodAllergiesOther;
             
-            $person_row[] = implode("<br>",$allergyArr);
+            $person_row[] = implode("\n",$allergyArr);
             if ($current_larp->ChooseParticipationDates) $person_row[]=$registration->LarpPartNotAttending;
         }
         $rows[] = $person_row;
