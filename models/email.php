@@ -440,7 +440,7 @@ class Email extends BaseModel{
             $mailer->Host = "send.one.com";
             $mailer->Port = 587;
             $mailer->Username = "dmh@berghemsvanner.se";
-            $mailer->Password = "Minnekapi1!";
+            $mailer->Password = "PangPang2024!";
             
         }
         
