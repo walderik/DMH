@@ -93,11 +93,15 @@ include 'navigation.php';
 		      $approvedUser = User::loadById($current_group->ApprovedByUserId);
 		      echo " av $approvedUser->Name, ".substr($current_group->ApprovedDate,0, 10); 
 		  }
+		  $editButton = "Ta bort godkännandet";
 		}
 		else {
 		    echo "<strong>Ej godkänd</strong>";
+		    $editButton = "Godkänn";
 		}		
-		?>
+?>
+        <form action="logic/toggle_approve_role.php" method="post"><input type="hidden" id="groupId" name="groupId" value="<?php echo $current_group->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
+		<br>
         <?php 
         if ($isRegistered) {
         if ($larp_group->UserMayEdit  == 1) {
