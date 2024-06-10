@@ -916,6 +916,9 @@ class Role extends BaseModel{
             case "Religion":
                 $sql = "SELECT * FROM regsys_role WHERE ReligionId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
+            case "RoleFunction":
+                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_rolefunction_role WHERE RoleFunctionId = ?) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                break;
         }
          
         return static::getSeveralObjectsqQuery($sql, array($valueId, $larp->Id));

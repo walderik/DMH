@@ -29,8 +29,10 @@ if ($operation == "search") {
     if ($type == "Race") $resTable .="<th>Kommentar till ras</th>";
     if ($type == "Ability") $resTable .="<th>Kommentar till förmåga</th>";
     if ($type == "Council") $resTable .="<th>Kommentar till byråd</th>";
+    if ($type == "RoleFunction") $resTable .="<th>Kommentar till funktion</th>";
     
     $resTable .= "</tr>";
+
     foreach ($roles as $role) {
         $resTable .= "<tr><td><a href='view_role.php?id=$role->Id'>$role->Name</a></td><td>$role->Profession</td><td>";
 
@@ -44,12 +46,14 @@ if ($operation == "search") {
         if ($type == "Race") $resTable .="<td>$role->RaceComment</td>";
         if ($type == "Ability") $resTable .="<td>$role->AbilityComment</td>";
         if ($type == "Council") $resTable .="<td>$role->Council</td>";
+        if ($type == "RoleFunction") $resTable .="<td>$role->RoleFunctionComment</td>";
         $resTable .= "</tr>";
         $personIdArr[] = $role->getPerson()->Id;
     }
     $resTable .="</table>";
     
-    $resMail = contactSeveralEmailIcon('Skicka till deltagarna med dessa roller', $em$personIdArrailArr, $valueText, "Meddelande från $current_larp->Name")."<br>";
+    $resMail = "";
+    if (!empty($personIdArr)) $resMail = contactSeveralEmailIcon('Skicka till deltagarna med dessa roller', $personIdArr, $valueText, "Meddelande från $current_larp->Name")."<br>";
     
     
     echo $resSearch . $resMail. $resTable;
