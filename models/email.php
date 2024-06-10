@@ -343,6 +343,13 @@ class Email extends BaseModel{
     # Normalt bör man inte anropa den här direkt utan newWithDefault
     public function sendNow() { 
         global $current_user;
+        
+        if (empty($this->To)) {
+            $this->SentAt = date_format(new Datetime(),"Y-m-d H:i:s");
+            $this->update();
+            return;
+        }
+        
         //Create a new PHPMailer instance
         $mailer = new PHPMailer();
         $mailer->CharSet = 'UTF-8';
@@ -383,6 +390,8 @@ class Email extends BaseModel{
             }
         }
         
+
+        
         $recipients = $this->getRecipients();
         $unsubscribeText = "";
         $site = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]";
@@ -390,7 +399,7 @@ class Email extends BaseModel{
             $mailer->CharSet = 'UTF-8';
             $person = $recipients[0];
             $code = $person->getUnsubscribeCode();
-            $unsubLink = "$site/regsys/unsubscribe.php?personId=$person->Id&code=$code";
+            $unsubLink = $site.'/regsys/unsubscribe.php?personId='.$person->Id.'&code='.$code; 
             $mailer->addCustomHeader(
                 'List-Unsubscribe',
                 "<$unsubLink>"
@@ -421,29 +430,19 @@ class Email extends BaseModel{
         $mailer->isHTML(true);
 
         $mailer->Body = $this->mailContent($unsubscribeText);
-
-        //Om man skickar med SMTP fungerar unsubscribe
+        
+        //$mailer->SMTPDebug = true;
+        
         if (str_contains($this->From, "kontakt@kampeniringen.se")) {
             $mailer->IsSMTP();
             $mailer->SMTPAuth = true;
             $mailer->SMTPSecure = "tls";
             $mailer->Host = "send.one.com";
             $mailer->Port = 587;
-            $mailer->Username = "kontakt@kampeniringen.se";
+            $mailer->Username = $this->From;
             $mailer->Password = "BrestaBresta1125";   
                      
-        }
-        if (str_contains($this->From, "dmh@berghemsvanner.se")) {
-            $mailer->IsSMTP();
-            $mailer->SMTPAuth = true;
-            $mailer->SMTPSecure = "tls";
-            $mailer->Host = "send.one.com";
-            $mailer->Port = 587;
-            $mailer->Username = "dmh@berghemsvanner.se";
-            $mailer->Password = "PangPang2024!";
-            
-        }
-        
+        }        
         
         /*
         Outgoing server name: mailout.one.com
