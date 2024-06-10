@@ -153,8 +153,12 @@ class Email extends BaseModel{
         $email->Subject = $Subject;
         $email->Text = $Text;
         $email->SenderText = $senderText;
+
         $now = new Datetime();
-        $email->SentAt = $now;
+        $email->SentAt = date_format($now,"Y-m-d H:i:s");
+
+        $now->modify("+$noOfDaysKept day");
+        $email->DeletesAt = date_format($now,"Y-m-d H:i:s");
         
         if (!is_null($larp)) {
             $email->LarpId = $larp->Id;
@@ -167,9 +171,6 @@ class Email extends BaseModel{
         if (empty($email->Subject)) $email->Subject = "Meddelande från $myName";
         
         
-        $now->modify("+$noOfDaysKept day");
-        
-        $email->DeletesAt = date_format($now,"Y-m-d H:i:s");
         
         $email->create();
         
@@ -288,9 +289,9 @@ class Email extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_email (SenderUserId, LarpId, `From`, `To`, ToName, Greeting, CC, Subject, Text, SenderText, CreatedAt, DeletesAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_email (SenderUserId, LarpId, `From`, `To`, ToName, Greeting, CC, Subject, Text, SenderText, CreatedAt, DeletesAt, SentAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->Greeting, $this->CC, $this->Subject, $this->Text, $this->SenderText, date_format(new Datetime(),"Y-m-d H:i:s"), $this->DeletesAt))) {
+        if (!$stmt->execute(array($this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->Greeting, $this->CC, $this->Subject, $this->Text, $this->SenderText, date_format(new Datetime(),"Y-m-d H:i:s"), $this->DeletesAt, $this->SentAt))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -340,12 +341,12 @@ class Email extends BaseModel{
         </body>";
     }
     
-    # Normalt bör man inte anropa den här direkt utan newWithDefault
+
     public function sendNow() { 
         global $current_user;
         
         if (empty($this->To)) {
-            $this->SentAt = date_format(new Datetime(),"Y-m-d H:i:s");
+            $this->SentAt = $this->CreatedAt;
             $this->update();
             return;
         }
