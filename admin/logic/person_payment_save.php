@@ -28,6 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $refundDate = $_POST['RefundDate'];
         if (isset ($refundDate) && $refundDate != "") {
             $registration->RefundDate = $refundDate;
+        } else {
+            $registration->RefundDate = null;
         }
         
         $registration->update();
