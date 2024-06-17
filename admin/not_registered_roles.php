@@ -18,7 +18,7 @@ include 'navigation.php';
     		    foreach ($groups as $group)  {
     		        $person = $group->getPerson();
     		        echo "<tr>\n";
-    		        echo "<td><a href='view_group.php?id=$group->Id>$group->Name</a>";
+    		        echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</a>";
     		        echo "</td>\n";
     		        echo "<td>$person->Name</td>";
     		        $larp = $group->lastLarp();

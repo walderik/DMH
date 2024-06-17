@@ -32,7 +32,7 @@ $currency = $current_larp->getCampaign()->Currency;
 $rows = array();
 $header = array("Namn", "Pris", "Kommentar                                                                                                                                   ");
 foreach ($resources as $resource) {
-    $rows[] = array($resource->UnitSingular, $resource->Price." $currency", "");
+    $rows[] = array($resource->Name, $resource->Price." $currency", "");
 }
 
 // add a page
