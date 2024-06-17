@@ -11,7 +11,9 @@ include 'navigation.php';
     <div class="content">   
         <h1>Grupper som ska godkännas</h1>
         <p>Ett godkännande gäller för kampanjen, inte bara det här lajvet. <br>
-        Inför anmälan till varje lajv har gruppledaren möjlighet att ändra på gruppen. Då förlorar den automatiskt sitt godkännande.</p>
+        Inför anmälan till varje lajv har gruppledaren möjlighet att ändra på gruppen. Då förlorar den automatiskt sitt godkännande.<br>
+        Om samma gruppen (i fiktionen) redan har <a href='not_registered_roles.php'>funnits i kampanjen</a> ska den användas istället för att skapa en ny. 
+        Annars följer inte länkar i intrigspår och "Vad hände" med som det ska. </p>
      		<?php 
     		$groups = Group::getAllToApprove($current_larp);
     		if (empty($groups)) {
@@ -37,7 +39,9 @@ include 'navigation.php';
     		?>    
         <h1>Karaktärer som ska godkännas</h1>
         <p>Ett godkännande gäller för kampanjen, inte bara det här lajvet. <br>
-        Inför anmälan till varje lajv har deltagare möjlighet att ändra på karaktären. Då förlorar den automatiskt sitt godkännande.</p>
+        Inför anmälan till varje lajv har deltagare möjlighet att ändra på karaktären. Då förlorar den automatiskt sitt godkännande.<br>
+        Om samma karaktär (i fiktionen) redan har <a href='not_registered_roles.php'>funnits i kampanjen</a> ska den användas istället för att skapa en ny. 
+        Annars följer inte länkar i intrigspår och "Vad hände" med som det ska. </p>
      		<?php 
      		$roles = Role::getAllToApprove($current_larp);
     		//$persons = Person::getAllToApprove($current_larp);
