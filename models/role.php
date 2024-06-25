@@ -328,6 +328,15 @@ class Role extends BaseModel{
         "regsys_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
     }
+
+    public static function getUnregistredRolesForPerson(Person $person, LARP $larp) {
+        if (is_null($person) || is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
+        "regsys_role.PersonId = ? AND ".
+        "regsys_role.Id!=regsys_larp_role.RoleId AND ".
+        "regsys_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+    }
    
     # Hämta de karaktärer en person på reservlistan har anmält till ett lajv
     public static function getReserveRegistredRolesForPerson(Person $person, LARP $larp) {
@@ -338,8 +347,6 @@ class Role extends BaseModel{
             "regsys_reserve_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
     }
-    
-    
     
     # Hämta huvudkaraktären för en person har anmält till ett lajv
     public static function getMainRoleForPerson(Person $person, LARP $larp) {
@@ -357,8 +364,6 @@ class Role extends BaseModel{
             "ORDER BY GroupId, Name;";
         return static::getSeveralObjectsqQuery($sql, array($campaignId));
     }
-    
-    
     
     public static function getAllRoles(LARP $larp) {
         if (is_null($larp)) return Array();
@@ -422,7 +427,6 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $larp->CampaignId));
     }
     
-    
     public static function getAllMainRolesInGroup(Group $group, LARP $larp) {
         if (is_null($group) or is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
@@ -450,9 +454,6 @@ class Role extends BaseModel{
             "regsys_larp_role.larpid=? AND IsMainRole=1) ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
-    
-    
-    
     
     public static function getAllNonMainRolesInGroup(Group $group, LARP $larp) {
         if (is_null($group) or is_null($larp)) return Array();

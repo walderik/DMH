@@ -183,9 +183,38 @@ include 'navigation.php';
         		        echo "<input type='submit' value='Ta bort sidokaraktär(er)'>";
         		        echo "</form>";
     		        }
-    		        echo "</div>\n";
-    		        
-    		        
+					echo "</div>\n"; 
+
+					echo "<div>\n";
+					if (!empty($unregistered_roles)) {
+						echo "<strong>Karaktärer som ännu ej är tillagda:</strong><br>\n";
+						$unregistered_roles = Role::getUnregisteredRolesAtLarp($current_larp);
+	
+						echo "<table>";
+						foreach($unregistered_roles as $role) {
+							if ($role->IsDead !==1) {
+								echo "<tr>";
+								echo "<td><a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
+								echo " <a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>";
+								echo "</td>";
+								echo "<td>$role->Profession</td>";
+								echo "<td>";
+								$role_group = $role->getGroup();
+								if (isset($role_group)) {
+									echo "<a href = 'view_group.php?id=$role_group->Id'>$role_group->Name</a>";
+								}
+								echo "</td>";
+								echo "<td>";
+								echo "<a href='logic/add_role.php?id=$role->Id'>Lägg till som sidokaraktär</a>";
+								echo "</td>";
+								echo "</tr>";
+							}
+						}
+						echo "</table>"
+					} else {
+						echo "<strong>Det finns inga ännu ej tillagda karaktärer.</strong>"
+					}      
+					echo "</div>\n";     
     		        
     		        //Epost
     		        $emails = Email::allForPersonAtLarp($person, $current_larp);
