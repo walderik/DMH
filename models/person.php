@@ -447,6 +447,10 @@ class Person extends BaseModel{
         return Role::getRegistredRolesForPerson($this, $larp);
     }
 
+    public function getUnregisteredRolesAtLarp($larp) {
+        return Role::getUnregistredRolesForPerson($this, $larp);
+    }
+
     public function getReserveRolesAtLarp($larp) {
         return Role::getReserveRegistredRolesForPerson($this, $larp);
     }
