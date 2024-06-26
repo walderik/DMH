@@ -89,6 +89,7 @@ if ($variant == 1) {
         if (isset($guardian)) $guardianName = $guardian->Name;
         
         if ($current_larp->ChooseParticipationDates) {
+            $registration = $person->getRegistration($current_larp);
             $rows[] = array($person->Name, $person->getAgeAtLarp($current_larp), $registration->LarpPartNotAttending, $groupName, $role->Name, $guardianName);
         }
         else {
