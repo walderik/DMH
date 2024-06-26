@@ -331,11 +331,12 @@ class Role extends BaseModel{
 
     public static function getUnregistredRolesForPerson(Person $person, LARP $larp) {
         if (is_null($person) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
+        $sql = "SELECT regsys_role.* FROM regsys_role WHERE ".
         "regsys_role.PersonId = ? AND ".
-        "regsys_role.Id!=regsys_larp_role.RoleId AND ".
-        "regsys_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+        "regsys_role.CampaignId=? AND ".
+        "regsys_role.Id NOT IN (SELECT RoleId FROM regsys_larp_role WHERE ".
+        "regsys_larp_role.LarpId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->CampaignId, $larp->Id));
     }
    
     # Hämta de karaktärer en person på reservlistan har anmält till ett lajv

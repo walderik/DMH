@@ -183,19 +183,17 @@ include 'navigation.php';
         		        echo "<input type='submit' value='Ta bort sidokaraktär(er)'>";
         		        echo "</form>";
     		        }
-					echo "</div>\n"; 
 
-					echo "<div>\n";
+    		        echo "<br><br>";
+    		        $unregistered_roles = $person->getUnregisteredRolesAtLarp($current_larp);
 					if (!empty($unregistered_roles)) {
-						echo "<strong>Karaktärer som ännu ej är tillagda:</strong><br>\n";
-						$unregistered_roles = Role::getUnregisteredRolesAtLarp($current_larp);
+						echo "<strong>Karaktärer som inte är med på lajvet:</strong><br>\n";
 	
 						echo "<table>";
 						foreach($unregistered_roles as $role) {
 							if ($role->IsDead !==1) {
 								echo "<tr>";
 								echo "<td><a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
-								echo " <a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>";
 								echo "</td>";
 								echo "<td>$role->Profession</td>";
 								echo "<td>";
@@ -210,9 +208,9 @@ include 'navigation.php';
 								echo "</tr>";
 							}
 						}
-						echo "</table>"
+						echo "</table>";
 					} else {
-						echo "<strong>Det finns inga ännu ej tillagda karaktärer.</strong>"
+						echo "<strong>$person->Name har inga karaktärer som inte är med på lajvet.</strong>";
 					}      
 					echo "</div>\n";     
     		        
