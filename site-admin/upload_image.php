@@ -95,7 +95,7 @@ include 'navigation.php';
 				<input class="input_field" type="text" id="Photographer" name="Photographer" value=""  size="25" maxlength="100">
           	<br><br>
           	<input type="submit" name="submit" value="Ladda upp bild">
-          	<p><strong>OBS:</strong> Bara .jpg, .jpeg, .gif, .png bilder är tillåtna och max storlek 0.5 MB.</p>
+          	<p><strong>OBS:</strong> Bara .jpg, .jpeg, .gif, .png bilder är tillåtna.</p>
         </form>
     </div>
 </body>

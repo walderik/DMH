@@ -42,9 +42,10 @@ function saveReceipt(Bookkeeping $bookkeeping) {
             $id = Image::saveImage("Verifikation $bookkeeping->Number", true);
             $bookkeeping->ImageId = $id;
             $bookkeeping->update();
+        } else {
+            $error_code = $error;
+            $error_message = getErrorText($error_code);
         }
-        $error_code = $error;
-        $error_message = getErrorText($error_code);
     }
     
 }

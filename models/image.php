@@ -7,7 +7,7 @@ class Image extends BaseModel{
     public $file_data;
     public $Photographer;
     
-    
+    const MAXSIZE = 0.5 * 1024 * 1024;
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
@@ -41,7 +41,7 @@ class Image extends BaseModel{
         if ($allow_pdf) $allowed["pdf"] = "application/pdf";
         $filename = $_FILES["upload"]["name"];
         $filetype = $_FILES["upload"]["type"];
-        $filesize = $_FILES["upload"]["size"];
+
         
         // Validate file extension
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
@@ -50,12 +50,49 @@ class Image extends BaseModel{
         // Validate type of the file
         if(!in_array($filetype, $allowed)) return "image_format";
         
-        // Validate file size - 0,5MB maximum
-        $maxsize = 0.5 * 1024 * 1024;
-        if($filesize > $maxsize) return "image_size";
-        
-        
     }
+    
+    
+    private static function compressImage($source) {
+        $quality = 75;
+        
+        // Temporary path
+        $uploadPath = dirname($source);
+        
+        // File info
+        //$fileName = basename($_FILES["upload"]["tmp_name"]);
+        $compressedImageName = $uploadPath . "/tmpImage.jpg";
+        
+        
+        // Get image info
+        $imgInfo = getimagesize($source);
+        $mime = $imgInfo['mime'];
+        
+        // Create a new image from file and then compress it
+        switch($mime){
+            case "image/jpg":
+            case "image/jpeg":
+                $image = imagecreatefromjpeg($source);
+                break;
+            case 'image/png':
+                $image = imagecreatefrompng($source);
+                break;
+            case 'image/gif':
+                $image = imagecreatefromgif($source);
+                break;
+        }
+        
+        do {
+            imagejpeg($image, $compressedImageName, $quality);
+            clearstatcache();
+            $quality = $quality - 10;
+        }
+        while (filesize($compressedImageName) > static::MAXSIZE && $quality > 15);
+
+        // Return compressed image
+        return $compressedImageName;
+    }
+    
         
     # Create a new image in db
     public static function saveImage($filename="", $allow_pdf = false) {        
@@ -64,17 +101,36 @@ class Image extends BaseModel{
         
         $file_mime = mime_content_type($_FILES["upload"]["tmp_name"]);
         
+        
+        //$file_data = file_get_contents($_FILES["upload"]["tmp_name"]);
+        $filesize = $_FILES["upload"]["size"];
+        
+        if ($filesize > static::MAXSIZE && static::isImage($file_mime)) {
+            $compressedImage = static::compressImage($_FILES["upload"]["tmp_name"]);
+            // Get image info
+            $imgInfo = getimagesize($compressedImage);
+            $file_mime = $imgInfo['mime'];
+            
+            $file_data = file_get_contents($compressedImage);
+        }
+        else {
+            $file_data = file_get_contents($_FILES["upload"]["tmp_name"]);
+        }
+        
+        
         if (empty($filename)) {
-            $filename = $_FILES["upload"]["name"];
+            $filename = $_FILES["upload"]["tmp_name"];
         } else {
             $filename = $filename.".".static::getExtension($file_mime);
         }
+        
+        
         $connection = static::connectStatic();
         $stmt = $connection->prepare("INSERT INTO regsys_image (file_name, file_mime, file_data, Photographer) VALUES (?,?,?,?)");
         
         if (!$stmt->execute(array($filename,
             $file_mime,
-            file_get_contents($_FILES["upload"]["tmp_name"]), 
+            $file_data, 
             $_POST['Photographer']))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -85,34 +141,6 @@ class Image extends BaseModel{
         return $id;
     }
     
-     /*
-    public static function loadById ($Id) {
-
-        $connection = static::connectStatic();
-        $stmt = $connection->prepare("SELECT Id, file_name, file_mime, file_data, Photographer ".
-            "FROM regsys_image WHERE Id=?");
-        
-        if (!$stmt->execute(array($Id))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
-        }
-        $file = $stmt->fetch();
-                
-        if ($file===false) {
-            echo "$Id not found";
-            return false;
-        }
-        $image = Image::newWithDefault();
-        $image->Id = $file["Id"];
-        $image->file_data = $file["file_data"];
-        $image->file_name = $file["file_name"];
-        $image->file_mime = $file["file_mime"];
-        $image->Photographer = $file["Photographer"];
-        return $image;
-    }
-    
-    */
     
     
     public static function getAllPDFVerifications(LARP $larp) {
@@ -140,6 +168,24 @@ class Image extends BaseModel{
         }
         return "";
     }
+    
+    
+    
+    public static function isImage($file_mime) {
+        switch ($file_mime) {
+            case "image/jpg":
+            case "image/jpeg":
+            case "image/gif":
+            case "image/png":
+                return true;
+                break;
+            case "application/pdf":
+                return false;
+                break;
+        }
+        return false;
+    }
+    
     
     public static function update() {
         //Används bara vid anonymisering av databasen
