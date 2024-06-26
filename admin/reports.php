@@ -89,7 +89,8 @@ include 'navigation.php';
 	</div>
     <h3>Övrigt</h3>
 	<div class='linklist'>
-		<a href="reports/check_in_out_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>In och utcheckning</a><br>
+		<a href="reports/check_in_out_pdf.php?variant=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>In och utcheckning (variant 1)</a><br>
+		<a href="reports/check_in_out_pdf.php?variant=2" target="_blank"><i class="fa-solid fa-file-pdf"></i>In och utcheckning (variant 2)</a><br>
 		<a href="reports/medical.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Hälsoinformation till sjukvårdare/trygghetsvärdar</a><br>
 		<a href="reports/guardians.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Ansvarig vuxen för barn</a><br>
 		<a href="reports/emergency_contacts.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Anhöriga</a><br>
