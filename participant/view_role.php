@@ -90,13 +90,15 @@ include 'navigation.php';
 			<?php } ?>
 			<tr><td valign="top" class="header">Varför befinner sig karaktären på platsen?</td><td><?php echo $role->ReasonForBeingInSlowRiver;?></td></tr>
 			
+			<?php if (RoleFunction:: isInUse($current_larp)) {?>
+				<tr><td valign="top" class="header">Funktioner</td><td><?php echo commaStringFromArrayObject($role->getSelectedRoleFunctionIds());?></td></tr>
+				<tr><td valign="top" class="header">Funktioner förklaring</td><td><?php echo $role->RoleFunctionComment;?></td></tr>
+			<?php }?>
 			
 			<?php if (Ability::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Kunskaper</td><td><?php echo commaStringFromArrayObject($role->getAbilities());?></td></tr>
 			<tr><td valign="top" class="header">Kunskaper förklaring</td><td><?php echo $role->AbilityComment;?></td></tr>
-			<?php }?>
-
-			
+			<?php }?>			
 			
 			<?php if (Religion::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Religion</td><td>
