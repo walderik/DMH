@@ -89,6 +89,7 @@ include_once $root . '/models/rumour.php';
 include_once $root . '/models/rumour_concerns.php';
 include_once $root . '/models/rumour_knows.php';
 include_once $root . '/models/shiptype.php';
+include_once $root . '/models/subdivision.php';
 include_once $root . '/models/telegram.php';
 include_once $root . '/models/timeline.php';
 include_once $root . '/models/titledeed.php';

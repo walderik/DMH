@@ -6,6 +6,7 @@ class IntrigueActor extends BaseModel{
     public $IntrigueId;
     public $RoleId;
     public $GroupId;
+    public $SubdivisionId;
     public $IntrigueText;
     public $OffInfo;
     public $WhatHappened = "";
@@ -23,6 +24,7 @@ class IntrigueActor extends BaseModel{
         if (isset($arr['IntrigueId'])) $this->IntrigueId = $arr['IntrigueId'];
         if (isset($arr['RoleId'])) $this->RoleId = $arr['RoleId'];
         if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
+        if (isset($arr['SubdivisionId'])) $this->SubdivisionId = $arr['SubdivisionId'];
         if (isset($arr['IntrigueText'])) $this->IntrigueText = $arr['IntrigueText'];
         if (isset($arr['OffInfo'])) $this->OffInfo = $arr['OffInfo'];
         if (isset($arr['WhatHappened'])) $this->WhatHappened = $arr['WhatHappened'];
@@ -35,8 +37,8 @@ class IntrigueActor extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor SET IntrigueId=?, RoleId=?, GroupId=?, IntrigueText=?, OffInfo=?, WhatHappened=? WHERE Id = ?");
-        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->IntrigueText, $this->OffInfo, $this->WhatHappened, $this->Id))) {
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor SET IntrigueId=?, RoleId=?, GroupId=?, SubdivisionId=?, IntrigueText=?, OffInfo=?, WhatHappened=? WHERE Id = ?");
+        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->IntrigueText, $this->OffInfo, $this->WhatHappened, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -48,9 +50,9 @@ class IntrigueActor extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, IntrigueText, OffInfo, WhatHappened) VALUES (?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, SubdivisionId, IntrigueText, OffInfo, WhatHappened) VALUES (?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->IntrigueText, $this->OffInfo, $this->WhatHappened))) {
+        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->IntrigueText, $this->OffInfo, $this->WhatHappened))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -60,8 +62,18 @@ class IntrigueActor extends BaseModel{
     }
     
     public function isRoleActor() {
-        if (empty($this->RoleId)) return false;
-        return true;
+        if (isset($this->RoleId)) return true;
+        return false;
+    }
+    
+    public function isGroupActor() {
+        if (isset($this->GroupId)) return true;
+        return false;
+    }
+    
+    public function isSubdivisionActor() {
+        if (isset($this->SubdivisionId)) return true;
+        return false;
     }
     
     public function getRole() {
@@ -74,7 +86,14 @@ class IntrigueActor extends BaseModel{
         return Group::loadById($this->GroupId);
     }
     
+    public function getSubdivision() {
+        if (empty($this->GroupId)) return null;
+        return Subdivision::loadById($this->GroupId);
+    }
+    
     public function isAtLARP() {
+        if ($this->isSubdivisionActor()) return true;
+        
         $larp = $this->getIntrigue()->getLarp();
         
         $role = $this->getRole();
@@ -111,6 +130,16 @@ class IntrigueActor extends BaseModel{
     
     public static function getRoleActorForIntrigue(Intrigue $intrigue, Role $role) {
         $sql = "SELECT * FROM regsys_intrigueactor WHERE RoleId = ? AND IntrigueId = ? ORDER BY Id";
+        return static::getOneObjectQuery($sql, array($role->Id, $intrigue->Id));
+    }
+    
+    public static function getAllSubdivisionActorsForIntrigue(Intrigue $intrigue) {
+        $sql = "SELECT * FROM regsys_intrigueactor WHERE Subdivision IS NOT NULL AND IntrigueId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
+    }
+    
+    public static function getSubdivisionActorForIntrigue(Intrigue $intrigue, Role $role) {
+        $sql = "SELECT * FROM regsys_intrigueactor WHERE SubdivisionId = ? AND IntrigueId = ? ORDER BY Id";
         return static::getOneObjectQuery($sql, array($role->Id, $intrigue->Id));
     }
     
@@ -412,7 +441,7 @@ class IntrigueActor extends BaseModel{
                  "new_intrigue.PreviousInstanceId = old_actor.IntrigueId AND ".
                  "old_actor.RoleId = ?)";
              return static::getOneObjectQuery($sql, array($this->IntrigueId, $this->RoleId));
-         } else {
+         } elseif ($this->isGroupActor()) {
              $sql = "SELECT * FROM regsys_intrigueactor WHERE Id IN (".
                  "SELECT old_actor.Id FROM regsys_intrigueactor as old_actor, regsys_intrigue as new_intrigue WHERE ".
                  "new_intrigue.Id = ? AND ".
@@ -420,7 +449,16 @@ class IntrigueActor extends BaseModel{
                  "old_actor.GroupId = ?)";
              
              return static::getOneObjectQuery($sql, array($this->IntrigueId, $this->GroupId));         
+         } elseif ($this->isSubdivisionActor()) {
+             $sql = "SELECT * FROM regsys_intrigueactor WHERE Id IN (".
+                 "SELECT old_actor.Id FROM regsys_intrigueactor as old_actor, regsys_intrigue as new_intrigue WHERE ".
+                 "new_intrigue.Id = ? AND ".
+                 "new_intrigue.PreviousInstanceId = old_actor.IntrigueId AND ".
+                 "old_actor.SubdivisionId = ?)";
+             
+             return static::getOneObjectQuery($sql, array($this->IntrigueId, $this->SubdivisionId));
          }
+         return null;
 
      }
      
