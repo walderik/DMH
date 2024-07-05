@@ -66,6 +66,15 @@ class Subdivision extends BaseModel{
     }
     
     
+    public function isVisibleToParticipants() {
+        if ($this->IsVisibleToParticipants==1) return true;
+        return false;
+    }
+    
+    public function canSeeOtherParticipants() {
+        if ($this->CanSeeOtherParticipants==1) return true;
+        return false;
+    }
     
     public function addMembers($roleIds) {
         //Ta reda på vilka som inte redan är kopplade till skolan

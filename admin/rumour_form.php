@@ -124,7 +124,7 @@ include 'navigation.php';
 
 				<td><label for="IntrigueId">Kopplad intrig</label></td>
 				
-				<td><?php  selectionDropDownByArray("IntrigueId", $intrigue_array, false, $rumour->IntrigueId, "form='main'");?></td>
+				<td><?php if (!empty($intrigue_array)) selectionDropDownByArray("IntrigueId", $intrigue_array, false, $rumour->IntrigueId, "form='main'");?></td>
 			</tr>
 			<tr>
 

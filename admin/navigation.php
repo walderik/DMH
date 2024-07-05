@@ -112,6 +112,7 @@ function changePart() {
             <a href="search_role_selectiondata.php">Sökning på karaktärer</a>
             <a href="intrigue_admin.php">Intrigspår</a>
             <a href="timeline_admin.php">Körschema</a>
+            <a href="subdivision_admin.php">Grupperingar</a>
             <a href="commerce.php">Handel</a>
             
 			<?php if ($current_larp->hasAlchemy()) {?>

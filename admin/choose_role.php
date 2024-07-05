@@ -93,6 +93,10 @@ elseif ($operation == "add_titledeed_owner_role") {
     $nonmainroles= null;
     $showAbilityChoice = true;
     $multiple=true;
+} elseif ($operation == "add_subdivision_member") {
+    $purpose = "Lägg till karaktärer i gruppering";
+    $url = "subdivision_form.php";
+    $multiple=true;
 }
 
 if ($multiple) {
