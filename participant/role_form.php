@@ -341,7 +341,7 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
 				<textarea class="input_field requiredIntrigueField" id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea>
 			</div>
 				
-			<?php if (!($campaign->is_dmh() || $campaign->is_me())) { ?>
+			<?php if ($campaign->is_kir()) { ?>
 			<div class="question intrigue">
 				<label for="PreviousLarps">Tidigare lajv</label><br> 
 				<div class="explanation"><?php echo $campaign->Name ?> är en kampanj. Det innebär att allt din karaktär gör ett år och andra gör mot den ska påverka det här lajvet.    
