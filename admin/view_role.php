@@ -379,6 +379,11 @@ include 'navigation.php';
 	            echo "</div>";
 		                
 		    }
+		    if (!empty($role->PreviousLarps)) {
+		        echo "<div class='border'><h3>Tidigare</h3>";
+		        echo "<p>".nl2br(htmlspecialchars($role->PreviousLarps))."</p></div>";
+		    }
+		    
 		}
 			    
 			

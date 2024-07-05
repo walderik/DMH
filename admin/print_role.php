@@ -81,7 +81,6 @@ if ($role->isMysLajvare()) {
 			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td><td><?php echo $role->TypeOfLarperComment;?></td></tr>
 			<?php } ?>
 			
-			<tr><td valign="top" class="header">Tidigare lajv</td><td><?php echo $role->PreviousLarps;?></td></tr>
 			<tr><td valign="top" class="header">Varför befinner sig karaktären på platsen?</td><td><?php echo nl2br(htmlspecialchars($role->ReasonForBeingInSlowRiver));?></td></tr>
 			
 			<?php if (Ability::isInUse($current_larp)) {?>
