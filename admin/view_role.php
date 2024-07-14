@@ -359,13 +359,16 @@ include 'navigation.php';
 		        foreach($intrigues as $intrigue) {
 		            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
 		            if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
-		                echo "<p><strong>Intrigspår $intrigue->Name</strong><br>".nl2br($intrigueActor->IntrigueText)."</p>";
+		                echo "<div class='intrigue'>";
+		                echo "<p><strong>Intrigspår: $intrigue->Name</strong><br>".nl2br($intrigueActor->IntrigueText)."</p>";
 		                
 		                echo "<p><strong>Vad hände med det?</strong><br>";
 		                if (!empty($intrigueActor->WhatHappened)) echo nl2br($intrigueActor->WhatHappened);
 		                else echo "Inget rapporterat";
 		                echo "</p>";
+		                echo "</div>";
 		            }
+
 		        }
 		        
 		        echo "<br><strong>Vad hände för $role->Name?</strong><br>";
