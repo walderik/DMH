@@ -59,7 +59,9 @@ class LoginController {
 
         
         //Log in
-        session_start();
+        session_start([
+            'cookie_lifetime' => 86400,
+        ]);
         session_unset();
         
         $user->LastLogin = date_format(new Datetime(),"Y-m-d H:i:s");
