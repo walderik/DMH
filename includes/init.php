@@ -2,7 +2,9 @@
 
 
 
-session_start();
+session_start([
+    'cookie_lifetime' => 86400,
+]);
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
 global $current_user, $current_larp, $root;
 
