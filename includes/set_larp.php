@@ -1,8 +1,6 @@
 <?php
 
-session_start([
-    'cookie_lifetime' => 86400,
-]);
+session_start();
 
 if (!isset($_SESSION['is_loggedin'])) {
     header('Location../index.php');
