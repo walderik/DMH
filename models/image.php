@@ -7,6 +7,8 @@ class Image extends BaseModel{
     public $file_data;
     public $Photographer;
     
+    public static $orderListBy = 'Id';
+    
     const MAXSIZE = 0.5 * 1024 * 1024;
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen

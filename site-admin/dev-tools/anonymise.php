@@ -34,9 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $roles = Role::all();
     foreach ($roles as $role) {
         if (isset($role->ImageId) && $role->ImageId != 1) {
-            $tmpId = $role->ImageId;
             $role->ImageId = 1;
-            //Image::delete($tmpId);
         }
         $role->CharactersWithRelations = "-";
         $role->DarkSecret = "-";
@@ -101,6 +99,45 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $rumour->Notes = "";
         $rumour->update();
     }
+    
+    $houses = House::all();
+    foreach($houses as $house) {
+        if (!empty($house->ImageId)) {
+            $house->ImageId = 1;
+            $house->update();
+        }
+    }
+    
+    $props = Prop::all();
+    foreach($props as $prop) {
+        if (!empty($prop->ImageId)) {
+            $prop->ImageId = 1;
+            $prop->update();
+        }
+    }
+    
+    $npcs = NPC::all();
+    foreach($npcs as $npc) {
+        if (!empty($npc->ImageId)) {
+            $npc->ImageId = 1;
+            $npc->update();
+        }
+    }
+    
+    $bookeepings = Bookkeeping::all();
+    foreach($bookeepings as $bookeeping) {
+        if (!empty($bookeeping->ImageId)) {
+            $bookeeping->ImageId = 1;
+            $bookeeping->update();
+        }
+
+    }
+    
+    
+    $images = Image::all();
+    foreach($images as $image) {
+        if ($image->Id != 1) Image::delete($image->Id);
+    }
 
 }
 
@@ -112,6 +149,8 @@ if (isset($_FILES["upload"])) {
         echo "Ska spara bild<br>";
         $image->update();
         echo "Bild sparad";
+        
+        
         
         //header('Location: ../index.php?message=image_uploaded');
         exit;
