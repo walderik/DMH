@@ -25,16 +25,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigue=$intrigueActor->getIntrigue();
         $intrigueActor->RoleId = $_POST['RoleId'];
         $intrigueActor->GroupId=null;
+        $intrigueActor->SubdivisionId=null;
         $intrigueActor->update();
     } elseif ($operation == "exhange_intrigue_actor_group") {
         $intrigueActor=IntrigueActor::loadById($_POST['Id']);
         $intrigue=$intrigueActor->getIntrigue();
         $intrigueActor->GroupId = $_POST['GroupId'];
         $intrigueActor->RoleId=null;
+        $intrigueActor->SubdivisionId=null;
         $intrigueActor->update();      
     } elseif ($operation == "add_intrigue_actor_group") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_POST['GroupId'])) $intrigue->addGroupActors($_POST['GroupId']);
+    } elseif ($operation == "add_intrigue_actor_subdivision") {
+        $intrigue=Intrigue::loadById($_POST['Id']);
+        if (isset($_POST['SubdivisionId'])) $intrigue->addSubdivisionActors($_POST['SubdivisionId']);
+    } elseif ($operation == "exhange_intrigue_actor_subdivision") {
+        $intrigueActor=IntrigueActor::loadById($_POST['Id']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->SubdivisionId = $_POST['SubdivisionId'];
+        $intrigueActor->GroupId=null;
+        $intrigueActor->RoleId=null;
+        $intrigueActor->update();
     } elseif ($operation == "add_intrigue_prop") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_POST['PropId'])) $intrigue->addProps($_POST['PropId']);

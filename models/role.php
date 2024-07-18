@@ -835,6 +835,18 @@ class Role extends BaseModel{
     }
     
     
+    public static function getAllKnownRolesForSubdivision(Subdivision $subdivision, LARP $larp) {
+        $sql = "SELECT * FROM regsys_role WHERE Id IN (".
+            "SELECT iak.RoleId FROM regsys_intrigueactor_knownactor, regsys_intrigueactor as ias, regsys_intrigueactor as iak, regsys_intrigue WHERE ".
+            "ias.SubdivisionId = ? AND ".
+            "ias.id = regsys_intrigueactor_knownactor.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownactor.KnownIntrigueActorId = iak.Id AND ".
+            "ias.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($subdivision->Id, $larp->Id));
+    }
+    
+    
     public static function getAllToApprove($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_role WHERE Id IN ".

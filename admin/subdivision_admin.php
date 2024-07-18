@@ -48,7 +48,7 @@ include 'navigation.php';
             foreach ($subdivision_array as $subdivision) {
                 $memberCount = count($subdivision->getAllMembers());
                 echo "<tr>\n";
-                echo "<td><a href='subdivision_form.php?operation=update&id=" . $subdivision->Id . "'>$subdivision->Name</a></td>\n";
+                echo "<td>".$subdivision->getViewLink()." ".$subdivision->getEditLinkPen()."</td>\n";
                 echo "<td>" . $subdivision->Description . "</td>\n";
                 echo "<td>" . count($subdivision->getAllMembers()) . "</td>\n";
                 echo "<td>" . ja_nej($subdivision->isVisibleToParticipants()) . "</td>\n";

@@ -65,6 +65,9 @@ class Subdivision extends BaseModel{
             $stmt = null;
     }
     
+    public function hasImage() {
+        return false;
+    }
     
     public function isVisibleToParticipants() {
         if ($this->IsVisibleToParticipants==1) return true;
@@ -74,6 +77,14 @@ class Subdivision extends BaseModel{
     public function canSeeOtherParticipants() {
         if ($this->CanSeeOtherParticipants==1) return true;
         return false;
+    }
+    
+    public function getViewLink() {
+        return "<a href='view_subdivision.php?id=$this->Id'>$this->Name</a>";
+    }
+    
+    public function getEditLinkPen() {
+        return "<a href='subdivision_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
     }
     
     public function addMembers($roleIds) {
@@ -122,10 +133,95 @@ class Subdivision extends BaseModel{
         return Role::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
+    
+    public function getAllRegisteredMembers(LARP $larp) {
+        $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE Id IN (".
+            "SELECT RoleId FROM resys_subdivisionmember WHERE SubdivisionId=?) AND ".
+            "regsys_role.Id = regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.LarpId = ? ".
+            "ORDER BY ".Role::$orderListBy.";";
+        return Role::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id));
+    }
+    
+    public static function allForRole(Role $role) {
+        if (is_null($role)) return Array();
+        $sql = "SELECT * FROM regsys_subdivision WHERE Id IN (SELECT SubdivisionId FROM  resys_subdivisionmember WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($role->Id));
+    }
+    
+    public static function allVisibleForRole(Role $role) {
+        if (is_null($role)) return Array();
+        $sql = "SELECT * FROM regsys_subdivision WHERE IsVisibleToParticipants=1 AND Id IN (SELECT SubdivisionId FROM  resys_subdivisionmember WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($role->Id));
+    }
+    
+    
     public static function allByCampaign(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_subdivision WHERE CampaignId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
+    
+    
+    
+    public function getAllKnownRoles(LARP $larp) {
+        return Role::getAllKnownRolesForSubdivision($this, $larp);
+    }
+    
+    public function getAllKnownGroups(LARP $larp) {
+        return Group::getAllKnownGroupsForSubdivision($this, $larp);
+    }
+    
+    public function getAllKnownNPCGroups(LARP $larp) {
+        return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForSubdivision($this, $larp);
+    }
+    
+    public function getAllKnownNPCs(LARP $larp) {
+        return IntrigueActor_KnownNPC::getAllKnownNPCsForSubdivision($this, $larp);
+    }
+    
+    public function getAllKnownProps(LARP $larp) {
+        return IntrigueActor_KnownProp::getAllKnownPropsForSubdivision($this, $larp);
+    }
+    
+    public function getAllKnownPdfs(LARP $larp) {
+        return IntrigueActor_KnownPdf::getAllKnownPdfsForSubdivision($this, $larp);
+    }
+    
+    public function getAllCheckinLetters(LARP $larp) {
+        return IntrigueActor_CheckinLetter::getAllCheckinLettersForSubdivision($this, $larp);
+    }
+    
+    public function getAllCheckinTelegrams(LARP $larp) {
+        return IntrigueActor_CheckinTelegram::getAllCheckinTelegramsForSubdivision($this, $larp);
+    }
+    
+    public function getAllCheckinProps(LARP $larp) {
+        return IntrigueActor_CheckinProp::getAllCheckinPropsForSubdivision($this, $larp);
+    }
+    
+    
+    public static function getAllKnownSubdivisionsForRole(Role $role, LARP $larp) {
+        $sql = "SELECT * FROM regsys_subdivision WHERE Id IN (".
+            "SELECT iak.SubdivisionId FROM regsys_intrigueactor_knownactor, regsys_intrigueactor as ias, regsys_intrigueactor as iak, regsys_intrigue WHERE ".
+            "ias.RoleId = ? AND ".
+            "ias.id = regsys_intrigueactor_knownactor.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownactor.KnownIntrigueActorId = iak.Id AND ".
+            "ias.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($role->Id, $larp->Id));
+    }
+    
+    public static function getAllKnownSubdivisionsForGroup(Group $group, LARP $larp) {
+        $sql = "SELECT * FROM regsys_subdivision WHERE Id IN (".
+            "SELECT iak.SubdivisionId FROM regsys_intrigueactor_knownactor, regsys_intrigueactor as ias, regsys_intrigueactor as iak, regsys_intrigue WHERE ".
+            "ias.GroupId = ? AND ".
+            "ias.id = regsys_intrigueactor_knownactor.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownactor.KnownIntrigueActorId = iak.Id AND ".
+            "ias.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
+    }
+    
     
 }

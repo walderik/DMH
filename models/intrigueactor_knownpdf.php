@@ -79,6 +79,15 @@ class IntrigueActor_KnownPdf extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
     }
     
+    public static function getAllKnownPdfsForSubdivision(Subdivision $subdivision, LARP $larp) {
+        $sql = "SELECT regsys_intrigueactor_knownpdf.* FROM regsys_intrigueactor_knownpdf, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigueactor_knownpdf.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ? AND ".
+            "regsys_intrigueactor.SubdivisionId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $subdivision->Id));
+    }
+    
     public static function getAllKnowninPdfsForIntrigueActor(IntrigueActor $intrigueActor) {
         $sql = "SELECT * FROM regsys_intrigueactor_knownpdf WHERE IntrigueActorId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));

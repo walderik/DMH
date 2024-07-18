@@ -78,6 +78,15 @@ class IntrigueActor_CheckinLetter extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
     }
     
+    public static function getAllCheckinLettersForSubdivision(Subdivision $subdivision, LARP $larp) {
+        $sql = "SELECT regsys_intrigueactor_checkinletter.* FROM regsys_intrigueactor_checkinletter, regsys_intrigueactor, regsys_intrigue WHERE ".
+            "regsys_intrigueactor_checkinletter.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ? AND ".
+            "regsys_intrigueactor.SubdivisionId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $subdivision->Id));
+    }
+    
     public static function getAllCheckinLettersForIntrigueActor(IntrigueActor $intrigueActor) {
         $sql = "SELECT * FROM regsys_intrigueactor_checkinletter WHERE IntrigueActorId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigueActor->Id));

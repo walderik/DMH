@@ -329,7 +329,7 @@ line-height: 1.8;
     		                echo $role_group_name;
     		                echo "<br>";
     		                
-    		                
+    		                //Specialkunskaper
          		            if (Magic_Magician::isMagician($role)) {
         		                $magician = Magic_Magician::getForRole($role);
         		                echo "<a href='view_magician.php?id=$role->Id'>Magiker</a> ";
@@ -399,6 +399,18 @@ line-height: 1.8;
         		                echo "<a href='view_visions.php?id=$role->Id'>Syner</a> ";
         		                echo "<br>";
         		            }
+        		            
+        		            
+        		            //Grupperingar
+        		            $subdivisions = Subdivision::allVisibleForRole($role);
+        		            if (!empty($subdivisions)) {
+        		                $subdivisionLinks = array();
+        		                foreach ($subdivisions as $subdivision) {
+        		                    $subdivisionLinks[] = "<a href='view_subdivision.php?id=$subdivision->Id'>$subdivision->Name</a>";
+        		                }
+        		                echo "Medlem i ".implode(", ", $subdivisionLinks)."<br>";
+        		            }
+        		            
         		            
         		            
     		                if ($role->isRegistered($current_larp) && $current_larp->isEnded()) {

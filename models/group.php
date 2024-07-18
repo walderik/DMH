@@ -421,6 +421,17 @@ class Group extends BaseModel{
          return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
      }
      
+     public static function getAllKnownGroupsForSubdivision(Subdivision $subdivision, LARP $larp) {
+         $sql = "SELECT * FROM regsys_group WHERE Id IN (".
+             "SELECT iak.GroupId FROM regsys_intrigueactor_knownactor, regsys_intrigueactor as ias, regsys_intrigueactor as iak, regsys_intrigue WHERE ".
+             "ias.SubdivisionId = ? AND ".
+             "ias.id = regsys_intrigueactor_knownactor.IntrigueActorId AND ".
+             "regsys_intrigueactor_knownactor.KnownIntrigueActorId = iak.Id AND ".
+             "ias.IntrigueId = regsys_intrigue.Id AND ".
+             "regsys_intrigue.LarpId = ?) ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($subdivision->Id, $larp->Id));
+     }
+     
      public static function getAllUnregisteredGroups(LARP $larp) {
          if (is_null($larp)) return Array();
          $sql = "SELECT * FROM regsys_group WHERE Id NOT IN ".

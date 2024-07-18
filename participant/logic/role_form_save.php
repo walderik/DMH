@@ -51,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
  
         $role->setValuesByArray($_POST);
+
         $role->update();
         $role->unapprove($current_larp, false);
 

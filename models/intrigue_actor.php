@@ -87,8 +87,8 @@ class IntrigueActor extends BaseModel{
     }
     
     public function getSubdivision() {
-        if (empty($this->GroupId)) return null;
-        return Subdivision::loadById($this->GroupId);
+        if (empty($this->SubdivisionId)) return null;
+        return Subdivision::loadById($this->SubdivisionId);
     }
     
     public function isAtLARP() {
@@ -134,13 +134,13 @@ class IntrigueActor extends BaseModel{
     }
     
     public static function getAllSubdivisionActorsForIntrigue(Intrigue $intrigue) {
-        $sql = "SELECT * FROM regsys_intrigueactor WHERE Subdivision IS NOT NULL AND IntrigueId = ? ORDER BY Id";
+        $sql = "SELECT * FROM regsys_intrigueactor WHERE SubdivisionId IS NOT NULL AND IntrigueId = ? ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($intrigue->Id));
     }
     
-    public static function getSubdivisionActorForIntrigue(Intrigue $intrigue, Role $role) {
+    public static function getSubdivisionActorForIntrigue(Intrigue $intrigue, Subdivision $subdivision) {
         $sql = "SELECT * FROM regsys_intrigueactor WHERE SubdivisionId = ? AND IntrigueId = ? ORDER BY Id";
-        return static::getOneObjectQuery($sql, array($role->Id, $intrigue->Id));
+        return static::getOneObjectQuery($sql, array($subdivision->Id, $intrigue->Id));
     }
     
     public function getAllIntrigues() {

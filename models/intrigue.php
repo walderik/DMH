@@ -277,6 +277,24 @@ class Intrigue extends BaseModel{
         }
     }
     
+    public function addSubdivisionActors($subdivisionIds) {
+        //Ta reda på vilka som inte redan är kopplade till intrigen
+        $exisitingSubdivisionIds = array();
+        $intrigue_actors = $this->getAllSubdivisionActors();
+        foreach ($intrigue_actors as $intrigue_actor) {
+            $exisitingSubdivisionIds[] = $intrigue_actor->SubdivisionId;
+        }
+        
+        $newSubdivisionIds = array_diff($subdivisionIds,$exisitingSubdivisionIds);
+        //Koppla karaktären till intrigen
+        foreach ($newSubdivisionIds as $subdivisionId) {
+            $intrigue_actor = IntrigueActor::newWithDefault();
+            $intrigue_actor->IntrigueId = $this->Id;
+            $intrigue_actor->SubdivisionId = $subdivisionId;
+            $intrigue_actor->create();
+        }
+    }
+    
     
     public function addProps($propIds) {
         //Ta reda på vilka som inte redan är kopplade till intrigen
@@ -509,6 +527,10 @@ class Intrigue extends BaseModel{
         return IntrigueActor::getAllRoleActorsForIntrigue($this);
     }
     
+    public function getAllSubdivisionActors() {
+        return IntrigueActor::getAllSubdivisionActorsForIntrigue($this);
+    }
+    
     public function getAllProps() {
         return Intrigue_Prop::getAllPropsForIntrigue($this);
     }
@@ -590,6 +612,12 @@ class Intrigue extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($roleId, $larpId));
     }
 
+    public static function getAllIntriguesForSubdivision($subdivisionId, $larpId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigueactor WHERE SubdivisionId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($subdivisionId, $larpId));
+    }
+    
     public static function getAllIntriguesForProp($propId, $larpId) {
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
             "SELECT IntrigueId FROM regsys_intrigue_prop WHERE PropId = ? AND LarpId = ?) ORDER BY Id";
