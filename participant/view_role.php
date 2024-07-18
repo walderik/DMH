@@ -183,21 +183,60 @@ include 'navigation.php';
 		                }
 		            }
 		        }
+		        
+		        $known_groups = $role->getAllKnownGroups($current_larp);
+		        $known_roles = $role->getAllKnownRoles($current_larp);
+		        
+		        $known_npcgroups = $role->getAllKnownNPCGroups($current_larp);
+		        $known_npcs = $role->getAllKnownNPCs($current_larp);
+		        $known_props = $role->getAllKnownProps($current_larp);
+		        $known_pdfs = $role->getAllKnownPdfs($current_larp);
+		        
+		        $checkin_letters = $role->getAllCheckinLetters($current_larp);
+		        $checkin_telegrams = $role->getAllCheckinTelegrams($current_larp);
+		        $checkin_props = $role->getAllCheckinProps($current_larp);
+		        
+		        
+		        $subdivisions = Subdivision::allForRole($role);
+		        foreach ($subdivisions as $subdivision) {
+		            $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id);
+		            foreach ($subdivisionIntrigues as $intrigue) {
+		                if ($intrigue->isActive()) {
+		                    $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
+		                    if ($subdivision->isVisibleToParticipants()) echo "<strong>För $subdivision->Name</strong><br>";
+		                    if (!empty($intrigue->CommonText)) echo "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                    if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+		                    if (!empty($intrigueActor->OffInfo)) {
+		                        echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
+		                    }
+		                    if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) {
+		                        $intrigue_numbers[] = $intrigue->Number;
+		                        echo "<hr>";
+		                    }
+		                }
+		            }
+		            
+		            $known_groups = array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp));
+		            $known_roles = array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp));
+		            
+		            $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
+		            $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
+		            $known_props = array_merge($known_props,$subdivision->getAllKnownProps($current_larp));
+		            $known_pdfs = array_merge($known_pdfs,$subdivision->getAllKnownPdfs($current_larp));
+		            
+		            $checkin_letters = array_merge($checkin_letters,$subdivision->getAllCheckinLetters($current_larp));
+		            $checkin_telegrams = array_merge($checkin_telegrams,$subdivision->getAllCheckinTelegrams($current_larp));
+		            $checkin_props = array_merge($checkin_props,$subdivision->getAllCheckinProps($current_larp));
+		            
+		            
+		            
+		        }
+		        natsort($intrigue_numbers);
+
 		        if (!empty($intrigue_numbers)) {
 		            echo "<p>Intrignummer " . implode(', ', $intrigue_numbers).". De kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet.</p>";
                 }
                 
-                $known_groups = $role->getAllKnownGroups($current_larp);
-                $known_roles = $role->getAllKnownRoles($current_larp);
-                
-                $known_npcgroups = $role->getAllKnownNPCGroups($current_larp);
-                $known_npcs = $role->getAllKnownNPCs($current_larp);
-                $known_props = $role->getAllKnownProps($current_larp);
-                $known_pdfs = $role->getAllKnownPdfs($current_larp);
- 
-                $checkin_letters = $role->getAllCheckinLetters($current_larp);
-                $checkin_telegrams = $role->getAllCheckinTelegrams($current_larp);
-                $checkin_props = $role->getAllCheckinProps($current_larp);
                 
                 
                 if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
