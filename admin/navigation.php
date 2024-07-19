@@ -107,12 +107,12 @@ function changePart() {
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-            <a href="groups.php">Grupper</a>
             <a href="roles.php">Karaktärer</a>
+            <a href="groups.php">Grupper</a>
+            <a href="subdivision_admin.php">Grupperingar</a>
             <a href="search_role_selectiondata.php">Sökning på karaktärer</a>
             <a href="intrigue_admin.php">Intrigspår</a>
             <a href="timeline_admin.php">Körschema</a>
-            <a href="subdivision_admin.php">Grupperingar</a>
             <a href="commerce.php">Handel</a>
             
 			<?php if ($current_larp->hasAlchemy()) {?>
