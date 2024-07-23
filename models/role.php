@@ -192,7 +192,6 @@ class Role extends BaseModel{
 
     public function userMayEdit(LARP $larp) {
         return LARP_Role::userMayEdit($this->Id, $larp->Id);
-        
     }
     
     public function getReligion() {
@@ -846,7 +845,6 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($subdivision->Id, $larp->Id));
     }
     
-    
     public static function getAllToApprove($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_role WHERE Id IN ".
@@ -868,7 +866,6 @@ class Role extends BaseModel{
         $this->update();
         
         BerghemMailer::send_role_approval_mail($this, $larp);
-        
     }
     
     public function unapprove($larp, $sendMail) {

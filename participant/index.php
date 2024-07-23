@@ -290,8 +290,6 @@ line-height: 1.8;
         		            }
         		            echo "</td><td>";
         		            
-
-
         		            //Namn på karaktären
         		            //echo "<div style='clear:both;'>";
         		            echo "<strong>";
@@ -301,6 +299,7 @@ line-height: 1.8;
         		            else {
         		                echo "<a href='role_form.php?operation=update&id=$role->Id'>$role->Name <i class='fa-solid fa-pen'></i></a>";
         		            }
+							
         		            if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
         		            if($role->isNeverRegistered()) {
         		                echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
