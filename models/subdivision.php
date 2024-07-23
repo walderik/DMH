@@ -105,7 +105,7 @@ class Subdivision extends BaseModel{
     private function addMember($roleId) {
         
         $stmt = $this->connect()->prepare("INSERT INTO ".
-            "resys_subdivisionmember (SubdivisionId, RoleId) VALUES (?,?);");
+            "regsys_subdivisionmember (SubdivisionId, RoleId) VALUES (?,?);");
         if (!$stmt->execute(array($this->Id, $roleId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -129,14 +129,14 @@ class Subdivision extends BaseModel{
     
     public function getAllMembers() {
         $sql = "SELECT * FROM regsys_role WHERE Id IN (".
-            "SELECT RoleId FROM resys_subdivisionmember WHERE SubdivisionId=?) ORDER BY ".Role::$orderListBy.";";
+            "SELECT RoleId FROM regsys_subdivisionmember WHERE SubdivisionId=?) ORDER BY ".Role::$orderListBy.";";
         return Role::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
     
     public function getAllRegisteredMembers(LARP $larp) {
         $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE Id IN (".
-            "SELECT RoleId FROM resys_subdivisionmember WHERE SubdivisionId=?) AND ".
+            "SELECT RoleId FROM regsys_subdivisionmember WHERE SubdivisionId=?) AND ".
             "regsys_role.Id = regsys_larp_role.RoleId AND ".
             "regsys_larp_role.LarpId = ? ".
             "ORDER BY ".Role::$orderListBy.";";
@@ -151,7 +151,7 @@ class Subdivision extends BaseModel{
     
     public static function allVisibleForRole(Role $role) {
         if (is_null($role)) return Array();
-        $sql = "SELECT * FROM regsys_subdivision WHERE IsVisibleToParticipants=1 AND Id IN (SELECT SubdivisionId FROM  resys_subdivisionmember WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_subdivision WHERE IsVisibleToParticipants=1 AND Id IN (SELECT SubdivisionId FROM  regsys_subdivisionmember WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($role->Id));
     }
     
