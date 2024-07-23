@@ -57,7 +57,6 @@ th {
     		            echo "<td>";
     		            echo $role->getViewLink() . "\n";
                         if (!empty($larp_role) && ($larp_role->IsMainRole == 0)) echo " * ";
-    		            if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		        echo "</td>\n";
         		        echo "<td align='center'>".showStatusIcon($isComing)."</td>\n";
         		        if (Wealth::isInUse($current_larp)) {

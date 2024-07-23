@@ -299,7 +299,6 @@ line-height: 1.8;
         		                echo " " . $role->getEditLinkPen(false);
         		            }
 							
-        		            if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
         		            if($role->isNeverRegistered()) {
         		                echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
         		            }

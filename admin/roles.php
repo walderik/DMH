@@ -76,7 +76,6 @@ th {
     		        }
     		        else {
         		        echo $role->getViewLink();
-        		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		        if ($role->userMayEdit($current_larp)) echo "<br>Deltagaren får ändra karaktären " . showStatusIcon(false);
         		        echo "</td>\n";
         		        echo "<td nowrap>";

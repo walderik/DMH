@@ -42,7 +42,6 @@ th {
     		        echo "<tr>\n";
     		        echo "<td>";
     		        echo $role->getViewLink();
-    		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
     		        if (Wealth::isInUse($current_larp)) {
@@ -94,7 +93,6 @@ th {
     		        echo "<tr>\n";
     		        echo "<td>";
     		        echo $role->getViewLink();
-    		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
     		        if (Wealth::isInUse($current_larp)) {
