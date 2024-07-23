@@ -208,7 +208,9 @@ div.housing-group {
         echo "<td>".implode(",", $houseslinks)."</td>";
         
         if (!empty($group)) {
-            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</a></td>\n";
+            echo "<td>";
+            echo $group->getViewLink();
+            echo "</td>\n";
         } else echo "<td></td>\n";
         echo "</tr>\n";
     }

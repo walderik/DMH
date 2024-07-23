@@ -70,14 +70,15 @@ function print_role($role, $group) {
 
 include 'navigation.php';
 ?>
-
-
 	<div class="content">
-		<h1><?php echo $current_group->Name;?>&nbsp;
-		<?php if ($current_group->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
-		<?php if ($isRegistered) {?>	
-		<a href='edit_group.php?id=<?php echo $current_group->Id;?>'><i class='fa-solid fa-pen'></i></a> 
-		<?php } ?>
+		<h1>
+			<?php echo $current_group->Name;?>&nbsp;
+			<?php if ($current_group->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
+			<?php 
+				if ($isRegistered) {	
+					echo $current_group->getEditLinkPen(true);
+				}
+			?>
 		</h1>	
 		<?php if ($isRegistered) {?>	
 		<a href='group_sheet.php?id=<?php echo $current_group->Id;?>' target='_blank'>

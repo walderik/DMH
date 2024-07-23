@@ -18,7 +18,8 @@ include 'navigation.php';
     		    foreach ($groups as $group)  {
     		        $person = $group->getPerson();
     		        echo "<tr>\n";
-    		        echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</a>";
+    		        echo "<td>";
+					echo $group->getViewLink();
     		        echo "</td>\n";
     		        echo "<td>$person->Name</td>";
     		        $larp = $group->lastLarp();
@@ -63,7 +64,9 @@ include 'navigation.php';
         		        if (is_null($group)) {
         		            echo "<td>&nbsp;</td>\n";
         		        } else {
-        		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</a></td>\n";
+							echo "<td>";
+        		            echo $group->getViewLink();
+							echo "</td>\n";
         		        }
         		        echo "<td>$person->Name</td>";
         		        $larp = $role->lastLarp();

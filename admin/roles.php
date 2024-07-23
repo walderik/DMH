@@ -113,7 +113,8 @@ th {
         		        if (is_null($group)) {
         		            echo "<td>&nbsp;</td>\n";
         		        } else {
-        		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</a>";
+        		            echo "<td>";
+							echo $group->getViewLink();
         		            $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
         		            echo "<br>";
         		            if (!empty($intrigues)) echo "Intrig: ";

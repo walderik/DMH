@@ -63,7 +63,7 @@ include 'alchemy_navigation.php';
                 echo "</td>";
                 echo "<td>";
                 $group = $role->getGroup();
-                if (isset($group)) echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
+                if (isset($group)) echo $group->getViewLink();
 
                 echo "</td>";
                 echo "<td>";

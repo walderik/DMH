@@ -37,7 +37,7 @@ if ($operation == "search") {
         $resTable .= "<tr><td>" . $role->getViewLink() . "</td><td>$role->Profession</td><td>";
 
         $group = $role->getGroup();
-        if (isset($group)) $resTable .= "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
+        if (isset($group)) $resTable .= $group->getViewLink();
         $resTable .= "</td>";
         
         if ($type == "Religion") $resTable .="<td>$role->Religion</td>";

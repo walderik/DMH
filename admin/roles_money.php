@@ -60,7 +60,9 @@ th {
     		        if (is_null($group)) {
     		            echo "<td>&nbsp;</td>\n";
     		        } else {
-    		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</></td>\n";
+    		            echo "<td>";
+						echo $group->getViewLink();
+						echo "</td>\n";
     		        }
     		        
     		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'></td>";
@@ -110,7 +112,9 @@ th {
     		        if (is_null($group)) {
     		            echo "<td>&nbsp;</td>\n";
     		        } else {
-    		            echo "<td><a href='view_group.php?id=$group->Id'>$group->Name</></td>\n";
+    		            echo "<td>";
+						echo $group->getViewLink();
+						echo "</td>\n";
     		        }
     		        
     		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'></td>";

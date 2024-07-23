@@ -59,7 +59,7 @@ include 'magic_navigation.php';
                 echo "<td><a href ='view_magician.php?id=$magician->Id'>$role->Name</a></td>\n";
                 echo "<td>";
                 $group = $role->getGroup();
-                if (isset($group)) echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>";;
+                if (isset($group)) echo $group->getViewLink();
                 echo "</td>";
                 echo "<td>";
                 echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person);
