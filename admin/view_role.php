@@ -34,7 +34,7 @@ include 'navigation.php';
 		<?php if ($role->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
 
 		<?php if ($isRegistered) {?>	
-		<a href='edit_role.php?id=<?php echo $role->Id;?>'>
+		<?php echo $role->getEditLinkPen(true)?>'>
 		<i class='fa-solid fa-pen'></i></a> 
 		<?php } ?>
 		</h1>

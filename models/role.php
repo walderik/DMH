@@ -857,6 +857,19 @@ class Role extends BaseModel{
         ") AND IsApproved = 0 ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
+
+    public function getViewLink() {
+        return "<a href='view_role.php?id=$this->Id'>$this->Name</a>";
+    }
+    
+    public function getEditLinkPen($isAdmin) {
+        if($isAdmin) {
+            return "<a href='edit_role.php?id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";
+        }
+        else {
+            return "<a href='role_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
+        }
+    }
     
     public function approve($larp, $user) {
         $this->IsApproved = 1;

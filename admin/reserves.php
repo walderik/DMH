@@ -53,7 +53,7 @@ th {
     		        foreach ($reserve_roles as $reserve_role) {
     		            $role = Role::loadById($reserve_role->RoleId);
     		            $group = $role->getGroup();
-    		            echo "<a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>\n";
+    		            echo $role->getViewLink() . "\n";
 
     		            if ($reserve_role->IsMainRole == 0) {
     		                echo " (Sidokaraktär)";

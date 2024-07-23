@@ -23,12 +23,11 @@ include 'alchemy_navigation.php';
 
 
 	<div class="content">
-		<h1><?php echo "Lövjerist <a href='view_role.php?id=$role->Id'>$role->Name</a>";?>&nbsp;
-		<a href='alchemy_supplier_sheet.php?id=<?php echo $supplier->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Lövjeristblad för <?php $role->Name?>'></i></a>&nbsp;
-
-		
-		<a href='alchemy_supplier_form.php?Id=<?php echo $supplier->Id;?>&operation=update'>
-		<i class='fa-solid fa-pen'></i></a> <a href="alchemy_supplier_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a> 
+		<h1>
+			<?php echo "Lövjerist" . $role->getViewLink() . "&nbsp"?>;
+			<a href='alchemy_supplier_sheet.php?id=<?php echo $supplier->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Lövjeristblad för <?php $role->Name?>'></i></a>&nbsp;
+			<a href='alchemy_supplier_form.php?Id=<?php echo $supplier->Id;?>&operation=update'>
+			<i class='fa-solid fa-pen'></i></a> <a href="alchemy_supplier_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a> 
 		</h1>
 		
 

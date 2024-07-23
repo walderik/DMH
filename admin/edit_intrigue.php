@@ -37,7 +37,7 @@ include 'navigation.php';
 
 
 	<div class="content">
-		<h1><?php echo $role->Name;?>&nbsp;<a href='edit_role.php?id=<?php echo $role->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
+		<h1><?php echo $role->Name;?>&nbsp;<?php echo $role->getEditLinkPen(true)?></h1>
 		<div>
 				<?php include 'print_role.php';?>
 		</div>

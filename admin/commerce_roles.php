@@ -55,7 +55,7 @@ th {
     		            if ($larp_role->IsMainRole == 1) echo "<tr>\n";
     		            else echo "<tr class='show_hide hidden'>\n";
     		            echo "<td>";
-    		            echo "<a href='view_role.php?id=$role->Id'>$role->Name</a>\n";
+    		            echo $role->getViewLink() . "\n";
                         if (!empty($larp_role) && ($larp_role->IsMainRole == 0)) echo " * ";
     		            if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		        echo "</td>\n";

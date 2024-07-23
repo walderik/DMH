@@ -277,7 +277,7 @@ line-height: 1.8;
  
 
         		            if ($role->hasImage()) {
-        		                echo "<a href='view_role.php?id=$role->Id'>";
+        		                echo $role->getViewLink();
         		                echo "<img width='100' src='../includes/display_image.php?id=$role->ImageId'/ >\n";
         		                echo "</a>";
         		                echo "<br>";
@@ -293,11 +293,10 @@ line-height: 1.8;
         		            //Namn på karaktären
         		            //echo "<div style='clear:both;'>";
         		            echo "<strong>";
-        		            if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
-        		                echo "<a href='view_role.php?id=$role->Id'>$role->Name</a> ";
-        		            }
-        		            else {
-        		                echo "<a href='role_form.php?operation=update&id=$role->Id'>$role->Name <i class='fa-solid fa-pen'></i></a>";
+        		            echo $role->getViewLink();
+        		            
+        		            if (!$role->isRegistered($current_larp) || $role->userMayEdit($current_larp)) {
+        		                echo " " . $role->getEditLinkPen(false);
         		            }
 							
         		            if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";

@@ -153,8 +153,8 @@ include 'navigation.php';
                         }
                         echo "</td>";
                         
-		                echo "<td><a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
-		                echo " <a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>";
+		                echo $role->getViewLink();
+		                echo $role->getEditLinkPen(true);
                         echo "</td>";
 		                echo "<td>$role->Profession</td>";
 		                echo "<td>";
@@ -193,7 +193,8 @@ include 'navigation.php';
 						foreach($unregistered_roles as $role) {
 							if ($role->IsDead !==1) {
 								echo "<tr>";
-								echo "<td><a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
+								echo "<td>";
+								echo $role->getViewLink();
 								echo "</td>";
 								echo "<td>$role->Profession</td>";
 								echo "<td>";

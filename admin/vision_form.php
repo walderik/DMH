@@ -169,7 +169,7 @@ include 'navigation.php';
 					$role_has_array = $vision->getHas();
 					foreach ($role_has_array as $role) {
 					    echo "<form id='delete_has_$role->Id' action='vision_form.php' method='post'>";
-					    echo "<a href='view_role.php?id=$role->Id'>$role->Name</a>";
+					    echo $role->getViewLink();
 					    echo " ";
 					    echo "<input form='delete_has_$role->Id' type='hidden' id='operation' name='operation' value='delete_has'>";
 					    echo "<input form='delete_has_$role->Id' type='hidden' id='id' name='id' value='$vision->Id'>";
