@@ -43,13 +43,15 @@ th {
     		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($groups as $group)  {
     		        echo "<tr>\n";
-    		        echo "<td><a href='view_group.php?id=" . $group->Id . "'>$group->Name</a>";
+    		        echo "<td>";
+					echo $group->getViewLink();
     		        if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        if ($group->userMayEdit($current_larp)) echo "<br>Gruppledaren får ändra gruppen " . showStatusIcon(false);
     		        
     		        echo "</td>\n";
     		        echo "<td>";
-    		        echo "<a href='edit_group.php?id=" . $group->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
+    		        echo $group->getEditLinkPen(true);
+					echo "\n";
     		        echo "<a href='group_sheet.php?id=" . $group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $group->Name'></i></a>\n";
     		        echo "</td>\n";
     		        $person = $group->getPerson();

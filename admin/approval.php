@@ -25,7 +25,7 @@ include 'navigation.php';
     		        echo "<form action='logic/approve.php' method='post'>";
     		        echo "<input type='hidden' id='GroupId' name='GroupId' value='$group->Id'>";
     		        
-    		        echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>, Gruppledare ".$group->getPerson()->Name;
+    		        echo $group->getViewLink() . ", Gruppledare ".$group->getPerson()->Name;
     		        echo "<br>\n";
     		        if ($larp_group->UserMayEdit == 1) {
     		            echo "Gruppledare får ändra på gruppen och kan därför inte godkännas.";

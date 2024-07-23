@@ -59,7 +59,7 @@ class Rumour_concerns extends BaseModel{
             return $role->getViewLink();
         } elseif (!empty($this->GroupId)) {
             $group = Group::loadById($this->GroupId);
-            return "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
+            return $group->getViewLink();
         }
         return "";
     }

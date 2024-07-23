@@ -230,12 +230,12 @@ line-height: 1.8;
     		            echo "<tr>";
     		            echo "<td>";
     		            if ($group->isRegistered($current_larp) && !$group->userMayEdit($current_larp)) {
-    		                echo  "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
+    		                echo  $group->getViewLink();
     		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		                
     		            }
     		            else {
-    		                echo "<a href='group_form.php?operation=update&id=$group->Id'>$group->Name <i class='fa-solid fa-pen'></i></a>"; 
+    		                echo $group->getEditLinkPen(false); 
     		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		                
     		                 if($group->isNeverRegistered()) {
@@ -318,7 +318,7 @@ line-height: 1.8;
     		                $role_group = $role->getGroup();
     		                $role_group_name = "Inte med i någon grupp";
     		                if (isset($role_group) && $role->isRegistered($current_larp)) {
-    		                    $role_group_name = "<a href='view_group.php?id=$role_group->Id'>$role_group->Name</a> ".
+    		                    $role_group_name = $role_group->getViewLink() .
         		                    "<a href='group_sheet.php?id=" . $role_group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $role_group->Name'></i></a>\n";
     		                }
     		                elseif (isset($role_group)) {

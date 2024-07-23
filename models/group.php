@@ -89,8 +89,6 @@ class Group extends BaseModel{
         $stmt = null;
     }
     
-    
-    
     # Create a new group in db
     public function create() {
         $connection = $this->connect();
@@ -143,8 +141,6 @@ class Group extends BaseModel{
          if ($this->IsApproved == 1) return true;
          return false;
      }
-     
-     
      
      public function is_trading(LARP $larp) {
          $campaign = $larp->getCampaign();
@@ -465,7 +461,6 @@ class Group extends BaseModel{
          $this->update();
          
          BerghemMailer::send_group_approval_mail($this, $larp);
-         
      }
      
      public function unapprove($larp, $sendMail) {
@@ -475,9 +470,18 @@ class Group extends BaseModel{
          $this->update();
          
          if ($sendMail) BerghemMailer::send_group_unapproval_mail($this, $larp);
-         
      }
      
-     
-     
+    public function getViewLink() {
+        return "<a href='view_group.php?id=$this->Id'>$this->Name</a>";
+    }
+    
+    public function getEditLinkPen($isAdmin) {
+        if($isAdmin) {
+            return "<a href='edit_group.php?id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera gruppen'></i></a>";
+        }
+        else {
+            return "<a href='group_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
+        }
+    }
 }

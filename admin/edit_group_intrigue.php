@@ -55,13 +55,12 @@ function print_role($group_member) {
         
 }
 
-
 include 'navigation.php';
 ?>
-
-
 	<div class="content">
-		<h1><?php echo $current_group->Name;?>&nbsp;<a href='edit_group.php?id=<?php echo $current_group->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
+		<h1>
+			<?php echo $current_group->Name . " " . $current_group->getEditLinkPen(true) ?>
+		</h1>
 		<table>
 			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $current_group->getPerson()->Name;?></a></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>

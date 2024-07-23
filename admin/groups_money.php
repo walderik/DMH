@@ -37,7 +37,7 @@ th {
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     		        echo "<tr>\n";
     		        echo "<td>";
-    		        echo "<a href='view_group.php?id=" . $group->Id . "'>$group->Name</a>";
+    		        echo $group->getViewLink();
     		        echo "</td>\n";
     		        if (Wealth::isInUse($current_larp)) {
         		        $wealth = $group->getWealth();

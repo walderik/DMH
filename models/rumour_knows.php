@@ -63,11 +63,10 @@ class Rumour_knows extends BaseModel{
             else return $role->getViewLink();
         } elseif (!empty($this->GroupId)) {
             $group = Group::loadById($this->GroupId);
-            return "<a href='view_group.php?id=$group->Id'>$group->Name</a>";
+            return $group->getViewLink();
         }
         return "";
     }
-    
     
     public static function getAllForRumour(Rumour $rumour) {
         if (is_null($rumour)) return Array();
@@ -75,7 +74,6 @@ class Rumour_knows extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($rumour->Id));
         
     }
-    
     
     public static function roleKnows($rumourId, $roleId) {
         $sql = "SELECT count(Id) as Num FROM regsys_rumour_knows WHERE RumourId = ? AND RoleId = ?";

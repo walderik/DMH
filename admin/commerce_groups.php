@@ -44,7 +44,8 @@ th {
     		        if (($isComing && $group->is_trading($current_larp)) || !empty($titledeeds)) {
         		        echo "<tr>\n";
         		        echo "<td>";
-    		            echo "<a href='view_group.php?id=$group->Id'>$group->Name</a>\n";
+    		            echo $group->getViewLink();
+						echo "\n";
         		        echo "</td>\n";
         		        echo "<td align='center'>".showStatusIcon($isComing)."</td>\n";
         		        $wealth = $group->getWealth();
@@ -65,7 +66,8 @@ th {
         		            echo "<br>";
         		        }
         		        echo "</td>";
-        		        echo "<td><input type='number' id='$group->Id' value='$larp_group->StartingMoney' onchange='setMoneyGroup(this, $current_larp->Id)'></td>";
+						$startingMoneyValue = isset($larp_group->StartingMoney) ? $larp_group->StartingMoney : 0;
+        		        echo "<td><input type='number' id='$group->Id' value='$startingMoneyValue' onchange='setMoneyGroup(this, $current_larp->Id)'></td>";
         		        echo "</tr>\n";
     		        }
     		    }
