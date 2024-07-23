@@ -35,8 +35,7 @@ function print_role(Role $role) {
     if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
     else echo "<li style='display:table-cell; width:49%;'>\n";
   
-    echo "<div class='name'>$role->Name";
-    echo "</div>\n";
+    echo "<div class='name'>".$role->getViewLink()."</div>\n";
     echo "Yrke: ".$role->Profession . "<br>";
     if ($role->isMain($current_larp)==0) {
         echo "Sidokaraktär<br>";

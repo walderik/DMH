@@ -140,7 +140,9 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         # Kolla först att det finns intriger och att någon har en intrigtext
         $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $this->larp->Id);
-        if (empty($intrigues)) return true;
+        $subdivisions = Subdivision::allForRole($this->role);
+        
+        if (empty($intrigues) && empty($subdivisions)) return true;
         
         $tomma_intriger = true;
         foreach ($intrigues as $intrigue) {
@@ -148,9 +150,19 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);   
             if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) $tomma_intriger = false;
         }
+        foreach ($subdivisions as $subdivision) {
+            $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $this->larp->Id);
+            foreach ($subdivisionIntrigues as $intrigue) {
+                if (!$intrigue->isActive()) continue;
+                $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
+                if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) $tomma_intriger = false;
+            }
+        }
+                
         if ($tomma_intriger) return true;
   
         if ($new_page) $this->AddPage();
+        else $y = $this->GetY()+$space*3;
         $this->SetXY($left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
         $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intriger'),0,0,'L');
@@ -159,14 +171,9 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->SetFont('Arial','',static::$text_fontsize);
         
-        //point to end of the array
-        end($intrigues);
-        //fetch key of the last element of the array.
-        $lastElementKey = key($intrigues);
-        
         $intrigue_numbers = array();
         
-        foreach ($intrigues as $key => $intrigue) {
+        foreach ($intrigues as $intrigue) {
             if (!$intrigue->isActive()) continue;
             
             $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
@@ -176,38 +183,57 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $intrigue_numbers[$intrigue->Number] = $intrigue->Number;
             }
             
-            if (!empty($intrigue->CommonText)) {
-                $text = trim(encode_utf_to_iso($intrigue->CommonText));
-                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                $y = $this->GetY() + $space;
-                $this->SetXY($left, $y);
-            }
+            $this->printIntrigue($intrigue, $intrigueActor, true);
             
-            if (!empty($intrigueActor->IntrigueText)) {
-                $text = trim(encode_utf_to_iso($intrigueActor->IntrigueText));
-                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                $y = $this->GetY() + $space;
-                $this->SetXY($left, $y);
-            }
-            
-            if (!empty($intrigueActor->OffInfo)) {
-                $text = trim(encode_utf_to_iso("OFF_INFORMATION: " . $intrigueActor->OffInfo));
-                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                $y = $this->GetY() + $space;
-                $this->SetXY($left, $y);
-            }
-            /*
-            if ($key != $lastElementKey && (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo))) {
-                $this->bar();
-                $y = $this->GetY()+$space*2;
-                $this->SetXY($left, $y);
-            }
-            */
             $this->shortbar();
             $y += 2;
             $this->SetXY($left, $y);
             
         }
+        $known_groups = $this->role->getAllKnownGroups($this->larp);
+        $known_roles = $this->role->getAllKnownRoles($this->larp);
+        $known_npcgroups = $this->role->getAllKnownNPCGroups($this->larp);
+        $known_npcs = $this->role->getAllKnownNPCs($this->larp);
+        $known_props = $this->role->getAllKnownProps($this->larp);
+        
+
+        foreach ($subdivisions as $subdivision) {
+            $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $this->larp->Id);
+            foreach ($subdivisionIntrigues as $intrigue) {
+                if ($intrigue->isActive()) {
+                    $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
+                    if (empty($intrigueActor)) continue;
+                    
+                    if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) {
+                        $intrigue_numbers[$intrigue->Number] = $intrigue->Number;
+                    }
+                    if ($subdivision->isVisibleToParticipants()) {
+                        $this->SetXY($left, $y);
+                        $this->SetFont('Helvetica','B',static::$text_fontsize);
+                        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('För '.$subdivision->Name),0,0,'L');
+                        $y = $this->GetY()+$space*2;
+                        $this->SetXY($left, $y);
+                        $this->SetFont('Helvetica','',static::$text_fontsize);
+                        
+                    }
+                    $this->printIntrigue($intrigue, $intrigueActor, true);
+
+                    $this->shortbar();
+                    $y += 2;
+                    $this->SetXY($left, $y);
+                    
+                }
+            }
+            
+            $known_groups = array_merge($known_groups,$subdivision->getAllKnownGroups($this->larp));
+            $known_roles = array_merge($known_roles,$subdivision->getAllKnownRoles($this->larp));
+            
+            $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($this->larp));
+            $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($this->larp));
+            $known_props = array_merge($known_props,$subdivision->getAllKnownProps($this->larp));
+        }
+
+        natsort($intrigue_numbers);
         
         if (!empty($intrigue_numbers)) {
             //$this->bar();
@@ -222,11 +248,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
         }
         
         
-        $known_groups = $this->role->getAllKnownGroups($this->larp);
-        $known_roles = $this->role->getAllKnownRoles($this->larp);
-        $known_npcgroups = $this->role->getAllKnownNPCGroups($this->larp);
-        $known_npcs = $this->role->getAllKnownNPCs($this->larp);
-        $known_props = $this->role->getAllKnownProps($this->larp);
         
         # Dom man känner till från intrigerna
         if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props))) {
@@ -282,6 +303,33 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $y = $this->GetY();
         if ($lovest_y > $y) $y = $lovest_y;
         return true;
+    }
+    
+    protected function printIntrigue(Intrigue $intrigue, IntrigueActor $intrigueActor, bool $showOffInfo) {
+        global $left, $y;
+        $space = 3;
+        
+        if (!empty($intrigue->CommonText)) {
+            $text = trim(encode_utf_to_iso($intrigue->CommonText));
+            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+            $y = $this->GetY() + $space;
+            $this->SetXY($left, $y);
+        }
+        
+        if (!empty($intrigueActor->IntrigueText)) {
+            $text = trim(encode_utf_to_iso($intrigueActor->IntrigueText));
+            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+            $y = $this->GetY() + $space;
+            $this->SetXY($left, $y);
+        }
+        
+        if ($showOffInfo && !empty($intrigueActor->OffInfo)) {
+            $text = trim(encode_utf_to_iso("OFF_INFORMATION: " . $intrigueActor->OffInfo));
+            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+            $y = $this->GetY() + $space;
+            $this->SetXY($left, $y);
+        }
+        
     }
     
     protected function print_know_stuff($text, $image){
@@ -351,6 +399,168 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $this->SetXY($left, $y);
         }
         
+    }
+    
+    
+    function history(){
+        global $y, $left, $left2;
+        $space = 3;
+        
+        $previous_larps = $this->role->getPreviousLarps();
+        if (isset($previous_larps) && count($previous_larps) > 0) {
+            
+            foreach ($previous_larps as $prevoius_larp) {
+                $this->AddPage();
+                
+                
+                $previous_larp_role = LARP_Role::loadByIds($this->role->Id, $prevoius_larp->Id);
+                $this->title($left, "Historik $prevoius_larp->Name");
+                
+                $this->names($left, $left2);
+                
+                $y += $this->cell_y_space;
+                $this->bar();
+                
+                $y += 3;
+                
+                $this->current_left = $left;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','B',static::$text_fontsize);
+                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intrig'),0,0,'L');
+                
+                $y = $this->GetY() + $space*3;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','',static::$text_fontsize);
+                
+                
+                if (!empty($previous_larp_role->Intrigue)) {
+                    $text = trim(encode_utf_to_iso($previous_larp_role->Intrigue));
+                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                    $y = $this->GetY() + $space;
+                    $this->SetXY($left, $y);
+                    
+                    $this->bar();
+                    $y += 3;
+                    
+                }
+                
+                $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $prevoius_larp->Id);
+                foreach($intrigues as $intrigue) {
+                    $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
+                    if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
+                        /*
+                        $this->current_left = $left;
+                        $this->SetXY($this->current_left, $y);
+                        $this->SetFont('Helvetica','B',static::$text_fontsize);
+                        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intrig'),0,0,'L');
+                        */
+                        $y = $this->GetY() + $space;
+                        $this->SetXY($this->current_left, $y);
+                        $this->SetFont('Helvetica','',static::$text_fontsize);
+                        
+                        $this->printIntrigue($intrigue, $intrigueActor, false);
+                        
+                        
+                        $this->current_left = $left;
+                        $this->SetXY($this->current_left, $y);
+                        $this->SetFont('Helvetica','B',static::$text_fontsize);
+                        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Vad hände?'),0,0,'L');
+                        
+                        $y = $this->GetY() + $space*3;
+                        $this->SetXY($this->current_left, $y);
+                        $this->SetFont('Helvetica','',static::$text_fontsize);
+                        
+                        $text = encode_utf_to_iso(!empty($intrigueActor->WhatHappened) ? $intrigueActor->WhatHappened : "Inget rapporterat");
+                        $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                        $y = $this->GetY() + $space;
+                        $this->SetXY($left, $y);
+                        
+                        $this->bar();
+                        $y += 3;
+                        
+                        
+                    }
+                }
+                
+                $subdivisions = Subdivision::allForRole($this->role);
+                foreach ($subdivisions as $subdivision) {
+                    $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $prevoius_larp->Id);
+                    foreach ($subdivisionIntrigues as $intrigue) {
+                        if ($intrigue->isActive()) {
+                            $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
+                            if (empty($intrigueActor)) continue;
+                            
+                            
+                            if ($subdivision->isVisibleToParticipants()) {
+                                $this->SetXY($left, $y);
+                                $this->SetFont('Helvetica','B',static::$text_fontsize);
+                                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('För '.$subdivision->Name),0,0,'L');
+                                $y = $this->GetY()+$space*2;
+                                $this->SetXY($left, $y);
+                                $this->SetFont('Helvetica','',static::$text_fontsize);
+                                
+                            }
+                            
+                            $this->printIntrigue($intrigue, $intrigueActor, false);
+                            
+                            
+                            $this->current_left = $left;
+                            $this->SetXY($this->current_left, $y);
+                            $this->SetFont('Helvetica','B',static::$text_fontsize);
+                            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Vad hände?'),0,0,'L');
+                            
+                            $y = $this->GetY() + $space*3;
+                            $this->SetXY($this->current_left, $y);
+                            $this->SetFont('Helvetica','',static::$text_fontsize);
+                            
+                            $text = encode_utf_to_iso(!empty($intrigueActor->WhatHappened) ? $intrigueActor->WhatHappened : "Inget rapporterat");
+                            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                            $y = $this->GetY() + $space;
+                            $this->SetXY($left, $y);
+                            
+                            $this->bar();
+                            $y += 3;
+                            
+                            
+                            
+                        }
+                    }
+                    
+                }
+                
+                
+                $this->current_left = $left;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','B',static::$text_fontsize);
+                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för ".$this->role->Name."?"),0,0,'L');
+                
+                $y = $this->GetY() + $space*3;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','',static::$text_fontsize);
+                
+                $text = encode_utf_to_iso((isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "") ? $previous_larp_role->WhatHappened : "Inget rapporterat");
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+                
+                
+                $this->current_left = $left;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','B',static::$text_fontsize);
+                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för andra?"),0,0,'L');
+                
+                $y = $this->GetY() + $space*3;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','',static::$text_fontsize);
+                
+                $text = encode_utf_to_iso((isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "") ? $previous_larp_role->WhatHappendToOthers : "Inget rapporterat");
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+                
+            }
+        
+        }
     }
     
     # Skriv bara ut intriger och rykten
@@ -461,124 +671,14 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->beskrivning();
 
-        # Att fixa när vi väl har tidigare lajv
-        $previous_larps = $this->role->getPreviousLarps();
-        if (isset($previous_larps) && count($previous_larps) > 0) {
-            
-            foreach ($previous_larps as $prevoius_larp) {
-                $this->AddPage();
-                
-                
-                $previous_larp_role = LARP_Role::loadByIds($this->role->Id, $prevoius_larp->Id);
-                $this->title($left, "Historik $prevoius_larp->Name");
 
-                $this->names($left, $left2);
-                
-                $y += $this->cell_y_space;
-                $this->bar();
-                
-                $y += 3;
-                
-                if (!empty($previous_larp_role->Intrigue)) {
-                    $this->current_left = $left;
-                    $this->SetXY($this->current_left, $y);
-                    $this->SetFont('Helvetica','B',static::$text_fontsize);
-                    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intrig'),0,0,'L');
-                    
-                    $y = $this->GetY() + $space*3;
-                    $this->SetXY($this->current_left, $y);
-                    $this->SetFont('Helvetica','',static::$text_fontsize);
-                    
-                    
-                    $text = trim(encode_utf_to_iso($previous_larp_role->Intrigue));
-                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                    $y = $this->GetY() + $space;
-                    $this->SetXY($left, $y);
-                    
-                    $this->bar();
-                    $y += 3;
-                    
-                }
-                
-                $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $prevoius_larp->Id);
-                foreach($intrigues as $intrigue) {
-                    $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
-                    if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
-                        $this->current_left = $left;
-                        $this->SetXY($this->current_left, $y);
-                        $this->SetFont('Helvetica','B',static::$text_fontsize);
-                        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intrig'),0,0,'L');
-                        
-                        $y = $this->GetY() + $space*3;
-                        $this->SetXY($this->current_left, $y);
-                        $this->SetFont('Helvetica','',static::$text_fontsize);
-                        
-                        
-                        $text = trim(encode_utf_to_iso($intrigueActor->IntrigueText));
-                        $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                        $y = $this->GetY() + $space;
-                        $this->SetXY($left, $y);
-                        
-                        
-
-                        $this->current_left = $left;
-                        $this->SetXY($this->current_left, $y);
-                        $this->SetFont('Helvetica','B',static::$text_fontsize);
-                        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Vad hände?'),0,0,'L');
-                        
-                        $y = $this->GetY() + $space*3;
-                        $this->SetXY($this->current_left, $y);
-                        $this->SetFont('Helvetica','',static::$text_fontsize);
-                        
-                        
-                        $text = encode_utf_to_iso((isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat");
-                        $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                        $y = $this->GetY() + $space;
-                        $this->SetXY($left, $y);
-                        
-                        $this->bar();
-                        $y += 3;
-                        
-                        
-                    }
-                }
-                
-                $this->current_left = $left;
-                $this->SetXY($this->current_left, $y);
-                $this->SetFont('Helvetica','B',static::$text_fontsize);
-                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för ".$this->role->Name."?"),0,0,'L');
-                
-                $y = $this->GetY() + $space*3;
-                $this->SetXY($this->current_left, $y);
-                $this->SetFont('Helvetica','',static::$text_fontsize);
-                
-                $text = encode_utf_to_iso((isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "") ? $previous_larp_role->WhatHappened : "Inget rapporterat");
-                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                $y = $this->GetY() + $space;
-                $this->SetXY($left, $y);
-                
-              
-                $this->current_left = $left;
-                $this->SetXY($this->current_left, $y);
-                $this->SetFont('Helvetica','B',static::$text_fontsize);
-                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för andra?"),0,0,'L');
-                
-                $y = $this->GetY() + $space*3;
-                $this->SetXY($this->current_left, $y);
-                $this->SetFont('Helvetica','',static::$text_fontsize);
-                
-                $text = encode_utf_to_iso((isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "") ? $previous_larp_role->WhatHappendToOthers : "Inget rapporterat");
-                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                $y = $this->GetY() + $space;
-                $this->SetXY($left, $y);
-                
-            }
-        }
-        
         if (!$this->isMyslajvare && !$this->isReserve && ($this->larp->isIntriguesReleased() || $this->all)) {
             $this->intrigues(false);
             $this->rumours(false);
         }
+        
+        $this->history();
+        
 	}
 	
 	function all_character_sheets(LARP $larp_in, bool $bara_intrig, ?bool $all_info=true) {
