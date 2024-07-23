@@ -53,7 +53,8 @@ function whatHappenedRole(Role $role) {
         }
     }
     if ($hasWhatHappened) {
-        echo "<h2><a href='view_role.php?id=$role->Id'>$role->Name</a>";
+        echo "<h2>";
+        echo $role->getViewLink();
         $group = $role->getGroup();
         if (isset($group)) echo " - <a href='view_group.php?id=$group->Id'>$group->Name</a>";
         echo "</h2>";

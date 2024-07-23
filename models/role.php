@@ -192,7 +192,6 @@ class Role extends BaseModel{
 
     public function userMayEdit(LARP $larp) {
         return LARP_Role::userMayEdit($this->Id, $larp->Id);
-        
     }
     
     public function getReligion() {
@@ -846,7 +845,6 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($subdivision->Id, $larp->Id));
     }
     
-    
     public static function getAllToApprove($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_role WHERE Id IN ".
@@ -859,6 +857,19 @@ class Role extends BaseModel{
         ") AND IsApproved = 0 ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
+
+    public function getViewLink() {
+        return "<a href='view_role.php?id=$this->Id'>$this->Name</a>";
+    }
+    
+    public function getEditLinkPen($isAdmin) {
+        if($isAdmin) {
+            return "<a href='edit_role.php?id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";
+        }
+        else {
+            return "<a href='role_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
+        }
+    }
     
     public function approve($larp, $user) {
         $this->IsApproved = 1;
@@ -868,7 +879,6 @@ class Role extends BaseModel{
         $this->update();
         
         BerghemMailer::send_role_approval_mail($this, $larp);
-        
     }
     
     public function unapprove($larp, $sendMail) {

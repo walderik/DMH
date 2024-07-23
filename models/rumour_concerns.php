@@ -56,7 +56,7 @@ class Rumour_concerns extends BaseModel{
     public function getViewLink() {
         if (!empty($this->RoleId)) {
             $role = Role::loadById($this->RoleId);
-            return "<a href='view_role.php?id=$role->Id'>$role->Name</a>";
+            return $role->getViewLink();
         } elseif (!empty($this->GroupId)) {
             $group = Group::loadById($this->GroupId);
             return "<a href='view_group.php?id=$group->Id'>$group->Name</a>";

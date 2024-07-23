@@ -55,7 +55,7 @@ include 'navigation.php';
     		        $person = $role->getPerson();
     		        if (!in_array($person, $reserve_persons)) {
         		        echo "<tr>\n";
-        		        echo "<td><a href='view_role.php?id=$role->Id'>$role->Name</a>";
+        		        echo "<td>" . $role->getViewLink();
         		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
         		        echo "</td>\n";
         		        echo "<td>$role->Profession</td>\n";

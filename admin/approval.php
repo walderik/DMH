@@ -61,11 +61,13 @@ include 'navigation.php';
     		            $role_group_name = " - $role_group->Name";
     		        }
     		        
-    		        echo "<a href='view_role.php?id=" . $role->Id . "'>$role->Name</a> - $role->Profession $role_group_name";
+    		        echo $role->getViewLink() . " - " . $role->Profession . " " . $role_group_name;
     		        if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
     		            echo ", Sidokaraktär";
     		        }
-    		        echo "<a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a>\n";
+					echo " ";
+    		        echo $role->getEditLinkPen(true);
+					echo " ";
     		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
     		        echo "<br><br>";
     		        echo "Spelas av <a href='view_person.php?id=$person->Id'>$person->Name</a>, ".$person->getAgeAtLarp($current_larp)." år ";

@@ -26,7 +26,7 @@ include 'magic_navigation.php';
 ?>
 
 	<div class="content">
-		<h1><?php echo "Magiker <a href='view_role.php?id=$role->Id'>$role->Name</a>" ?>&nbsp;
+		<h1><?php echo "Magiker" . $role->getViewLink(); ?>&nbsp;
 		<a href='magic_magician_sheet.php?id=<?php echo $magician->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för <?php $role->Name?>'></i></a>&nbsp;
 		
 		

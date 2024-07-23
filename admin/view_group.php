@@ -38,10 +38,11 @@ function print_role($role, $group) {
     }
     echo "</td>";
     
-    echo "<td><a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
+    echo "<td>";
+	echo $role->getViewLink();
     echo "</td>";
     echo "<td>";
-    echo " <a href='edit_role.php?id=" . $role->Id . "'><i class='fa-solid fa-pen' title='Ändra'></i></a>";
+    echo $role->getEditLinkPen(true);
     echo " <a href='logic/remove_group_member.php?groupID=$group->Id&roleID=$role->Id".
         "onclick='return confirm(\"Är du säker på att du vill ta bort karaktären från gruppen?\");'><i class='fa-solid fa-trash-can' title='Ta bort ur gruppen'></i></a>";
     echo "</td>";

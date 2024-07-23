@@ -88,7 +88,7 @@ include 'navigation.php';
 				<?php 
 				$roles = $person->getRolesAtLarp($current_larp);
 				foreach($roles as $role) {
-				    echo "<a href='view_role.php?id=$role->Id'>$role->Name</a>";
+				    echo $role->getViewLink();
 				    if ($role->isMain($current_larp)) echo " (Huvudkaraktär)";
 				    echo "<br>";
 				}

@@ -3,6 +3,7 @@ require 'header.php';
 include_once '../includes/error_handling.php';
 include "navigation.php";
 ?>
+	<body>
 		<div class="content">
 			<h1>Omnes Mundi administration</h1>
 			<p>			    
@@ -22,9 +23,7 @@ include "navigation.php";
 		    <h2>Devtools</h2>
 		    <p>	    			
     		    <a href="dev-tools/anonymise.php">Anonymisera databasen</a>	
-		    </p>
-
-
+		    </p>			
 			<?php }?>		    
 		</div>
 	</body>

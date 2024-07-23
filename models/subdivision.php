@@ -117,7 +117,7 @@ class Subdivision extends BaseModel{
     
     
     public function removeMember($roleId) {
-        $stmt = $this->connect()->prepare("DELETE FROM resys_subdivisionmember WHERE SubdivisionId=? AND RoleId = ?;");
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_subdivisionmember WHERE SubdivisionId=? AND RoleId = ?;");
         if (!$stmt->execute(array($this->Id, $roleId))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -145,7 +145,7 @@ class Subdivision extends BaseModel{
     
     public static function allForRole(Role $role) {
         if (is_null($role)) return Array();
-        $sql = "SELECT * FROM regsys_subdivision WHERE Id IN (SELECT SubdivisionId FROM  resys_subdivisionmember WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_subdivision WHERE Id IN (SELECT SubdivisionId FROM  regsys_subdivisionmember WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($role->Id));
     }
     

@@ -169,7 +169,6 @@ class User extends BaseModel{
         if ($stmt->rowCount() == 0) {
             $stmt = null;
             return false;
-
         }   
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
@@ -223,7 +222,6 @@ class User extends BaseModel{
         
         $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId from regsys_access_control_campaign WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($campaign->Id));
-        
     }
 
     public static function getAllWithAccessOnlyToLarp(LARP $larp) {
@@ -231,9 +229,8 @@ class User extends BaseModel{
         
         $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId from regsys_access_control_larp WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
-        
     }
-    
+
     
     public function isComing(Larp $larp) {
         if (is_null($larp)) return null;
