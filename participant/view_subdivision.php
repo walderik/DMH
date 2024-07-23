@@ -316,7 +316,7 @@ include 'navigation.php';
 		        echo "<h3>$prevoius_larp->Name</h3>";
 		        
 		        foreach($intrigues as $intrigue) {
-		            $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $subdivision);
+		            $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
 		            if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
 		                echo "<p><strong>Intrig</strong><br>".nl2br($intrigueActor->IntrigueText)."</p>";
 		                

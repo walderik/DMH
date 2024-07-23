@@ -141,7 +141,7 @@ class Intrigue extends BaseModel{
             $intrigueTypeIds = $previousIntrigue->getSelectedIntrigueTypeIds();
             $newIntrigue->saveAllIntrigueTypes($intrigueTypeIds);
             
-            //Koppla alla roller och grupper
+            //Koppla alla roller, grupper och grupperingar
             $groupactors = $previousIntrigue->getAllGroupActors();
             foreach($groupactors as $groupactor) {
                 $newactor = IntrigueActor::newWithDefault();
@@ -155,6 +155,14 @@ class Intrigue extends BaseModel{
                 $newactor = IntrigueActor::newWithDefault();
                 $newactor->IntrigueId = $newIntrigue->Id;
                 $newactor->RoleId = $roleactor->RoleId;
+                $newactor->create();
+            }
+            
+            $subdivisionactors = $previousIntrigue->getAllSubdivisionActors();
+            foreach($subdivisionactors as $subdivisionactor) {
+                $newactor = IntrigueActor::newWithDefault();
+                $newactor->IntrigueId = $newIntrigue->Id;
+                $newactor->SubdivisionId = $subdivisionactor->SubdivisionId;
                 $newactor->create();
             }
             
