@@ -276,7 +276,7 @@ div.npc {
                 echo "karaktär(er): ";
                 $roles = Role::getRegistredRolesForPerson($person, $current_larp);
                 foreach ($roles as $role) {
-                    echo "<a href='view_role.php?id=$role->Id'>$role->Name</a> ";
+                    echo $role->getViewLink();
                 }
                 echo "<br>";
                 echo "Önskemål: $registration->NPCDesire<br><br>";

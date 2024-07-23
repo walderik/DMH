@@ -41,7 +41,7 @@ th {
     		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
     		        echo "<tr>\n";
     		        echo "<td>";
-    		        echo "<a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
+    		        echo $role->getViewLink();
     		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";
@@ -91,7 +91,7 @@ th {
     		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
     		        echo "<tr>\n";
     		        echo "<td>";
-    		        echo "<a href='view_role.php?id=" . $role->Id . "'>$role->Name</a>";
+    		        echo $role->getViewLink();
     		        if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        echo "</td>\n";
     		        echo "<td>$role->Profession</td>\n";

@@ -34,7 +34,7 @@ if ($operation == "search") {
     $resTable .= "</tr>";
 
     foreach ($roles as $role) {
-        $resTable .= "<tr><td><a href='view_role.php?id=$role->Id'>$role->Name</a></td><td>$role->Profession</td><td>";
+        $resTable .= "<tr><td>" . $role->getViewLink() . "</td><td>$role->Profession</td><td>";
 
         $group = $role->getGroup();
         if (isset($group)) $resTable .= "<a href='view_group.php?id=$group->Id'>$group->Name</a>";

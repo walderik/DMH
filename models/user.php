@@ -169,7 +169,6 @@ class User extends BaseModel{
         if ($stmt->rowCount() == 0) {
             $stmt = null;
             return false;
-
         }   
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
@@ -184,9 +183,9 @@ class User extends BaseModel{
         //Kollar om användaren har en person som har en karaktär som är med i grupperingen
         if (!isset($subdivision)) return false;
         
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_role, regsys_person, resys_subdivisionmember WHERE ".
-            "resys_subdivisionmember.SubdivisionId=? AND ".
-            "regsys_role.Id=resys_subdivisionmember.RoleId AND ".
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_role, regsys_person, regsys_subdivisionmember WHERE ".
+            "regsys_subdivisionmember.SubdivisionId=? AND ".
+            "regsys_role.Id=regsys_subdivisionmember.RoleId AND ".
             "regsys_role.PersonId = regsys_person.Id AND ".
             "regsys_person.UserId=?;";
 
@@ -223,7 +222,6 @@ class User extends BaseModel{
         
         $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId from regsys_access_control_campaign WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($campaign->Id));
-        
     }
 
     public static function getAllWithAccessOnlyToLarp(LARP $larp) {
@@ -231,9 +229,8 @@ class User extends BaseModel{
         
         $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId from regsys_access_control_larp WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
-        
     }
-    
+
     
     public function isComing(Larp $larp) {
         if (is_null($larp)) return null;

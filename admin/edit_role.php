@@ -17,7 +17,6 @@ if (empty($role)) {
     exit;
 }
 
-
 if (!$role->isRegistered($current_larp)) {
     header('Location: index.php'); // Karaktären är inte anmäld
     exit;
@@ -39,12 +38,9 @@ else {
 
 include 'navigation.php';
 ?>
-
-
 	<script>
 	
 	function setFieldState(isYes) {
-
 		var intrigueDivs = document.getElementsByClassName("intrigue");
 		var requiredFields = document.getElementsByClassName("requiredIntrigueField");
 		var larpertype = document.getElementsByName("LarperTypeId");
