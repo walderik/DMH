@@ -11,6 +11,7 @@ if (isset($role->GroupId)) {
 $person = $role->getPerson();
 
 $isRegistered = $role->isRegistered($current_larp);
+$subdivisions = Subdivision::allForRole($role);
 
 ?>
 <table>
@@ -49,6 +50,13 @@ if ($role->isMysLajvare()) {
 			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a></td></tr>
 		<?php }?>
 		
+		<?php if (!empty($subdivisions)) { 
+		  echo "<tr><td>Medlem i</td><td>";
+		  foreach ($subdivisions as $subdivision) echo $subdivision->getViewLink()."<br>";
+		  echo "</td></tr>";
+		    
+		    
+		}?>
 		<?php if ($isRegistered) {?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
 		<?php }?>
