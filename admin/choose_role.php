@@ -168,6 +168,7 @@ th {
     		    ?>
     		    <form action="<?php echo $url;?>" method="post">
     		    <input type="hidden" id="operation" name="operation" value="<?php echo $operation;?>">
+
     		    <?php 
     		    if (isset($id)) {
     		        echo "<input type='hidden' id='id' name='id' value='$id'>";
@@ -175,6 +176,9 @@ th {
     		    }    
     		    if (isset($_POST['2ndReferer'])) {
     		        echo "<input type='hidden' id='2ndReferer' name='2ndReferer' value='".$_POST['2ndReferer']."'>";
+    		    }
+    		    if (isset($_POST['ReturnTo'])) {
+    		        echo "<input type='hidden' id='ReturnTo' name='ReturnTo' value='".$_POST['ReturnTo']."'>";
     		    }
     		    ?> 
     			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">

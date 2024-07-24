@@ -28,40 +28,61 @@ $temp=0;
 
 $subdivision = Subdivision::loadById($subdivisionId); 
 
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = $_SERVER['HTTP_REFERER'];
+} else {
+    $referer = "view_subdivision.php?id=$subdivision->Id";
+}
 
-function print_role(Role $role) {
-    global $current_larp, $type;
+function print_role($role, $subdivision) {
+    global $current_larp, $referer;
+
     
-    if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
-    else echo "<li style='display:table-cell; width:49%;'>\n";
-  
-    echo "<div class='name'>".$role->getViewLink()."</div>\n";
-    echo "Yrke: ".$role->Profession . "<br>";
-    if ($role->isMain($current_larp)==0) {
-        echo "Sidokaraktär<br>";
-    }
-    echo "Spelas av ".$role->getPerson()->Name."<br>";
-    
-    if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-        $guardian = $role->getRegistration($current_larp)->getGuardian();
-        if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
-        else echo "Ansvarig vuxen är inte utpekad.";
-    }
-    
-    echo "<div class='description'>$role->DescriptionForOthers</div>\n";
+    echo "<tr>";
+    echo "<td>";
     if ($role->hasImage()) {
-        $image = Image::loadById($role->ImageId);
-        echo "<img src='../includes/display_image.php?id=$role->ImageId'/>\n";
-        if (!empty($image->Photographer)) {
-            echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
-        }
+        echo "<img width='30' src='../includes/display_image.php?id=$role->ImageId'/>\n";
     }
-    else {
-        echo "<img src='../images/man-shape.png' />\n";
-        echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
-    }
-    echo "</li>\n\n";
+    echo "</td>";
     
+    echo "<td>";
+    echo $role->getViewLink();
+    echo "</td>";
+    echo "<td>";
+    echo $role->getEditLinkPen(true);
+    
+    echo "<form id='delete_member_$role->Id' action='subdivision_form.php' method='post' class='fabutton'>";
+    echo " ";
+    echo "<input form='delete_member_$role->Id' type='hidden' id='operation' name='operation' value='delete_member'>";
+    echo "<input form='delete_member_$role->Id' type='hidden' id='id' name='id' value='$subdivision->Id'>";
+    echo "<input form='delete_member_$role->Id' type='hidden' id='Referer' name='Referer' value='$referer'>";
+    echo "<input form='delete_member_$role->Id' type='hidden' id='ReturnTo' name='ReturnTo' value='view_subdivision.php?id=$subdivision->Id'>";
+    echo "<input form='delete_member_$role->Id' type='hidden' id='memberId' name='memberId' value='$role->Id'>";
+    echo "<button form='delete_member_$role->Id' class='invisible' type='submit'><i class='fa-solid fa-trash' title='Ta bort från grupperingen'></i></button>";
+    echo "</form>";
+    
+    
+    echo "</td>";
+    echo "<td>$role->Profession</td>";
+    
+    $person = $role->getPerson();
+    echo "<td><a href ='view_person.php?id=$person->Id'>$person->Name</a> </td>";
+    
+    
+    echo "<td>";
+    if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+        echo "Ansvarig vuxen är ";
+        $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
+        if (!empty($registration->GuardianId)) {
+            $guardian = $registration->getGuardian();
+            echo "<a href ='view_person.php?id=$guardian->Id'>$guardian->Name</a>";
+        } else echo showStatusIcon(false);
+        
+    }
+    
+    echo "</td>";
+    
+    echo "</tr>";
 }
 
 include 'navigation.php';
@@ -69,7 +90,7 @@ include 'navigation.php';
 
 
 	<div class="content">
-		<h1><?php echo $subdivision->Name;?> 
+		<h1><?php echo $subdivision->Name." ".$subdivision->getEditLinkPen();?> 
 		</h1>
 		<div>
 		<table>
@@ -87,48 +108,32 @@ include 'navigation.php';
 		$registered_characters_in_subdivision = $subdivision->getAllRegisteredMembers($current_larp);
 		$not_registered_characters = array_udiff($subdivision->getAllMembers(), $registered_characters_in_subdivision, 'compare_objects');
 		
-		if (!empty($registered_characters_in_subdivision)) {
-		    echo "<h2>Medlemmar som kommer på lajvet</h2>";
+	    echo "<h2>Medlemmar som kommer på lajvet</h2>";
+	    echo "<form id='add_member' action='choose_role.php' method='post'></form>";
+	    echo "<input form='add_member' type='hidden' id='id' name='id' value='$subdivision->Id'>";
+	    echo "<input form='add_member' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
+	    echo "<input form='add_member' type='hidden' id='ReturnTo' name='ReturnTo' value='view_subdivision.php?id=$subdivision->Id'>";
+	    echo "<input form='add_member' type='hidden' id='operation' name='operation' value='add_subdivision_member'>";
+	    echo "<button form='add_member' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) som är med i grupperingen'></i><i class='fa-solid fa-user' title='Lägg till karaktär(er) som är med i grupperingen'></i></button>";
 		    
-		    echo "<div class='container'>\n";
 		    
-		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
+	    if (!empty($registered_characters_in_subdivision)) {
+	        echo "<table>";
 		    foreach ($registered_characters_in_subdivision as $role) {
-		        print_role($role);
-		        $temp++;
-		        if($temp==$columns)
-		        {
-		            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-		            $temp=0;
-		        }
-		        
+		        print_role($role, $subdivision);
 		    }
-		    $temp=0;
 		    
-		    echo "</ul>\n";
-	       echo "</div>\n";
+		    echo "</table>\n";
 		}
 		
 		if (!empty($not_registered_characters)) {
 		    echo "<h2>Medlemmar som inte är anmälda</h2>";
 		    
-		    echo "<div class='container'>\n";
-		    
-		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
+		    echo "<table>\n";
 		    foreach ($not_registered_characters as $role) {
-		        print_role($role);
-		        $temp++;
-		        if($temp==$columns)
-		        {
-		            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-		            $temp=0;
-		        }
-		        
+		        print_role($role, $subdivision);
 		    }
-		    $temp=0;
-		    
-		    echo "</ul>\n";
-		    echo "</div>\n";
+		    echo "</table>\n";
 		}
 		
 		

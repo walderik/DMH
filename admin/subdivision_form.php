@@ -1,9 +1,7 @@
 <?php
 include_once 'header.php';
 
-?>
-   
-    <?php
+
     $subdivision = Subdivision::newWithDefault();
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -27,9 +25,19 @@ include_once 'header.php';
         
         if ($operation == 'delete_member') {
             $subdivision->removeMember($_POST['memberId']);
+            if (isset($_POST['ReturnTo'])) {
+                header('Location: '.$_POST['ReturnTo']);
+                exit;
+                
+            }
             $operation = 'update';
         } elseif ($operation == 'add_subdivision_member') {
             if (isset($_POST['RoleId'])) $subdivision->addMembers($_POST['RoleId']);
+            if (isset($_POST['ReturnTo'])) {
+                header('Location: '.$_POST['ReturnTo']);
+                exit;
+                
+            }
             $operation = 'update';
         }
         
