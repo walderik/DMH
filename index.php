@@ -50,11 +50,11 @@ if (!Email::handleEmailQueue()) {
 				<label for="email">
 					<i class="fas fa-user"></i>
 				</label>
-				<input type="text" name="email" placeholder="Epost" id="email" required>
+				<input type="text" name="email" placeholder="Epost" id="email"  autocomplete="username" required />
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
-				<input type="password" name="password" placeholder="Lösenord" id="password" required>
+				<input type="password" name="password" placeholder="Lösenord" id="password" autocomplete="current-password" required/>
 			
 				<input type="submit" value="Logga in" name="submit">
 			</form>
@@ -78,11 +78,11 @@ if (!Email::handleEmailQueue()) {
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
-				<input type="password" name="password" placeholder="Lösenord" id="password" required>
+				<input type="password" name="password" placeholder="Lösenord" id="password"  autocomplete="new-password" required />
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
-				<input type="password" name="passwordrepeat" placeholder="Repetera lösenord" id="password" required>
+				<input type="password" name="passwordrepeat" placeholder="Repetera lösenord" id="password"  autocomplete="new-password" required />
 				<input type="submit" value="Registrera"  name="submit">
 			</form>
 			</div>
