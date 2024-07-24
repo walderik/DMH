@@ -859,7 +859,13 @@ class Role extends BaseModel{
     }
 
     public function getViewLink() {
-        return "<a href='view_role.php?id=$this->Id'>$this->Name</a>";
+        $vrole = "<a href='view_role.php?id={$this->Id}'>{$this->Name}</a>";
+
+        if ($this->IsDead) {
+            $vrole .= " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
+        }
+
+        return $vrole;
     }
     
     public function getEditLinkPen($isAdmin) {

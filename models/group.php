@@ -473,7 +473,13 @@ class Group extends BaseModel{
      }
      
     public function getViewLink() {
-        return "<a href='view_group.php?id=$this->Id'>$this->Name</a>";
+        $vgroup = "<a href='view_group.php?id=$this->Id'>$this->Name</a>";
+
+        if ($this->IsDead) {
+            $vgroup .= " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
+        }
+
+        return $vgroup;
     }
     
     public function getEditLinkPen($isAdmin) {

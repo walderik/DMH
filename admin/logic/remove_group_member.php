@@ -23,7 +23,7 @@ $role = Role::loadById($RoleId);
 $role->GroupId = null;
 $role->update();
 
-header('Location: ../view_group.php?id='.$current_group->Id);
+header('Location: ' . $current_group->getViewLink());
 
 
 

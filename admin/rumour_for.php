@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $rumour_knows->RumourId = $rumourId;
             $rumour_knows->create();
         }
-        header("Location: view_role.php?id=$role->Id");
+        header("Location: " . $role->getViewLink());
         exit;
         
     }
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $rumour_knows->RumourId = $rumourId;
             $rumour_knows->create();
         }
-        header("Location: view_group.php?id=$group->Id");
+        header("Location: " . $group->getViewLink());
         exit;
         
     }

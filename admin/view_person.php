@@ -160,7 +160,7 @@ include 'navigation.php';
 		                echo "<td>";
 		                $role_group = $role->getGroup();
 		                if (isset($role_group)) {
-		                    echo "<a href = 'view_group.php?id=$role_group->Id'>$role_group->Name</a>";
+		                    echo $role_group->getViewLink();
 		                }
 		                echo "</td>";
 		                echo "<td>";
@@ -200,7 +200,7 @@ include 'navigation.php';
 								echo "<td>";
 								$role_group = $role->getGroup();
 								if (isset($role_group)) {
-									echo "<a href = 'view_group.php?id=$role_group->Id'>$role_group->Name</a>";
+									echo $role_group->getViewLink();
 								}
 								echo "</td>";
 								echo "<td>";

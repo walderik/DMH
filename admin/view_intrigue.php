@@ -17,62 +17,62 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
-    $section = "section_$intrgueActor->Id";
+function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
+    $section = "section_$intrigueActor->Id";
     echo "<h2 id='$section'>Intrig för ";
-    if (!empty($intrgueActor->RoleId)) echo "<a href='view_role.php?id=$intrgueActor->RoleId'>";
-    elseif (!empty($intrgueActor->GroupId)) echo "<a href='view_group.php?id=$intrgueActor->GroupId'>";
-    elseif (!empty($intrgueActor->SubdivisionId)) $intrgueActor->getSubdivision()->getViewLink();
+    if (!empty($intrigueActor->RoleId)) echo "<a href='view_role.php?id=$intrigueActor->RoleId'>";
+    elseif (!empty($intrigueActor->GroupId)) echo "<a href='view_group.php?id=$intrigueActor->GroupId'>";
+    elseif (!empty($intrigueActor->SubdivisionId)) $intrigueActor->getSubdivision()->getViewLink();
     
-    echo "$name</a> <a href='actor_intrigue_form.php?IntrigueActorId=$intrgueActor->Id&name=$name&section=$section'><i class='fa-solid fa-pen'></i></a></h2>\n";
+    echo "$name</a> <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$name&section=$section'><i class='fa-solid fa-pen'></i></a></h2>\n";
     echo "<table width='100%''>\n";
     
     
     echo "<tr><td width='10%'>Intrigtext</td>";
-    $previousActor = $intrgueActor->getPrevious();
+    $previousActor = $intrigueActor->getPrevious();
     if (!empty($previousActor)) {
-        echo "<td><textarea id='IntrigueText:$intrgueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
-            htmlspecialchars($intrgueActor->IntrigueText)."</textarea></td>";
+        echo "<td><textarea id='IntrigueText:$intrigueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
+            htmlspecialchars($intrigueActor->IntrigueText)."</textarea></td>";
             echo "<td><strong>Intrigtext förra lajvet</strong><br>".nl2br(htmlspecialchars($previousActor->IntrigueText));
             if (!empty($previousActor->WhatHappened)) echo "<br><br><strong>Vad hände?</strong><br>".nl2br(htmlspecialchars($previousActor->WhatHappened));
             "</td>";
             
     } else {
-        echo "<td colspan='2'><textarea id='IntrigueText:$intrgueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
-            htmlspecialchars($intrgueActor->IntrigueText)."</textarea></td>";
+        echo "<td colspan='2'><textarea id='IntrigueText:$intrigueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
+            htmlspecialchars($intrigueActor->IntrigueText)."</textarea></td>";
     }
     echo "</tr>\n";
-    echo "<tr><td>Off-info<br>till deltagaren</td><td colspan='2'>".nl2br(htmlspecialchars($intrgueActor->OffInfo))."</td></tr>\n";
+    echo "<tr><td>Off-info<br>till deltagaren</td><td colspan='2'>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</td></tr>\n";
     echo "<tr><td>Ska ha vid incheck</td>\n";
     echo "<td colspan='2'>";
-    echo "<a href='choose_intrigue_checkin.php?IntrigueActorId=$intrgueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
-    $checkinProps = $intrgueActor->getAllPropsForCheckin();
-    printAllProps($checkinProps, $intrgueActor, true, $section);
-    $checkinLetters = $intrgueActor->getAllLettersForCheckin();
-    printAllLetters($checkinLetters, $intrgueActor, $section);
-    $checkinTelegrams = $intrgueActor->getAllTelegramsForCheckin();
-    printAllTelegrams($checkinTelegrams, $intrgueActor, $section);
+    echo "<a href='choose_intrigue_checkin.php?IntrigueActorId=$intrigueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
+    $checkinProps = $intrigueActor->getAllPropsForCheckin();
+    printAllProps($checkinProps, $intrigueActor, true, $section);
+    $checkinLetters = $intrigueActor->getAllLettersForCheckin();
+    printAllLetters($checkinLetters, $intrigueActor, $section);
+    $checkinTelegrams = $intrigueActor->getAllTelegramsForCheckin();
+    printAllTelegrams($checkinTelegrams, $intrigueActor, $section);
     
     echo "</td></tr>\n";
     echo "<tr><td>Rekvisita och PDF aktören känner till</td><td colspan='2'>\n";
-    echo "<a href='choose_intrigue_props.php?IntrigueActorId=$intrgueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
-    $knownProps = $intrgueActor->getAllPropsThatAreKnown();
-    printAllProps($knownProps, $intrgueActor, false, $section);
-    $knownPdfs = $intrgueActor->getAllPdfsThatAreKnown();
-    printAllPdfs($knownPdfs, $intrgueActor, $section);
+    echo "<a href='choose_intrigue_props.php?IntrigueActorId=$intrigueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
+    $knownProps = $intrigueActor->getAllPropsThatAreKnown();
+    printAllProps($knownProps, $intrigueActor, false, $section);
+    $knownPdfs = $intrigueActor->getAllPdfsThatAreKnown();
+    printAllPdfs($knownPdfs, $intrigueActor, $section);
     echo "</td></tr>\n";
     echo "<tr><td>Karaktärer aktören känner till</td><td colspan='2'>\n";
-    echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrgueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
-    $knownActors = $intrgueActor->getAllKnownActors();
-    printAllKnownActors($knownActors, $intrgueActor, $section);
-    $knownNPCGroups = $intrgueActor->getAllKnownNPCGroups();
-    printAllKnownNPCGroups($knownNPCGroups, $intrgueActor, $section);
-    $knownNPCs = $intrgueActor->getAllKnownNPCs();
-    printAllKnownNPCs($knownNPCs, $intrgueActor, $section);
+    echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrigueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
+    $knownActors = $intrigueActor->getAllKnownActors();
+    printAllKnownActors($knownActors, $intrigueActor, $section);
+    $knownNPCGroups = $intrigueActor->getAllKnownNPCGroups();
+    printAllKnownNPCGroups($knownNPCGroups, $intrigueActor, $section);
+    $knownNPCs = $intrigueActor->getAllKnownNPCs();
+    printAllKnownNPCs($knownNPCs, $intrigueActor, $section);
     echo "</td></tr>\n";
-    if (!empty($intrgueActor->WhatHappened)) {
+    if (!empty($intrigueActor->WhatHappened)) {
         echo "<tr><td>Vad hände</td>\n";
-        echo "<td>".nl2br($intrgueActor->WhatHappened)."</td></tr>\n";
+        echo "<td>".nl2br($intrigueActor->WhatHappened)."</td></tr>\n";
     }
     echo "</table>\n";
     
@@ -329,7 +329,7 @@ th, td {
 	foreach ($groupActors as $groupActor) {
 	    $group = $groupActor->getGroup();
 	    echo "<li style='display:table-cell; width:19%;'>";
-	    echo "<div class='name'><a href='../admin/view_group.php?id=$group->Id'>$group->Name</a></div>";
+	    echo "<div class='name'>" . $group->getViewLink() . "</div>";
 	    echo "<div>Grupp</div>";
 	    $actor_intrigues = $groupActor->getAllIntrigues();
 	    foreach ($actor_intrigues as $actor_intrigue) {
@@ -405,7 +405,9 @@ th, td {
 	foreach ($roleActors as $roleActor) {
 	    $role = $roleActor->getRole();
 	    echo "<li style='display:table-cell; width:19%;'>";
-	    echo "<div class='name'><a href='../admin/view_role.php?id=$role->Id'>$role->Name</a></div>";
+	    echo "<div class='name'>";
+        echo $role->getViewLink();
+        echo "</div>";
 	    $role_group = $role->getGroup();
 	    if (!empty($role_group)) {
 	        echo "<div>$role_group->Name</div>";
@@ -672,7 +674,7 @@ foreach ($intrigue_visions as $intrigue_vision) {
     $vision=$intrigue_vision->getVision();
     $has_vision = $vision->getHas();
     $has_vision_array = array();
-    foreach($has_vision as $has) $has_vision_array[] = "<a href='view_role.php?id=$has->Id'>$has->Name</a>";
+    foreach($has_vision as $role_with_vision) $has_vision_array[] = $role_with_vision->getViewLink();
     $has_txt = "Kommmer att ha synen: ". implode(", ", $has_vision_array);
     
     echo $vision->getWhenStr() . ": ". $vision->VisionText;

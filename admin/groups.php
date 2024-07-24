@@ -45,7 +45,6 @@ th {
     		        echo "<tr>\n";
     		        echo "<td>";
 					echo $group->getViewLink();
-    		        if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
     		        if ($group->userMayEdit($current_larp)) echo "<br>Gruppledaren får ändra gruppen " . showStatusIcon(false);
     		        
     		        echo "</td>\n";

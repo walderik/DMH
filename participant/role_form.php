@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
-    header('Location: view_role.php?id='.$role->Id);
+    header('Location: ' . $role->getViewLink());
     exit;
 }
 

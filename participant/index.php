@@ -230,18 +230,14 @@ line-height: 1.8;
     		            echo "<tr>";
     		            echo "<td>";
     		            if ($group->isRegistered($current_larp) && !$group->userMayEdit($current_larp)) {
-    		                echo  $group->getViewLink();
-    		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
-        		                
+    		                echo  $group->getViewLink();        		                
     		            }
     		            else {
-    		                echo $group->getEditLinkPen(false); 
-    		                if ($group->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i>";
+    		                echo $group->getEditLinkPen(false);
     		                
     		                 if($group->isNeverRegistered()) {
     		                     echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
     		                 }
-    		                 
     		            }
     		            echo "</td>";
     		            echo "<td>Anmäld&nbsp;&nbsp;" . showParticipantStatusIcon($group->isRegistered($current_larp), "Gruppen är inte anmäld") . "</td>\n";
@@ -299,7 +295,6 @@ line-height: 1.8;
         		                echo " " . $role->getEditLinkPen(false);
         		            }
 							
-        		            if ($role->IsDead ==1) echo " <i class='fa-solid fa-skull-crossbones' title='Död'></i> ";
         		            if($role->isNeverRegistered()) {
         		                echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
         		            }
