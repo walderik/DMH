@@ -47,7 +47,7 @@ if ($role->isMysLajvare()) {
 			
 			</tr>
 		<?php if (isset($group)) {?>
-			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a></td></tr>
+			<tr><td valign="top" class="header">Grupp</td><td><?php echo $group->getViewLink() ?></td></tr>
 		<?php }?>
 		
 		<?php if (!empty($subdivisions)) { 

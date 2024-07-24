@@ -113,10 +113,10 @@ include 'navigation.php';
                 echo "<td>";
                 echo "<a href='choose_role.php?operation=add_has_role_admin&id=$vision->Id'><i class='fa-solid fa-plus' title='Lägg till karaktär'></i><i class='fa-solid fa-user' title='Lägg till karaktär'></i></a><br>";
                 
-                $has_roles = $vision->getHas();
-                foreach ($has_roles as $has_role) {
-                    echo "<a href='view_role.php?id=$has_role->Id'>$has_role->Name</a>  ";
-                    echo "<a href='vision_admin.php?operation=delete_has&id=$vision->Id&hasId=$has_role->Id'><i class='fa-solid fa-trash'></i></a><br>";
+                $roles_with_visions = $vision->getHas();
+                foreach ($roles_with_visions as $role) {
+                    echo $role->getViewLink();
+                    echo "<a href='vision_admin.php?operation=delete_has&id=$vision->Id&hasId=$role->Id'><i class='fa-solid fa-trash'></i></a><br>";
                     
                 }
                 echo "</td>\n";

@@ -32,8 +32,6 @@ if (isset($role->GroupId)) {
     $group=Group::loadById($role->GroupId);
 }
 
-
-
 include 'navigation.php';
 ?>
 
@@ -59,7 +57,7 @@ include 'navigation.php';
 			
 			</tr>
 		<?php if (isset($group)) {?>
-			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a></td></tr>
+			<tr><td valign="top" class="header">Grupp</td><td><?php echo $group->getViewLink() ?></td></tr>
 		<?php }?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
 			<tr><td valign="top" class="header">Yrke</td><td><?php echo $role->Profession;?></td></tr>

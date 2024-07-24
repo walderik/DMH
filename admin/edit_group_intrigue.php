@@ -36,13 +36,11 @@ $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($current_group, 
 function print_role($group_member) {
     global $current_larp;
     
-    
-    echo "<a href ='view_role.php?id=" . $group_member->Id ."'>" .
-        $group_member->Name . "</a> - " .
+    echo $group_member->getViewLink();
+	echo " - " .
         $group_member->Profession . " spelas av " .
         "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>" .
         $group_member->getPerson()->Name . "</a>";
-        
         
         if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
             echo ", ansvarig vuxen är ";
@@ -80,7 +78,7 @@ include 'navigation.php';
 			<?php if (ShipType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Typ av skepp</td><td><?php echo $current_group->getShipType()->Name; ?></td></tr>
 			<?php }?>
-			<?php if (Colour::isInUse($current_larp)) { ?>
+			<?php if ($current_larp->getCampaign()->is_me()) { ?>
 			<tr><td valign="top" class="header">Färg</td><td><?php echo $current_group->getColour()->Name; ?></td></tr>
 			<?php }?>
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>

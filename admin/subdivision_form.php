@@ -120,8 +120,6 @@ include_once 'header.php';
 					    echo "<input form='add_member' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
 					    echo "<input form='add_member' type='hidden' id='operation' name='operation' value='add_subdivision_member'>";
 					    echo "<button form='add_member' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) som är med i grupperingen'></i><i class='fa-solid fa-user' title='Lägg till karaktär(er) som är med i grupperingen'></i></button>";
-					    
-					    
 					} else {
 					  echo "<strong>När grupperingen är skapad, kan du lägga till medlemmar i den.</strong>";
 					}?>
@@ -130,7 +128,7 @@ include_once 'header.php';
 					$members = $subdivision->getAllMembers();
 					foreach ($members as $member) {
 					    echo "<form id='delete_member_$member->Id' action='subdivision_form.php' method='post'>";
-					    echo "<a href='view_role.php?id=$member->Id'>$member->Name</a>";
+					    echo $member->getViewLink();
 					    echo " ";
 					    echo "<input form='delete_member_$member->Id' type='hidden' id='operation' name='operation' value='delete_member'>";
 					    echo "<input form='delete_member_$member->Id' type='hidden' id='id' name='id' value='$subdivision->Id'>";

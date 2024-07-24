@@ -99,11 +99,14 @@ include 'magic_navigation.php';
 				    $master = $magician->getMaster();
 				    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 				    $isComing = !empty($larp_role);
-				    echo "<tr><td><a href = view_role.php?id=$role->Id'>$role->Name</td><td>$magician->Level</td>";
+				    echo "<tr><td>";
+					echo $role.getViewLink();
+					echo "</td><td>$magician->Level</td>";
 				    echo "<td>";
 				    if (isset($master)) {
 				        $masterRole = $master->getRole(); 
-				        echo "<a href = view_role.php?id=$masterRole->Id'>$masterRole->Name (nivå $master->Level)</td>";
+				        echo $masterRole->getViewLink();
+						echo " (nivå $master->Level)</td>";
 				    }
 				    echo "</td>";
 				    echo "<td align='center'>".showStatusIcon($isComing)."</td>";
@@ -128,11 +131,14 @@ include 'magic_navigation.php';
 				    $master = $magician->getMaster();
 				    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 				    $isComing = !empty($larp_role);
-				    echo "<tr><td><a href = view_role.php?id=$role->Id'>$role->Name</td><td>$magician->Level</td>";
+				    echo "<tr><td>";
+					echo $role->getViewLink();
+					echo "</td><td>$magician->Level</td>";
 				    echo "<td>";
 				    if (isset($master)) {
 				        $masterRole = $master->getRole(); 
-				        echo "<a href = view_role.php?id=$masterRole->Id'>$masterRole->Name (nivå $master->Level)</td>";
+				        echo $masterRole->getViewLink();
+						echo " (nivå $master->Level)</td>";
 				    }
 				    echo "</td>";
 				    echo "<td align='center'>".showStatusIcon($isComing)."</td>";

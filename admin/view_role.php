@@ -126,7 +126,6 @@ include 'navigation.php';
                }
             }
            
-           
            $known_groups = $role->getAllKnownGroups($current_larp);
            $known_roles = $role->getAllKnownRoles($current_larp);
            
@@ -185,11 +184,7 @@ include 'navigation.php';
                $checkin_letters = array_merge($checkin_letters,$subdivision->getAllCheckinLetters($current_larp));
                $checkin_telegrams = array_merge($checkin_telegrams,$subdivision->getAllCheckinTelegrams($current_larp));
                $checkin_props = array_merge($checkin_props,$subdivision->getAllCheckinProps($current_larp));
-               
-               
-               
            }
-           
            
            echo "<h3>Känner till</h3>";
            echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";

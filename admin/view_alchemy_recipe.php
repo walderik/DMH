@@ -56,7 +56,7 @@ include 'alchemy_navigation.php';
     				<td>
     					<?php 
     					$author = $recipe->getAuthorRole();
-    					if (isset($author)) echo "<a href='view_role.php?id=$author->Id'>$author->Name</a>";
+    					if (isset($author)) echo $author->getViewLink();
     					?>
                     </td>
     			</tr>
@@ -178,7 +178,9 @@ include 'alchemy_navigation.php';
 				    $role = $alchemist->getRole();
 				    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 				    $isComing = !empty($larp_role);
-				    echo "<tr><td><a href = view_role.php?id=$role->Id'>$role->Name</td>";
+				    echo "<tr><td>";
+					echo $role->getViewLink();
+					echo "</td>";
 				    echo "<td>$alchemist->Level</td>";
 				    echo "<td>";
 				    $approvedLarpId = $alchemist->recipeApprovedLarp($recipe);

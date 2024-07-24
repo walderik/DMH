@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 if ($group->isRegistered($current_larp) && !$group->userMayEdit($current_larp)) {
-    header('Location: view_group.php?id='.$group->Id);
+    header('Location: ' . $group->getViewLink());
     exit;
 }
 

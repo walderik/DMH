@@ -11,13 +11,13 @@ if (isset($_POST['roleId'])) {
 
     if ($role->isApproved()) $role->unapprove($current_larp, true);
     else $role->approve($current_larp, $current_user);
-    $location = "../view_role.php?id=$role->Id";
+    $location = $role->getViewLink();
 } elseif (isset($_POST['groupId'])) {
     $group = Group::loadById($_POST['groupId']);
     
     if ($group->isApproved()) $group->unapprove($current_larp, true);
     else $group->approve($current_larp, $current_user);
-    $location = "../view_group.php?id=$group->Id";
+    $location = $group->getViewLink();
 }
 
 

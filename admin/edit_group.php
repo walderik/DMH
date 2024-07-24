@@ -51,23 +51,21 @@ function existsInArray($entry, $array) {
 function print_role($group_member) {
     global $current_larp;
 
+    echo $group_member->getViewLink();
+    echo " - ";
+    echo $group_member->Profession;
+	echo ". Spelas av ";
+	echo "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>";
+	echo $group_member->getPerson()->Name . "</a>";
         
-    echo "<a href ='view_role.php?id=" . $group_member->Id ."'>" .
-        $group_member->Name . "</a> - " .
-        $group_member->Profession . " spelas av " .
-        "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>" .
-        $group_member->getPerson()->Name . "</a>";
-        
-        
-        if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-            echo ", ansvarig vuxen är ";
-            if (!empty($registration->GuardianId)) {
-                $group_member->getRegistration($current_larp)->getGuardian()->Name;
-            }
-            
-        }
+	if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+		echo ", ansvarig vuxen är ";
+		if (!empty($registration->GuardianId)) {
+			$group_member->getRegistration($current_larp)->getGuardian()->Name;
+		}
+		
+	}
      echo "<br>";       
-   
 }
 
 include 'navigation.php';
