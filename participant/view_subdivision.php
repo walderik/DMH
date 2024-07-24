@@ -41,11 +41,18 @@ if (!$subdivision->isVisibleToParticipants()) {
 $registered_characters_in_subdivision = null;
 
 
-if ($subdivision->canSeeOtherParticipants()) {
-    $registered_characters_in_subdivision = $subdivision->getAllRegisteredMembers($current_larp);
+function compare_objects($obj_a, $obj_b) {
+    return $obj_a->Id - $obj_b->Id;
 }
 
-function print_role(Role $role) {
+
+if ($subdivision->canSeeOtherParticipants()) {
+    $registered_characters_in_subdivision = $subdivision->getAllRegisteredMembers($current_larp);
+    $not_registered_characters = array_udiff($subdivision->getAllMembers(), $registered_characters_in_subdivision, 'compare_objects');
+    
+}
+
+function print_role(Role $role, bool $isComing) {
     global $current_larp, $type;
     
     if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
@@ -54,12 +61,16 @@ function print_role(Role $role) {
     echo "<div class='name'>$role->Name";
     echo "</div>\n";
     echo "Yrke: ".$role->Profession . "<br>";
-    if ($role->isMain($current_larp)==0) {
+    if ($isComing && $role->isMain($current_larp)==0) {
         echo "Sidokaraktär<br>";
     }
-    echo "Spelas av ".$role->getPerson()->Name."<br>";
+    $person = $role->getPerson();
+    if ($person->hasPermissionShowName()) {
+        echo "<div>Spelas av $person->Name</div>";
+    }
     
-    if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    
+    if ($isComing && $role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         $guardian = $role->getRegistration($current_larp)->getGuardian();
         if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
         else echo "Ansvarig vuxen är inte utpekad.";
@@ -104,7 +115,7 @@ include 'navigation.php';
 		    
 		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
 		    foreach ($registered_characters_in_subdivision as $role) {
-		        print_role($role);
+		        print_role($role, true);
 		        $temp++;
 		        if($temp==$columns)
 		        {
@@ -119,6 +130,27 @@ include 'navigation.php';
 	       echo "</div>\n";
 		}
 		
+		if (!empty($not_registered_characters)) {
+		    echo "<h2>Medlemmar som inte är anmälda</h2>";
+		    
+		    echo "<div class='container'>\n";
+		    
+		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
+		    foreach ($not_registered_characters as $role) {
+		        print_role($role, false);
+		        $temp++;
+		        if($temp==$columns)
+		        {
+		            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		            $temp=0;
+		        }
+		        
+		    }
+		    $temp=0;
+		    
+		    echo "</ul>\n";
+		    echo "</div>\n";
+		}
 		
 		
 		?>
