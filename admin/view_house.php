@@ -60,20 +60,24 @@ img {
     				<p>
     				<?php 
     				$personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
-    				$emails = array();
-    				foreach ($personsInHouse as $personInHouse) {
-    				    if ($personInHouse->isNotComing($current_larp)) continue;
-    				    $personIdArr[] = $personInHouse->Id;
-    				    echo "<a href='view_person.php?id=$personInHouse->Id'>$personInHouse->Name</a>";
-    				    
-    				    echo "<br>";
-    				}
-    				
-    				?>
-    				</p>
-    				<?php echo contactSeveralEmailIcon("Maila alla som bor i huset", $personIdArr, 
+    				if (!empty($personsInHouse)) {
+    				    $emails = array();
+    				    $personIdArr = array();
+    				    foreach ($personsInHouse as $personInHouse) {
+        				    if ($personInHouse->isNotComing($current_larp)) continue;
+        				    $personIdArr[] = $personInHouse->Id;
+        				    echo "<a href='view_person.php?id=$personInHouse->Id'>$personInHouse->Name</a>";
+        				    
+        				    echo "<br>";
+        				}
+        				echo "</p>";
+        				echo contactSeveralEmailIcon("Maila alla som bor i huset", $personIdArr, 
     				                                    "Boende i $house->Name på $current_larp->Name", 
-    				                                    "Meddelande till alla som bor i $house->Name på $current_larp->Name"); ?>
+    				                                    "Meddelande till alla som bor i $house->Name på $current_larp->Name");
+    				} else {
+    				    echo "Ingen tilldelad</p>";
+    				}
+    				?>
     				</td>
     			</tr>
     		</table>
