@@ -61,32 +61,35 @@ function print_role(Role $role, bool $isComing) {
     echo "<div class='name'>$role->Name";
     echo "</div>\n";
     echo "Yrke: ".$role->Profession . "<br>";
-    if ($isComing && $role->isMain($current_larp)==0) {
-        echo "Sidokaraktär<br>";
-    }
-    $person = $role->getPerson();
-    if ($person->hasPermissionShowName()) {
-        echo "<div>Spelas av $person->Name</div>";
-    }
-    
-    
-    if ($isComing && $role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-        $guardian = $role->getRegistration($current_larp)->getGuardian();
-        if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
-        else echo "Ansvarig vuxen är inte utpekad.";
-    }
-    
-    echo "<div class='description'>$role->DescriptionForOthers</div>\n";
-    if ($role->hasImage()) {
-        $image = Image::loadById($role->ImageId);
-        echo "<img src='../includes/display_image.php?id=$role->ImageId'/>\n";
-        if (!empty($image->Photographer)) {
-            echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
+    if ($isComing) {
+        if ($role->isMain($current_larp)==0) {
+            echo "Sidokaraktär<br>";
         }
-    }
-    else {
-        echo "<img src='../images/man-shape.png' />\n";
-        echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
+        $person = $role->getPerson();
+        if ($person->hasPermissionShowName()) {
+            echo "<div>Spelas av $person->Name</div>";
+        }
+        
+        
+        if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+            $guardian = $role->getRegistration($current_larp)->getGuardian();
+            if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
+            else echo "Ansvarig vuxen är inte utpekad.";
+        }
+        
+        echo "<div class='description'>$role->DescriptionForOthers</div>\n";
+        
+        if ($role->hasImage()) {
+            $image = Image::loadById($role->ImageId);
+            echo "<img src='../includes/display_image.php?id=$role->ImageId'/>\n";
+            if (!empty($image->Photographer)) {
+                echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
+            }
+        }
+        else {
+            echo "<img src='../images/man-shape.png' />\n";
+            echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
+        }
     }
     echo "</li>\n\n";
     
