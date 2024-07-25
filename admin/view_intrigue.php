@@ -321,7 +321,7 @@ th, td {
 <a href="choose_group.php?operation=add_intrigue_actor_group&Id=<?php echo $intrigue->Id?>&intrigueTypeFilter=1">
 	<i class='fa-solid fa-plus' title="Lägg till grupp"></i><i class='fa-solid fa-users' title="Lägg till grupp"></i></a>
 <a href="choose_subdivision.php?operation=add_intrigue_actor_subdivision&Id=<?php echo $intrigue->Id?>&intrigueTypeFilter=1">
-	<i class='fa-solid fa-plus' title="Lägg till gruppering"></i><i class='fa-solid fa-users' title="Lägg till gruppering"></i></a>
+	<i class='fa-solid fa-plus' title="Lägg till gruppering"></i><i class='fa-solid fa-people-group' title="Lägg till gruppering"></i></a>
 <ul class='image-gallery' style='display:table; border-spacing:5px;'>
 	<?php 
 	$groupActors = $intrigue->getAllGroupActors();
@@ -376,7 +376,7 @@ th, td {
 	    }
 	    echo "<div align='right'>";
 	    if (!$subdivisionActor->isAtLARP()) echo "<i class='fa-solid fa-bed' title='Inte med på lajvet'></i> ";
-	    echo "<a href='choose_subdivision.php?operation=exhange_intrigue_actor_subdivision&Id=$groupActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut gruppering som får intrigen'></i></a> ";
+	    echo "<a href='choose_subdivision.php?operation=exhange_intrigue_actor_subdivision&Id=$subdivisionActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut gruppering som får intrigen'></i></a> ";
 	    echo "<a ";
 	    if (!empty($subdivisionActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort grupperingen i alla fall?\')" ';
 	    echo " href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$subdivisionActor->Id&Id=$intrigue->Id'";
