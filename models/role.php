@@ -594,7 +594,7 @@ class Role extends BaseModel{
         $campaign = $larp->getCampaign();
         if (!$campaign->is_dmh()) return false;
         if ($this->isMysLajvare()) return false;
-        if ($this->WealthId > 2) return true;
+        if ($this->WealthId > 3) return true;
         
         //Äger verksamhet
         $titledeeds = Titledeed::getAllForRole($this);

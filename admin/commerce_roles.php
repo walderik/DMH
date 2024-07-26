@@ -20,7 +20,7 @@ th {
 
     <div class="content">   
         <h1>Karaktärer med handel</h1>
-        <p>Alla karaktärer som har <?php if (Wealth::isInUse($current_larp)) echo "rikedom 3 eller högre eller"?> som äger en verksamhet visas här. Det gäller alla karaktärer i kampanjen, även de som inte kommer på ett visst lajv.</p>
+        <p>Alla karaktärer <?php if (IntrigueType::isInUse($current_larp)) echo "som har valt intrigtypen Handel eller"?> <?php if (Wealth::isInUse($current_larp)) echo "som har rikedom 4 eller högre eller"?> som äger en verksamhet visas här. Det gäller alla karaktärer i kampanjen, även de som inte kommer på ett visst lajv.</p>
         <p>Sidokaraktärer markeras med en * efter namnet. De är gömda från början.</p>
 		    <?php 
 	        echo "Karaktärer filtrerade på om de är sidokaraktär eller inte.<br>";
@@ -52,7 +52,7 @@ th {
     		        $isComing = !empty($larp_role);
     		        if (!empty($registration) && $registration->isNotComing()) $isComing=false;
     		        if (($isComing && $role->is_trading($current_larp)) || !empty($titledeeds)) {
-    		            if ($larp_role->IsMainRole == 1) echo "<tr>\n";
+    		            if (!$isComing || $larp_role->IsMainRole == 1) echo "<tr>\n";
     		            else echo "<tr class='show_hide hidden'>\n";
     		            echo "<td>";
     		            echo $role->getViewLink() . "\n";
@@ -90,8 +90,8 @@ th {
                             
         		        }
                         echo "</td>";
-        		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'></td>";
-        		        echo "</td>";
+                        if ($isComing) echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'></td>";
+                        else echo "<td>Kommer inte på lajvet</td>";
         		        echo "</tr>\n";
     		        }
     		    }
