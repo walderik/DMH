@@ -24,10 +24,10 @@ if ($isRegistered) {
     $main_characters_in_group = Role::getAllMainRolesInGroup($current_group, $current_larp);
     $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($current_group, $current_larp);
     $intrigues = Intrigue::getAllIntriguesForGroup($current_group->Id, $current_larp->Id);
+	$allUnregisteredRoles = Role::getAllUnregisteredRolesInGroup($current_group, $current_larp);
 } else {
     $intrigues = array();
 }
-
 
 function print_role($role, $group) {
     global $current_larp;
@@ -196,8 +196,6 @@ include 'navigation.php';
 		
 		echo "$ikon &nbsp; &nbsp;";
 		
-		
-		
 		?>
 		</h2>
 		<?php 
@@ -219,6 +217,20 @@ include 'navigation.php';
 		}
 		echo "</div>";
 		?>
+
+		<?php
+		if(!empty($allUnregisteredRoles)) {
+			echo "<h2>Icke anmälda medlemmar</h2>";
+			echo "<div>";
+			echo "<table>";
+			foreach($allUnregisteredRoles as $role) {
+				print_role($role, $current_group);
+			}
+			echo "</table>";
+			echo "</div>";
+		}
+		?>
+
 		<h2>Intrig <a href='edit_group_intrigue.php?id=<?php echo $current_group->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php echo $larp_group->Intrigue; ?>		<?php 
@@ -276,8 +288,6 @@ include 'navigation.php';
 		$checkin_letters = $current_group->getAllCheckinLetters($current_larp);
 		$checkin_telegrams = $current_group->getAllCheckinTelegrams($current_larp);
 		$checkin_props = $current_group->getAllCheckinProps($current_larp);
-		
-		
 		
 		echo "<h3>Känner till</h3>";
 		echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
