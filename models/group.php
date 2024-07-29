@@ -145,7 +145,7 @@ class Group extends BaseModel{
      public function is_trading(LARP $larp) {
          $campaign = $larp->getCampaign();
          if (!$campaign->is_dmh()) return false;
-         if ($this->WealthId > 2) return true;
+         if ($this->WealthId > 3) return true;
          $larp_group = LARP_Group::loadByIds($this->Id, $larp->Id);
          
          //Äger verksamhet

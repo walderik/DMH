@@ -20,7 +20,7 @@ th {
 
     <div class="content">   
         <h1>Grupper med handel</h1>
-                <p>Alla grupper som har rikedom 3 eller högre eller som äger en verksamhet visas här. Det gäller alla grupper i kampanjen, även de som inte kommer på ett visst lajv.</p>
+                <p>Alla grupper som har valt intrigtype Handel, har rikedom 4 eller högre eller som äger en verksamhet visas här. Det gäller alla grupper i kampanjen, även de som inte kommer på ett visst lajv.</p>
         
      		<?php 
      		$groups = Group::getAllInCampaign($current_larp->CampaignId);
@@ -66,8 +66,10 @@ th {
         		            echo "<br>";
         		        }
         		        echo "</td>";
-						$startingMoneyValue = isset($larp_group->StartingMoney) ? $larp_group->StartingMoney : 0;
-        		        echo "<td><input type='number' id='$group->Id' value='$startingMoneyValue' onchange='setMoneyGroup(this, $current_larp->Id)'></td>";
+        		        if($isComing) {
+						  $startingMoneyValue = isset($larp_group->StartingMoney) ? $larp_group->StartingMoney : 0;
+        		          echo "<td><input type='number' id='$group->Id' value='$startingMoneyValue' onchange='setMoneyGroup(this, $current_larp->Id)'></td>";
+        		        } else echo "<td>Kommer inte på lajvet</td>";
         		        echo "</tr>\n";
     		        }
     		    }
