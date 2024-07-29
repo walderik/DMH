@@ -153,7 +153,8 @@ include 'navigation.php';
                         }
                         echo "</td>";
                         
-		                echo $role->getViewLink();
+                        echo "<td>";
+                        echo $role->getViewLink();
 		                echo $role->getEditLinkPen(true);
                         echo "</td>";
 		                echo "<td>$role->Profession</td>";
