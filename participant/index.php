@@ -107,14 +107,17 @@ line-height: 1.8;
                         //Utvärdering
                         if ($current_larp->isEnded() && !(AccessControl::hasAccessLarp($current_user, $current_larp) && (sizeof($persons) == 1 || $current_user->Name==$person->Name))) {
                             echo "<tr><td valign='baseline'>Utvärdering</td><td>";
-                            if ($registration->hasDoneEvaluation()) {
-                                echo showStatusIcon(true);
-                                echo "</td><td>Utvärderingen är inlämnad";
-                            }
-                            else {
-                                echo showParticipantStatusIcon(false, "Utvärderingen är inte gjord");
-                                echo "</td><td><a href='evaluation.php?PersonId=$person->Id'>Gör utvärdering";
-                            }
+                            if ($current_larp->isEvaluationOpen()) {
+                                if ($registration->hasDoneEvaluation()) {
+                                    echo showStatusIcon(true);
+                                    echo "</td><td>Utvärderingen är inlämnad";
+                                } elseif ($current_larp->useInternalEvaluation()) {
+                                    echo showParticipantStatusIcon(false, "Utvärderingen är inte gjord");
+                                    echo "</td><td><a href='evaluation.php?PersonId=$person->Id'>Gör utvärdering";
+                                } else {
+                                    echo "<a target='_blank' href='$current_larp->EvaluationLink'>Gör utvärdering (extern länk)";
+                                }
+                            } else echo "Utvärderingen öppnar $current_larp->EvaluationOpenDate";
                             echo "</td></tr>\n";
                             
                         }

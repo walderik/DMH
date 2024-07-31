@@ -28,6 +28,8 @@ class LARP extends BaseModel{
     public  $ChooseParticipationDates = 0;
     public  $Description;
     public  $ContentDescription;
+    public  $EvaluationOpenDate;
+    public  $EvaluationLink;
 
     
 //     public static $tableName = 'larp';
@@ -67,7 +69,9 @@ class LARP extends BaseModel{
         if (isset($arr['ChooseParticipationDates'])) $this->ChooseParticipationDates = $arr['ChooseParticipationDates'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['ContentDescription'])) $this->ContentDescription = $arr['ContentDescription'];
-
+        if (isset($arr['EvaluationOpenDate'])) $this->EvaluationOpenDate = $arr['EvaluationOpenDate'];
+        if (isset($arr['EvaluationLink'])) $this->EvaluationLink = $arr['EvaluationLink'];
+        
     
         if ($this->StartTimeLARPTime == '') $this->StartTimeLARPTime = null;
         if ($this->EndTimeLARPTime == '') $this->EndTimeLARPTime = null;
@@ -86,7 +90,7 @@ class LARP extends BaseModel{
                  "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=?, ".
                  "LastPaymentDate=?, HasTelegrams=?, HasLetters=?, HasRumours=?, 
                     HasAlchemy=?, HasMagic=?, HasVisions=?, HasCommerce=?,
-                    ChooseParticipationDates=?, Description=?, ContentDescription=?  WHERE Id = ?");
+                    ChooseParticipationDates=?, Description=?, ContentDescription=?, EvaluationOpenDate=?, EvaluationLink=?  WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
@@ -95,7 +99,7 @@ class LARP extends BaseModel{
             $this->LastPaymentDate, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, 
             $this->HasAlchemy, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
             $this->ChooseParticipationDates,
-            $this->Description, $this->ContentDescription, $this->Id))) {
+            $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -112,8 +116,8 @@ class LARP extends BaseModel{
             RegistrationOpen, PaymentReferencePrefix, NetDays, LastPaymentDate, HasTelegrams, 
             HasLetters, HasRumours, 
             HasAlchemy, HasMagic, HasVisions, HasCommerce, 
-            ChooseParticipationDates, Description, ContentDescription) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)");
+            ChooseParticipationDates, Description, ContentDescription,EvaluationOpenDate,EvaluationLink) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
@@ -121,7 +125,7 @@ class LARP extends BaseModel{
             $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->LastPaymentDate, $this->HasTelegrams, 
             $this->HasLetters, $this->HasRumours, 
             $this->HasAlchemy, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
-            $this->ChooseParticipationDates, $this->Description, $this->ContentDescription))) {
+            $this->ChooseParticipationDates, $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -158,6 +162,19 @@ class LARP extends BaseModel{
         if ($now < $this->EndDate) return false;
         return true;
         
+    }
+    
+    public function isEvaluationOpen() {
+        if (!$this->isEnded()) return false;
+        if (empty($this->EvaluationOpenDate)) return true;
+        $now = date("Y-m-d");
+        if ($now < $this->EvaluationOpenDate) return false;
+        return true;
+    }
+    
+    public function useInternalEvaluation() {
+        if (empty($this->EvaluationLink)) return true;
+        return false;
     }
     
     public function isFull() {

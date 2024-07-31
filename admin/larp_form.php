@@ -52,6 +52,8 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     include 'navigation.php';
     
     ?>
+    
+    
     <div class="content"> 
     	<h1><?php echo default_value('action');?> lajv</h1>
     	<form action="larp_admin.php" method="post">
@@ -111,7 +113,7 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     					name="NetDays" value="<?php echo $larp->NetDays; ?>" size="15" maxlength="10" required></td>
     			</tr>
     			<tr>
-    				<td><label for="StartDate">Absolut sista dag för betalning</label><br>Om antal dagar för betalning ger ett senare datum än detta så sätts detta som sista betal-datum för deltagaren.</td>
+    				<td><label for="LastPaymentDate">Absolut sista dag för betalning</label><br>Om antal dagar för betalning ger ett senare datum än detta så sätts detta som sista betal-datum för deltagaren.</td>
     				<td><input type="date" id="LastPaymentDate"
     					name="LastPaymentDate" value="<?php echo $larp->LastPaymentDate; ?>" size="50" required></td>
     			</tr>
@@ -124,6 +126,7 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
             			<label for="ChooseParticipationDates_no">Nej</label>
 					</td>
     			</tr>
+    			
     		</table>
 			<h2>Speltekniker</h2><br>Vilka speltekniker ska det finnas stöd för i systemet för detta lajv?
 			<table class="smalldata">
@@ -191,6 +194,40 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
 					</td>
     			</tr>
     		</table>
+    		<h2>Utvärdering</h2>
+    		<?php 
+    		$isEvaluationStarted = false;
+    		if ($larp->useInternalEvaluation()) {
+    		    echo "Has evaluation results?";
+    		    $question_result = EvaluationNumberQuestion::get("larp_q1", $larp);
+    		    if ($question_result->number_of_responders > 0) $isEvaluationStarted = true;
+    		} else $isEvaluationStarted = $larp->isEvaluationOpen();
+	
+    		
+    		?>
+    		<table>
+    			<tr>
+    				<td><label for="EvaluationOpenDate">När ska utvärderingen öppnas?</label><br>Utvärderingen kan inte öppna förrän lajvet är slut.<br>När lajvet är slut kan deltagarna se när utvärderingen kommer att öppna om den inte redan är öppen.</td>
+    				<td><input type="date" id="EvaluationOpenDate"
+    					name="EvaluationOpenDate" value="<?php echo $larp->EvaluationOpenDate; ?>" size="50" 
+    					<?php if ($isEvaluationStarted) echo "disabled=disabled";?> required></td>
+    			</tr>
+    			
+    			<tr>
+    				<td><label for='EvaluationType'>Typ av utvärdering</label><br>Ska Omnes Mundis inbygda utvärdering användas eller en extern?<br><a href='../participant/evaluation.php?ViewOnly=1' target='_blank'>Frågorna i den inbygda utvärderingen.</a></td>
+    				<td>
+						<input type="radio" id="Internal" name="EvaluationType" value="1" <?php if ($larp->useInternalEvaluation()) echo 'checked="checked"'?> onclick='toggleEnableLink(false)' <?php if ($isEvaluationStarted) echo "disabled=disabled";?> > 
+            			<label for="Internal">Inbygd</label><br> 
+            			<input type="radio" id="External" name="EvaluationType" value="0" <?php if (!$larp->useInternalEvaluation()) echo 'checked="checked"'?> onclick='toggleEnableLink(true)' <?php if ($isEvaluationStarted) echo "disabled=disabled";?> > 
+            			<label for="External">Extern</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for="EvaluationLink">Länk till extern utvärdering</label></td>
+    				<td><input type="url" id="EvaluationLink" name="EvaluationLink" value="<?php echo htmlspecialchars($larp->EvaluationLink); ?>" size="100" maxlength="250" required <?php if ($isEvaluationStarted) echo "disabled=disabled";?> ></td>
+    			</tr>
+    		
+    		</table>
     
     		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
     	</form>
@@ -198,3 +235,16 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     </body>
 
 </html>
+    <script>
+    function toggleEnableLink(enable) {
+        alert(enable);
+        if (enable) document.getElementById('EvaluationLink').disabled = false;
+        else {
+            linkField = document.getElementById('EvaluationLink');
+            linkField.disabled = true;
+            linkField.value = "";
+        }
+    }
+
+    <?php if (!$isEvaluationStarted) echo "toggleEnableLink(!".$larp->useInternalEvaluation().");"; ?>
+    </script>

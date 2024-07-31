@@ -6,10 +6,14 @@ if (!$current_larp->isEnded()) {
     exit;
 }
 
+$viewOnly = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['PersonId'])) {
         $PersonId = $_POST['PersonId'];
+    }
+    if (isset($_POST['ViewOnly'])) {
+        $viewOnly = true;
     }
 }
 
@@ -18,23 +22,30 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['PersonId'])) {
         $PersonId = $_GET['PersonId'];
     }
+    if (isset($_GET['ViewOnly'])) {
+        $viewOnly = true;
+    }
 }
+
+
+$person = Person::newWithDefault();
 
 if (isset($PersonId)) {
     $person = Person::loadById($PersonId);
-}
-else {
+} elseif(!$viewOnly) {
     header('Location: index.php');
     exit;
 }
 
-if ($person->UserId != $current_user->Id) {
+if (!$viewOnly && $person->UserId != $current_user->Id) {
     header('Location: index.php');
     exit;
 }
 
 
 function slider($headline, $id, ?String $explanation="") {
+    global $viewOnly;
+    
     $min = 0;
     $max = 10;
     $value = 0;
@@ -43,20 +54,25 @@ function slider($headline, $id, ?String $explanation="") {
     
     if (!empty($explanation)) echo "<div class='explanation'>$explanation</div>\n";
     
-    
-    echo "<div class='slidecontainer'>\n";
-    $value_text = $value;
-    if ($value == 0) $value_text = "Vet inte/inte aktuellt";
-    echo "<input type='range' min='$min' max='$max' value='$value' class='slider' id='$id' name='$id' oninput='slider_value(\"$id\")'> &nbsp; &nbsp;Värde: <span id='$id"."_val'>$value_text</span>\n";
-    echo "</div>\n";
+    if (!$viewOnly) {
+        echo "<div class='slidecontainer'>\n";
+        $value_text = $value;
+        if ($value == 0) $value_text = "Vet inte/inte aktuellt";
+        echo "<input type='range' min='$min' max='$max' value='$value' class='slider' id='$id' name='$id' oninput='slider_value(\"$id\")'> &nbsp; &nbsp;Värde: <span id='$id"."_val'>$value_text</span>\n";
+        echo "</div>\n";
+    }
     echo "</div>\n";
     
 }
 
 function textQuestion($headline, $id) {
+    global $viewOnly;
+    
     echo "<div class='question'>\n";
     echo "<label for='$id'>$headline</label><br>\n";
-    echo "<textarea id='$id' name='$id' rows='4' cols='100' maxlength='2000'></textarea>\n";
+    echo "<textarea id='$id' name='$id' rows='4' cols='100' maxlength='2000'";
+    if ($viewOnly) echo " disabled=disabled ";
+    echo "></textarea>\n";
     echo "</div>\n";
     
 }
@@ -102,8 +118,8 @@ label::before {
 		<h1>Utvärdering av <?php echo $current_larp->Name; ?>  för <?php echo $person->Name; ?></h1>
 			<p>Vi sparar inte vilka svar du har angett, bara att du har lämnat en utvärdering. Utvärderingen sparas anonymt.</p>
 			<form action="logic/evaluation_save.php" method="post">
-			<input type="hidden" id="Id" name="Id" value="<?php echo $person->getRegistration($current_larp)->Id ?>">
-			<input type="hidden" id="Age" name="Age" value="<?php echo $person->getAgeAtLarp($current_larp)?>">
+			<input type="hidden" id="Id" name="Id" value="<?php if (!$viewOnly) echo $person->getRegistration($current_larp)->Id ?>">
+			<input type="hidden" id="Age" name="Age" value="<?php if (!$viewOnly) echo $person->getAgeAtLarp($current_larp)?> ">
 
 			<div class="question">
     			<label for="Number_of_larps">Antal lajv du har varit på innan detta</label>
@@ -221,7 +237,9 @@ label::before {
 			<?php textQuestion("Vad tycker du att vi ska utveckla till nästa gång?", "finish_develop")?>
 			<?php textQuestion("Övrigt/kommentarer", "finish_comment")?>
             
+            <?php if (!$viewOnly) {?>
             <input type="submit" value="Skicka in">
+            <?php }?>
             </form>
 
 <p>Frågorna kommer från <a href="https://morgondagensgryning.se/" target="_blank">Morgondagens Gryning</a>. Åk gärna på deras lajv också.</p>
