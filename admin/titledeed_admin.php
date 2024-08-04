@@ -40,11 +40,13 @@ th {
 </style>
 
 <script src="../javascript/table_sort.js"></script>
+<script src="../javascript/show_hide_rows.js"></script>
 
     <div class="content">
         <h1>Verksamheter <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
         <p>Verksamheter går bara att ta bort om det inte finns några ägare eller inställningar för produktion/behov. 
         Detta för att man inte ska råka ta bort verksamheter som är i spel av misstag.</p>
+        
         <p>Ikoner:<br>
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
         <i class='fa-solid fa-house'></i> - Handelsstation
@@ -60,6 +62,11 @@ th {
         <a href="resource_titledeed_overview_rare.php">Översikt - ovanliga resurser</a>
         
         </p>
+        		    <?php 
+	        echo "<p>Verksamheterna är filtrerade på om de är i spel eller inte.<br>";
+	        echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
+	        echo "</p>";
+		    ?>
        <?php
     
        $titledeed_array = Titledeed::allByCampaign($current_larp, true);
@@ -77,7 +84,8 @@ th {
                 "<th onclick='sortTable(7, \"$tableId\")'>Resultat</th>".
                 "<th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
-                echo "<tr>\n";
+                if ($titledeed->isInUse()) echo "<tr>\n";
+                else echo "<tr class='show_hide hidden'>\n";
                 echo "<td><a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
                 if ($titledeed->Tradeable == 0) {
                     echo " <i class='fa-solid fa-money-bill-wave'></i>";

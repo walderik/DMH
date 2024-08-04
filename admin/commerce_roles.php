@@ -21,9 +21,9 @@ th {
     <div class="content">   
         <h1>Karaktärer med handel</h1>
         <p>Alla karaktärer <?php if (IntrigueType::isInUse($current_larp)) echo "som har valt intrigtypen Handel eller"?> <?php if (Wealth::isInUse($current_larp)) echo "som har rikedom 4 eller högre eller"?> som äger en verksamhet visas här. Det gäller alla karaktärer i kampanjen, även de som inte kommer på ett visst lajv.</p>
-        <p>Sidokaraktärer markeras med en * efter namnet. De är gömda från början.</p>
+        <p>Sidokaraktärer markeras med en * efter namnet.</p>
 		    <?php 
-	        echo "Karaktärer filtrerade på om de är sidokaraktär eller inte.<br>";
+	        echo "Karaktärer filtrerade på om de kommer eller inte.<br>";
 	        echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
 	        echo "<br><br>";
 		    ?>
@@ -52,7 +52,7 @@ th {
     		        $isComing = !empty($larp_role);
     		        if (!empty($registration) && $registration->isNotComing()) $isComing=false;
     		        if (($isComing && $role->is_trading($current_larp)) || !empty($titledeeds)) {
-    		            if (!$isComing || $larp_role->IsMainRole == 1) echo "<tr>\n";
+    		            if ($isComing) echo "<tr>\n";
     		            else echo "<tr class='show_hide hidden'>\n";
     		            echo "<td>";
     		            echo $role->getViewLink() . "\n";
@@ -80,6 +80,7 @@ th {
         		            $numberOfOwners = $titledeed->numberOfOwners();
         		            echo "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
                             if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
+                            echo showStatusIcon($titledeed->isInUse());
                             echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
                             echo "<br>";
                             $produces_normally = $titledeed->ProducesNormally();

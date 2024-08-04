@@ -17,10 +17,15 @@ th {
 <script src="../javascript/table_sort.js"></script>
 <script src="../javascript/setmoney_ajax.js"></script>
 
-
+<script src="../javascript/show_hide_rows.js"></script>
     <div class="content">   
         <h1>Grupper med handel</h1>
                 <p>Alla grupper som har valt intrigtype Handel, har rikedom 4 eller högre eller som äger en verksamhet visas här. Det gäller alla grupper i kampanjen, även de som inte kommer på ett visst lajv.</p>
+        		    <?php 
+	        echo "Grupperna är filtrerade på om de kommer eller inte.<br>";
+	        echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
+	        echo "<br><br>";
+		    ?>
         
      		<?php 
      		$groups = Group::getAllInCampaign($current_larp->CampaignId);
@@ -42,8 +47,9 @@ th {
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     		        $isComing = !empty($larp_group);
     		        if (($isComing && $group->is_trading($current_larp)) || !empty($titledeeds)) {
-        		        echo "<tr>\n";
-        		        echo "<td>";
+    		            if ($isComing) echo "<tr>\n";
+    		            else echo "<tr class='show_hide hidden'>\n";
+    		            echo "<td>";
     		            echo $group->getViewLink();
 						echo "\n";
         		        echo "</td>\n";
@@ -57,6 +63,7 @@ th {
         		            $numberOfOwners = $titledeed->numberOfOwners();
         		            echo "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
         		            if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
+        		            echo showStatusIcon($titledeed->isInUse());
         		            echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
         		            echo "<br>";
         		            $produces_normally = $titledeed->ProducesNormally();
