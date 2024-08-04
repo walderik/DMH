@@ -443,8 +443,8 @@ class BerghemMailer {
             $housetext = $housetext . "<br><br>De som bor i huset är: ".implode(", ", $names_in_house);
             
             
-            $subject = $subject . " ($house->Name)";
-            BerghemMailer::send($larp, $receivers, $greeting, $housetext, $subject, $senderText, BerghemMailer::DaysAutomatic);
+            $subject_house = $subject . " ($house->Name)";
+            BerghemMailer::send($larp, $receivers, $greeting, $housetext, $subject_house, $senderText, BerghemMailer::DaysAutomatic);
         }
     }
     
