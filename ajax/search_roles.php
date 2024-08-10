@@ -34,7 +34,10 @@ if ($operation == "search") {
     $resTable .= "</tr>";
 
     foreach ($roles as $role) {
-        $resTable .= "<tr><td>" . $role->getViewLink() . "</td><td>$role->Profession</td><td>";
+        $resTable .= "<tr><td>" . $role->getViewLink();
+        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+        if (!empty($larp_role) && $larp_role->IsMainRole!=1) $resTable .= " (sidokaraktär)";
+        $resTable .= "</td><td>$role->Profession</td><td>";
 
         $group = $role->getGroup();
         if (isset($group)) $resTable .= $group->getViewLink();
@@ -56,7 +59,25 @@ if ($operation == "search") {
     if (!empty($personIdArr)) $resMail = contactSeveralEmailIcon('Skicka till deltagarna med dessa roller', $personIdArr, $valueText, "Meddelande från $current_larp->Name")."<br>";
     
     
-    echo $resSearch . $resMail. $resTable;
+    $resSubdivision = "Lägg till alla karaktärerna i grupperingen <form action='subdivision_form.php' method='post' style='display: inline-block'>";
+    $resSubdivision .= "<input type='hidden' name='operation' value='add_subdivision_member'>";
+
+    foreach ($roles as $role) {
+        $resSubdivision .= "<input type='hidden' name='RoleId[]' value=$role->Id>";
+    }
+    
+    
+    $subdivisions = Subdivision::allByCampaign($current_larp);
+    $resSubdivision .= "<select name='id' id='id'>";
+    foreach ($subdivisions as $subdivision) {
+        $resSubdivision .= "<option value='$subdivision->Id'>$subdivision->Name</option>";
+    }
+    $resSubdivision .= "</select>";
+    
+    $resSubdivision .= " <input type ='submit' value='Lägg till'>";
+    $resSubdivision .= "</form>";
+
+    echo $resSearch . $resMail . $resTable . $resSubdivision;
 } elseif ($operation="values") {
     $larpId = $_REQUEST["larpId"];
     $type = $_REQUEST["type"];

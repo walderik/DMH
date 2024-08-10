@@ -19,7 +19,7 @@ include_once 'header.php';
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $operation = "insert";
-        $referer = $_POST['Referer'];
+        if (isset( $_POST['Referer'])) $referer = $_POST['Referer'];
         if (isset($_POST['operation'])) $operation = $_POST['operation'];
         $subdivision = Subdivision::loadById($_POST['id']);
         
@@ -79,7 +79,7 @@ include_once 'header.php';
     } elseif (isset($_SERVER['HTTP_REFERER'])) {
         $referer = $_SERVER['HTTP_REFERER'];
     } else {
-        $referer = "rumour_admin.php";
+        $referer = "subdivision_admin.php";
     }
     
     include 'navigation.php';
