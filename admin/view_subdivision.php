@@ -34,7 +34,7 @@ if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = "view_subdivision.php?id=$subdivision->Id";
 }
 
-function print_role($role, $subdivision) {
+function print_role($role, $subdivision, $isAtLarp) {
     global $current_larp, $referer;
 
     
@@ -66,11 +66,11 @@ function print_role($role, $subdivision) {
     echo "<td>$role->Profession</td>";
     
     $person = $role->getPerson();
-    echo "<td><a href ='view_person.php?id=$person->Id'>$person->Name</a> </td>";
+    echo "<td><a href ='view_person.php?id=$person->Id'>$person->Name</a></td>";
     
     
     echo "<td>";
-    if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    if ($isAtLarp && $role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         echo "Ansvarig vuxen är ";
         $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
         if (!empty($registration->GuardianId)) {
@@ -109,18 +109,28 @@ include 'navigation.php';
 		$not_registered_characters = array_udiff($subdivision->getAllMembers(), $registered_characters_in_subdivision, 'compare_objects');
 		
 	    echo "<h2>Medlemmar som kommer på lajvet</h2>";
-	    echo "<form id='add_member' action='choose_role.php' method='post'></form>";
-	    echo "<input form='add_member' type='hidden' id='id' name='id' value='$subdivision->Id'>";
-	    echo "<input form='add_member' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
-	    echo "<input form='add_member' type='hidden' id='ReturnTo' name='ReturnTo' value='view_subdivision.php?id=$subdivision->Id'>";
-	    echo "<input form='add_member' type='hidden' id='operation' name='operation' value='add_subdivision_member'>";
-	    echo "<button form='add_member' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) som är med i grupperingen'></i><i class='fa-solid fa-user' title='Lägg till karaktär(er) som är med i grupperingen'></i></button>";
 		    
 		    
 	    if (!empty($registered_characters_in_subdivision)) {
+	        $personIdArr = array();
+	        foreach ($registered_characters_in_subdivision as $role) {
+	            $person = $role->getPerson();
+	            if ($person->isNotComing($current_larp)) continue;
+	            $personIdArr[] = $person->Id;
+	        }
+	        echo contactSeveralEmailIcon("Maila alla som är med i $subdivision->Name", $personIdArr,
+	            "Medlem i $subdivision->Name på $current_larp->Name",
+	            "Meddelande till alla som är med i $subdivision->Name på $current_larp->Name");
+	        echo "<br><br>";
+	        echo "<form id='add_member' action='choose_role.php' method='post'></form>";
+	        echo "<input form='add_member' type='hidden' id='id' name='id' value='$subdivision->Id'>";
+	        echo "<input form='add_member' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
+	        echo "<input form='add_member' type='hidden' id='ReturnTo' name='ReturnTo' value='view_subdivision.php?id=$subdivision->Id'>";
+	        echo "<input form='add_member' type='hidden' id='operation' name='operation' value='add_subdivision_member'>";
+	        echo "<button form='add_member' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) som är med i grupperingen'></i><i class='fa-solid fa-user' title='Lägg till karaktär(er) som är med i grupperingen'></i></button>";
 	        echo "<table>";
 		    foreach ($registered_characters_in_subdivision as $role) {
-		        print_role($role, $subdivision);
+		        print_role($role, $subdivision, true);
 		    }
 		    
 		    echo "</table>\n";
@@ -131,7 +141,7 @@ include 'navigation.php';
 		    
 		    echo "<table>\n";
 		    foreach ($not_registered_characters as $role) {
-		        print_role($role, $subdivision);
+		        print_role($role, $subdivision, false);
 		    }
 		    echo "</table>\n";
 		}
