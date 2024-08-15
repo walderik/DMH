@@ -136,11 +136,16 @@ class Subdivision extends BaseModel{
     
     public function getAllRegisteredMembers(LARP $larp) {
         $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE Id IN (".
-            "SELECT RoleId FROM regsys_subdivisionmember WHERE SubdivisionId=?) AND ".
+            "SELECT RoleId FROM regsys_subdivisionmember, regsys_registration WHERE ".
+            " SubdivisionId=? AND ". 
+            "regsys_role.PersonId = regsys_registration.PersonId AND ".
+            "regsys_registration.LARPId = ? AND ".
+            "regsys_registration.NotComing = 0) AND ".
             "regsys_role.Id = regsys_larp_role.RoleId AND ".
             "regsys_larp_role.LarpId = ? ".
             "ORDER BY ".Role::$orderListBy.";";
-        return Role::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id));
+        echo $sql;
+        return Role::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id, $larp->Id));
     }
     
     public static function allForRole(Role $role) {
