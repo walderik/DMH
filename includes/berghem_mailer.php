@@ -410,6 +410,8 @@ class BerghemMailer {
         
         $houses = House::all();
         foreach($houses as $house) {
+            $subject_house = "";
+            
             $personsInHouse = Person::personsAssignedToHouse($house, $larp);
             if (empty($personsInHouse)) continue;
             $type = "hus";
@@ -444,6 +446,7 @@ class BerghemMailer {
             
             
             $subject_house = $subject . " ($house->Name)";
+            
             BerghemMailer::send($larp, $receivers, $greeting, $housetext, $subject_house, $senderText, BerghemMailer::DaysAutomatic);
         }
     }
