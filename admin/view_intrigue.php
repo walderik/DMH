@@ -24,7 +24,9 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
     elseif (!empty($intrigueActor->GroupId)) echo "<a href='view_group.php?id=$intrigueActor->GroupId'>";
     elseif (!empty($intrigueActor->SubdivisionId)) $intrigueActor->getSubdivision()->getViewLink();
     
-    echo "$name</a> <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$name&section=$section'><i class='fa-solid fa-pen'></i></a></h2>\n";
+    echo "$name</a> <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$name&section=$section'><i class='fa-solid fa-pen'></i></a> ";
+    echo "<a href='view_intrigue.php?Id=".$intrigueActor->IntrigueId."#actorlist'><i class='fa-solid fa-caret-up' title='Till listan med alla aktörer'></i></a>";
+    echo "</h2>\n";
     echo "<table width='100%''>\n";
     
     
@@ -54,7 +56,7 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
     printAllTelegrams($checkinTelegrams, $intrigueActor, $section);
     
     echo "</td></tr>\n";
-    echo "<tr><td>Rekvisita och PDF aktören känner till</td><td colspan='2'>\n";
+    echo "<tr><td>Rekvisita och PDF aktören känner till<br>PDF'er kommer att mailas till deltagaren vid intrigutskicket</td><td colspan='2'>\n";
     echo "<a href='choose_intrigue_props.php?IntrigueActorId=$intrigueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownProps = $intrigueActor->getAllPropsThatAreKnown();
     printAllProps($knownProps, $intrigueActor, false, $section);
@@ -146,7 +148,7 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor, $sec
     if (!empty($knownIntrigueActor->GroupId)) {
         $group=$knownIntrigueActor->getGroup();
         echo "<li style='display:table-cell; width:19%;'>";
-        echo "<div class='name'>$group->Name</div>";
+        echo "<div class='name'>".$group->getViewLink()."</div>";
         echo "<div>Grupp</div>";
         echo "</div>";
         echo "<div align='right'>";
@@ -158,7 +160,7 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor, $sec
     } elseif (!empty($knownIntrigueActor->RoleId)) {
         $role = $knownIntrigueActor->getRole();
         echo "<li style='display:table-cell; width:19%;'>";
-        echo "<div class='name'>$role->Name</div>";
+        echo "<div class='name'>".$role->getViewLink()."</div>";
         $role_group = $role->getGroup();
         if (!empty($role_group)) {
             echo "<div>$role_group->Name</div>";
@@ -174,7 +176,7 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor, $sec
     } elseif (!empty($knownIntrigueActor->SubdivisionId)) {
         $subdivision = $knownIntrigueActor->getSubdivision();
         echo "<li style='display:table-cell; width:19%;'>";
-        echo "<div class='name'>$subdivision->Name</div>";
+        echo "<div class='name'>".$subdivision->getViewLink()."</div>";
         echo "<div align='right'>";
         echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor_knownRole&RoleId=$role->Id&IntrigueActorId=$intrigueActor->Id&Section=$section'>";
         echo "<i class='fa-solid fa-xmark' title='Ta bort'></i></a>";
@@ -276,6 +278,21 @@ th, td {
   border-style:solid;
   border-color: #d4d4d4;
 }
+
+.actorheader {
+    display: block;
+    clear: both;
+}    
+
+
+.actorheader .name {
+    font-weight: bold;
+    float: left;
+}
+
+.actorheader .icons {
+        float: right;
+      }
 </style>
 
     <div class="content">
@@ -314,7 +331,7 @@ th, td {
 ?></td></tr>
 <tr><td>Text till alla aktörer</td><td><?php  echo nl2br($intrigue->CommonText); ?></td></tr>
 <tr><td>Anteckningar</td><td><?php  echo nl2br($intrigue->Notes); ?></td></tr>
-<tr><td>Aktörer<br>(Grupper, grupperingar och karaktärer som är inblandade i intrigen)</td>
+<tr><td id='actorlist'>Aktörer<br>(Grupper, grupperingar och karaktärer som är inblandade i intrigen)</td>
 <td>
 
 <div class='container'>
@@ -329,7 +346,24 @@ th, td {
 	foreach ($groupActors as $groupActor) {
 	    $group = $groupActor->getGroup();
 	    echo "<li style='display:table-cell; width:19%;'>";
-	    echo "<div class='name'>" . $group->getViewLink() . "</div>";
+	    echo "<div class='actorheader'>";
+	    echo "<span class='name'>";
+	    echo $group->getViewLink();
+	    if ($groupActor->isAtLARP()) echo " <a href='view_intrigue.php?Id=".$intrigue->Id."#section_$groupActor->Id'><i class='fa-solid fa-caret-down' title='Till aktören'></i></a>";
+	    echo "</span>";
+	    
+	    echo "<span class='icons'>";
+	    
+	    if (!$groupActor->isAtLARP()) echo "<i class='fa-solid fa-bed' title='Inte anmäld till lajvet'></i> ";
+	    echo "<a href='choose_group.php?operation=exhange_intrigue_actor_group&Id=$groupActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut grupp som får intrigen'></i></a> ";
+	    echo "<a ";
+	    if (!empty($groupActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort gruppen i alla fall?\')" ';
+	    echo " href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$groupActor->Id&Id=$intrigue->Id'";
+	    
+	    echo "><i class='fa-solid fa-xmark' title='Ta bort grupp'></i></a>";
+	    echo "</span></div><br>";
+	    
+	    
 	    echo "<div>Grupp</div>";
 	    $actor_intrigues = $groupActor->getAllIntrigues();
 	    foreach ($actor_intrigues as $actor_intrigue) {
@@ -338,17 +372,8 @@ th, td {
 	        }
 	    }
 	    if ($group->hasImage()) {
-	        echo "<img src='../includes/display_image.php?id=$group->ImageId'/>\n";
+	        echo "<div align='center'><img src='../includes/display_image.php?id=$group->ImageId'/></div>\n";
 	    }
-	    echo "<div align='right'>";
-	    if (!$groupActor->isAtLARP()) echo "<i class='fa-solid fa-bed' title='Inte anmäld till lajvet'></i> ";
-	    echo "<a href='choose_group.php?operation=exhange_intrigue_actor_group&Id=$groupActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut grupp som får intrigen'></i></a> ";
-	    echo "<a ";
-	    if (!empty($groupActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort gruppen i alla fall?\')" ';
-	    echo " href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$groupActor->Id&Id=$intrigue->Id'";
-        
-	    echo "><i class='fa-solid fa-xmark' title='Ta bort grupp'></i></a>";
-	    echo "</div>";
 	    echo "</li>";
 	    $temp++;
 	    if($temp==$cols)
@@ -363,7 +388,24 @@ th, td {
 	foreach ($subdivisionActors as $subdivisionActor) {
 	    $subdivision = $subdivisionActor->getSubdivision();
 	    echo "<li style='display:table-cell; width:19%;'>";
-	    echo "<div class='name'>".$subdivision->getViewLink()."</div>";
+	    echo "<div class='actorheader'>";
+	    echo "<span class='name'>";
+	    echo $subdivision->getViewLink();
+	    if ($subdivisionActor->isAtLARP()) echo " <a href='view_intrigue.php?Id=".$intrigue->Id."#section_$subdivisionActor->Id'><i class='fa-solid fa-caret-down' title='Till aktören'></i></a>";
+	    echo "</span>";
+	    
+	    echo "<span class='icons'>";
+	    if (!$subdivisionActor->isAtLARP()) echo "<i class='fa-solid fa-bed' title='Inte med på lajvet'></i> ";
+	    echo "<a href='choose_subdivision.php?operation=exhange_intrigue_actor_subdivision&Id=$subdivisionActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut gruppering som får intrigen'></i></a> ";
+	    echo "<a ";
+	    if (!empty($subdivisionActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort grupperingen i alla fall?\')" ';
+	    echo " href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$subdivisionActor->Id&Id=$intrigue->Id'";
+	    
+	    echo "><i class='fa-solid fa-xmark' title='Ta bort gruppering'></i></a>";
+	    echo "</span>";
+	    echo "</div><br>";
+	    
+	    
 	    echo "<div>Gruppering</div>";
 	    $actor_intrigues = $subdivisionActor->getAllIntrigues();
 	    foreach ($actor_intrigues as $actor_intrigue) {
@@ -372,17 +414,8 @@ th, td {
 	        }
 	    }
 	    if ($subdivision->hasImage()) {
-	        echo "<img src='../includes/display_image.php?id=$subdivision->ImageId'/>\n";
+	        echo "<div align='center'><img src='../includes/display_image.php?id=$subdivision->ImageId'/></div>\n";
 	    }
-	    echo "<div align='right'>";
-	    if (!$subdivisionActor->isAtLARP()) echo "<i class='fa-solid fa-bed' title='Inte med på lajvet'></i> ";
-	    echo "<a href='choose_subdivision.php?operation=exhange_intrigue_actor_subdivision&Id=$subdivisionActor->Id?'><i class='fa-solid fa-rotate' title='Byt ut gruppering som får intrigen'></i></a> ";
-	    echo "<a ";
-	    if (!empty($subdivisionActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort grupperingen i alla fall?\')" ';
-	    echo " href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$subdivisionActor->Id&Id=$intrigue->Id'";
-	    
-	    echo "><i class='fa-solid fa-xmark' title='Ta bort gruppering'></i></a>";
-	    echo "</div>";
 	    echo "</li>";
 	    $temp++;
 	    if($temp==$cols)
@@ -405,9 +438,22 @@ th, td {
 	foreach ($roleActors as $roleActor) {
 	    $role = $roleActor->getRole();
 	    echo "<li style='display:table-cell; width:19%;'>";
-	    echo "<div class='name'>";
+	    
+	    echo "<div class='actorheader'>";
+	    echo "<span class='name'>";
         echo $role->getViewLink();
-        echo "</div>";
+        if ($roleActor->isAtLARP()) echo " <a href='view_intrigue.php?Id=".$intrigue->Id."#section_$roleActor->Id'><i class='fa-solid fa-caret-down' title='Till aktören'></i></a>";
+        echo "</span>";
+        
+        echo "<span class='icons'>";
+        if (!$roleActor->isAtLARP()) echo "<i class='fa-solid fa-bed' title='Inte anmäld till lajvet'></i> ";
+        echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut karaktär som får intrigen'></i></a> ";
+        echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$roleActor->Id&Id=$intrigue->Id'";
+        if (!empty($roleActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort karaktären i alla fall?\')" ';
+        echo "><i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
+        echo "</span>";
+        echo "</div><br>";
+        
 	    $role_group = $role->getGroup();
 	    if (!empty($role_group)) {
 	        echo "<div>$role_group->Name</div>";
@@ -419,15 +465,8 @@ th, td {
 	        }
 	    }
 	    if ($role->hasImage()) {
-	        echo "<img src='../includes/display_image.php?id=$role->ImageId'/>\n";
+	        echo "<div align='center'><img src='../includes/display_image.php?id=$role->ImageId'/></div>\n";
 	    }
-	    echo "<div align='right'>";
-	    if (!$roleActor->isAtLARP()) echo "<i class='fa-solid fa-bed' title='Inte anmäld till lajvet'></i> ";
-	    echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut karaktär som får intrigen'></i></a> ";
-	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$roleActor->Id&Id=$intrigue->Id'";
-	    if (!empty($roleActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort karaktären i alla fall?\')" ';
-	    echo "><i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
-	    echo "</div>";
 	    echo "</li>";
 	    $temp++;
 	    if($temp==$cols)
@@ -452,7 +491,14 @@ th, td {
 	foreach ($intrigue_props as $intrigue_prop) {
 	    $prop = $intrigue_prop->getProp();
 	    echo "<li style='display:table-cell; width:19%;'>\n";
-	    echo "<div class='name'><a href='prop_form.php?operation=update&id=$prop->Id'>$prop->Name</a></div>\n";
+	    echo "<span class='name'><a href='prop_form.php?operation=update&id=$prop->Id'>$prop->Name</a></span>\n";
+
+	    echo "<span align='right'>";
+	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_prop&IntriguePropId=$intrigue_prop->Id&Id=$intrigue->Id'>";
+	    echo "<i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
+	    echo "</span>";
+	    
+	    
 	    $prop_intrigues = $intrigue_prop->getAllIntrigues();
 	    foreach ($prop_intrigues as $prop_intrigue) {
 	        if ($prop_intrigue->Id != $intrigue->Id) {
@@ -460,12 +506,8 @@ th, td {
 	        }
 	    }
 	    if ($prop->hasImage()) {
-	        echo "<img width='100' src='../includes/display_image.php?id=$prop->ImageId'/>\n";
+	        echo "<div align='center'><img width='100' src='../includes/display_image.php?id=$prop->ImageId'/></div>\n";
 	    }
-	    echo "<div align='right'>";
-	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_prop&IntriguePropId=$intrigue_prop->Id&Id=$intrigue->Id'>";
-	    echo "<i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
-	    echo "</div>";
 	    echo "</li>\n";
 	    $temp++;
 	    if($temp==$cols)
