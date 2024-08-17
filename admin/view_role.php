@@ -161,17 +161,17 @@ include 'navigation.php';
                        }
                        echo "</td>";
                        echo "<td><a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$role->Name'><i class='fa-solid fa-pen'></i></a></td>";
-                       echo "</tr>";
                    }
                    else {
                        if (!empty($intrigue->CommonText)) echo "<s>".nl2br(htmlspecialchars($intrigue->CommonText))."</s><br><br>";
                        echo "<s>$intrigueActor->IntrigueText</s>";
                        echo "</td>";
-                       echo "</tr>";
+                       echo "<td></td>";
                    }
+
+                   echo "</tr>";
                }
                
-               echo "</table>";
                
                $known_groups = array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp));
                $known_roles = array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp));
@@ -185,6 +185,7 @@ include 'navigation.php';
                $checkin_telegrams = array_merge($checkin_telegrams,$subdivision->getAllCheckinTelegrams($current_larp));
                $checkin_props = array_merge($checkin_props,$subdivision->getAllCheckinProps($current_larp));
            }
+           echo "</table>";
            
            echo "<h3>Känner till</h3>";
            echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
