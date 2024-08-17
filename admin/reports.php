@@ -86,6 +86,8 @@ include 'navigation.php';
 	<div class='linklist'>
         <a href="reports/economy.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Rapport till kassören</a><br>
         <a href="logic/all_bookkeeping_zip.php" target="_blank"><i class="fa-solid fa-file-zipper"></i> Alla verifikationer till kassör</a><br>
+		<a href="reports/fees_payed.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Inbetalade och återbetalade deltagaravgifter</a><br>
+        
 	</div>
     <h3>Övrigt</h3>
 	<div class='linklist'>
