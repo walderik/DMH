@@ -144,7 +144,7 @@ class Subdivision extends BaseModel{
             "regsys_role.Id = regsys_larp_role.RoleId AND ".
             "regsys_larp_role.LarpId = ? ".
             "ORDER BY ".Role::$orderListBy.";";
-        echo $sql;
+
         return Role::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id, $larp->Id));
     }
     
