@@ -106,7 +106,10 @@ include 'navigation.php';
                $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
                echo "<td>";
                if ($intrigue->isActive()) {
-                   if (!empty($intrigue->CommonText) && !$role->inSubdivisionInIntrigue($intrigue)) echo nl2br(htmlspecialchars($intrigue->CommonText))."<br><br>";
+                   if (!empty($intrigue->CommonText)) {
+                       if ($role->inSubdivisionInIntrigue($intrigue)) echo "Gemensam text som inte kommer att visas för deltagare eftersom hen får den texten som en del av en gruppering:<br><i>".nl2br(htmlspecialchars($intrigue->CommonText))."</i><br><br>";
+                       else echo nl2br(htmlspecialchars($intrigue->CommonText))."<br><br>";
+                   }
                    echo nl2br(htmlspecialchars($intrigueActor->IntrigueText));
                    if (!empty($intrigueActor->OffInfo)) {
                        echo "<br><br><strong>Off-information:</strong><br>".nl2br(htmlspecialchars($intrigueActor->OffInfo));
