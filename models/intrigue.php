@@ -668,4 +668,40 @@ class Intrigue extends BaseModel{
         return Vision::getAllForIntrigue($this);
     }
     
+    public function mayRemove() {
+        //Kolla om det finns något kopplat till intrigen
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_telegram WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_letter WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_pdf WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_npc WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_npcgroup WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_prop WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_rumour WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigueactor WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_timeline WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        if (!empty($this->getAllIntrigueRelations())) return false;
+        
+        return true;
+    }
+    
+    
+    
 }

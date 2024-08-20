@@ -14,6 +14,9 @@ include 'navigation.php';
        <br>
        <a href="reports/intrigues_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla intrigspår</a>&nbsp; &nbsp;
        <a href="intrigue_pdfs.php"><i class="fa-solid fa-file-pdf"></i>Alla pdf'er som används i något intrigspår</a>  
+               <p>Intrigspår går bara att ta bort om det inte finns några aktörer eller kopplade rykten/meddelande eller annat. 
+        Detta för att man inte ska råka ta bort intrigspår som är i spel av misstag.</p>
+       
        <?php if ($current_larp->isEnded()) { ?>
        		&nbsp; &nbsp;<a href="reports/intrigues_what_happened_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Vad hände</a>&nbsp; &nbsp;
        <?php
@@ -30,7 +33,7 @@ include 'navigation.php';
             echo "<table class='data'>";
             
             
-            echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th></tr>\n";
+            echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th><th></th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
                 $show = true;
                 if ($current_user->Id != $intrigue->ResponsibleUserId || !$intrigue->isActive()) {
@@ -47,6 +50,11 @@ include 'navigation.php';
                 $responsibleUser = $intrigue->getResponsibleUser();
                 echo "<td>$responsibleUser->Name</td>";
                 
+                echo "<td>";
+                if ($intrigue->mayRemove()) echo "<a href='logic/view_intrigue_logic.php.php?operation=delete&id=" . $intrigue->Id . "'><i class='fa-solid fa-trash'></i>";
+                else echo "Får ej raderas";
+                echo "</td>\n";
+                    
                 echo "</tr>\n";
             }
             echo "</table>";
