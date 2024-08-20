@@ -52,7 +52,6 @@ include 'navigation.php';
                 
                 echo "<td>";
                 if ($intrigue->mayRemove()) echo "<a href='logic/view_intrigue_logic.php.php?operation=delete&id=" . $intrigue->Id . "'><i class='fa-solid fa-trash'></i>";
-                else echo "Får ej raderas";
                 echo "</td>\n";
                     
                 echo "</tr>\n";
