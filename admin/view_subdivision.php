@@ -47,6 +47,13 @@ function print_role($role, $subdivision, $isAtLarp) {
     
     echo "<td>";
     echo $role->getViewLink();
+    if ($isAtLarp) { 
+        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+        if ($larp_role->IsMainRole != 1) {
+            echo " (Sidokaraktär)";
+        }
+    }
+    
     echo "</td>";
     echo "<td>";
     echo $role->getEditLinkPen(true);
