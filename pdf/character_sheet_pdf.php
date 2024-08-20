@@ -147,8 +147,11 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $tomma_intriger = true;
         foreach ($intrigues as $intrigue) {
             if (!$intrigue->isActive()) continue;
-            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);   
-            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) $tomma_intriger = false;
+            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);  
+            $role = $intrigueActor->getRole();
+            $isInSubdivision = $role->inSubdivisionInIntrigue($intrigue);
+            
+            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || (!$isInSubdivision && !empty($intrigue->CommonText))) $tomma_intriger = false;
         }
         foreach ($subdivisions as $subdivision) {
             $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $this->larp->Id);
@@ -179,15 +182,18 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
             if (empty($intrigueActor)) continue;
 
-            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) {
+            $role = $intrigueActor->getRole();
+            $isInSubdivision = $role->inSubdivisionInIntrigue($intrigue);
+            
+            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || (!$isInSubdivision && !empty($intrigue->CommonText))) {
                 $intrigue_numbers[$intrigue->Number] = $intrigue->Number;
+                $this->printIntrigue($intrigue, $intrigueActor, true);
+                
+                $this->shortbar();
+                $y += 2;
+                $this->SetXY($left, $y);
             }
             
-            $this->printIntrigue($intrigue, $intrigueActor, true);
-            
-            $this->shortbar();
-            $y += 2;
-            $this->SetXY($left, $y);
             
         }
         $known_groups = $this->role->getAllKnownGroups($this->larp);
@@ -309,7 +315,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
         global $left, $y;
         $space = 3;
         
-        if (!empty($intrigue->CommonText)) {
+        if ($intrigueActor->isRoleActor()) {
+            $role = $intrigueActor->getRole();
+            $isInSubdivision = $role->inSubdivisionInIntrigue($intrigue);
+        } else $isInSubdivision = false;
+        
+        if (!empty($intrigue->CommonText) && !$isInSubdivision) {
             $text = trim(encode_utf_to_iso($intrigue->CommonText));
             $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
             $y = $this->GetY() + $space;

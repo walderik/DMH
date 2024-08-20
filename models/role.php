@@ -966,4 +966,14 @@ class Role extends BaseModel{
         return false;
     }
     
+    public function inSubdivisionInIntrigue(Intrigue $intrigue) {
+        //Kolla om rollen finns med i en gruppering som finns i intrigen
+        $sql = "SELECT count(*) as Num FROM regsys_intrigueactor, regsys_subdivision, regsys_subdivisionmember WHERE ".
+            "regsys_intrigueactor.IntrigueId = ? AND ".
+            "regsys_intrigueactor.SubdivisionId =  regsys_subdivisionmember.SubdivisionId AND ".
+            "regsys_subdivisionmember.RoleId = ? ";
+        if (static::existsQuery($sql, array($intrigue->Id, $this->Id))) return true;
+        return false;
+    }
+    
 }

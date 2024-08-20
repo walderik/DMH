@@ -106,7 +106,7 @@ include 'navigation.php';
                $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
                echo "<td>";
                if ($intrigue->isActive()) {
-                   if (!empty($intrigue->CommonText)) echo nl2br(htmlspecialchars($intrigue->CommonText))."<br><br>";
+                   if (!empty($intrigue->CommonText) && !$role->inSubdivisionInIntrigue($intrigue)) echo nl2br(htmlspecialchars($intrigue->CommonText))."<br><br>";
                    echo nl2br(htmlspecialchars($intrigueActor->IntrigueText));
                    if (!empty($intrigueActor->OffInfo)) {
                        echo "<br><br><strong>Off-information:</strong><br>".nl2br(htmlspecialchars($intrigueActor->OffInfo));
