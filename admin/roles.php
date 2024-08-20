@@ -42,6 +42,7 @@ th {
     		    if (IntrigueType::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Intrigtyper</th>";
     		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
     		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Gruppering</th>".
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
@@ -128,6 +129,34 @@ th {
         		            
         		            echo "</td>\n";
         		        }
+        		        
+        		        $subdivisions = Subdivision::allForRole($role);
+        		        if (empty($subdivisions)) {
+        		            echo "<td>&nbsp;</td>\n";
+        		        } else {
+        		            echo "<td>";
+        		            
+        		            foreach ($subdivisions as $subdivision) {
+        		                echo $subdivision->getViewLink();
+        		                $intrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id);
+        		                echo "<br>";
+        		                if (!empty($intrigues)) echo "Intrig: ";
+        		                foreach ($intrigues as $intrigue) {
+        		                    echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
+        		                    if ($intrigue->isActive()) echo $intrigue->Number;
+        		                    else echo "<s>$intrigue->Number</s>";
+        		                    echo "</a>";
+        		                    echo " ";
+        		                }
+        		                echo "<br><br>";
+          		            }
+        		            
+        		            
+        		            echo "</td>\n";
+        		        }
+
+        		        
+        		        
         		        if ($role->isMysLajvare()) {
         		            echo "<td colspan=2>N/A</td>\n";
         		        } else {
