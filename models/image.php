@@ -43,14 +43,18 @@ class Image extends BaseModel{
         if ($allow_pdf) $allowed["pdf"] = "application/pdf";
         $filename = $_FILES["upload"]["name"];
         $filetype = $_FILES["upload"]["type"];
-
         
+        $file_mime = mime_content_type($_FILES["upload"]["tmp_name"]);
+
         // Validate file extension
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         if(!array_key_exists($ext, $allowed)) return "image_format";
         
         // Validate type of the file
         if(!in_array($filetype, $allowed)) return "image_format";
+
+        // Validate type of the file
+        if(!in_array($file_mime, $allowed)) return "image_format";
         
     }
     
