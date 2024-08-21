@@ -52,7 +52,7 @@ if ($role->isMysLajvare()) {
 		<?php }?>
 		
 		<?php if (!empty($subdivisions)) { 
-		  echo "<tr><td>Medlem i</td><td>";
+		  echo "<tr><td valign='top' class='header'>Medlem i</td><td>";
 		  foreach ($subdivisions as $subdivision) echo $subdivision->getViewLink()."<br>";
 		  echo "</td></tr>";
 		    

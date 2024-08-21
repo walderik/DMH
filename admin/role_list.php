@@ -24,15 +24,18 @@ include 'navigation.php';
 		    
 		    ?>
 		<h2>
-			<?php echo $role->Name;?>&nbsp;
-			<a href='edit_role.php?id=<?php echo $role->Id;?>'><i class='fa-solid fa-pen'></i></a>
-
-			<?php echo $role->Name;?>&nbsp;
+			<?php echo $role->getViewLink();?>&nbsp;
 			<?php echo $role->getEditLinkPen(false);?>
 
 			<a href='character_sheet.php?id=<?php echo $role->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad'></i></a>
 		</h2>
 		<?php include 'print_role.php';?>
+		<h2>Anteckningar (visas inte för deltagaren) <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
+		<div>
+		<?php    echo nl2br(htmlspecialchars($role->OrganizerNotes)); ?>
+		</div>
+		<?php include 'print_role_history.php';?>		
+		
 	<?php }?>
 	</div>
 
