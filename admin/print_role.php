@@ -30,7 +30,7 @@ if ($role->isMysLajvare()) {
     			<?php echo $person->Name; ?></a>&nbsp;
     			<?php  echo contactEmailIcon($person); ?>&nbsp;
     			
-    			(<?php echo $person->getAgeAtLarp($current_larp) ?> år)
+    			(<?php echo $person->getAgeAtLarp($current_larp) ?> år), <?php echo $person->getExperience()->Name?>
 			</td>
 		<?php 
 		if ($role->hasImage()) {
