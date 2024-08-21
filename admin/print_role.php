@@ -39,6 +39,7 @@ if ($role->isMysLajvare()) {
 		    echo "<td rowspan='20' valign='top'>";
 		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+		    echo "<br><a href='logic/delete_image.php?id=$role->Id&type=role'>Ta bort bild</a></td>\n";
 		    echo "</td>";
 		} else {
 		    echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";		    

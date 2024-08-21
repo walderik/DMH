@@ -136,8 +136,11 @@ include 'navigation.php';
 					if ($current_group->hasImage()) {
             		    echo "<td rowspan='20' valign='top'>";
             		    echo "<img width='300' src='../includes/display_image.php?id=$current_group->ImageId'/>\n";
+            		    echo "<br><a href='logic/delete_image.php?id=$current_group->Id&type=group'>Ta bort bild</a></td>\n";
             		    echo "</td>";
-            		}
+					} else {
+					    echo "<a href='upload_image.php?id=$current_group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+					}
             		?>
 			
 			</tr>

@@ -27,6 +27,12 @@ switch ($type) {
     case "resource":
         $object = Resource::loadById($id);
         break;
+    case "role":
+        $object = Role::loadById($id);
+        break;
+    case "group":
+        $object = Group::loadById($id);
+        break;
 }
 
 
@@ -35,10 +41,10 @@ if (!isset($object)) {
     exit;
 }
 
-$image = $object->ImageId;
+$imageId = $object->ImageId;
 $object->ImageId = null;
 $object->update();
-$image->destroy();
+Image::delete($imageId);
 
 
 if (isset($_SERVER['HTTP_REFERER'])) {

@@ -41,6 +41,10 @@ switch ($type) {
         $object = Role::loadById($id);
         $name = $object->Name;
         break;
+    case "group":
+        $object = Group::loadById($id);
+        $name = $object->Name;
+        break;
     case "magician":
         $object = Magic_Magician::loadById($id);
         $name = "stav";
