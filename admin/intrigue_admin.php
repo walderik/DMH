@@ -23,7 +23,7 @@ include 'navigation.php';
         }
        echo "<br>";
        echo "<br>";
-       echo "Intrigspår filtrerade på dig som ansvarig.<br>";
+       echo "Intrigspår filtrerade på dig som ansvarig. Huvudintriger visas alltid.<br>";
        echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
        echo "<br>";
        echo "<br>";
@@ -36,7 +36,7 @@ include 'navigation.php';
             echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th><th></th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
                 $show = true;
-                if ($current_user->Id != $intrigue->ResponsibleUserId || !$intrigue->isActive()) {
+                if (($current_user->Id != $intrigue->ResponsibleUserId || !$intrigue->isActive()) && !$intrigue->isMainIntrigue()) {
                     $show = false;
                 }
                 if ($show) echo "<tr>\n";

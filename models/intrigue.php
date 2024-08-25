@@ -81,7 +81,7 @@ class Intrigue extends BaseModel{
     
     public static function allByLARP(LARP $larp) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_intrigue WHERE LarpId = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_intrigue WHERE LarpId = ? ORDER BY MainIntrigue DESC,".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
@@ -220,6 +220,11 @@ class Intrigue extends BaseModel{
     
     public function isActive() {
         if ($this->Active == 0) return false;
+        return true;
+    }
+    
+    public function isMainIntrigue() {
+        if ($this->MainIntrigue == 0) return false;
         return true;
     }
     
