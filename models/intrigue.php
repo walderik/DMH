@@ -707,6 +707,14 @@ class Intrigue extends BaseModel{
         return true;
     }
     
+    public static function delete($id)
+    {
+        $intrigue = static::loadById($id);
+        $intrigue->deleteAllIntrigueTypes();
+        
+        parent::delete($id);
+    }
+    
     
     
 }
