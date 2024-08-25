@@ -106,6 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['Id'])) $intrigue=Intrigue::loadById($_GET['Id']);
+    elseif (isset($_GET['id'])) $intrigue=Intrigue::loadById($_GET['id']);
     $operation = "";
     if (isset($_GET['operation'])) $operation = $_GET['operation'];
         

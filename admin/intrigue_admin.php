@@ -51,7 +51,7 @@ include 'navigation.php';
                 echo "<td>$responsibleUser->Name</td>";
                 
                 echo "<td>";
-                if ($intrigue->mayRemove()) echo "<a href='logic/view_intrigue_logic.php.php?operation=delete&id=" . $intrigue->Id . "'><i class='fa-solid fa-trash'></i>";
+                if ($intrigue->mayRemove()) echo "<a href='logic/view_intrigue_logic.php?operation=delete&id=" . $intrigue->Id . "'><i class='fa-solid fa-trash' title='Ta bort'></i>";
                 echo "</td>\n";
                     
                 echo "</tr>\n";
