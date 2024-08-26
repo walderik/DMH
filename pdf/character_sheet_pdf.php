@@ -398,7 +398,9 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $name = $this->role->Name;
         $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Rykten $name känner till "),0,0,'L');
         $this->SetFont('Arial','',static::$text_fontsize-3);
-        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("(Hjälp gärna till att sprida och reagera på dom) "),0,0,'L');
+        $y = $this->GetY()+$space*2;
+        $this->SetXY($left, $y);
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Alla rykten är viktiga i lajvet. Undersök dom gärna. Hjälp gärna till att sprida och reagera på dom "),0,0,'L');
         
         $this->SetFont('Arial','',static::$text_fontsize);
         $y = $this->GetY()+$space*3;
