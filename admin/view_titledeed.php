@@ -114,13 +114,23 @@ $titledeed = Titledeed::loadById($_GET['id']);
 
 				<td><label for="Produces">Tillgångar</label></td>
 				<td>
-				<?php echo $titledeed->ProducesString(); ?>
+				
+				<?php 
+				
+				echo $titledeed->ProducesString(); 
+				echo " <a href='resource_titledeed_form.php?Id=$titledeed->Id'><i class='fa-solid fa-pen' title='Ändra'></i></a><br>";
+				
+				?>
 				</td>
 			</tr>
 			<tr>
 
 				<td><label for="Requires">Behöver</label></td>
-				<td><?php echo $titledeed->RequiresString(); ?></td>
+				<td>
+				<?php 
+				echo $titledeed->RequiresString(); 
+				echo " <a href='resource_titledeed_form.php?Id=$titledeed->Id'><i class='fa-solid fa-pen' title='Ändra'></i></a><br>";
+				?></td>
 			</tr>
 			<tr>
 

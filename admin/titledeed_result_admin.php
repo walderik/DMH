@@ -40,6 +40,7 @@ th {
 </style>
 
 <script src="../javascript/table_sort.js"></script>
+<script src="../javascript/show_hide_rows.js"></script>
 
     <div class="content">
         <h1>Resultat för verksamheter <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
@@ -47,6 +48,12 @@ th {
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
         <i class='fa-solid fa-house'></i> - Handelsstation
         </p>
+	    <?php 
+	        echo "<p>Verksamheterna är filtrerade på om de är i spel eller inte.<br>";
+	        echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
+	        echo "</p>";
+		    ?>
+        
        <?php
     
        $titledeed_array = Titledeed::allByCampaign($current_larp, true);
@@ -61,9 +68,10 @@ th {
                 "<th onclick='sortTable(4, \"$tableId\")'>Ägare</th>".
                 "</tr>\n";
             foreach ($titledeed_array as $titledeed) {
-                if (!$titledeed->isInUse()) continue;
                 $titledeedresult = $titledeed->getResult($current_larp);
-                echo "<tr>\n";
+                if ($titledeed->isInUse()) echo "<tr>\n";
+                else echo "<tr class='show_hide hidden'>\n";
+
                 echo "<td><a href='titledeed_result_form.php?id=" . $titledeed->Id . "'>$titledeed->Name</a>";
                 if ($titledeed->Tradeable == 0) {
                     echo " <i class='fa-solid fa-money-bill-wave'></i>";
