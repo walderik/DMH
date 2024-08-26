@@ -35,7 +35,9 @@ include 'navigation.php';
         <a href="reports/titledeeds_info_pdf.php?all_info=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Lista med verksamheter (för handelsansvarig)</a><br><br>  
         <a href="reports/resources_info_pdf.php?all_info=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Prislista</a><br>  
         <br>
-        <a href="titledeed_result_admin.php">Resultat efter lajvet</a><br>
+        <a href="titledeed_result_admin.php">Resultat för verksamheter efter lajvet</a><br>
+        <a href="roles_money_end.php">Pengar som karaktärer hade i slutet av lajvet</a><br>
+        <a href="groups_money_end.php">Pengar som grupper hade i slutet av lajvet</a><br>
         </div>
 
 </body>

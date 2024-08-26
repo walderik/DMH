@@ -6,6 +6,8 @@ if (isset($_REQUEST["roleId"])) $roleId = $_REQUEST["roleId"];
 if (isset($_REQUEST["groupId"])) $groupId = $_REQUEST["groupId"];
 $value = $_REQUEST["value"];
 $larpId = $_REQUEST["larpId"];
+$isEnd = false;
+if (isset($_REQUEST["isEnd"])) $isEnd = true;
 
 
 if ((empty($roleId) && empty($groupId))|| empty($value) || empty($larpId)) {
@@ -15,11 +17,13 @@ if ((empty($roleId) && empty($groupId))|| empty($value) || empty($larpId)) {
 
 if (isset($roleId)) {
     $larp_role = LARP_Role::loadByIds($roleId, $larpId);
-    $larp_role->StartingMoney = $value;
+    if ($isEnd) $larp_role->EndingMoney = $value;
+    else $larp_role->StartingMoney = $value;
     $larp_role->update();
 } elseif (isset($groupId)) {
     $larp_group = LARP_Group::loadByIds($groupId, $larpId);
-    $larp_group->StartingMoney = $value;
+    if ($isEnd) $larp_group->EndingMoney = $value;
+    else $larp_group->StartingMoney = $value;
     $larp_group->update();
 }
 
