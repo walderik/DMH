@@ -236,7 +236,7 @@ line-height: 1.8;
     		                echo  $group->getViewLink();        		                
     		            }
     		            else {
-    		                echo $group->getEditLinkPen(false);
+    		                echo $group->getViewLink() . " " . $group->getEditLinkPen(false);
     		                
     		                 if($group->isNeverRegistered()) {
     		                     echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
