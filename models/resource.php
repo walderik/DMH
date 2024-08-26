@@ -193,4 +193,36 @@ class Resource extends BaseModel{
         return $countForUpgrade;
     }
     
+    public function mayDelete() {
+        //Kolla om den används för producerar / behöver / behöver för uppgradering
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_resource_titledeed WHERE ResourceId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+         //Kolla om den används för normalt behöver        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_resource_titledeed_normally_requires WHERE ResourceId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        //Kolla om den används för normalt producerar
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_resource_titledeed_normally_produces WHERE ResourceId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        //Kolla om den används i resultat
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_titledeedresult_upgrade WHERE ResourceId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        return true;
+    }
+    
+    public static function delete($id) {
+        $resource = Resource::loadById($id);
+         if (!$resource->mayDelete()) return;
+        
+        $imageId = $resource->ImageId;
+        
+        parent::delete($id);
+        
+        if (isset($imageId)) Image::delete($imageId);
+    }
+    
+    
 }

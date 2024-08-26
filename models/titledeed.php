@@ -472,7 +472,7 @@ class Titledeed extends BaseModel{
         
     }
     
-    public function mayRemove() {
+    public function mayDelete() {
         //Finns det roller som ägare
         $sql = "SELECT COUNT(*) AS Num FROM regsys_titledeed_role WHERE TitledeedId=?";
         if (static::existsQuery($sql, array($this->Id))) return false;

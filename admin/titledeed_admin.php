@@ -149,7 +149,7 @@ th {
                 echo "<td>".$titledeed->calculateResult()." $currency</td>";
                 
                 echo "<td>";
-                if ($titledeed->mayRemove())
+                if ($titledeed->mayDelete())
                     echo "<a href='titledeed_admin.php?operation=delete&id=" . $titledeed->Id . "'><i class='fa-solid fa-trash'></i>";
                 echo "</td>\n";
                 echo "</tr>\n";

@@ -167,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $intrigue=$intriguePdf->getIntrigue();
         Intrigue_Pdf::delete($intriguePdf->Id);
     } elseif (($operation == "delete")) {
-        if ($intrigue->mayRemove()) Intrigue::delete($intrigue->Id);
+        if (isset($intrigue)) Intrigue::delete($intrigue->Id);
         header('Location: ../intrigue_admin.php');
         exit;
     }

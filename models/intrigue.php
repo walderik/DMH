@@ -673,7 +673,7 @@ class Intrigue extends BaseModel{
         return Vision::getAllForIntrigue($this);
     }
     
-    public function mayRemove() {
+    public function mayDelete() {
         //Kolla om det finns något kopplat till intrigen
         $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_telegram WHERE IntrigueId=?";
         if (static::existsQuery($sql, array($this->Id))) return false;
@@ -710,6 +710,9 @@ class Intrigue extends BaseModel{
     public static function delete($id)
     {
         $intrigue = static::loadById($id);
+        
+        if (!$intrigue->mayDelete()) return;
+        
         $intrigue->deleteAllIntrigueTypes();
         
         parent::delete($id);

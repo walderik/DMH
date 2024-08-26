@@ -16,6 +16,8 @@ include 'navigation.php';
     <div class="content">
         <h1>Resurser <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till handel"></i></a></h1>
             <a href="resource_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  
+            <p>Resurser går bara att radera om de inte används av någon verksamhet. 
+            Det inkluderar normalt producerar / behöver och vad det producerar / behöver / behöver för uppgradering, samt inmatade resultat på specifika lajv.</p>
         
        <?php
     
@@ -41,7 +43,9 @@ include 'navigation.php';
                 }
                 
                 echo "<td>" . "<a href='resource_form.php?operation=update&Id=" . $resource->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='resource_admin.php?operation=delete&Id=" . $resource->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>";
+                if ($resource->mayDelete()) echo "<a href='resource_admin.php?operation=delete&Id=" . $resource->Id . "'><i class='fa-solid fa-trash'></i>";
+                echo "</td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
