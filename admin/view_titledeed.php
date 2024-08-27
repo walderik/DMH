@@ -122,6 +122,7 @@ $titledeed = Titledeed::loadById($_GET['id']);
 				
 				?>
 				</td>
+				<td>Värde: <?php  echo $titledeed->calculateProduces()." ".$currency?></td>
 			</tr>
 			<tr>
 
@@ -131,6 +132,7 @@ $titledeed = Titledeed::loadById($_GET['id']);
 				echo $titledeed->RequiresString(); 
 				echo " <a href='resource_titledeed_form.php?Id=$titledeed->Id'><i class='fa-solid fa-pen' title='Ändra'></i></a><br>";
 				?></td>
+				<td>Värde: <?php  echo abs($titledeed->calculateNeeds())." ".$currency?></td>
 			</tr>
 			<tr>
 
