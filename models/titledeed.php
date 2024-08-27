@@ -424,7 +424,7 @@ class Titledeed extends BaseModel{
     public function moneySum(LARP $larp) {
         if (is_null($larp)) return 0;
         $sql = "SELECT Sum(regsys_titledeed.Money) as Num FROM regsys_titledeed WHERE ".
-            "regsys_titledeed.CampaignId = ?";
+            "regsys_titledeed.CampaignId = ? AND IsInUse=1";
         $count = static::countQuery($sql, array($larp->CampaignId));
         if (isset($count)) return $count;
         return 0;
@@ -434,7 +434,7 @@ class Titledeed extends BaseModel{
     public function moneySumUpgrade(LARP $larp) {
         if (is_null($larp)) return 0;
         $sql = "SELECT Sum(regsys_titledeed.MoneyForUpgrade) as Num FROM regsys_titledeed WHERE ".
-            "regsys_titledeed.CampaignId = ?";
+            "regsys_titledeed.CampaignId = ?  AND IsInUse = 1";
         $count = static::countQuery($sql, array($larp->CampaignId));
         if (isset($count)) return $count;
         return 0;
