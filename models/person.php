@@ -596,7 +596,16 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
     
-    
+     public static function getAllWithAllergyComment(LARP $larp) {
+         if (is_null($larp)) return Array();
+         
+         $sql="SELECT * FROM regsys_person WHERE id IN ".
+             "(SELECT PersonId from regsys_registration WHERE LarpId =? AND NotComing = 0 AND PersonId NOT IN ".
+             "(SELECT PersonId FROM regsys_normalallergytype_person)) AND FoodAllergiesOther !='' ".
+             "ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+     }
+     
     
     public static function getAllOfficials(LARP $larp) { 
         if (is_null($larp)) return Array();
