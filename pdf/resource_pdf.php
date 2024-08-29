@@ -54,7 +54,7 @@ class RESOURCE_PDF extends PDF_MemImage {
         global $root;
         $is_dmh = false;
         $dmh_image = $root . '/images/resurs_bakgrund_dmh.jpeg';
-        if ($larp->getCampaign()->is_dmh())$is_dmh = true;
+        if ($larp->getCampaign()->is_dmh() && !$type == RESOURCE_PDF::Calligraphy)$is_dmh = true;
         
         if ($type == RESOURCE_PDF::Calligraphy) {
             $font = $this->calligraphyfonts[array_rand($this->calligraphyfonts, 1)];
@@ -226,7 +226,9 @@ class RESOURCE_PDF extends PDF_MemImage {
                     $this->SetFont($font,'',$size);
                     $slen = $this->GetStringWidth($txt,0);
                 }
-                $this->SetXY($squareX + $rut_width - 3 - $slen, ($rut_height+4) + $squareY-2);
+                if ($is_dmh) $this->SetXY($squareX + $rut_width - 3 - $slen, ($rut_height+4) + $squareY-2);
+                else $this->SetXY($squareX + $rut_width - 1 - $slen, ($rut_height+4) + $squareY);
+                
                 $this->Cell($rut_width,10,encode_utf_to_iso($txt),0,1,'L');
                 
                 
