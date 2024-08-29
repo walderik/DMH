@@ -30,7 +30,7 @@ $bookkeeping = Bookkeeping::loadById($BookkeepingId);
 
 if (isset($_FILES["upload"])) {
     
-    $error = Image::maySave();
+    $error = Image::maySave(true);
     if (!isset($error)) {
  
         $id = Image::saveImage("Verifikation $bookkeeping->Number", true);
