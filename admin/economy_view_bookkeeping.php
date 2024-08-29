@@ -88,7 +88,7 @@ include 'navigation.php';
           if ($bookkeeping->hasImage()) {
                 $image = Image::loadById($bookkeeping->ImageId);
                 if ($image->file_mime == "application/pdf") {
-                    echo "</tr><tr><td>Kvitto</td><td><a href='view_pdf_receipt.php?id=$image->Id' target='_blank'>$image->file_name</a></td>";
+                    echo "</tr><tr><td>Kvitto</td><td><a href='view_pdf_receipt.php?id=$image->Id' target='_blank'>$image->file_name</a> <a href='logic/delete_image.php?id=$bookkeeping->Id&type=bookkeeping'><i class='fa-solid fa-trash'></i></a></td>";
                     
                 } else {
                     echo "<td rowspan='20' valign='top'>";
