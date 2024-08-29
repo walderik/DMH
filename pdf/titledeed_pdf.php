@@ -100,8 +100,17 @@ class TITLEDEED_PDF extends FPDF {
         }
         $this->SetXY($left2, $y+1);
         $this->MultiCell(0,8,encode_utf_to_iso($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
-
-        $y += 14;
+        $y += 7;
+        if (!empty($titledeed->Dividend)) {
+            $this->SetXY($left, $y);
+            $this->Cell(80,7,encode_utf_to_iso('Utdelning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+            $this->SetXY($left2, $y);
+            $this->MultiCell(0, 7, encode_utf_to_iso($titledeed->Dividend), 0, 'L');
+            $y = $this->GetY();
+        }
+        
+        
+        $y += 7;
         $this->SetXY($left, $y);
         $this->Cell(80,7,encode_utf_to_iso('Tillgångar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);

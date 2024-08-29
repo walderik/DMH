@@ -118,6 +118,11 @@ include_once 'header.php';
     			</td>
 			</tr>
 			<tr>
+				<td><label for="Type">Utdelning</label> <small>(pengar eller förmån till ägarna)</small></td>
+				<td><input type="text" id="Dividend" name="Dividend" value="<?php echo htmlspecialchars($titledeed->Dividend); ?>" size="100" maxlength="250"></td>
+			</tr>
+			
+			<tr>
 
 				<td><label for="Produces">Tillgångar (normalt)</label></td>
 				<td><?php selectionByArray('Produces', $resources, true, false, $titledeed->getSelectedProducesResourcesIds()) ?>

@@ -97,6 +97,10 @@ $titledeed = Titledeed::loadById($_GET['id']);
                 ?>
                 </td>
             </tr>
+			<tr>
+				<td><label for="Type">Utdelning</label> <small>(pengar eller förmån till ägarna)</small></td>
+				<td><?php echo htmlspecialchars($titledeed->Dividend); ?></td>
+			</tr>
                 
 			<tr>
 

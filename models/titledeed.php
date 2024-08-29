@@ -17,6 +17,7 @@ class Titledeed extends BaseModel{
     public $Type;
     public $Size;
     public $IsInUse = 1;
+    public $Dividend;
     public $TitledeedPlaceId;
     
     
@@ -46,6 +47,7 @@ class Titledeed extends BaseModel{
         if (isset($arr['Type'])) $this->Type = $arr['Type'];
         if (isset($arr['Size'])) $this->Size = $arr['Size'];
         if (isset($arr['IsInUse'])) $this->IsInUse = $arr['IsInUse'];
+        if (isset($arr['Dividend'])) $this->Dividend = $arr['Dividend'];
         if (isset($arr['TitledeedPlaceId'])) $this->TitledeedPlaceId = $arr['TitledeedPlaceId'];
         
         if (empty($this->Level)) $this->Level = null;
@@ -65,11 +67,11 @@ class Titledeed extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_titledeed SET Name=?, Location=?, Tradeable=?, IsTradingPost=?,
                   Level=?, CampaignId=?, Money=?, MoneyForUpgrade=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=?, 
-                  `Type`=?, Size=?, IsInUse=?, TitledeedPlaceId=? WHERE Id = ?;");
+                  `Type`=?, Size=?, IsInUse=?, TitledeedPlaceId=?, Dividend=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
             $this->Level, $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes, 
-            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId, $this->Id))) {
+            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId, $this->Dividend, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -81,11 +83,11 @@ class Titledeed extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_titledeed (Name, Location, Tradeable, IsTradingPost, 
-            Level, CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements, `Type`, Size, IsInUse, TitledeedPlaceId) VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?,?);");
+            Level, CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements, `Type`, Size, IsInUse, TitledeedPlaceId, Dividend) VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
             $this->Level, $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes,
-            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId))) {
+            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId, $this->Dividend))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
