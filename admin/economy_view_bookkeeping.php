@@ -93,6 +93,7 @@ include 'navigation.php';
                 } else {
                     echo "<td rowspan='20' valign='top'>";
                     echo "<img src='../includes/display_image.php?id=$bookkeeping->ImageId'/>\n";
+                    echo "<br><a href='logic/delete_image.php?id=$bookkeeping->Id&type=bookkeeping'>Ta bort bild</a></td>\n";
                     echo "</td>";
                 }
           }
