@@ -51,6 +51,11 @@ class RESOURCE_PDF extends PDF_MemImage {
     }
     
     function SetText(Titledeed $titledeed, $type, LARP $larp) {
+        global $root;
+        $is_dmh = false;
+        $dmh_image = $root . '/images/resurs_bakgrund_dmh.jpeg';
+        if ($larp->getCampaign()->is_dmh())$is_dmh = true;
+        
         if ($type == RESOURCE_PDF::Calligraphy) {
             $font = $this->calligraphyfonts[array_rand($this->calligraphyfonts, 1)];
         } else {
@@ -73,7 +78,18 @@ class RESOURCE_PDF extends PDF_MemImage {
         $width  = $this->GetPageWidth();
         
         $rut_width  = ($width  - 2*$this->margin) / 3;
-        $rut_height = ($height - 2*$this->margin) / 7;
+        if ($is_dmh) {
+            
+            list($image_width, $image_height) =  getimagesize($dmh_image);
+            $rut_height = round(($image_height / $image_width) * $rut_width);
+            
+            $max_y_nr = 5;
+        }
+        else {
+            $rut_height = ($height - 2*$this->margin) / 7;
+            $max_y_nr = 6;
+        }
+
         
         $max_image_width = 25;
         $max_image_height = 18;
@@ -87,7 +103,7 @@ class RESOURCE_PDF extends PDF_MemImage {
         # Rita rutor
         $x_nr = 0;
         $y_nr = 0;
-        $this->Line($this->margin, $this->margin+($rut_height), $width-$this->margin, $this->margin+($rut_height)); # Första Horisontell linje under
+        if (!$is_dmh) $this->Line($this->margin, $this->margin+($rut_height), $width-$this->margin, $this->margin+($rut_height)); # Första Horisontell linje under
         
         foreach ($resources as $resource_titledeed) {
             
@@ -100,6 +116,8 @@ class RESOURCE_PDF extends PDF_MemImage {
             for ($i = 0; $i < $resource_titledeed->Quantity; $i++){
                 $squareX = $this->margin+($x_nr * $rut_width);
                 $squareY = $y_nr * $rut_height;
+                
+                if ($is_dmh) $this->Image($dmh_image, $squareX, $squareY + $rut_height/4, $rut_width);
                 
 //                 # Rubriken
 //                 $this->SetFont('specialelite','',12);
@@ -140,7 +158,7 @@ class RESOURCE_PDF extends PDF_MemImage {
                 # Fix för font som alltid blir för stor
                 if ($font == 'simplyglamorous' || $font == 'cherish') $this->SetFont($font,'',$size-2);
                 
-                $this->SetXY($squareX, ($rut_height/2)-2 + $squareY);
+                $this->SetXY($squareX, ($rut_height/2)+2 + $squareY);
                 $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'C');
                 
                 # Undertext
@@ -161,7 +179,7 @@ class RESOURCE_PDF extends PDF_MemImage {
 
                     if ($titledeed->Tradeable && !$titledeed->IsTradingPost) {
                         $this->SetFont('specialelite','',11);
-                        $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
+                        $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY-1);
                         $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst("Från")),0,1,'L');
                         
                         $size=10;
@@ -169,12 +187,12 @@ class RESOURCE_PDF extends PDF_MemImage {
                         
                         $txt = $titledeed->Name;
                         $slen = $this->GetStringWidth($txt,0);
-                        while ($slen > $rut_width-3) {
+                        while ($slen > $rut_width-7) {
                             $size -= 1;
                             $this->SetFont('specialelite','',$size);
                             $slen = $this->GetStringWidth($txt,0);
                         }
-                        $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
+                        $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY-2);
                         $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($titledeed->Name)),0,1,'L');
                     }
                 } elseif ($type == RESOURCE_PDF::Calligraphy) {
@@ -208,7 +226,7 @@ class RESOURCE_PDF extends PDF_MemImage {
                     $this->SetFont($font,'',$size);
                     $slen = $this->GetStringWidth($txt,0);
                 }
-                $this->SetXY($squareX + $rut_width - 1 - $slen, ($rut_height+4) + $squareY);
+                $this->SetXY($squareX + $rut_width - 3 - $slen, ($rut_height+4) + $squareY-2);
                 $this->Cell($rut_width,10,encode_utf_to_iso($txt),0,1,'L');
                 
                 
@@ -218,17 +236,17 @@ class RESOURCE_PDF extends PDF_MemImage {
                     # Ny rad
                     $x_nr = 0;
                     $y_nr += 1;
-                    $this->Line($this->margin, $this->margin+(($y_nr+1)*$rut_height), $width-$this->margin, $this->margin+(($y_nr+1)*$rut_height)); # Horisontell linje under
+                    if(!$is_dmh) $this->Line($this->margin, $this->margin+(($y_nr+1)*$rut_height), $width-$this->margin, $this->margin+(($y_nr+1)*$rut_height)); # Horisontell linje under
                 } elseif ($x_nr < 3 ) {
                     # Dra vertikal linje i slutet av rutan
-                    $this->Line($this->margin+(($x_nr)*$rut_width), $this->margin+(($y_nr)*$rut_height), $this->margin+(($x_nr)*$rut_width), $this->margin+(($y_nr+1)*$rut_height));
+                    if(!$is_dmh) $this->Line($this->margin+(($x_nr)*$rut_width), $this->margin+(($y_nr)*$rut_height), $this->margin+(($x_nr)*$rut_width), $this->margin+(($y_nr+1)*$rut_height));
                     
                 }
-                if ($y_nr > 6) {
+                if ($y_nr > $max_y_nr) {
                     $this->AddPage();
                     $x_nr = 0;
                     $y_nr = 0;
-                    $this->Line($this->margin, $this->margin+($rut_height), $width-$this->margin, $this->margin+($rut_height)); # Första Horisontell linje under
+                    if(!$is_dmh) $this->Line($this->margin, $this->margin+($rut_height), $width-$this->margin, $this->margin+($rut_height)); # Första Horisontell linje under
                 }
             }
         }
