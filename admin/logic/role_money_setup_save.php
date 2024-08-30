@@ -12,9 +12,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (Wealth::isInUse($current_larp)) {
         $wealths = Wealth::allActive($current_larp);
         $wealth_values = array();
+        $new_wealth_values = array();
         foreach ($wealths as $wealth) {
             $key = "wealth_".$wealth->Id;
             $wealth_values[$wealth->Id] = $_POST[$key];
+            $new_wealth_values[$wealth->Id] = $_POST["new_".$key];
         }
     }
     if (isset($_POST['larp'])) $larpId = $_POST['larp'];
@@ -42,10 +44,14 @@ foreach ($roles as $role) {
     if (($which_roles_effect == "notset") && isset($larp_role->StartingMoney)) {
         continue;
     }
+    echo "Checking $role->Name<br>";
     
     $sum = 0;
+    $isset = false;
     if (Wealth::isInUse($current_larp))  {
-        if (isset($role->WealthId)) $sum += $wealth_values[$role->WealthId];
+        if (isset($role->WealthId)) {
+            $sum += $wealth_values[$role->WealthId];
+        }
     }
     
     if (isset($larpId)) {
@@ -53,16 +59,20 @@ foreach ($roles as $role) {
         if (isset($old_larp_role)) {
             $percent = rand($percent_min, $percent_max);
             $sum += $old_larp_role->EndingMoney * $percent / 100;
+            $isset = true;
+        } elseif (isset($role->WealthId)) {
+            $sum += $new_wealth_values[$role->WealthId];
         }
     }
     
     $sum += rand($fixed_sum_min, $fixed_sum_max);
-       
+    if ($fixed_sum_min > 0 && $fixed_sum_max > 0) $isset = true;
     //Sätt inget om värdet är 0
-    if ($sum == 0) continue;
-    
-    $larp_role->StartingMoney = $sum;
-    $larp_role->update();
+    if ($isset || $sum > 0) {
+        echo "$role->Name $sum<br>";
+        $larp_role->StartingMoney = $sum;
+        $larp_role->update();
+    }
 }
 
 

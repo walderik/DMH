@@ -85,6 +85,20 @@ $larps_in_campaign=LARP::getPreviousLarpsInCampaign($current_larp);
 				<label for="percent_max">Max % av resultatet</label>&nbsp;<font style="color:red">*</font>
 				<br> <input type="number" id="percent_max" name="percent_max" value="0" min="0" required>
 			</div>
+	     Karaktärer som inte var med på lajvet ska ha summa utifrån rikedomsnivå:
+            	<?php 
+            	$wealths = Wealth::allActive($current_larp);
+            	foreach ($wealths as $wealth) {
+            	    echo "<div class='question'>";
+            	    echo "<label for='new_wealth_$wealth->Id'>$wealth->Name</label>&nbsp;<font style='color:red'>*</font>";
+            	    echo "<br>";
+            	    echo "<input type='number' id='new_wealth_$wealth->Id' name='new_wealth_$wealth->Id' value='0' min='0' required> $currency";
+            	    echo "</div>";
+            	}
+
+        	
+        	?>
+			
 			
         <h2>Fast summa</h2>
         <p>Hur mycket extra pengar ska varje karaktär få.<br>
