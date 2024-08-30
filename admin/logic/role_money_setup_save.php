@@ -44,7 +44,6 @@ foreach ($roles as $role) {
     if (($which_roles_effect == "notset") && isset($larp_role->StartingMoney)) {
         continue;
     }
-    echo "Checking $role->Name<br>";
     
     $sum = 0;
     $isset = false;
@@ -69,7 +68,6 @@ foreach ($roles as $role) {
     if ($fixed_sum_min > 0 && $fixed_sum_max > 0) $isset = true;
     //Sätt inget om värdet är 0
     if ($isset || $sum > 0) {
-        echo "$role->Name $sum<br>";
         $larp_role->StartingMoney = $sum;
         $larp_role->update();
     }
