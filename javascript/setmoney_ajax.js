@@ -15,7 +15,7 @@ function setMoneyEnd(selectObject, larpId) {
   var roleId = selectObject.id;
 
   var callString = "../ajax/setmoney.php?roleId=" + roleId + "&" + "value=" + value + "&" + "larpId=" + larpId + "&" + "isEnd=" + 1; 
-
+  alert (callString);
   var xmlhttp = new XMLHttpRequest();
 
   xmlhttp.open("GET", callString, true);

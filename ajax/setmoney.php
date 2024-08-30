@@ -10,7 +10,7 @@ $isEnd = false;
 if (isset($_REQUEST["isEnd"])) $isEnd = true;
 
 
-if ((empty($roleId) && empty($groupId))|| empty($value) || empty($larpId)) {
+if ((empty($roleId) && empty($groupId))|| !isset($value) || empty($larpId)) {
     echo "Värde saknas";
     return;
 }
