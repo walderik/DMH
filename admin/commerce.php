@@ -23,6 +23,7 @@ include 'navigation.php';
         <br>
         <a href="roles_money.php">Pengar till karaktärer i början på lajvet</a><br>
         <a href="groups_money.php">Pengar till grupper i början på lajvet</a><br>
+        <a href="titledeed_dividend.php">Utdelning på verksamheter</a><br>
         <br>
 
         <a href="logic/all_titledeeds_dmh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Maskinskrivna)</a><br>
