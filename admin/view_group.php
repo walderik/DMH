@@ -492,6 +492,13 @@ include 'navigation.php';
 		        $previous_larp_group = LARP_Group::loadByIds($current_group->Id, $prevoius_larp->Id);
 		        echo "<div class='border'>";
 		        echo "<h3>$prevoius_larp->Name</h3>";
+		        if (isset($previous_larp_group->StartingMoney)) {
+		            echo "Började med $previous_larp_group->StartingMoney $currency";
+		            if (isset($previous_larp_group->EndingMoney)) echo ", slutade med $previous_larp_group->EndingMoney $currency.";
+		            echo "<br>";
+		        }
+		        
+		        
 		        if (!empty($previous_larp_group->Intrigue)) {
     		        echo "<strong>Intrig</strong><br>";
     		        echo "<p>".nl2br($previous_larp_group->Intrigue)."</p>";
