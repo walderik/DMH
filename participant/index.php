@@ -247,7 +247,7 @@ line-height: 1.8;
     		            if ($group->hasImage()) {
     		                echo "<td>";
     		                echo "<img width='30' src='../includes/display_image.php?id=$group->ImageId'/>\n";
-    		                echo " <a href='logic/delete_image.php?id=$group->Id&type=group'>Ta bort bild</a></td>\n";
+    		                echo " <a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$group->Id&type=group'>Ta bort bild</a></td>\n";
     		            }
     		            else {
     		                echo "<td><a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
@@ -280,7 +280,7 @@ line-height: 1.8;
         		                echo "<img width='100' src='../includes/display_image.php?id=$role->ImageId'/ >\n";
         		                echo "</a>";
         		                echo "<br>";
-        		                echo "<a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i>  Ta bort bild</a>\n";
+        		                echo "<a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i>  Ta bort bild</a>\n";
         		            }
         		            else {
         		                echo "<img width='100' src='../images/man-shape.png' / >\n";
