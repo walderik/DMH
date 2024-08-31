@@ -264,6 +264,15 @@ class LARP extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, null);
     }
     
+    public static function currentParticipatingLARPs(User $user) {
+        $sql = "SELECT * FROM regsys_larp WHERE StartDate <= CURDATE() AND EndDate >= CURDATE() AND Id IN ".
+            "(SELECT regsys_registration.LarpId FROM regsys_registration, regsys_person WHERE ".
+            "regsys_person.UserId = ? AND ".
+            "regsys_person.Id = regsys_registration.PersonId) ".
+        "ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($user->Id));
+    }
+    
     
     public static function allFutureOpenLARPs() {
         $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND RegistrationOpen=1 ORDER BY ".static::$orderListBy.";";
