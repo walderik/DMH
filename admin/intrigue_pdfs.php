@@ -5,7 +5,7 @@ include 'navigation.php';
 ?>
 <div class="content">   
     <h1>PDF'er i intriger</h1>
-    
+    <p>Antalet är också till stöd för att veta hur många man behöver skriva ut ifall man vill dela ut dem till alla som känner till dem.
    <?php 
    $intrigue_pdfs = Intrigue_Pdf::getAllByLarp($current_larp);
    
@@ -30,7 +30,7 @@ include 'navigation.php';
        }
        echo "</td>";
        echo "<td>";
-       echo count($intrigue_pdf->getAllKnownPdfs());
+       echo count($intrigue_pdf->getAllPersonsWhoKnowsPdf());
        echo "</td>";
        echo "</tr>";
    }
