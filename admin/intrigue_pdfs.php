@@ -30,7 +30,9 @@ include 'navigation.php';
        }
        echo "</td>";
        echo "<td>";
-       echo count($intrigue_pdf->getAllPersonsWhoKnowsPdf());
+       echo count($intrigue_pdf->getAllPersonsWhoKnowsPdf()). " personer";
+       $groups = $intrigue_pdf->getAllGroupsWhoKnowsPdf();
+       if (!empty($groups)) echo " och " .count($groups)." grupper";
        echo "</td>";
        echo "</tr>";
    }

@@ -113,6 +113,17 @@ class Intrigue_Pdf extends BaseModel{
         return array_unique(array_merge($knowsDirectly, $knowsThroughSubdivision), SORT_REGULAR);
             
     }
+
+    public function getAllGroupsWhoKnowsPdf() {
+        $sql = "SELECT * FROM regsys_group WHERE Id IN ".
+            "(SELECT regsys_intrigueactor.GroupId FROM regsys_intrigueactor, regsys_intrigue_pdf, regsys_intrigueactor_knownpdf WHERE ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownpdf.IntriguePdfId = ?) ".
+            "ORDER BY Id";
+        return Group::getSeveralObjectsqQuery($sql, array($this->Id));
+        
+    }
+    
     
     public function mayView(User $user) {
         
