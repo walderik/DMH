@@ -402,9 +402,9 @@ line-height: 1.8;
         		            if (!empty($subdivisions)) {
         		                $subdivisionLinks = array();
         		                foreach ($subdivisions as $subdivision) {
-        		                    $subdivisionLinks[] = "<a href='view_subdivision.php?id=$subdivision->Id'>$subdivision->Name</a>";
+        		                    if ($subdivision->isVisibleToParticipants()) $subdivisionLinks[] = "<a href='view_subdivision.php?id=$subdivision->Id'>$subdivision->Name</a>";
         		                }
-        		                echo "Medlem i ".implode(", ", $subdivisionLinks)."<br>";
+        		                if (!empty($subdivisionLinks)) echo implode(", ", $subdivisionLinks)."<br>";
         		            }
         		            
         		            
