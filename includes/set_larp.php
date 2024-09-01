@@ -1,5 +1,9 @@
 <?php
 
+global $root, $current_user;
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+include_once $root . '/includes/all_includes.php';
+
 session_start([
     'cookie_lifetime' => 86400,
 ]);
@@ -21,5 +25,8 @@ if ( !isset($larp) ) {
 
 $_SESSION['larp'] = $larp;
 
-if (isset($_SESSION['admin']) || AccessControl::hasAccessLarp($current_user, $larp)) header('Location: ../admin/index.php');
+$current_user = User::loadById($_SESSION['id']);
+$current_larp = LARP::loadById($_SESSION['larp']);
+
+if (AccessControl::hasAccessLarp($current_user, $current_larp) || isset($_SESSION['admin'])) header('Location: ../admin/index.php');
 else header('Location: ../participant/index.php');
