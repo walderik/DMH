@@ -16,6 +16,7 @@ include 'navigation.php';
         <a href='character_sheet.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla karaktärer som det ser ut för deltagarna(tar tid att generera)'></i> Alla karaktärer som det ser ut för deltagarna</a><br>
         <a href='group_sheet.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla grupper som det ser ut för deltagarna (tar tid att generera)'></i> Alla grupper som det ser ut för deltagarna</a><br>
         <a href="reports/checkin_packages.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Allt som alla huvudkaraktärer och gruper ska ha vid lajvstart</a><br>
+        <a href="reports/role_person.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla huvudkaraktärer och vem som spelar dem + plats för kommentar</a><br>
         </div>
     <h3>Intriger</h3>
 		<div class='linklist'>
