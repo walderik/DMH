@@ -42,7 +42,7 @@ foreach ($roles as $role) {
     $titlededsArr = array();
     $titledeeds = Titledeed::getAllForRole($role);
     foreach ($titledeeds as $titledeed) {
-        if ($titledeed->IsFirstOwnerRole($role)) {
+        if ($titledeed->isInUse() && $titledeed->IsFirstOwnerRole($role)) {
            $titlededsArr[] = "  $titledeed->Name";
         }
     }
@@ -150,7 +150,7 @@ foreach ($roles as $role) {
     $titlededsArr = array();
     $titledeeds = Titledeed::getAllForRole($role);
     foreach ($titledeeds as $titledeed) {
-        if ($titledeed->IsFirstOwnerRole($role)) {
+        if ($titledeed->isInUse() && $titledeed->IsFirstOwnerRole($role)) {
             $titlededsArr[] = "  $titledeed->Name";
         }
     }
