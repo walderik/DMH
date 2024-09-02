@@ -28,7 +28,7 @@ $rows = array();
 $header = array("Karaktär", "Deltagare", "");
 
 foreach ($roles as $role) {
-    $rows[] = array($role->Name, $role->getPerson()->Name,"                                                                                  ");
+    $rows[] = array($role->Name, $role->getPerson()->Name,"                                           ");
 }
 // add a page
 $pdf->AddPage();

@@ -232,7 +232,7 @@ foreach ($roles as $role) {
     //Props
     $props_txt_Arr = array();
     foreach($checkin_props as $checkin_prop) $props_txt_Arr[] = $checkin_prop->getIntrigueProp()->getProp()->Name;
-    if (!empty($props_txt_Arr)) $package .= "Rekvisita: ". implode(", ", $props_txt_Arr);
+    if (!empty($props_txt_Arr)) $package .= "Rekvisita: ". implode(", ", array_unique($props_txt_Arr));
     
     if (!empty($package)) $rows[] = array($role->Name." (S)", $package);
 }
