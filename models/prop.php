@@ -127,7 +127,22 @@ class Prop extends BaseModel{
             "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
             "regsys_intrigue.LarpId = ?".
             ")  ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+        
+        $propsForPerson = static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+        
+        
+        $sql = "SELECT * FROM regsys_prop WHERE Id IN (".
+            "SELECT PropId FROM regsys_intrigueactor_checkinprop, regsys_intrigue_prop, regsys_intrigueactor, regsys_intrigue, regsys_subdivisionmember, regsys_role WHERE ".
+            "regsys_intrigue_prop.Id = regsys_intrigueactor_checkinprop.IntriguePropId AND ".
+            "regsys_intrigueactor_checkinprop.IntrigueActorId = regsys_intrigueactor.Id AND ".
+            "regsys_intrigueactor.SubdivisionId = regsys_subdivisionmember.SubdivisionId AND ".
+            "regsys_subdivisionmember.RoleId = regsys_role.Id AND ".
+            "regsys_role.PersonId = ? AND ".
+            "regsys_intrigueactor.IntrigueId = regsys_intrigue.Id AND ".
+            "regsys_intrigue.LarpId = ?".
+            ")  ORDER BY ".static::$orderListBy.";";
+        $propsForSubdivision = static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+        return array_merge($propsForPerson, $propsForSubdivision);
         
     }
 

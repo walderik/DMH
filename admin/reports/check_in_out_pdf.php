@@ -33,6 +33,8 @@ if ($variant == 1) {
     $header = array("Namn", "Incheck", "Utcheck", "Kommentar                              ");
     foreach ($persons as $person) {
         $props = Prop::getCheckinPropsForPerson($person, $current_larp);
+        
+        //TODO få med brev och telegram till grupperingar om personen har en roll som är första roll i grupperingen
         $letters = Letter::getCheckinLettersForPerson($person, $current_larp);
         $telegrams = Telegram::getCheckinTelegramsForPerson($person, $current_larp);
     
