@@ -235,8 +235,8 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 }
             }
             
-            $known_groups = array_merge($known_groups,$subdivision->getAllKnownGroups($this->larp));
-            $known_roles = array_merge($known_roles,$subdivision->getAllKnownRoles($this->larp));
+            $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($this->larp)), SORT_REGULAR);
+            $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($this->larp)), SORT_REGULAR);
             
             $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($this->larp));
             $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($this->larp));
