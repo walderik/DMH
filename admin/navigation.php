@@ -23,7 +23,7 @@ function changePart() {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">    
     <link href="../css/navigation_admin.css" rel="stylesheet" type="text/css">
 	<link href="../css/style.css" rel="stylesheet" type="text/css">
 	<link href="../css/gallery.css" rel="stylesheet" type="text/css">
