@@ -674,7 +674,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         }
     }
     
-    function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false) {
+    function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false, $no_history = false) {
         global $current_user, $x, $y, $left, $left2, $mitten;
         $space = 3;
         
@@ -750,11 +750,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $this->rumours(false);
         }
         
-        $this->history();
+        if (!$no_history) $this->history();
         
 	}
 	
-	function all_character_sheets(LARP $larp_in, bool $bara_intrig, ?bool $all_info=true) {
+
+	function all_character_sheets(LARP $larp_in, bool $bara_intrig, ?bool $all_info=true, ?bool $only_main=false,?bool $no_history = false) {
 	    $this->larp = $larp_in;
 
 	    $roles = $this->larp->getAllMainRoles(false);
@@ -762,16 +763,18 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	        if ($bara_intrig) {
                 $this->intrigue_info($role, $larp_in);
 	        } else {
-	            $this->new_character_sheet($role, $larp_in, $all_info);
+	            $this->new_character_sheet($role, $larp_in, $all_info, $no_history);
 	        }
 	    }
-	    $roles = $this->larp->getAllNotMainRoles(false);
-	    foreach($roles as $role) {
-	        if ($bara_intrig) {
-	           $this->intrigue_info($role, $larp_in);
-	        } else {
-	            $this->new_character_sheet($role, $larp_in, $all_info);
-	        }
+	    if (!$only_main) {
+    	    $roles = $this->larp->getAllNotMainRoles(false);
+    	    foreach($roles as $role) {
+    	        if ($bara_intrig) {
+    	           $this->intrigue_info($role, $larp_in);
+    	        } else {
+    	            $this->new_character_sheet($role, $larp_in, $all_info, $no_history);
+    	        }
+    	    }
 	    }
 	}
 
