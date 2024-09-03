@@ -134,7 +134,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         return true;
     }
     
-    function intrigues($new_page = true) {
+    function intrigues($new_page = true, $start_line= true) {
         global $y, $left, $lovest_y;
         
         $space = 3;
@@ -167,7 +167,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         if ($new_page) $this->AddPage();
         else {
             $y = $this->GetY()+$space*1;
-            $this->bar();
+            if ($start_line) $this->bar();
             $y = $this->GetY()+$space*3;
         }
         $this->SetXY($left, $y);
@@ -665,11 +665,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->bar();
         
+        
         $y += 3;
 
         
         if (!$this->isMyslajvare && !$this->isReserve) {
-            $this->intrigues(false);
+            $this->intrigues(false, false);
             $this->rumours(false);
         }
     }
@@ -746,7 +747,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->subdivision_info();
         
         if (!$this->isMyslajvare && !$this->isReserve && ($this->larp->isIntriguesReleased() || $this->all)) {
-            $this->intrigues(false);
+            $this->intrigues(false, true);
             $this->rumours(false);
         }
         
