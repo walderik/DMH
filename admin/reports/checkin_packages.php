@@ -20,8 +20,16 @@ $pdf = new Report_TCP_PDF();
 $pdf->init($current_user->Name, $name, $current_larp->Name, false);
 
 
+function cmp($a, $b)
+{
+    if ($a->Name == $b->Name) {
+        return 0;
+    }
+    return ($a->Name < $b->Name) ? -1 : 1;
+}
 
 $roles = Role::getAllMainRoles($current_larp, false);
+usort($roles, "cmp");
 $currency = $current_larp->getCampaign()->Currency;
 $rows = array();
 $header = array("Namn", "Ska ha                                                                                                                        ");
@@ -132,6 +140,7 @@ foreach ($roles as $role) {
 
 //Sidokaraktärer
 $roles = Role::getAllNotMainRoles($current_larp, false);
+usort($roles, "cmp");
 
 $currency = $current_larp->getCampaign()->Currency;
 foreach ($roles as $role) {
