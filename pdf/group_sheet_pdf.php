@@ -342,7 +342,7 @@ class Group_PDF extends PDF_MemImage {
     }
     
     
-    function new_group_sheet(Group $group_in, LARP $larp_in, bool $all_in=false) {
+    function new_group_sheet(Group $group_in, LARP $larp_in, bool $all_in=false, ?bool $no_history=false) {
         global $x, $y, $left, $left2, $mitten;
         $space = 3;
         
@@ -395,55 +395,36 @@ class Group_PDF extends PDF_MemImage {
         
         $this->beskrivning();
         
-   
+        if ($this->larp->isIntriguesReleased() || $this->all) {
+            $this->intrigues();
+            $this->rumours();
+        }
+        
+        
 
 
-        # Det nedan löser vi med tiden. Just nu et jag inte hur det är tänkt fungera
-
-        $previous_larps = $this->group->getPreviousLarps();
-        if (isset($previous_larps) && count($previous_larps) > 0) {
-            
-            
-            foreach ($previous_larps as $prevoius_larp) {
-                $this->AddPage();
-                
-                $previous_larp_group = LARP_Group::loadByIds($this->group->Id, $prevoius_larp->Id);
-
-                $this->title($left, "Historik $prevoius_larp->Name");
-                $this->names($left, $left2);
-                $y += $this->cell_y_space;
-                $this->bar();
-                
-                $y += 3;
+        if (!$no_history) {
+        
+            $previous_larps = $this->group->getPreviousLarps();
+            if (isset($previous_larps) && count($previous_larps) > 0) {
                 
                 
-                
-                
-                if (!empty($previous_larp_group->Intrigue)) {
-                    $this->current_left = $left;
-                    $this->SetXY($this->current_left, $y);
-                    $this->SetFont('Helvetica','B',static::$text_fontsize);
-                    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intrig'),0,0,'L');
+                foreach ($previous_larps as $prevoius_larp) {
+                    $this->AddPage();
                     
-                    $y = $this->GetY() + $space*3;
-                    $this->SetXY($this->current_left, $y);
-                    $this->SetFont('Helvetica','',static::$text_fontsize);
-                    
-                    
-                    $text = trim(encode_utf_to_iso($previous_larp_group->Intrigue));
-                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                    $y = $this->GetY() + $space;
-                    $this->SetXY($left, $y);
-                
+                    $previous_larp_group = LARP_Group::loadByIds($this->group->Id, $prevoius_larp->Id);
+    
+                    $this->title($left, "Historik $prevoius_larp->Name");
+                    $this->names($left, $left2);
+                    $y += $this->cell_y_space;
                     $this->bar();
+                    
                     $y += 3;
-                }
-                
-                $intrigues = Intrigue::getAllIntriguesForGroup($this->group->Id, $prevoius_larp->Id);
-                foreach($intrigues as $intrigue) {
-                    $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this->group);
-                    if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
-                        
+                    
+                    
+                    
+                    
+                    if (!empty($previous_larp_group->Intrigue)) {
                         $this->current_left = $left;
                         $this->SetXY($this->current_left, $y);
                         $this->SetFont('Helvetica','B',static::$text_fontsize);
@@ -454,80 +435,100 @@ class Group_PDF extends PDF_MemImage {
                         $this->SetFont('Helvetica','',static::$text_fontsize);
                         
                         
-                        $text = trim(encode_utf_to_iso($intrigueActor->IntrigueText));
+                        $text = trim(encode_utf_to_iso($previous_larp_group->Intrigue));
                         $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                         $y = $this->GetY() + $space;
                         $this->SetXY($left, $y);
-                        
-                        
-                        
-                        $this->current_left = $left;
-                        $this->SetXY($this->current_left, $y);
-                        $this->SetFont('Helvetica','B',static::$text_fontsize);
-                        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Vad hände?'),0,0,'L');
-                        
-                        $y = $this->GetY() + $space*3;
-                        $this->SetXY($this->current_left, $y);
-                        $this->SetFont('Helvetica','',static::$text_fontsize);
-                        
-                        
-                        $text = (isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat";
-                        $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                        $y = $this->GetY() + $space;
-                        $this->SetXY($left, $y);
-                        
+                    
                         $this->bar();
                         $y += 3;
-                        
                     }
-                }
+                    
+                    $intrigues = Intrigue::getAllIntriguesForGroup($this->group->Id, $prevoius_larp->Id);
+                    foreach($intrigues as $intrigue) {
+                        $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this->group);
+                        if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
+                            
+                            $this->current_left = $left;
+                            $this->SetXY($this->current_left, $y);
+                            $this->SetFont('Helvetica','B',static::$text_fontsize);
+                            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intrig'),0,0,'L');
+                            
+                            $y = $this->GetY() + $space*3;
+                            $this->SetXY($this->current_left, $y);
+                            $this->SetFont('Helvetica','',static::$text_fontsize);
+                            
+                            
+                            $text = trim(encode_utf_to_iso($intrigueActor->IntrigueText));
+                            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                            $y = $this->GetY() + $space;
+                            $this->SetXY($left, $y);
+                            
+                            
+                            
+                            $this->current_left = $left;
+                            $this->SetXY($this->current_left, $y);
+                            $this->SetFont('Helvetica','B',static::$text_fontsize);
+                            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Vad hände?'),0,0,'L');
+                            
+                            $y = $this->GetY() + $space*3;
+                            $this->SetXY($this->current_left, $y);
+                            $this->SetFont('Helvetica','',static::$text_fontsize);
+                            
+                            
+                            $text = (isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat";
+                            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                            $y = $this->GetY() + $space;
+                            $this->SetXY($left, $y);
+                            
+                            $this->bar();
+                            $y += 3;
+                            
+                        }
+                    }
+                    
+                    
+                    $this->current_left = $left;
+                    $this->SetXY($this->current_left, $y);
+                    $this->SetFont('Helvetica','B',static::$text_fontsize);
+                    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för ".$this->group->Name."?"),0,0,'L');
+                    
+                    $y = $this->GetY() + $space*3;
+                    $this->SetXY($this->current_left, $y);
+                    $this->SetFont('Helvetica','',static::$text_fontsize);
+                    
+                    $text = (isset($previous_larp_group->WhatHappened) && $previous_larp_group->WhatHappened != "") ? $previous_larp_group->WhatHappened : "Inget rapporterat";
+                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                    $y = $this->GetY() + $space;
+                    $this->SetXY($left, $y);
+                    
+                    
+                    $this->current_left = $left;
+                    $this->SetXY($this->current_left, $y);
+                    $this->SetFont('Helvetica','B',static::$text_fontsize);
+                    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för andra?"),0,0,'L');
+                    
+                    $y = $this->GetY() + $space*3;
+                    $this->SetXY($this->current_left, $y);
+                    $this->SetFont('Helvetica','',static::$text_fontsize);
+                    
+                    $text = (isset($previous_larp_group->WhatHappendToOthers) && $previous_larp_group->WhatHappendToOthers != "") ? $previous_larp_group->WhatHappendToOthers : "Inget rapporterat";
+                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                    $y = $this->GetY() + $space;
+                    $this->SetXY($left, $y);
+                 }
                 
-                
-                $this->current_left = $left;
-                $this->SetXY($this->current_left, $y);
-                $this->SetFont('Helvetica','B',static::$text_fontsize);
-                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för ".$this->group->Name."?"),0,0,'L');
-                
-                $y = $this->GetY() + $space*3;
-                $this->SetXY($this->current_left, $y);
-                $this->SetFont('Helvetica','',static::$text_fontsize);
-                
-                $text = (isset($previous_larp_group->WhatHappened) && $previous_larp_group->WhatHappened != "") ? $previous_larp_group->WhatHappened : "Inget rapporterat";
-                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                $y = $this->GetY() + $space;
-                $this->SetXY($left, $y);
-                
-                
-                $this->current_left = $left;
-                $this->SetXY($this->current_left, $y);
-                $this->SetFont('Helvetica','B',static::$text_fontsize);
-                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad hände för andra?"),0,0,'L');
-                
-                $y = $this->GetY() + $space*3;
-                $this->SetXY($this->current_left, $y);
-                $this->SetFont('Helvetica','',static::$text_fontsize);
-                
-                $text = (isset($previous_larp_group->WhatHappendToOthers) && $previous_larp_group->WhatHappendToOthers != "") ? $previous_larp_group->WhatHappendToOthers : "Inget rapporterat";
-                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-                $y = $this->GetY() + $space;
-                $this->SetXY($left, $y);
-             }
-            
-        }
-       
-        if ($this->larp->isIntriguesReleased() || $this->all) {
-            $this->intrigues();
-            $this->rumours();
+            }
         }
         
 	}
 	
-	function all_group_sheets(LARP $larp_in, $all_info ) {
+	function all_group_sheets(LARP $larp_in, $all_info, $no_history) {
 	    $this->larp = $larp_in;
 
 	    $groups = Group::getAllRegistered($this->larp);
 	    foreach($groups as $group) {
-	        $this->new_group_sheet($group, $larp_in, $all_info);
+	        $this->new_group_sheet($group, $larp_in, $all_info, $no_history);
 	    }
 	}
 

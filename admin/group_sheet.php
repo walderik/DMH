@@ -14,6 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
+$no_history = false;
+
 if (isset($_GET['id'])) {
     $groupId = $_GET['id'];
     $group = Group::loadById($groupId);
@@ -24,6 +26,8 @@ if (isset($_GET['id'])) {
         header('Location: index.php'); // Gruppen är inte anmäld
         exit;
     }
+} else {
+    if (isset($_GET['no_history'])) $no_history = true;
 }
 
 $pdf = new Group_PDF();
@@ -37,7 +41,7 @@ $pdf->SetSubject(encode_utf_to_iso($subject));
 $all_info = (isset($_GET['all_info'])) ? true : false;
 
 if (empty($group)) {
-    $pdf->all_group_sheets($current_larp, $all_info);
+    $pdf->all_group_sheets($current_larp, $all_info, $no_history);
 } else {
     $pdf->new_group_sheet($group, $current_larp, $all_info);
 }
