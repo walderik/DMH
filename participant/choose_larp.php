@@ -161,7 +161,7 @@ div.border
       			echo "<form action='../includes/set_larp.php' method='POST'>";
       			echo "<label for='larp'>Välj lajv: </label>";
       			echo "<select name='larp' id='larp'>";
-      			foreach ($past_larp_array as $larp) {
+      			foreach (array_reverse($past_larp_array) as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";
@@ -198,7 +198,7 @@ div.border
         			 echo "<label for='larp'>Välj lajv: </label>";
         			 echo "<select name='larp' id='larp'>";
         			 
-        			 foreach ($larps_organizer as $larp) {
+        			 foreach (array_reverse($larps_organizer) as $larp) {
         			     echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
         			 }
         			 echo "</select>";
@@ -217,7 +217,7 @@ div.border
     			     echo "<label for='larp'>Välj lajv: </label>";
     			     echo "<select name='larp' id='larp'>";
     			     $larps = LARP::all();
-    			     foreach ($larps as $larp) {
+    			     foreach (array_reverse($larps) as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";
