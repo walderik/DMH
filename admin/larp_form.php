@@ -126,6 +126,19 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
             			<label for="ChooseParticipationDates_no">Nej</label>
 					</td>
     			</tr>
+     			<tr>
+    				<?php $hasRegistration = $larp->hasRegistrations(); ?>
+    				<td><label for='VisibleToParticipants'>Synlig för deltagare?</label>
+    				     <br>Ska lajvet synas bland kommande lajv?
+    				     <?php if ($hasRegistration) echo "<br>Lajvet har anmälningar och kan därför inte göras osynligt."?>
+    				</td>
+    				<td>
+						<input type="radio" id="VisibleToParticipants_yes" name="VisibleToParticipants" value="1" <?php if ($larp->isVisibleToParticipants()) echo 'checked="checked"'?> <?php if ($hasRegistration) echo " disabled ";?>> 
+            			<label for="VisibleToParticipants_yes">Ja</label><br> 
+            			<input type="radio" id="VisibleToParticipants_no" name="VisibleToParticipants" value="0" <?php if (!$larp->isVisibleToParticipants()) echo 'checked="checked"'?> <?php if ($hasRegistration) echo " disabled ";?>> 
+            			<label for="VisibleToParticipants_no">Nej</label>
+					</td>
+    			</tr>
     			
     		</table>
 			<h2>Speltekniker</h2><br>Vilka speltekniker ska det finnas stöd för i systemet för detta lajv?
@@ -207,10 +220,10 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     		?>
     		<table>
     			<tr>
-    				<td><label for="EvaluationOpenDate">När ska utvärderingen öppnas?</label><br>Utvärderingen kan inte öppna förrän lajvet är slut.<br>När lajvet är slut kan deltagarna se när utvärderingen kommer att öppna om den inte redan är öppen.</td>
+    				<td><label for="EvaluationOpenDate">När ska utvärderingen öppnas?</label><br>Utvärderingen kan inte öppna förrän lajvet är slut.<br>När lajvet är slut kan deltagarna se när utvärderingen kommer att öppna om den inte redan är öppen.<br>Om inget datum sätts öppnar det när lajvet slutar.</td>
     				<td><input type="date" id="EvaluationOpenDate"
     					name="EvaluationOpenDate" value="<?php echo $larp->EvaluationOpenDate; ?>" size="50" 
-    					<?php if ($isEvaluationStarted) echo "disabled=disabled";?> required></td>
+    					<?php if ($isEvaluationStarted) echo "disabled=disabled";?> ></td>
     			</tr>
     			
     			<tr>
@@ -237,7 +250,6 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
 </html>
     <script>
     function toggleEnableLink(enable) {
-        alert(enable);
         if (enable) document.getElementById('EvaluationLink').disabled = false;
         else {
             linkField = document.getElementById('EvaluationLink');

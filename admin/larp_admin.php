@@ -48,7 +48,7 @@ include 'navigation.php';
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
             echo "<tr><th>Namn</th><th>Startdatum</th><th>Slutdatum</th><th>Max deltagare</th>".
-            "<th>Sista anmälningsdag</th><th>Start lajvtid</th><th>Slut lajvtid</th><th>Prefix på<br>betalningsreferens</th><th>Antal dagar<br>för betalning</th><th></th><th></th></tr>\n";
+            "<th>Sista anmälningsdag</th><th>Prefix på<br>betalningsreferens</th><th>Antal dagar<br>för betalning</th><th>Synligt</th><th></th><th></th></tr>\n";
             foreach ($larp_array as $larp) {
                 echo "<tr>\n";
                 //echo "<td>" . $larp->Id . "</td>\n";
@@ -59,10 +59,9 @@ include 'navigation.php';
                 echo "<td>" . $larp->EndDate . "</td>\n";
                 echo "<td>" . $larp->MaxParticipants . "</td>\n";
                 echo "<td>" . $larp->LatestRegistrationDate . "</td>\n";
-                echo "<td>" . $larp->StartTimeLARPTime . "</td>\n";
-                echo "<td>" . $larp->EndTimeLARPTime . "</td>\n";
                 echo "<td>" . $larp->PaymentReferencePrefix . "</td>\n";
                 echo "<td>" . $larp->NetDays . "<br>$larp->LastPaymentDate</td>\n";
+                echo "<td>" . showStatusIcon($larp->isVisibleToParticipants()) . "</td>\n";
                 
                 echo "<td>" . "<a href='larp_form.php?operation=update&id=" . $larp->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
                 if (!$larp->hasRegistrations()) {
