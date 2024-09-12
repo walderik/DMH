@@ -128,9 +128,9 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     			</tr>
      			<tr>
     				<?php $hasRegistration = $larp->hasRegistrations(); ?>
-    				<td><label for='VisibleToParticipants'>Synlig för deltagare?</label>
-    				     <br>Ska lajvet synas bland kommande lajv?
-    				     <?php if ($hasRegistration) echo "<br>Lajvet har anmälningar och kan därför inte göras osynligt."?>
+    				<td><label for='VisibleToParticipants'>Ska lajvet vara synligt för deltagare och därmed synas under kommande lajv?</label>
+    				     
+    				     <?php if ($hasRegistration) echo "<br>(Lajvet har anmälningar och kan därför inte göras osynligt.)"?>
     				</td>
     				<td>
 						<input type="radio" id="VisibleToParticipants_yes" name="VisibleToParticipants" value="1" <?php if ($larp->isVisibleToParticipants()) echo 'checked="checked"'?> <?php if ($hasRegistration) echo " disabled ";?>> 
