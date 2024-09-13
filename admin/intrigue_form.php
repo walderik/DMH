@@ -104,9 +104,9 @@ include 'navigation.php';
 
 				<td><label for="Notes">Ansvarig arrangör</label></td>
 			<td><?php 
-			     
+			if (empty($intrigue->ResponsibleUserId)) $intrigue->ResponsibleUserId = $current_user->Id;
 			     $organizers = User::getAllWithAccessToLarp($current_larp);
-			     selectionByArray('ResponsibleUser', $organizers, false, true, $intrigue->ResponsibleUserId) ?></td>
+			     selectionDropDownByArray('ResponsibleUser', $organizers, true, $intrigue->ResponsibleUserId) ?></td>
 			</tr>
 		</table>
 

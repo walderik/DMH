@@ -19,7 +19,7 @@ $pdf = new Report_TCP_PDF();
 
 $pdf->init($current_user->Name, $name, $current_larp->Name, false);
 
-$bookkeepings = Bookkeeping::allByLARP($current_larp);
+$bookkeepings = Bookkeeping::allFinished($current_larp);
 
     
 $rows = array();

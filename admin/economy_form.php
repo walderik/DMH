@@ -98,9 +98,14 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 
 			</tr>
 			<tr>
-				<td><label for="Date">Datum</label></td>
-				<td><input type="date" id="Date"
-    					name="Date" value="<?php echo $bookkeeping->Date ?>" size="50" required></td>
+				<td><label for="CreationDate">Upplagd datum</label></td>
+				<td><input type="date" id="CreationDate"
+    					name="CreationDate" value="<?php echo $bookkeeping->CreationDate ?>" size="50" required></td>
+			</tr>
+			<tr>
+				<td><label for="AccountingDate">Bokföringsdatum</label></td>
+				<td><input type="date" id="AccountingDate"
+    					name="AccountingDate" value="<?php echo $bookkeeping->AccountingDate ?>" size="50"></td>
 			</tr>
 			<?php if ((default_value('sort')=="utgift") && !$bookkeeping->hasImage()) {?>
 			<tr>
@@ -108,6 +113,16 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 				<td><input type="file" name="upload"> (Enbart pdf, png, jpg och gif)</td>
 			</tr>
 			<?php } ?>
+			<tr>
+			<td><label for="UserId">Ansvarig</label></td>
+			<td><?php 
+			     if (empty($bookkeeping->UserId)) $bookkeeping->UserId = $current_user->Id;
+			     $organizers = User::getAllWithAccessToLarp($current_larp);
+			     selectionDropDownByArray('UserId', $organizers, true, $bookkeeping->UserId) ?></td>
+			</tr>
+
+			
+
 		</table>
           	<br><br>
 

@@ -17,7 +17,7 @@ $zip->open($file, ZipArchive::OVERWRITE);
 
 
 //Skapa pdf med alla vanliga verifikationer
-$bookkeepings = Bookkeeping::allByLARP($current_larp);
+$bookkeepings = Bookkeeping::allFinished($current_larp);
 $pdf = new Bookkeeping_PDF();
 $pdf->SetTitle(encode_utf_to_iso('Alla verifikationer'));
 $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));

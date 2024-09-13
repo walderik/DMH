@@ -27,12 +27,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $bookkeeping->update();
             saveReceipt($bookkeeping);
         }
+        header("Location: economy.php");
+        exit;
     }
     //if (isset($error)) header("Location: economy.php?error=$error");
     //else header('Location: ' . 'economy.php');
     //exit;
     
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    
+    if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
+        Bookkeeping::delete($_GET['id']);
+        header("Location: economy.php");
+        exit;
+    }
+}
+
 
 function saveReceipt(Bookkeeping $bookkeeping) {
     global $error_code, $error_message;
@@ -84,15 +96,55 @@ include 'navigation.php';
         <a href="logic/all_bookkeeping_zip.php" target="_blank"><i class="fa-solid fa-file-zipper"></i> Alla verifikationer till kassör</a><br>
         
         </p>
-	<?php 
-       $bookkeepings = Bookkeeping::allByLARP($current_larp);
+        
+        
+		<?php 
+	   $bookkeepings = Bookkeeping::allUnFinished($current_larp);
+	   //if (!empty($bookkeepings)) {
+           echo "<h2>Påbörjade</h2>"; 
+           echo "Alla som saknar bokföringsdatum hamnar här.";
+           echo "<table id='bookkeeping' class='data'>";
+           echo "<tr><th>Upplagd datum</th><th>Rubrik</th><th>Ansvarig</th><th>Summa</th><th></th></tr>\n";
+           foreach ($bookkeepings as $bookkeeping) {
+               echo "<tr>\n";
+
+               echo "<td>" . $bookkeeping->CreationDate . "</td>\n";
+               echo "<td><a href='economy_view_bookkeeping.php?id=$bookkeeping->Id'>" . $bookkeeping->Headline."</a>";
+               if ($bookkeeping->Amount < 0 && !$bookkeeping->hasImage()) {
+                   echo " " . showStatusIcon(false);
+               }
+               
+               if ($bookkeeping->Amount > 0) {
+                   echo " <a href='economy_form.php?operation=update_income&id=$bookkeeping->Id'><i class='fa-solid fa-pen' title='Ändra inkomst'></i></a>";
+                   echo " <a href='economy_receipt_pdf.php?bookkeepingId=$bookkeeping->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Visa kvitto'></i></a>";
+               } else {
+                   echo " <a href='economy_form.php?operation=update_expense&id=$bookkeeping->Id'><i class='fa-solid fa-pen' title='Ändra utgift'></i></a>";
+                   
+               }
+               echo "</td>\n";
+               
+               echo "<td>".$bookkeeping->getUser()->Name."</td>";
+               echo "<td>".$bookkeeping->Amount."</td>";
+               echo "<td>";
+               echo "<a href='economy.php?operation=delete&id=$bookkeeping->Id'><i class='fa-solid fa-trash' title='Radera'></i></a>";
+               echo "</td>";
+               echo "</tr>\n";
+           }
+           echo "</table>";
+	   //}
+	
+	
+	   
+	   $bookkeepings = Bookkeeping::allFinished($current_larp);
+	   //if (!empty($bookkeepings)) {
+	   echo "<h2>Klara</h2>";
        $sum = 0;
        echo "<table id='bookkeeping' class='data'>";
-       echo "<tr><th>Verifikation<br>nummer</th><th>Datum</th><th>Rubrik</th><th>Konto</th><th>Summa</th></tr>\n";
+       echo "<tr><th>Verifikation<br>nummer</th><th>Bokföringsdatum</th><th>Rubrik</th><th>Konto</th><th>Ansvarig</th><th>Summa</th></tr>\n";
        foreach ($bookkeepings as $bookkeeping) {
            echo "<tr>\n";
            echo "<td>" . $bookkeeping->Number . "</td>\n";
-           echo "<td>" . $bookkeeping->Date . "</td>\n";
+           echo "<td>" . $bookkeeping->AccountingDate . "</td>\n";
            echo "<td><a href='economy_view_bookkeeping.php?id=$bookkeeping->Id'>" . $bookkeeping->Headline."</a>";
            if ($bookkeeping->Amount < 0 && !$bookkeeping->hasImage()) {
                echo " " . showStatusIcon(false);
@@ -106,6 +158,8 @@ include 'navigation.php';
            }
            echo "</td>\n";
            echo "<td>" . $bookkeeping->getBookkeepingAccount()->Name . "</td>"; 
+           echo "<td>".$bookkeeping->getUser()->Name."</td>";
+           
            echo "<td class='amount'>" .number_format((float)$bookkeeping->Amount, 2, ',', '')."</td>\n";
            $sum += $bookkeeping->Amount;
            echo "</tr>\n";
@@ -119,6 +173,7 @@ include 'navigation.php';
            echo " <a href='invoice_pdf.php?invoiceId=$invoice->Id&showPayed=1' target='_blank'><i class='fa-solid fa-file-pdf' title='Visa faktura'></i></a>";
            echo "</td>\n";
            echo "<td>Fakturor</td>";
+           echo "<td></td>";
            echo "<td class='amount'>" .number_format((float)$invoice->FixedAmount, 2, ',', '')."</td>";
            $sum += $invoice->FixedAmount;
            echo "</tr>\n";
@@ -126,13 +181,14 @@ include 'navigation.php';
        
        $registration_fees = Registration::totalFeesPayed($current_larp);
        $sum += $registration_fees;
-       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Deltagaravgifter</td><td></td><td class='amount'>".number_format((float)$registration_fees, 2, ',', '')."</td></tr>";
+       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Deltagaravgifter</td><td></td><td></td><td class='amount'>".number_format((float)$registration_fees, 2, ',', '')."</td></tr>";
        $returned_fees = Registration::totalFeesReturned($current_larp);
        $sum -= $returned_fees;
-       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Återbetalade deltagaravgifter</td><td></td><td class='amount'>".number_format((float)(0-$returned_fees), 2, ',', '')."</td></tr>";
+       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Återbetalade deltagaravgifter</td><td></td><td></td><td class='amount'>".number_format((float)(0-$returned_fees), 2, ',', '')."</td></tr>";
        echo "<tr></tr>";
-       echo "<tr><th colspan='4'>Summa</th><th class='amount' style='text-align: right;'>".number_format((float)$sum, 2, ',', '')."</th></tr>";
+       echo "<tr><th colspan='5'>Summa</th><th class='amount' style='text-align: right;'>".number_format((float)$sum, 2, ',', '')."</th></tr>";
        echo "</table>";
+	   //}
        ?>
        
 	
