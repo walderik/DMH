@@ -76,7 +76,7 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 			<tr>
 
 				<td><label for="Text">Beskrivning</label></td>
-				<td><textarea id="Text" name="Text" rows="4" cols="100"><?php echo nl2br(htmlspecialchars($bookkeeping->Text))?></textarea></td>
+				<td><textarea id="Text" name="Text" rows="4" cols="100"><?php echo htmlspecialchars($bookkeeping->Text)?></textarea></td>
 			</tr>
 			<tr>
 
