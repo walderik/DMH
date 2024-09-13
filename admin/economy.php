@@ -124,7 +124,7 @@ include 'navigation.php';
                echo "</td>\n";
                
                echo "<td>".$bookkeeping->getUser()->Name."</td>";
-               echo "<td>".$bookkeeping->Amount."</td>";
+               echo "<td class='amount'>" .number_format((float)$bookkeeping->Amount, 2, ',', '')."</td>\n";
                echo "<td>";
                echo "<a href='economy.php?operation=delete&id=$bookkeeping->Id'><i class='fa-solid fa-trash' title='Radera'></i></a>";
                echo "</td>";
