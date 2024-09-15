@@ -351,4 +351,10 @@ class LARP extends BaseModel{
         return false;
     }
     
+    public function getOtherLarpsSameYear() {
+        $year = substr($this->StartDate, 0 , 4);
+        $sql ="SELECT * FROM regsys_larp WHERE Id != ? AND StartDate LIKE '$year-%' AND CampaignId=?";
+        return static::getSeveralObjectsqQuery($sql, array($this->Id, $this->CampaignId));
+    }
+    
 }

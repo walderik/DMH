@@ -148,6 +148,8 @@ include 'navigation.php';
            echo "<td><a href='economy_view_bookkeeping.php?id=$bookkeeping->Id'>" . $bookkeeping->Headline."</a>";
            if ($bookkeeping->Amount < 0 && !$bookkeeping->hasImage()) {
                echo " " . showStatusIcon(false);
+               echo " <a href='economy_receipt_pdf.php?bookkeepingId=$bookkeeping->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Visa kvitto'></i></a>";
+               
            }
            if ($bookkeeping->Amount > 0) {
                echo " <a href='economy_form.php?operation=update_income&id=$bookkeeping->Id'><i class='fa-solid fa-pen' title='Ändra inkomst'></i></a>";
@@ -191,7 +193,26 @@ include 'navigation.php';
 	   //}
        ?>
        
+       
 	
+		<?php 
+		$otherLarps = $current_larp->getOtherLarpsSameYear();
+		if (!empty($otherLarps)) {
+		    echo "<h2>Resultat för andra lajv i kampanjen samma år</h2>";
+	        echo "<table class='data'><th>Namn</th><th>Resultat</th></tr>";
+		      
+		    foreach ($otherLarps as $larp) {
+    		
+		        $income = Registration::totalIncomeToday($larp) + Bookkeeping::sumRegisteredIncomes($larp);
+		        $refund = 0 - Registration::totalFeesReturned($larp);
+		        $expense = Bookkeeping::sumRegisteredExpenses($larp);
+		        $sum = $income + $refund + $expense;
+		        
+		        echo "<tr><td>$larp->Name</td><td class='amount'>".number_format((float)$sum, 2, ',', '')." SEK</td></tr>";
+		    }
+		    echo "</table>";
+		}
+		?>
 
 
 </body>

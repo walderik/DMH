@@ -93,7 +93,7 @@ class Receipt_PDF extends FPDF {
     {
         $this->AddPage();
         
-        $this->SetText("Kvitto", $bookkeeping->Headline, $bookkeeping->Who, $bookkeeping->Text, $bookkeeping->Amount, $bookkeeping->Date, $bookkeeping->getLarp());
+        $this->SetText("Kvitto", $bookkeeping->Headline, $bookkeeping->Who, $bookkeeping->Text, abs($bookkeeping->Amount), $bookkeeping->AccountingDate, $bookkeeping->getLarp());
     }
 
 
