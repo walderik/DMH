@@ -23,11 +23,11 @@ $pdf->init($current_user->Name, $name, $current_larp->Name, false);
 $persons = Person::getAllRegistered($current_larp, true);
 
 $rows = array();
-$header = array("Namn", "Datum", "Summa");
+$header = array("Namn", "Datum", "Summa", "Kommentar");
 $widths = array(300, 100, 100);
 foreach ($persons as $person) {
     $registration = $person->getRegistration($current_larp);
-    if (!empty($registration->AmountPayed) && $registration->AmountPayed > 0) $rows[] = array($person->Name, $registration->Payed, $registration->AmountPayed);
+    if (!empty($registration->AmountPayed) && $registration->AmountPayed > 0) $rows[] = array($person->Name, $registration->Payed, $registration->AmountPayed, $registration->PaymentComment);
 }
 
 usort($rows, function ($a, $b) {

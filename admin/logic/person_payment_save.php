@@ -17,7 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset ($payed) && $payed != "") {
             $registration->Payed = $payed;
         }
- 
+        $registration->PaymentComment = $_POST['PaymentComment'];
+        
         $registration->NotComing = $_POST['NotComing'];
         $registration->NotComingReason = $_POST['NotComingReason'];
         $registration->IsToBeRefunded = $_POST['IsToBeRefunded'];

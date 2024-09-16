@@ -77,7 +77,9 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
 			<tr><td valign="top" class="header">Belopp att betala</td><td><input type="number" id="AmountToPay" name="AmountToPay" value="<?php echo $registration->AmountToPay; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
 			<tr><td valign="top" class="header">Belopp betalat</td><td><input type="number" id="AmountPayed" name="AmountPayed" value="<?php echo $registration->AmountPayed; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
-			<tr><td valign="top" class="header">Betalat datum</td><td><input type="date" id="Payed" name="Payed" value="<?php echo $registration->Payed; ?>"  size="15" maxlength="250"> <a href='economy_receipt_pdf.php?registrationId=<?php echo $registration->Id?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i></a>
+			<tr><td valign="top" class="header">Betalat datum</td><td><input type="date" id="Payed" name="Payed" value="<?php echo $registration->Payed; ?>"  size="15" maxlength="250"> 
+			<a href='economy_receipt_pdf.php?registrationId=<?php echo $registration->Id?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i></a>
+			<tr><td valign="top" class="header">Kommentar till betalning</td><td><input type="text" id="PaymentComment" name="PaymentComment" value="<?php echo $registration->PaymentComment; ?>"  size="100" maxlength="250">
 			</td></tr>
 			
 			<tr><td valign="top" class="header">Avbokad</td>
