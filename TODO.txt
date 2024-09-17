@@ -27,3 +27,6 @@ upload_max_filesize = 1024M
 Change my.ini
 
 max_allowed_packet = 1024M
+
+import av databasen via kommandotolken:
+mysql -u root -p berghemsvanner_ < OM_backup_1726568551.sql

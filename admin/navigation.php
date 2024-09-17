@@ -1,70 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script>
-function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
-
-function changePart() {
-  	var part_selector = document.getElementById("part");
-	if (part_selector.value.length != 0) {
-		window.location.href = part_selector.value;
-	}
-	
-}
-
-</script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">    
+   
     <link href="../css/navigation_admin.css" rel="stylesheet" type="text/css">
-	<link href="../css/style.css" rel="stylesheet" type="text/css">
-	<link href="../css/gallery.css" rel="stylesheet" type="text/css">
-	<link rel="icon" type="image/x-icon" href="../images/<?php echo $current_larp->getCampaign()->Icon; ?>">
-	<title><?php echo $current_larp->Name;?></title>
-	
-</head>
-<body>
-<div class="topnav"  id="myTopnav">
-    <div class="left">
-    	<a href="#home" target="_blank" style="padding: 11px 5px 11px 5px;" class="always_show">
-    	<img src="../images/<?php echo $current_larp->getCampaign()->Icon; ?>" width="30" height="30"/></a>
-    	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show"><?php echo $current_larp->Name;?></a>
-    </div>
-    <div class="right">
-
-	  
-	  <div id="placeholder" class="dropdown">&nbsp;<br>&nbsp;
-	    <button class="dropbtn">   
-	    </button>
-	  </div> 
+	<?php include '../common/navigation_beginning.php';?> 
 
 
-	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
 	  
-	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) || isset($_SESSION['admin'])) { ?>
+	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) { ?>
 	  
-	  <div class="dropdown">
-	    <button class="dropbtn">Kampanj 
-	      <i class="fa fa-caret-down"></i>
-	    </button>
-	    <div class="dropdown-content">
-	      	<a href="organizers.php">Arrangörer</a>
-	      	<a href="forms.php">Anmälningsformulär</a>
-            <a href="selection_data_admin.php?type=advertismenttypes">Annonsformat</a>
-            <a href="selection_data_admin.php?type=titledeedplace">Platser för handel</a>
-            <a href="bookkeeping_account_admin.php">Bokföringskonton</a>
-            <a href="campaign_admin.php">Inställningar för kampanjen</a>
-            <a href="larp_admin.php">Lajv i kampanjen</a>
- 	    </div>
-	  </div>
 	  <div class="dropdown">
 	    <button class="dropbtn">Lajvinställningar 
 	      <i class="fa fa-caret-down"></i>
@@ -144,29 +88,6 @@ function changePart() {
             <a href="what_happened.php">Vad hände?</a>
 	    </div>
 	  </div> 
-     <select name='part' id='part' onchange="changePart()">
-      	<option value='../participant/'>Deltagare</option>
-     
-     	<option value='' selected='selected'>Arrangör</option>
-    	<?php 
-    	 if (isset($_SESSION['admin'])) {
-    	 ?>	
-    	 <option value='../site-admin/'>OM Admin</option>
-        <?php }?>
-		</select>
-	  <!-- <a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a> -->
-    	<div class="dropdown">
-    		<button class="dropbtn"><i class="fa-solid fa-user" title="<?php echo $current_user->Name?>"></i> <?php echo $current_user->Name?></button>
-		    <div class="dropdown-content">
-		    	<a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
-    		</div>
-    	
-    	</div>
-	  
-	  
-	  <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
-	  </div>
-    
-    </div>
 
-	  
+	<?php include '../common/navigation_site_part_selector.php';?>  
+	<?php include '../common/navigation_end.php';?> 	  

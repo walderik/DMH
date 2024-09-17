@@ -22,16 +22,14 @@ $param = date_format(new Datetime(),"suv");
 
 	     foreach ($organizersLarp as $organizer) {
 	         echo $organizer->Name;
-	         if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
-    	         echo " <a href='logic/remove_organizer.php?userId=$organizer->Id'>";
-    	         echo "<i class='fa-solid fa-trash-can' title='Ta bort som arrangör'></i></a>";
-	         }
+	         echo " <a href='logic/remove_organizer.php?userId=$organizer->Id'>";
+	         echo "<i class='fa-solid fa-trash-can' title='Ta bort som arrangör'></i></a>";
 	         echo "<br>";
 
 	     }
-	     if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+
 	       echo "<br><a href='choose_users.php?larpId=$current_larp->Id&operation=organizer'>Lägg till arrangör på $current_larp->Name</a>";
-	     }
+
 	     ?>
 		
 

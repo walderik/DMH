@@ -18,8 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $campaign = Campaign::loadById($campaignId);
     foreach ($userIds as $userId) {
        
-       if (!AccessControl::hasAccessCampaign($userId, $campaignId)) {
-           AccessControl::grantCampaign($userId, $campaignId);
+       AccessControl::grantCampaign($userId, $campaignId);
        }
     }
     
