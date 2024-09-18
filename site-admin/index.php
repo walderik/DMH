@@ -8,7 +8,6 @@ include "navigation.php";
 			<h1>Omnes Mundi administration</h1>
 			<p>			    
 				<a href="campaign_admin.php">Kampanjer</a><br><br>
-			    <a href="house_admin.php">Hus och lägerplatser</a><br><br>
 			    <a href="user_admin.php">Användare / Logins /Admin behörighet</a><br><br>
 			    <a href="mail_admin.php">Alla skickade mail</a><br><br>
 			    <br><br>

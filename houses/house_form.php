@@ -9,6 +9,10 @@ include_once 'header.php';
             $operation = $_GET['operation'];
         }
         if ($operation == 'new') {
+            $type = "house";
+            if (isset($_GET['type'])) $type = $_GET['type'];
+            if ($type == "house") $house->IsHouse = 1;
+            else $house->IsHouse = 0;
         } elseif ($operation == 'update') {
             $house = House::loadById($_GET['id']);
         } else {

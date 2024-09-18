@@ -116,6 +116,7 @@ ul.list {
         				}?>
          				</td></tr>
 					
+					<?php  if ($house->IsHouse()) { ?>
         			<tr><td>&nbsp;</td></tr>
         			<tr>
         				<td colspan = '2'><h2>Husförvaltare är:</h2><br>
@@ -138,6 +139,7 @@ ul.list {
         					</table>
         				</td>
         			</tr>
+        			<?php } ?>
         			<tr><td>&nbsp;</td></tr>
         			<tr>
         				<td colspan = '2'><h2>Historik Boende</h2>

@@ -43,49 +43,61 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         header('Location: house_admin.php');
         exit;
     }
+    $type = "house";
+    if (isset($_GET['type'])) $type = $_GET['type'];
 }
 
 include "navigation.php";
+if ($type == "house") {
+    $house_array = House::getAllHouses();
+    $header = "Hus";
+} else {
+    $house_array = House::getAllCamps();
+    $header = "Lägerplatser";
+}
+
+
 ?>
 
 <div class="content">   
-    <h1>Hus och lägerplatser</h1>
-    <a href='all_houses.php'><i class='fa fa-map' aria-hidden='true'></i>Karta med alla hus</a><br> 
-    <a href='all_housing.php'><i class='fa fa-map' aria-hidden='true'></i>Karta med alla hus och lägerplatser</a>
-    <p><a href="house_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i> Lägg till</a></p>  <br>
+    <h1><?php echo $header?></h1>
+    <a href="house_form.php?operation=new&type=<?php echo $type?>"><i class="fa-solid fa-file-circle-plus"></i> Lägg till</a>
     
     <?php
-        
-        $house_array = House::all();
+
         $resultCheck = count($house_array);
         if ($resultCheck > 0) {
             echo "<table id='houses' class='data'>";
-            echo "<tr><th>Namn</th><th>Typ</th><th>Sovplatser/<br>Tältplatser</th><th>Plats</th><th>Beskrivning</th><th>Förvaltare</th><th></th><th></th><th></th></tr>\n";
+            echo "<tr><th>Namn</th>";
+            if ($type == "house ") echo "<th>Sovplatser</th>";
+            else echo "<th>Tältplatser</th>";
+            echo "<th>Plats</th><th>Beskrivning</th>";
+            if ($type == "house") echo "<th>Förvaltare</th>";
+            echo "<th></th><th></th><th></th></tr>\n";
             foreach ($house_array as $house) {
                 
                 echo "<tr>\n";
                 echo "<td><a href='view_house.php?operation=update&id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
-                echo "<td>";
-                if ($house->IsHouse()) echo "Hus";
-                else echo "Lägerplats";
-                echo "</td>";
+
                 echo "<td width='8%'>" . $house->NumberOfBeds . "</td>\n";
                 echo "<td width='20%' style='word-break: break-all';>" . $house->PositionInVillage . "</td>\n";
                 echo "<td>" . $house->Description . "</td>\n";
 //                 echo "<td>" . mb_strimwidth(str_replace('\n', '<br>', $house->Description), 0, 200, '...') . "</td>\n";
                 
-                echo "<td nowrap>";
-                
-                $caretakers = $house->getHousecaretakers();
-                foreach ($caretakers as $house_caretaker) {
-                    $person = $house_caretaker->getPerson();
-                    echo "$person->Name ";
-                    if (!$house_caretaker->isMember()) {
-                        echo '<img src="../images/alert-icon.png" alt="Inte medlem i Berghems vänner i år" title="Inte medlem i Berghems vänner i år" width="20" height="20">';
+                if ($type == "house") {
+                    echo "<td nowrap>";
+
+                    $caretakers = $house->getHousecaretakers();
+                    foreach ($caretakers as $house_caretaker) {
+                        $person = $house_caretaker->getPerson();
+                        echo "$person->Name ";
+                        if (!$house_caretaker->isMember()) {
+                            echo '<img src="../images/alert-icon.png" alt="Inte medlem i Berghems vänner i år" title="Inte medlem i Berghems vänner i år" width="20" height="20">';
+                        }
+                        echo "<br>";
                     }
-                    echo "<br>";
+                    echo "</td>";
                 }
-                echo "</td>";
                 
                 if ($house->hasImage()) {
                     $image = $house->getImage();

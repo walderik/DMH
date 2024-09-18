@@ -8,6 +8,27 @@
 
 
 	<!--  Egen meny -->
+	    	<!--  Egen meny -->
+	  <div class="dropdown">
+	    <button class="dropbtn">Boende 
+	      <i class="fa fa-caret-down"></i>
+	    </button>
+	    <div class="dropdown-content">
+		    <a href="house_admin.php?type=house">Hus</a>
+		    <a href="house_admin.php?type=camp">Lägerplatser</a>
+            <!--  <a href="house_admin.php">Husförvaltare</a>  -->
+ 	    </div>
+	  </div>
+	
+	  <div class="dropdown">
+	    <button class="dropbtn">Kartor 
+	      <i class="fa fa-caret-down"></i>
+	    </button>
+	    <div class="dropdown-content">
+		    <a href="all_houses.php">Hus</a>
+		    <a href="all_housing.php">Hus & Läger</a>
+ 	    </div>
+	  </div>
 
 	<?php include '../common/navigation_site_part_selector.php';?>  
 	<?php include '../common/navigation_end.php';?> 
