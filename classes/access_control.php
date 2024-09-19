@@ -8,7 +8,7 @@ class AccessControl extends Dbh {
     const ACCESS_TYPES = [
         AccessControl::ADMIN => "OM Admin",
         AccessControl::BOARD => "Styrelse",
-        AccessControl::HOUSES => "Husredigering"
+        AccessControl::HOUSES => "Hus & Läger"
     ];
     
     
@@ -179,6 +179,17 @@ class AccessControl extends Dbh {
         $stmt = null;
     }
     
+    public static function revokeAllOther($userId)
+    {
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_other WHERE UserId=?");
+        
+        if (!$stmt->execute(array($userId))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
     
     
     protected static function existsQuery($sql, $var_array) {
