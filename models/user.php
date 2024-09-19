@@ -211,6 +211,8 @@ class User extends BaseModel{
         return true;
     }
     
+    
+    
     public static function getAllWithAccessToLarp(LARP $larp) {
         $campaingUsers = User::getAllWithAccessToCampaign($larp->getCampaign());
         $onlyLarp = User::getAllWithAccessOnlyToLarp($larp);
@@ -231,6 +233,43 @@ class User extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
 
+    
+    public static function getAllWithOtherAccess() {
+        $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId FROM regsys_access_control_other WHERE 1) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array());
+     }
+     
+     
+     public function getOtherAccess() {
+         $sql = "SELECT Permission FROM regsys_access_control_other WHERE UserId = ? ORDER BY Permission;";
+         
+         $stmt = static::connectStatic()->prepare($sql);
+         
+         if (!$stmt->execute(array($this->Id))) {
+             $stmt = null;
+             header("location: ../index.php?error=stmtfailed");
+             exit();
+         }
+         
+         if ($stmt->rowCount() == 0) {
+             $stmt = null;
+             return false;
+             
+         }
+         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+         $stmt = null;
+         
+         $resPermissions = array();
+         foreach ($res as $item)  $resPermissions[] = $item['Permission'];
+         return $resPermissions;
+
+         
+         
+         if ($res[0]['Num'] == 0) return false;
+         return true;
+         
+         
+     }
     
     public function isComing(Larp $larp) {
         if (is_null($larp)) return null;

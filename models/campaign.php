@@ -15,6 +15,7 @@ class Campaign extends BaseModel{
     public  $MinimumAge;
     public  $MinimumAgeWithoutGuardian;
     public  $Currency;
+    public  $MainOrganizerUserId;
 
     
     
@@ -38,6 +39,7 @@ class Campaign extends BaseModel{
         if (isset($arr['MinimumAge'])) $this->MinimumAge = $arr['MinimumAge'];
         if (isset($arr['MinimumAgeWithoutGuardian'])) $this->MinimumAgeWithoutGuardian = $arr['MinimumAgeWithoutGuardian'];
         if (isset($arr['Currency'])) $this->Currency = $arr['Currency'];
+        if (isset($arr['MainOrganizerUserId'])) $this->MainOrganizerUserId = $arr['MainOrganizerUserId'];
         
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         
@@ -53,10 +55,13 @@ class Campaign extends BaseModel{
     
     # Update an existing campaign in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_campaign SET Name=?, Abbreviation=?, Description=?, Icon=?, Homepage=?, Email=?, Bankaccount=?, MinimumAge=?, MinimumAgeWithoutGuardian=?, Currency=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_campaign SET Name=?, Abbreviation=?, Description=?, Icon=?, 
+            Homepage=?, Email=?, Bankaccount=?, MinimumAge=?, MinimumAgeWithoutGuardian=?, 
+            Currency=?, MainOrganizerUserId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
-            $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Currency, $this->Id))) {
+            $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, 
+            $this->Currency, $this->MainOrganizerUserId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -112,6 +117,11 @@ class Campaign extends BaseModel{
     # Är det här Mareld
     public function is_me() {
         return ($this->Abbreviation=='ME');
+    }
+    
+    public function getMainOrganizer() {
+        if (empty($this->MainOrganizerUserId)) return NULL;
+        return User::loadById($this->MainOrganizerUserId);
     }
     
     public function hasLarps() {
