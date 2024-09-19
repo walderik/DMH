@@ -10,7 +10,7 @@
 	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) { ?>
 	  
 	  <div class="dropdown">
-	    <button class="dropbtn">Lajvinställningar 
+	    <button class="dropbtn">Inställningar 
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
