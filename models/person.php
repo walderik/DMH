@@ -19,6 +19,8 @@ class Person extends BaseModel{
     public $HasPermissionShowName = 0;
     public $IsSubscribed = 1;
     public $UnsubscribeCode;
+    public $MembershipCheckedAt;
+    public $IsMember;
 
     public static $orderListBy = 'Name';
     
@@ -55,6 +57,8 @@ class Person extends BaseModel{
         if (isset($arr['HasPermissionShowName'])) $this->HasPermissionShowName = $arr['HasPermissionShowName'];
         if (isset($arr['IsSubscribed'])) $this->IsSubscribed = $arr['IsSubscribed'];
         if (isset($arr['UnsubscribeCode'])) $this->UnsubscribeCode = $arr['UnsubscribeCode'];
+        if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
+        if (isset($arr['MembershipCheckedAt'])) $this->MembershipCheckedAt = $arr['MembershipCheckedAt'];
         
         if (isset($this->HouseId) && $this->HouseId=='null') $this->HouseId = null;
         
@@ -294,13 +298,19 @@ class Person extends BaseModel{
     
     # Update an existing person in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_person SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
-                                                                  FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
-                                                                  UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, HasPermissionShowName=?, IsSubscribed=?, UnsubscribeCode=? WHERE Id = ?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_person SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, 
+            EmergencyContact=?, Email=?,
+            FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
+            UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, 
+            HasPermissionShowName=?, IsSubscribed=?, UnsubscribeCode=?,
+            MembershipCheckedAt=?, IsMember=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
+        if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, 
+            $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId,
-            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode, $this->Id))) {
+            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
+            $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode, 
+            $this->MembershipCheckedAt, $this->IsMember, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -313,13 +323,18 @@ class Person extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_person (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
-                                                                    FoodAllergiesOther, OtherInformation, ExperienceId,
-                                                                    UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, HasPermissionShowName, IsSubscribed, UnsubscribeCode) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?);");
+                FoodAllergiesOther, OtherInformation, ExperienceId,
+                UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, 
+                HasPermissionShowName, IsSubscribed, UnsubscribeCode,
+                MembershipCheckedAt, IsMember) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId, 
-            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode))) {
+            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
+            $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode,
+            $this->MembershipCheckedAt, $this->IsMember
+        ))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -545,15 +560,7 @@ class Person extends BaseModel{
     }
     
     
-    public function isMember(Larp $larp) {
-        $registration = Registration::loadByIds($this->Id, $larp->Id);
 
-        //Vi bryr oss inte om ifall personer är medlemmar om det inte är anmälda till ett lajv
-        if (!isset($registration)) return false;
-        
-        return $registration->IsMember();
-    }
-    
     public static function getAllWithSingleAllergy(NormalAllergyType $allergy, LARP $larp) {
         if (is_null($allergy) OR is_null($larp)) return Array();
 
@@ -736,6 +743,46 @@ class Person extends BaseModel{
         
         
     }
+    
+    public function isMemberAtLarp(Larp $larp) {
+        $larp = LARP::loadById($this->LARPId);
+        $year = substr($larp->StartDate, 0, 4);
+        
+        $current_year = date("Y");
+        
+        if ($year >= $current_year) return false;
+        
+        return $this->IsMember();
+    }
+    
+    
+    public function isMember() {
+        //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
+        if ($this->IsMember == 1) return true;
+        
+        //Kolla inte oftare än en gång per kvart
+        if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false;
+        
+        $current_year = date("Y");
+        
+        $val = check_membership($this->SocialSecurityNumber, $current_year);
+        
+        
+        if ($val == 1) {
+            $this->IsMember=1;
+        }
+        else {
+            $this->IsMember = 0;
+        }
+        $now = new Datetime();
+        $this->MembershipCheckedAt = date_format($now,"Y-m-d H:i:s");
+        $this->update();
+        
+        if ($this->IsMember == 1) return true;
+        return false;
+        
+    }
+    
     
     
 }

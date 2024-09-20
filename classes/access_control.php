@@ -85,7 +85,7 @@ class AccessControl extends Dbh {
         if (static::hasAccessCampaign($user->Id, $larp->CampaignId)) return true;
         
         $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_larp, regsys_person WHERE ".
-            "regsys_access_control_campaign.PersonId = regsys_person.Id AND ".
+            "regsys_access_control_larp.PersonId = regsys_person.Id AND ".
             "regsys_person.UserId = ? AND ".
             "LarpId=?;";
         return static::existsQuery($sql, array($user->Id, $larp->Id));
@@ -96,9 +96,9 @@ class AccessControl extends Dbh {
         $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_other, regsys_person WHERE ".
             "regsys_access_control_other.PersonId = regsys_person.Id AND ".
             "regsys_person.UserId = ? AND ".
-            "(Permission=? OR Permission=?);";
+            "(Permission=?);";
         
-        return static::existsQuery($sql, array($userId, $access, AccessControl::ADMIN));
+        return static::existsQuery($sql, array($userId, $access));
         
     }
     
