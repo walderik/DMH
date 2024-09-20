@@ -74,31 +74,41 @@ class AccessControl extends Dbh {
     }
         
     public static function hasAccessCampaign($userId, $campaignId) {
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_campaign WHERE UserId =? AND CampaignId=?;";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_campaign, regsys_person WHERE ".
+            "regsys_access_control_campaign.PersonId = regsys_person.Id AND ".
+            "regsys_person.UserId = ? AND ".
+            "CampaignId=?;";
         return static::existsQuery($sql, array($userId, $campaignId));
     }
     
     public static function hasAccessLarp(User $user, LARP $larp) {
         if (static::hasAccessCampaign($user->Id, $larp->CampaignId)) return true;
         
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_larp WHERE UserId =? AND LarpId=?;";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_larp, regsys_person WHERE ".
+            "regsys_access_control_campaign.PersonId = regsys_person.Id AND ".
+            "regsys_person.UserId = ? AND ".
+            "LarpId=?;";
         return static::existsQuery($sql, array($user->Id, $larp->Id));
         
     }
     
     public static function hasAccessOther($userId, int $access) {
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_other WHERE UserId =? AND (Permission=? OR Permission=?);";
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_other, regsys_person WHERE ".
+            "regsys_access_control_other.PersonId = regsys_person.Id AND ".
+            "regsys_person.UserId = ? AND ".
+            "(Permission=? OR Permission=?);";
+        
         return static::existsQuery($sql, array($userId, $access, AccessControl::ADMIN));
         
     }
     
-    public static function grantCampaign($userId, $campaignId) { 
-        if (AccessControl::hasAccessCampaign($userId, $campaignId)) return;
+    public static function grantCampaign($personId, $campaignId) { 
+        if (AccessControl::hasAccessCampaign($personId, $campaignId)) return;
             
         $connection = static::connectStatic();
-        $stmt = $connection->prepare("INSERT INTO regsys_access_control_campaign (UserId, CampaignId) VALUES (?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_access_control_campaign (PersonId, CampaignId) VALUES (?,?)");
         
-        if (!$stmt->execute(array($userId, $campaignId))) {
+        if (!$stmt->execute(array($personId, $campaignId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -109,11 +119,11 @@ class AccessControl extends Dbh {
     }
     
     
-    public static function revokeCampaign($userId, $campaignId)
+    public static function revokeCampaign($personId, $campaignId)
     {
-        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_campaign WHERE UserId=? AND CampaignId=?");
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_campaign WHERE PersonId=? AND CampaignId=?");
         
-        if (!$stmt->execute(array($userId, $campaignId))) {
+        if (!$stmt->execute(array($personId, $campaignId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -122,13 +132,13 @@ class AccessControl extends Dbh {
     }
     
  
-    public static function grantLarp(User $user, Larp $larp) {
-        if (AccessControl::hasAccessLarp($user, $larp)) return;
+    public static function grantLarp(Person $person, Larp $larp) {
+        if (AccessControl::hasAccessLarp($person, $larp)) return;
             
         $connection = static::connectStatic();
-        $stmt = $connection->prepare("INSERT INTO regsys_access_control_larp (UserId, LarpId) VALUES (?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_access_control_larp (PersonId, LarpId) VALUES (?,?)");
         
-        if (!$stmt->execute(array($user->Id, $larp->Id))) {
+        if (!$stmt->execute(array($person->Id, $larp->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -139,11 +149,11 @@ class AccessControl extends Dbh {
     }
     
     
-    public static function revokeLarp($userId, $larpId) 
+    public static function revokeLarp($personId, $larpId) 
     {
-        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_larp WHERE UserId=? AND LarpId=?");
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_larp WHERE PersonId=? AND LarpId=?");
         
-        if (!$stmt->execute(array($userId, $larpId))) {
+        if (!$stmt->execute(array($personId, $larpId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -151,12 +161,12 @@ class AccessControl extends Dbh {
         $stmt = null;
     }
  
-    public static function grantOther($userId, $access) {
+    public static function grantOther($personId, $access) {
         $connection = static::connectStatic();
         
-        $stmt = $connection->prepare("INSERT INTO regsys_access_control_other (UserId, Permission) VALUES (?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_access_control_other (PersonId, Permission) VALUES (?,?)");
         
-        if (!$stmt->execute(array($userId, $access))) {
+        if (!$stmt->execute(array($personId, $access))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -167,11 +177,11 @@ class AccessControl extends Dbh {
     }
     
     
-    public static function revokeOther($userId, $access)
+    public static function revokeOther($personId, $access)
     {
-        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_other WHERE UserId=? AND Permission=?");
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_other WHERE PersonId=? AND Permission=?");
         
-        if (!$stmt->execute(array($userId, $access))) {
+        if (!$stmt->execute(array($personId, $access))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -179,11 +189,11 @@ class AccessControl extends Dbh {
         $stmt = null;
     }
     
-    public static function revokeAllOther($userId)
+    public static function revokeAllOther($personId)
     {
-        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_other WHERE UserId=?");
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_access_control_other WHERE PersonId=?");
         
-        if (!$stmt->execute(array($userId))) {
+        if (!$stmt->execute(array($personId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

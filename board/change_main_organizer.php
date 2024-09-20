@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $campaign = Campaign::loadById($campaignId);
     
 }
-$users = User::all();
+$persons = Person::all();
 
 include 'navigation.php';
 ?>
@@ -18,10 +18,10 @@ include 'navigation.php';
     <h1>Sätt huvudarrangör för <?php echo $campaign->Name ?></h1>
 	<form action="permissions.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="main_organizer"> 
-		<input type="hidden" id="CampaignId" name="CampaignId" value="<?php echo $campaigId ?>">
+		<input type="hidden" id="CampaignId" name="CampaignId" value="<?php echo $campaignId ?>">
 
 
-		<?php selectionDropDownByArray("MainOrganizerUserId", $users, false, $campaign->MainOrganizerUserId)?>
+		<?php selectionDropDownByArray("MainOrganizerPersonId", $persons, false, $campaign->MainOrganizerPersonId)?>
 		
 		<input type='submit' value='Spara'>
 	</form>

@@ -68,14 +68,14 @@ include "navigation.php";
                 echo "<tr>";
                 echo "<td colspan='10'>";
                 echo "Arrangörsbehörighet:<br>";
-                $organizers = User::getAllWithAccessToCampaign($campaign);
+                $organizers = Person::getAllWithAccessToCampaign($campaign);
                 if (count($organizers) == 0) echo "Ingen utsedd än<br>";
                 foreach ($organizers as $organizer) {
                     echo "$organizer->Name ";
-                    echo "<a href='logic/remove_organizer.php?campaignId=$campaign->Id&userId=$organizer->Id' onclick=\"return confirm('Är du säker på att du vill ta bort $organizer->Name från arrangörsgruppen?');\">";
+                    echo "<a href='logic/remove_organizer.php?campaignId=$campaign->Id&personId=$organizer->Id' onclick=\"return confirm('Är du säker på att du vill ta bort $organizer->Name från arrangörsgruppen?');\">";
                     echo "<i class='fa-solid fa-trash-can'></i></a><br>";
                 }
-                echo "<a href='choose_users.php?campaignId=$campaign->Id&operation=organizer'>Lägg till arrangör</a>";
+                echo "<a href='choose_persons.php?campaignId=$campaign->Id&operation=organizer'>Lägg till arrangör</a>";
                 echo "</td>";
                 echo "</tr>";
             }

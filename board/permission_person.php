@@ -4,13 +4,13 @@ include_once 'header.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['UserId'])) {
-        $userId = $_GET['UserId'];
-        $user = User::loadById($userId);
+    if (isset($_GET['PersonId'])) {
+        $personId = $_GET['PersonId'];
+        $person = Person::loadById($personId);
     }
-    else $userId = NULL;
+    else $personId = NULL;
 }
-$users = User::all();
+$persons = Person::all();
 
 include 'navigation.php';
 ?>
@@ -19,7 +19,7 @@ include 'navigation.php';
     <div class="content"> 
     <h1>
     <?php 
-    if (!empty($userId)) echo "Sätt behörigheter för $user->Name";
+    if (!empty($personId)) echo "Sätt behörigheter för $person->Name";
     else "Lägg användare med behörighet";
     ?>
 
@@ -29,14 +29,14 @@ include 'navigation.php';
 		<input type="hidden" id="operation" name="operation" value="permission_user"> 
 
 		<?php 
-		if (empty($userId)) {
-		    selectionDropDownByArray("UserId", $users, true);
+		if (empty($personId)) {
+		    selectionDropDownByArray("PersonId", $persons, true);
 		    echo "<br>";
 		    $current_permissions = array();
 		}
 		else {
-		    echo "<input type='hidden' id='UserId' name='UserId' value='$userId'>";
-		    $current_permissions = $user->getOtherAccess();
+		    echo "<input type='hidden' id='PersonId' name='PersonId' value='$personId'>";
+		    $current_permissions = $person->getOtherAccess();
 		}
 
 		?>

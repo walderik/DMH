@@ -25,7 +25,7 @@ foreach($campaigns as $campaign) {
     echo "<td>Arrangörsgrupp</td>";
     echo "<td>";
  
-    $organizers = User::getAllWithAccessToCampaign($campaign);
+    $organizers = Person::getAllWithAccessToCampaign($campaign);
     if (count($organizers) == 0) echo "Ingen utsedd än<br>";
     foreach ($organizers as $organizer) {
         echo "$organizer->Name ";

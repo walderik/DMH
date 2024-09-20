@@ -213,64 +213,6 @@ class User extends BaseModel{
     
     
     
-    public static function getAllWithAccessToLarp(LARP $larp) {
-        $campaingUsers = User::getAllWithAccessToCampaign($larp->getCampaign());
-        $onlyLarp = User::getAllWithAccessOnlyToLarp($larp);
-        return array_merge($campaingUsers, $onlyLarp);
-    }
-    
-    public static function getAllWithAccessToCampaign(Campaign $campaign) {
-        if (is_null($campaign)) return null;
-        
-        $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId from regsys_access_control_campaign WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($campaign->Id));
-    }
-
-    public static function getAllWithAccessOnlyToLarp(LARP $larp) {
-        if (is_null($larp)) return null;
-        
-        $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId from regsys_access_control_larp WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
-    }
-
-    
-    public static function getAllWithOtherAccess() {
-        $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId FROM regsys_access_control_other WHERE 1) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array());
-     }
-     
-     
-     public function getOtherAccess() {
-         $sql = "SELECT Permission FROM regsys_access_control_other WHERE UserId = ? ORDER BY Permission;";
-         
-         $stmt = static::connectStatic()->prepare($sql);
-         
-         if (!$stmt->execute(array($this->Id))) {
-             $stmt = null;
-             header("location: ../index.php?error=stmtfailed");
-             exit();
-         }
-         
-         if ($stmt->rowCount() == 0) {
-             $stmt = null;
-             return false;
-             
-         }
-         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-         $stmt = null;
-         
-         $resPermissions = array();
-         foreach ($res as $item)  $resPermissions[] = $item['Permission'];
-         return $resPermissions;
-
-         
-         
-         if ($res[0]['Num'] == 0) return false;
-         return true;
-         
-         
-     }
-    
     public function isComing(Larp $larp) {
         if (is_null($larp)) return null;
         $sql = "SELECT COUNT(*) AS Num FROM regsys_person, regsys_registration WHERE ".

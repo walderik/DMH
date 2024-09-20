@@ -13,22 +13,22 @@ $param = date_format(new Datetime(),"suv");
 		<?php 
 		echo "<strong>Hela kampanjen</strong><br>";
 		$campaign = $current_larp->getCampaign();
-	     $organizers = User::getAllWithAccessToCampaign($campaign);
+		$organizers = Person::getAllWithAccessToCampaign($campaign);
 	     foreach ($organizers as $organizer) {
 	         echo $organizer->Name."<br>";
 	     }
-	     $organizersLarp = User::getAllWithAccessOnlyToLarp($current_larp);
+	     $organizersLarp = Person::getAllWithAccessOnlyToLarp($current_larp);
 	     if (!empty($organizersLarp)) echo "<br><strong>Enbart detta lajv</strong><br>";
 
 	     foreach ($organizersLarp as $organizer) {
 	         echo $organizer->Name;
-	         echo " <a href='logic/remove_organizer.php?userId=$organizer->Id'>";
+	         echo " <a href='logic/remove_organizer.php?personId=$organizer->Id'>";
 	         echo "<i class='fa-solid fa-trash-can' title='Ta bort som arrangör'></i></a>";
 	         echo "<br>";
 
 	     }
 
-	       echo "<br><a href='choose_users.php?larpId=$current_larp->Id&operation=organizer'>Lägg till arrangör på $current_larp->Name</a>";
+	       echo "<br><a href='choose_persons.php?larpId=$current_larp->Id&operation=organizer'>Lägg till arrangör på $current_larp->Name</a>";
 
 	     ?>
 		

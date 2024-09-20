@@ -2,22 +2,15 @@
 
 require '../header.php';
 
-
-//If the user isnt admin it may not use this page
-if (!isset($_SESSION['admin'])) {
-    header('Location: ../../participant/index.php');
-    exit;
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (!isset($_GET['campaignId']) or !isset($_GET['userId'])) {
+    if (!isset($_GET['campaignId']) or !isset($_GET['personId'])) {
         header('Location: ../index.php');
         exit;
     }
     $campaignId = $_GET['campaignId'];
-    $userId = $_GET['userId'];
+    $personId = $_GET['personId'];
 
-    AccessControl::revokeCampaign($userId, $campaignId);
+    AccessControl::revokeCampaign($personId, $campaignId);
 }
 header('Location: ../campaign_admin.php');
 
