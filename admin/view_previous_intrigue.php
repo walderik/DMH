@@ -239,8 +239,7 @@ th, td {
 <tr><td>Intrigtyp</td><td><?php echo commaStringFromArrayObject($intrigue->getIntriguetypes())?></td></tr>
 <tr><td>Ansvarig</td><td>
 	<?php                  
-	  $responsibleUser = $intrigue->getResponsibleUser();
-      echo $responsibleUser->Name;
+	echo $intrigue->getResponsiblePerson()->Name;
 ?></td></tr>
 <tr><td>Text till alla aktörer</td><td><?php  echo nl2br($intrigue->CommonText); ?></td></tr>
 <tr><td>Anteckningar</td><td><?php  echo nl2br($intrigue->Notes); ?></td></tr>

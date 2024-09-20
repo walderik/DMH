@@ -36,7 +36,9 @@ include 'navigation.php';
             echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th><th></th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
                 $show = true;
-                if (($current_user->Id != $intrigue->ResponsibleUserId || !$intrigue->isActive()) && !$intrigue->isMainIntrigue()) {
+                $responsiblePerson = $intrigue->getResponsiblePerson();
+                
+                if (($current_user->Id != $responsiblePerson->UserId || !$intrigue->isActive()) && !$intrigue->isMainIntrigue()) {
                     $show = false;
                 }
                 if ($show) echo "<tr>\n";
@@ -47,8 +49,8 @@ include 'navigation.php';
                 echo "<td>" . ja_nej($intrigue->isActive()) . "</td>\n";
                 echo "<td>" . ja_nej($intrigue->MainIntrigue) . "</td>\n";
                 echo "<td>" . commaStringFromArrayObject($intrigue->getIntriguetypes()) . "</td>\n";
-                $responsibleUser = $intrigue->getResponsibleUser();
-                echo "<td>$responsibleUser->Name</td>";
+
+                echo "<td>$responsiblePerson->Name</td>";
                 
                 echo "<td>";
                 if ($intrigue->mayDelete()) echo "<a href='logic/view_intrigue_logic.php?operation=delete&id=" . $intrigue->Id . "'><i class='fa-solid fa-trash' title='Ta bort'></i>";
