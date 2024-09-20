@@ -757,13 +757,24 @@ class Person extends BaseModel{
     
     
     public function isMember() {
+        //Kolla så att vi inte har bytt år.
+        $last_checked_year = substr($this->MembershipCheckedAt, 0, 4);
+        $current_year = date("Y");
+        
+        if (($current_year > $last_checked_year) && $this->IsMember == 1) {
+            $this->IsMember = 0;
+        }
+        
         //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
         if ($this->IsMember == 1) return true;
+        
+        
+        
         
         //Kolla inte oftare än en gång per kvart
         if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false;
         
-        $current_year = date("Y");
+
         
         $val = check_membership($this->SocialSecurityNumber, $current_year);
         
