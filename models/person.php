@@ -493,6 +493,10 @@ class Person extends BaseModel{
         return getAge(substr($this->SocialSecurityNumber, 0, 8), $larp->StartDate);
     }
     
+    public function getAgeNow() {
+        return getAge(substr($this->SocialSecurityNumber, 0, 8), date("Ymd"));
+    }
+    
     public function isRegistered(LARP $larp) {
         $registration = Registration::loadByIds($this->Id, $larp->Id);
         if (isset($registration)) {

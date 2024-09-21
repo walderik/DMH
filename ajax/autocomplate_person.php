@@ -17,7 +17,7 @@ try {
     $results = array();
     
     foreach ($persons as $person) {
-        $results[] = array($person->Id, "$person->Name - $person->SocialSecurityNumber");
+        $results[] = array($person->Id, "$person->Name, ". $person->getAgeNow().' år');
     }
         
     // return $results;

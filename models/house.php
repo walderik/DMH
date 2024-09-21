@@ -146,6 +146,7 @@ class House extends BaseModel{
             $caretaker->HouseId = $this->Id;
             $caretaker->PersonId = $person->Id;
             $caretaker->IsApproved = true;
+            $caretaker->ContractSignedDate = null;
             $caretaker->create();
         }
         return $caretaker;

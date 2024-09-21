@@ -60,7 +60,7 @@ class Housecaretaker extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_housecaretaker (PersonId, HouseId, IsApproved, ContractSignedDate) 
-                VALUES (?,?,?,?,?,?);");
+                VALUES (?,?,?,?);");
         
         if (!$stmt->execute(array($this->PersonId, $this->HouseId, $this->IsApproved, $this->ContractSignedDate))) {
                 $this->connect()->rollBack();

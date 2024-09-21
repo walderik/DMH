@@ -19,10 +19,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         header("Location: view_house.php?id=$house->Id");
         exit;
     } elseif (isset($_GET['person_id'])) {
-        $person = Person::loadById($_GET['person_id']);
-        if (!empty($person)) {
-            $house->addCaretakerPerson($person);
-            echo "<h1>Lägger till $person->Name som husförvaltare</h1>";
+        $person_id = $_GET['person_id'];
+        if ($person_id == 0) {
+            echo "<h1>Välj en ny husförvaltare bland de föreslagna personerna.</h1>";
+        } else {
+            $person = Person::loadById($_GET['person_id']);
+            if (!empty($person)) {
+                $house->addCaretakerPerson($person);
+                echo "<h1>Lägger till $person->Name som husförvaltare</h1>";
+            }
         }
     }
 } else {
@@ -149,7 +154,7 @@ ul.list {
         					<form method="get" style="display: inline;">
                             	<input type="hidden" id="id"  name="id" value="<?php echo $house->Id ?>" style='display:inline;'>
                 				<?php  autocomplete_person_id('60%'); ?> 
-                				<input id="submit_button" type="submit" value="Lägg till en husförvaltare" style='display:inline;'>	
+                				<input id="submit_button" type="submit" value="Välj en ny husförvaltare" style='display:inline;'>	
             				</form>		
         				</td>
         			</tr>
