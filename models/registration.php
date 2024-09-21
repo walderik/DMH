@@ -368,7 +368,7 @@ class Registration extends BaseModel{
     
     
     public static function totalIncomeToday(LARP $larp) {
-        return static::totalFeesPayed($larp) - static::totalFeesReturned($larp);
+        return static::totalFeesPayed($larp);
     }
 
     

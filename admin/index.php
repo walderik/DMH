@@ -89,24 +89,7 @@ include "navigation.php";
 			<tr><td style='font-weight: normal'>Förväntade återbetalningar:<br>deltagaravgifter markerade för återbetalning</td>			
 			<td align='right'><?php echo number_format((float)Registration::totalRefundsToBe($current_larp), 2, ',', '');?> SEK</td></tr>
 			<tr><td  style='font-weight: normal' colspan='2'><hr></td></tr>
-			<?php 
-			$income = Registration::totalIncomeToday($current_larp) + Bookkeeping::sumRegisteredIncomes($current_larp);
-			$refund = 0 - Registration::totalFeesReturned($current_larp);
-			$expense = Bookkeeping::sumRegisteredExpenses($current_larp);
-			
-			?>
-		    <tr><td style='font-weight: normal'>Faktiskta intäkter:<br>registrerade betalningar och andra registrerade intäkter</td>
-		    <td align='right'><?php echo number_format((float)($income), 2, ',', '')?> SEK</td></tr>
-		    <tr><td style='font-weight: normal'>Avdrag återbetalningar:<br>alla registrerade återbetalningar</td>
-		    <td align='right'><?php echo number_format((float)($refund), 2, ',', '')?> SEK</td></tr>
-			<tr><td style='font-weight: normal'>Övriga utgifter:<br>andra registrerade utgifter<br></td>
-			<td align='right'><?php echo number_format((float)$expense, 2, ',', '')?> SEK</td></tr>
-		    <tr><td style='font-weight: normal'>Balans:<br>faktiska inkomster och utgifter</td>
-		    <td align='right'>
-		    <?php 
-		    
-		    $sum = $income + $refund + $expense;
-		    echo number_format((float)$sum, 2, ',', '') ?> SEK</td></tr>
+			<?php economy_overview($current_larp); ?>
 	    </table>
 		</div>
 		<br>&nbsp;<br>

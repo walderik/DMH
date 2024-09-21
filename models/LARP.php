@@ -265,6 +265,12 @@ class LARP extends BaseModel{
         
     }
     
+    public static function getAllForYear($campaignId, $year) {
+        $sql = "SELECT * FROM regsys_larp WHERE CampaignId=? AND StartDate LIKE ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($campaignId,$year."%"));
+    }
+    
+    
 
     public static function allFutureLARPs() {
         $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND VisibleToParticipants=1 ORDER BY ".static::$orderListBy.";";
@@ -359,6 +365,18 @@ class LARP extends BaseModel{
         $year = substr($this->StartDate, 0 , 4);
         $sql ="SELECT * FROM regsys_larp WHERE Id != ? AND StartDate LIKE '$year-%' AND CampaignId=?";
         return static::getSeveralObjectsqQuery($sql, array($this->Id, $this->CampaignId));
+    }
+    
+    public static function getAllYears() {
+        $sql = "SELECT * FROM regsys_larp ORDER BY StartDate";
+        $firstLarp = static::getOneObjectQuery($sql, array());
+        $firstYear = substr($firstLarp->StartDate, 0, 4);
+        $current_year = date("Y");
+        
+        $years = array();
+        for ($i = $firstYear; $i <=$current_year; $i++) $years[] = $i;
+        return $years;
+        
     }
     
 }

@@ -13,7 +13,7 @@
 	    </button>
 	    <div class="dropdown-content">
 	      	<a href="campaigns.php">Kampanjer</a>
-	      	<a href="ecenomy_overview.php">Ekomonisk översikt</a>
+	      	<a href="economy_overview.php">Ekomonisk översikt</a>
 	      	<a href="permissions.php">Behörigheter</a>
 	    </div>
 	  </div> 
