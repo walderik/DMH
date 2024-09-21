@@ -17,10 +17,11 @@ include "navigation.php";
 
 <form method="POST">
 <select name="campaignId" id="campaignId">
+  <option value='0'>Alla kampanjer</option>
 <?php 
 foreach ($campaigns as $campaign) {
   echo "<option value='$campaign->Id'";
-  if ($campaign->Id == $choosen_campaignId) echo " selected ";
+  if (isset($choosen_campaignId) && $campaign->Id == $choosen_campaignId) echo " selected ";
   echo ">$campaign->Name</option>";   
 }
 ?>
@@ -30,7 +31,7 @@ foreach ($campaigns as $campaign) {
 <?php 
 foreach ($years as $year) {
   echo "<option value='$year'";
-  if ($year == $choosen_year) echo " selected ";
+  if (isset($choosen_year) && $year == $choosen_year) echo " selected ";
   echo ">$year</option>";   
 }
 ?>

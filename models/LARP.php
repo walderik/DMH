@@ -266,8 +266,16 @@ class LARP extends BaseModel{
     }
     
     public static function getAllForYear($campaignId, $year) {
-        $sql = "SELECT * FROM regsys_larp WHERE CampaignId=? AND StartDate LIKE ? ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($campaignId,$year."%"));
+        if (empty($campaignId)) {
+            $sql = "SELECT * FROM regsys_larp WHERE StartDate LIKE ? ORDER BY ".static::$orderListBy.";";
+            $var_array = array($year."%");
+        } else { 
+            $sql = "SELECT * FROM regsys_larp WHERE CampaignId=? AND StartDate LIKE ? ORDER BY ".static::$orderListBy.";";
+            $var_array = array($campaignId,$year."%");
+
+        }
+        return static::getSeveralObjectsqQuery($sql, $var_array);
+
     }
     
     
