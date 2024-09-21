@@ -1,9 +1,6 @@
 <?php
  include_once 'header.php';
  
- if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
-     exit;
- }
  
  if ($_SERVER["REQUEST_METHOD"] == "GET") {
      
@@ -22,7 +19,7 @@
      $referer = "";
  }
  
- include "navigation.php";
+ include "../admin/navigation.php";
 ?>
 
 

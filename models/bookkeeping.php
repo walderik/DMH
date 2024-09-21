@@ -11,7 +11,7 @@ class Bookkeeping extends BaseModel{
     public  $BookkeepingAccountId;
     public  $Text;
     public  $Who;
-    public  $UserId;
+    public  $PersonId;
     public  $Amount;
     public  $CreationDate;
     public  $AccountingDate;
@@ -32,7 +32,7 @@ class Bookkeeping extends BaseModel{
         if (isset($arr['BookkeepingAccountId'])) $this->BookkeepingAccountId = $arr['BookkeepingAccountId'];
         if (isset($arr['Text'])) $this->Text = $arr['Text'];
         if (isset($arr['Who'])) $this->Who = $arr['Who'];
-        if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
+        if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
         if (isset($arr['Amount'])) $this->Amount = $arr['Amount'];
         if (isset($arr['CreationDate'])) $this->CreationDate = $arr['CreationDate'];
         if (isset($arr['AccountingDate'])) {
@@ -58,10 +58,10 @@ class Bookkeeping extends BaseModel{
     
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_bookkeeping SET Headline=?, BookkeepingAccountId=?, 
-        Text=?, Who=?, Amount=?, CreationDate=?, AccountingDate=?, ImageId=? WHERE Id = ?");
+        Text=?, Who=?, Amount=?, CreationDate=?, AccountingDate=?, ImageId=?, PersonId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Headline, $this->BookkeepingAccountId,
-            $this->Text, $this->Who, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->ImageId, $this->Id))) {
+            $this->Text, $this->Who, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->ImageId, $this->PersonId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -79,10 +79,10 @@ class Bookkeeping extends BaseModel{
         $this->Number = $max_number + 1;
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_bookkeeping (Number, LarpId, Headline, BookkeepingAccountId, 
-        Text, Who, UserId, Amount, CreationDate, AccountingDate, ImageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        Text, Who, PersonId, Amount, CreationDate, AccountingDate, ImageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Number, $this->LarpId, $this->Headline, $this->BookkeepingAccountId,
-            $this->Text, $this->Who, $this->UserId, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->ImageId))) {
+            $this->Text, $this->Who, $this->PersonId, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->ImageId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -97,8 +97,8 @@ class Bookkeeping extends BaseModel{
         return Bookkeeping_Account::loadById($this->BookkeepingAccountId);
     }
     
-    public function getUser() {
-        return User::loadById($this->UserId);
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
     }
     
 

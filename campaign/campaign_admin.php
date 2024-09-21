@@ -38,7 +38,7 @@ include 'navigation.php';
 
 				<?php 
                 echo "<strong>Arrangörsbehörighet:</strong><br>";
-                $organizers = User::getAllWithAccessToCampaign($campaign);
+                $organizers = Person::getAllWithAccessToCampaign($campaign);
                 if (count($organizers) == 0) echo "Ingen utsedd än<br>";
                 foreach ($organizers as $organizer) {
                     echo "$organizer->Name<br>";

@@ -15,6 +15,7 @@ class Campaign extends BaseModel{
     public  $MinimumAge;
     public  $MinimumAgeWithoutGuardian;
     public  $Currency;
+    public  $MainOrganizerPersonId;
 
     
     
@@ -38,6 +39,7 @@ class Campaign extends BaseModel{
         if (isset($arr['MinimumAge'])) $this->MinimumAge = $arr['MinimumAge'];
         if (isset($arr['MinimumAgeWithoutGuardian'])) $this->MinimumAgeWithoutGuardian = $arr['MinimumAgeWithoutGuardian'];
         if (isset($arr['Currency'])) $this->Currency = $arr['Currency'];
+        if (isset($arr['MainOrganizerPersonId'])) $this->MainOrganizerPersonId = $arr['MainOrganizerPersonId'];
         
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         
@@ -53,10 +55,13 @@ class Campaign extends BaseModel{
     
     # Update an existing campaign in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_campaign SET Name=?, Abbreviation=?, Description=?, Icon=?, Homepage=?, Email=?, Bankaccount=?, MinimumAge=?, MinimumAgeWithoutGuardian=?, Currency=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_campaign SET Name=?, Abbreviation=?, Description=?, Icon=?, 
+            Homepage=?, Email=?, Bankaccount=?, MinimumAge=?, MinimumAgeWithoutGuardian=?, 
+            Currency=?, MainOrganizerPersonId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
-            $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Currency, $this->Id))) {
+            $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, 
+            $this->Currency, $this->MainOrganizerPersonId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -114,6 +119,11 @@ class Campaign extends BaseModel{
         return ($this->Abbreviation=='ME');
     }
     
+    public function getMainOrganizer() {
+        if (empty($this->MainOrganizerPersonId)) return NULL;
+        return Person::loadById($this->MainOrganizerPersonId);
+    }
+    
     public function hasLarps() {
 
         $sql = "SELECT COUNT(*) AS Num FROM regsys_larp WHERE CampaignId=?;";
@@ -146,7 +156,10 @@ class Campaign extends BaseModel{
     }
     
     public static function organizerForCampaigns(User $user) {
-        $sql="SELECT * FROM regsys_campaign WHERE Id IN (SELECT CampaignId FROM regsys_access_control_campaign WHERE UserId = ?) ORDER BY ".static::$orderListBy.";";
+        $sql="SELECT * FROM regsys_campaign WHERE Id IN ".
+        "(SELECT CampaignId FROM regsys_access_control_campaign, regsys_person WHERE ".
+        "regsys_person.UserId = ? AND ".
+        "regsys_access_control_campaign.PersonId = regsys_person.Id) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($user->Id));
     }
     

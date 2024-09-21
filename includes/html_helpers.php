@@ -251,4 +251,20 @@ function autocomplete_person_id($width="100%") {
     	<input type='hidden' id='person_id'  name='person_id' value='0'>
     	<div id='suggestions'></div>
     	<script src='../javascript/autocomplete_person.js'></script>";
+
+function economy_overview(Larp $larp) {
+
+    $income = Registration::totalIncomeToday($larp) + Bookkeeping::sumRegisteredIncomes($larp);
+    $refund = 0 - Registration::totalFeesReturned($larp);
+    $expense = Bookkeeping::sumRegisteredExpenses($larp);
+    $sum = $income + $refund + $expense;
+
+    echo "<tr><td style='font-weight: normal'>Faktiskta intäkter:<br>registrerade betalningar och andra registrerade intäkter</td>\n";
+    echo "<td align='right'>".number_format((float)($income), 2, ',', '')." SEK</td></tr>\n";
+    echo "<tr><td style='font-weight: normal'>Avdrag återbetalningar:<br>alla registrerade återbetalningar</td>\n";
+    echo "<td align='right'>". number_format((float)($refund), 2, ',', '')." SEK</td></tr>\n";
+    echo "<tr><td style='font-weight: normal'>Övriga utgifter:<br>andra registrerade utgifter<br></td>\n";
+    echo "<td align='right'>".number_format((float)$expense, 2, ',', '')." SEK</td></tr>\n";
+    echo "<tr><td style='font-weight: normal'>Balans:<br>faktiska inkomster och utgifter</td>\n";
+    echo "<td align='right'>".number_format((float)$sum, 2, ',', '')."  SEK</td></tr>\n";
 }

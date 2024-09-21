@@ -116,9 +116,11 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 			<tr>
 			<td><label for="UserId">Ansvarig</label></td>
 			<td><?php 
-    			if (empty($bookkeeping->PersonId)) $bookkeeping->PersonId = $current_user->getOrganizer($current_larp)->Id;
-    			$organizers = Person::getAllWithAccessToLarp($current_larp);
-    			selectionDropDownByArray('PersonId', $organizers, true, $bookkeeping->PersonId) ?></td>
+
+			     if (empty($bookkeeping->PersonId)) $bookkeeping->PersonId = $current_user->getOrganizer($current_larp)->Id;
+			     $organizers = Person::getAllWithAccessToLarp($current_larp);
+			     selectionDropDownByArray('PersonId', $organizers, true, $bookkeeping->PersonId) ?></td>
+
 			</tr>
 
 			

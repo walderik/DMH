@@ -265,6 +265,20 @@ class LARP extends BaseModel{
         
     }
     
+    public static function getAllForYear($campaignId, $year) {
+        if (empty($campaignId)) {
+            $sql = "SELECT * FROM regsys_larp WHERE StartDate LIKE ? ORDER BY ".static::$orderListBy.";";
+            $var_array = array($year."%");
+        } else { 
+            $sql = "SELECT * FROM regsys_larp WHERE CampaignId=? AND StartDate LIKE ? ORDER BY ".static::$orderListBy.";";
+            $var_array = array($campaignId,$year."%");
+
+        }
+        return static::getSeveralObjectsqQuery($sql, $var_array);
+
+    }
+    
+    
 
     public static function allFutureLARPs() {
         $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND VisibleToParticipants=1 ORDER BY ".static::$orderListBy.";";
@@ -341,9 +355,13 @@ class LARP extends BaseModel{
     }
     
     public static function organizerForLarps(User $user) {
-        $sql="SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_access_control_larp WHERE UserId = ?) ORDER BY ".static::$orderListBy.";";
+        $sql="SELECT * FROM regsys_larp WHERE Id IN ".
+            "(SELECT LarpId FROM regsys_access_control_larp, regsys_person WHERE ".
+            "regsys_person.UserId = ? AND ".
+            "regsys_access_control_larp.PersonId = regsys_person.Id) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($user->Id));
     }
+    
     
     public function larpInJanuary() {
         $larpmonth = substr($this->StartDate, 5, 2);
@@ -355,6 +373,18 @@ class LARP extends BaseModel{
         $year = substr($this->StartDate, 0 , 4);
         $sql ="SELECT * FROM regsys_larp WHERE Id != ? AND StartDate LIKE '$year-%' AND CampaignId=?";
         return static::getSeveralObjectsqQuery($sql, array($this->Id, $this->CampaignId));
+    }
+    
+    public static function getAllYears() {
+        $sql = "SELECT * FROM regsys_larp ORDER BY StartDate";
+        $firstLarp = static::getOneObjectQuery($sql, array());
+        $firstYear = substr($firstLarp->StartDate, 0, 4);
+        $current_year = date("Y");
+        
+        $years = array();
+        for ($i = $firstYear; $i <=$current_year; $i++) $years[] = $i;
+        return $years;
+        
     }
     
 }

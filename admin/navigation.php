@@ -4,8 +4,6 @@
     <link href="../css/navigation_admin.css" rel="stylesheet" type="text/css">
 	
 	<?php include '../common/navigation_beginning.php';?> 
-
-
 	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
 	  
 	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) { ?>
@@ -92,5 +90,5 @@
 	  </div> 
 	  
 	<?php include '../common/navigation_site_part_selector.php';?>  
-	<?php include '../common/navigation_end.php';?> 
-	  
+	<?php include '../common/navigation_end.php';?>   
+

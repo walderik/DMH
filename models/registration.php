@@ -14,7 +14,6 @@ class Registration extends BaseModel{
     public $Payed; //Datum
     public $PaymentComment;
     public $IsMember; 
-    public $MembershipCheckedAt;
     public $NotComing = 0;
     public $IsToBeRefunded = 0;
     public $RefundAmount = 0;
@@ -56,7 +55,6 @@ class Registration extends BaseModel{
         if (isset($arr['Payed'])) $this->Payed = $arr['Payed'];
         if (isset($arr['PaymentComment'])) $this->PaymentComment = $arr['PaymentComment'];
         if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
-        if (isset($arr['MembershipCheckedAt'])) $this->MembershipCheckedAt = $arr['MembershipCheckedAt'];
         if (isset($arr['NotComing'])) $this->NotComing = $arr['NotComing'];
         if (isset($arr['IsToBeRefunded'])) $this->IsToBeRefunded = $arr['IsToBeRefunded'];
         if (isset($arr['RefundAmount'])) $this->RefundAmount = $arr['RefundAmount'];
@@ -111,14 +109,14 @@ class Registration extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?,  
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
-                Payed=?, PaymentComment=?, IsMember=?, MembershipCheckedAt=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
+                Payed=?, PaymentComment=?, IsMember=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
                 RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?, 
                 GuardianId=?, NotComingReason=?,
                 SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, LarpPartNotAttending=?, LarpPartAcknowledged=?, EvaluationDone=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId,  
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
-            $this->Payed, $this->PaymentComment, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
+            $this->Payed, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment, 
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, 
@@ -138,13 +136,13 @@ class Registration extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, PaymentComment, IsMember,
-            MembershipCheckedAt, NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, 
+            NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, 
             NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, NotComingReason, 
             SpotAtLARP, TypeOfFoodId, FoodChoice, LarpPartNotAttending, LarpPartAcknowledged, EvaluationDone) 
             VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
-            $this->AmountPayed, $this->Payed, $this->PaymentComment, $this->IsMember, $this->MembershipCheckedAt, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
+            $this->AmountPayed, $this->Payed, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
             $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment,
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason,
@@ -198,34 +196,6 @@ class Registration extends BaseModel{
     }
     
     
-    public function isMember() {
-        //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
-        if ($this->IsMember == 1) return true;
-        
-        //Kolla inte oftare än en gång per kvart
-        if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false;
-        
-        $larp = LARP::loadById($this->LARPId);
-        $year = substr($larp->StartDate, 0, 4);
-        
-        
-        $val = check_membership($this->getPerson()->SocialSecurityNumber, $year);
-        
-        
-        if ($val == 1) {
-            $this->IsMember=1;
-        }
-        else {
-            $this->IsMember = 0;
-        }
-        $now = new Datetime();
-        $this->MembershipCheckedAt = date_format($now,"Y-m-d H:i:s");
-        $this->update();
-        
-        if ($this->IsMember == 1) return true;
-        return false;
-        
-    }
     
     public function hasSpotAtLarp() {
         if ($this->SpotAtLARP == 1) return true;
@@ -398,7 +368,7 @@ class Registration extends BaseModel{
     
     
     public static function totalIncomeToday(LARP $larp) {
-        return static::totalFeesPayed($larp) - static::totalFeesReturned($larp);
+        return static::totalFeesPayed($larp);
     }
 
     
@@ -566,6 +536,23 @@ class Registration extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public function isMember() {
+        //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
+        if ($this->IsMember == 1) return true;
+        
+        $person = $this->getPerson();
+        $larp = LARP::loadById($this->LARPId);
+        
+        $isMember = $person->isMemberAtLarp($larp);
+        
+        if ($isMember) {
+            $this->IsMember = 1;
+            $this->update();
+            return true;
+        }
+        
+        return false;
+    }
     
     
 }

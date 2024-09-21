@@ -2,10 +2,6 @@
 
 include_once '../header.php';
 
-if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
-    exit;
-}
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -15,9 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     foreach ($userIds as $userId) {
         $user = User::loadById($userId);
         
-        if (!AccessControl::hasAccessLarp($user, $larp)) {
-            AccessControl::grantLarp($userId, $larpId);
-       }
+        AccessControl::grantLarp($user, $larp);
+       
     }
     
     header('Location: ../settings.php');
