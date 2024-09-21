@@ -29,7 +29,7 @@ foreach ($intrigue_array as $intrigue) {
     if (!$intrigue->isActive()) continue;
     if (isset($one_intrigue_id) && $one_intrigue_id != $intrigue->Id) continue;
     $rows = array();
-    $header = array("Ansvarig", $intrigue->getResponsibleUser()->Name);
+    $header = array("Ansvarig", $intrigue->getResponsiblePerson()->Name);
 
     $groupActors = $intrigue->getAllGroupActors();
     foreach($groupActors as $groupActor) {

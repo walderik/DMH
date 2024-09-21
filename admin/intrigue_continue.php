@@ -26,7 +26,7 @@ include 'navigation.php';
 
 		        echo "<td>".$intrigue->getLarp()->Name."</td>";
 		        
-		        echo "<td>".$intrigue->getResponsibleUser()->Name."</td>";
+		        echo "<td>".$intrigue->getResponsiblePerson()->Name."</td>";
 		        echo "</tr>\n";
 		    }
 		    echo "</table>";
