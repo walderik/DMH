@@ -226,9 +226,29 @@ function fontDropDown(String $name, ?String $selected=null) {
         
 
         echo "<option value='$font' $row_option>$font</option>\n"; 
-        //echo "<input type='radio' id='" .$font . "' name='" . $name . "' value='" . $font . "' " . $row_option . ">\n";
-        //echo "<label for='" .$font . "'>" .  $font . "</label><br>\n";
     }
     echo "</select>\n";
     echo "</div>\n";
+}
+
+# Inamtning för hitta personer enkelt
+# Man kan ange bredden på inmatningsfältet som argument
+function autocomplete_person_id($width="100%") {
+    echo "
+        <style>
+            #suggestions div {
+                cursor: pointer;
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+            #suggestions div:hover {
+                background-color: #f0f0f0;
+            }
+        </style>";
+    
+    echo "
+        <input type='text' id='autocomplete_person' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' >
+    	<input type='hidden' id='person_id'  name='person_id' value='0'>
+    	<div id='suggestions'></div>
+    	<script src='../javascript/autocomplete_person.js'></script>";
 }

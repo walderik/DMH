@@ -142,8 +142,7 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
         
     }
-    
-    
+
     
     public static function getPersonsForUser($userId) {
         $sql = "SELECT * FROM regsys_person WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
@@ -233,6 +232,13 @@ class Person extends BaseModel{
             }
         }
         return $group_members;
+    }
+    
+    # En function som letar bland alla personer och returnerar en array av personer om något hittas
+    public static function searchPersons($search) {
+        $sql = "SELECT * from regsys_person WHERE `name` LIKE ? OR `SocialSecurityNumber` regexp ? OR `SocialSecurityNumber` regexp ? ORDER BY ".static::$orderListBy.";";
+        $persons = static::getSeveralObjectsqQuery($sql, array("%$search%", "^$search", "^19$search"));
+        return $persons;
     }
     
     

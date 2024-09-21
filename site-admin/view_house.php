@@ -40,11 +40,9 @@ ul.list {
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
 
-
-
     <div class="content"> 
     	<h1><?php echo $house->Name; ?>
-    	<a href='house_form.php?operation=update&id=<?php echo $house->Id ?>'><i class='fa-solid fa-pen'> </i></a>
+    	<a href='house_form.php?operation=update&id=<?php echo $house->Id ?>' title="Redigera beskrivningen"><i class='fa-solid fa-pen'> </i></a>
     	</h1>
     	<table>
     		<tr>
@@ -58,24 +56,21 @@ ul.list {
         				?>
         				</td>
         				<td>
-     
-        					<?php echo htmlspecialchars($house->NumberOfBeds); 
-        					if ($house->IsHouse()) echo " (Hus)";
-                            else echo " (Lägerplats)";?>
+    					<?php echo htmlspecialchars($house->NumberOfBeds); 
+    					if ($house->IsHouse()) echo " (Hus)";
+                        else echo " (Lägerplats)";?>
         				</td>
 
-        				        	<?php 
-	        if ($house->hasImage()) {
-	            $image = $house->getImage();
-	            $photografer = (!empty($image->Photographer) && $image->Photographer!="") ? "Fotograf $image->Photographer" : "";
-	            echo "<td rowspan='6'>";
-	            echo "<img src='../includes/display_image.php?id=$house->ImageId' title='$photografer'/>\n";
-	            echo "<br>$photografer";
-	            echo "</td>";
-	        }
-            ?>
-
-        				
+        				<?php 
+            	        if ($house->hasImage()) {
+            	            $image = $house->getImage();
+            	            $photografer = (!empty($image->Photographer) && $image->Photographer!="") ? "Fotograf $image->Photographer" : "";
+            	            echo "<td rowspan='6'>";
+            	            echo "<img src='../includes/display_image.php?id=$house->ImageId' title='$photografer'/>\n";
+            	            echo "<br>$photografer";
+            	            echo "</td>";
+            	        }
+                        ?>
         			</tr>
         			<tr>
         				<td>Plats</td>
@@ -96,7 +91,7 @@ ul.list {
         			</tr>
         			<?php if ($house->IsHouse()) {?>
         			<tr>
-        				<td>Information till deltagare som ska bo i huset</td>
+        				<td>Husbrev<br>(Information till deltagare som ska bo i huset)</td>
         				<td><?php echo nl2br(htmlspecialchars($house->NotesToUsers)); ?></td>
         			</tr>
         			<tr>
@@ -118,7 +113,7 @@ ul.list {
 					
         			<tr><td>&nbsp;</td></tr>
         			<tr>
-        				<td colspan = '2'><h2>Husförvaltare är:</h2><br>
+        				<td colspan = '2'><h2>Husförvaltare är:</h2>
         					<table id='caretakers' class='data'>
                 				<th>Namn</th><th>Medlem</th><th>Email</th><th>&nbsp;</th>
                 				<?php 
@@ -127,7 +122,10 @@ ul.list {
                 				    $person = $caretaker->getPerson();
                 				    echo "<tr>\n";
                 				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
-                				    echo "  <td>".showStatusIcon($caretaker->isMember())."</td>\n";
+                				    echo "  <td>";
+                				   
+                				    //showStatusIcon($caretaker->isMember()).
+                				    echo "</td>\n";
                 				    echo "  <td>".contactEmailIcon($person)."</td>\n";
                 				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
                 				    $confirm = "onclick='return confirm($txt)'";
@@ -136,6 +134,12 @@ ul.list {
                 				}
                 				?>
         					</table>
+        					<br>
+        					<form method="get" style="display: inline;">
+                            	<input type="hidden" id="id"  name="id" value="<?php echo $house->Id ?>" style='display:inline;'>
+                				<?php  autocomplete_person_id('60%'); ?> 
+                				<input id="submit_button" type="submit" value="Lägg till en husförvaltare" style='display:inline;'>	
+            				</form>		
         				</td>
         			</tr>
         			<tr><td>&nbsp;</td></tr>
@@ -164,8 +168,7 @@ ul.list {
         		</table>
         	</td>
         	</tr>
-    	</table>
-    	
+    	</table>    	
     	
     	<script>
 

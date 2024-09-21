@@ -72,7 +72,6 @@ include "navigation.php";
                 echo "<td width='8%'>" . $house->NumberOfBeds . "</td>\n";
                 echo "<td width='20%' style='word-break: break-all';>" . $house->PositionInVillage . "</td>\n";
                 echo "<td>" . $house->Description . "</td>\n";
-//                 echo "<td>" . mb_strimwidth(str_replace('\n', '<br>', $house->Description), 0, 200, '...') . "</td>\n";
                 
                 echo "<td nowrap>";
                 
@@ -91,12 +90,11 @@ include "navigation.php";
                     $image = $house->getImage();
                     $photografer = (!empty($image->Photographer) && $image->Photographer!="") ? "Fotograf $image->Photographer" : "";
                     echo "<td><img width=45 src='../includes/display_image.php?id=$house->ImageId' title='$photografer'/><br>\n";
-//                           <a href='logic/delete_image.php?id=$house->Id&type=house'>Ta bort bild</a></td>\n";
                 } else {
                     echo "<td><a href='upload_image.php?id=$house->Id&type=house'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";
                 }
                 
-                echo "<td><a href='house_form.php?operation=update&id=" . $house->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                echo "<td><a href='house_form.php?operation=update&id=$house->Id' title=\"Redigera beskrivningen\"><i class='fa-solid fa-pen'></i></td>\n";
                 
                 $txt = '"Är du säker att du helt vill ta bort '.$house->Name.'?"';
                 $confirm = "onclick='return confirm($txt)'";

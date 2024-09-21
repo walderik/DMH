@@ -50,7 +50,7 @@ img {
     			</tr>
     			<?php if ($house->IsHouse() && isset($house->NotesToUsers)) {?>
     			<tr>
-    				<td>Information till deltagare som ska bo i huset</td>
+    				<td>Husbrev<br>(Information till deltagare som ska bo i huset)</td>
     				<td><?php echo nl2br(htmlspecialchars($house->NotesToUsers)); ?></td>
     			</tr>
     			<?php }?>
