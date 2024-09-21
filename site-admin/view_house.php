@@ -1,10 +1,14 @@
 <?php
 include_once 'header.php';
+// include_once '../includes/error_handling.php';
 
 $house = House::newWithDefault();
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $house = House::loadById($_GET['id']);
+    if (empty($house)) {
+        header('Location: index.php?error=no_house');
+    }
     
     if (isset($_GET['operation']) && ($_GET['operation'] == 'position')) {
         
@@ -14,6 +18,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         
         header("Location: view_house.php?id=$house->Id");
         exit;
+    } elseif (isset($_GET['person_id'])) {
+        $person = Person::loadById($_GET['person_id']);
+        if (!empty($person)) {
+            $house->addCaretakerPerson($person);
+            echo "<h1>Lägger till $person->Name som husförvaltare</h1>";
+        }
     }
 } else {
     header('Location: index.php');

@@ -139,6 +139,18 @@ class House extends BaseModel{
         return Person::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
+    public function addCaretakerPerson(Person $person) {
+        $caretaker = Housecaretaker::loadByIds($this->Id, $person->Id);
+        if (empty($caretaker)) {
+            $caretaker = Housecaretaker::newWithDefault();
+            $caretaker->HouseId = $this->Id;
+            $caretaker->PersonId = $person->Id;
+            $caretaker->IsApproved = true;
+            $caretaker->create();
+        }
+        return $caretaker;
+    }
+    
     # Det finns en objectmetod på person som heter @person->housesOf
     public static function housesOf(Person $person) {
         $sql = "SELECT * FROM regsys_house WHERE Id IN (
