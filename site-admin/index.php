@@ -2,7 +2,14 @@
 require 'header.php';
 include_once '../includes/error_handling.php';
 include "navigation.php";
+if (isset($error_message) && strlen($error_message)>0) {
+    echo '<div class="error">'.$error_message.'</div>';
+}
+if (isset($message_message) && strlen($message_message)>0) {
+    echo '<div class="message">'.$message_message.'</div>';
+}
 ?>
+	 
 	<body>
 		<div class="content">
 			<h1>Omnes Mundi administration</h1>

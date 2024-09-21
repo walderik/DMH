@@ -142,6 +142,9 @@ function getErrorText($code) {
         case "no_email":
             $output = "Ingen korrekt epostadress angiven.";
             break;
+        case "no_house":
+            $output = "Det huset finns inte.";
+            break;
         case "no_text":
             $output = "Ingen text angiven.";
             break;
