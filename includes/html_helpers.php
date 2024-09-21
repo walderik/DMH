@@ -251,6 +251,7 @@ function autocomplete_person_id($width="100%") {
     	<input type='hidden' id='person_id'  name='person_id' value='0'>
     	<div id='suggestions'></div>
     	<script src='../javascript/autocomplete_person.js'></script>";
+}
 
 function economy_overview(Larp $larp) {
 
