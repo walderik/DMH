@@ -129,13 +129,26 @@ ul.list {
 					<?php  if ($house->IsHouse()) { ?>
         			<tr><td>&nbsp;</td></tr>
         			<tr>
-        				<td colspan = '2'><h2>Husförvaltare är:</h2>
+        				<td colspan = '2'>
+        					<h2 style='display:inline;text-align: left;'>Husförvaltare är:</h2> &nbsp;
+        					<?php
+        					    $persons = array();
+        					    $personIdArr = array();
+            			        $caretakers = $house->getHousecaretakers();
+            					foreach ($caretakers as $caretaker) {
+            					    $persons[] = $caretaker->getPerson();
+            					    $personIdArr[] = $caretaker->PersonId;
+            					}
+        					    
+            					echo contactSeveralEmailIcon("Maila alla husförvaltare", $personIdArr,
+                    	            "Bäste husförvaltare av $house->Name!",
+                    	            "Meddelande till alla som är husförvaltare av $house->Name");?>
+        					
         					<table id='caretakers' class='data'>
                 				<th>Namn</th><th>Medlem</th><th>Email</th><th>&nbsp;</th>
                 				<?php 
                 				$caretakers = $house->getHousecaretakers();
-                				foreach ($caretakers as $caretaker) {
-                				    $person = $caretaker->getPerson();
+                				foreach ($persons as $person) {
                 				    echo "<tr>\n";
                 				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
                 				    echo "  <td>";
