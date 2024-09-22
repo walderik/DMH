@@ -12,10 +12,10 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      	<a href="forms.php">Anmälningsformulär</a>
-            <a href="selection_data_admin.php?type=advertismenttypes">Annonsformat</a>
-            <a href="selection_data_admin.php?type=titledeedplace">Platser för handel</a>
-            <a href="campaign_admin.php">Inställningar för kampanjen</a>
+	      	<a href="../campaign/forms.php">Anmälningsformulär</a>
+            <a href="../campaign/selection_data_admin.php?type=advertismenttypes">Annonsformat</a>
+            <a href="../campaign/selection_data_admin.php?type=titledeedplace">Platser för handel</a>
+            <a href="../campaign/campaign_admin.php">Inställningar för kampanjen</a>
 	      	<a href="../common/mail_admin.php">Skickad epost</a>
  	    </div>
 	  </div>
@@ -25,8 +25,8 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      	<a href="organizers.php">Arrangörer</a>
-            <a href="larp_admin.php">Lajv i kampanjen</a>
+	      	<a href="../campaign/organizers.php">Arrangörer</a>
+            <a href="../campaign/larp_admin.php">Lajv i kampanjen</a>
  	    </div>
 	  </div>
 	  
@@ -35,7 +35,7 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-            <a href="bookkeeping_account_admin.php">Bokföringskonton</a>
+            <a href="../campaign/bookkeeping_account_admin.php">Bokföringskonton</a>
  	    </div>
 	  </div>
 	  

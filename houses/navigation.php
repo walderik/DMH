@@ -9,27 +9,21 @@
 
 	<!--  Egen meny -->
 	    	<!--  Egen meny -->
-	  <div class="dropdown">
-	    <button class="dropbtn">Boende 
-	      <i class="fa fa-caret-down"></i>
-	    </button>
-	    <div class="dropdown-content">
-		    <a href="house_admin.php?type=house">Hus</a>
-		    <a href="house_admin.php?type=camp">Lägerplatser</a>
-            <!--  <a href="house_admin.php">Husförvaltare</a>  -->
-	      	<a href="../common/mail_admin.php">Skickad epost</a>
-  	    </div>
-	  </div>
+	    <a href="../houses/house_admin.php?type=house">Hus</a>
+	    <a href="../houses/house_admin.php?type=camp">Lägerplatser</a>
+	    <a href="../houses/xxx.php">Husförvaltare</a>
 	
 	  <div class="dropdown">
 	    <button class="dropbtn">Kartor 
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-		    <a href="all_houses.php">Hus</a>
-		    <a href="all_housing.php">Hus & Läger</a>
+		    <a href="../houses/all_houses.php">Hus</a>
+		    <a href="../houses/all_housing.php">Hus & Läger</a>
  	    </div>
 	  </div>
+
+      	<a href="../common/mail_admin.php">Skickad epost</a>
 
 	<?php include '../common/navigation_site_part_selector.php';?>  
 	<?php include '../common/navigation_end.php';?> 

@@ -12,9 +12,10 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      	<a href="campaigns.php">Kampanjer</a>
-	      	<a href="economy_overview.php">Ekonomisk översikt</a>
-	      	<a href="permissions.php">Behörigheter</a>
+	      	<a href="../board/campaigns.php">Kampanjer</a>
+	      	<a href="../board/economy_overview.php">Ekonomisk översikt</a>
+	      	<a href="../board/permissions.php">Behörigheter</a>
+		    <a href="../board/ssn_check.php">Medlemskontroll</a> 
 	      	<a href="../common/mail_admin.php">Skickad epost</a>
 	    </div>
 	  </div> 
