@@ -1,6 +1,6 @@
 <?php
 require 'header.php';
-include_once '../includes/error_handling.php';
+// include_once '../includes/error_handling.php';
 
 include "navigation.php";
 $isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));

@@ -1,6 +1,6 @@
 <?php
 require 'header.php';
-include_once '../includes/error_handling.php';
+// include_once '../includes/error_handling.php';
 
 include "navigation.php";
 ?>

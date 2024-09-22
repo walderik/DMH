@@ -1,6 +1,6 @@
 <?php
 include_once 'header.php';
-include_once '../includes/error_handling.php';
+// include_once '../includes/error_handling.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
