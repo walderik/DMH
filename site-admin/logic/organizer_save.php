@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     foreach ($userIds as $userId) {
        
        AccessControl::grantCampaign($userId, $campaignId);
-       }
+       
     }
     
     header('Location: ../campaign_admin.php');

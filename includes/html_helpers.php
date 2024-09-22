@@ -147,33 +147,24 @@ function showParticipantStatusIcon($value, $message) {
     }
 }
 
-function contactEmailIcon(Person $person) {
+function contactEmailIcon(Person $person, ?bool $isLarp=true) {
     $param = date_format(new Datetime(),"suv");
-    return "<form action='contact_email.php'  class='fabutton' method='post'>\n".
-        "<input type=hidden name='send_one' value=$param>\n".
+    $res = "<form action='../common/contact_email.php'  class='fabutton' method='post'>\n";
+    if ($isLarp) $res .= "<input type=hidden name='isLarp' value='1'>";
+    $res .= "<input type=hidden name='send_one' value=$param>\n".
         "<input type=hidden name='personId' value=$person->Id>\n".
         "<button type='submit' class='invisible' title='Skicka mail till $person->Name'>".
         "  <i class='fa-solid fa-envelope-open-text'></i>".
         "</button>\n".
         "</form>\n";
+    return $res;
 }
-
-function contactEmailIconUser(User $user) {
-    $param = date_format(new Datetime(),"suv");
-    return "<form action='contact_email.php'  class='fabutton' method='post'>\n".
-        "<input type=hidden name='send_one' value=$param>\n".
-        "<input type=hidden name='email' value=$user->Email>\n".
-        "<button type='submit' class='invisible' title='Skicka mail till $user->Name'>".
-        "  <i class='fa-solid fa-envelope-open-text'></i>".
-        "</button>\n".
-        "</form>\n";
-}
-
 
 
 function contactAllEmailIcon(){
     $param = date_format(new Datetime(),"suv");
-    return "<form action='contact_email.php'  class='fabutton' method='post'>".
+    return "<form action='../common/contact_email.php'  class='fabutton' method='post'>".
+        "<input type=hidden name='isLarp' value='1'>".
         "<input type=hidden name='send_all' value=$param>".
         "<button type='submit' class='invisible' title='Skicka ett utskick till alla deltagare i lajvet'>".
         "  <i class='fa-solid fa-envelope-open-text'></i>".
@@ -182,11 +173,11 @@ function contactAllEmailIcon(){
 }
 
 
-function contactSeveralEmailIcon($txt, $personIdArr, $greeting, $subject){
+function contactSeveralEmailIcon($txt, $personIdArr, $greeting, $subject, ?bool $isLarp=true){
     $param = date_format(new Datetime(),"suv");
-    $retrunStr = "<form action='contact_email.php'  class='fabutton' method='post'>\n".
+    $retrunStr = "<form action='../common/contact_email.php'  class='fabutton' method='post'>\n".
         "<input type=hidden name='send_several' value=$param>\n";
-        
+    if ($isLarp) $retrunStr .= "<input type=hidden name='isLarp' value='1'>";
     foreach ($personIdArr as $personId)  {
         $retrunStr .= "<input type='hidden' name='personId[]' value='$personId'>\n";
     }

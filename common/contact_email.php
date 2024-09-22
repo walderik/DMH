@@ -1,6 +1,32 @@
 <?php
 
-include_once 'header.php';
+$referer = '';
+if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
+else {
+    header('Location: ../participant/index.php');
+    exit;
+}
+
+if (str_contains($referer, "/admin/")) {
+    include '../admin/header.php';
+    $navigation = '../admin/navigation.php';
+} elseif (str_contains($referer, "/campaign/")) {
+    include '../campaign/header.php';
+    $navigation =  '../campaign/navigation.php';
+} elseif (str_contains($referer, "/board/")) {
+    include '../board/header.php';
+    $navigation =  '../board/navigation.php';
+} elseif (str_contains($referer, "/houses/")) {
+    include '../houses/header.php';
+    $navigation =  '../houses/navigation.php';
+} elseif (str_contains($referer, "/site-admin/")) {
+    include '../site-admin/header.php';
+    $navigation =  '../site-admin/navigation.php';
+} else {
+    header('Location: ../participant/index.php');
+    exit;
+}
+
 
 global $current_larp;
 
@@ -19,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $subject = "Boende på $current_larp->Name";
     } elseif (isset($_POST['send_one'])) {
         $type="one";
+        if (isset($_POST['subject'])) $subject = $_POST['subject'];
         $personId = $_POST['personId'];
         $person = Person::loadById($personId);
         $name = $person->Name;
@@ -35,19 +62,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-if (empty($type)) {
-    header('Location: index.php');
-    exit;
+if (isset($_POST['isLarp'])) $isLarp = true;
+else $isLarp = false;
+
+if ($isLarp) {
+    $campaign = $current_larp->getCampaign();
+    $hej = $campaign->hej();
+    
+    $senderTexts = ["$current_user->Name för arrangörsgruppen av $current_larp->Name", "Arrangörerna av $current_larp->Name"]; 
+    if (!isset($subject)) $subject = "Meddelande från $campaign->Name";
+} else {
+    $hej = "Hej";
+    $senderTexts = ["$current_user->Name för Berghems Vänner", "Berghems Vänner"];
+    if (!isset($subject)) $subject = "Meddelande från Berghems Vänner";
 }
 
-$referer = '';
-if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
 
-$campaign = $current_larp->getCampaign();
 
-$hej = $campaign->hej();
 
-include 'navigation.php';
+
+include $navigation;
 ?>
 
 	<div class="content">
@@ -97,7 +131,7 @@ include 'navigation.php';
     		}
 		}
 		
-        if (!isset($subject)) $subject = "Meddelande från $campaign->Name";    
+
 	    echo "Ärende: <input id='subject' size = '70' name='subject' value='$subject' required>";
 		    
 
@@ -133,12 +167,11 @@ include 'navigation.php';
 			<b>
 			
 			<?php 
-			$senderText1 = "$current_user->Name för arrangörsgruppen av $current_larp->Name";
-			$senderText2 = "Arrangörerna av $current_larp->Name";
 			
 			echo "<select name='senderText' id='senderText'>";
-		    echo "<option value=\"$senderText1\">$senderText1</option>";
-		    echo "<option value=\"$senderText2\">$senderText2</option>";
+		    foreach ($senderTexts as $senderText) {
+		        echo "<option value=\"$senderText\">$senderText</option>";
+		    }
 		    echo "</select>";
 			
 			?>

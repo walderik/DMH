@@ -45,8 +45,8 @@ $param = date_format(new Datetime(),"suv");
                   
                 ?>
                 </td><td>
-				<form action='contact_email.php'  method="post"  
-			    >
+				<form action='../common/contact_email.php'  method="post" >
+				<input type=hidden name="isLarp" value='1'>
 				<input type=hidden name="send_intrigues" value=<?php echo $param ?>>
                 <input type='submit' value='Skicka ut intrigerna'></form>
                 <br>
@@ -69,7 +69,8 @@ $param = date_format(new Datetime(),"suv");
                 ?>
         </td>
         <td>
-		<form action='contact_email.php'  method="post" >
+		<form action='../common/contact_email.php'  method="post" >
+				<input type=hidden name="isLarp" value='1'>
 				<input type=hidden name="send_housing" value=<?php echo $param ?>>
 			
         <input type='submit' value='Skicka ut boendet'>
