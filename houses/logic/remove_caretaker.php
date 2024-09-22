@@ -28,6 +28,10 @@ if (isset($_SERVER['HTTP_REFERER'])) {
     $url = $_SERVER['HTTP_REFERER'];
     $url = preg_replace('/(&|\?)'.preg_quote('person_id').'=[^&]*$/', '', $url);
     $url = preg_replace('/(&|\?)'.preg_quote('person_id').'=[^&]*&/', '$1', $url);
+    $url = preg_replace('/(&|\?)'.preg_quote('message').'=[^&]*$/', '', $url);
+    $url = preg_replace('/(&|\?)'.preg_quote('message').'=[^&]*&/', '$1', $url);
+    $url = preg_replace('/(&|\?)'.preg_quote('error').'=[^&]*$/', '', $url);
+    $url = preg_replace('/(&|\?)'.preg_quote('error').'=[^&]*&/', '$1', $url);
     $url .= '&message=caretaker_removed';
     
     header('Location: ' . $url);
