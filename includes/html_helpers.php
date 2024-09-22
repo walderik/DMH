@@ -185,7 +185,7 @@ function contactSeveralEmailIcon($txt, $personIdArr, $greeting, $subject, ?int $
     $retrunStr .= "<input type=hidden name='name' value='$greeting'>\n".
         "<input type=hidden name='subject' value='$subject'>\n".
         "<button type='submit' class='invisible' title='$txt'>".
-        "  <i class='fa-solid fa-envelope-open-text'></i>  ".$txt.
+        "  <i class='fa-solid fa-envelope-open-text' title='Skicka epost till alla'></i>  ".$txt.
         "</button>\n".
     "</form>\n";
     return $retrunStr;

@@ -93,7 +93,7 @@ ul.list {
                         ?>
         			</tr>
         			<tr>
-        				<td>Plats</td>
+        				<td>Typ av boende</td>
         				<td>
         				<?php                 
         				if ($house->IsHouse()) echo "Hus";
@@ -135,7 +135,7 @@ ul.list {
         			<tr><td>&nbsp;</td></tr>
         			<tr>
         				<td colspan = '2'>
-        					<h2 style='display:inline;text-align: left;'>Husförvaltare är:</h2> &nbsp;
+        					<h2 style='text-align: left;'>Husförvaltare &nbsp;
         					<?php
         					    $persons = array();
         					    $personIdArr = array();
@@ -144,11 +144,10 @@ ul.list {
             					    $persons[] = $caretaker->getPerson();
             					    $personIdArr[] = $caretaker->PersonId;
             					}
-        					    
-            					echo contactSeveralEmailIcon("Maila alla husförvaltare", $personIdArr,
-                    	            "Bäste husförvaltare av $house->Name!",
-                    	            "Meddelande till alla som är husförvaltare av $house->Name", BerghemMailer::ASSOCIATION);?>
-        					
+            					echo contactSeveralEmailIcon("", $personIdArr,
+                    	            "bäste husförvaltare av $house->Name!",
+                    	            "Meddelande till alla som är husförvaltare av $house->Name", BerghemMailer::ASSOCIATION) ;?>
+        					</h2>
         					<table id='caretakers' class='data'>
                 				<th>Namn</th><th>Medlem</th><th>Email</th><th>&nbsp;</th>
                 				<?php 
@@ -171,7 +170,7 @@ ul.list {
         					<br>
         					<form method="get"  autocomplete="off" style="display: inline;">
                             	<input type="hidden" id="id"  name="id" value="<?php echo $house->Id ?>" style='display:inline;'>
-                				<?php  autocomplete_person_id('60%', true); ?> 
+                				<?php autocomplete_person_id('60%', true); ?> 
             				</form>		
         				</td>
         			</tr>
@@ -182,19 +181,27 @@ ul.list {
         					<?php 
         					$larps = $house->getAllLarpsWithHousing();
         					foreach (array_reverse($larps) as $larp) {
-            				    echo "<h3>$larp->Name</h3>";
+        					    $personsInHouse = Person::personsAssignedToHouse($house, $larp);
+        					    $personIdArr = array();
+        					    foreach ($personsInHouse as $person) {
+        					        $personIdArr[] = $person->Id;
+        					    }
+        					    $mailikon = contactSeveralEmailIcon("", $personIdArr,
+        					        "bäste boende i $house->Name under $larp->Name!",
+        					        "Meddelande till alla som bodde i $house->Name under $larp->Name", BerghemMailer::ASSOCIATION);
+        					    
+            				    echo "<details><summary><b>$larp->Name</b>  &nbsp; $mailikon</summary> ";
             				    echo substr($larp->StartDate, 2, 8) .' -> '.substr($larp->EndDate, 2, 8)."<br><br>\n";
             					echo "<table id='caretakers' class='data'>";
                 				echo "<th>Namn</th><th>Email</th>";
-                				
-            				    $personsInHouse = Person::personsAssignedToHouse($house, $larp);
+            				    
             				    foreach ($personsInHouse as $person) {
                 				    echo "<tr>\n";
                 				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
                 				    echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
                 				    echo "</tr>\n";
                 				}
-                				echo "</table><br>\n";
+                				echo "</table><br></details><br>\n";
             				}
         				    ?>
         				</td>
