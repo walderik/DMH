@@ -55,7 +55,8 @@ foreach ($houses as $house) {
         echo "var target = L.latLng('$house->Lat', '$house->Lon');";
         
         echo "marker = L.marker(target).addTo(map);";
-        echo "marker.bindPopup('$house->Name').openPopup();";
+        $text = "<a href='view_house.php?operation=update&id=$house->Id' target='_blank'><b>$house->Name</b></a><br>";
+        echo "marker.bindPopup(\"$text\").openPopup();";
 
     }
 }
