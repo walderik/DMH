@@ -1,8 +1,9 @@
 <?php
 include_once 'header.php';
-// include_once '../includes/error_handling.php';
 
 $house = House::newWithDefault();
+
+include "navigation.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $house = House::loadById($_GET['id']);
@@ -21,12 +22,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } elseif (isset($_GET['person_id'])) {
         $person_id = $_GET['person_id'];
         if ($person_id == 0) {
-            echo "<h1>Välj en ny husförvaltare bland de föreslagna personerna.</h1>";
+            $error_message = "Kan du bara välja en ny husförvaltare bland de föreslagna personerna.";
         } else {
             $person = Person::loadById($_GET['person_id']);
             if (!empty($person)) {
                 $house->addCaretakerPerson($person);
-                echo "<h1>Lägger till $person->Name som husförvaltare</h1>";
+                $message_message = "Lägger till $person->Name som husförvaltare på $house->Name";
             }
         }
     }
@@ -35,8 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     exit;
 }
 
-
-include "navigation.php";
+if (isset($error_message) && strlen($error_message)>0) {
+    echo '<div class="error">'.$error_message.'</div>';
+}
+if (isset($message_message) && strlen($message_message)>0) {
+    echo '<div class="message">'.$message_message.'</div>';
+}
 
 ?>
     
