@@ -24,3 +24,5 @@ function myFunction() {
 
 
 </script>
+
+<?php include_once '../includes/error_handling.php'; ?>

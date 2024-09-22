@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $housecaretaker = Housecaretaker::loadByIds($houseId, $personId);
 
 if (!isset($housecaretaker)) {
-    header('Location: ../index.php');
+    header('Location: ../index.php?message=caretaker_removed');
     exit;
 }
 
@@ -25,7 +25,12 @@ $housecaretaker->destroy();
 
 
 if (isset($_SERVER['HTTP_REFERER'])) {
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    $url = $_SERVER['HTTP_REFERER'];
+    $url = preg_replace('/(&|\?)'.preg_quote('person_id').'=[^&]*$/', '', $url);
+    $url = preg_replace('/(&|\?)'.preg_quote('person_id').'=[^&]*&/', '$1', $url);
+    $url .= '&message=caretaker_removed';
+    
+    header('Location: ' . $url);
     exit;
 }
 

@@ -1,8 +1,9 @@
 <?php
 include_once 'header.php';
-// include_once '../includes/error_handling.php';
 
 $house = House::newWithDefault();
+
+include "navigation.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $house = House::loadById($_GET['id']);
@@ -21,12 +22,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } elseif (isset($_GET['person_id'])) {
         $person_id = $_GET['person_id'];
         if ($person_id == 0) {
-            echo "<h1>Välj en ny husförvaltare bland de föreslagna personerna.</h1>";
+            $error_message = "Kan du bara välja en ny husförvaltare bland de föreslagna personerna.";
         } else {
             $person = Person::loadById($_GET['person_id']);
             if (!empty($person)) {
                 $house->addCaretakerPerson($person);
-                echo "<h1>Lägger till $person->Name som husförvaltare</h1>";
+                $message_message = "Lägger till $person->Name som husförvaltare på $house->Name";
             }
         }
     }
@@ -35,8 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     exit;
 }
 
-
-include "navigation.php";
+if (isset($error_message) && strlen($error_message)>0) {
+    echo '<div class="error">'.$error_message.'</div>';
+}
+if (isset($message_message) && strlen($message_message)>0) {
+    echo '<div class="message">'.$message_message.'</div>';
+}
 
 ?>
     
@@ -164,10 +169,9 @@ ul.list {
                 				?>
         					</table>
         					<br>
-        					<form method="get" style="display: inline;">
+        					<form method="get"  autocomplete="off" style="display: inline;">
                             	<input type="hidden" id="id"  name="id" value="<?php echo $house->Id ?>" style='display:inline;'>
-                				<?php  autocomplete_person_id('60%'); ?> 
-                				<input id="submit_button" type="submit" value="Välj en ny husförvaltare" style='display:inline;'>	
+                				<?php  autocomplete_person_id('60%', true); ?> 
             				</form>		
         				</td>
         			</tr>
@@ -200,40 +204,37 @@ ul.list {
         	</tr>
     	</table>    	
     	
+    	<?php  if (isset($house->Lat) && isset($house->Lon)) { ?>
     	<script>
 
-//Where you want to render the map.
-var element = document.getElementById('osm-map');
+        //Where you want to render the map.
+        var element = document.getElementById('osm-map');
+        
+        // Height has to be set. You can do this in CSS too.
+        element.style = 'height:300px;';
+        
+        // Create Leaflet map on map element.
+        var map = L.map(element);
+        
+        // Add OSM tile layer to the Leaflet map.
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Target's GPS coordinates.
+        <?php if (isset($house->Lat) && isset($house->Lon)) { 
+            echo "var target = L.latLng('$house->Lat', '$house->Lon');";
+            // Place a marker on the same location.
+            echo "L.marker(target).addTo(map);";
+        } else {
+            echo "var target = L.latLng('57.47008', '13.93714');";
+        } 
+        ?>
 
-// Height has to be set. You can do this in CSS too.
-element.style = 'height:300px;';
-
-// Create Leaflet map on map element.
-var map = L.map(element);
-
-// Add OSM tile layer to the Leaflet map.
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-// Target's GPS coordinates.
-<?php if (isset($house->Lat) && isset($house->Lon)) { 
-    echo "var target = L.latLng('$house->Lat', '$house->Lon');";
-    // Place a marker on the same location.
-    echo "L.marker(target).addTo(map);";
-} else {
-    echo "var target = L.latLng('57.47008', '13.93714');";
-}
-    
-    
-?>
-
-
-// Set map's center to target with zoom 20.
-map.setView(target, 20);
-
-
-</script>
+        // Set map's center to target with zoom 20.
+        map.setView(target, 20);
+        </script>
+        <?php } ?>
 
     </body>
 

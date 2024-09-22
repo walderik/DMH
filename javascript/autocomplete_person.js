@@ -13,16 +13,28 @@ document.getElementById('autocomplete_person').addEventListener('input', functio
             return response.json();
         })
         .then(data => {
-        	console.log('Data:', data);
+        	console.log('Data from PHP:', data);
+        	console.log('Query 2:', query);
+
             let suggestions = document.getElementById('suggestions');
             suggestions.innerHTML = '';
-             if (data.error) {
+            if (data.error) {
                 console.error('Error:', data.error);
                 return;
             }
             data.forEach(item => {
                 let div = document.createElement('div');
-                div.textContent = item[1];
+                let matchIndex = item[1].toLowerCase().indexOf(query.toLowerCase());
+                
+                console.log('MatchIndex:', matchIndex);
+                if (matchIndex !== -1) {
+                    let beforeMatch = item[1].substr(0, matchIndex);
+                    let matchText = item[1].substr(matchIndex, query.length);
+                    let afterMatch = item[1].substr(matchIndex + query.length);
+                    div.innerHTML = beforeMatch + "<strong>" + matchText + "</strong>" + afterMatch;
+                } else {
+                    div.textContent = item[1];
+                }
                 div.dataset.id = item[0]; // Store the id in a data attribute
                 div.style.cursor = 'pointer';
                 div.addEventListener('click', function() {

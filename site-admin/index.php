@@ -1,7 +1,7 @@
 <?php
 require 'header.php';
-include_once '../includes/error_handling.php';
 include "navigation.php";
+
 if (isset($error_message) && strlen($error_message)>0) {
     echo '<div class="error">'.$error_message.'</div>';
 }
