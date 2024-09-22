@@ -16,6 +16,7 @@
             <a href="selection_data_admin.php?type=advertismenttypes">Annonsformat</a>
             <a href="selection_data_admin.php?type=titledeedplace">Platser för handel</a>
             <a href="campaign_admin.php">Inställningar för kampanjen</a>
+	      	<a href="../common/mail_admin.php">Skickad epost</a>
  	    </div>
 	  </div>
 	  

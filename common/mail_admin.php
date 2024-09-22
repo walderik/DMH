@@ -1,8 +1,36 @@
 <?php
-include_once 'header.php';
+$referer = '';
+if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
+else {
+    header('Location: ../participant/index.php');
+    exit;
+}
+
+$isLarp = false;
+
+if (str_contains($referer, "/admin/")) {
+    include '../admin/header.php';
+    $navigation = '../admin/navigation.php';
+    $isLarp = true;
+} elseif (str_contains($referer, "/campaign/")) {
+    include '../campaign/header.php';
+    $navigation =  '../campaign/navigation.php';
+} elseif (str_contains($referer, "/board/")) {
+    include '../board/header.php';
+    $navigation =  '../board/navigation.php';
+} elseif (str_contains($referer, "/houses/")) {
+    include '../houses/header.php';
+    $navigation =  '../houses/navigation.php';
+} elseif (str_contains($referer, "/site-admin/")) {
+    include '../site-admin/header.php';
+    $navigation =  '../site-admin/navigation.php';
+} else {
+    header('Location: ../participant/index.php');
+    exit;
+}
 
 
-include 'navigation.php';
+include $navigation;
 
 $unsent_emails = Email::allUnsent();
 
@@ -40,7 +68,9 @@ th {
 	    "<th onclick='sortTable(5, \"$tableId\")'>Fel</th>".
         "</tr>\n";
     	
-    	$emails = Email::allBySelectedLARPAndCommon($current_larp);
+        if ($isLarp) $emails = Email::allBySelectedLARPAndCommon($current_larp);
+        else $emails = Email::allCommon();
+
     	foreach (array_reverse($emails) as $email) {
     	    $sendUserName = "";
     	    if (isset($email->SenderUserId)) {

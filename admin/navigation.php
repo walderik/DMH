@@ -28,7 +28,7 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      	<a href="mail_admin.php">Skickad epost</a>
+	      	<a href="../common/mail_admin.php">Skickad epost</a>
             <a href="registered_persons.php">Deltagare</a>
             <a href="approval.php">Godkänna</a>
             <a href="kitchen.php">Köket</a>

@@ -17,7 +17,8 @@
 		    <a href="house_admin.php?type=house">Hus</a>
 		    <a href="house_admin.php?type=camp">Lägerplatser</a>
             <!--  <a href="house_admin.php">Husförvaltare</a>  -->
- 	    </div>
+	      	<a href="../common/mail_admin.php">Skickad epost</a>
+  	    </div>
 	  </div>
 	
 	  <div class="dropdown">

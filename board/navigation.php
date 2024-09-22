@@ -15,6 +15,7 @@
 	      	<a href="campaigns.php">Kampanjer</a>
 	      	<a href="economy_overview.php">Ekonomisk översikt</a>
 	      	<a href="permissions.php">Behörigheter</a>
+	      	<a href="../common/mail_admin.php">Skickad epost</a>
 	    </div>
 	  </div> 
 
