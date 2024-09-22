@@ -62,15 +62,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-if (isset($_POST['isLarp'])) $isLarp = true;
-else $isLarp = false;
+if (isset($_POST['sender'])) $sender = $_POST['sender'];
+else $sender = BerghemMailer::LARP;
 
-if ($isLarp) {
+if ($sender == BerghemMailer::LARP) {
     $campaign = $current_larp->getCampaign();
     $hej = $campaign->hej();
     
     $senderTexts = ["$current_user->Name för arrangörsgruppen av $current_larp->Name", "Arrangörerna av $current_larp->Name"]; 
     if (!isset($subject)) $subject = "Meddelande från $campaign->Name";
+} elseif ($sender == BerghemMailer::CAMPAIGN) {
+    $campaign = $current_larp->getCampaign();
+    $hej = $campaign->hej();
+    
+    $senderTexts = ["$current_user->Name för arrangörsgruppen för $campaign->Name", "Arrangörerna av $campaign->Name"];
+    if (!isset($subject)) $subject = "Meddelande från $campaign->Name";   
 } else {
     $hej = "Hej";
     $senderTexts = ["$current_user->Name för Berghems Vänner", "Berghems Vänner"];
@@ -140,6 +146,7 @@ include $navigation;
 
     		<input type="hidden" id="type" name="type" value="<?php echo $type; ?>">
     		<input type="hidden" id="referer" name="referer" value="<?php echo $referer; ?>">
+    		<input type="hidden" id="sender" name="sender" value="$sender">
     		
     		<p><br />
     		<p>

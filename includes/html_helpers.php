@@ -147,10 +147,10 @@ function showParticipantStatusIcon($value, $message) {
     }
 }
 
-function contactEmailIcon(Person $person, ?bool $isLarp=true) {
+function contactEmailIcon(Person $person, ?int $sender=BerghemMailer::LARP) {
     $param = date_format(new Datetime(),"suv");
     $res = "<form action='../common/contact_email.php'  class='fabutton' method='post'>\n";
-    if ($isLarp) $res .= "<input type=hidden name='isLarp' value='1'>";
+    $res .= "<input type=hidden name='sender' value='$sender'>";
     $res .= "<input type=hidden name='send_one' value=$param>\n".
         "<input type=hidden name='personId' value=$person->Id>\n".
         "<button type='submit' class='invisible' title='Skicka mail till $person->Name'>".
@@ -173,11 +173,12 @@ function contactAllEmailIcon(){
 }
 
 
-function contactSeveralEmailIcon($txt, $personIdArr, $greeting, $subject, ?bool $isLarp=true){
+function contactSeveralEmailIcon($txt, $personIdArr, $greeting, $subject, ?int $sender=BerghemMailer::LARP){
     $param = date_format(new Datetime(),"suv");
     $retrunStr = "<form action='../common/contact_email.php'  class='fabutton' method='post'>\n".
         "<input type=hidden name='send_several' value=$param>\n";
-    if ($isLarp) $retrunStr .= "<input type=hidden name='isLarp' value='1'>";
+    $retrunStr .= "<input type=hidden name='sender' value='$sender'>";
+    
     foreach ($personIdArr as $personId)  {
         $retrunStr .= "<input type='hidden' name='personId[]' value='$personId'>\n";
     }

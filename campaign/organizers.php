@@ -19,7 +19,7 @@ $param = date_format(new Datetime(),"suv");
 		$organizers = Person::getAllWithAccessToCampaign($campaign);
 	     foreach ($organizers as $organizer) {
 	         echo $organizer->Name;
-	         echo " ".contactEmailIcon($organizer, false);
+	         echo " ".contactEmailIcon($organizer, BerghemMailer::CAMPAIGN);
 	         if ($isMainOrganizer) {
     	         echo " <a href='logic/remove_campaign_organizer.php?personId=$organizer->Id'>";
     	         echo "<i class='fa-solid fa-trash-can' title='Ta bort som arrangör'></i></a>";
@@ -36,7 +36,7 @@ $param = date_format(new Datetime(),"suv");
 
 	     foreach ($organizersLarp as $organizer) {
 	         echo $organizer->Name;
-	         echo " ".contactEmailIcon($organizer, false);
+	         echo " ".contactEmailIcon($organizer, BerghemMailer::CAMPAIGN);
 	         echo " <a href='logic/remove_organizer.php?personId=$organizer->Id'>";
 	         echo "<i class='fa-solid fa-trash-can' title='Ta bort som arrangör'></i></a>";
 	         echo "<br>";

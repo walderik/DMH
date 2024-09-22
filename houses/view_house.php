@@ -147,7 +147,7 @@ ul.list {
         					    
             					echo contactSeveralEmailIcon("Maila alla husförvaltare", $personIdArr,
                     	            "Bäste husförvaltare av $house->Name!",
-                    	            "Meddelande till alla som är husförvaltare av $house->Name", false);?>
+                    	            "Meddelande till alla som är husförvaltare av $house->Name", BerghemMailer::ASSOCIATION);?>
         					
         					<table id='caretakers' class='data'>
                 				<th>Namn</th><th>Medlem</th><th>Email</th><th>&nbsp;</th>
@@ -160,7 +160,7 @@ ul.list {
                 				   
                 				    //showStatusIcon($caretaker->isMember()).
                 				    echo "</td>\n";
-                				    echo "  <td>".contactEmailIcon($person, false)."</td>\n";
+                				    echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
                 				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
                 				    $confirm = "onclick='return confirm($txt)'";
                 				    echo "  <td><a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
@@ -191,7 +191,7 @@ ul.list {
             				    foreach ($personsInHouse as $person) {
                 				    echo "<tr>\n";
                 				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
-                				    echo "  <td>".contactEmailIcon($person)."</td>\n";
+                				    echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
                 				    echo "</tr>\n";
                 				}
                 				echo "</table><br>\n";

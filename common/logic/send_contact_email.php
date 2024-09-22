@@ -27,6 +27,7 @@ if (!isset($_POST['text'])) {
 $greeting = $_POST['greeting'];
 $subject = $_POST['subject'];
 $senderText = $_POST['senderText'];
+$sender = $_POST['sender'];
 $referer = (isset($_POST['referer'])) ? $_POST['referer'] : '../../index.php';
 $referer .= "?message=contact_email_sent";
 
@@ -54,7 +55,8 @@ switch ($type) {
         BerghemMailer::sendHousing($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
         break;
     case "one":
-        BerghemMailer::sendContactMailToSomeone($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
+        if ($sender==BerghemMailer::LARP) BerghemMailer::sendContactMailToSomeone($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
+        else BerghemMailer::sendContactMailToSomeone($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, null);
         header('Location: ' . $referer);
         exit;
         break;
@@ -62,7 +64,8 @@ switch ($type) {
         BerghemMailer::sendContactMailToAll($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
         break;
     case "several":
-        BerghemMailer::sendContactMailToSeveral($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
+        if ($sender==BerghemMailer::LARP) BerghemMailer::sendContactMailToSeveral($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
+        else BerghemMailer::sendContactMailToSeveral($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, null);
         break;
 }
 
