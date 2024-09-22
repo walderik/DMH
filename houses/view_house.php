@@ -169,10 +169,9 @@ ul.list {
                 				?>
         					</table>
         					<br>
-        					<form method="get" style="display: inline;">
+        					<form method="get"  autocomplete="off" style="display: inline;">
                             	<input type="hidden" id="id"  name="id" value="<?php echo $house->Id ?>" style='display:inline;'>
-                				<?php  autocomplete_person_id('60%'); ?> 
-                				<input id="submit_button" type="submit" value="Välj en ny husförvaltare" style='display:inline;'>	
+                				<?php  autocomplete_person_id('60%', true); ?> 
             				</form>		
         				</td>
         			</tr>
@@ -205,40 +204,37 @@ ul.list {
         	</tr>
     	</table>    	
     	
+    	<?php  if (isset($house->Lat) && isset($house->Lon)) { ?>
     	<script>
 
-//Where you want to render the map.
-var element = document.getElementById('osm-map');
+        //Where you want to render the map.
+        var element = document.getElementById('osm-map');
+        
+        // Height has to be set. You can do this in CSS too.
+        element.style = 'height:300px;';
+        
+        // Create Leaflet map on map element.
+        var map = L.map(element);
+        
+        // Add OSM tile layer to the Leaflet map.
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Target's GPS coordinates.
+        <?php if (isset($house->Lat) && isset($house->Lon)) { 
+            echo "var target = L.latLng('$house->Lat', '$house->Lon');";
+            // Place a marker on the same location.
+            echo "L.marker(target).addTo(map);";
+        } else {
+            echo "var target = L.latLng('57.47008', '13.93714');";
+        } 
+        ?>
 
-// Height has to be set. You can do this in CSS too.
-element.style = 'height:300px;';
-
-// Create Leaflet map on map element.
-var map = L.map(element);
-
-// Add OSM tile layer to the Leaflet map.
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-// Target's GPS coordinates.
-<?php if (isset($house->Lat) && isset($house->Lon)) { 
-    echo "var target = L.latLng('$house->Lat', '$house->Lon');";
-    // Place a marker on the same location.
-    echo "L.marker(target).addTo(map);";
-} else {
-    echo "var target = L.latLng('57.47008', '13.93714');";
-}
-    
-    
-?>
-
-
-// Set map's center to target with zoom 20.
-map.setView(target, 20);
-
-
-</script>
+        // Set map's center to target with zoom 20.
+        map.setView(target, 20);
+        </script>
+        <?php } ?>
 
     </body>
 

@@ -233,7 +233,7 @@ function fontDropDown(String $name, ?String $selected=null) {
 
 # Inamtning för hitta personer enkelt
 # Man kan ange bredden på inmatningsfältet som argument
-function autocomplete_person_id($width="100%") {
+function autocomplete_person_id($width="100%", $render_sumbit_button=false) {
     echo "
         <style>
             #suggestions div {
@@ -244,11 +244,11 @@ function autocomplete_person_id($width="100%") {
             #suggestions div:hover {
                 background-color: #f0f0f0;
             }
-        </style>";
-    
-    echo "
-        <input type='text' id='autocomplete_person' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' >
-    	<input type='hidden' id='person_id'  name='person_id' value='0'>
+        </style>
+
+        <input type='text' id='autocomplete_person' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' >";
+        if ($render_sumbit_button) echo " &nbsp; <input id='autocomplete_person_submit_button' type='submit' value='Välj en person' style='display:inline;'>	";
+    	echo "<input type='hidden' id='person_id'  name='person_id' value='0'>
     	<div id='suggestions'></div>
     	<script src='../javascript/autocomplete_person.js'></script>";
 }
