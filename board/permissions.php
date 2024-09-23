@@ -3,20 +3,19 @@ require 'header.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    $operation = "";
+     $operation = "";
     if (isset($_POST['operation'])) $operation = $_POST['operation'];
     if ($operation == 'main_organizer') {
         $campaign = Campaign::loadById($_POST['CampaignId']);
-        if ($_POST['MainOrganizerPersonId'] == 'null') $campaign->MainOrganizerPersonId=NULL;
-        else {
-            $campaign->MainOrganizerPersonId = $_POST['MainOrganizerPersonId'];
-            
-            if (!AccessControl::hasAccessCampaign(User::loadById($campaign->MainOrganizerPersonId)->Id, $campaign->Id)) AccessControl::grantCampaign($campaign->MainOrganizerPersonId, $campaign->Id);
-        }
+        $campaign->MainOrganizerPersonId = $_POST['person_id'];
+        $campaign->update();
+        if (!AccessControl::hasAccessCampaign(User::loadById($campaign->MainOrganizerPersonId)->Id, $campaign->Id)) AccessControl::grantCampaign($campaign->MainOrganizerPersonId, $campaign->Id);
+    } elseif ($operation == 'remove_main_organizer') {
+        $campaign = Campaign::loadById($_POST['CampaignId']);
+        $campaign->MainOrganizerPersonId = null;
         $campaign->update();
     } elseif ($operation = 'permission_person') {
-        $personId = $_POST['PersonId'];
+        $personId = $_POST['person_id'];
         if (isset($_POST['Permission'])) $new_permissions = $_POST['Permission'];
         else $new_permissions = array();
         $all_permissions = AccessControl::ACCESS_TYPES;
@@ -48,8 +47,21 @@ foreach($campaigns as $campaign) {
     echo "<td>$campaign->Name</td>";
     echo "<td>";
     $mainOrg = $campaign->getMainOrganizer();
-    if (!empty($mainOrg)) echo $mainOrg->Name; 
-    echo " <a href = 'change_main_organizer.php?CampaignId=$campaign->Id'><i class='fa-solid fa-pen' title='Byt huvudarrangör'></i></a>";
+    if (!empty($mainOrg)) {
+        echo $mainOrg->Name; 
+        $text = "Byt huvudarrangör";
+    } else {
+        $text = "Sätt huvudarrangör";
+    }
+    echo " <a href = 'change_main_organizer.php?CampaignId=$campaign->Id'><i class='fa-solid fa-pen' title='$text'></i></a> ";
+    if (!empty($mainOrg)) {
+        echo "<form action='permissions.php' method='post' style='display:inline-block'>";
+        echo "<input type='hidden' name='CampaignId' value='$campaign->Id'>\n";
+        echo "<input type='hidden' name='operation' value='remove_main_organizer'>\n";
+        echo " <button class='invisible' type ='submit'><i class='fa-solid fa-trash-can' title='Ta bort huvudarrangör'></i></button>\n";
+        echo "</form>\n";
+     }
+
     echo "</td>";
 }
 echo "</table>";

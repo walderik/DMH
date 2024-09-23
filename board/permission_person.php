@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     else $personId = NULL;
 }
-$persons = Person::all();
+
 
 include 'navigation.php';
 ?>
@@ -25,17 +25,17 @@ include 'navigation.php';
 
     
     </h1>
-	<form action="permissions.php" method="post">
+	<form autocomplete="off" action="permissions.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="permission_user"> 
 
 		<?php 
 		if (empty($personId)) {
-		    selectionDropDownByArray("PersonId", $persons, true);
+		    autocomplete_person_id('60%', false);
 		    echo "<br>";
 		    $current_permissions = array();
 		}
 		else {
-		    echo "<input type='hidden' id='PersonId' name='PersonId' value='$personId'>";
+		    echo "<input type='hidden' id='person_id' name='person_id' value='$personId'>";
 		    $current_permissions = $person->getOtherAccess();
 		}
 

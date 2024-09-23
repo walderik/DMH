@@ -158,7 +158,7 @@ ul.list {
                 				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
                 				    echo "  <td>";
                 				   
-                				    //showStatusIcon($caretaker->isMember()).
+                				    showStatusIcon($caretaker->isMember()).
                 				    echo "</td>\n";
                 				    echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
                 				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
