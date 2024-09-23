@@ -7,7 +7,7 @@ $isMainOrganizer = $campaign->isMainOrganizer($current_user);
 $choosen_year = date("Y");
 
 
-include 'navigation.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['year'])) $choosen_year = $_POST['year'];
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-
+include 'navigation.php';
 
 if (isset($error_message) && strlen($error_message)>0) {
     echo '<div class="error">'.$error_message.'</div>';
@@ -61,7 +61,7 @@ if (isset($message_message) && strlen($message_message)>0) {
 	         echo $organizer->Name;
 	         echo " ".contactEmailIcon($organizer, BerghemMailer::CAMPAIGN);
 	         if ($isMainOrganizer) {
-	             echo "<form action='organizers.php' method='post' style='display:inline-block'>";
+	             echo "<form method='post' style='display:inline-block'>";
 	             echo "<input type='hidden' name='operation' value='remove_campaign_organizer'>\n";
 	             echo " <button class='invisible' type ='submit'><i class='fa-solid fa-trash-can' title='Ta bort ur kampanjarrangörsgruppen'></i></button>\n";
 	             echo "</form>\n";
@@ -116,7 +116,7 @@ if (isset($message_message) && strlen($message_message)>0) {
     	     foreach ($organizersLarp as $organizer) {
     	         echo $organizer->Name;
     	         echo " ".contactEmailIcon($organizer, BerghemMailer::CAMPAIGN);
-	             echo "<form action='organizers.php' method='post' style='display:inline-block'>";
+	             echo "<form method='post' style='display:inline-block'>";
 	             echo "<input type='hidden' name='larpId' value='$larp->Id'>\n";
 	             echo "<input type='hidden' name='operation' value='remove_larp_organizer'>\n";
 	             echo " <button class='invisible' type ='submit'><i class='fa-solid fa-trash-can' title='Ta bort ur lajvarrangörsgruppen'></i></button>\n";
