@@ -1,6 +1,6 @@
 <?php
-$error_message = "";
-$message_message = "";
+if (!isset($error_message)) $error_message = "";
+if (!isset($message_message)) $message_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
