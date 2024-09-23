@@ -1,27 +1,28 @@
 <?php
-$referer = '';
-if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
-else {
+global $root;
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+
+require_once $root . '/includes/init.php';
+
+if (!isset($_SESSION['navigation'])) {
     header('Location: ../participant/index.php');
     exit;
 }
 
-$isLarp = false;
 
-if (str_contains($referer, "/admin/")) {
+if ($_SESSION['navigation'] == Navigation::LARP) {
     include '../admin/header.php';
     $navigation = '../admin/navigation.php';
-    $isLarp = true;
-} elseif (str_contains($referer, "/campaign/")) {
+} elseif ($_SESSION['navigation'] == Navigation::CAMPAIGN) {
     include '../campaign/header.php';
     $navigation =  '../campaign/navigation.php';
-} elseif (str_contains($referer, "/board/")) {
+} elseif ($_SESSION['navigation'] == Navigation::BOARD) {
     include '../board/header.php';
     $navigation =  '../board/navigation.php';
-} elseif (str_contains($referer, "/houses/")) {
+} elseif ($_SESSION['navigation'] == Navigation::HOUSES) {
     include '../houses/header.php';
     $navigation =  '../houses/navigation.php';
-} elseif (str_contains($referer, "/site-admin/")) {
+} elseif ($_SESSION['navigation'] == Navigation::OM_ADMIN) {
     include '../site-admin/header.php';
     $navigation =  '../site-admin/navigation.php';
 } else {
@@ -68,7 +69,7 @@ th {
 	    "<th onclick='sortTable(5, \"$tableId\")'>Fel</th>".
         "</tr>\n";
     	
-        if ($isLarp) $emails = Email::allBySelectedLARPAndCommon($current_larp);
+        if ($_SESSION['navigation'] == Navigation::LARP) $emails = Email::allBySelectedLARPAndCommon($current_larp);
         else $emails = Email::allCommon();
 
     	foreach (array_reverse($emails) as $email) {

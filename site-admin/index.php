@@ -1,5 +1,6 @@
 <?php
 require 'header.php';
+$_SESSION['navigation'] = Navigation::OM_ADMIN;
 include "navigation.php";
 
 if (isset($error_message) && strlen($error_message)>0) {

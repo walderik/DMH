@@ -1,3 +1,9 @@
+<?php 
+global $root;
+
+include_once $root . '/includes/navigation_control.php';
+?>
+
 <script>
 function changePart() {
   	var part_selector = document.getElementById("part");
@@ -15,14 +21,33 @@ $board_selected = "";
 $houses_selected = "";
 $site_admin_selected = "";
 
-$url = $_SERVER['REQUEST_URI'];
-
-if (str_contains($url, "/participant/")) $participant_selected = "selected='selected'";
-elseif (str_contains($url, "/admin/")) $admin_selected = "selected='selected'";
-elseif (str_contains($url, "/campaign/")) $campaign_selected = "selected='selected'";
-elseif (str_contains($url, "/board/")) $board_selected = "selected='selected'";
-elseif (str_contains($url, "/houses/")) $houses_selected = "selected='selected'";
-elseif (str_contains($url, "/site-admin/")) $site_admin_selected = "selected='selected'";
+if (!isset($_SESSION['navigation'])) $_SESSION['navigation'] = Navigation::PARTICIPANT;
+switch ($_SESSION['navigation']) {
+    case Navigation::PARTICIPANT: {
+        $participant_selected = "selected='selected'";
+        break;
+    }
+    case Navigation::LARP: {
+        $admin_selected = "selected='selected'";
+        break;
+    }
+    case Navigation::CAMPAIGN: {
+        $campaign_selected = "selected='selected'";
+        break;
+    }
+    case Navigation::BOARD: {
+        $board_selected = "selected='selected'";
+        break;
+    }
+    case Navigation::HOUSES: {
+        $houses_selected = "selected='selected'";
+        break;
+    }
+    case Navigation::OM_ADMIN: {
+        $site_admin_selected = "selected='selected'";
+        break;
+    }
+}
 
 
 if (AccessControl::isMoreThanParticipant($current_user, $current_larp)) {

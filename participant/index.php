@@ -2,6 +2,8 @@
 require 'header.php';
 // include_once '../includes/error_handling.php';
 
+$_SESSION['navigation'] = Navigation::PARTICIPANT;
+
 include "navigation.php";
 $isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
 ?>

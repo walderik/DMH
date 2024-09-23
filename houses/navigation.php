@@ -23,8 +23,6 @@
  	    </div>
 	  </div>
 
-      	<a href="../common/mail_admin.php">Skickad epost</a>
-
 	<?php include '../common/navigation_site_part_selector.php';?>  
 	<?php include '../common/navigation_end.php';?> 
 

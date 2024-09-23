@@ -4,10 +4,7 @@
     <link href="../css/navigation_admin.css" rel="stylesheet" type="text/css">
 	
 	<?php include '../common/navigation_beginning.php';?> 
-	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
-	  
 	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) { ?>
-	  
 
 	  <div class="dropdown">
 	    <button class="dropbtn">Inställningar 
@@ -28,7 +25,6 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      	<a href="../common/mail_admin.php">Skickad epost</a>
             <a href="../admin/registered_persons.php">Deltagare</a>
             <a href="../admin/approval.php">Godkänna</a>
             <a href="../admin/kitchen.php">Köket</a>

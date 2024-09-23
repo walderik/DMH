@@ -16,7 +16,7 @@
             <a href="../campaign/selection_data_admin.php?type=advertismenttypes">Annonsformat</a>
             <a href="../campaign/selection_data_admin.php?type=titledeedplace">Platser för handel</a>
             <a href="../campaign/campaign_admin.php">Inställningar för kampanjen</a>
-	      	<a href="../common/mail_admin.php">Skickad epost</a>
+
  	    </div>
 	  </div>
 	  
@@ -35,6 +35,7 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
+	      	<a href="../campaign/economy_overview.php">Ekonomisk översikt</a>
             <a href="../campaign/bookkeeping_account_admin.php">Bokföringskonton</a>
  	    </div>
 	  </div>

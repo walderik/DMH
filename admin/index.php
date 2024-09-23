@@ -1,6 +1,7 @@
 <?php
 require 'header.php';
 // include_once '../includes/error_handling.php';
+$_SESSION['navigation'] = Navigation::LARP;
 
 include "navigation.php";
 ?>
