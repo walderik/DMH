@@ -46,7 +46,7 @@ if (isset($choosen_campaignId) && isset($choosen_year)) {
     $larps = LARP::getAllForYear($choosen_campaignId, $choosen_year);
     
     if (empty($larps)) {
-        echo "<br>Kampanjen hade inget lajv $choosen_year";
+        echo "<br>Kampanjen har inget lajv $choosen_year";
         exit;
     }
     

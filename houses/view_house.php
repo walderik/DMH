@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } elseif (isset($_GET['person_id'])) {
         $person_id = $_GET['person_id'];
         if ($person_id == 0) {
-            $error_message = "Kan du bara välja en ny husförvaltare bland de föreslagna personerna.";
+            $error_message = "Du kan bara välja en ny husförvaltare bland de föreslagna personerna.";
         } else {
             $person = Person::loadById($_GET['person_id']);
             if (!empty($person)) {
@@ -157,7 +157,7 @@ ul.list {
                 				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
                 				    echo "  <td>";
                 				   
-                				    showStatusIcon($caretaker->isMember()).
+                				    showStatusIcon($caretaker->isMember());
                 				    echo "</td>\n";
                 				    echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
                 				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';

@@ -3,6 +3,7 @@ require 'header.php';
 
 $campaignId = $current_larp->CampaignId;
 $years = array_reverse(LARP::getAllYears());
+$choosen_year = date("Y");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['year'])) $choosen_year = $_POST['year'];
@@ -36,7 +37,7 @@ if (isset($choosen_year)) {
     $larps = LARP::getAllForYear($campaignId, $choosen_year);
     
     if (empty($larps)) {
-        echo "<br>Kampanjen hade inget lajv $choosen_year";
+        echo "<br>Kampanjen har inget lajv $choosen_year";
         exit;
     }
     
