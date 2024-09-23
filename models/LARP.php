@@ -379,10 +379,17 @@ class LARP extends BaseModel{
         $sql = "SELECT * FROM regsys_larp ORDER BY StartDate";
         $firstLarp = static::getOneObjectQuery($sql, array());
         $firstYear = substr($firstLarp->StartDate, 0, 4);
+
+        $sql = "SELECT * FROM regsys_larp ORDER BY StartDate DESC";
+        $lastLarp = static::getOneObjectQuery($sql, array());
+        $lastYear = substr($lastLarp->StartDate, 0, 4);
+        
+        
         $current_year = date("Y");
+        if ($lastYear < $current_year) $lastYear = $current_year;
         
         $years = array();
-        for ($i = $firstYear; $i <=$current_year; $i++) $years[] = $i;
+        for ($i = $firstYear; $i <=$lastYear; $i++) $years[] = $i;
         return $years;
         
     }
