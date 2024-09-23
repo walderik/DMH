@@ -211,7 +211,6 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
     		<?php 
     		$isEvaluationStarted = false;
     		if ($larp->useInternalEvaluation()) {
-    		    echo "Has evaluation results?";
     		    $question_result = EvaluationNumberQuestion::get("larp_q1", $larp);
     		    if ($question_result->number_of_responders > 0) $isEvaluationStarted = true;
     		} else $isEvaluationStarted = $larp->isEvaluationOpen();
