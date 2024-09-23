@@ -1,42 +1,65 @@
 <?php
 require 'header.php';
 
+include "navigation.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
      $operation = "";
     if (isset($_POST['operation'])) $operation = $_POST['operation'];
     if ($operation == 'main_organizer') {
         $campaign = Campaign::loadById($_POST['CampaignId']);
-        $campaign->MainOrganizerPersonId = $_POST['person_id'];
-        $campaign->update();
-        if (!AccessControl::hasAccessCampaign(User::loadById($campaign->MainOrganizerPersonId)->Id, $campaign->Id)) AccessControl::grantCampaign($campaign->MainOrganizerPersonId, $campaign->Id);
+        $person_id = $_POST['person_id'];
+        if ($person_id == 0) {
+            $error_message = "Du kan bara välja bland de föreslagna personerna.";
+        } else {
+            $campaign->MainOrganizerPersonId = $person_id;
+            $campaign->update();
+            if (!AccessControl::hasAccessCampaign(User::loadById($campaign->MainOrganizerPersonId)->Id, $campaign->Id)) AccessControl::grantCampaign($campaign->MainOrganizerPersonId, $campaign->Id);
+        }
     } elseif ($operation == 'remove_main_organizer') {
         $campaign = Campaign::loadById($_POST['CampaignId']);
         $campaign->MainOrganizerPersonId = null;
         $campaign->update();
     } elseif ($operation = 'permission_person') {
-        $personId = $_POST['person_id'];
-        if (isset($_POST['Permission'])) $new_permissions = $_POST['Permission'];
-        else $new_permissions = array();
-        $all_permissions = AccessControl::ACCESS_TYPES;
-        AccessControl::revokeAllOther($personId);
-        foreach ($all_permissions as $key => $permission) {
-            if (in_array($key, $new_permissions)) {
-                AccessControl::grantOther($personId, $key);
+        $person_id = $_POST['person_id'];
+        if ($person_id == 0) {
+            $error_message = "Du kan bara välja bland de föreslagna personerna.";
+        } else {
+                
+            if (isset($_POST['Permission'])) $new_permissions = $_POST['Permission'];
+            else $new_permissions = array();
+            $all_permissions = AccessControl::ACCESS_TYPES;
+            AccessControl::revokeAllOther($person_id);
+            foreach ($all_permissions as $key => $permission) {
+                if (in_array($key, $new_permissions)) {
+                    AccessControl::grantOther($person_id, $key);
+                }
             }
         }
     }
-    header('Location: ' . 'permissions.php');
-    exit;
+    if (!isset($error_message)) {
+        header('Location: ' . 'permissions.php');
+        exit;
+    }
     
 }
 
 
 
 
-include "navigation.php";
+
+
+if (isset($error_message) && strlen($error_message)>0) {
+    echo '<div class="error">'.$error_message.'</div>';
+}
+if (isset($message_message) && strlen($message_message)>0) {
+    echo '<div class="message">'.$message_message.'</div>';
+}
+
+
 ?>
 <h1>Behörigheter</h1>
+
 <h2>Huvudarrangörer</h2>
 <?php 
 $campaigns = Campaign::all();
