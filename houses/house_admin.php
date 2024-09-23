@@ -69,7 +69,7 @@ if ($type == "house") {
         if ($resultCheck > 0) {
             echo "<table id='houses' class='data'>";
             echo "<tr><th>Namn</th>";
-            if ($type == "house ") echo "<th>Sovplatser</th>";
+            if ($type == "house") echo "<th>Sovplatser</th>";
             else echo "<th>Tältplatser</th>";
             echo "<th>Plats</th><th>Beskrivning</th>";
             if ($type == "house") echo "<th>Förvaltare</th>";
