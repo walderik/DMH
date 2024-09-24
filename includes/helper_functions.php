@@ -23,7 +23,7 @@ function scrub($filename) {
 # Kolla om man just nu är OM-admin för närvarande
 function isOmAdmin(?String $url = NULL) {
     global $current_user;
-    if (!isset(AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN))) return false;
+    if (!AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) return false;
     if (is_null($url)) $url = $_SERVER['REQUEST_URI'];
     return (strpos($url, "/site-admin/")!=false);
 }

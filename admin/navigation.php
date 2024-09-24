@@ -4,7 +4,7 @@
     <link href="../css/navigation_admin.css" rel="stylesheet" type="text/css">
 	
 	<?php include '../common/navigation_beginning.php';?> 
-	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) { ?>
+	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) || AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) { ?>
 
 	  <div class="dropdown">
 	    <button class="dropbtn">Inställningar 
