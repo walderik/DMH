@@ -11,7 +11,7 @@ $campaigns = Campaign::all();
 
 foreach($campaigns as $campaign) {
     echo "<h2>$campaign->Name</h2>\n";
-    echo "<table class='smalldata'>";
+    echo "<table class='small_data'>";
     echo "<tr>";
     echo "<td>Huvudarrangör</td>";
     echo "<td>";

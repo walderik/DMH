@@ -17,7 +17,7 @@ include 'navigation.php';
     <?php 
     $foodChoises = Registration::getFoodVariants($current_larp);
     $hasFoodChoices = false;
-    echo "<table class='smalldata'>";
+    echo "<table class='small_data'>";
     foreach($foodChoises as $foodChoise) {
         if (!empty($foodChoise[0])) $hasFoodChoices = true;
         echo "<tr><td>".$foodChoise[0] . "</td><td>" . $foodChoise[1] . "</td><td>" . $foodChoise[2] . " st</td></tr>"; 

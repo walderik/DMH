@@ -12,7 +12,7 @@ if (($housesWithoutMapPoint > 0) || ($campsWithoutMapPoint > 0)) {
 ?>
 
 <h2>Saknar kartpunkter</h2>
-<table>
+<table class='small_data'>
 <tr><th>Typ</th><th>Antal</th></tr>
 <tr><td>Hus</td><td><?php echo $housesWithoutMapPoint?></td></tr>
 <tr><td>Lägerplats</td><td><?php echo $campsWithoutMapPoint?></td></tr>

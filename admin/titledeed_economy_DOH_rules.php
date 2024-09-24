@@ -13,7 +13,7 @@ th {
 
     <div class="content">
         <h1>Regler för nivåer för verksamheter för DÖH. <a href="commerce.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-        <table  class="smalldata">
+        <table  class="small_data">
         <tr>
         <th>Nivå</th><th>Tillgångar</th><th>Behöver</th><th>Utveckling</th>
         </tr>
