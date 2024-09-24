@@ -69,11 +69,7 @@ class LoginController {
         
         $_SESSION['is_loggedin'] = true;
         $_SESSION['id'] = $user->Id;
-        $isAdmin = $user->IsAdmin;
-        
-        if ($isAdmin == 1) {
-            $_SESSION['admin'] = true;
-        }
+
     }
     
     

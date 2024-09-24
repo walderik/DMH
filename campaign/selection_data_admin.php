@@ -2,10 +2,6 @@
  include_once 'header.php';
  include_once '../includes/selection_data_control.php';
  
- if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)  && !isset($_SESSION['admin'])) {
-     exit;
- }
- 
  $type;
  $objectType;
  

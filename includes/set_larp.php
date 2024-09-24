@@ -28,5 +28,5 @@ $_SESSION['larp'] = $larp;
 $current_user = User::loadById($_SESSION['id']);
 $current_larp = LARP::loadById($_SESSION['larp']);
 
-if (AccessControl::hasAccessLarp($current_user, $current_larp) || isset($_SESSION['admin'])) header('Location: ../admin/index.php');
+if (AccessControl::hasAccessLarp($current_user, $current_larp) || AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) header('Location: ../admin/index.php');
 else header('Location: ../participant/index.php');

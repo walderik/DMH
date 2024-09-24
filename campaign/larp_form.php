@@ -1,13 +1,6 @@
 <?php
 include_once 'header.php';
 
-if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) && !isset($_SESSION['admin'])) {
-    exit;
-}
-
-?>
-   
-    <?php
     $larp = LARP::newWithDefault();
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {

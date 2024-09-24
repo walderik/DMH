@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //If the user isnt admin it may not see these pages
     
     // Sicka aktiveringsmail tiull användaren medd ett visst Id.
-    if (!isset($_SESSION['admin'])) {
+    if (!AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) {
         header('Location: ../participant/index.php');
         exit();
     }

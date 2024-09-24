@@ -1,9 +1,7 @@
 <?php
  include_once 'header.php';
  
- if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)  && !isset($_SESSION['admin'])) {
-     exit;
- }
+
  
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 

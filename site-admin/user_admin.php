@@ -23,7 +23,6 @@ th {
             echo "<table id='$tableId' class='data'>";         
             echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                 "<th onclick='sortTable(1, \"$tableId\");'>Email</th>".
-                "<th onclick='sortTable(2, \"$tableId\");'>Admin</th>".
                 "<th onclick='sortTable(3, \"$tableId\");'>Aktivering</th>".
                 "<th onclick='sortTable(4, \"$tableId\");'>Kan Logga in</th>".
                 "<th onclick='sortTable(5, \"$tableId\");'>Senast inloggad</th>\n";
@@ -35,11 +34,6 @@ th {
                 }
                 echo "<td>$user->Name <a href='logic/become_user.php?UserId=$user->Id'>su</a></td>\n";
                 echo "<td>$user->Email</td>\n";
-                if ($current_user->Email == $user->Email ) {
-                    echo "<td>" . showStatusIcon($user->IsAdmin) . "</td>\n";
-                } else {
-                    echo "<td><a href='logic/toggle_is_admin.php?user_id=$user->Id'>" . showStatusIcon($user->IsAdmin) . "</a>";
-                }
                 echo "<td>";
                 if ($user->ActivationCode == 'activated') {
                     echo "Aktiverad</td>\n";
