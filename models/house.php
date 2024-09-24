@@ -112,6 +112,17 @@ class House extends BaseModel{
         
     }
     
+    public static function countHousesWithoutMapPoint() {
+        $sql = "SELECT Count(1) as Num FROM regsys_house WHERE IsHouse=1 AND Lat IS NULL ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array());
+        
+    }
+    
+    public static function countCampsWithoutMapPoint() {
+        $sql = "SELECT Count(1) as Num FROM regsys_house WHERE IsHouse=0 AND Lat IS NULL ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array());
+        
+    }
     public static function getHouseAtLarp(Person $person, Larp $larp) {
         $sql = "SELECT regsys_house.* FROM regsys_house, regsys_housing WHERE ".
             "regsys_house.Id = regsys_housing.HouseId AND ".

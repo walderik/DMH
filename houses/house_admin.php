@@ -71,7 +71,7 @@ if ($type == "house") {
             echo "<tr><th>Namn</th>";
             if ($type == "house") echo "<th>Sovplatser</th>";
             else echo "<th>Tältplatser</th>";
-            echo "<th>Plats</th><th>Beskrivning</th>";
+            echo "<th>Plats</th><th>Beskrivning</th><th>Kartpunkt</th>";
             if ($type == "house") echo "<th>Förvaltare</th>";
             echo "<th></th><th></th><th></th></tr>\n";
             foreach ($house_array as $house) {
@@ -82,6 +82,8 @@ if ($type == "house") {
                 echo "<td width='8%'>" . $house->NumberOfBeds . "</td>\n";
                 echo "<td width='20%' style='word-break: break-all';>" . $house->PositionInVillage . "</td>\n";
                 echo "<td>" . $house->Description . "</td>\n";
+                echo "<td>" . showStatusIcon($house->Lat != NULL) . "</td>\n";
+                
                 
                 if ($type == "house") {
                     echo "<td nowrap>";
