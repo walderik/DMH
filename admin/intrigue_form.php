@@ -104,9 +104,13 @@ include 'navigation.php';
 
 				<td><label for="Notes">Ansvarig arrangör</label></td>
 			<td><?php 
-			if (empty($intrigue->ResponsiblePersonId)) $intrigue->ResponsiblePersonId = $current_user->getOrganizer($current_larp)->Id;
-			     $organizers = Person::getAllWithAccessToLarp($current_larp);
-			     selectionDropDownByArray('ResponsiblePerson', $organizers, true, $intrigue->ResponsiblePersonId) ?></td>
+			
+			if (empty($intrigue->ResponsiblePersonId)) {
+			    $current_user_organizer = $current_user->getOrganizer($current_larp);
+			    if (isset($current_user_organizer)) $intrigue->ResponsiblePersonId = $current_user_organizer->Id;
+			}
+		     $organizers = Person::getAllWithAccessToLarp($current_larp);
+		     selectionDropDownByArray('ResponsiblePersonId', $organizers, true, $intrigue->ResponsiblePersonId) ?></td>
 			</tr>
 		</table>
 
