@@ -82,6 +82,8 @@ class LARP extends BaseModel{
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
         $larp = new self();
+        $larp->NetDays = 7;
+        $larp->VisibleToParticipants = true;
         return $larp;
     }
     
