@@ -88,7 +88,7 @@ if ($sender == BerghemMailer::LARP) {
 }
 
 
-
+$referer = $_SERVER['HTTP_REFERER'];
 
 
 include $navigation;

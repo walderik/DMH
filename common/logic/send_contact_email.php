@@ -28,7 +28,7 @@ $greeting = $_POST['greeting'];
 $subject = $_POST['subject'];
 $senderText = $_POST['senderText'];
 $sender = $_POST['sender'];
-$referer = (isset($_POST['referer'])) ? $_POST['referer'] : '../../index.php';
+$referer = (isset($_POST['referer'])) ? $_POST['referer'] : '../../participant/index.php';
 $referer .= "?message=contact_email_sent";
 
 // print_r($_POST);
