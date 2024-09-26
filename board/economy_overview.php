@@ -51,7 +51,7 @@ if (isset($choosen_campaignId) && isset($choosen_year)) {
     } else $campaigns[] = Campaign::loadById($choosen_campaignId);
     
     foreach ($campaigns as $campaign) {
-        echo "<h2>$campaign->Name</h2>";
+        echo "<h2><a href='view_economy.php?campaignId=$campaign->Id&year=$choosen_year'>$campaign->Name</a></h2>";
         echo "<table>";
         economy_overview_campaign($campaign, $choosen_year);
         echo "</table>";
