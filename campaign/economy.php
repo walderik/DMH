@@ -166,6 +166,7 @@ include 'navigation.php';
        $sum = 0;
        echo "<table id='bookkeeping' class='data'>";
        echo "<tr><th>Verifikation<br>nummer</th><th>Bokföringsdatum</th><th>Rubrik</th><th>Konto</th><th>Ansvarig</th><th>Summa</th></tr>\n";
+       echo "<tr><td></td><td></td><td>Buffert</td><td></td><td></td><td class='amount' style='text-align: right;'>" .number_format((float)10000, 2, ',', '')."</td></tr>";
        foreach ($bookkeepings as $bookkeeping) {
            echo "<tr>\n";
            echo "<td>" . $bookkeeping->Number . "</td>\n";
@@ -205,14 +206,15 @@ include 'navigation.php';
                
                $sum += $larp_sum;
                
-               echo "<tr><td>$larp->Name</td><td></td><td></td><td></td><td></td><td class='amount'>".number_format((float)$larp_sum, 2, ',', '')."</td></tr>";
+               echo "<tr><td></td><td></td><td>$larp->Name</td><td></td><td></td><td class='amount'>".number_format((float)$larp_sum, 2, ',', '')."</td></tr>";
            }
 
        }
 
        
        echo "<tr></tr>";
-       echo "<tr><th colspan='5'>Summa</th><th class='amount' style='text-align: right;'>".number_format((float)$sum, 2, ',', '')."</th></tr>";
+       echo "<tr><th colspan='5'>Balans</th><th class='amount' style='text-align: right;'>".number_format((float)$sum, 2, ',', '')."</th></tr>";
+       echo "<tr><th colspan='5'>På kontot</th><th class='amount' style='text-align: right;'>".number_format((float)$sum+10000, 2, ',', '')."</th></tr>";
        echo "</table>";
 	   //}
        ?>

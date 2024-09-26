@@ -188,8 +188,10 @@ include 'navigation.php';
        $sum -= $returned_fees;
        echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Återbetalade deltagaravgifter</td><td></td><td></td><td class='amount'>".number_format((float)(0-$returned_fees), 2, ',', '')."</td></tr>";
        echo "<tr></tr>";
-       echo "<tr><th colspan='5'>Summa</th><th class='amount' style='text-align: right;'>".number_format((float)$sum, 2, ',', '')."</th></tr>";
-       echo "</table>";
+       echo "<tr><th colspan='5'>Balans</th><th class='amount' style='text-align: right;'>".number_format((float)$sum, 2, ',', '')."</th></tr>";
+  
+       echo "<tr></tr>";
+
 	   //}
        ?>
        
@@ -198,22 +200,23 @@ include 'navigation.php';
 		<?php 
 		$otherLarps = $current_larp->getOtherLarpsSameYear();
 		if (!empty($otherLarps)) {
-		    echo "<h2>Resultat för andra lajv i kampanjen samma år</h2>";
-	        echo "<table class='data'><th>Namn</th><th>Resultat</th></tr>";
+
 		      
 		    foreach ($otherLarps as $larp) {
     		
 		        $income = Registration::totalIncomeToday($larp) + Bookkeeping::sumRegisteredIncomes($larp);
 		        $refund = 0 - Registration::totalFeesReturned($larp);
 		        $expense = Bookkeeping::sumRegisteredExpenses($larp);
-		        $sum = $income + $refund + $expense;
+		        $larp_sum = $income + $refund + $expense;
+		        $sum += $larp_sum;
 		        
-		        echo "<tr><td>$larp->Name</td><td class='amount'>".number_format((float)$sum, 2, ',', '')." SEK</td></tr>";
+		        echo "<tr><td></td><td>".substr($larp->EndDate, 0, 10)."</td><td>$larp->Name</td><td></td><td></td><td class='amount'>".number_format((float)$larp_sum, 2, ',', '')."</td></tr>";
 		    }
-		    echo "</table>";
 		}
-		?>
-
-
+       echo "<tr><th colspan='5'>På kontot</th><th class='amount' style='text-align: right;'>".number_format((float)$sum+10000, 2, ',', '')."</th></tr>";
+       echo "</table>";
+       
+       ?>
+       
 </body>
 </html>
