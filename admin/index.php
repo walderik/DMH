@@ -83,6 +83,7 @@ include "navigation.php";
 		
 		<div class="content">
 		<h2>Ekonomisk översikt</h2>
+        <a href="economy_form.php?operation=add_expense"><i class="fa-solid fa-file-circle-plus"></i> Ladda upp kvitto</a><br>
 		<table>
 
 			<tr><td style='font-weight: normal'>Förväntade intäkter:<br>deltagaravgifter för alla anmälda</td>			
