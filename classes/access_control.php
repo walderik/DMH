@@ -103,7 +103,9 @@ class AccessControl extends Dbh {
     }
     
     public static function grantCampaign($personId, $campaignId) { 
-        if (AccessControl::hasAccessCampaign($personId, $campaignId)) return;
+        if (empty($personId)) return;
+        $person = Person::loadById($personId);
+        if (AccessControl::hasAccessCampaign($person->UserId, $campaignId)) return;
             
         $connection = static::connectStatic();
         $stmt = $connection->prepare("INSERT INTO regsys_access_control_campaign (PersonId, CampaignId) VALUES (?,?)");
@@ -133,7 +135,7 @@ class AccessControl extends Dbh {
     
  
     public static function grantLarp(Person $person, Larp $larp) {
-        if (AccessControl::hasAccessLarp($person, $larp)) return;
+        if (AccessControl::hasAccessLarp($person->getUser(), $larp)) return;
             
         $connection = static::connectStatic();
         $stmt = $connection->prepare("INSERT INTO regsys_access_control_larp (PersonId, LarpId) VALUES (?,?)");
@@ -162,6 +164,10 @@ class AccessControl extends Dbh {
     }
  
     public static function grantOther($personId, $access) {
+        if (empty($personId)) return;
+        $person = Person::loadById($personId);
+        if (static::hasAccessOther($person->UserId, $access)) return;
+        
         $connection = static::connectStatic();
         
         $stmt = $connection->prepare("INSERT INTO regsys_access_control_other (PersonId, Permission) VALUES (?,?)");

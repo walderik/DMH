@@ -226,23 +226,28 @@ function fontDropDown(String $name, ?String $selected=null) {
 # Inamtning för hitta personer enkelt
 # Man kan ange bredden på inmatningsfältet som argument
 function autocomplete_person_id($width="100%", $render_sumbit_button=false) {
-    echo "
+    global $count;
+    
+    if (isset($count)) $count++;
+    else $count=1;
+    if ($count == 1)
+        echo "
         <style>
-            #suggestions div {
+            .suggestions div {
                 cursor: pointer;
                 padding: 5px;
                 border: 1px solid #ccc;
             }
-            #suggestions div:hover {
+            .suggestions div:hover {
                 background-color: #f0f0f0;
             }
         </style>
+       <script src='../javascript/autocomplete_person.js'></script>";
 
-        <input type='text' id='autocomplete_person' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' >";
-        if ($render_sumbit_button) echo " &nbsp; <input id='autocomplete_person_submit_button' type='submit' value='Välj en person' style='display:inline;'>	";
-    	echo "<input type='hidden' id='person_id'  name='person_id' value='0'>
-    	<div id='suggestions'></div>
-    	<script src='../javascript/autocomplete_person.js'></script>";
+    echo "<input type='text' id='autocomplete_person$count' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' oninput='autocomplete_person(event, this, $count)'>";
+    if ($render_sumbit_button) echo " &nbsp; <input id='autocomplete_person_submit_button$count' type='submit' value='Välj en person' style='display:inline;'>	";
+	echo "<input type='hidden' id='person_id$count'  name='person_id' value='0'>
+	<div id='suggestions$count' class='suggestions'></div>";
 }
 
 function economy_overview(Larp $larp) {

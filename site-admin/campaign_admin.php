@@ -20,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($person_id == 0) {
             $error_message = "Du kan bara välja bland de föreslagna personerna.";
         } else {
-            $operation = $_POST['operation'];
             AccessControl::grantCampaign($person_id, $_POST['campaignId']);
         }
     }

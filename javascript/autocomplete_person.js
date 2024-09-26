@@ -1,5 +1,5 @@
-document.getElementById('autocomplete_person').addEventListener('input', function() {
-	let query = this.value;
+function autocomplete_person(ev, person, number) {
+	let query = person.value;
     if (query.length > 2) {
         fetch("../ajax/autocomplate_person.php", {
             method: 'POST',
@@ -16,7 +16,7 @@ document.getElementById('autocomplete_person').addEventListener('input', functio
         	console.log('Data from PHP:', data);
         	console.log('Query 2:', query);
 
-            let suggestions = document.getElementById('suggestions');
+            let suggestions = document.getElementById('suggestions'+number);
             suggestions.innerHTML = '';
             if (data.error) {
                 console.error('Error:', data.error);
@@ -39,8 +39,8 @@ document.getElementById('autocomplete_person').addEventListener('input', functio
                 div.style.cursor = 'pointer';
                 div.addEventListener('click', function() {
 					// Update the HTML fields
-					document.getElementById('autocomplete_person').value = item[1];
-        			document.getElementById('person_id').value = item[0];
+					document.getElementById('autocomplete_person'+number).value = item[1];
+        			document.getElementById('person_id'+number).value = item[0];
         			// Clear the suggestions
                     suggestions.innerHTML = '';
                 });
@@ -49,7 +49,7 @@ document.getElementById('autocomplete_person').addEventListener('input', functio
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error:', error);
+            alert('Error:'+ error);
         });
     }
-});
+}
