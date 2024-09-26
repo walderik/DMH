@@ -33,22 +33,12 @@ foreach ($years as $year) {
 </form>
 <?php 
 if (isset($choosen_year)) {
+    echo "<h2>Kampanjen</h2>";
+    echo "<table>";
+    economy_overview_campaign($current_larp->getCampaign(), $choosen_year);
+    echo "</table>";
     
-    $larps = LARP::getAllForYear($campaignId, $choosen_year);
-    
-    if (empty($larps)) {
-        echo "<br>Kampanjen har inget lajv $choosen_year";
-        exit;
-    }
-    
-    foreach ($larps as $larp) {
-        echo "<h2>Resultat för $larp->Name</h3>";
-        echo "<table>";
-        economy_overview($larp);
-        echo "</table>";
-    }
-    
-}
+ }
 
 
 

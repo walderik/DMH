@@ -265,4 +265,38 @@ function economy_overview(Larp $larp) {
     echo "<td align='right'>".number_format((float)$expense, 2, ',', '')." SEK</td></tr>\n";
     echo "<tr><td style='font-weight: normal'>Balans:<br>faktiska inkomster och utgifter</td>\n";
     echo "<td align='right'>".number_format((float)$sum, 2, ',', '')."  SEK</td></tr>\n";
+    return $sum;
 }
+
+function economy_overview_campaign(Campaign $campaign, $year) {
+    
+    $income = Bookkeeping::sumRegisteredIncomesCampaign($campaign, $year);
+    $expense = Bookkeeping::sumRegisteredExpensesCampaign($campaign, $year);
+    $sum = $income + $expense;
+    
+    echo "<tr><td style='font-weight: normal'>Intäkter:</td>\n";
+    echo "<td align='right'>".number_format((float)($income), 2, ',', '')." SEK</td></tr>\n";
+    echo "<tr><td style='font-weight: normal'>Utgifter:<br>andra registrerade utgifter<br></td>\n";
+    echo "<td align='right'>".number_format((float)$expense, 2, ',', '')." SEK</td></tr>\n";
+    
+    $larps = LARP::getAllForYear($campaign->Id, $year);
+    if (!empty($larps)) {
+        foreach ($larps as $larp) {
+            echo "<tr><td style='font-weight: normal'>";
+            
+            echo "<details><summary>$larp->Name</summary> ";
+            echo substr($larp->StartDate, 0, 10) .' - '.substr($larp->EndDate, 0, 10)."<br><br>\n";
+            echo "<table>";
+            $larpsum = economy_overview($larp);
+            echo "</table><br></details><br>\n";
+            
+            echo "</td>\n";
+            echo "<td align='right'>".number_format((float)$larpsum, 2, ',', '')." SEK</td></tr>\n";
+            $sum += $larpsum;
+            
+        }
+    }
+    echo "<tr><td style='font-weight: normal'>Balans:</td>\n";
+    echo "<td align='right'>".number_format((float)$sum, 2, ',', '')."  SEK</td></tr>\n";
+}
+

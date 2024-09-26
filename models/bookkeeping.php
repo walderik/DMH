@@ -159,17 +159,18 @@ class Bookkeeping extends BaseModel{
         
     }
 
-    
-    public static function sumRegisteredIncomesCampaign(Campaign $campaign) {
-        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE CampaignId = ? AND Amount > 0 AND AccountingDate IS NOT NULL ORDER BY ".static::$orderListBy.";";
-        return static::countQuery($sql, array($campaign->Id));
+    public static function sumRegisteredIncomesCampaign(Campaign $campaign, int $year) {
+        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE CampaignId = ? AND Amount > 0 AND AccountingDate LIKE ? ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array($campaign->Id,$year."%"));
         
     }
     
-    public static function sumRegisteredExpensesCampaign(Campaign $campaign) {
-        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE CampaignId = ? AND Amount < 0 AND AccountingDate IS NOT NULL ORDER BY ".static::$orderListBy.";";
-        return static::countQuery($sql, array($campaign->Id));
+    public static function sumRegisteredExpensesCampaign(Campaign $campaign, int $year) {
+        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE CampaignId = ? AND Amount < 0 AND AccountingDate LIKE ? ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array($campaign->Id,$year."%"));
         
     }
     
+    
+     
 }

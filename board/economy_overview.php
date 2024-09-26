@@ -3,6 +3,8 @@ require 'header.php';
 
 $campaigns = Campaign::all();
 $years = array_reverse(LARP::getAllYears());
+$choosen_year = date('Y');
+$choosen_campaignId = 0;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['campaignId'])) $choosen_campaignId = $_POST['campaignId'];
@@ -43,20 +45,18 @@ foreach ($years as $year) {
 <?php 
 if (isset($choosen_campaignId) && isset($choosen_year)) {
     
-    $larps = LARP::getAllForYear($choosen_campaignId, $choosen_year);
+    if ($choosen_campaignId == 0) {
+        //Alla kampanjer
+        $campaigns = Campaign::all();
+    } else $campaigns[] = Campaign::loadById($choosen_campaignId);
     
-    if (empty($larps)) {
-        echo "<br>Kampanjen har inget lajv $choosen_year";
-        exit;
-    }
-    
-    foreach ($larps as $larp) {
-        echo "<h2>Resultat för $larp->Name</h3>";
+    foreach ($campaigns as $campaign) {
+        echo "<h2>$campaign->Name</h2>";
         echo "<table>";
-        economy_overview($larp);
+        economy_overview_campaign($campaign, $choosen_year);
         echo "</table>";
+        
     }
-    
 }
 
 
