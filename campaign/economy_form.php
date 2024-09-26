@@ -1,6 +1,8 @@
 <?php
 include_once 'header.php';
 $bookkeeping = Bookkeeping::newWithDefault();
+$bookkeeping->CampaignId = $current_larp->CampaignId;
+$bookkeeping->LarpId = NULL;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "add_expense";
@@ -116,13 +118,12 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 			<tr>
 			<td><label for="UserId">Ansvarig</label></td>
 			<td><?php 
-    			if (empty($bookkeeping->PersonId)) {
-    			    $current_user_organizer = $current_user->getOrganizer($current_larp);
-    			    if (isset($current_user_organizer)) $bookkeeping->PersonId = $current_user_organizer->Id;
-    			}
-			
-			     $organizers = Person::getAllWithAccessToLarp($current_larp);
-			     selectionDropDownByArray('PersonId', $organizers, true, $bookkeeping->PersonId) ?></td>
+			if (empty($bookkeeping->PersonId)) {
+			    $current_user_organizer = $current_user->getOrganizer($current_larp);
+			    if (isset($current_user_organizer)) $bookkeeping->PersonId = $current_user_organizer->Id;
+			}
+			$organizers = Person::getAllWithAccessToCampaign($current_larp->getCampaign());
+		    selectionDropDownByArray('PersonId', $organizers, true, $bookkeeping->PersonId) ?></td>
 
 			</tr>
 

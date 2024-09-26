@@ -2,13 +2,19 @@
 include_once 'header.php';
 // include_once '../includes/error_handling.php';
 
+$years = array_reverse(LARP::getAllYears());
+$choosen_year = date("Y");
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['year'])) $choosen_year = $_POST['year'];
     if (isset($_POST['operation'])) {
         $operation = $_POST['operation'];
         
         if ($operation == 'add_income') {
             $bookkeeping = Bookkeeping::newFromArray($_POST);
+            $bookkeeping->CampaignId = $current_larp->CampaignId;
+            $bookkeeping->LarpId = NULL;
             $bookkeeping->create();
         } elseif ($operation == 'add_expense') {
             $bookkeeping = Bookkeeping::newFromArray($_POST);
@@ -62,6 +68,8 @@ function saveReceipt(Bookkeeping $bookkeeping) {
     
 }
 
+$campaign = $current_larp->getCampaign();
+
 
 // include_once '../includes/error_handling.php';
 
@@ -84,22 +92,39 @@ include 'navigation.php';
 	  <?php if (isset($message_message) && strlen($message_message)>0) {
 	      echo '<div class="message">'.$message_message.'</div>';
 	  }?>
-        <p>Lägg in alla inkomster och utgifter som lajvet har. Deltagaravgifter kommer med automatiskt. 
-        När lajvet är klart behöver du bara generera rapporten och skicka till kassören för att bokföringen ska vara avklarad.<br><br>
+        <p>Lägg in alla inkomster och utgifter som kampanjen har som inte är direkt kopplade till ett lajv.  
+        Vid årets slut är det bara att plocka ut de två filerna som ska till kassören och maila in så följer allt om kampanjens lajv med.<br><br>
         En varning betyder att det saknas ett kvitto på en utgift.<br><br>
-        Konton läggs upp under kampanj.</a></p>
+        Konton läggs upp under <a href="settings.php">inställningar</a></p>
         <p>
-        <a href="economy_payments.php">Kontrollera bankfil mot obetalade avgifter</a><br>
         <a href="economy_form.php?operation=add_income"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a> &nbsp; 
         <a href="economy_form.php?operation=add_expense"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a><br>
+        
+        <!-- 
         <a href="reports/economy.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Generera rapport till kassör</a> &nbsp; 
         <a href="logic/all_bookkeeping_zip.php" target="_blank"><i class="fa-solid fa-file-zipper"></i> Alla verifikationer till kassör</a><br>
-        
+         -->
         </p>
+        <form method="POST">
         
+        
+        <select name="year" id="year">
+        <?php 
+        foreach ($years as $year) {
+          echo "<option value='$year'";
+          if (isset($choosen_year) && $year == $choosen_year) echo " selected ";
+          echo ">$year</option>";   
+        }
+        ?>
+        </select>
+        
+        <input type='submit' value='Visa'>
+        
+        </form>
+                
         
 		<?php 
-	   $bookkeepings = Bookkeeping::allUnFinished($current_larp);
+		$bookkeepings = Bookkeeping::allUnFinishedCampaign($campaign,$choosen_year);
 	   //if (!empty($bookkeepings)) {
            echo "<h2>Påbörjade</h2>"; 
            echo "Alla som saknar bokföringsdatum hamnar här.";
@@ -135,7 +160,7 @@ include 'navigation.php';
 	
 	
 	   
-	   $bookkeepings = Bookkeeping::allFinished($current_larp);
+           $bookkeepings = Bookkeeping::allFinishedCampaign($campaign, $choosen_year);
 	   //if (!empty($bookkeepings)) {
 	   echo "<h2>Klara</h2>";
        $sum = 0;
@@ -166,27 +191,26 @@ include 'navigation.php';
            $sum += $bookkeeping->Amount;
            echo "</tr>\n";
        }
-       $invoices = Invoice::getAllNormalInvoices($current_larp);
-       foreach ($invoices as $invoice) {
-           echo "<tr>\n";
-           echo "<td>Faktura $invoice->Number </td>\n";
-           echo "<td>$invoice->PayedDate</td>\n";
-           echo "<td>$invoice->Recipient";
-           echo " <a href='invoice_pdf.php?invoiceId=$invoice->Id&showPayed=1' target='_blank'><i class='fa-solid fa-file-pdf' title='Visa faktura'></i></a>";
-           echo "</td>\n";
-           echo "<td>Fakturor</td>";
-           echo "<td></td>";
-           echo "<td class='amount'>" .number_format((float)$invoice->FixedAmount, 2, ',', '')."</td>";
-           $sum += $invoice->FixedAmount;
-           echo "</tr>\n";
+
+
+       $larps = LARP::getAllForYear($campaign->Id, $choosen_year);
+       if (!empty($larps)) {
+           
+           foreach ($larps as $larp) {
+               
+               $income = Registration::totalIncomeToday($larp) + Bookkeeping::sumRegisteredIncomes($larp);
+               $refund = 0 - Registration::totalFeesReturned($larp);
+               $expense = Bookkeeping::sumRegisteredExpenses($larp);
+               $larp_sum = $income + $refund + $expense;
+               
+               $sum += $larp_sum;
+               
+               echo "<tr><td>$larp->Name</td><td></td><td></td><td></td><td></td><td class='amount'>".number_format((float)$larp_sum, 2, ',', '')."</td></tr>";
+           }
+
        }
+
        
-       $registration_fees = Registration::totalFeesPayed($current_larp);
-       $sum += $registration_fees;
-       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Deltagaravgifter</td><td></td><td></td><td class='amount'>".number_format((float)$registration_fees, 2, ',', '')."</td></tr>";
-       $returned_fees = Registration::totalFeesReturned($current_larp);
-       $sum -= $returned_fees;
-       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Återbetalade deltagaravgifter</td><td></td><td></td><td class='amount'>".number_format((float)(0-$returned_fees), 2, ',', '')."</td></tr>";
        echo "<tr></tr>";
        echo "<tr><th colspan='5'>Summa</th><th class='amount' style='text-align: right;'>".number_format((float)$sum, 2, ',', '')."</th></tr>";
        echo "</table>";
@@ -195,24 +219,6 @@ include 'navigation.php';
        
        
 	
-		<?php 
-		$otherLarps = $current_larp->getOtherLarpsSameYear();
-		if (!empty($otherLarps)) {
-		    echo "<h2>Resultat för andra lajv i kampanjen samma år</h2>";
-	        echo "<table class='data'><th>Namn</th><th>Resultat</th></tr>";
-		      
-		    foreach ($otherLarps as $larp) {
-    		
-		        $income = Registration::totalIncomeToday($larp) + Bookkeeping::sumRegisteredIncomes($larp);
-		        $refund = 0 - Registration::totalFeesReturned($larp);
-		        $expense = Bookkeeping::sumRegisteredExpenses($larp);
-		        $sum = $income + $refund + $expense;
-		        
-		        echo "<tr><td>$larp->Name</td><td class='amount'>".number_format((float)$sum, 2, ',', '')." SEK</td></tr>";
-		    }
-		    echo "</table>";
-		}
-		?>
 
 
 </body>

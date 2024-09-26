@@ -35,6 +35,7 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
+	      	<a href="../campaign/economy.php">Kassabok</a>
 	      	<a href="../campaign/economy_overview.php">Ekonomisk översikt</a>
             <a href="../campaign/bookkeeping_account_admin.php">Bokföringskonton</a>
  	    </div>
