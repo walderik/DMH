@@ -60,7 +60,7 @@ if (isset($message_message) && strlen($message_message)>0) {
 	     foreach ($organizers as $organizer) {
 	         echo $organizer->Name;
 	         echo " ".contactEmailIcon($organizer, BerghemMailer::CAMPAIGN);
-	         if ($isMainOrganizer) {
+	         if ($isMainOrganizer && ($organizer->UserId != $current_user->Id)) {
 	             echo "<form method='post' style='display:inline-block'>";
 	             echo "<input type='hidden' name='operation' value='remove_campaign_organizer'>\n";
 	             echo " <button class='invisible' type ='submit'><i class='fa-solid fa-trash-can' title='Ta bort ur kampanjarrangörsgruppen'></i></button>\n";
