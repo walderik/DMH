@@ -116,7 +116,7 @@ class Bookkeeping_PDF extends PDF_MemImage {
         $this->SetXY($left, $y);
         $this->Cell(80,10,encode_utf_to_iso('Datum'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
-        $this->Cell(80,10,encode_utf_to_iso($bookkeeping->Date),0,1);        
+        $this->Cell(80,10,encode_utf_to_iso($bookkeeping->AccountingDate),0,1);        
 
         if (isset($image) && ($image->file_mime == "application/pdf")) {
             $y += 7;
