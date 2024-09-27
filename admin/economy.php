@@ -85,15 +85,13 @@ include 'navigation.php';
 	      echo '<div class="message">'.$message_message.'</div>';
 	  }?>
         <p>Lägg in alla inkomster och utgifter som lajvet har. Deltagaravgifter kommer med automatiskt. 
-        När lajvet är klart behöver du bara generera rapporten och skicka till kassören för att bokföringen ska vara avklarad.<br><br>
+        <br><br>
         En varning betyder att det saknas ett kvitto på en utgift.<br><br>
-        Konton läggs upp under kampanj.</a></p>
+        Konton läggs upp under kampanj. Under kampanj finns även rapporter att skicka in till Berghems Vänners kassör vid årets slut.</a></p>
         <p>
         <a href="economy_payments.php">Kontrollera bankfil mot obetalade avgifter</a><br>
         <a href="economy_form.php?operation=add_income"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a> &nbsp; 
         <a href="economy_form.php?operation=add_expense"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a><br>
-        <a href="reports/economy.php" target="_blank"><i class="fa-solid fa-file-pdf"></i> Generera rapport till kassör</a> &nbsp; 
-        <a href="logic/all_bookkeeping_zip.php" target="_blank"><i class="fa-solid fa-file-zipper"></i> Alla verifikationer till kassör</a><br>
         
         </p>
         

@@ -171,6 +171,17 @@ class Bookkeeping extends BaseModel{
         
     }
     
+    public static function allIncomesOnAccount(LARP $larp, Bookkeeping_Account $account) {
+        $sql = "SELECT * FROM regsys_bookkeeping WHERE LarpId = ? AND Amount > 0 AND AccountingDate IS NOT NULL AND BookkeepingAccountId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $account->Id));
+        
+    }
+    
+    public static function allExpensesOnAccount(LARP $larp, Bookkeeping_Account $account) {
+        $sql = "SELECT * FROM regsys_bookkeeping WHERE LarpId = ? AND Amount < 0 AND AccountingDate IS NOT NULL AND BookkeepingAccountId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $account->Id));
+        
+    }
     
      
 }
