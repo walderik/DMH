@@ -154,6 +154,12 @@ class Image extends BaseModel{
             "SELECT ImageId FROM regsys_bookkeeping WHERE LarpId=?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
+
+    public static function getAllPDFVerificationsCampaign(Campaign $campaign, int $year) {
+        $sql = "SELECT * FROM regsys_image WHERE file_mime='application/pdf' AND Id IN (".
+            "SELECT ImageId FROM regsys_bookkeeping WHERE CampaignId=? AND AccountingDate LIKE ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($campaign->Id, $year."%"));
+    }
     
     
     public static function getExtension($file_mime) {

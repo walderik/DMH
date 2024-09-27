@@ -19,6 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } elseif ($operation == 'add_expense') {
             $bookkeeping = Bookkeeping::newFromArray($_POST);
             $bookkeeping->Amount = 0 - $_POST['Amount'];
+            $bookkeeping->CampaignId = $current_larp->CampaignId;
+            $bookkeeping->LarpId = NULL;
             $bookkeeping->create();
             saveReceipt($bookkeeping);
         } elseif ($operation == 'update_income') {
@@ -149,7 +151,7 @@ include 'navigation.php';
                }
                echo "</td>\n";
                
-               echo "<td>".$bookkeeping->getUser()->Name."</td>";
+               echo "<td>".$bookkeeping->getPerson()->Name."</td>";
                echo "<td class='amount'>" .number_format((float)$bookkeeping->Amount, 2, ',', '')."</td>\n";
                echo "<td>";
                echo "<a href='economy.php?operation=delete&id=$bookkeeping->Id'><i class='fa-solid fa-trash' title='Radera'></i></a>";

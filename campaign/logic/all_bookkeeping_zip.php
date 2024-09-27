@@ -33,6 +33,12 @@ $pdf->printBookkeepings($bookkeepings);
 
 $zip->addFromString('Alla verifikationer för '.$campaign->Name.'.pdf',$pdf->Output('S'));
 
+//Lägg till alla pdf'verifikationer
+$pdf_images = Image::getAllPDFVerificationsCampaign($campaign, $year);
+foreach ($pdf_images as $pdf_image) {
+    $zip->addFromString($campaign->Name.'_'.$pdf_image->file_name, $pdf_image->file_data);
+}
+
 
 $larps = LARP::getAllForYear($campaign->Id, $year);
 foreach ($larps as $larp) {
@@ -55,7 +61,7 @@ foreach ($larps as $larp) {
     //Lägg till alla pdf'verifikationer
     $pdf_images = Image::getAllPDFVerifications($larp);
     foreach ($pdf_images as $pdf_image) {
-        $zip->addFromString($pdf_image->file_name, $pdf_image->file_data);
+        $zip->addFromString($larp->Name.'_'.$pdf_image->file_name, $pdf_image->file_data);
     }
     
     foreach ($invoices as $invoice) {
