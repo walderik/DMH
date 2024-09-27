@@ -41,9 +41,9 @@
 	  </div> 
 	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
 	  <?php 
-	  $url = $_SERVER['REQUEST_URI'];
+	  $uri = $_SERVER['REQUEST_URI'];
 	  
-	  if (str_contains($url, "/participant/")) {
+	  if (str_contains($uri, "/participant/")) {
 	      //TODO bygg mail för deltagare
 	      //<a href="../participant/mail.php"><i class="fa-solid fa-envelope"></i> Epost</a>
 	  } else {
