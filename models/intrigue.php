@@ -10,7 +10,7 @@ class Intrigue extends BaseModel{
     public $CommonText;
     public $Notes;
     public $LarpId;
-    public $ResponsibleUserId;
+    public $ResponsiblePersonId;
     public $PreviousInstanceId;
     
     public static $orderListBy = 'Number';
@@ -30,7 +30,7 @@ class Intrigue extends BaseModel{
         if (isset($arr['CommonText'])) $this->CommonText = $arr['CommonText'];
         if (isset($arr['Notes'])) $this->Notes = $arr['Notes'];
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
-        if (isset($arr['ResponsibleUserId'])) $this->ResponsibleUserId = $arr['ResponsibleUserId'];
+        if (isset($arr['ResponsiblePersonId'])) $this->ResponsiblePersonId = $arr['ResponsiblePersonId'];
         if (isset($arr['PreviousInstanceId'])) $this->PreviousInstanceId = $arr['PreviousInstanceId'];
     }
     
@@ -45,9 +45,9 @@ class Intrigue extends BaseModel{
     
     # Update an existing intrigue in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Active=?, MainIntrigue=?, CommonText=?, Notes=?, LarpId=?, ResponsibleUserId=?, PreviousInstanceId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Active=?, MainIntrigue=?, CommonText=?, Notes=?, LarpId=?, ResponsiblePersonId=?, PreviousInstanceId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsibleUserId, $this->PreviousInstanceId, $this->Id))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsiblePersonId, $this->PreviousInstanceId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -62,9 +62,9 @@ class Intrigue extends BaseModel{
         
         $connection = $this->connect();
         
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, CommonText, Notes, LarpId, ResponsibleUserId, PreviousInstanceId) VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, CommonText, Notes, LarpId, ResponsiblePersonId, PreviousInstanceId) VALUES (?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsibleUserId, $this->PreviousInstanceId))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsiblePersonId, $this->PreviousInstanceId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -81,7 +81,7 @@ class Intrigue extends BaseModel{
     
     public static function allByLARP(LARP $larp) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_intrigue WHERE LarpId = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_intrigue WHERE LarpId = ? ORDER BY MainIntrigue DESC,".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
@@ -96,8 +96,8 @@ class Intrigue extends BaseModel{
     }
     
     
-    public function getResponsibleUser() {
-        return User::loadById($this->ResponsibleUserId);
+    public function getResponsiblePerson() {
+        return Person::loadById($this->ResponsiblePersonId);
     }
     
  
@@ -133,7 +133,7 @@ class Intrigue extends BaseModel{
             $newIntrigue->CommonText = $previousIntrigue->CommonText;
             $newIntrigue->Notes = $previousIntrigue->Notes;
             $newIntrigue->LarpId = $larp->Id;
-            $newIntrigue->ResponsibleUserId = $user->Id;
+            $newIntrigue->ResponsiblePersonId = $user->getOrganizer($larp)->Id;
             $newIntrigue->PreviousInstanceId = $previousIntrigue->Id;
             $newIntrigue->create();
             
@@ -220,6 +220,11 @@ class Intrigue extends BaseModel{
     
     public function isActive() {
         if ($this->Active == 0) return false;
+        return true;
+    }
+    
+    public function isMainIntrigue() {
+        if ($this->MainIntrigue == 0) return false;
         return true;
     }
     
@@ -668,7 +673,7 @@ class Intrigue extends BaseModel{
         return Vision::getAllForIntrigue($this);
     }
     
-    public function mayRemove() {
+    public function mayDelete() {
         //Kolla om det finns något kopplat till intrigen
         $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_telegram WHERE IntrigueId=?";
         if (static::existsQuery($sql, array($this->Id))) return false;
@@ -700,6 +705,17 @@ class Intrigue extends BaseModel{
         if (!empty($this->getAllIntrigueRelations())) return false;
         
         return true;
+    }
+    
+    public static function delete($id)
+    {
+        $intrigue = static::loadById($id);
+        
+        if (!$intrigue->mayDelete()) return;
+        
+        $intrigue->deleteAllIntrigueTypes();
+        
+        parent::delete($id);
     }
     
     

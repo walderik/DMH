@@ -1,6 +1,6 @@
 <?php
-$error_message = "";
-$message_message = "";
+if (!isset($error_message)) $error_message = "";
+if (!isset($message_message)) $message_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
@@ -141,6 +141,9 @@ function getErrorText($code) {
             break;
         case "no_email":
             $output = "Ingen korrekt epostadress angiven.";
+            break;
+        case "no_house":
+            $output = "Det huset finns inte.";
             break;
         case "no_text":
             $output = "Ingen text angiven.";

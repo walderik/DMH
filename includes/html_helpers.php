@@ -147,33 +147,24 @@ function showParticipantStatusIcon($value, $message) {
     }
 }
 
-function contactEmailIcon(Person $person) {
+function contactEmailIcon(Person $person, ?int $sender=BerghemMailer::LARP) {
     $param = date_format(new Datetime(),"suv");
-    return "<form action='contact_email.php'  class='fabutton' method='post'>\n".
-        "<input type=hidden name='send_one' value=$param>\n".
+    $res = "<form action='../common/contact_email.php'  class='fabutton' method='post'>\n";
+    $res .= "<input type=hidden name='sender' value='$sender'>";
+    $res .= "<input type=hidden name='send_one' value=$param>\n".
         "<input type=hidden name='personId' value=$person->Id>\n".
         "<button type='submit' class='invisible' title='Skicka mail till $person->Name'>".
         "  <i class='fa-solid fa-envelope-open-text'></i>".
         "</button>\n".
         "</form>\n";
+    return $res;
 }
-
-function contactEmailIconUser(User $user) {
-    $param = date_format(new Datetime(),"suv");
-    return "<form action='contact_email.php'  class='fabutton' method='post'>\n".
-        "<input type=hidden name='send_one' value=$param>\n".
-        "<input type=hidden name='email' value=$user->Email>\n".
-        "<button type='submit' class='invisible' title='Skicka mail till $user->Name'>".
-        "  <i class='fa-solid fa-envelope-open-text'></i>".
-        "</button>\n".
-        "</form>\n";
-}
-
 
 
 function contactAllEmailIcon(){
     $param = date_format(new Datetime(),"suv");
-    return "<form action='contact_email.php'  class='fabutton' method='post'>".
+    return "<form action='../common/contact_email.php'  class='fabutton' method='post'>".
+        "<input type=hidden name='isLarp' value='1'>".
         "<input type=hidden name='send_all' value=$param>".
         "<button type='submit' class='invisible' title='Skicka ett utskick till alla deltagare i lajvet'>".
         "  <i class='fa-solid fa-envelope-open-text'></i>".
@@ -182,18 +173,19 @@ function contactAllEmailIcon(){
 }
 
 
-function contactSeveralEmailIcon($txt, $personIdArr, $greeting, $subject){
+function contactSeveralEmailIcon($txt, $personIdArr, $greeting, $subject, ?int $sender=BerghemMailer::LARP){
     $param = date_format(new Datetime(),"suv");
-    $retrunStr = "<form action='contact_email.php'  class='fabutton' method='post'>\n".
+    $retrunStr = "<form action='../common/contact_email.php'  class='fabutton' method='post'>\n".
         "<input type=hidden name='send_several' value=$param>\n";
-        
+    $retrunStr .= "<input type=hidden name='sender' value='$sender'>";
+    
     foreach ($personIdArr as $personId)  {
         $retrunStr .= "<input type='hidden' name='personId[]' value='$personId'>\n";
     }
     $retrunStr .= "<input type=hidden name='name' value='$greeting'>\n".
         "<input type=hidden name='subject' value='$subject'>\n".
         "<button type='submit' class='invisible' title='$txt'>".
-        "  <i class='fa-solid fa-envelope-open-text'></i>  ".$txt.
+        "  <i class='fa-solid fa-envelope-open-text' title='Skicka epost till alla'></i>  ".$txt.
         "</button>\n".
     "</form>\n";
     return $retrunStr;
@@ -226,9 +218,85 @@ function fontDropDown(String $name, ?String $selected=null) {
         
 
         echo "<option value='$font' $row_option>$font</option>\n"; 
-        //echo "<input type='radio' id='" .$font . "' name='" . $name . "' value='" . $font . "' " . $row_option . ">\n";
-        //echo "<label for='" .$font . "'>" .  $font . "</label><br>\n";
     }
     echo "</select>\n";
     echo "</div>\n";
 }
+
+# Inamtning för hitta personer enkelt
+# Man kan ange bredden på inmatningsfältet som argument
+function autocomplete_person_id($width="100%", $render_sumbit_button=false) {
+    global $count;
+    
+    if (isset($count)) $count++;
+    else $count=1;
+    if ($count == 1)
+        echo "
+        <style>
+            .suggestions div {
+                cursor: pointer;
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+            .suggestions div:hover {
+                background-color: #f0f0f0;
+            }
+        </style>
+       <script src='../javascript/autocomplete_person.js'></script>";
+
+    echo "<input type='text' id='autocomplete_person$count' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' oninput='autocomplete_person(event, this, $count)'>";
+    if ($render_sumbit_button) echo " &nbsp; <input id='autocomplete_person_submit_button$count' type='submit' value='Välj en person' style='display:inline;'>	";
+	echo "<input type='hidden' id='person_id$count'  name='person_id' value='0'>
+	<div id='suggestions$count' class='suggestions'></div>";
+}
+
+function economy_overview(Larp $larp) {
+
+    $income = Registration::totalIncomeToday($larp) + Bookkeeping::sumRegisteredIncomes($larp);
+    $refund = 0 - Registration::totalFeesReturned($larp);
+    $expense = Bookkeeping::sumRegisteredExpenses($larp);
+    $sum = $income + $refund + $expense;
+
+    echo "<tr><td style='font-weight: normal'>Faktiskta intäkter:<br>registrerade betalningar och andra registrerade intäkter</td>\n";
+    echo "<td align='right'>".number_format((float)($income), 2, ',', '')." SEK</td></tr>\n";
+    echo "<tr><td style='font-weight: normal'>Avdrag återbetalningar:<br>alla registrerade återbetalningar</td>\n";
+    echo "<td align='right'>". number_format((float)($refund), 2, ',', '')." SEK</td></tr>\n";
+    echo "<tr><td style='font-weight: normal'>Övriga utgifter:<br>andra registrerade utgifter<br></td>\n";
+    echo "<td align='right'>".number_format((float)$expense, 2, ',', '')." SEK</td></tr>\n";
+    echo "<tr><td style='font-weight: normal'>Balans:<br>faktiska inkomster och utgifter</td>\n";
+    echo "<td align='right'>".number_format((float)$sum, 2, ',', '')."  SEK</td></tr>\n";
+    return $sum;
+}
+
+function economy_overview_campaign(Campaign $campaign, $year) {
+    
+    $income = Bookkeeping::sumRegisteredIncomesCampaign($campaign, $year);
+    $expense = Bookkeeping::sumRegisteredExpensesCampaign($campaign, $year);
+    $sum = $income + $expense;
+    
+    echo "<tr><td style='font-weight: normal'>Intäkter:</td>\n";
+    echo "<td align='right'>".number_format((float)($income), 2, ',', '')." SEK</td></tr>\n";
+    echo "<tr><td style='font-weight: normal'>Utgifter:<br>andra registrerade utgifter<br></td>\n";
+    echo "<td align='right'>".number_format((float)$expense, 2, ',', '')." SEK</td></tr>\n";
+    
+    $larps = LARP::getAllForYear($campaign->Id, $year);
+    if (!empty($larps)) {
+        foreach ($larps as $larp) {
+            echo "<tr><td style='font-weight: normal'>";
+            
+            echo "<details><summary>$larp->Name</summary> ";
+            echo substr($larp->StartDate, 0, 10) .' - '.substr($larp->EndDate, 0, 10)."<br><br>\n";
+            echo "<table>";
+            $larpsum = economy_overview($larp);
+            echo "</table><br></details><br>\n";
+            
+            echo "</td>\n";
+            echo "<td align='right'>".number_format((float)$larpsum, 2, ',', '')." SEK</td></tr>\n";
+            $sum += $larpsum;
+            
+        }
+    }
+    echo "<tr><td style='font-weight: normal'>Balans:</td>\n";
+    echo "<td align='right'>".number_format((float)$sum, 2, ',', '')."  SEK</td></tr>\n";
+}
+

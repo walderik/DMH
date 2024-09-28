@@ -64,7 +64,10 @@ th {
 						echo "</td>\n";
     		        }
     		        
-    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'></td>";
+    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'>";
+    		        echo " <a href='logic/remove_set_money.php?roleId=$role->Id&larpId=$current_larp->Id'><i class='fa-solid fa-xmark' title='Sätt pengarna till osatta'></i></a>";
+    		        echo "</td>";
+    		        
     		        
     		        echo "</tr>\n";
     		    }
@@ -115,7 +118,9 @@ th {
 						echo "</td>\n";
     		        }
     		        
-    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'></td>";
+    		        echo "<td><input type='number' id='$role->Id' value='$larp_role->StartingMoney' onchange='setMoney(this, $current_larp->Id)'>";
+    		        echo " <a href='logic/remove_set_money.php?roleId=$role->Id&larpId=$current_larp->Id'><i class='fa-solid fa-xmark' title='Sätt pengarna till osatta'></i></a>"; 
+    		        echo "</td>";
     		        
     		        echo "</tr>\n";
     		    

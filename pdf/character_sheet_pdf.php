@@ -32,6 +32,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
     public $person;
     public $isMyslajvare;
     public $larp;
+    public $subdivisions;
     public $all;
     public $current_left;
     public $cell_y_space;        # Standardhöjden på en cell 
@@ -133,16 +134,15 @@ class CharacterSheet_PDF extends PDF_MemImage {
         return true;
     }
     
-    function intrigues($new_page = true) {
+    function intrigues($new_page = true, $start_line= true) {
         global $y, $left, $lovest_y;
         
         $space = 3;
         
         # Kolla först att det finns intriger och att någon har en intrigtext
         $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $this->larp->Id);
-        $subdivisions = Subdivision::allForRole($this->role);
         
-        if (empty($intrigues) && empty($subdivisions)) return true;
+        if (empty($intrigues) && empty($this->subdivisions)) return true;
         
         $tomma_intriger = true;
         foreach ($intrigues as $intrigue) {
@@ -153,7 +153,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
             
             if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || (!$isInSubdivision && !empty($intrigue->CommonText))) $tomma_intriger = false;
         }
-        foreach ($subdivisions as $subdivision) {
+        foreach ($this->subdivisions as $subdivision) {
             $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $this->larp->Id);
             foreach ($subdivisionIntrigues as $intrigue) {
                 if (!$intrigue->isActive()) continue;
@@ -165,7 +165,11 @@ class CharacterSheet_PDF extends PDF_MemImage {
         if ($tomma_intriger) return true;
   
         if ($new_page) $this->AddPage();
-        else $y = $this->GetY()+$space*3;
+        else {
+            $y = $this->GetY()+$space*1;
+            if ($start_line) $this->bar();
+            $y = $this->GetY()+$space*3;
+        }
         $this->SetXY($left, $y);
         $this->SetFont('Helvetica','B',static::$text_fontsize);
         $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('Intriger'),0,0,'L');
@@ -203,7 +207,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $known_props = $this->role->getAllKnownProps($this->larp);
         
 
-        foreach ($subdivisions as $subdivision) {
+        foreach ($this->subdivisions as $subdivision) {
             $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $this->larp->Id);
             foreach ($subdivisionIntrigues as $intrigue) {
                 if ($intrigue->isActive()) {
@@ -231,8 +235,8 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 }
             }
             
-            $known_groups = array_merge($known_groups,$subdivision->getAllKnownGroups($this->larp));
-            $known_roles = array_merge($known_roles,$subdivision->getAllKnownRoles($this->larp));
+            $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($this->larp)), SORT_REGULAR);
+            $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($this->larp)), SORT_REGULAR);
             
             $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($this->larp));
             $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($this->larp));
@@ -384,6 +388,57 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->SetXY($this->current_left, $y);
     }
     
+    protected function subdivision_info(){
+        if (!empty($this->subdivisions)) {
+            foreach ($this->subdivisions as $subdivision) {
+                if ($subdivision->isVisibleToParticipants()) {
+                    if ($subdivision->canSeeOtherParticipants()) $this->print_open_subdivision($subdivision);
+                    else $this->print_secret_subdivision($subdivision);
+                }
+            }
+        }
+
+    }
+    
+    function print_open_subdivision(Subdivision $subdivision) {
+        global $y, $left;
+        $space = 3;
+        $this->print_secret_subdivision($subdivision);
+
+        $y = $this->GetY()+$space*2;
+        $membernames = array();
+        foreach ($subdivision->getAllRegisteredMembers($this->larp) as $role) {
+            $membernames[] = $role->Name;
+        }
+     
+        if (!empty($membernames)) {
+            $this->SetXY($left, $y);
+            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Medlemmar:"),0,0,'L');
+            $y = $this->GetY()+$space*2;
+            $this->SetXY($left, $y);
+            $this->MultiCell(0, static::$cell_y-1, trim(encode_utf_to_iso(implode(", ", $membernames))), 0, 'L');
+            
+        }
+        
+    }
+    
+    function print_secret_subdivision(Subdivision $subdivision) {
+        global $y, $left;
+        $space = 3;
+        $y = $this->GetY()+$space;
+        $this->bar();
+        $y = $this->GetY()+$space*2;
+        $this->SetFont('Helvetica','B',static::$text_fontsize);
+        $this->SetXY($left, $y);
+        $this->Cell(0, static::$cell_y, encode_utf_to_iso($subdivision->Name),0,0,'L');
+        $this->SetFont('Arial','',static::$text_fontsize-3);
+        $y = $this->GetY()+$space*2;
+        $this->SetXY($left, $y);
+        $this->MultiCell(0, static::$cell_y-1, trim(encode_utf_to_iso($subdivision->Description)), 0, 'L');
+        
+    }
+    
+    
     function rumours($new_page = true){
         global $y, $left;
         $space = 3;
@@ -398,7 +453,9 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $name = $this->role->Name;
         $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Rykten $name känner till "),0,0,'L');
         $this->SetFont('Arial','',static::$text_fontsize-3);
-        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("(Hjälp gärna till att sprida och reagera på dom) "),0,0,'L');
+        $y = $this->GetY()+$space*2;
+        $this->SetXY($left, $y);
+        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Alla rykten är viktiga i lajvet. Undersök dom gärna. Hjälp gärna till att sprida och reagera på dom "),0,0,'L');
         
         $this->SetFont('Arial','',static::$text_fontsize);
         $y = $this->GetY()+$space*3;
@@ -493,8 +550,8 @@ class CharacterSheet_PDF extends PDF_MemImage {
                     }
                 }
                 
-                $subdivisions = Subdivision::allForRole($this->role);
-                foreach ($subdivisions as $subdivision) {
+                
+                foreach ($this->subdivisions as $subdivision) {
                     $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $prevoius_larp->Id);
                     foreach ($subdivisionIntrigues as $intrigue) {
                         if ($intrigue->isActive()) {
@@ -582,6 +639,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->person = $this->role->getPerson();
         $this->isMyslajvare = $this->role->isMysLajvare();
         $this->larp = $larp_in;
+        $this->subdivisions = Subdivision::allForRole($this->role);
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $this->current_cell_height = $this->cell_y_space;
         
@@ -607,15 +665,17 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->bar();
         
+        
         $y += 3;
+
         
         if (!$this->isMyslajvare && !$this->isReserve) {
-            $this->intrigues(false);
+            $this->intrigues(false, false);
             $this->rumours(false);
         }
     }
     
-    function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false) {
+    function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false, $no_history = false) {
         global $current_user, $x, $y, $left, $left2, $mitten;
         $space = 3;
         
@@ -623,6 +683,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->person = $this->role->getPerson();
         $this->isMyslajvare = $this->role->isMysLajvare();
         $this->larp = $larp_in;
+        $this->subdivisions = Subdivision::allForRole($this->role);
         $this->all = $all_information;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $this->current_cell_height = $this->cell_y_space;
@@ -682,17 +743,20 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->beskrivning();
 
-
+        
+        $this->subdivision_info();
+        
         if (!$this->isMyslajvare && !$this->isReserve && ($this->larp->isIntriguesReleased() || $this->all)) {
-            $this->intrigues(false);
+            $this->intrigues(false, true);
             $this->rumours(false);
         }
         
-        $this->history();
+        if (!$no_history) $this->history();
         
 	}
 	
-	function all_character_sheets(LARP $larp_in, bool $bara_intrig, ?bool $all_info=true) {
+
+	function all_character_sheets(LARP $larp_in, bool $bara_intrig, ?bool $all_info=true, ?bool $only_main=false,?bool $no_history = false) {
 	    $this->larp = $larp_in;
 
 	    $roles = $this->larp->getAllMainRoles(false);
@@ -700,16 +764,18 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	        if ($bara_intrig) {
                 $this->intrigue_info($role, $larp_in);
 	        } else {
-	            $this->new_character_sheet($role, $larp_in, $all_info);
+	            $this->new_character_sheet($role, $larp_in, $all_info, $no_history);
 	        }
 	    }
-	    $roles = $this->larp->getAllNotMainRoles(false);
-	    foreach($roles as $role) {
-	        if ($bara_intrig) {
-	           $this->intrigue_info($role, $larp_in);
-	        } else {
-	            $this->new_character_sheet($role, $larp_in, $all_info);
-	        }
+	    if (!$only_main) {
+    	    $roles = $this->larp->getAllNotMainRoles(false);
+    	    foreach($roles as $role) {
+    	        if ($bara_intrig) {
+    	           $this->intrigue_info($role, $larp_in);
+    	        } else {
+    	            $this->new_character_sheet($role, $larp_in, $all_info, $no_history);
+    	        }
+    	    }
 	    }
 	}
 

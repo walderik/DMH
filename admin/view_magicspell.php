@@ -100,7 +100,7 @@ include 'magic_navigation.php';
 				    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 				    $isComing = !empty($larp_role);
 				    echo "<tr><td>";
-					echo $role.getViewLink();
+					echo $role->getViewLink();
 					echo "</td><td>$magician->Level</td>";
 				    echo "<td>";
 				    if (isset($master)) {

@@ -1,14 +1,21 @@
 <?php
 require 'header.php';
-include_once '../includes/error_handling.php';
+$_SESSION['navigation'] = Navigation::OM_ADMIN;
 include "navigation.php";
+
+if (isset($error_message) && strlen($error_message)>0) {
+    echo '<div class="error">'.$error_message.'</div>';
+}
+if (isset($message_message) && strlen($message_message)>0) {
+    echo '<div class="message">'.$message_message.'</div>';
+}
 ?>
+	 
 	<body>
 		<div class="content">
 			<h1>Omnes Mundi administration</h1>
 			<p>			    
 				<a href="campaign_admin.php">Kampanjer</a><br><br>
-			    <a href="house_admin.php">Hus och lägerplatser</a><br><br>
 			    <a href="user_admin.php">Användare / Logins /Admin behörighet</a><br><br>
 			    <a href="mail_admin.php">Alla skickade mail</a><br><br>
 			    <br><br>

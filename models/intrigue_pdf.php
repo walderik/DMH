@@ -92,6 +92,39 @@ class Intrigue_Pdf extends BaseModel{
         return IntrigueActor_KnownPdf::getAllKnownPdfsForIntriguePdf($this);
     }
     
+    public function getAllPersonsWhoKnowsPdf() {
+        $sql = "SELECT * FROM regsys_person WHERE Id IN ".
+        "(SELECT regsys_role.PersonId FROM regsys_role, regsys_intrigueactor, regsys_intrigue_pdf, regsys_intrigueactor_knownpdf WHERE ".
+        "regsys_role.Id = regsys_intrigueactor.RoleId AND ".
+        "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
+        "regsys_intrigueactor_knownpdf.IntriguePdfId = ?) ".
+        "ORDER BY Id";
+        $knowsDirectly = Person::getSeveralObjectsqQuery($sql, array($this->Id));
+        
+        $knowsThroughSubdivision= array();
+        $sql = "SELECT * FROM regsys_person WHERE Id IN ".
+            "(SELECT regsys_role.PersonId FROM regsys_role, regsys_subdivisionmember, regsys_intrigueactor, regsys_intrigue_pdf, regsys_intrigueactor_knownpdf WHERE ".
+            "regsys_role.Id = regsys_subdivisionmember.RoleId AND ".
+            "regsys_subdivisionmember.SubdivisionId = regsys_intrigueactor.SubdivisionId AND ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownpdf.IntriguePdfId = ?) ".
+            "ORDER BY Id";
+        $knowsThroughSubdivision = Person::getSeveralObjectsqQuery($sql, array($this->Id));
+        return array_unique(array_merge($knowsDirectly, $knowsThroughSubdivision), SORT_REGULAR);
+            
+    }
+
+    public function getAllGroupsWhoKnowsPdf() {
+        $sql = "SELECT * FROM regsys_group WHERE Id IN ".
+            "(SELECT regsys_intrigueactor.GroupId FROM regsys_intrigueactor, regsys_intrigue_pdf, regsys_intrigueactor_knownpdf WHERE ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownpdf.IntriguePdfId = ?) ".
+            "ORDER BY Id";
+        return Group::getSeveralObjectsqQuery($sql, array($this->Id));
+        
+    }
+    
+    
     public function mayView(User $user) {
         
         //Kontrollera om användaren har en roll som får se 

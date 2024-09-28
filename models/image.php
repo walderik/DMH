@@ -154,6 +154,12 @@ class Image extends BaseModel{
             "SELECT ImageId FROM regsys_bookkeeping WHERE LarpId=?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
+
+    public static function getAllPDFVerificationsCampaign(Campaign $campaign, int $year) {
+        $sql = "SELECT * FROM regsys_image WHERE file_mime='application/pdf' AND Id IN (".
+            "SELECT ImageId FROM regsys_bookkeeping WHERE CampaignId=? AND AccountingDate LIKE ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($campaign->Id, $year."%"));
+    }
     
     
     public static function getExtension($file_mime) {
@@ -193,29 +199,19 @@ class Image extends BaseModel{
     }
     
     
-    public static function update() {
-        //Används bara vid anonymisering av databasen
-
+    
+    # Update an existing object in db
+    public function update() {
+        $stmt = $this->connect()->prepare("UPDATE regsys_image SET file_name=?,
+            file_mime=?, file_data=?, Photographer=?  WHERE Id = ?;");
         
-        $file_mime = mime_content_type($_FILES["upload"]["tmp_name"]);
-        $filename = "anonym";
-
-        $connection = static::connectStatic();
-        
-        $stmt = $connection->prepare("UPDATE regsys_image SET file_name=?, file_mime=?, file_data=?, Photographer=? WHERE Id=?");
-        
-        if (!$stmt->execute(array($filename,
-            $file_mime,
-            file_get_contents($_FILES["upload"]["tmp_name"]),
-            "",1))) {
+        if (!$stmt->execute(array($this->file_name, $this->file_mime, $this->file_data,
+            $this->Photographer, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
             }
-            $id = $connection->lastInsertId();
             $stmt = null;
-            return $id;
     }
-    
     
 }

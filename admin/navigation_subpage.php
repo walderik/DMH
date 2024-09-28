@@ -6,8 +6,8 @@
 		<link href="../css/style.css" rel="stylesheet" type="text/css">
 		<link href="../css/admin_style.css" rel="stylesheet" type="text/css">
 		<link rel="icon" type="image/x-icon" href="../images/<?php echo $current_larp->getCampaign()->Icon; ?>">
-		<script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
-	</head>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">  
+		</head>
 	<body class="loggedin">
 	<nav id="navigation">
         <a href="<?php echo $current_larp->getCampaign()->Homepage ?>" class="logo" target="_blank">

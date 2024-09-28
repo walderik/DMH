@@ -454,8 +454,7 @@ include 'navigation.php';
 		$titledeeds = Titledeed::getAllForGroup($current_group);
 		foreach ($titledeeds as $titledeed) {
 		    $numberOfOwners = $titledeed->numberOfOwners();
-		    echo "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
-		    if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
+		    echo "<a href='view_titledeed.php?id=$titledeed->Id'>$titledeed->Name</a>";		    if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
 		    echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
 		    echo "<br>";
 		    $produces_normally = $titledeed->ProducesNormally();
@@ -493,6 +492,13 @@ include 'navigation.php';
 		        $previous_larp_group = LARP_Group::loadByIds($current_group->Id, $prevoius_larp->Id);
 		        echo "<div class='border'>";
 		        echo "<h3>$prevoius_larp->Name</h3>";
+		        if (isset($previous_larp_group->StartingMoney)) {
+		            echo "Började med $previous_larp_group->StartingMoney $currency";
+		            if (isset($previous_larp_group->EndingMoney)) echo ", slutade med $previous_larp_group->EndingMoney $currency.";
+		            echo "<br>";
+		        }
+		        
+		        
 		        if (!empty($previous_larp_group->Intrigue)) {
     		        echo "<strong>Intrig</strong><br>";
     		        echo "<p>".nl2br($previous_larp_group->Intrigue)."</p>";

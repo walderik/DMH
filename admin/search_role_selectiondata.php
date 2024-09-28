@@ -9,6 +9,7 @@ $options = getAllOptionsForRoles($current_larp);
 include 'navigation.php';
 ?>
 
+
 	<script>
 	function getSearchedRoles(button) {
 		button.disabled = 'disabled';
@@ -182,6 +183,7 @@ function removeOptions(selectElement) {
 	
 
 </script>
+<script src="../javascript/table_sort.js"></script>
 
 </body>
 </html>

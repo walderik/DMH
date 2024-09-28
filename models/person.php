@@ -19,6 +19,8 @@ class Person extends BaseModel{
     public $HasPermissionShowName = 0;
     public $IsSubscribed = 1;
     public $UnsubscribeCode;
+    public $MembershipCheckedAt;
+    public $IsMember;
 
     public static $orderListBy = 'Name';
     
@@ -55,6 +57,8 @@ class Person extends BaseModel{
         if (isset($arr['HasPermissionShowName'])) $this->HasPermissionShowName = $arr['HasPermissionShowName'];
         if (isset($arr['IsSubscribed'])) $this->IsSubscribed = $arr['IsSubscribed'];
         if (isset($arr['UnsubscribeCode'])) $this->UnsubscribeCode = $arr['UnsubscribeCode'];
+        if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
+        if (isset($arr['MembershipCheckedAt'])) $this->MembershipCheckedAt = $arr['MembershipCheckedAt'];
         
         if (isset($this->HouseId) && $this->HouseId=='null') $this->HouseId = null;
         
@@ -142,8 +146,7 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
         
     }
-    
-    
+
     
     public static function getPersonsForUser($userId) {
         $sql = "SELECT * FROM regsys_person WHERE UserId = ? ORDER BY ".static::$orderListBy.";";
@@ -235,6 +238,13 @@ class Person extends BaseModel{
         return $group_members;
     }
     
+    # En function som letar bland alla personer och returnerar en array av personer om något hittas
+    public static function searchPersons($search) {
+        $sql = "SELECT * from regsys_person WHERE `name` LIKE ? OR `SocialSecurityNumber` regexp ? OR `SocialSecurityNumber` regexp ? ORDER BY ".static::$orderListBy.";";
+        $persons = static::getSeveralObjectsqQuery($sql, array("%$search%", "^$search", "^19$search"));
+        return $persons;
+    }
+    
     
     public function getGuardianFor(LARP $larp) {
         $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
@@ -294,13 +304,19 @@ class Person extends BaseModel{
     
     # Update an existing person in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_person SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, EmergencyContact=?, Email=?,
-                                                                  FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
-                                                                  UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, HasPermissionShowName=?, IsSubscribed=?, UnsubscribeCode=? WHERE Id = ?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_person SET Name=?, SocialSecurityNumber=?, PhoneNumber=?, 
+            EmergencyContact=?, Email=?,
+            FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
+            UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, 
+            HasPermissionShowName=?, IsSubscribed=?, UnsubscribeCode=?,
+            MembershipCheckedAt=?, IsMember=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email,
+        if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, 
+            $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId,
-            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode, $this->Id))) {
+            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
+            $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode, 
+            $this->MembershipCheckedAt, $this->IsMember, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -313,13 +329,18 @@ class Person extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_person (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
-                                                                    FoodAllergiesOther, OtherInformation, ExperienceId,
-                                                                    UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, HasPermissionShowName, IsSubscribed, UnsubscribeCode) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?);");
+                FoodAllergiesOther, OtherInformation, ExperienceId,
+                UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, 
+                HasPermissionShowName, IsSubscribed, UnsubscribeCode,
+                MembershipCheckedAt, IsMember) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId, 
-            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode))) {
+            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
+            $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode,
+            $this->MembershipCheckedAt, $this->IsMember
+        ))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -472,6 +493,10 @@ class Person extends BaseModel{
         return getAge(substr($this->SocialSecurityNumber, 0, 8), $larp->StartDate);
     }
     
+    public function getAgeNow() {
+        return getAge(substr($this->SocialSecurityNumber, 0, 8), date("Ymd"));
+    }
+    
     public function isRegistered(LARP $larp) {
         $registration = Registration::loadByIds($this->Id, $larp->Id);
         if (isset($registration)) {
@@ -545,15 +570,7 @@ class Person extends BaseModel{
     }
     
     
-    public function isMember(Larp $larp) {
-        $registration = Registration::loadByIds($this->Id, $larp->Id);
 
-        //Vi bryr oss inte om ifall personer är medlemmar om det inte är anmälda till ett lajv
-        if (!isset($registration)) return false;
-        
-        return $registration->IsMember();
-    }
-    
     public static function getAllWithSingleAllergy(NormalAllergyType $allergy, LARP $larp) {
         if (is_null($allergy) OR is_null($larp)) return Array();
 
@@ -596,7 +613,16 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
     
-    
+     public static function getAllWithAllergyComment(LARP $larp) {
+         if (is_null($larp)) return Array();
+         
+         $sql="SELECT * FROM regsys_person WHERE id IN ".
+             "(SELECT PersonId from regsys_registration WHERE LarpId =? AND NotComing = 0 AND PersonId NOT IN ".
+             "(SELECT PersonId FROM regsys_normalallergytype_person)) AND FoodAllergiesOther !='' ".
+             "ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+     }
+     
     
     public static function getAllOfficials(LARP $larp) { 
         if (is_null($larp)) return Array();
@@ -669,4 +695,115 @@ class Person extends BaseModel{
         }
         return $this->UnsubscribeCode;
     }
+    
+    public static function getAllWithAccessToLarp(LARP $larp) {
+        $campaingPersons = Person::getAllWithAccessToCampaign($larp->getCampaign());
+        $onlyLarp = Person::getAllWithAccessOnlyToLarp($larp);
+        return array_merge($campaingPersons, $onlyLarp);
+    }
+    
+    public static function getAllWithAccessToCampaign(Campaign $campaign) {
+        if (is_null($campaign)) return null;
+        
+        $sql = "SELECT * FROM regsys_person WHERE Id IN (SELECT PersonId from regsys_access_control_campaign WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($campaign->Id));
+    }
+    
+    public static function getAllWithAccessOnlyToLarp(LARP $larp) {
+        if (is_null($larp)) return null;
+        
+        $sql = "SELECT * FROM regsys_person WHERE Id IN (SELECT PersonId from regsys_access_control_larp WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
+    public static function getAllWithOtherAccess() {
+        $sql = "SELECT * FROM regsys_person WHERE Id IN (SELECT PersonId FROM regsys_access_control_other WHERE 1) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array());
+    }
+    
+    
+    public function getOtherAccess() {
+        $sql = "SELECT Permission FROM regsys_access_control_other WHERE PersonId = ? ORDER BY Permission;";
+        
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+            
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = null;
+        
+        $resPermissions = array();
+        foreach ($res as $item)  $resPermissions[] = $item['Permission'];
+        return $resPermissions;
+        
+        
+        
+        if ($res[0]['Num'] == 0) return false;
+        return true;
+        
+        
+    }
+    
+    public function isMemberAtLarp(Larp $larp) {
+        $larp = LARP::loadById($this->LARPId);
+        $year = substr($larp->StartDate, 0, 4);
+        
+        $current_year = date("Y");
+        
+        if ($year >= $current_year) return false;
+        
+        return $this->IsMember();
+    }
+    
+    
+    public function isMember() {
+        //Kolla så att vi inte har bytt år.
+        $last_checked_year = substr($this->MembershipCheckedAt, 0, 4);
+        $current_year = date("Y");
+        
+        if (($current_year > $last_checked_year) && $this->IsMember == 1) {
+            $this->IsMember = 0;
+        }
+        
+        //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
+        if ($this->IsMember == 1) return true;
+        
+        
+        
+        
+        //Kolla inte oftare än en gång per kvart
+        if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false;
+        
+
+        
+        $val = check_membership($this->SocialSecurityNumber, $current_year);
+        
+        
+        if ($val == 1) {
+            $this->IsMember=1;
+        }
+        else {
+            $this->IsMember = 0;
+        }
+        $now = new Datetime();
+        $this->MembershipCheckedAt = date_format($now,"Y-m-d H:i:s");
+        $this->update();
+        
+        if ($this->IsMember == 1) return true;
+        return false;
+        
+    }
+    
+    
+    
 }

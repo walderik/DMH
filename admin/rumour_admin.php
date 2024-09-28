@@ -48,7 +48,8 @@ include 'navigation.php';
     <div class="content">
         <h1>Rykten</h1>
         <p>Rykten skapade av arrangörer blir automatiskt godkända. Rykten skapade av deltagare behöver godkännas av arrangörer innan de kan spridas.<br> 
-        <a href="rumour_wizard_pg1.php">Fördela ett eller flera rykten, som ingen redan känner till, slumpmässigt <i class="fa-solid fa-wand-sparkles"></i></a>
+        <a href="rumour_wizard_pg1.php">Fördela ett eller flera rykten, som ingen redan känner till, slumpmässigt <i class="fa-solid fa-wand-sparkles"></i></a><br>
+        <a href="rumour_roles.php">Se hur många rykten olika karaktärer har.</a>
         </p>
 		<form action="rumour_admin.php" method="post">
             <a href="rumour_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;

@@ -21,6 +21,9 @@ class BerghemMailer {
     public const DaysAutomatic = 7;
     public const DaysManual = 180;
     
+    const LARP = 0;
+    const CAMPAIGN = 1;
+    const ASSOCIATION = 2;    
     
     public static $from = 'info@berghemsvanner.se';
     

@@ -14,6 +14,7 @@ class LARP extends BaseModel{
     public  $DisplayIntrigues = 0;
     public  $DisplayHousing = 0;
     public  $CampaignId;
+    public  $VisibleToParticipants;
     public  $RegistrationOpen = 0;
     public  $PaymentReferencePrefix = "";
     public  $NetDays = 0;
@@ -55,7 +56,8 @@ class LARP extends BaseModel{
         if (isset($arr['DisplayHousing'])) $this->DisplayHousing = $arr['DisplayHousing'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
-        if (isset($arr['RegistrationOpen'])) $this->RegistrationOpen = $arr['RegistrationOpen'];        
+        if (isset($arr['VisibleToParticipants'])) $this->VisibleToParticipants = $arr['VisibleToParticipants'];        
+        if (isset($arr['RegistrationOpen'])) $this->RegistrationOpen = $arr['RegistrationOpen'];
         if (isset($arr['PaymentReferencePrefix'])) $this->PaymentReferencePrefix = $arr['PaymentReferencePrefix'];
         if (isset($arr['NetDays'])) $this->NetDays = $arr['NetDays'];
         if (isset($arr['LastPaymentDate'])) $this->LastPaymentDate = $arr['LastPaymentDate'];
@@ -80,6 +82,8 @@ class LARP extends BaseModel{
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
         $larp = new self();
+        $larp->NetDays = 7;
+        $larp->VisibleToParticipants = true;
         return $larp;
     }
     
@@ -87,7 +91,7 @@ class LARP extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_larp SET Name=?, TagLine=?, StartDate=?, EndDate=?, ".
                  "MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, ".
-                 "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=?, ".
+                 "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, VisibleToParticipants=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=?, ".
                  "LastPaymentDate=?, HasTelegrams=?, HasLetters=?, HasRumours=?, 
                     HasAlchemy=?, HasMagic=?, HasVisions=?, HasCommerce=?,
                     ChooseParticipationDates=?, Description=?, ContentDescription=?, EvaluationOpenDate=?, EvaluationLink=?  WHERE Id = ?");
@@ -95,7 +99,7 @@ class LARP extends BaseModel{
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
-            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, 
+            $this->VisibleToParticipants, $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, 
             $this->LastPaymentDate, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, 
             $this->HasAlchemy, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
             $this->ChooseParticipationDates,
@@ -113,16 +117,16 @@ class LARP extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp (Name, TagLine, StartDate, EndDate, MaxParticipants, 
             LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, DisplayHousing, CampaignId, 
-            RegistrationOpen, PaymentReferencePrefix, NetDays, LastPaymentDate, HasTelegrams, 
+            VisibleToParticipants, RegistrationOpen, PaymentReferencePrefix, NetDays, LastPaymentDate, HasTelegrams, 
             HasLetters, HasRumours, 
             HasAlchemy, HasMagic, HasVisions, HasCommerce, 
             ChooseParticipationDates, Description, ContentDescription,EvaluationOpenDate,EvaluationLink) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)");
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
-            $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->LastPaymentDate, $this->HasTelegrams, 
+            $this->VisibleToParticipants, $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->LastPaymentDate, $this->HasTelegrams, 
             $this->HasLetters, $this->HasRumours, 
             $this->HasAlchemy, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
             $this->ChooseParticipationDates, $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink))) {
@@ -149,6 +153,11 @@ class LARP extends BaseModel{
     
     public function getAllNotMainRoles($includeNotComing) {
         return Role::getAllNotMainRoles($this, $includeNotComing);
+    }
+    
+    public function isVisibleToParticipants() {
+        if ($this->VisibleToParticipants == 1) return true;
+        return false;
     }
     
     public function isPastLatestRegistrationDate() {
@@ -258,10 +267,33 @@ class LARP extends BaseModel{
         
     }
     
+    public static function getAllForYear($campaignId, $year) {
+        if (empty($campaignId)) {
+            $sql = "SELECT * FROM regsys_larp WHERE StartDate LIKE ? ORDER BY CampaignId, ".static::$orderListBy.";";
+            $var_array = array($year."%");
+        } else { 
+            $sql = "SELECT * FROM regsys_larp WHERE CampaignId=? AND StartDate LIKE ? ORDER BY ".static::$orderListBy.";";
+            $var_array = array($campaignId,$year."%");
+
+        }
+        return static::getSeveralObjectsqQuery($sql, $var_array);
+
+    }
+    
+    
 
     public static function allFutureLARPs() {
-        $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_larp WHERE StartDate >= CURDATE() AND VisibleToParticipants=1 ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, null);
+    }
+    
+    public static function currentParticipatingLARPs(User $user) {
+        $sql = "SELECT * FROM regsys_larp WHERE StartDate <= CURDATE() AND EndDate >= CURDATE() AND Id IN ".
+            "(SELECT regsys_registration.LarpId FROM regsys_registration, regsys_person WHERE ".
+            "regsys_person.UserId = ? AND ".
+            "regsys_person.Id = regsys_registration.PersonId) ".
+        "ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($user->Id));
     }
     
     
@@ -325,14 +357,43 @@ class LARP extends BaseModel{
     }
     
     public static function organizerForLarps(User $user) {
-        $sql="SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_access_control_larp WHERE UserId = ?) ORDER BY ".static::$orderListBy.";";
+        $sql="SELECT * FROM regsys_larp WHERE Id IN ".
+            "(SELECT LarpId FROM regsys_access_control_larp, regsys_person WHERE ".
+            "regsys_person.UserId = ? AND ".
+            "regsys_access_control_larp.PersonId = regsys_person.Id) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($user->Id));
     }
+    
     
     public function larpInJanuary() {
         $larpmonth = substr($this->StartDate, 5, 2);
         if ($larpmonth == "01") return true;
         return false;
+    }
+    
+    public function getOtherLarpsSameYear() {
+        $year = substr($this->StartDate, 0 , 4);
+        $sql ="SELECT * FROM regsys_larp WHERE Id != ? AND StartDate LIKE '$year-%' AND CampaignId=?";
+        return static::getSeveralObjectsqQuery($sql, array($this->Id, $this->CampaignId));
+    }
+    
+    public static function getAllYears() {
+        $sql = "SELECT * FROM regsys_larp ORDER BY StartDate";
+        $firstLarp = static::getOneObjectQuery($sql, array());
+        $firstYear = substr($firstLarp->StartDate, 0, 4);
+
+        $sql = "SELECT * FROM regsys_larp ORDER BY StartDate DESC";
+        $lastLarp = static::getOneObjectQuery($sql, array());
+        $lastYear = substr($lastLarp->StartDate, 0, 4);
+        
+        
+        $current_year = date("Y");
+        if ($lastYear < $current_year) $lastYear = $current_year;
+        
+        $years = array();
+        for ($i = $firstYear; $i <=$lastYear; $i++) $years[] = $i;
+        return $years;
+        
     }
     
 }

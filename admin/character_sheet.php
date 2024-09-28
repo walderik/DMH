@@ -16,6 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $bara_intrig = false;
 $role = null;
+$only_main = false;
+$no_history = false;
 
 
 if (isset($_GET['id'])) {
@@ -28,8 +30,10 @@ if (isset($_GET['id'])) {
         header('Location: index.php'); // Karaktären är inte anmäld
         exit;
     }
-} elseif (isset($_GET['bara_intrig'])) {
-    $bara_intrig = true;
+} else {
+    if (isset($_GET['bara_intrig'])) $bara_intrig = true;
+    if (isset($_GET['main'])) $only_main = true;
+    if (isset($_GET['no_history'])) $no_history = true;
 }
 
 
@@ -47,7 +51,9 @@ $all_info = (isset($_GET['all_info'])) ? true : false;
 $only_children = (isset($_GET['children'])) ? true : false;
 
 if (empty($role)) {
-    if (empty($only_children)) $pdf->all_character_sheets($current_larp, $bara_intrig, $all_info);
+    if (empty($only_children)) {
+        $pdf->all_character_sheets($current_larp, $bara_intrig, $all_info, $only_main, $no_history);
+    }
     else {
         $children = array();
         $roles = Role::getAllMainRoles($current_larp, false);

@@ -211,26 +211,7 @@ class User extends BaseModel{
         return true;
     }
     
-    public static function getAllWithAccessToLarp(LARP $larp) {
-        $campaingUsers = User::getAllWithAccessToCampaign($larp->getCampaign());
-        $onlyLarp = User::getAllWithAccessOnlyToLarp($larp);
-        return array_merge($campaingUsers, $onlyLarp);
-    }
     
-    public static function getAllWithAccessToCampaign(Campaign $campaign) {
-        if (is_null($campaign)) return null;
-        
-        $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId from regsys_access_control_campaign WHERE CampaignId = ?) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($campaign->Id));
-    }
-
-    public static function getAllWithAccessOnlyToLarp(LARP $larp) {
-        if (is_null($larp)) return null;
-        
-        $sql = "SELECT * FROM regsys_user WHERE Id IN (SELECT UserId from regsys_access_control_larp WHERE LarpId = ?) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
-    }
-
     
     public function isComing(Larp $larp) {
         if (is_null($larp)) return null;
@@ -242,5 +223,12 @@ class User extends BaseModel{
             "regsys_registration.LarpId=?;";
         return static::existsQuery($sql, array($this->Id, $larp->Id));
         
+    }
+    
+    
+    public function getOrganizer(Larp $larp) {
+        $organizers = Person::getAllWithAccessToLarp($larp);
+        foreach ($organizers as $organizer)  if ($organizer->UserId == $this->Id) return $organizer;
+        return null;
     }
 }

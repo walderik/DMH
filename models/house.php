@@ -112,6 +112,17 @@ class House extends BaseModel{
         
     }
     
+    public static function countHousesWithoutMapPoint() {
+        $sql = "SELECT Count(1) as Num FROM regsys_house WHERE IsHouse=1 AND Lat IS NULL ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array());
+        
+    }
+    
+    public static function countCampsWithoutMapPoint() {
+        $sql = "SELECT Count(1) as Num FROM regsys_house WHERE IsHouse=0 AND Lat IS NULL ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array());
+        
+    }
     public static function getHouseAtLarp(Person $person, Larp $larp) {
         $sql = "SELECT regsys_house.* FROM regsys_house, regsys_housing WHERE ".
             "regsys_house.Id = regsys_housing.HouseId AND ".
@@ -137,6 +148,19 @@ class House extends BaseModel{
         $sql = "SELECT * FROM regsys_person WHERE Id IN (".
             "SELECT PersonId FROM regsys_housecaretaker WHERE HouseId=?) ORDER BY ".Person::$orderListBy.";";
         return Person::getSeveralObjectsqQuery($sql, array($this->Id));
+    }
+    
+    public function addCaretakerPerson(Person $person) {
+        $caretaker = Housecaretaker::loadByIds($this->Id, $person->Id);
+        if (empty($caretaker)) {
+            $caretaker = Housecaretaker::newWithDefault();
+            $caretaker->HouseId = $this->Id;
+            $caretaker->PersonId = $person->Id;
+            $caretaker->IsApproved = true;
+            $caretaker->ContractSignedDate = null;
+            $caretaker->create();
+        }
+        return $caretaker;
     }
     
     # Det finns en objectmetod på person som heter @person->housesOf

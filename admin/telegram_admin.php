@@ -36,7 +36,8 @@ include 'navigation.php';
         <p>Telegram skapade av arrangörer blir automatiskt godkända. Telegram skapade av deltagare behöver godkännas av arrangörer innan de kommer med i pdf:en.</p> 
             <a href="telegram_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
         
-            <a href="logic/all_telegrams_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera pdf</a>  
+            <a href="logic/all_telegrams_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla telegram</a>  &nbsp; &nbsp;
+            <a href="reports/telegram_time.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Körschema för telegram</a>  
         
         <?php
     

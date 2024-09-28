@@ -16,14 +16,18 @@ class TITLEDEED_PDF extends FPDF {
 //         $this->Image($root . '/images/telegram.png',null,null,200);
     }
     
-    function SetTextDMH(Titledeed $titledeed, Campaign $campaign, bool $odd) {
+    function SetTextDMH(Titledeed $titledeed, LARP $larp, bool $odd) {
+        global $root;
         
         $left = 11;
         $page_height = $this->GetPageHeight();
         $y = $odd ? 0 : ($page_height/2);
         $left2 = $left + 30;
         
-        if ($odd) $this->Line(0, ($page_height/2), $this->GetPageWidth(), ($page_height/2));
+        $this->Image($root . '/images/agarbevis.jpeg', 0, $y, $this->GetPageWidth()-5);
+        
+        
+        
         
         $txt_font = ($titledeed->Tradeable) ? 'SpecialElite' : 'Helvetica';
         
@@ -36,8 +40,8 @@ class TITLEDEED_PDF extends FPDF {
         
         $y += 13;
         $this->SetXY($left, $y);
-        $txt = $titledeed->Tradeable ? 'ÄGARBEVIS' : 'Ägarinformation';
-        $this->Cell(0,10,encode_utf_to_iso($txt),0,1,'C');
+        //$txt = $titledeed->Tradeable ? 'ÄGARBEVIS' : 'Ägarinformation';
+        //$this->Cell(0,10,encode_utf_to_iso($txt),0,1,'C');
         if (!$titledeed->Tradeable) {
             $this->SetXY($left, $y);
             $y += 10;
@@ -47,37 +51,33 @@ class TITLEDEED_PDF extends FPDF {
             $y -= 10;
         }
         
-        $this->SetFont($txt_font,'',20);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
+        //$this->SetFont($txt_font,'',20);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
 		# För mer fonter använder du http://www.fpdf.org/makefont/
-        if (strlen($titledeed->Name) > 40) $this->SetFont($txt_font,'',18);
+        //if (strlen($titledeed->Name) > 40) $this->SetFont($txt_font,'',18);
+        
+        $this->SetFont($txt_font,'',12);
         
         $y += 25;
         $this->SetXY($left, $y);
-		$this->Cell(80,10,encode_utf_to_iso('Namn'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+		$this->Cell(80,10,encode_utf_to_iso('NAMN'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
 		$this->SetXY($left2, $y);
-		$this->Cell(80,10,encode_utf_to_iso($titledeed->Name),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+		$this->Cell(80,10,strtoupper(encode_utf_to_iso($titledeed->Name)),0,0); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
 		$y += 3;
         
 		$this->SetFont($txt_font,'',12); 
 		
-		if (!empty($titledeed->Location)) {
-		    $y += 3;
-		    $this->SetXY($left2, $y);
-		    $this->Cell(80,10,encode_utf_to_iso($titledeed->Location),0,1);
-		}
-		    
-		
-		$txt = '';
+        $texts = array();
+        $txt = '';
 		if (!empty($titledeed->Type)) $txt .= "$titledeed->Type ";
 		if (!empty($titledeed->Size)) $txt .= "($titledeed->Size)";
-        if (!empty($titledeed->Size)) {
-            $y += 7;
-//     		$this->SetXY($left, $y);
-//     		$this->Cell(80,10,encode_utf_to_iso('Typ'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
-    		$this->SetXY($left2, $y);
-    		$this->Cell(80,10,encode_utf_to_iso($txt),0,1);
-        }
-        
+		if (!empty($txt)) $texts[] = $txt;
+		if (!empty($titledeed->Location)) $texts[] = "$titledeed->Location ";
+		if (!empty($texts)) {
+		    $y += 3;
+		    $this->SetXY($left2, $y);
+		    $this->Cell(80,10,encode_utf_to_iso(implode(", ",$texts)),0,1);
+		}
+		    
         if (!empty($titledeed->PublicNotes)) {
             $y += 7;
 //             $this->SetXY($left, $y);
@@ -100,8 +100,19 @@ class TITLEDEED_PDF extends FPDF {
         }
         $this->SetXY($left2, $y+1);
         $this->MultiCell(0,8,encode_utf_to_iso($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
-
         $y += 14;
+ 
+        
+        if (!empty($titledeed->Dividend)) {
+            $this->SetXY($left, $y);
+            $this->Cell(80,7,encode_utf_to_iso('Utdelning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+            $this->SetXY($left2, $y);
+            $this->MultiCell(0, 7, encode_utf_to_iso($titledeed->Dividend), 0, 'L');
+            $y = $this->GetY();
+        }
+        
+        
+
         $this->SetXY($left, $y);
         $this->Cell(80,7,encode_utf_to_iso('Tillgångar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
         $this->SetXY($left2, $y);
@@ -122,6 +133,19 @@ class TITLEDEED_PDF extends FPDF {
         $this->SetXY($left2, $y);
         $this->MultiCell(0, 7, encode_utf_to_iso($titledeed->RequiresForUpgradeString()), 0, 'L');
         $y = $this->GetY();
+        
+        
+        $size=5;
+        $this->SetFont($txt_font,'',$size);
+        
+        $y_bottom = $odd ? ($page_height/2) : $page_height;
+
+        $txt = $larp->Name;
+        $slen = $this->GetStringWidth($txt,0);
+        $this->SetXY(($this->GetPageWidth()-$slen)/2, $y_bottom-10);
+        $this->Cell(($this->GetPageWidth()- $slen)/2,10,encode_utf_to_iso($txt),0,1,'L');
+
+        
     }
     
     function SetTextDOH(Titledeed $titledeed, Campaign $campaign, bool $odd) {
@@ -225,9 +249,11 @@ class TITLEDEED_PDF extends FPDF {
 	
 	function all_titledeedsDMH(Array $titledeeds, LARP $larp)
 	{
-	    $campaign = $larp->getCampaign();
 	    $this->AddFont('Smokum','');
 	    $this->AddFont('SpecialElite');
+	    $this->SetMargins(0, 0);
+	    $this->SetAutoPageBreak(false);
+	    
 	    //         $this->AddPage('L','A5',270);
 	    $odd = true;
 	    foreach ($titledeeds as $titledeed) {
@@ -237,7 +263,7 @@ class TITLEDEED_PDF extends FPDF {
 	        } else {
 	            $odd = true;
 	        }
-	    $this->SetTextDMH($titledeed, $campaign, !$odd);
+	        $this->SetTextDMH($titledeed, $larp, !$odd);
 	    }
 	}
 

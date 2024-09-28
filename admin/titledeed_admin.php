@@ -86,7 +86,7 @@ th {
             foreach ($titledeed_array as $titledeed) {
                 if ($titledeed->isInUse()) echo "<tr>\n";
                 else echo "<tr class='show_hide hidden'>\n";
-                echo "<td><a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
+                echo "<td><a href='view_titledeed.php?id=$titledeed->Id'>$titledeed->Name</a> <a href='titledeed_form.php?operation=update&id=$titledeed->Id'><i class='fa-solid fa-pen'></i></a>";
                 if ($titledeed->Tradeable == 0) {
                     echo " <i class='fa-solid fa-money-bill-wave'></i>";
                 }
@@ -149,7 +149,7 @@ th {
                 echo "<td>".$titledeed->calculateResult()." $currency</td>";
                 
                 echo "<td>";
-                if ($titledeed->mayRemove())
+                if ($titledeed->mayDelete())
                     echo "<a href='titledeed_admin.php?operation=delete&id=" . $titledeed->Id . "'><i class='fa-solid fa-trash'></i>";
                 echo "</td>\n";
                 echo "</tr>\n";

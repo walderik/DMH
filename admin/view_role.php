@@ -176,8 +176,8 @@ include 'navigation.php';
                }
                
                
-               $known_groups = array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp));
-               $known_roles = array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp));
+               $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp)), SORT_REGULAR);
+               $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp)), SORT_REGULAR);
                
                $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
                $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
@@ -362,7 +362,7 @@ include 'navigation.php';
 		$titledeeds = Titledeed::getAllForRole($role);
 		foreach ($titledeeds as $titledeed) {
 		    $numberOfOwners = $titledeed->numberOfOwners();
-		    echo "<a href='titledeed_form.php?operation=update&id=" . $titledeed->Id . "'>$titledeed->Name</a>";
+		    echo "<a href='view_titledeed.php?id=$titledeed->Id'>$titledeed->Name</a>";
 		    if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
 		    echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
 		    echo "<br>";
@@ -388,6 +388,7 @@ include 'navigation.php';
 		<div>
 		<?php    echo nl2br(htmlspecialchars($role->OrganizerNotes)); ?>
 		</div>
+
 		<?php include 'print_role_history.php';?>		
 
 	</div>

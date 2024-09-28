@@ -1,79 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script>
-function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
-
-function changePart() {
-  	var part_selector = document.getElementById("part");
-	if (part_selector.value.length != 0) {
-		window.location.href = part_selector.value;
-	}
-	
-}
-
-</script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
     <link href="../css/navigation_admin.css" rel="stylesheet" type="text/css">
-	<link href="../css/style.css" rel="stylesheet" type="text/css">
-	<link href="../css/gallery.css" rel="stylesheet" type="text/css">
-	<link rel="icon" type="image/x-icon" href="../images/<?php echo $current_larp->getCampaign()->Icon; ?>">
-	<title><?php echo $current_larp->Name;?></title>
 	
-</head>
-<body>
-<div class="topnav"  id="myTopnav">
-    <div class="left">
-    	<a href="#home" target="_blank" style="padding: 11px 5px 11px 5px;" class="always_show">
-    	<img src="../images/<?php echo $current_larp->getCampaign()->Icon; ?>" width="30" height="30"/></a>
-    	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show"><?php echo $current_larp->Name;?></a>
-    </div>
-    <div class="right">
+	<?php include '../common/navigation_beginning.php';?> 
+	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) || AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) { ?>
 
-	  
-	  <div id="placeholder" class="dropdown">&nbsp;<br>&nbsp;
-	    <button class="dropbtn">   
-	    </button>
-	  </div> 
-
-
-	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
-	  
-	  <?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) || isset($_SESSION['admin'])) { ?>
-	  
 	  <div class="dropdown">
-	    <button class="dropbtn">Kampanj 
+	    <button class="dropbtn">Inställningar 
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      	<a href="organizers.php">Arrangörer</a>
-	      	<a href="forms.php">Anmälningsformulär</a>
-            <a href="selection_data_admin.php?type=advertismenttypes">Annonsformat</a>
-            <a href="selection_data_admin.php?type=titledeedplace">Platser för handel</a>
-            <a href="bookkeeping_account_admin.php">Bokföringskonton</a>
-            <a href="campaign_admin.php">Inställningar för kampanjen</a>
-            <a href="larp_admin.php">Lajv i kampanjen</a>
- 	    </div>
-	  </div>
-	  <div class="dropdown">
-	    <button class="dropbtn">Lajvinställningar 
-	      <i class="fa fa-caret-down"></i>
-	    </button>
-	    <div class="dropdown-content">
-	      	<a href="status.php">Lajvstatus</a>
+	      	<a href="../admin/status.php">Lajvstatus</a>
 	    	
-	      	<a href="larp_form.php?operation=update&id=<?php echo $current_larp->Id?>">Basinställningar</a>
-	      	<a href="payment_information_admin.php">Avgifter, inklusive mat</a>
+	      	<a href="../admin/larp_form.php?operation=update&id=<?php echo $current_larp->Id?>">Basinställningar</a>
+	      	<a href="../admin/payment_information_admin.php">Avgifter, inklusive mat</a>
 	    </div>
 	  </div> 
 	  <?php } ?> 
@@ -84,20 +25,19 @@ function changePart() {
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      	<a href="mail_admin.php">Skickad epost</a>
-            <a href="registered_persons.php">Deltagare</a>
-            <a href="approval.php">Godkänna</a>
-            <a href="kitchen.php">Köket</a>
-            <a href="officials.php">Funktionärer</a>
-            <a href="housing.php">Boende</a>
-            <a href="reserves.php">Reservlista</a>
-            <a href="economy.php">Kassabok</a>
-            <a href="invoice_admin.php">Fakturor</a>
-            <a href="refund_persons.php">Återbetalning</a>
-            <a href="reports.php">Rapporter</a>
-            <a href="statistics.php">Statistik</a>
-            <a href="evaluation_result.php">Utvärdering</a>
-		    <a href="ssn_check.php">Medlemskontroll</a> 
+            <a href="../admin/registered_persons.php">Deltagare</a>
+            <a href="../admin/approval.php">Godkänna</a>
+            <a href="../admin/kitchen.php">Köket</a>
+            <a href="../admin/officials.php">Funktionärer</a>
+            <a href="../admin/housing.php">Boende</a>
+            <a href="../admin/reserves.php">Reservlista</a>
+            <a href="../admin/economy.php">Kassabok</a>
+            <a href="../admin/invoice_admin.php">Fakturor</a>
+            <a href="../admin/refund_persons.php">Återbetalning</a>
+            <a href="../admin/reports.php">Rapporter</a>
+            <a href="../admin/statistics.php">Statistik</a>
+            <a href="../admin/evaluation_result.php">Utvärdering</a>
+
 
 
 	    </div>
@@ -107,66 +47,44 @@ function changePart() {
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-            <a href="roles.php">Karaktärer</a>
-            <a href="groups.php">Grupper</a>
-            <a href="subdivision_admin.php">Grupperingar</a>
-            <a href="search_role_selectiondata.php">Sökning på karaktärer</a>
-            <a href="intrigue_admin.php">Intrigspår</a>
-            <a href="timeline_admin.php">Körschema</a>
-            <a href="commerce.php">Handel</a>
+            <a href="../admin/roles.php">Karaktärer</a>
+            <a href="../admin/groups.php">Grupper</a>
+            <a href="../admin/subdivision_admin.php">Grupperingar</a>
+            <a href="../admin/search_role_selectiondata.php">Sökning på karaktärer</a>
+            <a href="../admin/intrigue_admin.php">Intrigspår</a>
+            <a href="../admin/timeline_admin.php">Körschema</a>
+            <a href="../admin/commerce.php">Handel</a>
             
 			<?php if ($current_larp->hasAlchemy()) {?>
-            <a href="alchemy.php">Alkemi</a>
+            <a href="../admin/alchemy.php">Alkemi</a>
             <?php }?>
             
 			<?php if ($current_larp->hasMagic()) {?>
-            <a href="magic.php">Magi</a>
+            <a href="../admin/magic.php">Magi</a>
             <?php }?>
             
 			<?php if ($current_larp->hasVisions()) {?>
-            <a href="vision_admin.php">Syner</a>
+            <a href="../admin/vision_admin.php">Syner</a>
             <?php }?>
             			
 			<?php if ($current_larp->hasTelegrams()) {?>
-            <a href="telegram_admin.php">Telegram</a>
+            <a href="../admin/telegram_admin.php">Telegram</a>
             <?php }?>
             
 			<?php if ($current_larp->hasLetters()) {?>
-            <a href="letter_admin.php">Brev</a>
+            <a href="../admin/letter_admin.php">Brev</a>
             <?php }?>
             
 			<?php if ($current_larp->hasRumours()) {?>
-            <a href="rumour_admin.php">Rykten</a>
+            <a href="../admin/rumour_admin.php">Rykten</a>
             <?php }?>
             
-            <a href="prop_admin.php">Rekvisita</a>
-            <a href="npc.php">NPC'er</a>
-            <a href="what_happened.php">Vad hände?</a>
+            <a href="../admin/prop_admin.php">Rekvisita</a>
+            <a href="../admin/npc.php">NPC'er</a>
+            <a href="../admin/what_happened.php">Vad hände?</a>
 	    </div>
 	  </div> 
-     <select name='part' id='part' onchange="changePart()">
-      	<option value='../participant/'>Deltagare</option>
-     
-     	<option value='' selected='selected'>Arrangör</option>
-    	<?php 
-    	 if (isset($_SESSION['admin'])) {
-    	 ?>	
-    	 <option value='../site-admin/'>OM Admin</option>
-        <?php }?>
-		</select>
-	  <!-- <a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a> -->
-    	<div class="dropdown">
-    		<button class="dropbtn"><i class="fa-solid fa-user" title="<?php echo $current_user->Name?>"></i> <?php echo $current_user->Name?></button>
-		    <div class="dropdown-content">
-		    	<a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
-    		</div>
-    	
-    	</div>
 	  
-	  
-	  <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
-	  </div>
-    
-    </div>
+	<?php include '../common/navigation_site_part_selector.php';?>  
+	<?php include '../common/navigation_end.php';?>   
 
-	  

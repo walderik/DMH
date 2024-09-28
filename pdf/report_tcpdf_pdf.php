@@ -15,7 +15,7 @@ class Report_TCP_PDF extends Tcpdf {
     
     private $isSensitive;
     
-    public static $max_font_size = 20; # Så stor font som rapporten kan få om allt får plats jättebra
+    public static $max_font_size = 15; # Så stor font som rapporten kan få om allt får plats jättebra
     public static $min_font_size = 9;  # Mindre än så kan man inte läsa
     
     public $text_fontsize;
@@ -67,7 +67,7 @@ class Report_TCP_PDF extends Tcpdf {
         $this->SetFooterMargin(PDF_MARGIN_FOOTER);
         
         // set auto page breaks
-        $this->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        $this->SetAutoPageBreak(FALSE);
         
         // set image scale factor
         $this->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -84,7 +84,7 @@ class Report_TCP_PDF extends Tcpdf {
     // Colored table
     public function Table($headline, $header,$data, ?array $colWidths = NULL, ?bool $doHTML=false) {
         // set font
-        $this->SetFont('helvetica', 'B', 30);
+        $this->SetFont('helvetica', 'B', 20);
         
         $this->Write(0, $headline, '', 0, 'C', true, 0, false, false, 0);
         

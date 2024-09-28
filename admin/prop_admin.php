@@ -49,7 +49,7 @@ include 'navigation.php';
 
                 if ($prop->hasImage()) {
                     echo "<td><img width='30' src='../includes/display_image.php?id=$prop->ImageId'/>\n";
-                    echo " <a href='logic/delete_image.php?id=$prop->Id&type=prop'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a></td>\n";
+                    echo " <a href='../common/logic/rotate_image.php?id=$prop->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$prop->Id&type=prop'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a></td>\n";
                 }
                 else {
                     echo "<td><a href='upload_image.php?id=$prop->Id&type=prop'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a></td>\n";

@@ -214,8 +214,8 @@ include 'navigation.php';
 		                }
 		            }
 		            
-		            $known_groups = array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp));
-		            $known_roles = array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp));
+		            $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp)), SORT_REGULAR);
+		            $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp)), SORT_REGULAR);
 		            
 		            $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
 		            $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));

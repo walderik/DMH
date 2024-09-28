@@ -33,6 +33,9 @@ switch ($type) {
     case "group":
         $object = Group::loadById($id);
         break;
+    case "bookkeeping":
+        $object = Bookkeeping::loadById($id);
+        break;
 }
 
 

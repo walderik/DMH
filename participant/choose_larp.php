@@ -7,6 +7,15 @@ require $root . '/includes/init.php';
 $future_larp_array = LARP::allFutureLARPs();
 //$future_closed_larp_array = LARP::allFutureNotYetOpenLARPs();
 $past_larp_array = LARP::allPastLarpsWithRegistrations($current_user);
+$current_participating_larp_array = LARP::currentParticipatingLARPs($current_user);
+
+$referer = '';
+if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
+
+if (sizeof($current_participating_larp_array) == 1 AND str_contains($referer, '/regsys/index.php')) {
+    header('Location: ../includes/set_larp.php?larp='.$current_participating_larp_array[0]->Id);
+    exit;
+}
 
 ?>
 <!DOCTYPE html>
@@ -25,7 +34,7 @@ function myFunction() {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <script src="https://kit.fontawesome.com/30d6e99205.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">  
     <link href="../css/navigation_participant.css" rel="stylesheet" type="text/css">
 	<link href="../css/style.css" rel="stylesheet" type="text/css">
 	<link rel="icon" type="image/x-icon" href="../images/bv.ico">
@@ -69,7 +78,39 @@ div.border
 
 		<div class="content">
 			<h1>Välj lajv</h1>
+			
+		
     			<?php
+    			
+    			$resultCheck = count($current_participating_larp_array);
+    			if ($resultCheck > 0) {
+    			    echo "<h3>Pågående lajv</h3>";
+    			    
+    			    foreach ($current_participating_larp_array as $larp) {
+    			        echo "<div class='border'>";
+    			        echo "<form action='../includes/set_larp.php' method='POST'>";
+    			        echo "<input type='hidden' value='" . $larp->Id . "' name='larp' id='larp'>\n";
+    			        echo "<strong>$larp->Name</strong><br>\n";
+    			        $startdate=date_create($larp->StartDate);
+    			        $enddate=date_create($larp->EndDate);
+    			        $fmt = new \IntlDateFormatter('sv_SE', NULL, NULL);
+    			        $fmt->setPattern('d MMMM');
+    			        // See: https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax for pattern syntax
+    			        
+    			        echo $fmt->format($startdate) . " - " . $fmt->format($enddate)."<br>\n";
+    			        echo "Kampanj: ".$larp->getCampaign()->Name."<br>\n";
+    			        
+    			    }
+        			echo "<br>";
+        			echo '<button type="submit">Välj</button>';
+        			echo "</form>";
+        			echo "</div>";
+        			echo "<br><hr>";
+    			}
+    			
+
+    			
+
 
     			$resultCheck = count($future_larp_array);
     			 if ($resultCheck > 0) {
@@ -120,7 +161,7 @@ div.border
       			echo "<form action='../includes/set_larp.php' method='POST'>";
       			echo "<label for='larp'>Välj lajv: </label>";
       			echo "<select name='larp' id='larp'>";
-      			foreach ($past_larp_array as $larp) {
+      			foreach (array_reverse($past_larp_array) as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";
@@ -157,7 +198,7 @@ div.border
         			 echo "<label for='larp'>Välj lajv: </label>";
         			 echo "<select name='larp' id='larp'>";
         			 
-        			 foreach ($larps_organizer as $larp) {
+        			 foreach (array_reverse($larps_organizer) as $larp) {
         			     echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
         			 }
         			 echo "</select>";
@@ -169,14 +210,14 @@ div.border
     			 
     			 
     			 
-    			 if (isset($_SESSION['admin'])) {
+    			 if (AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) {
     			     echo "<h3>OM Admin</h3>";
     			     echo "<p>Eftersom du är OM admin har du tillgång till alla lajv.</p>";
     			     echo "<form action='../includes/set_larp.php' method='POST'>";
     			     echo "<label for='larp'>Välj lajv: </label>";
     			     echo "<select name='larp' id='larp'>";
     			     $larps = LARP::all();
-    			     foreach ($larps as $larp) {
+    			     foreach (array_reverse($larps) as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select>";

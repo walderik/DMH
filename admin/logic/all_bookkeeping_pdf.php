@@ -6,7 +6,7 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require_once $root . '/pdf/bookkeeping_pdf.php';
 include_once '../header.php';
 
-$bookkeepings = Bookkeeping::allByLARP($current_larp);
+$bookkeepings = Bookkeeping::allFinished($current_larp);
 $pdf = new Bookkeeping_PDF();
 $pdf->SetTitle(encode_utf_to_iso('Alla verifikationer'));
 $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));

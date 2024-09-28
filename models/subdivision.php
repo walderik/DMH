@@ -228,5 +228,11 @@ class Subdivision extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
+    public function IsFirstRole(Role $role) {
+        $members = $this->getAllMembers();
+        if (!empty($members) && $members[0] == $role) return true;
+        return false;
+    }
+    
     
 }

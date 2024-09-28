@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
        $intrigueActors = array();
        foreach ($intrigues as $intrigue) {
            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
-           if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
+           if ($intrigue->isActive() && (!empty($intrigue->CommonText) || !empty($intrigueActor->IntrigueText))) {
                $intrigueActors[] = $intrigueActor;
            }
            
@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $intrigueActors = array();
         foreach ($intrigues as $intrigue) {
             $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $group);
-            if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
+            if ($intrigue->isActive() && (!empty($intrigue->CommonText) || !empty($intrigueActor->IntrigueText))) {
                 $intrigueActors[] = $intrigueActor;
             }
             
@@ -90,10 +90,12 @@ textarea{
     		 
     		 
  			    foreach ($intrigueActors as $intrigueActor) {
+ 			        $intrigue = $intrigueActor->getIntrigue();
 	                echo "<input type='hidden' id='IngtrigueActorId$intrigueActor->Id' name='IngtrigueActorId[]' value='$intrigueActor->Id'>";
 	                echo "<div class='question'>";
 	                echo "<label for='IngtrigueActor_$intrigueActor->Id'><strong>Vad hände med det här?</strong></label>";
 	                echo "<div class='explanation'>";
+	                if (!empty($intrigue->CommonText)) echo nl2br($intrigue->CommonText)."<br>";
 	                echo nl2br($intrigueActor->IntrigueText);
 	                echo "</div>";
 	                echo "<textarea id='IngtrigueActor_$intrigueActor->Id' name='IngtrigueActor_$intrigueActor->Id' rows='10' cols='100' maxlength='60000'>$intrigueActor->WhatHappened</textarea>";

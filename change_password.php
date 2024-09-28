@@ -36,7 +36,7 @@ $user->setEmailChangeCode();
 		<title>Byt lösenord</title>
 		<link href="css/loginpage.css" rel="stylesheet" type="text/css">
 		<link rel="icon" type="image/x-icon" href="../images/bv.ico">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.10/css/all.css">
 	</head>
 	<body>
 	  <h1>Byt lösenord på ditt konto</h1>

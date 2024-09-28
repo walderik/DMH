@@ -1,5 +1,5 @@
 <?php
-global $root;
+global $root, $current_user;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require $root . '/includes/init.php';
@@ -8,7 +8,7 @@ require 'random_name.php';
 require 'lorem_ipsum.php';
 
 //Ifthe user isnt admin it may not see these pages
-if (!isset($_SESSION['admin'])) {
+if (!AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) {
     header('Location: ../../participant/index.php');
     exit;
 }
@@ -146,13 +146,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 if (isset($_FILES["upload"])) {
     
         $image = Image::loadById(1);
+        $image->file_name = "anonym";
+        $image->file_mime = mime_content_type($_FILES["upload"]["tmp_name"]);
+        $image->file_data = file_get_contents($_FILES["upload"]["tmp_name"]);
+        $image->Photographer = "";
         echo "Ska spara bild<br>";
         $image->update();
         echo "Bild sparad";
         
         
         
-        //header('Location: ../index.php?message=image_uploaded');
+        header('Location: ../index.php?message=image_uploaded');
         exit;
 }
 

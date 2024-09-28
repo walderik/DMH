@@ -45,7 +45,10 @@ th {
         		        if (!empty($wealth)) echo $wealth->Name;
         		        echo "</td>\n";
     		        }
-    		        echo "<td><input type='number' id='$group->Id' value='$larp_group->StartingMoney' onchange='setMoneyGroup(this, $current_larp->Id)'></td>";
+    		        echo "<td><input type='number' id='$group->Id' value='$larp_group->StartingMoney' onchange='setMoneyGroup(this, $current_larp->Id)'>";
+    		        echo " <a href='logic/remove_set_money.php?groupId=$group->Id&larpId=$current_larp->Id'><i class='fa-solid fa-xmark' title='Sätt pengarna till osatta'></i></a>";
+    		        
+    		        echo "</td>";
     		        
     		        echo "</tr>\n";
     		    }

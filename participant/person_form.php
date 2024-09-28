@@ -102,18 +102,6 @@
 			</div>
 			
 			
-			<h2>Husförvaltare</h2>
-			<div class="question">
-				<label for="House">Är du husförvaltare?</label><br>
-				<div class="explanation">I så fall välj ditt hus</div>
-				<?php 
-				$houses = $person->housesOf();
-				$houseId = null;
-				if (!empty($houses)) $houseId = $houses[0]->Id;
-			    selectionByArray('House', House::getAllHouses(), false, false, $houseId); ?>
-			</div>
-
-			
 			<h2>Lajvrelaterat</h2>
 			
 			<div class="question">

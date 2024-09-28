@@ -7,13 +7,15 @@ class Bookkeeping extends BaseModel{
     public  $Id;
     public  $Number;
     public  $LarpId;
+    public  $CampaignId;
     public  $Headline;
     public  $BookkeepingAccountId;
     public  $Text;
     public  $Who;
-    public  $UserId;
+    public  $PersonId;
     public  $Amount;
-    public  $Date;
+    public  $CreationDate;
+    public  $AccountingDate;
     public  $ImageId;
     
     public static $orderListBy = 'Number';
@@ -27,17 +29,21 @@ class Bookkeeping extends BaseModel{
     public function setValuesByArray($arr) {
         if (isset($arr['Number'])) $this->Number = $arr['Number'];
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
+        if (isset($arr['LarpId'])) $this->CampaignId = $arr['LarpId'];
         if (isset($arr['Headline'])) $this->Headline = $arr['Headline'];
         if (isset($arr['BookkeepingAccountId'])) $this->BookkeepingAccountId = $arr['BookkeepingAccountId'];
         if (isset($arr['Text'])) $this->Text = $arr['Text'];
         if (isset($arr['Who'])) $this->Who = $arr['Who'];
-        if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
+        if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
         if (isset($arr['Amount'])) $this->Amount = $arr['Amount'];
-        if (isset($arr['Date'])) $this->Date = $arr['Date'];
+        if (isset($arr['CreationDate'])) $this->CreationDate = $arr['CreationDate'];
+        if (isset($arr['AccountingDate'])) {
+            if ($arr['AccountingDate']== '0000-00-00' || empty($arr['AccountingDate'])) $this->AccountingDate = NULL;
+            else $this->AccountingDate = $arr['AccountingDate'];
+        }
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
-        
         
     }
   
@@ -46,7 +52,7 @@ class Bookkeeping extends BaseModel{
     public static function newWithDefault() {
         global $current_larp, $current_user;
         $obj = new self();
-        $obj->Date = date("Y-m-d");
+        $obj->CreationDate = date("Y-m-d");
         $obj->LarpId = $current_larp->Id;
         $obj->UserId=$current_user->Id;
         return $obj;
@@ -54,10 +60,10 @@ class Bookkeeping extends BaseModel{
     
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_bookkeeping SET Headline=?, BookkeepingAccountId=?, 
-        Text=?, Who=?, Amount=?, Date=?, ImageId=? WHERE Id = ?");
+        Text=?, Who=?, Amount=?, CreationDate=?, AccountingDate=?, ImageId=?, PersonId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Headline, $this->BookkeepingAccountId,
-            $this->Text, $this->Who, $this->Amount, $this->Date, $this->ImageId, $this->Id))) {
+            $this->Text, $this->Who, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->ImageId, $this->PersonId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -74,11 +80,11 @@ class Bookkeeping extends BaseModel{
         if (empty($max_number)) $max_number = 0;
         $this->Number = $max_number + 1;
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_bookkeeping (Number, LarpId, Headline, BookkeepingAccountId, 
-        Text, Who, UserId, Amount, Date, ImageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_bookkeeping (Number, LarpId, CampaignId, Headline, BookkeepingAccountId, 
+        Text, Who, PersonId, Amount, CreationDate, AccountingDate, ImageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->Number, $this->LarpId, $this->Headline, $this->BookkeepingAccountId,
-            $this->Text, $this->Who, $this->UserId, $this->Amount, $this->Date, $this->ImageId))) {
+        if (!$stmt->execute(array($this->Number, $this->LarpId, $this->CampaignId, $this->Headline, $this->BookkeepingAccountId,
+            $this->Text, $this->Who, $this->PersonId, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->ImageId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -93,17 +99,44 @@ class Bookkeeping extends BaseModel{
         return Bookkeeping_Account::loadById($this->BookkeepingAccountId);
     }
     
-    public function getLarp() {
-        return LARP::loadById($this->LarpId);
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
     }
     
+
+    public function getLarp() {
+        if (empty($this->LarpId)) return NULL;
+        return LARP::loadById($this->LarpId);
+    }
+
+    public function getCampaign() {
+        if (empty($this->CampaignId)) return NULL;
+        return Campaign::loadById($this->CampaignId);
+    }
     
-    public static function allByLARP(Larp $larp) {
+    public static function allFinished(Larp $larp) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_bookkeeping WHERE LarpId = ? ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT * FROM regsys_bookkeeping WHERE LarpId = ? AND AccountingDate IS NOT NULL ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function allUnFinished(Larp $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_bookkeeping WHERE LarpId = ? AND AccountingDate IS NULL ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    public static function allFinishedCampaign(Campaign $campaign, $year) {
+        if (is_null($campaign)) return Array();
+        $sql = "SELECT * FROM regsys_bookkeeping WHERE CampaignId = ? AND AccountingDate IS NOT NULL AND CreationDate LIKE ?  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($campaign->Id,$year."%"));
+    }
+    
+    public static function allUnFinishedCampaign(Campaign $campaign, $year) {
+        if (is_null($campaign)) return Array();
+        $sql = "SELECT * FROM regsys_bookkeeping WHERE CampaignId = ? AND AccountingDate IS NULL AND CreationDate LIKE ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($campaign->Id,$year."%"));
+    }
     public function hasImage() {
         if (isset($this->ImageId)) return true;
         return false;
@@ -115,15 +148,40 @@ class Bookkeeping extends BaseModel{
     }
     
     public static function sumRegisteredIncomes(LARP $larp) {
-        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE LarpId = ? AND Amount > 0 ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE LarpId = ? AND Amount > 0 AND AccountingDate IS NOT NULL ORDER BY ".static::$orderListBy.";";
         return static::countQuery($sql, array($larp->Id));
         
     }
 
     public static function sumRegisteredExpenses(LARP $larp) {
-        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE LarpId = ? AND Amount < 0 ORDER BY ".static::$orderListBy.";";
+        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE LarpId = ? AND Amount < 0 AND AccountingDate IS NOT NULL ORDER BY ".static::$orderListBy.";";
         return static::countQuery($sql, array($larp->Id));
         
     }
+
+    public static function sumRegisteredIncomesCampaign(Campaign $campaign, int $year) {
+        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE CampaignId = ? AND Amount > 0 AND AccountingDate LIKE ? ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array($campaign->Id,$year."%"));
+        
+    }
     
+    public static function sumRegisteredExpensesCampaign(Campaign $campaign, int $year) {
+        $sql = "SELECT sum(Amount) AS Num FROM regsys_bookkeeping WHERE CampaignId = ? AND Amount < 0 AND AccountingDate LIKE ? ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array($campaign->Id,$year."%"));
+        
+    }
+    
+    public static function allIncomesOnAccount(LARP $larp, Bookkeeping_Account $account) {
+        $sql = "SELECT * FROM regsys_bookkeeping WHERE LarpId = ? AND Amount > 0 AND AccountingDate IS NOT NULL AND BookkeepingAccountId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $account->Id));
+        
+    }
+    
+    public static function allExpensesOnAccount(LARP $larp, Bookkeeping_Account $account) {
+        $sql = "SELECT * FROM regsys_bookkeeping WHERE LarpId = ? AND Amount < 0 AND AccountingDate IS NOT NULL AND BookkeepingAccountId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $account->Id));
+        
+    }
+    
+     
 }

@@ -2,7 +2,6 @@
  include_once 'header.php';
  
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $operation = $_POST['operation'];
      
     if ($operation == 'insert') {
@@ -14,8 +13,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $campaign=Campaign::loadById($_POST['Id']);
         $campaign->setValuesByArray($_POST);
         $campaign->update();
-    } 
+    } elseif ($operation == "remove_campaign_organizer") {
+        AccessControl::revokeCampaign($_POST['personId'], $_POST['campaignId']);
+    } elseif ($operation == "add_campaign_organizer" && isset($_POST['person_id'])) {
+        $person_id = $_POST['person_id'];
+        if ($person_id == 0) {
+            $error_message = "Du kan bara välja bland de föreslagna personerna.";
+        } else {
+            AccessControl::grantCampaign($person_id, $_POST['campaignId']);
+        }
+    }
 }
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
@@ -26,6 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 include "navigation.php";
+
+
+if (isset($error_message) && strlen($error_message)>0) {
+    echo '<div class="error">'.$error_message.'</div>';
+}
+if (isset($message_message) && strlen($message_message)>0) {
+    echo '<div class="message">'.$message_message.'</div>';
+}
+
 ?>
 
     <div class="content">   
@@ -68,14 +87,24 @@ include "navigation.php";
                 echo "<tr>";
                 echo "<td colspan='10'>";
                 echo "Arrangörsbehörighet:<br>";
-                $organizers = User::getAllWithAccessToCampaign($campaign);
+                $organizers = Person::getAllWithAccessToCampaign($campaign);
                 if (count($organizers) == 0) echo "Ingen utsedd än<br>";
                 foreach ($organizers as $organizer) {
                     echo "$organizer->Name ";
-                    echo "<a href='logic/remove_organizer.php?campaignId=$campaign->Id&userId=$organizer->Id' onclick=\"return confirm('Är du säker på att du vill ta bort $organizer->Name från arrangörsgruppen?');\">";
-                    echo "<i class='fa-solid fa-trash-can'></i></a><br>";
+                    echo "<form method='post' style='display:inline-block'>";
+                    echo "<input type='hidden' name='campaignId' value='$campaign->Id'>\n";
+                    echo "<input type='hidden' name='personId' value='$organizer->Id'>\n";
+                    echo "<input type='hidden' name='operation' value='remove_campaign_organizer'>\n";
+                    echo " <button class='invisible' type ='submit'><i class='fa-solid fa-trash-can' title='Ta bort ur kampanjarrangörsgruppen'></i></button>\n";
+                    echo "</form>\n";
+                    echo "<br>";
                 }
-                echo "<a href='choose_users.php?campaignId=$campaign->Id&operation=organizer'>Lägg till arrangör</a>";
+                echo "<form method='post'  autocomplete='off' style='display: inline;'>";
+                echo "<input type='hidden' name='campaignId' value='$campaign->Id'>\n";
+                echo "<input type='hidden' name='operation' value='add_campaign_organizer'>\n";
+                echo "Lägg till kampanjarrangör ";
+                autocomplete_person_id('40%', true); 
+			    echo "</form>";		
                 echo "</td>";
                 echo "</tr>";
             }

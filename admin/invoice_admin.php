@@ -31,7 +31,7 @@ include 'navigation.php';
        $invoice_array = Invoice::allBySelectedLARP($current_larp);
        if (!empty($invoice_array)) {   
             echo "<table class='data'>";
-            echo "<tr><th>Nummer</th><th>Mottagare</th><th>Kontaktperson<br>Skicka</th><th>Belopp</th><th>Referens</th><th>Betalad</th><th>Faktura<br>pdf</th><th></th></tr>\n";
+            echo "<tr><th>Nummer</th><th>Mottagare</th><th>Kontaktperson<br>Skicka</th><th>Belopp</th><th>Gäller</th><th>Referens</th><th>Betalad</th><th>Faktura<br>pdf</th><th></th></tr>\n";
             foreach ($invoice_array as $invoice) {
                 $amount = $invoice->Amount();
                 echo "<tr>\n";
@@ -67,6 +67,20 @@ include 'navigation.php';
 
                 if (isset($amount)) echo $amount . " SEK";
                 echo "</td>\n";
+                
+                echo "<td>";
+                $concerns_array = $invoice->getConcerendRegistrations();
+                if (empty($concerns_array)) echo $invoice->Matter;
+                else {
+                    echo "Avgifter för:<br>";
+                    foreach ($concerns_array as $registration) {
+                        $person = $registration->getPerson();
+                        echo "<a href=view_person.php?id=$person->Id'>$person->Name</a> $registration->AmountToPay SEK<br>";
+                    }
+                }
+                echo "</td>";
+                
+                
                 echo "<td>" . $invoice->PaymentReference . "</td>\n";
                 echo "<td>";
                 if ($invoice->isSent()) {

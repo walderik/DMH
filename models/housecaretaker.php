@@ -6,8 +6,7 @@ class Housecaretaker extends BaseModel{
     public $HouseId;
     public $IsApproved = 0;
     public $ContractSignedDate;
-    public $IsMember = 0;
-    public $MembershipCheckedAt;
+
     
     public static $orderListBy = 'HouseId';
     
@@ -23,9 +22,7 @@ class Housecaretaker extends BaseModel{
         if (isset($arr['HouseId'])) $this->HouseId = $arr['HouseId'];
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
         if (isset($arr['ContractSignedDate'])) $this->ContractSignedDate = $arr['ContractSignedDate'];
-        if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
-        if (isset($arr['MembershipCheckedAt'])) $this->MembershipCheckedAt = $arr['MembershipCheckedAt'];
-    }
+     }
     
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -47,10 +44,10 @@ class Housecaretaker extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_housecaretaker SET IsApproved=?, 
-            ContractSignedDate=?, IsMember=?, MembershipCheckedAt=?
+            ContractSignedDate=?
             WHERE PersonId=? AND HouseId=?;");
         
-        if (!$stmt->execute(array($this->IsApproved, $this->ContractSignedDate, $this->IsMember, $this->MembershipCheckedAt, $this->PersonId, 
+        if (!$stmt->execute(array($this->IsApproved, $this->ContractSignedDate, $this->PersonId, 
             $this->HouseId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -62,10 +59,10 @@ class Housecaretaker extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_housecaretaker (PersonId, HouseId, IsApproved, ContractSignedDate, IsMember, MembershipCheckedAt) 
-                VALUES (?,?,?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_housecaretaker (PersonId, HouseId, IsApproved, ContractSignedDate) 
+                VALUES (?,?,?,?);");
         
-        if (!$stmt->execute(array($this->PersonId, $this->HouseId, $this->IsApproved, $this->ContractSignedDate, $this->IsMember, $this->MembershipCheckedAt))) {
+        if (!$stmt->execute(array($this->PersonId, $this->HouseId, $this->IsApproved, $this->ContractSignedDate))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -104,30 +101,8 @@ class Housecaretaker extends BaseModel{
     
     # Kolla om husförvaltaren är medlem
     public function isMember() {
-        //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
-        if ($this->IsMember == 1) return true;
-        
-        //Kolla inte oftare än en gång per kvart
-        if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false; # < 15*60
-        
-        $year = date("Y");
-        
-        
-        $val = check_membership($this->getPerson()->SocialSecurityNumber, $year);
-        
-        
-        if ($val == 1) {
-            $this->IsMember=1;
-        } else {
-            $this->IsMember = 0;
-        }
-        $now = new Datetime();
-        $this->MembershipCheckedAt = date_format($now,"Y-m-d H:i:s");
-        $this->update();
-        
-        if ($this->IsMember == 1) return true;
-        return false;
-        
+        $person = $this->getPerson();
+        return $person->isMember();
     }
     
 }

@@ -30,9 +30,12 @@ $rows = array();
 
 if ($variant == 1) {
 
-    $header = array("Namn", "Incheck", "Utcheck", "Kommentar                              ");
+    $header = array("Namn", "Incheck", "Utcheck", "Rekvisita", "Kommentar");
     foreach ($persons as $person) {
         $props = Prop::getCheckinPropsForPerson($person, $current_larp);
+        
+        //TODO få med brev och telegram till grupperingar om personen har en roll som är första roll i grupperingen
+        //De finns med i packlistan, så de borde komma med där.
         $letters = Letter::getCheckinLettersForPerson($person, $current_larp);
         $telegrams = Telegram::getCheckinTelegramsForPerson($person, $current_larp);
     
@@ -42,9 +45,9 @@ if ($variant == 1) {
         foreach($telegrams as $telegram) $checkin_txt_Arr[] = "Telegram från: $telegram->Sender till: $telegram->Reciever";
         
         
-        $comment = "";
-        if (!empty($checkin_txt_Arr)) $comment = "Ska ha vid incheck: ". implode(", ", $checkin_txt_Arr);
-        $rows[] = array($person->Name, "", "", $comment);
+        $propstext = "";
+        if (!empty($checkin_txt_Arr)) $propstext = implode(", ", $checkin_txt_Arr);
+        $rows[] = array($person->Name, "", "", $propstext, "                ");
     }
     
     // add a page
@@ -57,7 +60,7 @@ if ($variant == 1) {
     
     $groups = Group::getAllRegistered($current_larp);
     $rows = array();
-    $header = array("Namn", "Incheck", "Utcheck", "Kommentar                              ");
+    $header = array("Namn", "Incheck", "Utcheck", "Rekvisita", "Kommentar");
     foreach ($groups as $group) {
         $props = Prop::getCheckinPropsForGroup($group, $current_larp);
         $letters = Letter::getCheckinLettersForGroup($group, $current_larp);
@@ -67,7 +70,9 @@ if ($variant == 1) {
         foreach($props as $prop) $checkin_txt_Arr[] = $prop->Name;
         foreach($letters as $letter) $checkin_txt_Arr[] = "Brev från: $letter->Signature till: $letter->Recipient";
         foreach($telegrams as $telegram) $checkin_txt_Arr[] = "Telegram från: $telegram->Sender till: $telegram->Reciever";
-        $rows[] = array($group->Name, "", "", $comment);
+        $propstext="";
+        if (!empty($checkin_txt_Arr)) $propstext = implode(", ", $checkin_txt_Arr);
+        $rows[] = array($group->Name, "", "", $propstext, "                 ");
     }
     // add a page
     $pdf->AddPage();

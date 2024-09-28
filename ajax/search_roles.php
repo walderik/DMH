@@ -21,15 +21,20 @@ if ($operation == "search") {
     $resSearch = "Sökning på alla karaktärer med värde $valueText för ".$typeTexts[$type]."<br>";
     
     $emailArr = array();
-    $resTable = "<table class='data'><tr><th>Namn</th><th>Yrke</th><th>Grupp</th>";
+    $tableId = "roles";
+    $colnum = 0;
+    $resTable = "<table id='$tableId'  class='data'><tr>".
+        "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
+        "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Yrke</th>".
+        "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Grupp</th>";
     
-    if ($type == "Religion") $resTable .="<th>Kommentar till religion</th>";
-    if ($type == "LarperType") $resTable .="<th>Kommentar till typ av lajvare</th>";
-    if ($type == "IntrigueType") $resTable .="<th>Intrigidéer</th>";
-    if ($type == "Race") $resTable .="<th>Kommentar till ras</th>";
-    if ($type == "Ability") $resTable .="<th>Kommentar till förmåga</th>";
-    if ($type == "Council") $resTable .="<th>Kommentar till byråd</th>";
-    if ($type == "RoleFunction") $resTable .="<th>Kommentar till funktion</th>";
+    if ($type == "Religion") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till religion</th>";
+    if ($type == "LarperType") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till typ av lajvare</th>";
+    if ($type == "IntrigueType") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Intrigidéer</th>";
+    if ($type == "Race") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till ras</th>";
+    if ($type == "Ability") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till förmåga</th>";
+    if ($type == "Council") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till byråd</th>";
+    if ($type == "RoleFunction") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till funktion</th>";
     
     $resTable .= "</tr>";
 

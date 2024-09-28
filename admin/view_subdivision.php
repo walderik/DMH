@@ -115,7 +115,7 @@ include 'navigation.php';
 		$registered_characters_in_subdivision = $subdivision->getAllRegisteredMembers($current_larp);
 		$not_registered_characters = array_udiff($subdivision->getAllMembers(), $registered_characters_in_subdivision, 'compare_objects');
 		
-	    echo "<h2>Medlemmar som kommer på lajvet</h2>";
+	    echo "<h2>Medlemmar som kommer på $current_larp->Name</h2>";
 		    
 		    
 	    if (!empty($registered_characters_in_subdivision)) {
