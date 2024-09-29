@@ -129,6 +129,7 @@ if (isset($message_message) && strlen($message_message)>0) {
     	     <br>
 	         <form method="post"  autocomplete="off" style="display: inline;">
  	             <input type='hidden' name='larpId' value='<?php echo $larp->Id ?>'>
+	             <input type='hidden' name='operation' value='add_larp_organizer'>
 	         	Lägg till lajvarrangör 
 	         	<?php autocomplete_person_id('40%', true); ?>
 			 </form>		
