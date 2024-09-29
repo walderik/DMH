@@ -30,7 +30,7 @@ if ($role->isMysLajvare()) {
     			<?php echo $person->Name; ?></a>&nbsp;
     			<?php  echo contactEmailIcon($person); ?>&nbsp;
     			
-    			(<?php echo $person->getAgeAtLarp($current_larp) ?> år)
+    			(<?php echo $person->getAgeAtLarp($current_larp) ?> år), <?php echo $person->getExperience()->Name?>
 			</td>
 		<?php 
 		if ($role->hasImage()) {
@@ -52,7 +52,7 @@ if ($role->isMysLajvare()) {
 		<?php }?>
 		
 		<?php if (!empty($subdivisions)) { 
-		  echo "<tr><td>Medlem i</td><td>";
+		  echo "<tr><td valign='top' class='header'>Medlem i</td><td>";
 		  foreach ($subdivisions as $subdivision) echo $subdivision->getViewLink()."<br>";
 		  echo "</td></tr>";
 		    
