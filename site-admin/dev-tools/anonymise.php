@@ -17,6 +17,11 @@ if (!Dbh::isLocal()) exit;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     echo "Anonymiserar data i databasen...<br>";
+    
+    $images = Image::all();
+    $firstImageId = reset($images)->Id;
+    
+    
     $persons = Person::all();
     
     foreach($persons as $person) {
@@ -33,8 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     $roles = Role::all();
     foreach ($roles as $role) {
-        if (isset($role->ImageId) && $role->ImageId != 1) {
-            $role->ImageId = 1;
+        if (isset($role->ImageId) && $role->ImageId != $firstImageId) {
+            $role->ImageId = $firstImageId;
         }
         $role->CharactersWithRelations = "-";
         $role->DarkSecret = "-";
@@ -53,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $groups = Group::all();
     $groupNames = RandomName::getGroupNames(count($groups));
     foreach($groups as $i => $group) {
-        if (isset($group->ImageId)) $group->ImageId = 1;
+        if (isset($group->ImageId)) $group->ImageId = $firstImageId;
         $group->Description = LoremIpsum::getText(strlen($group->Description));
         $group->DescriptionForOthers = LoremIpsum::getText(strlen($group->DescriptionForOthers));
         $group->Enemies = LoremIpsum::getText(strlen($group->Enemies));
@@ -103,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $houses = House::all();
     foreach($houses as $house) {
         if (!empty($house->ImageId)) {
-            $house->ImageId = 1;
+            $house->ImageId = $firstImageId;
             $house->update();
         }
     }
@@ -111,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $props = Prop::all();
     foreach($props as $prop) {
         if (!empty($prop->ImageId)) {
-            $prop->ImageId = 1;
+            $prop->ImageId = $firstImageId;
             $prop->update();
         }
     }
@@ -119,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $npcs = NPC::all();
     foreach($npcs as $npc) {
         if (!empty($npc->ImageId)) {
-            $npc->ImageId = 1;
+            $npc->ImageId = $firstImageId;
             $npc->update();
         }
     }
@@ -127,16 +132,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $bookeepings = Bookkeeping::all();
     foreach($bookeepings as $bookeeping) {
         if (!empty($bookeeping->ImageId)) {
-            $bookeeping->ImageId = 1;
+            $bookeeping->ImageId = $firstImageId;
             $bookeeping->update();
         }
 
     }
     
+    $resources = Resource::all();
+    foreach($resources as $resource) {
+        if (!empty($resource->ImageId)) {
+            $resource->ImageId = $firstImageId;
+            $resource->update();
+        }
+        
+    }
     
-    $images = Image::all();
     foreach($images as $image) {
-        if ($image->Id != 1) Image::delete($image->Id);
+        if ($image->Id != $firstImageId) Image::delete($image->Id);
     }
 
 }
@@ -145,14 +157,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 // (A) SAVE IMAGE INTO DATABASE
 if (isset($_FILES["upload"])) {
     
-        $image = Image::loadById(1);
+    $images = Image::all();
+    $image = reset($images);
+    
         $image->file_name = "anonym";
         $image->file_mime = mime_content_type($_FILES["upload"]["tmp_name"]);
         $image->file_data = file_get_contents($_FILES["upload"]["tmp_name"]);
         $image->Photographer = "";
-        echo "Ska spara bild<br>";
         $image->update();
-        echo "Bild sparad";
         
         
         
