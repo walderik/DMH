@@ -31,7 +31,9 @@ foreach ($years as $year) {
 
 <?php 
 foreach ($larps as $larp) {
-    echo "<input type='checkbox' name='choosenLarps[]' name='larp$larp->Id' value='$larp->Id'>";
+    echo "<input type='checkbox' name='choosenLarps[]' name='larp$larp->Id' value='$larp->Id'";
+    if (in_array($larp->Id, $choosenLarps)) echo " checked=checked ";
+    echo ">";
     echo "<label for='larp$larp->Id'> $larp->Name</label><br>";
 }
 
