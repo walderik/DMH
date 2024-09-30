@@ -15,7 +15,7 @@
 	      	<a href="../board/campaigns.php">Kampanjer</a>
 	      	<a href="../board/economy_overview.php">Ekonomisk översikt</a>
 	      	<a href="../board/permissions.php">Behörigheter</a>
-	      	<a href="../board/classic.php">Berghems klassikern</a>
+	      	<a href="../board/classic.php">Berghemsklassikern</a>
 		    <a href="../board/ssn_check.php">Medlemskontroll</a> 
 	    </div>
 	  </div> 
