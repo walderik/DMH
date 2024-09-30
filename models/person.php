@@ -804,6 +804,15 @@ class Person extends BaseModel{
         
     }
     
-    
+    public static function allParticipants($larpIds) {
+        $sql = "SELECT * FROM regsys_person WHERE ";
+        $larpsql = array();
+        foreach($larpIds as $larpId) {
+            $larpsql[] = " Id IN (SELECT PersonId FROM regsys_registration WHERE LarpId = ? AND NotComing=0) ";
+        }
+        $sql .= implode(" AND ", $larpsql);
+        $sql .= " ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, $larpIds);
+    }
     
 }
