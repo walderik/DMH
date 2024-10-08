@@ -1,6 +1,21 @@
 <?php
 include_once 'header.php';
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    $operation = $_POST['operation'];
+    
+    if ($operation == 'update') {
+        $larp=LARP::loadById($_POST['Id']);
+        $larp->setValuesByArray($_POST);
+        $larp->update();
+    }
+    if (isset($larp)) header('Location: larp_form.php?operation=update&id='.$larp->Id);
+    else header('Location: index.php');
+    exit;
+}
+
+
     $larp = LARP::newWithDefault();
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -49,7 +64,7 @@ include_once 'header.php';
     
     <div class="content"> 
     	<h1><?php echo default_value('action');?> lajv</h1>
-    	<form action="larp_admin.php" method="post">
+    	<form action="larp_form.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
      		<input type="hidden" id="CampaignId" name="CampaignId" value="<?php echo $larp->CampaignId?>">
