@@ -111,9 +111,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     					name="EndTimeLARPTime" value="<?php echo formatDateTimeForInput($larp->EndTimeLARPTime); ?>" size="50"></td>
     			</tr>
     			<tr>
-    				<td><label for="PaymentReferencePrefix">Prefix för betalningsreferens</label></td>
+    				<td><label for="PaymentReferencePrefix">Prefix för betalningsreferens</label><br>Max 4 tecken</td>
     				<td><input type="text" id="PaymentReferencePrefix"
-    					name="PaymentReferencePrefix" value="<?php echo htmlspecialchars($larp->PaymentReferencePrefix); ?>" size="15" maxlength="10"></td>
+    					name="PaymentReferencePrefix" value="<?php echo htmlspecialchars($larp->PaymentReferencePrefix); ?>" size="15" maxlength="4"></td>
     			</tr>
     			<tr>
     				<td><label for=NetDays>Antal dagar för betalning</label></td>

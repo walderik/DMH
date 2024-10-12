@@ -397,8 +397,8 @@ class Registration extends BaseModel{
     
     public function createPaymentReference() {
         $larp = LARP::loadById($this->LARPId);
-        $numberStr = $this->LARPId . $this->PersonId;
-        return  $larp->PaymentReferencePrefix . $numberStr;
+        if (!empty($larp->PaymentReferencePrefix)) return $larp->PaymentReferencePrefix . $this->PersonId . "B";
+        else return $this->LARPId . $this->PersonId . "B";
     }
     
     public function paymentDueDate() {
