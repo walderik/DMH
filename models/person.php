@@ -755,7 +755,6 @@ class Person extends BaseModel{
     }
     
     public function isMemberAtLarp(Larp $larp) {
-        $larp = LARP::loadById($this->LARPId);
         $year = substr($larp->StartDate, 0, 4);
         
         $current_year = date("Y");
