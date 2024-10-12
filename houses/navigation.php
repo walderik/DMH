@@ -11,7 +11,7 @@
 	    	<!--  Egen meny -->
 	    <a href="../houses/house_admin.php?type=house">Hus</a>
 	    <a href="../houses/house_admin.php?type=camp">Lägerplatser</a>
-	    <a href="../houses/xxx.php">Husförvaltare</a>
+	    <a href="../houses/housecaretakers_admin.php">Husförvaltare</a>
 	
 	  <div class="dropdown">
 	    <button class="dropbtn">Kartor 
