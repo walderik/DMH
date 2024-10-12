@@ -72,14 +72,48 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
 
 # En ikon som man hovrar över och som då visar hjälptexten. Går att klicka på mobiltelefon.
 function help_icon($help_text) {
-    echo "&nbsp; <label onclick='showHelpText(this)' data-tooltip='&nbsp; $help_text' data-toggle='tooltip'><i class='fa-solid fa-circle-info'></i></label>";
-    echo "<script>
-    function showHelpText(element) {
-        var tooltip = element.getAttribute('data-tooltip');
-        alert(tooltip);
-    }
-    </script>";
+    $formatted_text = nl2br($help_text);
+    echo "&nbsp; <label data-tooltip='&nbsp; $formatted_text' data-toggle='tooltip'><i class='fa-solid fa-circle-info'></i></label>";
+//     echo "<script>
+//     function showHelpText(element) {
+//         var tooltip = element.getAttribute('data-tooltip');
+//         alert(tooltip);
+//     }
+//     </script>";
 }
+
+// function help_icon($text) {
+//     global $help_icon_count;
+    
+//     if (isset($help_icon_count)) $help_icon_count++;
+//     else $help_icon_count=1;
+    
+//     $formatted_text = nl2br($text);
+//     echo "&nbsp; <label onclick='showHelpText(this)' data-tooltip=\"$formatted_text\" data-toggle='tooltip'><i class='fa-solid fa-circle-info'></i></label>";
+    
+//     if ($help_icon_count == 1)
+//         echo "<script>
+//         function showHelpText(element) {
+//             var tooltip = element.getAttribute('data-tooltip');
+//             var helpDiv = document.createElement('div');
+//             helpDiv.innerHTML = tooltip;
+//             helpDiv.style.position = 'absolute';
+//             helpDiv.style.backgroundColor = '#fff';
+//             helpDiv.style.border = '1px solid #ccc';
+//             helpDiv.style.padding = '10px';
+//             helpDiv.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+//             document.body.appendChild(helpDiv);
+            
+//             var rect = element.getBoundingClientRect();
+//             helpDiv.style.top = rect.bottom + 'px';
+//             helpDiv.style.left = rect.left + 'px';
+            
+//             helpDiv.onclick = function() {
+//                 document.body.removeChild(helpDiv);
+//             };
+//         }
+//         </script>";
+// }
 
 # En selector där man kan välja i en array av objekt
 function selectionDropDownByArray(String $name, Array $selectionDatas, $required=true, $selected=null, ?String $formIdentifier="") {
@@ -235,11 +269,11 @@ function fontDropDown(String $name, ?String $selected=null) {
 # Inamtning för hitta personer enkelt
 # Man kan ange bredden på inmatningsfältet som argument
 function autocomplete_person_id($width="100%", $render_sumbit_button=false) {
-    global $count;
+    global $autocomplete_count;
     
-    if (isset($count)) $count++;
-    else $count=1;
-    if ($count == 1)
+    if (isset($autocomplete_count)) $autocomplete_count++;
+    else $autocomplete_count=1;
+    if ($autocomplete_count == 1)
         echo "
         <style>
             .suggestions div {
@@ -253,10 +287,10 @@ function autocomplete_person_id($width="100%", $render_sumbit_button=false) {
         </style>
        <script src='../javascript/autocomplete_person.js'></script>";
 
-    echo "<input type='text' id='autocomplete_person$count' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' oninput='autocomplete_person(event, this, $count)'>";
-    if ($render_sumbit_button) echo " &nbsp; <input id='autocomplete_person_submit_button$count' type='submit' value='Välj en person' style='display:inline;'>	";
-	echo "<input type='hidden' id='person_id$count'  name='person_id' value='0'>
-	<div id='suggestions$count' class='suggestions'></div>";
+    echo "<input type='text' id='autocomplete_person$autocomplete_count' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' oninput='autocomplete_person(event, this, $autocomplete_count)'>";
+    if ($render_sumbit_button) echo " &nbsp; <input id='autocomplete_person_submit_button$autocomplete_count' type='submit' value='Välj en person' style='display:inline;'>	";
+	echo "<input type='hidden' id='person_id$autocomplete_count'  name='person_id' value='0'>
+	<div id='suggestions$autocomplete_count' class='suggestions'></div>";
 }
 
 function economy_overview(Larp $larp) {
