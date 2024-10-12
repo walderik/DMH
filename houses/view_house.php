@@ -151,13 +151,13 @@ ul.list {
         					<table id='caretakers' class='data'>
                 				<th>Namn</th><th>Medlem</th><th>Email</th><th>&nbsp;</th>
                 				<?php 
-                				$caretakers = $house->getHousecaretakers();
+//                 				$caretakers = $house->getHousecaretakers();
                 				foreach ($persons as $person) {
                 				    echo "<tr>\n";
                 				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
                 				    echo "  <td>";
                 				   
-                				    showStatusIcon($caretaker->isMember());
+                				    echo showStatusIcon($person->isMember());
                 				    echo "</td>\n";
                 				    echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
                 				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
