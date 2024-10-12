@@ -12,6 +12,7 @@ class Campaign extends BaseModel{
     public  $Homepage;
     public  $Email;
     public  $Bankaccount;
+    public  $SwishNumber;
     public  $MinimumAge;
     public  $MinimumAgeWithoutGuardian;
     public  $Currency;
@@ -36,6 +37,7 @@ class Campaign extends BaseModel{
         if (isset($arr['Homepage'])) $this->Homepage = $arr['Homepage'];
         if (isset($arr['Email'])) $this->Email = $arr['Email'];
         if (isset($arr['Bankaccount'])) $this->Bankaccount = $arr['Bankaccount'];
+        if (isset($arr['SwishNumber'])) $this->SwishNumber = $arr['SwishNumber'];
         if (isset($arr['MinimumAge'])) $this->MinimumAge = $arr['MinimumAge'];
         if (isset($arr['MinimumAgeWithoutGuardian'])) $this->MinimumAgeWithoutGuardian = $arr['MinimumAgeWithoutGuardian'];
         if (isset($arr['Currency'])) $this->Currency = $arr['Currency'];
@@ -56,11 +58,11 @@ class Campaign extends BaseModel{
     # Update an existing campaign in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_campaign SET Name=?, Abbreviation=?, Description=?, Icon=?, 
-            Homepage=?, Email=?, Bankaccount=?, MinimumAge=?, MinimumAgeWithoutGuardian=?, 
+            Homepage=?, Email=?, Bankaccount=?, SwishNumber=?, MinimumAge=?, MinimumAgeWithoutGuardian=?, 
             Currency=?, MainOrganizerPersonId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
-            $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, 
+            $this->Homepage, $this->Email, $this->Bankaccount, $this->SwishNumber, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, 
             $this->Currency, $this->MainOrganizerPersonId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -73,10 +75,11 @@ class Campaign extends BaseModel{
     # Create a new campaign in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_campaign (Name, Abbreviation, Description, Icon, Homepage, Email, Bankaccount, MinimumAge, MinimumAgeWithoutGuardian, Currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_campaign (Name, Abbreviation, Description, Icon, Homepage, Email, Bankaccount, SwishNumber, 
+            MinimumAge, MinimumAgeWithoutGuardian, Currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
-            $this->Homepage, $this->Email, $this->Bankaccount, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Currency))) {
+            $this->Homepage, $this->Email, $this->Bankaccount, $this->SwishNumber, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Currency))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();

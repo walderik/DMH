@@ -59,7 +59,7 @@ if (isset($message_message) && strlen($message_message)>0) {
         $resultCheck = count($campaign_array);
         if ($resultCheck > 0) {
             echo "<table id='larp' class='data'>";
-            echo "<tr><th>Namn</th><th>Förkortning</th><th>Icon</th><th>Hemsida</th><th>Epost</th><th>Bankkonto</th><th>Minimiålder</th><th>Minimiålder<br>utan ansvarig vuxen</th><th>Lajv-<br>valuta</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Namn</th><th>Förkortning</th><th>Icon</th><th>Hemsida</th><th>Epost</th><th>Bankkonto</th><th>Swishnummer</th><th>Minimiålder</th><th>Minimiålder<br>utan ansvarig vuxen</th><th>Lajv-<br>valuta</th><th></th><th></th></tr>\n";
             foreach ($campaign_array as $campaign) {
                 echo "<tr>\n";
         
@@ -71,6 +71,7 @@ if (isset($message_message) && strlen($message_message)>0) {
                 echo "<td>" . $campaign->Homepage . "</td>\n";
                 echo "<td>" . $campaign->Email . "</td>\n";
                 echo "<td>" . $campaign->Bankaccount . "</td>\n";
+                echo "<td>" . $campaign->SwishNumber . "</td>\n";
                 echo "<td>" . $campaign->MinimumAge . "</td>\n";
                 echo "<td>" . $campaign->MinimumAgeWithoutGuardian . "</td>\n";
                 echo "<td>" . $campaign->Currency . "</td>\n";

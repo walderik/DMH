@@ -148,6 +148,10 @@ line-height: 1.8;
                             } else {
                                 $campaign = $current_larp->getCampaign();
                                 echo "</td><td>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. Betalas senast ".$registration->paymentDueDate();
+                                if (!empty($campaign->SwishNumber)) 
+                                    echo "<br><img width='200' src='../includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/>\n";
+                                    
+                                
                             }
                         }
                         echo "</td></tr>\n";

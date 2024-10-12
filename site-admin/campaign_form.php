@@ -83,6 +83,11 @@ include_once 'header.php';
     					name="Bankaccount" value="<?php echo htmlspecialchars($campaign->Bankaccount); ?>"  size="50" required></td>
     			</tr>
     			<tr>
+    				<td><label for="Bankaccount">Swishnummer</label></td>
+    				<td><input type="text" id="SwishNumber"
+    					name="SwishNumber" value="<?php echo htmlspecialchars($campaign->SwishNumber); ?>"  size="50" required></td>
+    			</tr>
+    			<tr>
     				<td><label for="MinimumAge">Minsta ålder</label></td>
     				<td><input type="number" id="MinimumAge"
     					name="MinimumAge" value="<?php echo $campaign->MinimumAge; ?>" size="50" required></td>

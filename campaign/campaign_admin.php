@@ -28,6 +28,7 @@ include 'navigation.php';
                <tr><td valign="top" class="header">Hemsida</td><td><?php echo $campaign->Homepage ?></td></tr>
                <tr><td valign="top" class="header">Epost</td><td><?php echo $campaign->Email ?></td></tr>
                <tr><td valign="top" class="header">Bankkonto</td><td><?php echo $campaign->Bankaccount ?></td></tr>
+               <tr><td valign="top" class="header">Swishnummer</td><td><?php echo $campaign->SwishNumber ?></td></tr>
                <tr><td valign="top" class="header">Minsta ålder</td><td><?php echo $campaign->MinimumAge ?></td></tr>
                <tr><td valign="top" class="header">Minsta ålder utan ansvarig vuxen</td><td><?php echo $campaign->MinimumAgeWithoutGuardian ?></td></tr>
                <tr><td valign="top" class="header">Lajv-valuta</td><td><?php echo $campaign->Currency ?></td></tr> 

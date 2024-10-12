@@ -49,6 +49,10 @@ foreach($campaigns as $campaign) {
     echo "<td>" . $campaign->Bankaccount . "</td>\n";
     echo "</tr>";
     echo "<tr>";
+    echo "<td>Swish</td>";
+    echo "<td>" . $campaign->SwishNumber . "</td>\n";
+    echo "</tr>";
+    echo "<tr>";
     echo "<td>Minimiålder</td>";
     echo "<td>" . $campaign->MinimumAge . "</td>\n";
     echo "</tr>";
