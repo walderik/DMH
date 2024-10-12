@@ -50,12 +50,17 @@ foreach ($houses as $house) {
         //".setLatLng([$house->Lat, $house->Lon])".
         //".setContent('$house->Name')".
         //".openOn(map);";
-        
-        
+
         echo "var target = L.latLng('$house->Lat', '$house->Lon');";
         
         echo "marker = L.marker(target).addTo(map);";
+        
         $text = "<a href='view_house.php?operation=update&id=$house->Id' target='_blank'><b>$house->Name</b></a><br>";
+        
+        if ($house->hasImage()) {
+            $text .= "<br><img width='100px' height='100px' alt='House image' src='../includes/display_image.php?id=$house->ImageId'/>";
+        }
+        
         echo "marker.bindPopup(\"$text\").openPopup();";
 
     }
