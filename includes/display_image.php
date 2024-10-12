@@ -4,17 +4,19 @@
 
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
-require_once $root . '/includes/init.php';
 
-// If the user is not logged in redirect to the login page...
-if (!isset($_SESSION['is_loggedin'])) {
-    header('Location: index.php');
-    exit;
-}
 
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
+        require_once $root . '/includes/init.php';
+        // If the user is not logged in redirect to the login page...
+        if (!isset($_SESSION['is_loggedin'])) {
+            header('Location: index.php');
+            exit;
+        }
+        
+        
         $imageId = $_GET['id'];
         $image = Image::loadById($imageId);
         
@@ -28,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         
         
     } elseif (isset($_GET['Swish'])) {
+        include_once $root . '/includes/all_includes.php';
         $registration = Registration::loadById($_GET['RegistrationId']);
         $campaign = Campaign::loadById($_GET['CampaignId']);
         $response = Swish::QRCode($registration, $campaign);        
