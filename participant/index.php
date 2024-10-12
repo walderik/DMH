@@ -59,7 +59,7 @@ line-height: 1.8;
 			 </div>
 		</div>
 		<div class="content">
-    		<h2>Registreringar / anmälningar<?php echo help_icon("Du kan registrera och hantera flera deltagare från ditt konto. Exempelvis kan en förälder hantera familjens barn via ett konto."); ?></h2><br />
+    		<h2>Registreringar / anmälningar<?php help_icon("Du kan registrera och hantera flera deltagare från ditt konto. Exempelvis kan en förälder hantera familjens barn via ett konto."); ?></h2><br />
     		<div>
     		<?php 
     		
