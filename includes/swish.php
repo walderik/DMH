@@ -46,7 +46,7 @@ class Swish {
         
         
         $baseURL = "swish://payment?data=";
-        return $baseURL . encodeURIComponent(JSON.stringify($data));
+        return $baseURL . urlencode(json_encode($data));
     }
     
 }
