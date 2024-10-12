@@ -283,3 +283,16 @@ div.intrigue {
     padding-right: 1em;
 }
 
+[data-tooltip]:hover::after {
+  display: inline-block;
+  position: absolute;
+  content: attr(data-tooltip);
+  border: 1px solid black;
+  background: #eee;
+  padding: .25em;
+  cursor: help;
+  border-radius: .5em;
+  font-style: normal;
+  font-size: 14px;
+  font-weight: normal;
+}

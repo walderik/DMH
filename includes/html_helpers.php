@@ -70,7 +70,16 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
     echo "</table>\n";
 }
 
-
+# En ikon som man hovrar över och som då visar hjälptexten. Går att klicka på mobiltelefon.
+function help_icon($help_text) {
+    echo "&nbsp; <label onclick='showHelpText(this)' data-tooltip='&nbsp; $help_text' data-toggle='tooltip'><i class='fa-solid fa-circle-info'></i></label>";
+    echo "<script>
+    function showHelpText(element) {
+        var tooltip = element.getAttribute('data-tooltip');
+        alert(tooltip);
+    }
+    </script>";
+}
 
 # En selector där man kan välja i en array av objekt
 function selectionDropDownByArray(String $name, Array $selectionDatas, $required=true, $selected=null, ?String $formIdentifier="") {
