@@ -86,6 +86,11 @@ class Housecaretaker extends BaseModel{
         
     }
     
+    public static function getAll() {
+        $sql = "SELECT * FROM regsys_housecaretaker ORDER BY PersonId;";
+        return static::getSeveralObjectsqQuery($sql, array());
+    }
+    
     # Icke statisk version av delete
     public function destroy() {
         static::delete_housecaretaker($this->HouseId, $this->PersonId);
@@ -100,6 +105,7 @@ class Housecaretaker extends BaseModel{
     }
     
     # Kolla om husförvaltaren är medlem
+    # Den här metoden verkar inte fungera. Använde @person->isMember() direkt istället
     public function isMember() {
         $person = $this->getPerson();
         return $person->isMember();
