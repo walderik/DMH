@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 include "navigation.php";
 
-$caretakers_array = Housecaretaker::getAll();
+$caretakers_array = Housecaretaker::all();
 
 
 

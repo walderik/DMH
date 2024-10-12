@@ -86,11 +86,6 @@ class Housecaretaker extends BaseModel{
         
     }
     
-    public static function getAll() {
-        $sql = "SELECT * FROM regsys_housecaretaker ORDER BY PersonId;";
-        return static::getSeveralObjectsqQuery($sql, array());
-    }
-    
     # Icke statisk version av delete
     public function destroy() {
         static::delete_housecaretaker($this->HouseId, $this->PersonId);
