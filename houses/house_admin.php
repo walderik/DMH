@@ -10,6 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $house->create();
     } elseif ($operation == 'update') {
         $house=House::loadById($_POST['Id']);
+        if (empty($house)) {
+            header('Location: index.php'); // Magikern finns inte
+            exit;
+        }
         $house->setValuesByArray($_POST);
         $house->update();
     }
@@ -23,6 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['operation']) && $_GET['operation'] == 'delete') {
 
         $house=House::loadById($_GET['id']);
+        if (empty($house)) {
+            header('Location: index.php'); // Magikern finns inte
+            exit;
+        }
         if ($house->mayDelete()) {
             $caretakers = $house->getHousecaretakers();
             foreach ($caretakers as $caretaker) {
@@ -121,7 +129,7 @@ if ($type == "house") {
             echo "</table>";
         }
         else {
-            echo "<p>Inga registrerade ännu</p>";
+            echo "<p>Inga hus eller lägerplatser registrerade ännu</p>";
         }
         ?>
     
