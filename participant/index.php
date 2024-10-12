@@ -489,11 +489,15 @@ line-height: 1.8;
 		      if ($current_larp->hasTelegrams()) {
 		      
 		        echo "<div class='content'>\n";
-		        echo "<h2>Telegram</h2>\n";
+		        echo "<h2>Telegram";
+		        help_icon("På ett visst klockslag under lajvet kommer telegrammets mottagare att få ditt meddelande.");
+		        echo "</h2>\n";
 		        echo "<div>\n";
 		        $telegram_array = $current_user->getTelegramsAtLarp($current_larp);
-		        if(isset($telegram_array) && count($telegram_array) > 0) {
-		            echo "<b>Telegram skapade av $current_user->Name:</b><br>\n";
+		        $antal = (isset($telegram_array)) ? count($telegram_array) : 0;
+		        if($antal > 0) {
+		            echo "<details><summary>Du har skapat $antal telegram</summary> ";
+// 		            echo "<b>Telegram skapade av $current_user->Name:</b><br>\n";
 		            echo "<table class='data' id='telegrams' align='left'>";
 		            echo "<tr align='left'><th>Leveranstid</th><th>Avsändare</th><th>Mottagare</th>";
 		            echo "<th>Meddelande</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
@@ -508,21 +512,27 @@ line-height: 1.8;
 		                echo "<td align='center'>" . "<a href='logic/show_telegram.php?id=" . $telegram->Id . "'  target='_blank'><i class='fa-solid fa-file-pdf'></i></td>\n";
 		                echo "</tr>\n";
 		            }
-		            echo "</table></p>\n";
+		            echo "</table></p><br>";
+		            echo "</details>\n";
 
 		        }
 		        echo "<p><a href='telegram_suggestion.php'><b>Skapa ett telegram</b></i></a>\n";
 		        echo "</div></div>";
 		      }
+		      
+		      
 		      if ($current_larp->hasLetters()) {
 		          
-		        
 		        echo "<div class='content'>\n";
-		        echo "<h2>Brev</h2>\n";
+		        echo "<h2>Brev"; 
+		        help_icon("Någon gång under lajvet kommer förhoppningsvis det här handskrivna meddelandet nå sin mottagare.");
+		        echo "</h2>\n";
 		        echo "<div>\n";
 		        $letter_array = $current_user->getLettersAtLarp($current_larp);
-		        if(isset($letter_array) && count($letter_array) > 0) {
-		            echo "<b>Brev skapade av $current_user->Name:</b><br>\n";
+		        $antal = (isset($letter_array)) ? count($letter_array) : 0;
+		        if($antal > 0) {
+		            echo "<details><summary>Du har skrivit $antal brev</summary> ";
+// 		            echo "<b>Brev skapade av $current_user->Name:</b><br>\n";
 		            echo "<table class='data' id='letters' align='left'>";
 		            echo "<tr align='left'><th>Ort och datum</th><th>Hälsningsfras</th>";
 		            echo "<th>Meddelande</th><th>Hälsning</th><th>Underskrift</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
@@ -539,21 +549,25 @@ line-height: 1.8;
 		                echo "</tr>\n";
 		            }
 		            echo "</table></p>\n";
-		            
+		            echo "</details>\n";
 		        }
-		        echo "<p><a href='letter_suggestion.php'><b>Skapa ett brev</b></i></a>\n";
+		        echo "<p><a href='letter_suggestion.php'><b>Skriv ett brev</b></i></a>\n";
 		        echo "</div></div>";
 		      }
+		      
+		      
 		      if ($current_larp->hasRumours()) {
 		          
-		        
-		        
     		    echo "<div class='content'>\n";
-    		    echo "<h2>Rykten</h2>\n";
+    		    echo "<h2>Rykten";
+    		    help_icon("Rykten är kul. Sprid om dig eller andra.");
+    		    echo "</h2>\n";
     		    echo "<div>\n";
     		    $rumour_array = $current_user->getRumoursAtLarp($current_larp);
-    		    if(isset($rumour_array) && count($rumour_array) > 0) {
-    		        echo "<b>Rykten skapade av $current_user->Name:</b><br>\n";
+    		    $antal = (isset($rumour_array)) ? count($rumour_array) : 0;
+    		    if($antal > 0) {
+    		        echo "<details><summary>Du har spridit $antal rykten</summary> ";
+//     		        echo "<b>Rykten skapade av $current_user->Name:</b><br>\n";
     		        echo "<table class='data' id='letters' align='left'>";
     		        echo "<tr align='left'><th>Text</th><th>Ok</th><th>Ändra</th>";
     		        echo "</tr>\n";
@@ -567,9 +581,10 @@ line-height: 1.8;
     		            echo "</tr>\n";
     		        }
     		        echo "</table></p>\n";
+    		        echo "</details>\n";
     		        
     		    }
-    		    echo "<p><a href='rumour_suggestion.php'><b>Skapa ett rykte</b></i></a>\n";
+    		    echo "<p><a href='rumour_suggestion.php'><b>Sprid ett rykte</b></i></a>\n";
     		    echo "</div></div>";
 	       }
 	       

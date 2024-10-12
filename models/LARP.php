@@ -201,16 +201,17 @@ class LARP extends BaseModel{
         return $this->DisplayHousing == 1;
     }
     
+    # Kör det här lajvet med telegram?
     public function hasTelegrams() {
         return $this->HasTelegrams == 1;
     }
     
-    
+    # Kör det här lajvet med brev?
     public function hasLetters() {
         return $this->HasLetters == 1;
     }
     
-    
+    # Kör det här lajvet med rykten?
     public function hasRumours() {
         return $this->HasRumours == 1;
     }
