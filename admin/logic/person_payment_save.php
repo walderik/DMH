@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registrationId = $_POST['RegistrationId'];
     $registration = Registration::loadById($registrationId);
     if (isset($registration)) {
+        $oldAmount = $registration->AmountToPay;
         $registration->AmountToPay = $_POST['AmountToPay'];
         if (empty($registration->AmountToPay)) $registration->AmountToPay=0;
         $registration->AmountPayed = $_POST['AmountPayed'];
@@ -52,6 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
+
+        if ($oldAmount != $registration->AmountToPay) BerghemMailer::send_updatedpayment_mail($registration);
+        
         if (isset($_POST['Referer']) && $_POST['Referer']!="") {
             header('Location: ' . $_POST['Referer']);
             exit;

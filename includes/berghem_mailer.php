@@ -119,7 +119,11 @@ class BerghemMailer {
         $campaign = $larp->getCampaign();
         
         $text  = "Du är nu anmäld för att vara med i lajvet $larp->Name<br>\n";
-        $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. Betalas senast ".$registration->paymentDueDate()."<br>\n";
+        $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. ";
+        $text .= "Betalas senast ".$registration->paymentDueDate()."<br>\n";
+        $host = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]";
+        if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/regsys/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
+        
         
         if (!$registration->isMember()) {
             $currentYear = date("Y");
@@ -153,6 +157,37 @@ class BerghemMailer {
     }
     
  
+    public static function send_updatedpayment_mail(Registration $registration) {
+        $person = $registration->getPerson();
+        
+        $larp = $registration->getLARP();
+        $roles = $person->getRolesAtLarp($larp);
+        
+        $campaign = $larp->getCampaign();
+        
+        $text  = "Din avgift för lajvet lajvet $larp->Name har ändrats.<br>\n";
+        $text .= "Du ska nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. ";
+        $text .= "Betalas senast ".$registration->paymentDueDate()."<br>\n";
+        $host = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]";
+        if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/regsys/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
+        
+        if (!$registration->isMember()) {
+            $currentYear = date("Y");
+            $larpYear = substr($larp->StartDate, 0, 4);
+            if ($currentYear == $larpYear) {
+                $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
+            } else {
+                $text .= "Du måste också vara medlem i Berghems vänner $larpYear.</b><br>\n";
+            }
+        }
+        $text .= "<br>\n";
+        
+        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Uppdaterad avgift till $larp->Name", "", BerghemMailer::DaysAutomatic);
+    }
+    
+    
+    
+    
     public static function send_reserve_registration_mail(Reserve_Registration $reserve_registration) {
         $person = $reserve_registration->getPerson();
         
