@@ -186,6 +186,133 @@ class Intrigue extends BaseModel{
                 $newPdf->create();
             }
             
+            
+            //Kopiera brev
+            if ($larp->hasLetters()) {
+                $intrigueLetters = $previousIntrigue->getAllLetters();
+                foreach($intrigueLetters as $intrigueLetter) {
+                    $oldLetter = $intrigueLetter->getLetter();
+                    $newLetter = Letter::newWithDefault();
+
+                    $newLetter->LARPid = $newIntrigue->LarpId;
+                    $newLetter->WhenWhere = $oldLetter->WhenWhere;
+                    $newLetter->Signature = $oldLetter->Signature;
+                    $newLetter->Recipient = $oldLetter->Recipient;
+                    $newLetter->Message = $oldLetter->Message;
+                    $newLetter->Greeting = $oldLetter->Greeting;
+                    $newLetter->Font = $oldLetter->Font;
+                    $newLetter->EndingPhrase = $oldLetter->EndingPhrase;
+                    $newLetter->OrganizerNotes = $oldLetter->OrganizerNotes;
+                    $newLetter->UserId = $oldLetter->UserId;
+                    $newLetter->Approved = $oldLetter->Approved;
+                    $newLetter->create();
+                    
+                    $newIntrigueLetter = Intrigue_Letter::newWithDefault();
+                    $newIntrigueLetter->IntrigueId = $newIntrigue->Id;
+                    $newIntrigueLetter->LetterId = $newLetter->Id;
+                    $newIntrigueLetter->create();
+                }
+            }
+ 
+            //Kopiera telegram
+            if ($larp->hasTelegrams()) {
+                $intrigueTelegrams = $previousIntrigue->getAllTelegrams();
+                foreach($intrigueTelegrams as $intrigueTelegram) {
+                    $oldTelegram = $intrigueTelegram->getTelegram();
+                    $newTelegram = Telegram::newWithDefault();
+                    
+                    $newTelegram->LARPid = $newIntrigue->LarpId;
+                    $newTelegram->Deliverytime = $oldTelegram->Deliverytime;
+                    $newTelegram->Message = $oldTelegram->Message;
+                    $newTelegram->Reciever = $oldTelegram->Reciever;
+                    $newTelegram->RecieverCity = $oldTelegram->RecieverCity;
+                    $newTelegram->Sender = $oldTelegram->Sender;
+                    $newTelegram->SenderCity = $oldTelegram->SenderCity;
+                    $newTelegram->OrganizerNotes = $oldTelegram->OrganizerNotes;
+                    $newTelegram->UserId = $oldTelegram->UserId;
+                    $newTelegram->Approved = $oldTelegram->Approved;
+                    $newTelegram->create();
+                    
+                    $newIntrigueTelegram = Intrigue_Telegram::newWithDefault();
+                    $newIntrigueTelegram->IntrigueId = $newIntrigue->Id;
+                    $newIntrigueTelegram->TelegramId = $newTelegram->Id;
+                    $newIntrigueTelegram->create();
+                }
+            }
+            
+            
+            //Kopiera rykten
+            if ($larp->hasRumours()) {
+                $rumours = $previousIntrigue->getRumours();
+                foreach($rumours as $rumour) {
+                    $newRumour = Rumour::newWithDefault();
+                    $newRumour->IntrigueId = $newIntrigue->Id;
+                    $newRumour->LARPid = $newIntrigue->LarpId;
+                    $newRumour->Text = $rumour->Text;
+                    $newRumour->Notes = $rumour->Notes;
+                    $newRumour->UserId = $rumour->UserId;
+                    $newRumour->Approved = $rumour->Approved;
+                    $newRumour->create();
+                }
+            }
+            
+            //Kopiera syner
+            if ($larp->HasVisions()) {
+                $visions = $previousIntrigue->getVisions();
+                foreach($visions as $vision) {
+                    $newVision = Vision::newWithDefault();
+                    
+                    $newVision->LARPid = $newIntrigue->LarpId;
+                    $newVision->OrganizerNotes = $vision->OrganizerNotes;
+                    $newVision->SideEffect = $vision->SideEffect;
+                    $newVision->Source = $vision->Source;
+                    $newVision->VisionText = $vision->VisionText;
+                    $newVision->WhenDate = NULL;
+                    $newVision->WhenSpec = NULL;
+                    $newVision->create();
+                    
+                    $newIntrigueVision = Intrigue_Vision::newWithDefault();
+                    $newIntrigueVision->IntrigueId = $newIntrigue->Id;
+                    $newIntrigueVision->VisionId = $newVision->Id;
+                    $newIntrigueVision->create();
+                }
+            }
+            
+            
+            //Kopiera npc'er
+            $npcs = $previousIntrigue->getAllNPCs();
+            foreach($npcs as $npc) {
+                $newInrigue_NPC = Intrigue_NPC::newWithDefault();
+                $newInrigue_NPC->IntrigueId = $newIntrigue->Id;
+                
+                $oldNpc = $npc->getNPC();
+                
+                $newNpc = NPC::newWithDefault();
+                
+                if ($oldNpc->hasImage()) {
+                    $oldImage = $oldNpc->getImage();
+                    $newImage = Image::newWithDefault();
+                    $newImage->file_data = $oldImage->file_data;
+                    $newImage->file_mime = $oldImage->file_mime;
+                    $newImage->file_name = $oldImage->file_name;
+                    $newImage->Photographer = $oldImage->Photographer;
+                    $newImage->create();
+                    
+                    $newNpc->ImageId = $newImage->Id;
+                }
+                $newNpc->LarpId = $newIntrigue->LarpId;
+                $newNpc->Name = $oldNpc->Name;
+                $newNpc->Description = $oldNpc->Description;
+                $newNpc->IsToBePlayed = $oldNpc->IsToBePlayed;
+                $newNpc->IsReleased = false;
+                $newNpc->create();
+                
+                $newInrigue_NPC->NPCId = $newNpc->Id;
+                $newInrigue_NPC->create();
+            }
+
+            
+            
         }
     }
     

@@ -33,7 +33,35 @@ class Image extends BaseModel{
      }
     
     
-    
+     # Update an existing object in db
+     public function update() {
+         $stmt = $this->connect()->prepare("UPDATE regsys_image SET file_name=?,
+            file_mime=?, file_data=?, Photographer=?  WHERE Id = ?;");
+         
+         if (!$stmt->execute(array($this->file_name, $this->file_mime, $this->file_data,
+             $this->Photographer, $this->Id))) {
+                 $stmt = null;
+                 header("location: ../index.php?error=stmtfailed");
+                 exit();
+             }
+             $stmt = null;
+     }
+     
+     
+     public function create() {
+         $connection = $this->connect();
+         
+         $stmt = $connection->prepare("INSERT INTO regsys_image (file_name, file_mime, file_data, Photographer) VALUES (?,?,?,?)");
+         
+         if (!$stmt->execute(array($this->file_name, $this->file_mime, $this->file_data, $this->Photographer))) {
+             $stmt = null;
+             header("location: ../index.php?error=stmtfailed");
+             exit();
+         }
+         $this->Id = $connection->lastInsertId();
+         $stmt = null;
+     }
+     
     
     
     
@@ -131,20 +159,14 @@ class Image extends BaseModel{
         }
         
         
-        $connection = static::connectStatic();
-        $stmt = $connection->prepare("INSERT INTO regsys_image (file_name, file_mime, file_data, Photographer) VALUES (?,?,?,?)");
-        
-        if (!$stmt->execute(array($filename,
-            $file_mime,
-            $file_data, 
-            $_POST['Photographer']))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        $id = $connection->lastInsertId();
-        $stmt = null;
-        return $id;
+        $image = Image::newWithDefault();
+        $image->file_data = $file_data;
+        $image->file_mime = $file_mime;
+        $image->file_name = $filename;
+        $image->Photographer = $_POST['Photographer'];
+        $image->create();
+
+        return $image->Id;
     }
     
     
@@ -200,18 +222,5 @@ class Image extends BaseModel{
     
     
     
-    # Update an existing object in db
-    public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_image SET file_name=?,
-            file_mime=?, file_data=?, Photographer=?  WHERE Id = ?;");
-        
-        if (!$stmt->execute(array($this->file_name, $this->file_mime, $this->file_data,
-            $this->Photographer, $this->Id))) {
-                $stmt = null;
-                header("location: ../index.php?error=stmtfailed");
-                exit();
-            }
-            $stmt = null;
-    }
     
 }
