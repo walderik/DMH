@@ -87,6 +87,7 @@ include_once $root . '/models/reserve_larp_role.php';
 include_once $root . '/models/resource.php';
 include_once $root . '/models/resource_titledeed.php';
 include_once $root . '/models/role.php';
+include_once $root . '/models/role_approved_copy.php';
 include_once $root . '/models/rolefunction.php';
 include_once $root . '/models/rumour.php';
 include_once $root . '/models/rumour_concerns.php';

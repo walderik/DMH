@@ -9,6 +9,14 @@ class RoleFunction extends SelectionData{
         return static::getSeveralObjectsqQuery($sql, array($roleId));
     }
     
+    public static function getRoleFunctionsForApprovedRoleCopy($roleCopyId) {
+        if (is_null($roleCopyId)) return array();
+        $sql = "SELECT * from regsys_rolefunction WHERE Id IN ".
+            "(SELECT RoleFunctionId FROM regsys_rolefunction_role_approved_copy WHERE ".
+            "RoleId = ?) ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($roleCopyId));
+    }
+    
     public function mayDelete() {
         $sql = "select count(RoleId) AS Num FROM regsys_rolefunction_role WHERE RoleFunctionId=?";
         return !static::existsQuery($sql, array($this->Id));

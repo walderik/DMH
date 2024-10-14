@@ -61,6 +61,7 @@ include 'navigation.php';
     		            $role_group_name = " - $role_group->Name";
     		        }
     		        
+    		        $oldApprovedRole = $role->getOldApprovedRole();
     		        echo $role->getViewLink() . " - " . $role->Profession . " " . $role_group_name;
     		        if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
     		            echo ", Sidokaraktär";
@@ -68,7 +69,11 @@ include 'navigation.php';
 					echo " ";
     		        echo $role->getEditLinkPen(true);
 					echo " ";
-    		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
+
+
+    		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a><br>\n";
+    		        if (empty($role->getPreviousLarps())) echo "Helt ny karaktär.<br>";
+    		        if (!empty($oldApprovedRole)) echo "Karaktären har tidigare varit godkänd. <a href='view_role_changes.php?id=$role->Id'>Visa ändringar</a><br>";
     		        echo "<br><br>";
     		        echo "Spelas av <a href='view_person.php?id=$person->Id'>$person->Name</a>, ".$person->getAgeAtLarp($current_larp)." år ";
     		        echo "<br>\n";

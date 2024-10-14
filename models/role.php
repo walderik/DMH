@@ -298,6 +298,11 @@ class Role extends BaseModel{
     public function getPreviousLarps() {
         return LARP::getPreviousLarpsRole($this->Id);
     }
+  
+    public function getOldApprovedRole() {
+        return RoleApprovedCopy::getOldRole($this->Id);
+    }
+    
     
     
     public static function getRolesForPerson($personId, $campaignId) {
@@ -878,6 +883,9 @@ class Role extends BaseModel{
     }
     
     public function approve($larp, $user) {
+        $oldCopy = $this->getOldApprovedRole();
+        RoleApprovedCopy::delete($oldCopy->Id);
+        
         $this->IsApproved = 1;
         $this->ApprovedByUserId = $user->Id;
         $now = new Datetime();

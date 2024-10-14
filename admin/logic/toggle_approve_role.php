@@ -20,11 +20,4 @@ if (isset($_POST['roleId'])) {
     $location = $group->getViewLink();
 }
 
-
-if (isset($_SERVER['HTTP_REFERER'])) {
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
-    exit;
-}
-
-echo $location;
-header('Location: '.$location);
+header('Location: ../approval.php');

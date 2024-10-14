@@ -49,7 +49,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('Location: index.php'); //Inte din karaktär
             exit;
         }
- 
+        if ($role->isApproved()) {
+            RoleApprovedCopy::makeCopyOfApprovedRole($role);
+        }
+        
         $role->setValuesByArray($_POST);
 
         $role->update();
