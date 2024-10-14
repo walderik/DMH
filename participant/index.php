@@ -149,8 +149,6 @@ line-height: 1.8;
                                 $campaign = $current_larp->getCampaign();
                                 echo "</td><td>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. Betalas senast ".$registration->paymentDueDate();
                                 if (!empty($campaign->SwishNumber)) {
-                                    $isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
-                                    $isMob = true;
                                     if ($isMob) echo "<br><a href = ".Swish::getSwishLink($registration, $campaign). "><button ><img style='padding:2px'  width='20' src='../images/Swish Logo.png'><span style='vertical-align: top'> Betala med swish </span></button></a>";
                                     else echo "<br><img width='200' src='../includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/>\n";
                                 }
