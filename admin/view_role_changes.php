@@ -70,7 +70,13 @@ include 'navigation.php';
 		    $editButton = "Godkänn";
 		}		
 		?>
+		<?php 
+		if ($role->userMayEdit($current_larp)) {
+		    echo "Spelare får ändra på karaktären och därför kan den inte godkännas.";
+		} else {
+		?>
         <form action="logic/toggle_approve_role.php" method="post"><input type="hidden" id="roleId" name="roleId" value="<?php echo $role->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
+        <?php } ?>
 		<br>
 		
  		<div>
@@ -81,9 +87,9 @@ include 'navigation.php';
 				<th>Ny version av karaktären</th>
 				<th>Gammal version av karaktären<br>
 						  
-    		  <?php if (!empty($role->ApprovedByUserId) && !empty($role->ApprovedDate)) {
-    		      $approvedUser = User::loadById($role->ApprovedByUserId);
-    		      echo "Godkänd av $approvedUser->Name, ".substr($role->ApprovedDate,0, 10); 
+    		  <?php if (!empty($oldRoleCopy->ApprovedByUserId) && !empty($oldRoleCopy->ApprovedDate)) {
+    		      $approvedUser = User::loadById($oldRoleCopy->ApprovedByUserId);
+    		      echo "Godkänd av $approvedUser->Name, ".substr($oldRoleCopy->ApprovedDate,0, 10); 
     		  }
     		  ?>
 				</th>
