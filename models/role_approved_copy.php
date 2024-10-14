@@ -151,31 +151,6 @@ class RoleApprovedCopy extends BaseModel {
         return IntrigueType::getIntrigeTypesForApprovedRoleCopy($this->Id);
     }
     
-    /*
-    public function getSelectedIntrigueTypeIds() {
-        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  regsys_intriguetype_role_approved_copy WHERE RoleId = ? ORDER BY IntrigueTypeId;");
-        
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = $row['IntrigueTypeId'];
-        }
-        $stmt = null;
-        
-        return $resultArray;
-    }
-    */
     
     public function saveAllIntrigueTypes($idArr) {
         if (!isset($idArr)) {
@@ -206,32 +181,7 @@ class RoleApprovedCopy extends BaseModel {
     public function getAbilities(){
         return Ability::getAbilitiesForApprovedRoleCopy($this->Id);
     }
-    /*
-    public function getSelectedAbilityIds() {
-        $stmt = $this->connect()->prepare("SELECT AbilityId FROM  regsys_ability_role_approved_copy WHERE RoleId = ? ORDER BY AbilityId;");
-        
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = $row['AbilityId'];
-        }
-        $stmt = null;
-        
-        return $resultArray;
-    }
-    */
-    
+     
     public function saveAllAbilities($idArr) {
         if (!isset($idArr)) {
             return;
@@ -261,31 +211,7 @@ class RoleApprovedCopy extends BaseModel {
     public function getRoleFunctions(){
         return RoleFunction::getRoleFunctionsForApprovedRoleCopy($this->Id);
     }
-    /*
-    public function getSelectedRoleFunctionIds() {
-        $stmt = $this->connect()->prepare("SELECT RoleFunctionId FROM  regsys_rolefunction_role_approved_copy WHERE RoleId = ? ORDER BY RoleFunctionId;");
-        
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = $row['RoleFunctionId'];
-        }
-        $stmt = null;
-        
-        return $resultArray;
-    }
-    */
+ 
     public function saveAllRoleFunctions($idArr) {
         if (!isset($idArr)) {
             return;
