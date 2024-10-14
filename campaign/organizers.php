@@ -10,6 +10,7 @@ $choosen_year = date("Y");
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
     if (isset($_POST['year'])) $choosen_year = $_POST['year'];
     if (isset($_POST['person_id'])) {
         $person_id = $_POST['person_id'];
@@ -63,6 +64,7 @@ if (isset($message_message) && strlen($message_message)>0) {
 	         if ($isMainOrganizer && ($organizer->UserId != $current_user->Id)) {
 	             echo "<form method='post' style='display:inline-block'>";
 	             echo "<input type='hidden' name='operation' value='remove_campaign_organizer'>\n";
+	             echo "<input type='hidden' name='person_id' value='$organizer->Id'>\n";
 	             echo " <button class='invisible' type ='submit'><i class='fa-solid fa-trash-can' title='Ta bort ur kampanjarrangörsgruppen'></i></button>\n";
 	             echo "</form>\n";
 	         }
@@ -71,6 +73,7 @@ if (isset($message_message) && strlen($message_message)>0) {
 	     if ($isMainOrganizer) { ?>
 	     	<br>
 	         <form method="post"  autocomplete="off" style="display: inline;">
+	            <input type='hidden' name='operation' value='add_campaign_organizer'>
 	         	Lägg till kampanjarrangör 
 	         	<?php autocomplete_person_id('40%', true); ?>
 			 </form>		
@@ -119,6 +122,7 @@ if (isset($message_message) && strlen($message_message)>0) {
 	             echo "<form method='post' style='display:inline-block'>";
 	             echo "<input type='hidden' name='larpId' value='$larp->Id'>\n";
 	             echo "<input type='hidden' name='operation' value='remove_larp_organizer'>\n";
+	             echo "<input type='hidden' name='person_id' value='$organizer->Id'>\n";
 	             echo " <button class='invisible' type ='submit'><i class='fa-solid fa-trash-can' title='Ta bort ur lajvarrangörsgruppen'></i></button>\n";
 	             echo "</form>\n";
     	         echo "<br>";

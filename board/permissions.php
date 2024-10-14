@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $campaign->MainOrganizerPersonId = $person_id;
             $campaign->update();
-            if (!AccessControl::hasAccessCampaign(User::loadById($campaign->MainOrganizerPersonId)->Id, $campaign->Id)) AccessControl::grantCampaign($campaign->MainOrganizerPersonId, $campaign->Id);
+            if (!AccessControl::hasAccessCampaign(Person::loadById($campaign->MainOrganizerPersonId)->UserId, $campaign->Id)) AccessControl::grantCampaign($campaign->MainOrganizerPersonId, $campaign->Id);
         }
     } elseif ($operation == 'remove_main_organizer') {
         $campaign = Campaign::loadById($_POST['CampaignId']);
