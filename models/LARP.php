@@ -75,6 +75,7 @@ class LARP extends BaseModel{
         if (isset($arr['EvaluationLink'])) $this->EvaluationLink = $arr['EvaluationLink'];
         
     
+        if ($this->EvaluationOpenDate == '') $this->EvaluationOpenDate = null;
         if ($this->StartTimeLARPTime == '') $this->StartTimeLARPTime = null;
         if ($this->EndTimeLARPTime == '') $this->EndTimeLARPTime = null;
     }
