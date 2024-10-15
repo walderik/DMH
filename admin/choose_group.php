@@ -88,7 +88,8 @@ include 'navigation.php';
     <div class="content">   
         <h1><?php echo $purpose;?></h1>
      		<?php 
-    		$groups = Group::getAllRegistered($current_larp);
+     		if (isset($_GET['notRegistered'])) $groups = Group::getAllUnregisteredGroups($current_larp);
+    		else $groups = Group::getAllRegistered($current_larp);
     		if (empty($groups)) {
     		    echo "Inga anmälda grupper";
     		} else {
@@ -133,7 +134,9 @@ include 'navigation.php';
     		        echo "<td><input type='$type' id='Group$group->Id' name='GroupId$array' value='$group->Id'>";
 
     		        echo "<label for='Group$group->Id'>$group->Name</label></td>\n";
-    		        echo "<td>".ja_nej($larp_group->WantIntrigue)."</td>\n";
+    		        echo "<td>";
+    		        if (isset($larp_group)) echo ja_nej($larp_group->WantIntrigue);
+    		        echo "</td>\n";
     		        if (IntrigueType::isInUse($current_larp)) echo "<td>".commaStringFromArrayObject($group->getIntrigueTypes())."</td>";
     		        
     		        echo "</tr>\n";

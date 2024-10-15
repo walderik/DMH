@@ -31,9 +31,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     
 }
+if (isset($_GET['notRegistered'])) {
+    $mainroles = Role::getAllUnregisteredRoles($current_larp);
+    $nonmainroles = array();
+}
+else {
+    $mainroles = Role::getAllMainRolesNoMyslajvare($current_larp);
+    $nonmainroles = Role::getAllNotMainRolesNoMyslavare($current_larp);
+}
 
-$mainroles = Role::getAllMainRolesNoMyslajvare($current_larp);
-$nonmainroles = Role::getAllNotMainRolesNoMyslavare($current_larp);
 
 $multiple=false;
 $showAbilityChoice = false;
