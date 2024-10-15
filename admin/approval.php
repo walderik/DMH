@@ -27,6 +27,10 @@ include 'navigation.php';
     		        
     		        echo $group->getViewLink() . ", Gruppledare ".$group->getPerson()->Name;
     		        echo "<br>\n";
+    		        if (empty($group->getPreviousLarps())) echo "Helt ny grupp.<br>";
+    		        $oldApprovedGroup = $group->getOldApprovedGroup();
+    		        if (!empty($oldApprovedGroup)) echo "Gruppen har tidigare varit godkänd. <a href='view_group_changes.php?id=$group->Id'>Visa ändringar</a><br>";
+    		        
     		        if ($larp_group->UserMayEdit == 1) {
     		            echo "Gruppledare får ändra på gruppen och kan därför inte godkännas.";
     		        } else {
@@ -61,7 +65,7 @@ include 'navigation.php';
     		            $role_group_name = " - $role_group->Name";
     		        }
     		        
-    		        $oldApprovedRole = $role->getOldApprovedRole();
+
     		        echo $role->getViewLink() . " - " . $role->Profession . " " . $role_group_name;
     		        if (LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
     		            echo ", Sidokaraktär";
@@ -73,6 +77,7 @@ include 'navigation.php';
 
     		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a><br>\n";
     		        if (empty($role->getPreviousLarps())) echo "Helt ny karaktär.<br>";
+    		        $oldApprovedRole = $role->getOldApprovedRole();
     		        if (!empty($oldApprovedRole)) echo "Karaktären har tidigare varit godkänd. <a href='view_role_changes.php?id=$role->Id'>Visa ändringar</a><br>";
     		        echo "<br><br>";
     		        echo "Spelas av <a href='view_person.php?id=$person->Id'>$person->Name</a>, ".$person->getAgeAtLarp($current_larp)." år ";

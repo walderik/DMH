@@ -141,6 +141,10 @@ class Group extends BaseModel{
          if ($this->IsApproved == 1) return true;
          return false;
      }
+     public function getOldApprovedGroup() {
+         return GroupApprovedCopy::getOldGroup($this->Id);
+     }
+     
      
      public function is_trading(LARP $larp) {
          $campaign = $larp->getCampaign();
@@ -290,11 +294,11 @@ class Group extends BaseModel{
          
      }
      
-     public function saveAllIntrigueTypes($post) {
-         if (!isset($post['IntrigueTypeId'])) {
+     public function saveAllIntrigueTypes($idArr) {
+         if (!isset($idArr)) {
              return;
          }
-         foreach($post['IntrigueTypeId'] as $Id) {
+         foreach($idArr as $Id) {
              $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_group (IntrigueTypeId, GroupId) VALUES (?,?);");
              if (!$stmt->execute(array($Id, $this->Id))) {
                  $stmt = null;
@@ -454,6 +458,9 @@ class Group extends BaseModel{
      }
      
      public function approve($larp, $user) {
+         $oldCopy = $this->getOldApprovedGroup();
+         GroupApprovedCopy::delete($oldCopy->Id);
+         
          $this->IsApproved = 1;
          $this->ApprovedByUserId = $user->Id;
          $now = new Datetime();

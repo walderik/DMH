@@ -283,7 +283,6 @@ line-height: 1.8;
  
 
         		            if ($role->hasImage()) {
-        		                echo $role->getViewLink();
         		                echo "<img width='100' src='../includes/display_image.php?id=$role->ImageId'/ >\n";
         		                echo "</a>";
         		                echo "<br>";

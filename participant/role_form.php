@@ -396,7 +396,7 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
        			<div class="explanation">   
        			</div>
                 <?php 
-                selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedAbilityIds());
+                selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedRoleFunctionIds());
                 ?>
             </div>
             

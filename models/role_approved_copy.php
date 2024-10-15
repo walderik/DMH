@@ -281,6 +281,11 @@ class RoleApprovedCopy extends BaseModel {
         return Guard::loadById($this->GuardId);
     }
     
+    public function getLarperType() {
+        if (is_null($this->LarperTypeId)) return null;
+        return LarperType::loadById($this->LarperTypeId);
+    }
+    
     
     
     public static function makeCopyOfApprovedRole(Role $role) {

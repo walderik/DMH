@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $group->IsApproved = 0;
         $group->create();
         $group->deleteAllIntrigueTypes();
-        $group->saveAllIntrigueTypes($_POST);
+        $group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         
         if (!strpos($_POST['action'], "anmälan")) {
             header('Location: ../index.php');
@@ -44,12 +44,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
         
+        if ($group->isApproved()) {
+            GroupApprovedCopy::makeCopyOfApprovedGroup($group);
+        }
+        
         
         $group->setValuesByArray($_POST);
         $group->update();
         $group->unapprove($current_larp, false);
         $group->deleteAllIntrigueTypes();
-        $group->saveAllIntrigueTypes($_POST);
+        $group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         
         if (!empty($larp_group)) {
             $larp_group->UserMayEdit = 0;

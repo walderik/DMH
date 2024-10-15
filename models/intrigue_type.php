@@ -94,6 +94,16 @@ class IntrigueType extends SelectionData{
     }
     
     
+    public static function getIntrigeTypesForApprovedGroupCopy($groupId) {
+        if (is_null($groupId)) return array();
+        
+        $sql = "SELECT * from regsys_intriguetype WHERE Id IN ".
+            "(SELECT IntrigueTypeId FROM regsys_intriguetype_groupapprovedcopy ".
+            "WHERE GroupId = ?) ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($groupId));
+    }
+    
+    
     public static function countByTypeOnRoles(LARP $larp, $mainRole) {
         if (is_null($larp)) return Array();
         

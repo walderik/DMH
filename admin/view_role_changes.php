@@ -19,7 +19,7 @@ $group = $role->getGroup();
 $oldGroup = $oldRoleCopy->getGroup();
 
 function setClass($text1, $text2, $side) {
-    if ($text1 == $text2) {
+    if (trim($text1) == trim($text2)) {
         if ($side == 1) echo "class='unchangedNew'";
         else echo "class='unchangedOld'";
     } else {
@@ -211,7 +211,7 @@ include 'navigation.php';
 			<tr>
 				<td valign="top" class="header">Funktioner förklaring</td>
 				<td <?php setClass($role->RoleFunctionComment, $oldRoleCopy->RoleFunctionComment, 1); ?>><?php echo $role->RoleFunctionComment;?></td>
-				<td <?php setClass($role->RoleFunctionComment, $oldRoleCopy->RoleFunctionComment, 2); ?>><?php echo oldRoleCopy->RoleFunctionComment;?></td>
+				<td <?php setClass($role->RoleFunctionComment, $oldRoleCopy->RoleFunctionComment, 2); ?>><?php echo $oldRoleCopy->RoleFunctionComment;?></td>
 			</tr>
 			<?php }?>
 

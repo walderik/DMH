@@ -39,6 +39,7 @@ include_once $root . '/models/evaluation.php';
 include_once $root . '/models/experience.php';
 include_once $root . '/models/guard.php';
 include_once $root . '/models/group.php';
+include_once $root . '/models/group_approved_copy.php';
 include_once $root . '/models/grouptype.php';
 include_once $root . '/models/house.php';
 include_once $root . '/models/housecaretaker.php';
