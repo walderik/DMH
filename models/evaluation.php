@@ -5,7 +5,7 @@ class Evaluation extends BaseModel{
     public $Id;
     public $LarpId;
     public $Age;
-    public $Number_of_larps;
+    //public $Number_of_larps;
     public $larp_q1;
     public $larp_q2;
     public $larp_q3;
@@ -80,7 +80,7 @@ class Evaluation extends BaseModel{
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
         if (isset($arr['Age'])) $this->Age = $arr['Age'];
-        if (isset($arr['Number_of_larps'])) $this->Number_of_larps = $arr['Number_of_larps'];
+        //if (isset($arr['Number_of_larps'])) $this->Number_of_larps = $arr['Number_of_larps'];
         if (isset($arr['larp_q1'])) $this->larp_q1 = $arr['larp_q1'];
         if (isset($arr['larp_q2'])) $this->larp_q2 = $arr['larp_q2'];
         if (isset($arr['larp_q3'])) $this->larp_q3 = $arr['larp_q3'];
@@ -150,7 +150,7 @@ class Evaluation extends BaseModel{
     # Create a new evaluation in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_evaluation (LarpId, Age, Number_of_larps, 
+        $stmt = $connection->prepare("INSERT INTO regsys_evaluation (LarpId, Age, 
             larp_q1, larp_q2, larp_q3, larp_q4, larp_q5, larp_q6, larp_q7, larp_q8, larp_q9, larp_comment, 
             exp_q1, exp_q2, exp_q3, exp_q4, exp_q5, exp_q6, exp_q7, exp_comment, 
             info_q1, info_q2, info_q3, info_q4, info_dev, info_comment, 
@@ -161,7 +161,7 @@ class Evaluation extends BaseModel{
             health_q1, health_q2, health_q3, health_comment,  
             game_q1, game_q2, game_q3, game_q4, game_q5, game_q6, game_q7, game_q8, game_q9, game_comment, 
             finish_positive, finish_negative, finish_develop, finish_comment) 
-            VALUES (?,?,?, 
+            VALUES (?,?, 
             ?,?,?,?,?,?,?,?,?,?, 
             ?,?,?,?,?,?,?,?, 
             ?,?,?,?,?,?, 
@@ -174,7 +174,7 @@ class Evaluation extends BaseModel{
             ?,?,?,?)");
        
         
-        if (!$stmt->execute(array($this->LarpId, $this->Age, $this->Number_of_larps, 
+        if (!$stmt->execute(array($this->LarpId, $this->Age, 
             $this->larp_q1, $this->larp_q2, $this->larp_q3, $this->larp_q4, $this->larp_q5, $this->larp_q6, $this->larp_q7, $this->larp_q8, $this->larp_q9, $this->larp_comment, 
             $this->exp_q1, $this->exp_q2, $this->exp_q3, $this->exp_q4, $this->exp_q5, $this->exp_q6, $this->exp_q7, $this->exp_comment,
             $this->info_q1, $this->info_q2, $this->info_q3, $this->info_q4, $this->info_dev, $this->info_comment, 

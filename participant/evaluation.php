@@ -121,15 +121,6 @@ label::before {
 			<input type="hidden" id="Id" name="Id" value="<?php if (!$viewOnly) echo $person->getRegistration($current_larp)->Id ?>">
 			<input type="hidden" id="Age" name="Age" value="<?php if (!$viewOnly) echo $person->getAgeAtLarp($current_larp)?> ">
 
-			<div class="question">
-    			<label for="Number_of_larps">Antal lajv du har varit på innan detta</label>
-				<select name="Number_of_larps" id="Number_of_larps">
-                  <option value="0" checked="checked">0</option>
-                  <option value="1-5">1-5</option>
-                  <option value="6-10">6-10</option>
-                  <option value="10+">10+</option>
-                </select> st
-            </div>
             
             <h2>Betygsätt lajvet: skala 1-10</h2>
             
