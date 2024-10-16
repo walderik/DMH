@@ -115,8 +115,8 @@ label::before {
 </style>
 
 	<div class="content">
-		<h1>Utvärdering av <?php echo $current_larp->Name; ?>  för <?php echo $person->Name; ?></h1>
-			<p>Vi sparar inte vilka svar du har angett, bara att du har lämnat en utvärdering. Utvärderingen sparas anonymt.</p>
+		<h1>Utvärdering av <span style='color:red'><?php echo $current_larp->Name; ?></span>  för <?php echo $person->Name; ?></h1>
+			<p>Kontrollera att du lämnar in utvärdering för rätt lajv.<br><br>Vi sparar inte vilka svar du har angett, bara att du har lämnat en utvärdering. Utvärderingen sparas anonymt.</p>
 			<form action="logic/evaluation_save.php" method="post">
 			<input type="hidden" id="Id" name="Id" value="<?php if (!$viewOnly) echo $person->getRegistration($current_larp)->Id ?>">
 			<input type="hidden" id="Age" name="Age" value="<?php if (!$viewOnly) echo $person->getAgeAtLarp($current_larp)?> ">
