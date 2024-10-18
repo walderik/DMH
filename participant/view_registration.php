@@ -71,7 +71,12 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $registration->NPCDesire;?></td></tr>
 			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Önskat boende</td>
+				<td>
+				<?php 
+				    $housingrequest = $registration->getHousingRequest();
+				    if(!empty($housingrequest)) echo $housingrequest->Name;?>
+			    </td></tr>
 			<?php } ?>
 			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo nl2br(htmlspecialchars($registration->LarpHousingComment)); ?></td></tr>
 			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentType)); ?></td></tr>

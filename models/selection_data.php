@@ -37,6 +37,7 @@ class SelectionData extends BaseModel{
     }
     
     public static function loadById($id) {
+        if (is_null($id)) return null;
         static $cache = array();
         $key = strtolower(static::class).$id;
         if (isset($cache[$key])) return $cache[$key];

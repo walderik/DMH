@@ -90,7 +90,11 @@ include 'navigation.php';
 			</tr>
 			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Önskat boende</td><td><?php echo HousingRequest::loadById($registration->HousingRequestId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Önskat boende</td>
+				<td>
+					<?php 
+					$housingrequest = HousingRequest::loadById($registration->HousingRequestId);
+					if (!empty($housingrequest)) echo $housingrequest->Name;?></td></tr>
 			<?php } ?>
 			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentType)); ?></td></tr>
 			<tr><td valign="top" class="header">Storlek på tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentSize)); ?></td></tr>

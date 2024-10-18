@@ -124,7 +124,7 @@ include 'navigation.php';
 			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
-			<td><?php HousingRequest::selectionDropdown($current_larp, false,true,$registration->HousingRequestId);?></td></tr>
+			<td><?php HousingRequest::selectionDropdown($current_larp, false,false,$registration->HousingRequestId);?></td></tr>
 			<?php } ?>
 			<tr><td valign="top" class="header">Typ av tält</td>
 			<td><input class="input_field" type="text" id="TentType" name="TentType"  maxlength="200" value="<?php echo htmlspecialchars($registration->TentType); ?>"></td></tr>
