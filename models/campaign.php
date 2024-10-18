@@ -17,6 +17,7 @@ class Campaign extends BaseModel{
     public  $MinimumAgeWithoutGuardian;
     public  $Currency;
     public  $MainOrganizerPersonId;
+    public  $ShowGroupMemberHousingInormation;
 
     
     
@@ -42,6 +43,7 @@ class Campaign extends BaseModel{
         if (isset($arr['MinimumAgeWithoutGuardian'])) $this->MinimumAgeWithoutGuardian = $arr['MinimumAgeWithoutGuardian'];
         if (isset($arr['Currency'])) $this->Currency = $arr['Currency'];
         if (isset($arr['MainOrganizerPersonId'])) $this->MainOrganizerPersonId = $arr['MainOrganizerPersonId'];
+        if (isset($arr['ShowGroupMemberHousingInormation'])) $this->ShowGroupMemberHousingInormation = $arr['ShowGroupMemberHousingInormation'];
         
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         
@@ -59,11 +61,11 @@ class Campaign extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_campaign SET Name=?, Abbreviation=?, Description=?, Icon=?, 
             Homepage=?, Email=?, Bankaccount=?, SwishNumber=?, MinimumAge=?, MinimumAgeWithoutGuardian=?, 
-            Currency=?, MainOrganizerPersonId=? WHERE Id = ?");
+            Currency=?, MainOrganizerPersonId=?, ShowGroupMemberHousingInormation=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
             $this->Homepage, $this->Email, $this->Bankaccount, $this->SwishNumber, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, 
-            $this->Currency, $this->MainOrganizerPersonId, $this->Id))) {
+            $this->Currency, $this->MainOrganizerPersonId, $this->ShowGroupMemberHousingInormation, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -76,10 +78,10 @@ class Campaign extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_campaign (Name, Abbreviation, Description, Icon, Homepage, Email, Bankaccount, SwishNumber, 
-            MinimumAge, MinimumAgeWithoutGuardian, Currency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            MinimumAge, MinimumAgeWithoutGuardian, Currency, ShowGroupMemberHousingInormation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
-            $this->Homepage, $this->Email, $this->Bankaccount, $this->SwishNumber, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Currency))) {
+            $this->Homepage, $this->Email, $this->Bankaccount, $this->SwishNumber, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Currency, $this->ShowGroupMemberHousingInormation))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -126,6 +128,12 @@ class Campaign extends BaseModel{
         if (empty($this->MainOrganizerPersonId)) return NULL;
         return Person::loadById($this->MainOrganizerPersonId);
     }
+    
+    public function showGroupMemberHousingInormation() {
+        return $this->ShowGroupMemberHousingInormation == 1;
+    }
+    
+    
     
     public function hasLarps() {
 

@@ -102,6 +102,15 @@ include_once 'header.php';
     				<td><input type="text" id="Currency"
     					name="Currency" value="<?php echo $campaign->Currency; ?>" size="50"></td>
     			</tr>
+   			<tr>
+    				<td><label for=ShowGroupMemberHousingInormation>Fråga om boende för gruppmedlemmar</label><br>I anmälningsformuläret för deltagare finns frågor om bodent. Man kan välja att inte visa dem för de som har en huvudkaraktär som är med i en grupp.</td>
+    				<td>
+						<input type="radio" id="ShowGroupMemberHousingInormation_yes" name="ShowGroupMemberHousingInormation" value="1" <?php if ($campaign->showGroupMemberHousingInormation()) echo 'checked="checked"'?>> 
+            			<label for="ShowGroupMemberHousingInormation_yes">Ja</label><br> 
+            			<input type="radio" id="ShowGroupMemberHousingInormation_no" name="ShowGroupMemberHousingInormation" value="0" <?php if (!$campaign->showGroupMemberHousingInormation()) echo 'checked="checked"'?>> 
+            			<label for="CShowGroupMemberHousingInormation_no">Nej</label>
+					</td>
+    			</tr>
     		</table>
     
     		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
