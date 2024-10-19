@@ -14,8 +14,6 @@ function getObjectName($name) {
         case "experiences" : return "Erfarenhet";
         case "race" : return "Ras";
         case "abilities" : return "Förmågor";
-        case "council" : return "Byråd";
-        case "guard" : return "Markvakt";
         case "religon" : return "Religion";
         case "advertismenttypes" : return "Annonstyper";
         case "titledeedplace" : return "Platser för verksamheter";
@@ -40,8 +38,6 @@ function getObjectType($name) {
         case "experiences" : return "Experience";
         case "race" : return "Race";
         case "abilities" : return "Ability";
-        case "council" : return "Council";
-        case "guard" : return "Guard";
         case "religion" : return "Religion";
         case "advertismenttypes" : return "AdvertismentType";
         case "titledeedplace" : return "TitledeedPlace";
@@ -60,8 +56,6 @@ function getAllTypesForRoles(Larp $larp) {
     if (IntrigueType::isInUse($larp)) $types["IntrigueType"] = "Typ av intriger";
     if (Race::isInUse($larp)) $types["Race"] = "Ras";
     if (Ability::isInUse($larp)) $types["Ability"] = "Förmågor";
-    if (Council::isInUse($larp)) $types["Council"] = "Byråd";
-    if (Guard::isInUse($larp)) $types["Guard"] = "Markvakt";
     if (Religion::isInUse($larp)) $types["Religion"] = "Religion";
     if (Belief::isInUse($larp)) $types["Belief"] = "Hur troende";
     if (RoleFunction::isInUse($larp)) $types["RoleFunction"] = "Karaktärens funktion";

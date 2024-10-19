@@ -144,25 +144,6 @@ if ($role->isMysLajvare()) {
 			</td></tr>
 			<?php }?>
 
-			<?php if (Council::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Byrådet</td><td>
-			<?php 
-			$council = $role->getCouncil();
-			if (!empty($council)) echo $council->Name;
-			?>
-			</td></tr>
-			<tr><td valign="top" class="header">Byrådet förklaring</td><td><?php echo $role->Council;?></td></tr>
-			<?php }?>
-			
-			<?php if (Guard::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Markvakt</td><td>
-			<?php 
-			$guard = $role->getGuard();
-			if (!empty($guard)) echo $guard->Name;
-			?>
-			</td></tr>
-			<?php }?>			
-			
 			<tr><td valign="top" class="header">Mörk hemlighet</td><td><?php echo $role->DarkSecret;?></td></tr>
 			<tr><td valign="top" class="header">Mörk hemlighet - intrig idéer</td><td><?php echo nl2br($role->DarkSecretIntrigueIdeas); ?></td></tr>
 			

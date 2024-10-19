@@ -1,6 +1,7 @@
 <?php
 
 include_once 'header.php';
+include '../includes/finediff.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
@@ -106,11 +107,17 @@ include 'navigation.php';
 		<?php } ?>
 			<tr>
 				<td valign="top" class="header">Grupp</td>
-				<td  <?php setClass($role->GroupId, $oldRoleCopy->GroupId, 1); ?>><?php if (isset($group)) echo $group->getViewLink() ?></td>
+				<td <?php setClass($role->GroupId, $oldRoleCopy->GroupId, 1); ?>><?php if (isset($group)) echo $group->getViewLink() ?></td>
 				<td <?php setClass($role->GroupId, $oldRoleCopy->GroupId, 2); ?>><?php if (isset($oldGroup)) echo $oldGroup->getViewLink() ?></td>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Yrke</td>
+				<?php 
+				$opcodes = FineDiff::getDiffOpcodes($oldRoleCopy->Profession, $role->Profession, FineDiff::$wordGranularity);
+				$to_text = FineDiff::renderToTextFromOpcodes($oldRoleCopy->Profession, $opcodes);
+				print_r($opcodes);
+				echo $to_text;
+				?>
 				<td <?php setClass($role->Profession, $oldRoleCopy->Profession, 1); ?>><?php echo $role->Profession;?></td>
 				<td <?php setClass($role->Profession, $oldRoleCopy->Profession, 2); ?>><?php echo $oldRoleCopy->Profession;?></td>
 			</tr>
@@ -257,43 +264,6 @@ include 'navigation.php';
 			</tr>
 			<?php }?>
 
-			<?php if (Council::isInUse($current_larp)) {?>
-			<tr>
-				<td valign="top" class="header">Byrådet</td>
-				<td <?php setClass($role->CouncilId, $oldRoleCopy->CouncilId, 1); ?>>
-    			<?php 
-    			$council = $role->getCouncil();
-    			if (!empty($council)) echo $council->Name;
-    			?>
-    			</td>
-				<td <?php setClass($role->CouncilId, $oldRoleCopy->CouncilId, 2); ?>>
-    			<?php 
-    			$council = $oldRoleCopy->getCouncil();
-    			if (!empty($council)) echo $council->Name;
-    			?>
-    			</td>
-			</tr>
-			<tr><td valign="top" class="header">Byrådet förklaring</td>
-			<td <?php setClass($role->Council, $oldRoleCopy->Council, 1); ?>><?php echo $role->Council;?></td>
-			<td <?php setClass($role->Council, $oldRoleCopy->Council, 2); ?>><?php echo $oldRoleCopy->Council;?></td>
-			</tr>
-			<?php }?>
-			
-			<?php if (Guard::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Markvakt</td><td <?php setClass($role->GuardId, $oldRoleCopy->GuardId, 1); ?>>
-			<?php 
-			$guard = $role->getGuard();
-			if (!empty($guard)) echo $guard->Name;
-			?>
-			</td>
-			<td <?php setClass($role->GuardId, $oldRoleCopy->GuardId, 2); ?>>
-			<?php 
-			$guard = $oldRoleCopy->getGuard();
-			if (!empty($guard)) echo $guard->Name;
-			?>
-			</td>
-			</tr>
-			<?php }?>			
 			
 			<tr>
 				<td valign="top" class="header">Mörk hemlighet</td>

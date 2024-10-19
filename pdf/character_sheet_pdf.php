@@ -727,8 +727,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->draw_field('race');
         $this->draw_field('ability');
         $this->draw_field('religion');
-        $this->draw_field('council');
-        $this->draw_field('guard');
         
         if ($this->all) $this->draw_field('darkSecret');
         if ($this->all) $this->draw_field('darkSecretSuggestion');
@@ -966,28 +964,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	}
 	
 
-	protected function council($left) {
-	    if (!Council::isInUse($this->larp)) return false;
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Byråd');
-	    $mertext = (empty(trim($this->role->Council))) ? '' : " (".trim($this->role->Council).")";
-	    $text = $this->role->getCouncil()->Name.$mertext;
-	    $this->set_text($left, $text );
-	    return true;
-	}
-	
-	protected function guard($left) {
-	    if (!Guard::isInUse($this->larp)) return false;
-	    if ($this->isMyslajvare) return false;
-	    $this->set_header($left, 'Markvakt');
-	    $text = $this->role->getGuard()->Name;
-	    $this->set_text($left, $text );
-	    return true;
-	}
-	
-	
-	
-	
 	protected function reason_for_being_in_here($left) {
 	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Orsak för att vistas här');
