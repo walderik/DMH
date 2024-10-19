@@ -82,7 +82,7 @@ function print_individual(Person $person, $group, $house) {
     }
     echo "  </div>\n";
 
-    $housingRequest = HousingRequest::loadById($person->getRegistration($current_larp)->HousingRequestId);
+    $housingRequest = $person->getRegistration($current_larp)->getHousingRequest();
     echo "  <div>";
     if (!empty($housingRequest)) echo $housingRequest->Name;
     echo "</div>\n";

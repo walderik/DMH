@@ -47,8 +47,6 @@ include 'navigation.php';
 		var wealths = document.getElementsByName("WealthId");
 		var religions = document.getElementsByName("ReligionId");
 		var placeofresidences = document.getElementsByName("PlaceOfResidenceId");
-		var councils = document.getElementsByName("CouncilId");
-		var guards = document.getElementsByName("GuardId");
 		var believes = document.getElementsByName("BeliefId");
         if (isYes) {
     		for (var i = 0; i < intrigueDivs.length; i++) {
@@ -68,12 +66,6 @@ include 'navigation.php';
     		}
     		for (var i = 0; i < placeofresidences.length; i++) {
         		placeofresidences[i].required = false;        		
-    		}
-    		for (var i = 0; i < councils.length; i++) {
-    			councils[i].required = false;        		
-    		}
-    		for (var i = 0; i < guards.length; i++) {
-    			guards[i].required = false;        		
     		}
     		for (var i = 0; i < believes.length; i++) {
     			believes[i].required = false;        		
@@ -96,12 +88,6 @@ include 'navigation.php';
     		}
     		for (var i = 0; i < placeofresidences.length; i++) {
         		placeofresidences[i].required = true;  
-    		}
-    		for (var i = 0; i < councils.length; i++) {
-    			councils[i].required = true;  
-    		}
-    		for (var i = 0; i < guards.length; i++) {
-    			guards[i].required = true;  
     		}
        		for (var i = 0; i < believes.length; i++) {
     			believes[i].required = true;  
@@ -197,19 +183,6 @@ include 'navigation.php';
 			</td></tr>
 			<?php }?>
 
-
-			<?php if (Council::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Byrådet</td><td>
-			<?php Council::selectionDropdown($current_larp, false, true, $role->CouncilId); ?>
-			</td></tr>
-			<tr class="intrigue"><td valign="top" class="header">Byrådet förklaring</td><td><input type="text" id="Council" name="Council" value="<?php echo htmlspecialchars($role->Council); ?>"  size="100" maxlength="250"></td></tr>
-			<?php }?>
-			
-			<?php if (Guard::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Markvakt</td><td>
-			<?php Guard::selectionDropdown($current_larp, false, true, $role->GuardId); ?>
-			</td></tr>
-			<?php }?>			
 
 			<?php if (Ability::isInUse($current_larp)) {?>
 			<tr class="intrigue"><td valign="top" class="header">Kunskaper</td>

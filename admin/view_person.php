@@ -93,7 +93,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Önskat boende</td>
 				<td>
 					<?php 
-					$housingrequest = HousingRequest::loadById($registration->HousingRequestId);
+					$housingrequest = $registration->getHousingRequest();
 					if (!empty($housingrequest)) echo $housingrequest->Name;?></td></tr>
 			<?php } ?>
 			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentType)); ?></td></tr>

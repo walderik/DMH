@@ -33,7 +33,6 @@ if ($operation == "search") {
     if ($type == "IntrigueType") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Intrigidéer</th>";
     if ($type == "Race") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till ras</th>";
     if ($type == "Ability") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till förmåga</th>";
-    if ($type == "Council") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till byråd</th>";
     if ($type == "RoleFunction") $resTable .="<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Kommentar till funktion</th>";
     
     $resTable .= "</tr>";
@@ -53,7 +52,6 @@ if ($operation == "search") {
         if ($type == "IntrigueType") $resTable .="<td>$role->IntrigueSuggestions</td>";
         if ($type == "Race") $resTable .="<td>$role->RaceComment</td>";
         if ($type == "Ability") $resTable .="<td>$role->AbilityComment</td>";
-        if ($type == "Council") $resTable .="<td>$role->Council</td>";
         if ($type == "RoleFunction") $resTable .="<td>$role->RoleFunctionComment</td>";
         $resTable .= "</tr>";
         $personIdArr[] = $role->getPerson()->Id;

@@ -25,8 +25,6 @@ $param = date_format(new Datetime(),"suv");
 			    <a href="selection_data_admin.php?type=belief">Hur troende en karaktär är</a><br>
 			    <a href="selection_data_admin.php?type=race">Ras för karaktärer</a>	<br>		    			
 			    <a href="selection_data_admin.php?type=abilities">Typ av förmågor för karaktärer</a>	<br>		    			 					    
-			    <a href="selection_data_admin.php?type=council">Byråd för karaktärer</a>	<br>		    			 					    
-			    <a href="selection_data_admin.php?type=guard">Markvakt för karaktärer</a>	<br>		    			 					    
 			    <a href="selection_data_admin.php?type=rolefunction">Karaktärens funktion</a>	<br>		    			 					    
 			    <a href="selection_data_admin.php?type=intriguetypes">Typ av intriger för karaktärer och grupper</a>	<br>		    			 					    
 			    <a href="selection_data_admin.php?type=housingrequests">Boendeönskemål för deltagare och grupper</a>	<br>		    			

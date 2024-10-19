@@ -23,9 +23,6 @@ class Role extends BaseModel{
     public $WealthId;
     public $PlaceOfResidenceId;
     public $RaceId;
-    public $CouncilId;
-    public $Council;
-    public $GuardId;
     public $RoleFunctionComment;
     public $Photo;
     public $Birthplace;
@@ -76,9 +73,6 @@ class Role extends BaseModel{
         if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
         if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
         if (isset($arr['RaceId'])) $this->RaceId = $arr['RaceId'];
-        if (isset($arr['CouncilId'])) $this->CouncilId = $arr['CouncilId'];
-        if (isset($arr['Council'])) $this->Council = $arr['Council'];
-        if (isset($arr['GuardId'])) $this->GuardId = $arr['GuardId'];
         if (isset($arr['RoleFunctionComment'])) $this->RoleFunctionComment = $arr['RoleFunctionComment'];
         if (isset($arr['Birthplace'])) $this->Birthplace = $arr['Birthplace'];
         if (isset($arr['CharactersWithRelations'])) $this->CharactersWithRelations = $arr['CharactersWithRelations'];
@@ -98,8 +92,6 @@ class Role extends BaseModel{
         if (isset($this->LarperTypeId) && $this->LarperTypeId=='null') $this->LarperTypeId = null;
         if (isset($this->PlaceOfResidenceId) && $this->PlaceOfResidenceId=='null') $this->PlaceOfResidenceId = null;
         if (isset($this->RaceId) && $this->RaceId=='null') $this->RaceId = null;
-        if (isset($this->GuardId) && $this->GuardId=='null') $this->GuardId = null;
-        if (isset($this->CouncilId) && $this->CouncilId=='null') $this->CouncilId = null;
         if (isset($this->WealthId) && $this->WealthId=='null') $this->WealthId = null;
         if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
@@ -122,7 +114,7 @@ class Role extends BaseModel{
                               DescriptionForGroup=?, DescriptionForOthers=?,
                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, ReligionId=?, Religion=?, BeliefId=?, DarkSecret=?,
                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
-                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, CouncilId=?, Council=?, GuardId=?, RoleFunctionComment=?, Birthplace=?, 
+                              PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, RoleFunctionComment=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
                               NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=?, ApprovedByUserId=?, ApprovedDate=? WHERE Id = ?;");
         
@@ -130,7 +122,7 @@ class Role extends BaseModel{
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
             $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
-            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, $this->CouncilId, $this->Council, $this->GuardId, 
+            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,  
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
             $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
             $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByUserId, $this->ApprovedDate, $this->Id))) {
@@ -148,17 +140,17 @@ class Role extends BaseModel{
                                                             DescriptionForGroup, DescriptionForOthers, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, ReligionId, Religion, BeliefId, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
-                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId, CouncilId, Council, GuardId, 
+                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId,  
                                                             RoleFunctionComment, Birthplace, CharactersWithRelations, CampaignId, ImageId, 
                                     IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, IsApproved, ApprovedByUserId, ApprovedDate) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?);");
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
-            $this->CouncilId, $this->Council, $this->GuardId, $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
+            $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
             $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
             $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByUserId, $this->ApprovedDate
         ))) {
@@ -219,16 +211,7 @@ class Role extends BaseModel{
         return Race::loadById($this->RaceId);
     }
     
-    public function getCouncil() {
-        if (is_null($this->CouncilId)) return null;
-        return Council::loadById($this->CouncilId);
-    }
-    public function getGuard() {
-        if (is_null($this->GuardId)) return null;
-        return Guard::loadById($this->GuardId);
-    }
-    
-    public function isApproved() {
+     public function isApproved() {
         if ($this->IsApproved == 1) return true;
         return false;
     }
@@ -944,12 +927,6 @@ class Role extends BaseModel{
                 break;
             case "Ability":
                 $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_ability_role WHERE AbilityId = ?) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
-                break;
-            case "Council":
-                $sql = "SELECT * FROM regsys_role WHERE CouncilId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
-                break;
-            case "Guard":
-                $sql = "SELECT * FROM regsys_role WHERE GuardId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Religion":
                 $sql = "SELECT * FROM regsys_role WHERE ReligionId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";

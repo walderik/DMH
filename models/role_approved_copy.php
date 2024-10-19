@@ -24,9 +24,6 @@ class RoleApprovedCopy extends BaseModel {
     public $WealthId;
     public $PlaceOfResidenceId;
     public $RaceId;
-    public $CouncilId;
-    public $Council;
-    public $GuardId;
     public $RoleFunctionComment;
     public $Photo;
     public $Birthplace;
@@ -78,9 +75,6 @@ class RoleApprovedCopy extends BaseModel {
         if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
         if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
         if (isset($arr['RaceId'])) $this->RaceId = $arr['RaceId'];
-        if (isset($arr['CouncilId'])) $this->CouncilId = $arr['CouncilId'];
-        if (isset($arr['Council'])) $this->Council = $arr['Council'];
-        if (isset($arr['GuardId'])) $this->GuardId = $arr['GuardId'];
         if (isset($arr['RoleFunctionComment'])) $this->RoleFunctionComment = $arr['RoleFunctionComment'];
         if (isset($arr['Birthplace'])) $this->Birthplace = $arr['Birthplace'];
         if (isset($arr['CharactersWithRelations'])) $this->CharactersWithRelations = $arr['CharactersWithRelations'];
@@ -100,8 +94,6 @@ class RoleApprovedCopy extends BaseModel {
         if (isset($this->LarperTypeId) && $this->LarperTypeId=='null') $this->LarperTypeId = null;
         if (isset($this->PlaceOfResidenceId) && $this->PlaceOfResidenceId=='null') $this->PlaceOfResidenceId = null;
         if (isset($this->RaceId) && $this->RaceId=='null') $this->RaceId = null;
-        if (isset($this->GuardId) && $this->GuardId=='null') $this->GuardId = null;
-        if (isset($this->CouncilId) && $this->CouncilId=='null') $this->CouncilId = null;
         if (isset($this->WealthId) && $this->WealthId=='null') $this->WealthId = null;
         if (isset($this->GroupId) && $this->GroupId=='null') $this->GroupId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
@@ -122,17 +114,17 @@ class RoleApprovedCopy extends BaseModel {
                                                             DescriptionForGroup, DescriptionForOthers, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, ReligionId, Religion, BeliefId, DarkSecret, DarkSecretIntrigueIdeas,
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation,
-                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId, CouncilId, Council, GuardId,
+                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId, 
                                                             RoleFunctionComment, Birthplace, CharactersWithRelations,
                                     NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, ApprovedByUserId, ApprovedDate)
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?);");
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->RoleId, $this->Name, $this->Profession, $this->Description,
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, 
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,
-            $this->CouncilId, $this->Council, $this->GuardId, $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations,
+            $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations,
             $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
             $this->RaceComment, $this->AbilityComment, $this->ApprovedByUserId, $this->ApprovedDate
         ))) {
@@ -272,16 +264,7 @@ class RoleApprovedCopy extends BaseModel {
         return Race::loadById($this->RaceId);
     }
     
-    public function getCouncil() {
-        if (is_null($this->CouncilId)) return null;
-        return Council::loadById($this->CouncilId);
-    }
-    public function getGuard() {
-        if (is_null($this->GuardId)) return null;
-        return Guard::loadById($this->GuardId);
-    }
-    
-    public function getLarperType() {
+     public function getLarperType() {
         if (is_null($this->LarperTypeId)) return null;
         return LarperType::loadById($this->LarperTypeId);
     }
