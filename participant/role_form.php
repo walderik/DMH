@@ -139,6 +139,11 @@ include 'navigation.php';
 		setFieldState(true);
 	}
 
+	function defaultEjMyslajvare() {
+		document.getElementById("myslajvare_no").checked = true;
+		setFieldState(false);
+	}
+	
 	
 	</script>
 
@@ -174,6 +179,9 @@ include 'navigation.php';
 				        echo "<input type='radio' id='Person".$current_person->Id . "' name='PersonId' value='" . $current_person->Id . "' 'required'";
 				        if ($current_person->getAgeAtLarp($current_larp) < $current_larp->smallChildAge()) {
 				            echo " onchange='defaultMyslajvare()' ";
+				        } else {
+				            echo " onchange='defaultEjMyslajvare()' ";
+				            
 				        }
 				        echo ">\n";
 				        echo "<label for='Person" .$current_person->Id . "'>" .  htmlspecialchars($current_person->Name) . "</label><br>\n";
