@@ -133,14 +133,11 @@ include 'navigation.php';
             setFieldState(false);
         }
     }
-	
-	<?php 
-	if($role->isMysLajvare()) {
-	    echo 'setFieldState(true);';
-	} else {
-	    echo 'setFieldState(false);';
+
+	function defaultMyslajvare() {
+		document.getElementById("myslajvare_yes").checked = true;
+		setFieldState(true);
 	}
-	?>
 
 	
 	</script>
@@ -162,7 +159,33 @@ include 'navigation.php';
 			<div class="question">
 				<label for="Person">Deltagare</label>&nbsp;<font style="color:red">*</font><br>
 				<div class="explanation">Vilken deltagare spelar karaktären?</div>
-				<?php selectionByArray('Person', $current_persons, false, true, $role->PersonId); ?>
+				<?php 
+				if (is_null($role->Id)) {
+				    if (count($current_persons)==1) {
+				        echo "<tr><td>";
+				        echo htmlspecialchars($current_persons[0]->Name) . "<br>\n";
+				        echo "<input type='hidden' id='Person" . $current_persons[0]->Id . "' name='PersonId' value=" .  $current_persons[0]->Id . ">";
+				        echo "</td>";
+				        if ($current_persons[0]->getAgeAtLarp($current_larp) < $current_larp->smallChildAge()) $role->NoIntrigue = 1;
+				    } else {
+				        foreach ($current_persons as $current_person) {
+				        echo "<tr>";
+				        echo "<td>";
+				        echo "<input type='radio' id='Person".$current_person->Id . "' name='PersonId' value='" . $current_person->Id . "' 'required'";
+				        if ($current_person->getAgeAtLarp($current_larp) < $current_larp->smallChildAge()) {
+				            echo " onchange='defaultMyslajvare()' ";
+				        }
+				        echo ">\n";
+				        echo "<label for='Person" .$current_person->Id . "'>" .  htmlspecialchars($current_person->Name) . "</label><br>\n";
+				        echo "</td>";
+				        
+				        echo "</tr>";
+				    }
+				    }
+				    
+				} else selectionByArray('Person', $current_persons, false, true, $role->PersonId); 
+				
+				?>
 			</div>
 
 			<div class="question">

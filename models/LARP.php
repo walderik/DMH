@@ -398,4 +398,8 @@ class LARP extends BaseModel{
         
     }
     
+    public function smallChildAge() {
+        return 7;
+    }
+    
 }
