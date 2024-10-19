@@ -126,8 +126,6 @@ ul.list {
         				    echo "<div id='osm-map'></div>";
         				} else {
         				    echo "Sätt position <i class='fa fa-map' aria-hidden='true'></i></a>";
-        				    
-        				    
         				}?>
          				</td></tr>
 					
@@ -148,7 +146,7 @@ ul.list {
                     	            "bäste husförvaltare av $house->Name!",
                     	            "Meddelande till alla som är husförvaltare av $house->Name", BerghemMailer::ASSOCIATION) ;?>
         					</h2>
-        					<table id='caretakers' class='data'>
+        					<table id='caretakers' class='data' style='width:40%;' >
                 				<th>Namn</th><th>Medlem</th><th>Email</th><th>&nbsp;</th>
                 				<?php 
 //                 				$caretakers = $house->getHousecaretakers();
@@ -162,7 +160,7 @@ ul.list {
                 				    echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
                 				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
                 				    $confirm = "onclick='return confirm($txt)'";
-                				    echo "  <td><a href='logic/remove_caretaker.php?id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
+                				    echo "  <td><a href='logic/remove_caretaker.php?person_id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
                 				    echo "</tr>\n";
                 				}
                 				?>
@@ -170,7 +168,7 @@ ul.list {
         					<br>
         					<form method="get"  autocomplete="off" style="display: inline;">
                             	<input type="hidden" id="id"  name="id" value="<?php echo $house->Id ?>" style='display:inline;'>
-                				<?php autocomplete_person_id('60%', true); ?> 
+                				Lägg till husförvaltare:<p><?php autocomplete_person_id('50%', true); ?> </p>
             				</form>		
         				</td>
         			</tr>
@@ -192,7 +190,7 @@ ul.list {
         					    
             				    echo "<details><summary><b>$larp->Name</b>  &nbsp; $mailikon</summary> ";
             				    echo substr($larp->StartDate, 2, 8) .' -> '.substr($larp->EndDate, 2, 8)."<br><br>\n";
-            					echo "<table id='caretakers' class='data'>";
+            					echo "<table style='width:30%;' id='caretakers' class='data'>";
                 				echo "<th>Namn</th><th>Email</th>";
             				    
             				    foreach ($personsInHouse as $person) {
