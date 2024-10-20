@@ -101,7 +101,7 @@ img {
             			<tr>
             				<td><label for="NotesToUsers" class="header">Husbrev<br>(Information till deltagare som ska bo i huset)</label></td>
             				<td>
-            					<textarea id="NotesToUsers" name="NotesToUsers" rows="6" cols="50" maxlength="60000" required><?php echo htmlspecialchars($house->NotesToUsers); ?></textarea>
+            					<textarea id="NotesToUsers" name="NotesToUsers" rows="6" cols="50" maxlength="600000" required><?php echo htmlspecialchars($house->NotesToUsers); ?></textarea>
             				</td>
             			</tr>
 

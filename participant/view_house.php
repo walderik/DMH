@@ -3,13 +3,13 @@ include_once 'header.php';
 
 $house = House::newWithDefault();
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+if (isset($_GET['id']))  {
      $house = House::loadById($_GET['id']);
-     if (empty($house)) {
-         header('Location: index.php?error=no_house');
-     }
 }
-  
+
+if (empty($house)) {
+    header('Location: index.php?error=no_house');
+}
 
 include "navigation.php";
 
@@ -31,7 +31,11 @@ ul.list {
 <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>  
 
     <div class="content"> 
-    	<h1><?php echo $house->Name ?></h1>
+    	<h1><?php echo $house->Name;
+    	if (false && $house->IsHouse() && $current_user->hasEditRightToHouse($house)) {
+    	    echo " &nbsp;<a href='house_form.php?operation=update&id=$house->Id' title='Redigera husbrevet'><i class='fa-solid fa-pen'> </i></a>";
+    	}
+    	?></h1>
     	<table>
     		<tr>
     		<td>
@@ -63,7 +67,20 @@ ul.list {
         				<td><?php echo nl2br(htmlspecialchars($house->NotesToUsers)); ?></td>
         			</tr>
     			<?php }
-    			if (isset($house->Lat) && isset($house->Lon)) echo "<tr><td></td></tr><tr><td colspan='3'><div id='osm-map'></div></td></tr><tr><td></td></tr>"; ?>
+    			if (isset($house->Lat) && isset($house->Lon)) echo "<tr><td></td></tr><tr><td colspan='3'><div id='osm-map'></div></td></tr><tr><td></td></tr>"; 
+    			
+    			if ($house->IsHouse() && $current_user->hasEditRightToHouse($house)) {
+    			    $caretakers = $house->getHousecaretakers();
+                    echo "<table id='caretakers' class='data' style='width:40%;' >";
+                	echo "<th>Husförvaltare</th>";
+    				foreach ($caretakers as $caretaker) {
+    				    $person = $caretaker->getPerson();
+    				    echo "<tr>\n";
+    				    echo "  <td>$person->Name</td>\n";
+    				    echo "</tr>\n";
+    				}
+        			echo "</table>\n";
+    			} ?>
     			<tr>
     				<td colspan = '2'><b>De som bor i huset under <?php echo $current_larp->Name ?> är:</b><br>
     				<p>

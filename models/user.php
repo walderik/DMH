@@ -231,4 +231,16 @@ class User extends BaseModel{
         foreach ($organizers as $organizer)  if ($organizer->UserId == $this->Id) return $organizer;
         return null;
     }
+    
+    public function hasEditRightToHouse(House $house) {
+        global $current_user;
+        if (AccessControl::hasAccessOther($current_user->Id, AccessControl::HOUSES)) return true;
+
+        $persons = $this->getPersons();
+        foreach ($persons as $person) {
+            if (null !== ($house->getHousecaretakerForPerson($person))) return true;
+        }
+        if (AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) return true;
+        return false;
+    }
 }
