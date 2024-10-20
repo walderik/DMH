@@ -87,6 +87,7 @@ include 'navigation.php';
 				  }
 				  echo implode(",", $houseslinks);
 				  ?>
+				</td>
 			</tr>
 			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
