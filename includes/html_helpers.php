@@ -343,3 +343,10 @@ function economy_overview_campaign(Campaign $campaign, $year) {
     echo "<td align='right'>".number_format((float)$sum, 2, ',', '')."  SEK</td></tr>\n";
 }
 
+# Ta bort någon som husförvaltare för ett hus
+function remove_housecaretaker(Person $person, House $house) {
+    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare för '.$house->Name.'?"';
+    $confirm = "onclick='return confirm($txt)'";
+    $i = "<i class='fa-solid fa-trash' title='Ta bort $person->Name som husförvaltare för $house->Name'></i>";
+    return " <a href='logic/remove_caretaker.php?person_id=$person->Id&houseId=$house->Id' $confirm>$i</a>";
+}

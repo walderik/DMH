@@ -15,15 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 include 'navigation.php';
 
-$is_member = false;
 $houses = $person->housesOf();
-foreach ($houses as $house) {
-    $houseCareTaker = $house->getHousecaretakerForPerson($person);
-    if (!empty($houseCareTaker)) {
-        $is_member = $houseCareTaker->isMember();
-        break;
-    }
-}
 
 ?>
 
@@ -32,7 +24,7 @@ foreach ($houses as $house) {
 		<div>
 		<table>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $person->SocialSecurityNumber;?></td></tr>
-						<tr><td valign="top" class="header">Medlem i Berghems vänner just nu</td><td><?php echo showStatusIcon($is_member)?></td></tr>
+						<tr><td valign="top" class="header">Medlem i Berghems vänner just nu</td><td><?php echo showStatusIcon($person->IsMember())?></td></tr>
 			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email." ".contactEmailIcon($person, BerghemMailer::ASSOCIATION);?></td></tr>
 			<tr><td valign="top" class="header">Mobilnummer</td><td><?php echo $person->PhoneNumber;?></td></tr>
 			<tr><td valign="top" class="header">Närmaste anhörig</td><td><?php echo $person->EmergencyContact;?></td></tr>
