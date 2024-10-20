@@ -111,7 +111,7 @@
 			<div class="question">
 				<label for="NotAcceptableIntrigues">Vilken typ av intriger vill du absolut inte spela på?</label>
 				<br> 
-				<div class="explanation">Eftersom vi inte vill att någon ska må dåligt är det bra att veta vilka begränsningar du som person har vad det gäller intriger. Vilken typ av intriger vill du absolut inte spela på oavsett kampanj eller setting?</div>
+				<div class="explanation">Eftersom vi inte vill att någon ska må dåligt är det bra att veta vilka begränsningar du som person har vad det gäller intriger. Vilken typ av intriger vill du absolut inte spela på oavsett kampanj eller setting? Det gäller alltså alla lajv.</div>
 				<input class="input_field" type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo htmlspecialchars($person->NotAcceptableIntrigues); ?>" size="100" maxlength="200" >
 			</div>
 
