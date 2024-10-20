@@ -119,7 +119,8 @@ ul.list {
         				<td><?php echo nl2br(htmlspecialchars($house->InspectionNotes)); ?></td>
         			</tr>
         			<?php }?>
-        			<tr><td colspan='3'>
+        			<tr>
+        				<td colspan='3'>
         				<a href='choose_coords.php?id=<?php echo $house->Id ?>'>
         				<?php if (isset($house->Lat) && isset($house->Lon)) { 
         				    echo "Ändra position <i class='fa fa-map' aria-hidden='true'></i></a> Nuvarande position: Lat $house->Lat, Lon $house->Lon<br>"; 
@@ -127,7 +128,8 @@ ul.list {
         				} else {
         				    echo "Sätt position <i class='fa fa-map' aria-hidden='true'></i></a>";
         				}?>
-         				</td></tr>
+         				</td>
+         			</tr>
 					
 					<?php  if ($house->IsHouse()) { ?>
         			<tr><td>&nbsp;</td></tr>
