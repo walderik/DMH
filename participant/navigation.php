@@ -4,8 +4,18 @@
 
 	<link href="../css/navigation_participant.css" rel="stylesheet" type="text/css">
 
-	<?php include '../common/navigation_beginning.php';?> 
-
+	<?php 
+	include '../common/navigation_beginning.php';
+	$persons = $current_user->getPersons();
+	if (!empty($persons)) {
+	    foreach ($persons as $person) {	
+	        $houses = $person->housesOf();
+	        if (!empty($houses)) {
+	            foreach ($houses as $persons_house) echo "<a href='view_house.php?id=$persons_house->Id'>$persons_house->Name</a>";
+	        }
+	    }
+	}
+    ?>
 
 	  <div class="dropdown">
 	    <button class="dropbtn">Registrera 

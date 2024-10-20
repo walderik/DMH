@@ -119,7 +119,8 @@ ul.list {
         				<td><?php echo nl2br(htmlspecialchars($house->InspectionNotes)); ?></td>
         			</tr>
         			<?php }?>
-        			<tr><td colspan='3'>
+        			<tr>
+        				<td colspan='3'>
         				<a href='choose_coords.php?id=<?php echo $house->Id ?>'>
         				<?php if (isset($house->Lat) && isset($house->Lon)) { 
         				    echo "Ändra position <i class='fa fa-map' aria-hidden='true'></i></a> Nuvarande position: Lat $house->Lat, Lon $house->Lon<br>"; 
@@ -127,7 +128,8 @@ ul.list {
         				} else {
         				    echo "Sätt position <i class='fa fa-map' aria-hidden='true'></i></a>";
         				}?>
-         				</td></tr>
+         				</td>
+         			</tr>
 					
 					<?php  if ($house->IsHouse()) { ?>
         			<tr><td>&nbsp;</td></tr>
@@ -158,9 +160,7 @@ ul.list {
                 				    echo showStatusIcon($person->isMember());
                 				    echo "</td>\n";
                 				    echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
-                				    $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
-                				    $confirm = "onclick='return confirm($txt)'";
-                				    echo "  <td><a href='logic/remove_caretaker.php?person_id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
+                				    echo "  <td>".remove_housecaretaker($person, $house)."</td>\n";
                 				    echo "</tr>\n";
                 				}
                 				?>

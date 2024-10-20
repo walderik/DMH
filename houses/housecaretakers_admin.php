@@ -76,7 +76,7 @@ if ($resultCheck > 0) {
             $person = $housecaretaker->getPerson();
             $house = $housecaretaker->getHouse();
             echo "<tr>\n";
-            echo "<td>$person->Name </td>\n";
+            echo "<td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
             echo "<td>" . showStatusIcon($person->isMember()) . "</td>\n";
             echo "<td>";
             
@@ -98,9 +98,7 @@ if ($resultCheck > 0) {
 //             echo "<td>" . showStatusIcon($housecaretaker->IsApproved, "housecaretakers_admin.php?house_id=$housecaretaker->HouseId&person_id=$person->Id&ok_person=".time()) . "</td>\n";
             echo "<td><a href='view_house.php?operation=update&id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
             echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
-            $txt = '"Är du säker '.$person->Name.' inte ska vara husförvaltare?"';
-            $confirm = "onclick='return confirm($txt)'";
-            echo "  <td><a href='logic/remove_caretaker.php?person_id=$person->Id&houseId=$house->Id' $confirm><i class='fa-solid fa-trash'></i></a></td>\n";
+            echo "  <td>".remove_housecaretaker($person, $house)."</td>\n";
         }
         echo "</table>";
     } else {
