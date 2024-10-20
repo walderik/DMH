@@ -5,10 +5,16 @@ $house = House::newWithDefault();
 
 if (isset($_GET['id']))  {
      $house = House::loadById($_GET['id']);
+     if (empty($house)) {
+         header('Location: index.php?error=no_house');
+     }
 }
 
-if (empty($house)) {
-    header('Location: index.php?error=no_house');
+if ($_SERVER["REQUEST_METHOD"] == "POST" ) {
+    if (isset($_POST['operation']) && $_POST['operation']=='updateNotesToUser' && $house->IsHouse() && $current_user->hasEditRightToHouse($house) )  { # isset($_GET['NotesToUsers'])
+        $house->NotesToUsers = $_POST['NotesToUsers'];
+        $house->update();
+    }
 }
 
 include "navigation.php";
@@ -32,7 +38,7 @@ ul.list {
 
     <div class="content"> 
     	<h1><?php echo $house->Name;
-    	if (false && $house->IsHouse() && $current_user->hasEditRightToHouse($house)) {
+    	if ($house->IsHouse() && $current_user->hasEditRightToHouse($house)) {
     	    echo " &nbsp;<a href='house_form.php?operation=update&id=$house->Id' title='Redigera husbrevet'><i class='fa-solid fa-pen'> </i></a>";
     	}
     	?></h1>

@@ -33,9 +33,8 @@ img {
     	Det skickas till alla som placeras i huset på något av Berghems lajv.<br>
     	Det bör innehålla information om vad man får och inte får göra i huset och hur huset fungerar på olika sätt.<br>
     	Alla huseförvaltare har rätt att redigera den här texten.</div>
-    	<form action="view_house.php?id=<?php echo $house->Id ?>" method="post">
+    	<form action="view_house.php?id=<?php echo $house->Id ?>&operation=updateNotesToUser" method="post">
     		<input type="hidden" id="operation" name="operation" value="updateNotesToUser"> 
-    		<input type="hidden" id="Id" name="Id" value="<?php $house->Id ?>">
     		<table>
         		<tr>
             		<td>
