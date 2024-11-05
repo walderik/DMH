@@ -133,49 +133,50 @@ class Report_TCP_PDF extends Tcpdf {
         $dimensions = $this->getPageDimensions();
         $hasBorder = false; //flag for fringe case
         $fill = 0;
-        $numCols = count($data[0]);
-        
-        foreach($data as $row) {
-            $rowcount = 0;
+        if (!empty($data)) {
+            $numCols = count($data[0]);
             
-            $rowcount = 0;
-            for($i = 0; $i < $numCols; ++$i) $rowcount = max($rowcount, $this->getNumLines($row[$i], $widths[$i]));
-            //work out the number of lines required
-            
-            $startY = $this->GetY();
-            
-            if (($startY + $rowcount * 6) + $dimensions['bm']+5 > ($dimensions['hk'])) {
-                //this row will cause a page break, draw the bottom border on previous row and give this a top border
-                //we could force a page break and rewrite grid headings here
-                if ($hasBorder) {
-                    $hasBorder = false;
+            foreach($data as $row) {
+                $rowcount = 0;
+                
+                $rowcount = 0;
+                for($i = 0; $i < $numCols; ++$i) $rowcount = max($rowcount, $this->getNumLines($row[$i], $widths[$i]));
+                //work out the number of lines required
+                
+                $startY = $this->GetY();
+                
+                if (($startY + $rowcount * 6) + $dimensions['bm']+5 > ($dimensions['hk'])) {
+                    //this row will cause a page break, draw the bottom border on previous row and give this a top border
+                    //we could force a page break and rewrite grid headings here
+                    if ($hasBorder) {
+                        $hasBorder = false;
+                    } else {
+                        $this->Cell(array_sum($widths), 0, '', 'T');  //draw bottom border on previous row
+                        $this->AddPage();
+                        $this->Ln();
+                    }
+                    $borders = 'LTR';
+                } elseif ((ceil($startY) + $rowcount * 6) + $dimensions['bm'] == floor($dimensions['hk'])) {
+                    //fringe case where this cell will just reach the page break
+                    //draw the cell with a bottom border as we cannot draw it otherwise
+                    $borders = 'LRB';
+                    $hasBorder = true; //stops the attempt to draw the bottom border on the next row
                 } else {
-                    $this->Cell(array_sum($widths), 0, '', 'T');  //draw bottom border on previous row
-                    $this->AddPage();
-                    $this->Ln();
+                    //normal cell
+                    $borders = 'LR';
                 }
-                $borders = 'LTR';
-            } elseif ((ceil($startY) + $rowcount * 6) + $dimensions['bm'] == floor($dimensions['hk'])) {
-                //fringe case where this cell will just reach the page break
-                //draw the cell with a bottom border as we cannot draw it otherwise
-                $borders = 'LRB';
-                $hasBorder = true; //stops the attempt to draw the bottom border on the next row
-            } else {
-                //normal cell
-                $borders = 'LR';
+                
+                //now draw it
+                for($i = 0; $i < $numCols; ++$i) {
+                    $this->MultiCell($widths[$i],$rowcount * $size,$row[$i],$borders,'L',$fill,0);
+                }
+                //$this->MultiCell(80,$rowcount * 6,$row['cell2data'],$borders,'L',0,0);
+                //$this->MultiCell(80,$rowcount * 6,$row['cell3data'],$borders,'L',0,0);
+                
+                $this->Ln();
+                $fill=!$fill;
             }
-            
-            //now draw it
-            for($i = 0; $i < $numCols; ++$i) {
-                $this->MultiCell($widths[$i],$rowcount * $size,$row[$i],$borders,'L',$fill,0);
-            }
-            //$this->MultiCell(80,$rowcount * 6,$row['cell2data'],$borders,'L',0,0);
-            //$this->MultiCell(80,$rowcount * 6,$row['cell3data'],$borders,'L',0,0);
-            
-            $this->Ln();
-            $fill=!$fill;
         }
-        
         $this->Cell(array_sum($widths), 0, '', 'T');  //last bottom border
     }
     
