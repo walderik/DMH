@@ -459,7 +459,7 @@ class Group extends BaseModel{
      
      public function approve($larp, $user) {
          $oldCopy = $this->getOldApprovedGroup();
-         GroupApprovedCopy::delete($oldCopy->Id);
+         if (isset($oldCopy)) GroupApprovedCopy::delete($oldCopy->Id);
          
          $this->IsApproved = 1;
          $this->ApprovedByUserId = $user->Id;

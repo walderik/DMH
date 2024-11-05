@@ -867,7 +867,7 @@ class Role extends BaseModel{
     
     public function approve($larp, $user) {
         $oldCopy = $this->getOldApprovedRole();
-        RoleApprovedCopy::delete($oldCopy->Id);
+        if (isset($oldCopy)) RoleApprovedCopy::delete($oldCopy->Id);
         
         $this->IsApproved = 1;
         $this->ApprovedByUserId = $user->Id;
