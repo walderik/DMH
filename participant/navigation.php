@@ -6,10 +6,10 @@
 
 	<?php 
 	include '../common/navigation_beginning.php';
-	$persons = $current_user->getPersons();
-	if (!empty($persons)) {
-	    foreach ($persons as $person) {	
-	        $houses = $person->housesOf();
+	$all_persons = $current_user->getPersons();
+	if (!empty($all_persons)) {
+	    foreach ($all_persons as $person1) {	
+	        $houses = $person1->housesOf();
 	        if (!empty($houses)) {
 	            foreach ($houses as $persons_house) echo "<a href='view_house.php?id=$persons_house->Id'>$persons_house->Name</a>";
 	        }
