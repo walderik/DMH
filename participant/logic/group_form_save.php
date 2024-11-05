@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $group->IsApproved = 0;
         $group->create();
         $group->deleteAllIntrigueTypes();
-        $group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+        if (isset($_POST['IntrigueTypeId'])) $group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         
         if (!strpos($_POST['action'], "anmälan")) {
             header('Location: ../index.php');
