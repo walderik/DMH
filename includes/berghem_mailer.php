@@ -130,13 +130,15 @@ class BerghemMailer {
             if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/regsys/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
         }
         
+            $text .= "Din anmälan som deltagare innebär inte att din karaktär är godkänd, utan det är en separat process.</b><br>\n";
+        
         if (!$registration->isMember()) {
             $currentYear = date("Y");
             $larpYear = substr($larp->StartDate, 0, 4);
             if ($currentYear == $larpYear) {
                 $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
             } else {
-                $text .= "Du måste också vara medlem i Berghems vänner $larpYear.</b><br>\n";
+                $text .= "Du måste också vara medlem i Berghems vänner för år $larpYear. Det kan du först bli efter nyår, så vänta tills dess med att betala in avgiften.</b><br>\n";
             }
         }
         $text .= "<br>\n";
