@@ -113,10 +113,12 @@ include 'navigation.php';
 			<tr>
 				<td valign="top" class="header">Yrke</td>
 				<?php 
+				/*
 				$opcodes = FineDiff::getDiffOpcodes($oldRoleCopy->Profession, $role->Profession, FineDiff::$wordGranularity);
 				$to_text = FineDiff::renderToTextFromOpcodes($oldRoleCopy->Profession, $opcodes);
 				print_r($opcodes);
 				echo $to_text;
+				*/
 				?>
 				<td <?php setClass($role->Profession, $oldRoleCopy->Profession, 1); ?>><?php echo $role->Profession;?></td>
 				<td <?php setClass($role->Profession, $oldRoleCopy->Profession, 2); ?>><?php echo $oldRoleCopy->Profession;?></td>
