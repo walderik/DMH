@@ -16,17 +16,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $role = Role::loadById($RoleId);
 $oldRoleCopy = $role->getOldApprovedRole();
 
-$group = $role->getGroup();
-$oldGroup = $oldRoleCopy->getGroup();
+//$group = $role->getGroup();
+//$oldGroup = $oldRoleCopy->getGroup();
 
-function setClass($text1, $text2, $side) {
-    if (trim($text1) == trim($text2)) {
-        if ($side == 1) echo "class='unchangedNew'";
-        else echo "class='unchangedOld'";
-    } else {
-        if ($side == 1) echo "class='changedNew'";
-        else echo "class='changedOld'";
-    }
+
+function echoDiff($fromtxt, $totxt) {
+    $opcodes = FineDiff::getDiffOpcodes($fromtxt, $totxt, FineDiff::$wordGranularity);
+    $to_text = FineDiff::renderDiffToHTMLFromOpcodes($fromtxt, $opcodes);
+    
+    echo "<td>$to_text</td>";
+    
+}
+
+function echoNameDiff($oldthing, $newthing) {
+    $oldName = "";
+    $newName = "";
+    
+    
+    if (!empty($newthing)) $newName = $newthing->Name;
+    if (!empty($oldthing)) $oldName = $oldthing->Name;
+    
+    echoDiff($oldName, $newName);
 }
 
 
@@ -34,20 +44,16 @@ include 'navigation.php';
 ?>
 
 <style>
-.unchangedNew {
+ins {
+	color: green;
+	background: #dfd;
+	text-decoration: none
 }
 
-.changedNew {
-
-    background-color:#c4fed6;
-}
-
-.unchangedOld {
-    color:grey;
-}
-
-.changedOld {
-    background-color:#fbd3cb;
+del {
+	color: red;
+	background: #fdd;
+	text-decoration: none
 }
 
 </style>
@@ -78,24 +84,18 @@ include 'navigation.php';
 		?>
         <form action="logic/toggle_approve_role.php" method="post"><input type="hidden" id="roleId" name="roleId" value="<?php echo $role->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
         <?php } ?>
+        
+		  <?php if (!empty($oldRoleCopy->ApprovedByUserId) && !empty($oldRoleCopy->ApprovedDate)) {
+		      $approvedUser = User::loadById($oldRoleCopy->ApprovedByUserId);
+		      echo "Tidigare godkänd av $approvedUser->Name, ".substr($oldRoleCopy->ApprovedDate,0, 10); 
+    		  }
+    		  ?>
+        
 		<br>
 		
  		<div>
  		
 		<table>
-			<tr>
-				<th></th>
-				<th>Ny version av karaktären</th>
-				<th>Gammal version av karaktären<br>
-						  
-    		  <?php if (!empty($oldRoleCopy->ApprovedByUserId) && !empty($oldRoleCopy->ApprovedDate)) {
-    		      $approvedUser = User::loadById($oldRoleCopy->ApprovedByUserId);
-    		      echo "Godkänd av $approvedUser->Name, ".substr($oldRoleCopy->ApprovedDate,0, 10); 
-    		  }
-    		  ?>
-				</th>
-			</tr>
-
 
 		<?php if ($role->isMysLajvare() && $oldRoleCopy->isMysLajvare()) {?>
 			<tr><td></td><td><strong>Bakgrundslajvare</strong></td><td><strong>Bakgrundslajvare</strong></td></tr>
@@ -107,58 +107,34 @@ include 'navigation.php';
 		<?php } ?>
 			<tr>
 				<td valign="top" class="header">Grupp</td>
-				<td <?php setClass($role->GroupId, $oldRoleCopy->GroupId, 1); ?>><?php if (isset($group)) echo $group->getViewLink() ?></td>
-				<td <?php setClass($role->GroupId, $oldRoleCopy->GroupId, 2); ?>><?php if (isset($oldGroup)) echo $oldGroup->getViewLink() ?></td>
+				<?php echoNameDiff($oldRoleCopy->getGroup(), $role->getGroup()); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Yrke</td>
-				<?php 
-				/*
-				$opcodes = FineDiff::getDiffOpcodes($oldRoleCopy->Profession, $role->Profession, FineDiff::$wordGranularity);
-				$to_text = FineDiff::renderToTextFromOpcodes($oldRoleCopy->Profession, $opcodes);
-				print_r($opcodes);
-				echo $to_text;
-				*/
-				?>
-				<td <?php setClass($role->Profession, $oldRoleCopy->Profession, 1); ?>><?php echo $role->Profession;?></td>
-				<td <?php setClass($role->Profession, $oldRoleCopy->Profession, 2); ?>><?php echo $oldRoleCopy->Profession;?></td>
+				<?php echoDiff($oldRoleCopy->Profession, $role->Profession); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Beskrivning</td>
-				<td <?php setClass($role->Description, $oldRoleCopy->Description, 1); ?>><?php echo nl2br($role->Description);?></td>
-				<td <?php setClass($role->Description, $oldRoleCopy->Description, 2); ?>><?php echo nl2br($oldRoleCopy->Description);?></td>
+				<?php echoDiff($oldRoleCopy->Description, $role->Description); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Beskrivning för gruppen</td>
-				<td <?php setClass($role->DescriptionForGroup, $oldRoleCopy->DescriptionForGroup, 1); ?>><?php echo nl2br($role->DescriptionForGroup);?></td>
-				<td <?php setClass($role->DescriptionForGroup, $oldRoleCopy->DescriptionForGroup, 2); ?>><?php echo nl2br($oldRoleCopy->DescriptionForGroup);?></td>
+				<?php echoDiff($oldRoleCopy->DescriptionForGroup, $role->DescriptionForGroup); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Beskrivning för andra</td>
-				<td <?php setClass($role->DescriptionForOthers, $oldRoleCopy->DescriptionForOthers, 1); ?>><?php echo nl2br($role->DescriptionForOthers);?></td>
-				<td <?php setClass($role->DescriptionForOthers, $oldRoleCopy->DescriptionForOthers, 2); ?>><?php echo nl2br($oldRoleCopy->DescriptionForOthers);?></td>
+				<?php echoDiff($oldRoleCopy->DescriptionForOthers, $role->DescriptionForOthers); ?>
 			</tr>
 
 			<?php if (Race::isInUse($current_larp)) {?>
 			<tr>
 				<td valign="top" class="header">Ras</td>
-				<td <?php setClass($role->RaceId, $oldRoleCopy->RaceId, 1); ?>>
-        			<?php 
-        			$race = $role->getRace();
-        			if (!empty($race)) echo $race->Name;
-        			?>
-				</td>
-				<td <?php setClass($role->RaceId, $oldRoleCopy->RaceId, 2); ?>>
-        			<?php 
-        			$race = $oldRoleCopy->getRace();
-        			if (!empty($race)) echo $race->Name;
-        			?>
-				</td>
+				<?php echoNameDiff($oldRoleCopy->getRace(), $role->getRace()); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Kommentar till ras</td>
-				<td <?php setClass($role->RaceComment, $oldRoleCopy->RaceComment, 1); ?>><?php echo $role->RaceComment;?></td>
-				<td <?php setClass($role->RaceComment, $oldRoleCopy->RaceComment, 2); ?>><?php echo $oldRoleCopy->RaceComment;?></td>
+
+				<?php echoDiff($oldRoleCopy->RaceComment, $role->RaceComment); ?>
 			</tr>
 			<?php } ?>
 
@@ -166,30 +142,17 @@ include 'navigation.php';
 			<?php if (LarperType::isInUse($current_larp)) {?>
 			<tr>
 				<td valign="top" class="header">Typ av lajvare</td>
-				<td <?php setClass($role->LarperTypeId, $oldRoleCopy->LarperTypeId, 1); ?>>
-    			<?php 
-    			$larpertype = $role->getLarperType();
-    			if (!empty($larpertype)) echo $larpertype->Name;
-    			?>
-				</td>
-				<td <?php setClass($role->LarperTypeId, $oldRoleCopy->LarperTypeId, 2); ?>>
-    			<?php 
-    			$larpertype = $oldRoleCopy->getLarperType();
-    			if (!empty($larpertype)) echo $larpertype->Name;
-    			?>
-				</td>
+				<?php echoNameDiff($oldRoleCopy->getLarperType(), $role->getLarperType()); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Kommentar till typ av lajvare</td>
-				<td <?php setClass($role->TypeOfLarperComment, $oldRoleCopy->TypeOfLarperComment, 1); ?>><?php echo $role->TypeOfLarperComment;?></td>
-				<td <?php setClass($role->TypeOfLarperComment, $oldRoleCopy->TypeOfLarperComment, 2); ?>><?php echo $oldRoleCopy->TypeOfLarperComment;?></td>
+				<?php echoDiff($oldRoleCopy->TypeOfLarperComment, $role->TypeOfLarperComment); ?>
 			</tr>
 			<?php } ?>
 			
 			<tr>
 				<td valign="top" class="header">Varför befinner sig karaktären på platsen?</td>
-				<td <?php setClass($role->ReasonForBeingInSlowRiver, $oldRoleCopy->ReasonForBeingInSlowRiver, 1); ?>><?php echo nl2br(htmlspecialchars($role->ReasonForBeingInSlowRiver));?></td>
-				<td <?php setClass($role->ReasonForBeingInSlowRiver, $oldRoleCopy->ReasonForBeingInSlowRiver, 2); ?>><?php echo nl2br(htmlspecialchars($oldRoleCopy->ReasonForBeingInSlowRiver));?></td>
+				<?php echoDiff($oldRoleCopy->ReasonForBeingInSlowRiver, $role->ReasonForBeingInSlowRiver); ?>
 			</tr>
 			
 			<?php if (Ability::isInUse($current_larp)) {
@@ -198,13 +161,11 @@ include 'navigation.php';
 			    ?>
 			<tr>
 				<td valign="top" class="header">Kunskaper</td>
-				<td <?php setClass($newAbilities, $oldAbilities, 1); ?>><?php echo $newAbilities;?></td>
-				<td <?php setClass($newAbilities, $oldAbilities, 2); ?>><?php echo $oldAbilities;?></td>
+				<?php echoDiff($oldAbilities, $newAbilities); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Kunskaper förklaring</td>
-				<td <?php setClass($role->AbilityComment, $oldRoleCopy->AbilityComment, 1); ?>><?php echo $role->AbilityComment;?></td>
-				<td <?php setClass($role->AbilityComment, $oldRoleCopy->AbilityComment, 2); ?>><?php echo $oldRoleCopy->AbilityComment;?></td>
+				<?php echoDiff($oldRoleCopy->AbilityComment, $role->AbilityComment); ?>
 			</tr>
 			<?php }?>
 
@@ -214,36 +175,22 @@ include 'navigation.php';
 			    ?>
 			<tr>
 				<td valign="top" class="header">Funktioner</td>
-				<td <?php setClass($newFunctions, $oldFunctions, 1); ?>><?php echo $newFunctions;?></td>
-				<td <?php setClass($newFunctions, $oldFunctions, 2); ?>><?php echo $oldFunctions;?></td>
+				<?php echoDiff($oldFunctions, $newFunctions); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Funktioner förklaring</td>
-				<td <?php setClass($role->RoleFunctionComment, $oldRoleCopy->RoleFunctionComment, 1); ?>><?php echo $role->RoleFunctionComment;?></td>
-				<td <?php setClass($role->RoleFunctionComment, $oldRoleCopy->RoleFunctionComment, 2); ?>><?php echo $oldRoleCopy->RoleFunctionComment;?></td>
+				<?php echoDiff($oldRoleCopy->RoleFunctionComment, $role->RoleFunctionComment); ?>
 			</tr>
 			<?php }?>
 
 			<?php if (Religion::isInUse($current_larp)) {?>
 			<tr>
 				<td valign="top" class="header">Religion</td>
-				<td <?php setClass($role->ReligionId, $oldRoleCopy->ReligionId, 1); ?>>
-    			<?php 
-    			$religion = $role->getReligion();
-    			if (!empty($religion)) echo $religion->Name;
-    			?>
-    			</td>
-				<td <?php setClass($role->ReligionId, $oldRoleCopy->ReligionId, 2); ?>>
-    			<?php 
-    			$religion = $oldRoleCopy->getReligion();
-    			if (!empty($religion)) echo $religion->Name;
-    			?>
-    			</td>
+				<?php echoNameDiff($oldRoleCopy->getReligion(), $role->getReligion()); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Religion förklaring</td>
-				<td <?php setClass($role->Religion, $oldRoleCopy->Religion, 1); ?>><?php echo $role->Religion;?></td>
-				<td <?php setClass($role->Religion, $oldRoleCopy->Religion, 2); ?>><?php echo $oldRoleCopy->Religion;?></td>
+				<?php echoDiff($oldRoleCopy->Religion, $role->Religion); ?>
 			</tr>
 			<?php }?>
 
@@ -251,31 +198,18 @@ include 'navigation.php';
 			<?php if (Belief::isInUse($current_larp)) {?>
 			<tr>
 				<td valign="top" class="header">Hur troende</td>
-				<td <?php setClass($role->BeliefId, $oldRoleCopy->BeliefId, 1); ?>>
-    			<?php 
-    			$belief = $role->getBelief();
-    			if (!empty($belief)) echo $belief->Name;
-    			?>
-    			</td>
-				<td <?php setClass($role->BeliefId, $oldRoleCopy->BeliefId, 2); ?>>
-    			<?php 
-    			$belief = $oldRoleCopy->getBelief();
-    			if (!empty($belief)) echo $belief->Name;
-    			?>
-    			</td>
+				<?php echoNameDiff($oldRoleCopy->getBelief(), $role->getBelief()); ?>
 			</tr>
 			<?php }?>
 
 			
 			<tr>
 				<td valign="top" class="header">Mörk hemlighet</td>
-				<td <?php setClass($role->DarkSecret, $oldRoleCopy->DarkSecret, 1); ?>><?php echo $role->DarkSecret;?></td>
-				<td <?php setClass($role->DarkSecret, $oldRoleCopy->DarkSecret, 2); ?>><?php echo $oldRoleCopy->DarkSecret;?></td>
+				<?php echoDiff($oldRoleCopy->DarkSecret, $role->DarkSecret); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Mörk hemlighet - intrig idéer</td>
-				<td <?php setClass($role->DarkSecretIntrigueIdeas, $oldRoleCopy->DarkSecretIntrigueIdeas, 1); ?>><?php echo nl2br($role->DarkSecretIntrigueIdeas); ?></td>
-				<td <?php setClass($role->DarkSecretIntrigueIdeas, $oldRoleCopy->DarkSecretIntrigueIdeas, 2); ?>><?php echo nl2br($oldRoleCopy->DarkSecretIntrigueIdeas); ?></td>
+				<?php echoDiff($oldRoleCopy->DarkSecretIntrigueIdeas, $role->DarkSecretIntrigueIdeas); ?>
 			</tr>
 			
 			<?php if (IntrigueType::isInUse($current_larp)) {
@@ -284,73 +218,45 @@ include 'navigation.php';
 			    ?>
 			<tr>
 				<td valign="top" class="header">Intrigtyper</td>
-				<td <?php setClass($newIntrigues, $oldIntrigues, 1); ?>><?php echo $newIntrigues;?></td>
-				<td <?php setClass($newIntrigues, $oldIntrigues, 2); ?>><?php echo $oldIntrigues;?></td>
+				<?php echoDiff($oldIntrigues, $newIntrigues); ?>
 			</tr>
 			<?php } ?>
 			
 			<tr>
 				<td valign="top" class="header">Intrigidéer</td>
-				<td <?php setClass($role->IntrigueSuggestions, $oldRoleCopy->IntrigueSuggestions, 1); ?>><?php echo nl2br($role->IntrigueSuggestions); ?></td>
-				<td <?php setClass($role->IntrigueSuggestions, $oldRoleCopy->IntrigueSuggestions, 2); ?>><?php echo nl2br($oldRoleCopy->IntrigueSuggestions); ?></td>
+				<?php echoDiff($oldRoleCopy->IntrigueSuggestions, $role->IntrigueSuggestions); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Saker karaktären inte vill spela på</td>
-				<td <?php setClass($role->NotAcceptableIntrigues, $oldRoleCopy->NotAcceptableIntrigues, 1); ?>><?php echo $role->NotAcceptableIntrigues;?></td>
-				<td <?php setClass($role->NotAcceptableIntrigues, $oldRoleCopy->NotAcceptableIntrigues, 2); ?>><?php echo $oldRoleCopy->NotAcceptableIntrigues;?></td>
+				<?php echoDiff($oldRoleCopy->NotAcceptableIntrigues, $role->NotAcceptableIntrigues); ?>
 			</tr>
 			
 			<tr>
 				<td valign="top" class="header">Relationer med andra</td>
-				<td <?php setClass($role->CharactersWithRelations, $oldRoleCopy->CharactersWithRelations, 1); ?>><?php echo $role->CharactersWithRelations;?></td>
-				<td <?php setClass($role->CharactersWithRelations, $oldRoleCopy->CharactersWithRelations, 2); ?>><?php echo $oldRoleCopy->CharactersWithRelations;?></td>
+				<?php echoDiff($oldRoleCopy->CharactersWithRelations, $role->CharactersWithRelations); ?>
 			</tr>
 			<?php if (Wealth::isInUse($current_larp)) {?>
 			<tr>
 				<td valign="top" class="header">Rikedom</td>
-				<td <?php setClass($role->WealthId, $oldRoleCopy->WealthId, 1); ?>>
-    			<?php 
-    			$wealth = $role->getWealth();
-    			if (!empty($wealth)) echo $wealth->Name;
-    			?>
-    			</td>
-				<td <?php setClass($role->WealthId, $oldRoleCopy->WealthId, 2); ?>>
-    			<?php 
-    			$wealth = $oldRoleCopy->getWealth();
-    			if (!empty($wealth)) echo $wealth->Name;
-    			?>
-    			</td>
+				<?php echoNameDiff($oldRoleCopy->getWealth(), $role->getWealth()); ?>
 			</tr>
 			<?php }?>
 			
 			<tr>
 				<td valign="top" class="header">Var är karaktären född?</td>
-				<td <?php setClass($role->Birthplace, $oldRoleCopy->Birthplace, 1); ?>><?php echo $role->Birthplace;?></td>
-				<td <?php setClass($role->Birthplace, $oldRoleCopy->Birthplace, 2); ?>><?php echo $oldRoleCopy->Birthplace;?></td>
+				<?php echoDiff($oldRoleCopy->Birthplace, $role->Birthplace); ?>
 			</tr>
 			
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
 			<tr>
 				<td valign="top" class="header">Var bor karaktären?</td>
-				<td <?php setClass($role->PlaceOfResidenceId, $oldRoleCopy->PlaceOfResidenceId, 1); ?>>
-    			<?php 
-    			$por = $role->getPlaceOfResidence();
-    			if (!empty($por)) echo $por->Name;
-    			?>
-    			</td>
-				<td <?php setClass($role->PlaceOfResidenceId, $oldRoleCopy->PlaceOfResidenceId, 2); ?>>
-    			<?php 
-    			$por = $oldRoleCopy->getPlaceOfResidence();
-    			if (!empty($por)) echo $por->Name;
-    			?>
-    			</td>
+				<?php echoNameDiff($oldRoleCopy->getPlaceOfResidence(), $role->getPlaceOfResidence()); ?>
 			</tr>
 			<?php } ?>
 			
 			<tr>
 				<td valign="top" class="header">Annan information</td>
-				<td <?php setClass($role->OtherInformation, $oldRoleCopy->OtherInformation, 1); ?>><?php echo $role->OtherInformation;?></td>
-				<td <?php setClass($role->OtherInformation, $oldRoleCopy->OtherInformation, 2); ?>><?php echo $oldRoleCopy->OtherInformation;?></td>
+				<?php echoDiff($oldRoleCopy->OtherInformation, $role->OtherInformation); ?>
 			</tr>
 			
 			

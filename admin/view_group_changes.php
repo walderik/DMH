@@ -1,6 +1,7 @@
 <?php
 
 include_once 'header.php';
+include '../includes/finediff.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
@@ -16,37 +17,43 @@ $group = Group::loadById($GroupId);
 
 $oldGroupCopy = $group->getOldApprovedGroup();
 
-function setClass($text1, $text2, $side) {
-    if ($text1 == $text2) {
-        if ($side == 1) echo "class='unchangedNew'";
-        else echo "class='unchangedOld'";
-    } else {
-        if ($side == 1) echo "class='changedNew'";
-        else echo "class='changedOld'";
-    }
+function echoDiff($fromtxt, $totxt) {
+    $opcodes = FineDiff::getDiffOpcodes($fromtxt, $totxt, FineDiff::$wordGranularity);
+    $to_text = FineDiff::renderDiffToHTMLFromOpcodes($fromtxt, $opcodes);
+    
+    echo "<td>$to_text</td>";
+    
 }
+
+function echoNameDiff($oldthing, $newthing) {
+    $oldName = "";
+    $newName = "";
+    
+    
+    if (!empty($newthing)) $newName = $newthing->Name;
+    if (!empty($oldthing)) $oldName = $oldthing->Name;
+    
+    echoDiff($oldName, $newName);
+}
+
+
 
 
 include 'navigation.php';
 ?>
 
 <style>
-.unchangedNew {
+ins {
+	color: green;
+	background: #dfd;
+	text-decoration: none
 }
 
-.changedNew {
-
-    background-color:#c4fed6;
+del {
+	color: red;
+	background: #fdd;
+	text-decoration: none
 }
-
-.unchangedOld {
-    color:grey;
-}
-
-.changedOld {
-    background-color:#fbd3cb;
-}
-
 </style>
 
 	<div class="content">
@@ -68,115 +75,60 @@ include 'navigation.php';
 		}		
 		?>
         <form action="logic/toggle_approve_role.php" method="post"><input type="hidden" id="groupId" name="groupId" value="<?php echo $group->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
+	  	<?php if (!empty($oldGroupCopy->ApprovedByUserId) && !empty($oldGroupCopy->ApprovedDate)) {
+		      $approvedUser = User::loadById($oldGroupCopy->ApprovedByUserId);
+		      echo "Tidigare godkänd av $approvedUser->Name, ".substr($oldGroupCopy->ApprovedDate,0, 10); 
+		  }
+	  ?>
+		
 		<br>
 		
  		<div>
  		
 		<table>
 			<tr>
-				<th></th>
-				<th>Ny version av gruppen</th>
-				<th>Gammal version av gruppen<br>
-						  
-    		  <?php if (!empty($oldGroupCopy->ApprovedByUserId) && !empty($oldGroupCopy->ApprovedDate)) {
-    		      $approvedUser = User::loadById($oldGroupCopy->ApprovedByUserId);
-    		      echo "Godkänd av $approvedUser->Name, ".substr($oldGroupCopy->ApprovedDate,0, 10); 
-    		  }
-    		  ?>
-				</th>
-			</tr>
-
-			<tr>
 				<td valign="top" class="header">Beskrivning</td>
-				<td <?php setClass($group->Description, $oldGroupCopy->Description, 1); ?>><?php echo nl2br($group->Description);?></td>
-				<td <?php setClass($group->Description, $oldGroupCopy->Description, 2); ?>><?php echo nl2br($oldGroupCopy->Description);?></td>
+				<?php echoDiff($oldGroupCopy->Description, $group->Description); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Beskrivning för andra</td>
-				<td <?php setClass($group->DescriptionForOthers, $oldGroupCopy->DescriptionForOthers, 1); ?>><?php echo nl2br($group->DescriptionForOthers);?></td>
-				<td <?php setClass($group->DescriptionForOthers, $oldGroupCopy->DescriptionForOthers, 2); ?>><?php echo nl2br($oldGroupCopy->DescriptionForOthers);?></td>
+				<?php echoDiff($oldGroupCopy->DescriptionForOthers, $group->DescriptionForOthers); ?>
 			</tr>
 
 			<tr>
 				<td valign="top" class="header">Vänner</td>
-				<td <?php setClass($group->Friends, $oldGroupCopy->Friends, 1); ?>><?php echo nl2br($group->Friends);?></td>
-				<td <?php setClass($group->Friends, $oldGroupCopy->Friends, 2); ?>><?php echo nl2br($oldGroupCopy->Friends);?></td>
+				<?php echoDiff($oldGroupCopy->Friends, $group->Friends); ?>
 			</tr>
 			<tr>
 				<td valign="top" class="header">Fiender</td>
-				<td <?php setClass($group->Enemies, $oldGroupCopy->Enemies, 1); ?>><?php echo nl2br($group->Enemies);?></td>
-				<td <?php setClass($group->Enemies, $oldGroupCopy->Enemies, 2); ?>><?php echo nl2br($oldGroupCopy->Enemies);?></td>
+				<?php echoDiff($oldGroupCopy->Enemies, $group->Enemies); ?>
 			</tr>
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
 			<tr>
 				<td valign="top" class="header">Rikedom</td>
-				<td <?php setClass($group->WealthId, $oldGroupCopy->WealthId, 1); ?>>
-    			<?php 
-    			$wealth = $group->getWealth();
-    			if (!empty($wealth)) echo $wealth->Name;
-    			?>
-    			</td>
-				<td <?php setClass($group->WealthId, $oldGroupCopy->WealthId, 2); ?>>
-    			<?php 
-    			$wealth = $oldGroupCopy->getWealth();
-    			if (!empty($wealth)) echo $wealth->Name;
-    			?>
-    			</td>
+				<?php echoNameDiff($oldGroupCopy->getWealth(), $group->getWealth()); ?>
 			</tr>
 			<?php }?>
 
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
 			<tr>
 				<td valign="top" class="header">Var bor karaktären?</td>
-				<td <?php setClass($group->PlaceOfResidenceId, $oldGroupCopy->PlaceOfResidenceId, 1); ?>>
-    			<?php 
-    			$por = $group->getPlaceOfResidence();
-    			if (!empty($por)) echo $por->Name;
-    			?>
-    			</td>
-				<td <?php setClass($group->PlaceOfResidenceId, $oldGroupCopy->PlaceOfResidenceId, 2); ?>>
-    			<?php 
-    			$por = $oldGroupCopy->getPlaceOfResidence();
-    			if (!empty($por)) echo $por->Name;
-    			?>
-    			</td>
+				<?php echoNameDiff($oldGroupCopy->getPlaceOfResidence(), $group->getPlaceOfResidence()); ?>
 			</tr>
 			<?php } ?>
 
 			<?php if (GroupType::isInUse($current_larp)) {?>
 			<tr>
 				<td valign="top" class="header">Typ av grupp</td>
-				<td <?php setClass($group->GroupTypeId, $oldGroupCopy->GroupTypeId, 1); ?>>
-    			<?php 
-    			$por = $group->getGroupType();
-    			if (!empty($por)) echo $por->Name;
-    			?>
-    			</td>
-				<td <?php setClass($group->GroupTypeId, $oldGroupCopy->GroupTypeId, 2); ?>>
-    			<?php 
-    			$por = $oldGroupCopy->getGroupType();
-    			if (!empty($por)) echo $por->Name;
-    			?>
-    			</td>
+				<?php echoNameDiff($oldGroupCopy->getGroupType(), $group->getGroupType()); ?>
 			</tr>
 			<?php } ?>
 
 			<?php if (ShipType::isInUse($current_larp)) {?>
 			<tr>
-				<td valign="top" class="header">Typ av shepp</td>
-				<td <?php setClass($group->ShipTypeId, $oldGroupCopy->ShipTypeId, 1); ?>>
-    			<?php 
-    			$por = $group->getShipType();
-    			if (!empty($por)) echo $por->Name;
-    			?>
-    			</td>
-				<td <?php setClass($group->ShipTypeId, $oldGroupCopy->ShipTypeId, 2); ?>>
-    			<?php 
-    			$por = $oldGroupCopy->getShipType();
-    			if (!empty($por)) echo $por->Name;
-    			?>
-    			</td>
+				<td valign="top" class="header">Typ av skepp</td>
+				<?php echoNameDiff($oldGroupCopy->getShipType(), $group->getShipType()); ?>
 			</tr>
 			<?php } ?>
 
@@ -185,8 +137,7 @@ include 'navigation.php';
 			<?php if ($current_larp->getCampaign()->is_me()) { ?>
 			<tr>
 				<td valign="top" class="header">Färg</td>
-				<td <?php setClass($group->Colour, $oldGroupCopy->Colour, 1); ?>><?php echo nl2br($group->Colour);?></td>
-				<td <?php setClass($group->Colour, $oldGroupCopy->Colour, 2); ?>><?php echo nl2br($oldGroupCopy->Colour);?></td>
+				<?php echoDiff($oldGroupCopy->Colour, $group->Colour); ?>
 			</tr>
 			<?php }?>
 
@@ -197,15 +148,13 @@ include 'navigation.php';
 			    ?>
 			<tr>
 				<td valign="top" class="header">Intrigtyper</td>
-				<td <?php setClass($newIntrigues, $oldIntrigues, 1); ?>><?php echo $newIntrigues;?></td>
-				<td <?php setClass($newIntrigues, $oldIntrigues, 2); ?>><?php echo $oldIntrigues;?></td>
+				<?php echoDiff($oldIntrigues, $newIntrigues); ?>
 			</tr>
 			<?php } ?>
 
 			<tr>
 				<td valign="top" class="header">Intrigidéer</td>
-				<td <?php setClass($group->IntrigueIdeas, $oldGroupCopy->IntrigueIdeas, 1); ?>><?php echo nl2br($group->IntrigueIdeas); ?></td>
-				<td <?php setClass($group->IntrigueIdeas, $oldGroupCopy->IntrigueIdeas, 2); ?>><?php echo nl2br($oldGroupCopy->IntrigueIdeas); ?></td>
+				<?php echoDiff($oldGroupCopy->IntrigueIdeas, $group->IntrigueIdeas); ?>
 			</tr>
 
 
