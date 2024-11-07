@@ -1,5 +1,6 @@
 <?php
 include_once 'header.php';
+include_once '../includes/selection_data_control.php';
 
 
     $subdivision = Subdivision::newWithDefault();
@@ -119,6 +120,39 @@ include_once 'header.php';
 					</td>
     			</tr>
     			
+    			<tr>
+    				<td>Regel för automatisk tilldelning<br>Alla karaktärer som uppfyller alla de valda värdena kommer att automatiskt vara medlemmar i grupperingen.</td>
+    				<td>
+    				<?php 
+    				$options = getAllOptionsForRoles($current_larp);
+    				$types = getAllTypesForRoles($current_larp);
+    				
+                    echo "<table>";    
+    				foreach ($types as $key => $type) {
+    				    echo "<tr><td>$type</td>";
+    				    echo "<td>";
+    				    $values = $options[$key];
+    				    if (is_null($subdivision->Id)) $selectedvalues = array();
+    				    else $selectedvalues = $subdivision->getRuleSelectedValues($key);
+    				    echo "<select form='main' name='".$key."[]' id='$key' multiple>";
+    				    foreach ($values as $value) {
+    				        echo "<option form='main' value='$value->Id'";
+    				        if (in_array($value->Id, $selectedvalues)) echo " selected ";
+    				        echo ">$value->Name</option>\n";
+    				    }
+    				    echo "</select>\n";
+    				    
+    				    echo "</td></tr>\n";
+    				}
+    				echo "</select>";
+    				
+    				
+    				
+    				
+    				?>
+    				</td>
+				</tr>
+    			
     							<tr>
 				<td><label>Medlemmar i grupperingen</label></td>
 				<td>
@@ -133,7 +167,7 @@ include_once 'header.php';
 					}?>
 					
 					<?php 
-					$members = $subdivision->getAllMembers();
+					$members = $subdivision->getAllManualMembers();
 					foreach ($members as $member) {
 					    echo "<form id='delete_member_$member->Id' action='subdivision_form.php' method='post'>";
 					    echo $member->getViewLink();

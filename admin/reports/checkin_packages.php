@@ -98,7 +98,7 @@ foreach ($roles as $role) {
             $checkin_props_subdivision = $subdivision->getAllCheckinProps($current_larp);
             $checkin_props = array_merge($checkin_props ,$checkin_props_subdivision);
             
-            if ($subdivision->IsFirstRole($role)) {
+            if ($subdivision->IsFirstRole($role, $current_larp)) {
 
                 $checkin_letters_subdivision = $subdivision->getAllCheckinLetters($current_larp);
                 $checkin_telegrams_subdivision = $subdivision->getAllCheckinTelegrams($current_larp);
@@ -207,7 +207,7 @@ foreach ($roles as $role) {
             $checkin_props_subdivision = $subdivision->getAllCheckinProps($current_larp);
             $checkin_props = array_merge($checkin_props ,$checkin_props_subdivision);
             
-            if ($subdivision->IsFirstRole($role)) {
+            if ($subdivision->IsFirstRole($role, $current_larp)) {
                 
                 $checkin_letters_subdivision = $subdivision->getAllCheckinLetters($current_larp);
                 $checkin_telegrams_subdivision = $subdivision->getAllCheckinTelegrams($current_larp);

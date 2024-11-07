@@ -73,3 +73,5 @@ function getAllOptionsForRoles(Larp $larp) {
     
     return $options;
 }
+
+

@@ -1,6 +1,6 @@
 <?php
  include_once 'header.php';
- 
+ include_once '../includes/selection_data_control.php';
  
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -10,12 +10,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $subdivision = Subdivision::newFromArray($_POST);
         $subdivision->CampaignId = $current_larp->CampaignId;
         $subdivision->create();
+        $types = getAllTypesForRoles($current_larp);
+        foreach ($types as $key => $type) {
+            if (isset($_POST[$key])) $subdivision->addRule($key, $_POST[$key]);
+        }
     } elseif ($operation == 'delete') {
         Subdivision::delete($_POST['Id']);
     } elseif ($operation == 'update') {
         $subdivision=Subdivision::loadById($_POST['Id']);
         $subdivision->setValuesByArray($_POST);
         $subdivision->update();
+        $subdivision->clearRule();
+        $types = getAllTypesForRoles($current_larp);
+        foreach ($types as $key => $type) {
+            if (isset($_POST[$key])) $subdivision->addRule($key, $_POST[$key]);
+        }
     }
     header('Location: subdivision_admin.php');
     exit;
@@ -44,13 +53,13 @@ include 'navigation.php';
         $resultCheck = count($subdivision_array);
         if ($resultCheck > 0) {
             echo "<table id='subdivision' class='data'>";
-            echo "<tr><th>Namn</th><th>Beskrivning</th><th>Antal medlemmar</th><th>Synligt</th><th>Ser medlemmar</th><th></th></tr>\n";
+            echo "<tr><th>Namn</th><th>Beskrivning</th><th>Antal anmälda medlemmar</th><th>Synligt</th><th>Ser medlemmar</th><th></th></tr>\n";
             foreach ($subdivision_array as $subdivision) {
-                $memberCount = count($subdivision->getAllMembers());
+                $memberCount = count($subdivision->getAllRegisteredMembers($current_larp));
                 echo "<tr>\n";
                 echo "<td>".$subdivision->getViewLink()." ".$subdivision->getEditLinkPen()."</td>\n";
                 echo "<td>" . $subdivision->Description . "</td>\n";
-                echo "<td>" . count($subdivision->getAllMembers()) . "</td>\n";
+                echo "<td>" . $memberCount . "</td>\n";
                 echo "<td>" . ja_nej($subdivision->isVisibleToParticipants()) . "</td>\n";
                 echo "<td>" . ja_nej($subdivision->canSeeOtherParticipants()) . "</td>\n";
                 

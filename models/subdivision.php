@@ -9,6 +9,7 @@ class Subdivision extends BaseModel{
     public $CampaignId;
     public $IsVisibleToParticipants = 0;
     public $CanSeeOtherParticipants = 0;
+    public $Rule = "";
     
     public static $orderListBy = 'Name';
     
@@ -26,6 +27,7 @@ class Subdivision extends BaseModel{
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['IsVisibleToParticipants'])) $this->IsVisibleToParticipants = $arr['IsVisibleToParticipants'];
         if (isset($arr['CanSeeOtherParticipants'])) $this->CanSeeOtherParticipants = $arr['CanSeeOtherParticipants'];
+        if (isset($arr['Rule'])) $this->Rule = $arr['Rule'];
     }
     
         
@@ -39,9 +41,9 @@ class Subdivision extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_subdivision SET Name=?, Description=?, OrganizerNotes=?, IsVisibleToParticipants=?, CanSeeOtherParticipants=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_subdivision SET Name=?, Description=?, OrganizerNotes=?, IsVisibleToParticipants=?, CanSeeOtherParticipants=?, Rule=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->Description, $this->OrganizerNotes, $this->IsVisibleToParticipants, $this->CanSeeOtherParticipants, $this->Id))) {
+        if (!$stmt->execute(array($this->Name, $this->Description, $this->OrganizerNotes, $this->IsVisibleToParticipants, $this->CanSeeOtherParticipants, $this->Rule, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -54,9 +56,9 @@ class Subdivision extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_subdivision (Name, Description, OrganizerNotes, IsVisibleToParticipants, CanSeeOtherParticipants, CampaignId) VALUES (?,?,?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_subdivision (Name, Description, OrganizerNotes, IsVisibleToParticipants, CanSeeOtherParticipants, Rule, CampaignId) VALUES (?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->Name, $this->Description, $this->OrganizerNotes, $this->IsVisibleToParticipants, $this->CanSeeOtherParticipants, $this->CampaignId))) {
+        if (!$stmt->execute(array($this->Name, $this->Description, $this->OrganizerNotes, $this->IsVisibleToParticipants, $this->CanSeeOtherParticipants, $this->Rule, $this->CampaignId))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -87,10 +89,54 @@ class Subdivision extends BaseModel{
         return "<a href='subdivision_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
     }
     
+    public function clearRule() {
+        $this->Rule = "";
+        $this->update();
+    }
+    
+    public function addRule($key, $values) {
+        $rule = json_decode($this->Rule, true);
+        if (empty($rule)) $rule = array();
+        $rule[$key] = $values;
+        $this->Rule = json_encode($rule);
+        $this->update();
+    }
+    
+    public function getRuleTextArray() {
+        global $current_larp;
+        $rule = json_decode($this->Rule, true);
+        
+        $options = getAllOptionsForRoles($current_larp);
+        $types = getAllTypesForRoles($current_larp);
+        
+        $textarray = array();
+        foreach ($types as $key => $type) {
+            if (array_key_exists ($key, $rule)) {
+                $rulevalue = $rule[$key];
+                $values = $options[$key];
+                $chosenAlternativesText = array();
+                foreach ($values as $val) {
+                    if (in_array($val->Id, $rulevalue)) {
+                        $chosenAlternativesText[] = $val->Name;
+                    }
+                }
+                $textarray[] = $type .  " = " . implode(", ", $chosenAlternativesText);
+            }
+        }
+        return $textarray;
+        //return ["Religion = Ateist, Agnostiker", "Var karaktärer bor = Slow River"];
+    }
+    
+    public function getRuleSelectedValues($key) {
+        $rule = json_decode($this->Rule, true);
+        if (array_key_exists ($key, $rule)) return $rule[$key];
+        else return array();
+     }
+    
     public function addMembers($roleIds) {
-        //Ta reda på vilka som inte redan är kopplade till skolan
+        //Ta reda på vilka som inte redan är kopplade till grupperingen
         $exisitingIds = array();
-        $members = $this->getAllMembers();
+        $members = $this->getAllManualMembers();
         foreach ($members as $member) {
             $exisitingIds[] = $member->Id;
         }
@@ -127,24 +173,61 @@ class Subdivision extends BaseModel{
     }
     
     
-    public function getAllMembers() {
-        $sql = "SELECT * FROM regsys_role WHERE Id IN (".
-            "SELECT RoleId FROM regsys_subdivisionmember WHERE SubdivisionId=?) ORDER BY ".Role::$orderListBy.";";
+     public function getAllRegisteredMembers(LARP $larp) {
+        return array_merge($this->getAllAutomaticRegisteredMembers($larp), $this->getAllManualRegisteredMembers($larp));
+    }
+    
+    public function getAllAutomaticRegisteredMembers(LARP $larp) {
+        if (empty($this->Rule)) return array();
+        $rule = json_decode($this->Rule, true);
+        $first = true;
+        foreach($rule as $key => $rulepart) {
+            if ($first) $memberRoles = Role::getAllWithTypeValues($larp->Id, $key, $rulepart);
+            else $memberRoles = array_uintersect($memberRoles, Role::getAllWithTypeValues($larp->Id, $key, $rulepart),
+                function ($objOne, $objTwo) {
+                    return $objOne->Id - $objTwo->Id;
+                });
+            $first = false;
+        }
+
+        return $memberRoles;
+    }
+    public function getAllManualMembers() {
+        $sql = "SELECT regsys_role.* FROM regsys_role WHERE Id IN (".
+            "SELECT RoleId FROM regsys_subdivisionmember WHERE ".
+            " SubdivisionId=?) ".
+            "ORDER BY ".Role::$orderListBy.";";
+        
         return Role::getSeveralObjectsqQuery($sql, array($this->Id));
     }
     
     
-    public function getAllRegisteredMembers(LARP $larp) {
+    public function getAllManualRegisteredMembers(LARP $larp) {
         $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE Id IN (".
             "SELECT RoleId FROM regsys_subdivisionmember, regsys_registration WHERE ".
-            " SubdivisionId=? AND ". 
+            " SubdivisionId=? AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
             "regsys_registration.LARPId = ? AND ".
             "regsys_registration.NotComing = 0) AND ".
             "regsys_role.Id = regsys_larp_role.RoleId AND ".
             "regsys_larp_role.LarpId = ? ".
             "ORDER BY ".Role::$orderListBy.";";
+        
+        return Role::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id, $larp->Id));
+    }
 
+    
+    public function getAllManualMembersNotComing(LARP $larp) {
+        $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE Id IN (".
+            "SELECT RoleId FROM regsys_subdivisionmember, regsys_registration WHERE ".
+            " SubdivisionId=? AND ".
+            "regsys_role.PersonId = regsys_registration.PersonId AND ".
+            "regsys_registration.LARPId = ? AND ".
+            "regsys_registration.NotComing = 1) AND ".
+            "regsys_role.Id = regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.LarpId = ? ".
+            "ORDER BY ".Role::$orderListBy.";";
+        
         return Role::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id, $larp->Id));
     }
     
@@ -228,8 +311,8 @@ class Subdivision extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
-    public function IsFirstRole(Role $role) {
-        $members = $this->getAllMembers();
+    public function IsFirstRole(Role $role, LARP $larp) {
+        $members = $this->getAllRegisteredMembers($larp);
         if (!empty($members) && $members[0] == $role) return true;
         return false;
     }

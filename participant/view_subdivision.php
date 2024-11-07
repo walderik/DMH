@@ -48,8 +48,7 @@ function compare_objects($obj_a, $obj_b) {
 
 if ($subdivision->canSeeOtherParticipants()) {
     $registered_characters_in_subdivision = $subdivision->getAllRegisteredMembers($current_larp);
-    $not_registered_characters = array_udiff($subdivision->getAllMembers(), $registered_characters_in_subdivision, 'compare_objects');
-    
+    $not_registered_characters = $subdivision->getAllManualMembersNotComing($current_larp);
 }
 
 function print_role(Role $role, bool $isComing) {

@@ -34,7 +34,7 @@ if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = "view_subdivision.php?id=$subdivision->Id";
 }
 
-function print_role($role, $subdivision, $isAtLarp) {
+function print_role($role, $subdivision, $isAtLarp, $mayRemove) {
     global $current_larp, $referer;
 
     
@@ -57,17 +57,17 @@ function print_role($role, $subdivision, $isAtLarp) {
     echo "</td>";
     echo "<td>";
     echo $role->getEditLinkPen(true);
-    
-    echo "<form id='delete_member_$role->Id' action='subdivision_form.php' method='post' class='fabutton'>";
-    echo " ";
-    echo "<input form='delete_member_$role->Id' type='hidden' id='operation' name='operation' value='delete_member'>";
-    echo "<input form='delete_member_$role->Id' type='hidden' id='id' name='id' value='$subdivision->Id'>";
-    echo "<input form='delete_member_$role->Id' type='hidden' id='Referer' name='Referer' value='$referer'>";
-    echo "<input form='delete_member_$role->Id' type='hidden' id='ReturnTo' name='ReturnTo' value='view_subdivision.php?id=$subdivision->Id'>";
-    echo "<input form='delete_member_$role->Id' type='hidden' id='memberId' name='memberId' value='$role->Id'>";
-    echo "<button form='delete_member_$role->Id' class='invisible' type='submit'><i class='fa-solid fa-trash' title='Ta bort från grupperingen'></i></button>";
-    echo "</form>";
-    
+    if ($mayRemove) {
+        echo "<form id='delete_member_$role->Id' action='subdivision_form.php' method='post' class='fabutton'>";
+        echo " ";
+        echo "<input form='delete_member_$role->Id' type='hidden' id='operation' name='operation' value='delete_member'>";
+        echo "<input form='delete_member_$role->Id' type='hidden' id='id' name='id' value='$subdivision->Id'>";
+        echo "<input form='delete_member_$role->Id' type='hidden' id='Referer' name='Referer' value='$referer'>";
+        echo "<input form='delete_member_$role->Id' type='hidden' id='ReturnTo' name='ReturnTo' value='view_subdivision.php?id=$subdivision->Id'>";
+        echo "<input form='delete_member_$role->Id' type='hidden' id='memberId' name='memberId' value='$role->Id'>";
+        echo "<button form='delete_member_$role->Id' class='invisible' type='submit'><i class='fa-solid fa-trash' title='Ta bort från grupperingen'></i></button>";
+        echo "</form>";
+    }
     
     echo "</td>";
     echo "<td>$role->Profession</td>";
@@ -92,6 +92,7 @@ function print_role($role, $subdivision, $isAtLarp) {
     echo "</tr>";
 }
 
+$ruletextarray = $subdivision->getRuleTextArray();
 include 'navigation.php';
 ?>
 
@@ -102,53 +103,77 @@ include 'navigation.php';
 		<div>
 		<table>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br(htmlspecialchars($subdivision->Description));?></td></tr>
+			<tr><td valign="top" class="header">Synlig för medlemmar</td><td><?php echo ja_nej($subdivision->isVisibleToParticipants());?></td></tr>
+			<tr><td valign="top" class="header">Kan se vilka som är medlemmar</td><td><?php echo ja_nej($subdivision->canSeeOtherParticipants());?></td></tr>
+			<tr><td valign="top" class="header">Automatisk tilldelning</td><td><?php echo implode("<br>",$ruletextarray);?></td></tr>
 		</table>		
 		
 		
 
 		<?php 
+		
 		function compare_objects($obj_a, $obj_b) {
 		    return $obj_a->Id - $obj_b->Id;
 		}
 		
 		
-		$registered_characters_in_subdivision = $subdivision->getAllRegisteredMembers($current_larp);
-		$not_registered_characters = array_udiff($subdivision->getAllMembers(), $registered_characters_in_subdivision, 'compare_objects');
+		$registered_automatic_characters_in_subdivision = $subdivision->getAllAutomaticRegisteredMembers($current_larp);
+		$registered_manual_characters_in_subdivision = $subdivision->getAllManualRegisteredMembers($current_larp);
+		$not_registered_characters = $subdivision->getAllManualMembersNotComing($current_larp);
 		
-	    echo "<h2>Medlemmar som kommer på $current_larp->Name</h2>";
+
+	    $personIdArr = array();
+	    foreach ($registered_automatic_characters_in_subdivision as $role) {
+	        $person = $role->getPerson();
+	        if ($person->isNotComing($current_larp)) continue;
+	        $personIdArr[] = $person->Id;
+	    }
+	    foreach ($registered_manual_characters_in_subdivision as $role) {
+	        $person = $role->getPerson();
+	        if ($person->isNotComing($current_larp)) continue;
+	        $personIdArr[] = $person->Id;
+	    }
+	    echo contactSeveralEmailIcon("Maila alla som är med i $subdivision->Name", $personIdArr,
+		        "Medlem i $subdivision->Name på $current_larp->Name",
+		        "Meddelande till alla som är med i $subdivision->Name på $current_larp->Name");
 		    
-		    
-	    if (!empty($registered_characters_in_subdivision)) {
-	        $personIdArr = array();
-	        foreach ($registered_characters_in_subdivision as $role) {
-	            $person = $role->getPerson();
-	            if ($person->isNotComing($current_larp)) continue;
-	            $personIdArr[] = $person->Id;
-	        }
-	        echo contactSeveralEmailIcon("Maila alla som är med i $subdivision->Name", $personIdArr,
-	            "Medlem i $subdivision->Name på $current_larp->Name",
-	            "Meddelande till alla som är med i $subdivision->Name på $current_larp->Name");
-	        echo "<br><br>";
-	        echo "<form id='add_member' action='choose_role.php' method='post'></form>";
-	        echo "<input form='add_member' type='hidden' id='id' name='id' value='$subdivision->Id'>";
-	        echo "<input form='add_member' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
-	        echo "<input form='add_member' type='hidden' id='ReturnTo' name='ReturnTo' value='view_subdivision.php?id=$subdivision->Id'>";
-	        echo "<input form='add_member' type='hidden' id='operation' name='operation' value='add_subdivision_member'>";
-	        echo "<button form='add_member' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) som är med i grupperingen'></i><i class='fa-solid fa-user' title='Lägg till karaktär(er) som är med i grupperingen'></i></button>";
-	        echo "<table>";
-		    foreach ($registered_characters_in_subdivision as $role) {
-		        print_role($role, $subdivision, true);
-		    }
-		    
-		    echo "</table>\n";
+	    
+
+		echo "<h2>Automatiskt tillagda medlemmar som kommer på $current_larp->Name</h2>";
+		echo "<strong>Regel: ". implode(" och ", $ruletextarray)."</strong><br>";
+		echo "<table>";
+		foreach ($registered_automatic_characters_in_subdivision as $role) {
+		    print_role($role, $subdivision, true, false);
 		}
 		
+		echo "</table>\n";
+		
+
+
+		echo "<h2>Manuellt tillagda medlemmar som kommer på $current_larp->Name</h2>";
+		    
+		    
+        echo "<br><br>";
+        echo "<form id='add_member' action='choose_role.php' method='post'></form>";
+        echo "<input form='add_member' type='hidden' id='id' name='id' value='$subdivision->Id'>";
+        echo "<input form='add_member' type='hidden' id='2ndReferer' name='2ndReferer' value='$referer'>";
+        echo "<input form='add_member' type='hidden' id='ReturnTo' name='ReturnTo' value='view_subdivision.php?id=$subdivision->Id'>";
+        echo "<input form='add_member' type='hidden' id='operation' name='operation' value='add_subdivision_member'>";
+        echo "<button form='add_member' class='invisible' type='submit'><i class='fa-solid fa-plus' title='Lägg till karaktär(er) som är med i grupperingen'></i><i class='fa-solid fa-user' title='Lägg till karaktär(er) som är med i grupperingen'></i></button>";
+        echo "<table>";
+        foreach ($registered_manual_characters_in_subdivision as $role) {
+	        print_role($role, $subdivision, true, true);
+	    }
+	    
+	    echo "</table>\n";
+
+		
 		if (!empty($not_registered_characters)) {
-		    echo "<h2>Medlemmar som inte är anmälda</h2>";
+		    echo "<h2>Manuellt tillagda medlemmar som inte är anmälda</h2>";
 		    
 		    echo "<table>\n";
 		    foreach ($not_registered_characters as $role) {
-		        print_role($role, $subdivision, false);
+		        print_role($role, $subdivision, false, true);
 		    }
 		    echo "</table>\n";
 		}

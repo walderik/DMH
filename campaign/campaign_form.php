@@ -109,7 +109,7 @@ if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->Campaign
 						<input type="radio" id="ShowGroupMemberHousingInormation_yes" name="ShowGroupMemberHousingInormation" value="1" <?php if ($campaign->showGroupMemberHousingInormation()) echo 'checked="checked"'?>> 
             			<label for="ShowGroupMemberHousingInormation_yes">Ja</label><br> 
             			<input type="radio" id="ShowGroupMemberHousingInormation_no" name="ShowGroupMemberHousingInormation" value="0" <?php if (!$campaign->showGroupMemberHousingInormation()) echo 'checked="checked"'?>> 
-            			<label for="CShowGroupMemberHousingInormation_no">Nej</label>
+            			<label for="ShowGroupMemberHousingInormation_no">Nej</label>
 					</td>
     			</tr>
     		</table>

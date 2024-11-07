@@ -901,6 +901,10 @@ class Role extends BaseModel{
     
     
     public static function getAllWithTypeValue($larpId, $typeName, $valueId) {
+        return static::getAllWithTypeValues($larpId, $typeName, array($valueId));
+     }
+    
+    public static function getAllWithTypeValues($larpId, $typeName, $valueIds) {
         $larp = LARP::loadById($larpId);
         
         $roles_at_larp_SQL = "SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE regsys_larp_role.LarpId=? AND ".
@@ -909,35 +913,43 @@ class Role extends BaseModel{
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId";
         
+        
+        $placeholders = rtrim(str_repeat('?,', count($valueIds)), ',');
+         
         switch ($typeName) {
             case "Wealth":
-                $sql = "SELECT * FROM regsys_role WHERE WealthId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE WealthId IN ($placeholders) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "PlaceOfResidence":
-                $sql = "SELECT * FROM regsys_role WHERE PlaceOfResidenceId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE PlaceOfResidenceId IN ($placeholders) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "LarperType":
-                $sql = "SELECT * FROM regsys_role WHERE LarperTypeId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE LarperTypeId IN ($placeholders) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "IntrigueType":
-                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_intriguetype_role WHERE IntrigueTypeId = ?) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_intriguetype_role WHERE IntrigueTypeId IN ($placeholders)) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Race":
-                $sql = "SELECT * FROM regsys_role WHERE RaceId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE RaceId IN ($placeholders) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Ability":
-                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_ability_role WHERE AbilityId = ?) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_ability_role WHERE AbilityId IN ($placeholders)) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Religion":
-                $sql = "SELECT * FROM regsys_role WHERE ReligionId = ? AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE ReligionId IN ($placeholders) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "RoleFunction":
-                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_rolefunction_role WHERE RoleFunctionId = ?) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_rolefunction_role WHERE RoleFunctionId IN ($placeholders)) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
         }
-         
-        return static::getSeveralObjectsqQuery($sql, array($valueId, $larp->Id));
+        $params = $valueIds;
+        $params[] = $larp->Id;
+        return static::getSeveralObjectsqQuery($sql, $params);
     }
+    
+    
+    
+    
     
     public function hasRegisteredWhatHappened(LARP $larp) {
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
