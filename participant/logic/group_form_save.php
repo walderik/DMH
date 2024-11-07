@@ -11,6 +11,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($operation == 'insert') {
         $group = Group::newFromArray($_POST);
+        
+        $allExistingGroups = Group::getAllInCampaign($current_larp->CampaignId);
+        foreach ($allExistingGroups as $existingGroup) {
+            if ($group->Name == $existingGroup->Name) {
+                if ($group->PersonId == $existingGroup->PersonId) header('Location: ../index.php?error=group_already_exists_own');
+                else header('Location: ../index.php?error=group_already_exists_other');
+                exit;
+            }
+        }
         $group->IsApproved = 0;
         $group->create();
         $group->deleteAllIntrigueTypes();

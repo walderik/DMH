@@ -160,6 +160,12 @@ function getErrorText($code) {
         case "role_already_exists":
             $output = "Du har redan en karaktär med det namnet. Använd den istället.";
             break;
+        case "group_already_exists_other":
+            $output = "Det finns redan en grupp med det namnet. Be gruppledaren anmäla den ifall du vill vara med i gruppen.";
+            break;
+        case "group_already_exists_own":
+            $output = "Du har redan en grupp med det namnet. Använd den istället.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }
