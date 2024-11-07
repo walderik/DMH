@@ -150,7 +150,7 @@ include $navigation;
 
     		<input type="hidden" id="type" name="type" value="<?php echo $type; ?>">
     		<input type="hidden" id="referer" name="referer" value="<?php echo $referer; ?>">
-    		<input type="hidden" id="sender" name="sender" value="$sender">
+    		<input type="hidden" id="sender" name="sender" value="<?php  echo $sender; ?>">
     		
     		<p><br />
     		<p>
