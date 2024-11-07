@@ -39,7 +39,25 @@
 	    <button class="dropbtn">   
 	    </button>
 	  </div> 
-	  <a href="index.php"><i class="fa-solid fa-house"></i> Hem</a>
+	  <?php 
+	  if ($_SESSION['navigation'] == Navigation::LARP) {
+	      $location =  '../admin/';
+	  } elseif ($_SESSION['navigation'] == Navigation::CAMPAIGN) {
+	      $location =  '../campaign/';
+	  } elseif ($_SESSION['navigation'] == Navigation::BOARD) {
+	      $location =  '../board/';
+	  } elseif ($_SESSION['navigation'] == Navigation::HOUSES) {
+	      $location =  '../houses/';
+	  } elseif ($_SESSION['navigation'] == Navigation::OM_ADMIN) {
+	      $location =  '../site-admin/';
+	  } else {
+	      $location =  '../participant/';
+	  }
+	  
+	  
+	  ?>
+	  
+	  <a href="<?php echo $location; ?>index.php"><i class="fa-solid fa-house"></i> Hem</a>
 	  <?php 
 	  $uri = $_SERVER['REQUEST_URI'];
 	  
