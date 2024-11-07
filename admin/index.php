@@ -34,7 +34,7 @@ include "navigation.php";
 
             if ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
                 echo "<br>Lajvet är fullt nu.".
-                "<br>Just nu är det ". Reserve_Registration::count($current_larp) . " st på reservlistan.";
+                "<br>Just nu är det ". Reserve_Registration::count($current_larp) . " st på <a href='reserves.php'>reservlistan</a>.";
                 
             }
             
