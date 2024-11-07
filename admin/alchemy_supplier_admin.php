@@ -46,7 +46,7 @@ include 'alchemy_navigation.php';
                $personIdArr[] = $person->Id;
            }
            echo "<h2>Lövjerister som är anmälda</h2>";
-           echo contactSeveralEmailIcon('Skicka mail till alla lövjerister', $personIdArr, 'Lövjerist', "Meddelande till alla lövjerister i $current_larp->Name");
+           echo contactSeveralEmailIcon('Skicka mail till alla anmälda lövjerister', $personIdArr, 'Lövjerist', "Meddelande till alla lövjerister i $current_larp->Name");
            
            $tableId = "suppliers";
            echo "<table id='$tableId' class='data'>";

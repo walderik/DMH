@@ -39,7 +39,7 @@ include 'magic_navigation.php';
            }
            echo "<h2>Magiker som är anmälda</h2>";
            
-           echo contactSeveralEmailIcon('Skicka mail till alla magiker', $personIdArr, 'Magiker', "Meddelande till alla magiker på $current_larp->Name");
+           echo contactSeveralEmailIcon('Skicka mail till alla anmälda magiker', $personIdArr, 'Magiker', "Meddelande till alla magiker på $current_larp->Name");
            
            
            $tableId = "magicians";

@@ -38,7 +38,7 @@ include 'alchemy_navigation.php';
                $personIdArr[] = $person->Id;
            }
            echo "<h2>Alkemister som är anmälda</h2>";
-           echo contactSeveralEmailIcon('Skicka mail till alla alkemister', $personIdArr, 'Alkemist', "Meddelande till alla alkemister i $current_larp->Name");
+           echo contactSeveralEmailIcon('Skicka mail till alla anmälda alkemister', $personIdArr, 'Alkemist', "Meddelande till alla alkemister i $current_larp->Name");
            
            echo "<br>";
            
