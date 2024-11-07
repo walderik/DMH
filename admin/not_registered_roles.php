@@ -3,18 +3,28 @@ include_once 'header.php';
 
 include 'navigation.php';
 
+
+if (isset($error_message) && strlen($error_message)>0) {
+    echo '<div class="error">'.$error_message.'</div>';
+}
+if (isset($message_message) && strlen($message_message)>0) {
+    echo '<div class="message">'.$message_message.'</div>';
+}
 ?>
 
 
     <div class="content">   
+    
             <h1>Grupper i kampanjen som inte är anmälda (än) i år</h1>
+            Om man anmäler en grupp härifrån kommer de att få standardvärden på tex boendeönskemål. Du får redigera det på personen efteråt om det behövs.
+            
      		<?php 
     		$groups = Group::getAllUnregisteredGroups($current_larp);
     		if (empty($groups)) {
-    		    echo "Inga anmälda grupper";
+    		    echo "Inga oanmälda grupper";
     		} else {
     		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Gruppledare</th><th>Senast spelad</th></tr>\n";
+    		    echo "<tr><th>Namn</th><th>Gruppledare</th><th>Senast spelad</th><th>Lägg till</th></tr>\n";
     		    foreach ($groups as $group)  {
     		        $person = $group->getPerson();
     		        echo "<tr>\n";
@@ -31,6 +41,9 @@ include 'navigation.php';
     		            echo $larp->Name;
     		        }
     		        echo "</td>";
+    		        echo "<td>";
+    		        echo "<a href='logic/register_group.php?id=$group->Id'>Anmäl</a>";
+    		        echo "</td>";
                     echo "</tr>\n";
 		        }
     		    echo "</table>";
@@ -42,7 +55,7 @@ include 'navigation.php';
     
         <h1>Karaktärer i kampanjen som inte är anmälda (än) i år</h1>
         <p>
-        Om man anmäler någon härifrån kommer de att få stanadrdvärden på tex boendeönskemål och matönskemål. Du får redigera det på personen efteråt om det behövs.
+        Om man anmäler någon härifrån kommer de att få standardvärden på tex boendeönskemål och matönskemål. Du får redigera det på personen efteråt om det behövs.
 		<br><br>Deltagare som finns på reservlistan visas inte här.</p>
      		<?php 
     		$roles = Role::getAllUnregisteredRoles($current_larp);

@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         
         
     BerghemMailer::send_registration_mail($registration);
-    header('Location: ../index.php?message=registration_done');
+    header('Location: ../not_registered_roles.php?message=registration_done');
     exit;
 
 }

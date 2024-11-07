@@ -2,8 +2,8 @@
 if (!isset($error_message)) $error_message = "";
 if (!isset($message_message)) $message_message = "";
 
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    
     if (isset($_GET['error'])) {
         $error_code = $_GET['error'];
         $error_message = getErrorText($error_code);
@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $message_message = getMessageText($message_code);
     }
 }
+
 
 function getMessageText($code) {
     $output = "";
@@ -59,7 +60,7 @@ function getMessageText($code) {
             break;
         case "registration_done":
             $output = "Anmälan har registrerats.";
-            exit;
+            break;
         default:
             $output = "Okänt meddelande: ". $code;
     }
