@@ -9,6 +9,8 @@ if (!isset($_SESSION['navigation'])) {
     exit;
 }
 
+$onlyCommon = false;
+if (isset($_GET['common'])) $onlyCommon = true;
 
 if ($_SESSION['navigation'] == Navigation::LARP) {
     include '../admin/header.php';
@@ -59,6 +61,13 @@ th {
             echo "<strong>".count($unsent_emails) ."</strong> mail har ännu inte skickats iväg. <br>Sidan kommer automatiskt att laddas om tills alla har skickats. Du måste inte stanna på den här sidan, men gå gärna tillbaka hit efteråt så att du ser att alla mail verkligen har kommit iväg.";
         }
         
+        if ($_SESSION['navigation'] == Navigation::LARP && !$onlyCommon) {
+            $emails = Email::allBySelectedLARP($current_larp);
+            echo "<a href='mail_admin.php?common=1'>Visa system-mail</a><br>";
+        }
+        else $emails = Email::allCommon();
+        
+        
 	    $tableId = "mail";
         echo "<table id='$tableId' class='data'>";
         echo "<tr><th onclick='sortTable(0, \"$tableId\");' width='30%'>Till</th>".
@@ -69,8 +78,6 @@ th {
 	    "<th onclick='sortTable(5, \"$tableId\")'>Fel</th>".
         "</tr>\n";
     	
-        if ($_SESSION['navigation'] == Navigation::LARP) $emails = Email::allBySelectedLARPAndCommon($current_larp);
-        else $emails = Email::allCommon();
 
     	foreach (array_reverse($emails) as $email) {
     	    $sendUserName = "";
