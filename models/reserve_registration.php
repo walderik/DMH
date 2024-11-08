@@ -140,6 +140,12 @@ class Reserve_Registration extends BaseModel{
         return TypeOfFood::loadById($this->TypeOfFoodId);
     }
     
+    public function getHousingRequest() {
+        if (is_null($this->HousingRequestId)) return null;
+        return HousingRequest::loadById($this->HousingRequestId);
+    }
+    
+    
     
     
     public function getOfficialTypes() {

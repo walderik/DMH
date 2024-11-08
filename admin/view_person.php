@@ -20,7 +20,11 @@ if (!$person->isRegistered($current_larp) && !$person->isReserve($current_larp))
 }
 
 $registration = Registration::loadByIds($person->Id, $current_larp->Id);
+$reserveregistration = Reserve_Registration::loadByIds($person->Id, $current_larp->Id);
+$activeRegistration = null;
 
+if (isset($registration)) $activeRegistration = $registration;
+elseif (isset($reserveregistration)) $activeRegistration = $reserveregistration;
 
 include 'navigation.php';
 
@@ -39,7 +43,7 @@ include 'navigation.php';
 		    ?>
 			<tr><td valign="top" class="header">Ansvarig vuxen</td><td>
 			
-			<?php if (!empty($registration->GuardianId)) echo "<a href='view_person.php?id=$registration->GuardianId'>".$registration->getGuardian()->Name."</a>"; else echo showStatusIcon(false); ?>
+			<?php if (!empty($activeRegistration->GuardianId)) echo "<a href='view_person.php?id=$activeRegistration->GuardianId'>".$activeRegistration->getGuardian()->Name."</a>"; else echo showStatusIcon(false); ?>
 			
 			</td></tr>
 		    
@@ -65,17 +69,22 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td><td><?php echo $person->NotAcceptableIntrigues;?></td></tr>
 
 			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Typ av mat</td><td><?php echo TypeOfFood::loadById($registration->TypeOfFoodId)->Name;?></td></tr>
+			<tr><td valign="top" class="header">Typ av mat</td><td>
+			<?php 
+			echo TypeOfFood::loadById($activeRegistration->TypeOfFoodId)->Name;
+			
+			     
+			     ?></td></tr>
 			<?php } ?>
-			<?php if (isset($registration->FoodChoice)) { ?>
-			    <tr><td valign="top" class="header">Matalternativ</td><td><?php echo $registration->FoodChoice; ?></td></tr>
-			    
-			<?php } ?>
+			<?php 
+			if (isset($activeRegistration->FoodChoice))  { ?>
+			    <tr><td valign="top" class="header">Matalternativ</td><td><?php echo $activeRegistration->FoodChoice; ?></td></tr>
+			<?php }?>
 			<tr><td valign="top" class="header">Vanliga allergier</td><td><?php echo commaStringFromArrayObject($person->getNormalAllergyTypes());?></td></tr>
 
 			<tr><td valign="top" class="header">Andra allergier</td><td><?php echo $person->FoodAllergiesOther;?></td></tr>
 
-			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $registration->NPCDesire;?></td></tr>
+			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $activeRegistration->NPCDesire;?></td></tr>
 			<tr>
 				<td valign="top" class="header">Husförvaltare</td>
 				<td><?php 
@@ -94,13 +103,13 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Önskat boende</td>
 				<td>
 					<?php 
-					$housingrequest = $registration->getHousingRequest();
+					$housingrequest = $activeRegistration->getHousingRequest();
 					if (!empty($housingrequest)) echo $housingrequest->Name;?></td></tr>
 			<?php } ?>
-			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentType)); ?></td></tr>
-			<tr><td valign="top" class="header">Storlek på tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentSize)); ?></td></tr>
-			<tr><td valign="top" class="header">Vilka ska bo i tältet</td><td><?php echo nl2br(htmlspecialchars($registration->TentHousing)); ?></td></tr>
-			<tr><td valign="top" class="header">Önskad placering</td><td><?php echo nl2br(htmlspecialchars($registration->TentPlace)); ?></td></tr>
+			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentType)); ?></td></tr>
+			<tr><td valign="top" class="header">Storlek på tält</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentSize)); ?></td></tr>
+			<tr><td valign="top" class="header">Vilka ska bo i tältet</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentHousing)); ?></td></tr>
+			<tr><td valign="top" class="header">Önskad placering</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentPlace)); ?></td></tr>
 			<?php 
                 echo "<tr><td>Boende</td>";
                 if ($current_larp->isHousingReleased()) {
@@ -123,14 +132,14 @@ include 'navigation.php';
 
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo nl2br($person->OtherInformation);?></td></tr>
 			<tr><td valign="top" class="header">Får visa namn</td><td><?php echo ja_nej($person->HasPermissionShowName)?></td></tr>
-			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($registration->isMember())?></td></tr>
-			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
-			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
 			
 			<?php if (OfficialType::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php echo commaStringFromArrayObject($registration->getOfficialTypes());?></td></tr>
+			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php echo commaStringFromArrayObject($activeRegistration->getOfficialTypes());?></td></tr>
 			<?php } ?>
-
+			<?php if (isset($registration)) {?>
+			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
+			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($registration->isMember())?></td></tr>
+			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
 			<tr><td valign="top" class="header">Belopp att betala</td><td><?php echo $registration->AmountToPay;?></td></tr>
 			<tr><td valign="top" class="header">Belopp betalat</td><td><?php echo $registration->AmountPayed;?></td></tr>
@@ -142,6 +151,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Återbetalning</td><td><?php echo $registration->RefundAmount;?></td></tr>
 			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><?php echo $registration->RefundDate;?></td></tr>
 			<?php  }?>
+			<?php }?>
 		</table>	
 		</div>	
 		<?php 
