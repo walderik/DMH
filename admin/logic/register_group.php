@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $larp_group->LARPId = $current_larp->Id;
     $larp_group->WantIntrigue = true;
     $larp_group->ApproximateNumberOfMembers = 0;
-    $larp_group->NeedFireplace = false;
+    $larp_group->NeedFireplace = 0;
     if (HousingRequest::isInUse($current_larp)) $larp_group->HousingRequestId = HousingRequest::allActive($current_larp)[0]->Id;
     $larp_group->create();
     
