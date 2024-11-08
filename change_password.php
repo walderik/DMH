@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_GET['code']) || !isset($_GET['email'])) {
-    header("location: ../index.php?error=userNotFound");
+    header("location: index.php?error=userNotFound");
     exit();
 }
 
@@ -20,7 +20,7 @@ include_once $root . '/includes/error_handling.php';
 $user = User::loadByEmailChangeCode($code);
 
 if (is_null($user) || ($user->Email != $_GET['email'])) {
-    header("location: ../index.php?error=userNotFound");
+    header("location: index.php?error=userNotFound");
     exit();
 }
 
