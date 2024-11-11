@@ -104,6 +104,7 @@ class Subdivision extends BaseModel{
     
     public function getRuleTextArray() {
         global $current_larp;
+        if (empty($this->Rule)) return array();
         $rule = json_decode($this->Rule, true);
         
         $options = getAllOptionsForRoles($current_larp);
@@ -128,6 +129,7 @@ class Subdivision extends BaseModel{
     }
     
     public function getRuleSelectedValues($key) {
+        if (empty($this->Rule)) return array();
         $rule = json_decode($this->Rule, true);
         if (array_key_exists ($key, $rule)) return $rule[$key];
         else return array();
