@@ -888,6 +888,17 @@ class Role extends BaseModel{
         
     }
     
+    public function deleteAllSubdivisionMembership() {
+         $stmt = $this->connect()->prepare("DELETE FROM regsys_subdivisionmember WHERE RoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    
+    }
+    
     public static function delete($id)
     {
         $role = static::loadById($id);
@@ -895,6 +906,7 @@ class Role extends BaseModel{
         $role->deleteAllAbilities();
         $role->deleteAllIntrigueTypes();
         $role->deleteAllRoleFunctions();
+        $role->deleteAllSubdivisionMembership();
         
         parent::delete($id);
     }
