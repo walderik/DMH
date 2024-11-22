@@ -218,8 +218,6 @@ class Group extends BaseModel{
          return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
      
-     
-     
      public static function getAllRegistered($larp) {
          
          if (is_null($larp)) return Array();
@@ -361,10 +359,17 @@ class Group extends BaseModel{
          return LARP::getPreviousLarpsGroup($this->Id);
      }
      
-     
      public function getAllKnownRoles(LARP $larp) {
          return Role::getAllKnownRolesForGroup($this, $larp);
      }
+
+     public static function countAllRolesInGroup(LARP $larp) {
+        $mainRoles = Role::getAllComingMainRolesInGroup($this, $larp);
+        $nonMainRoles = Role::getAllNonMainRolesInGroup($this, $larp);
+
+        $totalRoles = count($mainRoles) + count($nonMainRoles);
+        return $totalRoles;
+    }
      
      public function getAllKnownGroups(LARP $larp) {
          return Group::getAllKnownGroupsForGroup($this, $larp);
