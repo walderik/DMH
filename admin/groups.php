@@ -39,6 +39,7 @@ th {
         		    "<th>&nbsp; &nbsp; </th>";
     		    $colnum++;
     		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Gruppledare</th>";
+				echo "<th onclick='sortTableNumbers(". $colnum++ .", \"$tableId\")'>Antal medlemmar</th>";
     		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
     		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($groups as $group)  {
@@ -55,6 +56,7 @@ th {
     		        echo "</td>\n";
     		        $person = $group->getPerson();
     		        echo "<td>" . $person->Name . " " . contactEmailIcon($person) . "</td>\n";
+					echo "<td>" . $group->countAllRolesInGroup($current_larp) . "</td>\n";
     		        if (Wealth::isInUse($current_larp)) echo "<td>" . $group->getWealth()->Name . "</td>\n";
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     		        echo "<td>" . showStatusIcon($group->hasIntrigue($current_larp));
