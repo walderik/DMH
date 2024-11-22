@@ -23,6 +23,7 @@ if ($isRegistered) {
     $persons = Person::getGroupMembers($group, $current_larp);
     $main_characters_in_group = Role::getAllMainRolesInGroup($group, $current_larp);
     $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($group, $current_larp);
+    $allUnregisteredRoles = Role::getAllUnregisteredRolesInGroup($group, $current_larp);
     $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
 } else {
     $intrigues = array();
@@ -220,7 +221,21 @@ include 'navigation.php';
 		    echo "</table>";
 		    
 		}
+		
+		
 		echo "</div>";
+		?>
+		<?php
+		if(!empty($allUnregisteredRoles)) {
+			echo "<h2>Icke anmälda medlemmar</h2>";
+			echo "<div>";
+			echo "<table>";
+			foreach($allUnregisteredRoles as $role) {
+				print_role($role, $group);
+			}
+			echo "</table>";
+			echo "</div>";
+		}
 		?>
 		<h2>Intrig <a href='edit_group_intrigue.php?id=<?php echo $group->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>

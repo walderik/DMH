@@ -537,6 +537,21 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getAllUnregisteredRolesInGroup(Group $group, LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_role WHERE GroupId=? AND ".
+            "(Id NOT IN ".
+            "(SELECT RoleId FROM regsys_larp_role WHERE ".
+            "regsys_larp_role.larpid = ?) OR ID IN ".
+            "(SELECT regsys_role.Id FROM regsys_role, regsys_registration, regsys_larp_role WHERE ".
+            "regsys_registration.larpid = regsys_larp_role.larpid AND ".
+            "regsys_role.Id = regsys_larp_role.RoleId AND ".
+            "regsys_role.PersonId = regsys_registration.PersonId AND ".
+            "regsys_registration.NotComing = 1 AND ".
+            "regsys_larp_role.larpid=?)) ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id, $larp->Id));
+    }
+    
     public static function getTitledeedOwners(Titledeed $titledeed) {
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_titledeed_role WHERE ".
