@@ -42,8 +42,9 @@ $larp_group = LARP_Group::loadByIds($current_group->Id, $current_larp->Id);
 
 $main_characters_in_group = Role::getAllMainRolesInGroup($current_group, $current_larp);
 $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($current_group, $current_larp);
+$allUnregisteredRoles = Role::getAllUnregisteredRolesInGroup($current_group, $current_larp);
 
-function print_role(Role $role, Group $group) {
+function print_role(Role $role, Group $group, $isComing) {
     global $current_user, $current_larp, $type;
     
     if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
@@ -51,7 +52,7 @@ function print_role(Role $role, Group $group) {
     
     echo "<div class='name'>$role->Name";
     if ($current_user->isGroupLeader($group)) {
-        echo " <a href='logic/remove_group_member.php?groupID=<?php echo $group->Id; ?>&roleID=<?php echo $role->Id; ?>' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
+        echo " <a href='logic/remove_group_member.php?groupID=".$group->Id."&roleID=".$role->Id."' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
         echo "<i class='fa-solid fa-trash-can'></i>";
         echo "</a>";
     }
@@ -62,7 +63,7 @@ function print_role(Role $role, Group $group) {
     }
     echo "Spelas av ".$role->getPerson()->Name."<br>";
     
-    if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    if ($isComing && $role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         $guardian = $role->getRegistration($current_larp)->getGuardian();
         if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
         else echo "Ansvarig vuxen är inte utpekad.";
@@ -163,7 +164,7 @@ include 'navigation.php';
 		else {
 		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
 		    foreach ($main_characters_in_group as $role) {
-		        print_role($role, $current_group);
+		        print_role($role, $current_group, true);
 		        $temp++;
 		        if($temp==$columns) {
 		            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
@@ -177,7 +178,7 @@ include 'navigation.php';
     		    echo "<h3>Sidokaraktärer</h3>";
     		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
     		    foreach ($non_main_characters_in_group as $role) {
-    		        print_role($role, $current_group);
+    		        print_role($role, $current_group, true);
     		        $temp++;
     		        if($temp==$columns) {
     		            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
@@ -193,7 +194,27 @@ include 'navigation.php';
 		
 		
 		?>
-		</div>    
+		</div>
+		<?php
+		if(!empty($allUnregisteredRoles)) {
+		    echo "<div class='container' style ='box-shadow: none; margin: 0px; padding: 0px;'>\n";
+			echo "<h2>Icke anmälda medlemmar</h2>";
+			$temp=0;
+			echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
+			foreach($allUnregisteredRoles as $role) {
+			    print_role($role, $current_group, false);
+			    $temp++;
+			    if($temp==$columns) {
+			        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+			        $temp=0;
+			    }
+			}
+			$temp=0;
+			echo "</ul>\n";
+			echo "</div>\n";
+		}
+		?>
+		    
 
 		<h2>Intrig</h2>
 		<div>
