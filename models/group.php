@@ -363,8 +363,8 @@ class Group extends BaseModel{
          return Role::getAllKnownRolesForGroup($this, $larp);
      }
 
-     public static function countAllRolesInGroup(LARP $larp) {
-        $mainRoles = Role::getAllComingMainRolesInGroup($this, $larp);
+     public function countAllRolesInGroup(LARP $larp) {
+        $mainRoles = Role::getAllMainRolesInGroup($this, $larp);
         $nonMainRoles = Role::getAllNonMainRolesInGroup($this, $larp);
 
         $totalRoles = count($mainRoles) + count($nonMainRoles);
