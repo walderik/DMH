@@ -20,8 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
     $section = "section_$intrigueActor->Id";
     echo "<h2 id='$section'>Intrig för ";
-    if (!empty($intrigueActor->RoleId)) echo "<a href='view_role.php?id=$intrigueActor->RoleId'>";
-    elseif (!empty($intrigueActor->GroupId)) echo "<a href='view_group.php?id=$intrigueActor->GroupId'>";
+    if (!empty($intrigueActor->RoleId)) {
+        $role = $intrigueActor->getRole();
+        echo $role->getViewLink();
+    }
+    elseif (!empty($intrigueActor->GroupId)) {
+        $group = $intrigueActor->getGroup();
+        echo $group->getViewLink();
+    }
     elseif (!empty($intrigueActor->SubdivisionId)) $intrigueActor->getSubdivision()->getViewLink();
     
     echo "$name</a> <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$name&section=$section'><i class='fa-solid fa-pen'></i></a> ";
