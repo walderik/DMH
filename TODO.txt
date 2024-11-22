@@ -4,9 +4,6 @@
 Tips och ticks
 ===============
 
-Hur fixa MySQL:
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;
-
 GRANT SELECT, INSERT, UPDATE, DELETE ON `berghemsvanner\_`.* TO 'regsys'@'%';
 Sätt lösenordet på regsys
 
@@ -30,3 +27,17 @@ max_allowed_packet = 1024M
 
 import av databasen via kommandotolken:
 mysql -u root -p berghemsvanner_ < OM_backup_1726568551.sql
+
+Import av MySQL via skript
+==========================
+Stå i mysql/bin. Lägg backupfilen där också.
+mysql -u root -p berghemsvanner_ < OM_backup_1732276196.sql
+
+
+Crashad MySQL
+==============
+Rename folder mysql/data to mysql/data_old
+Make a copy of mysql/backup folder and name it as mysql/data
+Copy all your database folders from mysql/data_old into mysql/data (except mysql, performance_schema, and phpmyadmin folders)
+Copy mysql/data_old/ibdata1 file into mysql/data folder
+Start MySQL from XAMPP control pane
