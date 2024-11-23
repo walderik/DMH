@@ -58,7 +58,7 @@ class Dbh {
 
     }
     
-    protected static function connectStatic() {
+    public static function connectStatic() {
         Dbh::setUpConnection();
         try {
 

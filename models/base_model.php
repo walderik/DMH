@@ -179,7 +179,7 @@ class BaseModel extends Dbh{
     }
     
     
-    protected static function countQuery($sql, $var_array) {
+    public static function countQuery($sql, $var_array) {
         //Måste märka fältet som räkna med 'Num'
         $stmt = static::connectStatic()->prepare($sql);
         

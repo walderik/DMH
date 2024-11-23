@@ -18,13 +18,25 @@ if (!Dbh::isLocal()) exit;
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     echo "Anonymiserar data i databasen...<br>";
     
-    $images = Image::all();
-    $firstImageId = reset($images)->Id;
+    echo "Hitta lägsta bild-id<br>";
+    $sql = "SELECT Min(Id) as Num FROM regsys_image";
+    $firstImageId = Image::countQuery($sql, array());
     
     
-    $persons = Person::all();
     
-    foreach($persons as $person) {
+    // Person
+    echo "Personer<br>";
+    $sql = "SELECT * FROM regsys_person";
+    $stmt = BaseModel::connectStatic()->prepare($sql);
+    
+    if (!$stmt->execute()) {
+        $stmt = null;
+        header("location: ../index.php?error=stmtfailed");
+        exit();
+    }
+    
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $person = Person::newFromArray($row);
         $person->Email = "me@privacy.net";
         $person->EmergencyContact = RandomName::getName()." 070-00 00 00";
         $person->HealthComment = "";
@@ -36,8 +48,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $person->update();
     }
     
-    $roles = Role::all();
-    foreach ($roles as $role) {
+    // Role
+    echo "Roller<br>";
+    $sql = "SELECT * FROM regsys_role";
+    $stmt = BaseModel::connectStatic()->prepare($sql);
+    
+    if (!$stmt->execute()) {
+        $stmt = null;
+        header("location: ../index.php?error=stmtfailed");
+        exit();
+    }
+    
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $role = Role::newFromArray($row);
         if (isset($role->ImageId) && $role->ImageId != $firstImageId) {
             $role->ImageId = $firstImageId;
         }
@@ -55,6 +78,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $role->update();
     }
     
+    // Group
+    echo "Grupper<br>";
     $groups = Group::all();
     $groupNames = RandomName::getGroupNames(count($groups));
     foreach($groups as $i => $group) {
@@ -69,6 +94,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $group->update();
     }
     
+    // Intrigue
+    echo "Intriger<br>";
     $intrigues = Intrigue::all();
     foreach ($intrigues as $intrigue) {
         $intrigue->Notes = LoremIpsum::getText(strlen($intrigue->Notes));
@@ -84,6 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $intrigueActor->update();
     }
     
+    echo "Meddelanden<br>";
     $letters = Letter::all();
     foreach ($letters as $letter) {
         $letter->Message = LoremIpsum::getText(strlen($letter->Message));
@@ -98,6 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $telegram->update();
     }
     
+    echo "Rykten<br>";
     $rumours = Rumour::all();
     foreach($rumours as $rumour) {
         $rumour->Text = LoremIpsum::getText(strlen($rumour->Text));
@@ -105,6 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $rumour->update();
     }
     
+    echo "Hus (bara ta bort bilder)<br>";
     $houses = House::all();
     foreach($houses as $house) {
         if (!empty($house->ImageId)) {
@@ -113,6 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
     }
     
+    echo "Rekvisita (bara ta bort bilder)<br>";
     $props = Prop::all();
     foreach($props as $prop) {
         if (!empty($prop->ImageId)) {
@@ -121,6 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
     }
     
+    echo "NPC (bara ta bort bilder)<br>";
     $npcs = NPC::all();
     foreach($npcs as $npc) {
         if (!empty($npc->ImageId)) {
@@ -129,6 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
     }
     
+    echo "Kassabok (bara ta bort bilder)<br>";
     $bookeepings = Bookkeeping::all();
     foreach($bookeepings as $bookeeping) {
         if (!empty($bookeeping->ImageId)) {
@@ -138,6 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     }
     
+    echo "Handelsresurser (bara ta bort bilder)<br>";
     $resources = Resource::all();
     foreach($resources as $resource) {
         if (!empty($resource->ImageId)) {
@@ -147,7 +181,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         
     }
     
-    foreach($images as $image) {
+    echo "Bilder<br>";
+    $sql = "SELECT * FROM regsys_image";
+    $stmt = BaseModel::connectStatic()->prepare($sql);
+    
+    if (!$stmt->execute()) {
+        $stmt = null;
+        header("location: ../index.php?error=stmtfailed");
+        exit();
+    }
+    
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $image = Image::newFromArray($row);
         if ($image->Id != $firstImageId) Image::delete($image->Id);
     }
 
