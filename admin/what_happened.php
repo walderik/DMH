@@ -19,9 +19,11 @@ function whatHappenedGroup(Group $group) {
         }
     }
     if ($hasWhatHappened) {
-        echo "<h2>";
+        echo "<div class='item'>";
+        echo "<h3>";
         echo $group->getViewLink();
-        echo "</h2>";
+        echo "</h3>";
+
         foreach($intrigueActors as $intrigueActor) {
             $intrigue = $intrigueActor->getIntrigue();
             echo "<h3><a href='view_intrigue.php?Id=$intrigue->Id'>$intrigue->Number. $intrigue->Name</a></h3>";
@@ -35,6 +37,7 @@ function whatHappenedGroup(Group $group) {
             echo "<h3>Vad såg $group->Name hände med andra?</h3>";
             echo nl2br($larp_group->WhatHappenedToOthers);
         }
+        echo "</div>";
     }
 }
 
@@ -55,11 +58,12 @@ function whatHappenedRole(Role $role) {
         }
     }
     if ($hasWhatHappened) {
-        echo "<h2>";
+        echo "<div class='item'>";
+        echo "<h3>";
         echo $role->getViewLink();
         $group = $role->getGroup();
         if (isset($group)) echo " - " . $group->getViewLink();
-        echo "</h2>";
+        echo "</h3>";
         foreach($intrigueActors as $intrigueActor) {
             $intrigue = $intrigueActor->getIntrigue();
             echo "<h3><a href='view_intrigue.php?Id=$intrigue->Id'>$intrigue->Number. $intrigue->Name</a></h3>";
@@ -73,29 +77,42 @@ function whatHappenedRole(Role $role) {
             echo "<h3>Vad såg $role->Name hände med andra?</h3>";
             echo nl2br($larp_role->WhatHappenedToOthers);
         }
+        echo "</div>";
     }
 }
 
 ?>
 
+<style>
+.item {
+    border: 1px solid #e0e0e3;
+}
+</style>
 
 <div class="content">
 <h1>Vad hände på <?php echo $current_larp->Name;?></h1>
+<a href="#group">Grupper</a><br>
+<a href="#main">Huvudkaraktärer</a><br>
+<a href="#nonmain">Sidokaraktärer</a>
 
+
+<a name="group"></a><h2>Grupper</h2>
 <?php 
 $groups = Group::getAllRegistered($current_larp);
 foreach ($groups as $group) {
     whatHappenedGroup($group);
 }
-
+?>
+<a name="main"></a><h2>Huvudkaraktärer</h2>
+<?php 
 $roles = $current_larp->getAllMainRoles(false);
-
 foreach ($roles as $role) {
     whatHappenedRole($role);
 }
-
+?>
+<a name="nonmain"></a><h2>Sidokaraktärer</h2>
+<?php 
 $roles = $current_larp->getAllNotMainRoles(false);
-
 foreach ($roles as $role) {
     whatHappenedRole($role);
 }
