@@ -28,9 +28,12 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
         $group = $intrigueActor->getGroup();
         echo $group->getViewLink();
     }
-    elseif (!empty($intrigueActor->SubdivisionId)) $intrigueActor->getSubdivision()->getViewLink();
+    elseif (!empty($intrigueActor->SubdivisionId)) {
+        $subdivision = $intrigueActor->getSubdivision();
+        echo $subdivision->getViewLink();
+    }
     
-    echo "$name</a> <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$name&section=$section'><i class='fa-solid fa-pen'></i></a> ";
+    echo " <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$name&section=$section'><i class='fa-solid fa-pen'></i></a> ";
     echo "<a href='view_intrigue.php?Id=".$intrigueActor->IntrigueId."#actorlist'><i class='fa-solid fa-caret-up' title='Till listan med alla aktörer'></i></a>";
     echo "</h2>\n";
     echo "<table width='100%''>\n";
@@ -454,6 +457,9 @@ th, td {
         echo "</span>";
         
         echo "<span class='icons'>";
+        if ($role->getPerson()->getRegistration($current_larp)->isNotComing()) {
+            echo "<i class='fa-solid fa-triangle-exclamation' title='Spelaren är avbokad' style='color:red;'></i> ";
+        }
         echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut karaktär som får intrigen'></i></a> ";
         echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$roleActor->Id&Id=$intrigue->Id'";
         if (!empty($roleActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort karaktären i alla fall?\')" ';
