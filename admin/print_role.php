@@ -15,6 +15,11 @@ $subdivisions = Subdivision::allForRole($role);
 
 ?>
 <table>
+<?php 
+if ($person->isNotComing($current_larp)) {
+    echo "<tr><td></td><td><strong>Karaktären kommer inte på lajvet</strong></td></tr>";
+}
+?>
 <?php
 if ($role->isMysLajvare()) {
     echo "<tr><td></td><td><strong>Bakgrundslajvare</strong></td></tr>";
