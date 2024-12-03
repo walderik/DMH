@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
     ]);
 }
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
-global $current_user, $current_larp, $root;
+global $current_user, $current_person, $current_larp, $root;
 
 
 include_once $root . '/includes/all_includes.php';
@@ -19,6 +19,7 @@ if (!isset($_SESSION['is_loggedin'])) {
 }
 
 $current_user = User::loadById($_SESSION['id']);
+if (isset($_SESSION['PersonId'])) $current_person = Person::loadById($_SESSION['PersonId']);
 if (!isset($current_user) or is_null($current_user)) {
     header('Location: ../index.php');
     exit;

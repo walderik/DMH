@@ -59,7 +59,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
                 $row_option = $row_option.' checked="checked"';
         }
         echo "<tr>";
-        echo "<td>";
+        echo "<td  style='white-space: nowrap;'>";
         echo "<input type='" . $type . "' id='" .$name_in.$selectionData->Id . "' name='" . $name . "' value='" . $selectionData->Id . "' " . $row_option . ">\n";
         echo "<label for='" .$name_in.$selectionData->Id . "'>" .  htmlspecialchars($selectionData->Name) . "</label><br>\n";
         echo "</td>";

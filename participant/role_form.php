@@ -6,13 +6,14 @@ $admin = false;
 if (isset($_GET['admin'])) $admin = true;
 
 
-$current_persons = $current_user->getPersons();
-if (empty($current_persons) && !$admin) {
-    header('Location: index.php?error=no_person');
+
+if (empty($current_person) && !$admin) {
+    header('Location: index.php');
     exit;
 }
 
 $role = Role::newWithDefault();
+$role->PersonId = $current_person->Id;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "new";
@@ -34,7 +35,7 @@ if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
     exit;
 }
 
-if ($operation == 'update' && Person::loadById($role->PersonId)->UserId != $current_user->Id) {
+if ($operation == 'update' && $role->PersonId != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
     exit;
 }
@@ -53,10 +54,10 @@ function default_value($field) {
             break;
         case "action":
             if (is_null($role->Id)) {
-                $output = "Registrera";
+                $output = "Skapa";
                 break;
             }
-            $output = "Uppdatera";
+            $output = "Ändra";
             break;
     }
     
@@ -153,6 +154,7 @@ include 'navigation.php';
 		<form action="logic/role_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
+    		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $role->PersonId; ?>">
 
 
 			<p>Vi vill veta vilken karaktär du vill spela.<br />
@@ -161,40 +163,6 @@ include 'navigation.php';
 			<br>
 			Efter anmälan kommer du att kunna ladda upp en bild på din karaktär. 
 			</p>
-			<div class="question">
-				<label for="Person">Deltagare</label>&nbsp;<font style="color:red">*</font><br>
-				<div class="explanation">Vilken deltagare spelar karaktären?</div>
-				<?php 
-				if (is_null($role->Id)) {
-				    if (count($current_persons)==1) {
-				        echo "<tr><td>";
-				        echo htmlspecialchars($current_persons[0]->Name) . "<br>\n";
-				        echo "<input type='hidden' id='Person" . $current_persons[0]->Id . "' name='PersonId' value=" .  $current_persons[0]->Id . ">";
-				        echo "</td>";
-				        if ($current_persons[0]->getAgeAtLarp($current_larp) < $current_larp->smallChildAge()) $role->NoIntrigue = 1;
-				    } else {
-				        foreach ($current_persons as $current_person) {
-				        echo "<tr>";
-				        echo "<td>";
-				        echo "<input type='radio' id='Person".$current_person->Id . "' name='PersonId' value='" . $current_person->Id . "' 'required'";
-				        if ($current_person->getAgeAtLarp($current_larp) < $current_larp->smallChildAge()) {
-				            echo " onchange='defaultMyslajvare()' ";
-				        } else {
-				            echo " onchange='defaultEjMyslajvare()' ";
-				            
-				        }
-				        echo ">\n";
-				        echo "<label for='Person" .$current_person->Id . "'>" .  htmlspecialchars($current_person->Name) . "</label><br>\n";
-				        echo "</td>";
-				        
-				        echo "</tr>";
-				    }
-				    }
-				    
-				} else selectionByArray('Person', $current_persons, false, true, $role->PersonId); 
-				
-				?>
-			</div>
 
 			<div class="question">
 				<label for="Name">Karaktärens namn</label>&nbsp;<font style="color:red">*</font>

@@ -73,7 +73,7 @@ include 'navigation.php';
     			Skriv in namn eller personnummer på den ansvarige. Personnummer anges på formen ÅÅÅÅMMDD-NNNN.
     			Om den ansvarige inte går att hitta kommer inte din anmälan att kunna godkännas förrän det är löst.
 				</div>
-				<input class="GuardianInfo" type="text" id="GuardianInfo" name="GuardianInfo" size="100" maxlength="25" >
+				<input class="input_field" type="text" id="GuardianInfo" name="GuardianInfo" size="100" maxlength="25" >
             </div>
 		    
 			  <input type="submit" value="Spara">

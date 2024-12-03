@@ -5,14 +5,13 @@ require 'header.php';
 $admin = false;
 if (isset($_GET['admin'])) $admin = true;
 
-$current_persons = $current_user->getPersons();
-
-if (empty($current_persons) && !admin) {
-    header('Location: index.php?error=no_person');
+if (empty($current_person) && !$admin) {
+    header('Location: index.php');
     exit;
 }
 
 $group = Group::newWithDefault();
+$group->PersonId = $current_person->Id;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "new";
@@ -45,10 +44,10 @@ function default_value($field) {
             break;
         case "action":
             if (is_null($group->Id)) {
-                $output = "Registrera";
+                $output = "Skapa";
                 break;
             }
-            $output = "Uppdatera";
+            $output = "Ändra";
             break;
     }
     
@@ -62,14 +61,15 @@ include 'navigation.php';
 	<div class="content">
 		<h1><?php 
 		if ($operation == 'update') {
-		    echo "Redigera $group->Name";
+		    echo "Ändra $group->Name";
 		} else {
-		    echo "Registrering av en grupp";
+		    echo "Skapa en grupp";
 		}    
 		 ?></h1>
 		<form action="logic/group_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $group->Id; ?>">
+   			<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $group->PersonId; ?>">
 
 
 			<p>En grupp är en gruppering av karaktärer som gör något tillsammans på
@@ -77,19 +77,6 @@ include 'navigation.php';
 				Det som du skriver i anmälan kommer att vara synligt för alla i gruppen, förrutom intrigidéer.</p>
 				
 				
-			<h2>Gruppansvarig</h2>
-			<p>Gruppansvarig är den som arrangörerna kommer att kontakta när det
-				uppstår frågor kring gruppen.
-			</p>
-			
-			<div class="question">
-				<label for="Person">Gruppansvarig</label>&nbsp;<font style="color:red">*</font><br>
-				<div class="explanation">Vem är gruppansvarig?</div>
-				<?php selectionByArray('Person', $current_persons, false, true, $group->PersonId) ?>
-			</div>
-			
-			
-			
 			<h2>Information om gruppen</h2>
 			
 			

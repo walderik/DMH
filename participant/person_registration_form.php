@@ -6,7 +6,6 @@ $admin = false;
 if (isset($_GET['admin'])) $admin = true;
 
 if ($admin) {
-    $current_person = Person::newWithDefault();
     $roles = array();
     $role = Role::newWithDefault();
     $role->Name = "Karaktärens namn";
@@ -30,14 +29,6 @@ else {
         if (isset($_GET['PersonId'])) {
             $PersonId = $_GET['PersonId'];
         }
-    }
-    
-    if (isset($PersonId)) {
-        $current_person = Person::loadById($PersonId);
-    }
-    else {
-        header('Location: index.php?error=no_person');
-        exit;
     }
     
     if ($current_person->UserId != $current_user->Id) {
@@ -97,7 +88,7 @@ include 'navigation.php';
     			Skriv in namn eller personnummer på den ansvarige. Personnummer anges på formen ÅÅÅÅMMDD-NNNN. Man kan bara ha en ansvarig vuxen.
     			Om den ansvarige inte går att hitta kommer inte din anmälan att kunna godkännas förrän det är löst.
 				</div>
-				<input class="GuardianInfo" type="text" id="GuardianInfo" name="GuardianInfo" size="100" maxlength="25" >
+				<input class="input_field" type="text" id="GuardianInfo" name="GuardianInfo" size="100" maxlength="200" >
             </div>
 		    
 		    <?php 
@@ -126,7 +117,7 @@ include 'navigation.php';
 				<div class="explanation">Vilka karaktärer vill du spela på lajvet? Avmarkera checkboxen för de karaktärer som inte ska vara med.<br>
 				     En av dina karaktärer är din huvudkaraktär. Vi måste veta vilken.<br>
 				     Andra karaktärer är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
-				     Om du vill spela flera karaktärer så behöver de vara registrerade, så att de finns med i den här listan, innan du gör din anmälan.
+				     Om du vill spela flera karaktärer så behöver de vara skapade, så att de finns med i den här listan, innan du gör din anmälan.
 				</div>
 				<table class="list">
         			<?php 
@@ -296,12 +287,11 @@ include 'navigation.php';
 			<div class="explanation">
 			  	Alla karaktärer ska godkännas. Du kommer att får ett mail när någon i arrangörsgruppen har 
 			  	läst igenom din karaktär och godkänt den. Om den inte blir godkänd kommer du att få möjlighet 
-			  	att ändra karaktären i samarbete med arrangörerna. Nu när du skickar in den är den så klart 
-			  	ännu inte godkänd och därför kan du bara välja 'Nej'.
+			  	att ändra karaktären i samarbete med arrangörerna.
 			  
 			</div>
-			<input type="radio" name="approval" value="" required />
-  			<label for="approval">Nej</label> 
+			<input type="checkbox" id="approval" name="approval" value="" required>
+  			<label for="approval">Jag förstår</label> 
 			</div>
 
 

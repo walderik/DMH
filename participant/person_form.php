@@ -194,9 +194,9 @@
 			<div class="question">
 			<label for="PUL">GDPR</label> <font style="color:red">*</font><br>
 			<div class="explanation">Härmed samtycker jag till att föreningen Berghems
-			Vänner får hantera och lagra mina uppgifter - såsom namn/
-			e-postadress/telefonnummer/hälsouppgifter/annat. Detta för att kunna
-			arrangera lajvet. <br>Den rättsliga grunden för personuppgiftsbehandlingen är att du ger ditt samtycke.&nbsp;</div>
+			Vänner får hantera och lagra mina uppgifter - såsom namn,
+			e-postadress, telefonnummer, hälsouppgifter och annat. Detta för att kunna
+			arrangera lajvet. <br>Den rättsliga grunden för personuppgiftsbehandlingen är att du ger ditt samtycke.</div>
 			
 			
 			

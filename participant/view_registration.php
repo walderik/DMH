@@ -2,18 +2,7 @@
 
 include_once 'header.php';
 
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id'])) {
-        $PersonId = $_GET['id'];
-    }
-    else {
-        header('Location: index.php');
-        exit;
-    }
-}
-
-$person = Person::loadById($PersonId);
+$person = $current_person;
 
 
 
