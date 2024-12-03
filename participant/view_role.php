@@ -34,28 +34,35 @@ if (isset($role->GroupId)) {
 
 include 'navigation.php';
 ?>
+	<div class='itemselector'>
+		<div class="header">
 
-	<div class="content">
-		<h1><?php echo $role->Name;?>
-		<a href='character_sheet.php?id=<?php echo $role->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för <?php echo $role->Name;?>'></i></a>
-		</h1>
-		<div>
+			<i class="fa-solid fa-person"></i>
+			<?php echo $role->Name;?>
+		</div>
+	   		<div class='itemcontainer'>
+
+    		<?php 
+    		if ($role->hasImage()) {
+    		    
+    		    $image = Image::loadById($role->ImageId);
+    		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
+    		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+    		}
+    		?>
+			</div>
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Godkänd</div>
+			<?php echo ja_nej($role->isApproved());?>
+			</div>
 		
-		<table>
-			<tr><td valign="top" class="header">Godkänd</td><td><?php echo showStatusIcon($role->isApproved())." ". ja_nej($role->isApproved()) ?></td><tr>
-					<tr><td valign="top" class="header">Spelas av</td><td><?php echo $person->Name; ?></td>
-		<?php 
-		if ($role->hasImage()) {
-		    
-		    $image = Image::loadById($role->ImageId);
-		    echo "<td rowspan='20' valign='top'>";
-		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
-		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-		    echo "</td>";
-		}
-		?>
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Spelas av</div>
+			<?php echo $person->Name;?>
+			</div>
 			
-			</tr>
+
 		<?php if (isset($group)) {?>
 			   <div class='itemcontainer'>
                <div class='itemname'>Grupp</div>
@@ -64,25 +71,25 @@ include 'navigation.php';
 				</div>
 		<?php }?>
 
-			   <div class='itemcontainer'>
-               <div class='itemname'>Grupp</div>
-				<?php echo $role->Profession;?>
-				</div>
-				
-			   <div class='itemcontainer'>
-               <div class='itemname'>Beskrivning</div>
-			   <?php echo nl2br($role->Description);?>
-			   </div>
+		   <div class='itemcontainer'>
+           <div class='itemname'>Grupp</div>
+			<?php echo $role->Profession;?>
+			</div>
+			
+		   <div class='itemcontainer'>
+           <div class='itemname'>Beskrivning</div>
+		   <?php echo nl2br($role->Description);?>
+		   </div>
 
-			   <div class='itemcontainer'>
-               <div class='itemname'>Beskrivning för gruppen</div>
-				<?php echo nl2br($role->DescriptionForGroup);?>
-				</div>
-				
-			   <div class='itemcontainer'>
-               <div class='itemname'>Beskrivning för andra</div>
-			   <?php echo nl2br($role->DescriptionForOthers);?>
-			   </div>
+		   <div class='itemcontainer'>
+           <div class='itemname'>Beskrivning för gruppen</div>
+			<?php echo nl2br($role->DescriptionForGroup);?>
+			</div>
+			
+		   <div class='itemcontainer'>
+           <div class='itemname'>Beskrivning för andra</div>
+		   <?php echo nl2br($role->DescriptionForOthers);?>
+		   </div>
 
 			<?php if (Race::isInUse($current_larp)) {?>
 			   <div class='itemcontainer'>
@@ -134,55 +141,106 @@ include 'navigation.php';
 			<?php }?>
 			
 			<?php if (Ability::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Kunskaper</td><td><?php echo commaStringFromArrayObject($role->getAbilities());?></td></tr>
-			<tr><td valign="top" class="header">Kunskaper förklaring</td><td><?php echo $role->AbilityComment;?></td></tr>
+				<div class='itemcontainer'>
+               	<div class='itemname'>Kunskaper</div>
+    			<?php echo commaStringFromArrayObject($role->getAbilities());?>		   
+				</div>
+			
+			   <div class='itemcontainer'>
+               <div class='itemname'>Kunskaper förklaring</div>
+			   <?php echo $role->AbilityComment;?>
+			   </div>
 			<?php }?>			
 			
 			<?php if (Religion::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Religion</td><td>
-			<?php 
-			$religion = $role->getReligion();
-			if (!empty($religion)) echo $religion->Name;
-			?>
-			</td></tr>
-			<tr><td valign="top" class="header">Religion förklaring</td><td><?php echo $role->Religion;?></td></tr>
+				<div class='itemcontainer'>
+               	<div class='itemname'>Religion</div>
+    			<?php 
+    			$religion = $role->getReligion();
+    			if (!empty($religion)) echo $religion->Name;
+    			?>			   
+				</div>
+			
+			   <div class='itemcontainer'>
+               <div class='itemname'>Religion förklaring</div>
+			   <?php echo $role->Religion;?>
+			   </div>
 			<?php }?>
 
+		   <div class='itemcontainer'>
+           <div class='itemname'>Mörk hemlighet</div>
+		   <?php echo $role->DarkSecret;?>
+		   </div>
+
+		   <div class='itemcontainer'>
+           <div class='itemname'>Mörk hemlighet - intrig idéer</div>
+		   <?php echo nl2br($role->DarkSecretIntrigueIdeas);?>
+		   </div>
 			
-			<tr><td valign="top" class="header">Mörk hemlighet</td><td><?php echo $role->DarkSecret;?></td></tr>
-			<tr><td valign="top" class="header">Mörk hemlighet - intrig idéer</td><td><?php echo nl2br($role->DarkSecretIntrigueIdeas); ?></td></tr>
+			
 			
 			<?php if (IntrigueType::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($role->getIntrigueTypes());?></td></tr>
+				<div class='itemcontainer'>
+               	<div class='itemname'>Intrigtyper</div>
+    			<?php echo commaStringFromArrayObject($role->getIntrigueTypes());?>		   
+				</div>
 			<?php }?>
-			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo nl2br($role->IntrigueSuggestions); ?></td></tr>
-			<tr><td valign="top" class="header">Saker karaktären inte vill spela på</td><td><?php echo $role->NotAcceptableIntrigues;?></td></tr>
-			<tr><td valign="top" class="header">Relationer med andra</td><td><?php echo $role->CharactersWithRelations;?></td></tr>
-			<tr><td valign="top" class="header">Annan information</td><td><?php echo $role->OtherInformation;?></td></tr>
-			
+
+		   <div class='itemcontainer'>
+           <div class='itemname'>Intrigidéer</div>
+		   <?php echo nl2br($role->IntrigueSuggestions);?>
+		   </div>
+
+		   <div class='itemcontainer'>
+           <div class='itemname'>Saker karaktären inte vill spela på</div>
+		   <?php echo nl2br($role->NotAcceptableIntrigues);?>
+		   </div>
+
+		   <div class='itemcontainer'>
+           <div class='itemname'>Relationer med andra</div>
+		   <?php echo nl2br($role->CharactersWithRelations);?>
+		   </div>
+
 			<?php if (Wealth::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Rikedom</td><td>
-			<?php 
-			$wealth = $role->getWealth();
-			if (!empty($wealth)) echo $wealth->Name;
-			?>
-			</td></tr>
+				<div class='itemcontainer'>
+               	<div class='itemname'>Religion</div>
+    			<?php 
+    			$wealth = $role->getWealth();
+    			if (!empty($wealth)) echo $wealth->Name;
+    			?>			   
+				</div>
 			<?php } ?>
-			<tr><td valign="top" class="header">Var är karaktären född?</td><td><?php echo $role->Birthplace;?></td></tr>
+			
+		   <div class='itemcontainer'>
+           <div class='itemname'>Var är karaktären född?</div>
+		   <?php echo $role->Birthplace;?>
+		   </div>
 			
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Var bor karaktären?</td><td>
-			<?php 
-			$por = $role->getPlaceOfResidence();
-			if (!empty($por)) echo $por->Name;
-			?>
-			</td></tr>
+				<div class='itemcontainer'>
+               	<div class='itemname'>Var bor karaktären?</div>
+    			<?php 
+    			$por = $role->getPlaceOfResidence();
+    			if (!empty($por)) echo $por->Name;
+    			?>			   
+				</div>
 			<?php } ?>
+
+		   <div class='itemcontainer'>
+           <div class='itemname'>Annan information</div>
+		   <?php echo nl2br($role->OtherInformation);?>
+		   </div>
+
 		<?php }?>
-		</table>		
 		</div>
-		<h2>Intrig</h2>
-		<div>
+		
+		
+		<div class='itemselector'>
+		<div class="header">
+
+			<i class="fa-solid fa-scroll"></i> Intrig
+		</div>
+			<div class='itemcontainer'>
 			<?php if ($current_larp->isIntriguesReleased()) {
 			    echo "<p>".nl2br($larp_role->Intrigue) ."</p>"; 
 			    
@@ -406,12 +464,21 @@ include 'navigation.php';
 			    echo "Intrigerna är inte klara än.";
 			}
 			?>
+			</div>
 		</div>
 		<?php 
 		$previous_larps = $role->getPreviousLarps();
-		if (isset($previous_larps) && count($previous_larps) > 0 || !empty($role->PreviousLarps)) {
+		if (isset($previous_larps) && count($previous_larps) > 0 || !empty($role->PreviousLarps)) { 
+		    ?>
 		    
-		    echo "<h2>Historik</h2>";
+		    <div class='itemselector'>
+		    <div class="header">
+		    
+		    <i class="fa-solid fa-landmark"></i> Historik
+		    </div>
+		    <div class='itemcontainer'>
+		    
+		   <?php 
 		    foreach ($previous_larps as $prevoius_larp) {
 		        $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
 		        echo "<div class='border'>";
@@ -434,14 +501,16 @@ include 'navigation.php';
 		            }
 		        }
 		        
-		        echo "<br><strong>Vad hände för $role->Name?</strong><br>";
+		        echo "<p><strong>Vad hände för $role->Name?</strong><br>";
 		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
 		            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappened));
-		            else echo "Inget rapporterat";
-	            echo "<br><strong>Vad hände för andra?</strong><br>";
+	            else echo "Inget rapporterat";
+	            echo "</p>";
+	            echo "<p><strong>Vad hände för andra?</strong><br>";
 	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
 	                echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
-	                else echo "Inget rapporterat";
+                else echo "Inget rapporterat";
+                echo "</p>";
 	            echo "</div>";
 		                
 		    }
@@ -455,6 +524,7 @@ include 'navigation.php';
 			
 			
 		?>
+		</div>
 	</div>
 
 

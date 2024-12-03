@@ -3,7 +3,8 @@
 <head>
 
 	<link href="../css/navigation_participant.css" rel="stylesheet" type="text/css">
-
+	<link href='../css/participant_style.css' rel='stylesheet' type='text/css'>
+	
 	<?php 
 	include '../common/navigation_beginning.php';
 	$all_persons = $current_user->getPersons();
