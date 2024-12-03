@@ -57,40 +57,80 @@ include 'navigation.php';
 			
 			</tr>
 		<?php if (isset($group)) {?>
-			<tr><td valign="top" class="header">Grupp</td><td><?php echo $group->getViewLink() ?></td></tr>
+			   <div class='itemcontainer'>
+               <div class='itemname'>Grupp</div>
+		
+				<?php echo $group->getViewLink() ?>
+				</div>
 		<?php }?>
-			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
-			<tr><td valign="top" class="header">Yrke</td><td><?php echo $role->Profession;?></td></tr>
-			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br($role->Description);?></td></tr>
-			<tr><td valign="top" class="header">Beskrivning för gruppen</td><td><?php echo nl2br($role->DescriptionForGroup);?></td></tr>
-			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo nl2br($role->DescriptionForOthers);?></td></tr>
+
+			   <div class='itemcontainer'>
+               <div class='itemname'>Grupp</div>
+				<?php echo $role->Profession;?>
+				</div>
+				
+			   <div class='itemcontainer'>
+               <div class='itemname'>Beskrivning</div>
+			   <?php echo nl2br($role->Description);?>
+			   </div>
+
+			   <div class='itemcontainer'>
+               <div class='itemname'>Beskrivning för gruppen</div>
+				<?php echo nl2br($role->DescriptionForGroup);?>
+				</div>
+				
+			   <div class='itemcontainer'>
+               <div class='itemname'>Beskrivning för andra</div>
+			   <?php echo nl2br($role->DescriptionForOthers);?>
+			   </div>
 
 			<?php if (Race::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Ras</td><td>
-			<?php 
-			$race = $role->getRace();
-			if (!empty($race)) echo $race->Name;
-			?>
-			</td></tr>
-			<tr><td valign="top" class="header">Kommentar till ras</td><td><?php echo $role->RaceComment;?></td></tr>
+			   <div class='itemcontainer'>
+               <div class='itemname'>Ras</div>
+    			<?php 
+    			$race = $role->getRace();
+    			if (!empty($race)) echo $race->Name;
+    			?>			   
+				</div>
+			
+			   <div class='itemcontainer'>
+               <div class='itemname'>Kommentar till ras</div>
+			   <?php echo $role->RaceComment;?>
+			   </div>
 			<?php } ?>
 
 		<?php if (!$role->isMysLajvare()) {?>
 		
 			<?php if (LarperType::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Typ av lajvare</td><td>
-			<?php 
-			$larpertype = $role->getLarperType();
-			if (!empty($larpertype)) echo $larpertype->Name;
-			?>
-			</td></tr>
-			<tr><td valign="top" class="header">Kommentar till typ av lajvare</td><td><?php echo $role->TypeOfLarperComment;?></td></tr>
+				<div class='itemcontainer'>
+               	<div class='itemname'>Typ av lajvare</div>
+    			<?php 
+    			$larpertype = $role->getLarperType();
+    			if (!empty($larpertype)) echo $larpertype->Name;
+    			?>			   
+				</div>
+			
+			   <div class='itemcontainer'>
+               <div class='itemname'>Kommentar till typ av lajvare</div>
+			   <?php echo $role->TypeOfLarperComment;?>
+			   </div>
 			<?php } ?>
-			<tr><td valign="top" class="header">Varför befinner sig karaktären på platsen?</td><td><?php echo $role->ReasonForBeingInSlowRiver;?></td></tr>
+
+		   <div class='itemcontainer'>
+           <div class='itemname'>Varför befinner sig karaktären på platsen?</div>
+		   <?php echo nl2br($role->ReasonForBeingInSlowRiver);?>
+		   </div>
 			
 			<?php if (RoleFunction:: isInUse($current_larp)) {?>
-				<tr><td valign="top" class="header">Funktioner</td><td><?php echo commaStringFromArrayObject($role->getRoleFunctions());?></td></tr>
-				<tr><td valign="top" class="header">Funktioner förklaring</td><td><?php echo $role->RoleFunctionComment;?></td></tr>
+				<div class='itemcontainer'>
+               	<div class='itemname'>Funktioner</div>
+    			<?php echo commaStringFromArrayObject($role->getRoleFunctions());?>		   
+				</div>
+			
+			   <div class='itemcontainer'>
+               <div class='itemname'>Funktioner förklaring</div>
+			   <?php echo $role->RoleFunctionComment;?>
+			   </div>
 			<?php }?>
 			
 			<?php if (Ability::isInUse($current_larp)) {?>
