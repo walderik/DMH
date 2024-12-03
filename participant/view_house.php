@@ -87,6 +87,7 @@ ul.list {
     				}
         			echo "</table>\n";
     			} ?>
+    			<?php if ($current_larp->isHousingReleased()) { ?>
     			<tr>
     				<td colspan = '2'><b>De som bor i huset under <?php echo $current_larp->Name ?> är:</b><br>
     				<p>
@@ -105,6 +106,7 @@ ul.list {
     				</p>
     				</td>
 				</tr>
+				<?php } ?>
     		</table>
     		</td>
     		<?php 
