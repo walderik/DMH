@@ -17,20 +17,20 @@ $registration = Registration::loadByIds($person->Id, $current_larp->Id);
 include 'navigation.php';
 
 ?>
+	<div class='itemselector'>
+		<div class="header">
 
-	<div class="content">
-		<h1><?php echo $person->Name;?></h1>
-		<div>
-		<table>
+			<i class="fa-solid fa-file"></i>
+			Anmälan för <?php echo $person->Name;?>
+		</div>
+   		<div class='itemcontainer'>
 		    <?php 
 		    if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		    ?>
-			<tr><td valign="top" class="header">Ansvarig vuxen</td><td>
-			
-			<?php if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name; else echo showStatusIcon(false); ?>
-			
-			</td></tr>
-		    
+    	   		<div class='itemcontainer'>
+               	<div class='itemname'>Ansvarig vuxen</div>
+				<?php if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name; else echo showStatusIcon(false); ?>
+    			</div>
 		    <?php 
 		    }
 		    ?>
@@ -38,59 +38,90 @@ include 'navigation.php';
 		    <?php 
 		    $minors = $person->getGuardianFor($current_larp);
 		    if (!empty($minors)) {
-    			echo "<tr><td valign='top' class='header'>Ansvarig för</td><td>";
-    			$minor_str_arr = array();
-    			foreach ($minors as $minor) {
-    			     $minor_str_arr[] = "<a href='view_registration.php?id=".$minor->Id."'>".$minor->Name."</a>";
-    			}
-    			echo implode(", ", $minor_str_arr);
-    			echo "</td></tr>";
+		        echo "<div class='itemcontainer'>";
+		        echo "<div class='itemname'>Ansvarig vuxen för</div>";
+		        $minor_str_arr = array();
+		        foreach ($minors as $minor) {
+		            $minor_str_arr[] = "<a href='view_registration.php?id=".$minor->Id."'>".$minor->Name."</a>";
+		        }
+		        echo implode(", ", $minor_str_arr);
+		        echo "</div>";
 		    }
 		    ?>
 
-
-
 			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Typ av mat</td><td><?php echo TypeOfFood::loadById($registration->TypeOfFoodId)->Name;?></td></tr>
+    	   		<div class='itemcontainer'>
+               	<div class='itemname'>Typ av mat</div>
+				<?php echo TypeOfFood::loadById($registration->TypeOfFoodId)->Name;?>
+    			</div>
 			<?php } ?>
+
 			<?php if (isset($registration->FoodChoice)) { ?>
-			    <tr><td valign="top" class="header">Matalternativ</td><td><?php echo $registration->FoodChoice; ?></td></tr>
-			    
+	   	   		<div class='itemcontainer'>
+               	<div class='itemname'>Matalternativ</div>
+				<?php echo $registration->FoodChoice; ?>
+    			</div>
 			<?php } ?>
-			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $registration->NPCDesire;?></td></tr>
-			
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>NPC önskemål</div>
+			<?php echo $registration->NPCDesire;?>
+			</div>
+
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Önskat boende</td>
-				<td>
+	   	   		<div class='itemcontainer'>
+               	<div class='itemname'>Önskat boende</div>
 				<?php 
 				    $housingrequest = $registration->getHousingRequest();
-				    if(!empty($housingrequest)) echo $housingrequest->Name;?>
-			    </td></tr>
-			<?php } ?>
-			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo nl2br(htmlspecialchars($registration->LarpHousingComment)); ?></td></tr>
-			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentType)); ?></td></tr>
-			<tr><td valign="top" class="header">Storlek på tält</td><td><?php echo nl2br(htmlspecialchars($registration->TentSize)); ?></td></tr>
-			<tr><td valign="top" class="header">Vilka ska bo i tältet</td><td><?php echo nl2br(htmlspecialchars($registration->TentHousing)); ?></td></tr>
-			<tr><td valign="top" class="header">Önskad placering</td><td><?php echo nl2br(htmlspecialchars($registration->TentPlace)); ?></td></tr>
-			
-			<?php if (OfficialType::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Funktionärsönskemål</td><td><?php echo commaStringFromArrayObject($registration->getOfficialTypes());?></td></tr>
+				    if(!empty($housingrequest)) echo $housingrequest->Name;
+			    ?>
+    			</div>
 			<?php } ?>
 
-			<tr><td valign="top" class="header">Anmälda karaktärer</td>
-			<td>
-				<?php 
-				$roles = $person->getRolesAtLarp($current_larp);
-				foreach($roles as $role) {
-				    echo $role->getViewLink();
-				    if ($role->isMain($current_larp)) echo " (Huvudkaraktär)";
-				    echo "<br>";
-				}
-				
-				 ?>
-			</td>
-			</tr>
-		</table>	
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Boendehänsyn</div>
+			<?php echo nl2br(htmlspecialchars($registration->LarpHousingComment)); ?>
+			</div>
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Typ av tält</div>
+			<?php echo nl2br(htmlspecialchars($registration->TentType)); ?>
+			</div>
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Storlek på tält</div>
+			<?php echo nl2br(htmlspecialchars($registration->TentSize)); ?>
+			</div>
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Vilka ska bo i tältet</div>
+			<?php echo nl2br(htmlspecialchars($registration->TentHousing)); ?>
+			</div>
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Önskad placering</div>
+			<?php echo nl2br(htmlspecialchars($registration->TentPlace)); ?>
+			</div>
+
+			<?php if (OfficialType::isInUse($current_larp)) { ?>
+	   	   		<div class='itemcontainer'>
+               	<div class='itemname'>Funktionärsönskemål</div>
+				<?php echo commaStringFromArrayObject($registration->getOfficialTypes());?>
+    			</div>
+			<?php } ?>
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Anmälda karaktärer</div>
+			<?php 
+			$roles = $person->getRolesAtLarp($current_larp);
+			foreach($roles as $role) {
+			    echo $role->getViewLink();
+			    if ($role->isMain($current_larp)) echo " (Huvudkaraktär)";
+			    echo "<br>";
+			}
+			
+			 ?>
+			</div>
 		</div>	
 	</div>
 
