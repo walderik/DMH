@@ -68,7 +68,7 @@ class AccessControl extends Dbh {
     public static function isMoreThanParticipant(Person $person, LARP $larp) {
         if (static::hasAccessLarp($person, $larp)) return true;
         foreach (AccessControl::ACCESS_TYPES as $key => $value) {
-            if (static::hasAccessOther($person->Id, $key)) return true;
+            if (static::hasAccessOther($person, $key)) return true;
         }
         return false;
     }
@@ -81,7 +81,7 @@ class AccessControl extends Dbh {
     }
     
     public static function hasAccessLarp(Person $person, LARP $larp) {
-        if (static::hasAccessCampaign($person->Id, $larp->CampaignId)) return true;
+        if (static::hasAccessCampaign($person, $larp->CampaignId)) return true;
         
         $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_larp WHERE ".
             "regsys_access_control_larp.PersonId = ? AND ".
