@@ -29,6 +29,14 @@ $current_user->Password = null;
 // If the user has not chosen a larp, and is not on the choose larp page or the larp admin pages
 $url = $_SERVER['REQUEST_URI'];
 
+//Man måste välja person först
+if (!isset($current_person) && strpos($url, "participant/index.php") == false) {
+    header('Location: ../participant/index.php');
+    exit;
+}
+
+//Och lajv 
+//TODO man borde kunna gå till OM admin, styrelse och hus & läger utan att ha valt lajv.
 if (!isset($_SESSION['larp']) && strpos($url, "choose_larp.php") == false && strpos($url, "participant/index.php") == false && strpos($url, "larp_admin.php") == false && strpos($url, "larp_form.php") == false) {
     header('Location: ../participant/index.php');
     exit;
