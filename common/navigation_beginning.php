@@ -29,7 +29,7 @@
     	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show"><?php echo $current_larp->Name;?></a>
     	<?php } else {?>
     	<img src="../images/bv.ico" width="30" height="30"/></a>
-    	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show">Välj lajv</a>
+    	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show">Omnes Mundi</a>
     	<?php }?>
     </div>
     <div id="right">

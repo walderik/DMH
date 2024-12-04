@@ -29,8 +29,8 @@ $current_user->Password = null;
 // If the user has not chosen a larp, and is not on the choose larp page or the larp admin pages
 $url = $_SERVER['REQUEST_URI'];
 
-if (!isset($_SESSION['larp']) && strpos($url, "choose_larp.php") == false && strpos($url, "populater.php") == false && strpos($url, "larp_admin.php") == false && strpos($url, "larp_form.php") == false) {
-    header('Location: ../participant/choose_larp.php');
+if (!isset($_SESSION['larp']) && strpos($url, "choose_larp.php") == false && strpos($url, "participant/index.php") == false && strpos($url, "larp_admin.php") == false && strpos($url, "larp_form.php") == false) {
+    header('Location: ../participant/index.php');
     exit;
 }
 

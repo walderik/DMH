@@ -633,7 +633,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
     
     # Skriv bara ut intriger och rykten
     function intrigue_info(Role $role_in, LARP $larp_in){
-        global $current_user, $x, $y, $left, $left2, $mitten;
+        global $current_person, $x, $y, $left, $left2, $mitten;
         
         $this->role = $role_in;
         $this->person = $this->role->getPerson();
@@ -646,7 +646,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->isReserve = Reserve_LARP_Role::isReserve($this->role->Id, $this->larp->Id);
         
         # Säkerställer att bara arrngörer någonsin kan få se all info om en karaktär
-        if (!(AccessControl::hasAccessLarp($current_user, $larp_in))) return;
+        if (!(AccessControl::hasAccessLarp($current_person, $larp_in))) return;
         
         $left = static::$x_min + static::$Margin;
         $x = $left;
@@ -676,7 +676,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
     }
     
     function new_character_sheet(Role $role_in, LARP $larp_in, bool $all_information=false, $no_history = false) {
-        global $current_user, $x, $y, $left, $left2, $mitten;
+        global $current_person, $x, $y, $left, $left2, $mitten;
         $space = 3;
         
         $this->role = $role_in;
@@ -691,7 +691,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->isReserve = Reserve_LARP_Role::isReserve($this->role->Id, $this->larp->Id);
         
         # Säkerställer att bara arrngörer någonsin kan få se all info om en karaktär
-        if ($this->all && !(AccessControl::hasAccessLarp($current_user, $larp_in))) $this->all = false;
+        if ($this->all && !(AccessControl::hasAccessLarp($current_person, $larp_in))) $this->all = false;
         
         $left = static::$x_min + static::$Margin;
         $x = $left;

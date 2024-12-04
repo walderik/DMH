@@ -95,7 +95,7 @@ include "navigation.php";
 	    </table>
 		</div>
 		<br>&nbsp;<br>
-		<?php if (AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) {
+		<?php if (AccessControl::hasAccessCampaign($current_person, $current_larp->CampaignId)) {
 		    
 		    echo "<a href='https://docs.google.com/document/d/1kcoqIp-dVs_CMS2AyKYlyw8gR9mmQV2KiLpSqfazMBU/edit' target='_blank'>Synpunktsdokumentet</a>";
 		}

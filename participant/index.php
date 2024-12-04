@@ -1,49 +1,13 @@
 <?php
 require 'header.php';
+
+$_SESSION['navigation'] = Navigation::PARTICIPANT;
+$isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
+
+include 'navigation.php';
 ?>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="../css/navigation_participant.css" rel="stylesheet"
-	type="text/css">
-<link rel="stylesheet"
-	href="https://use.fontawesome.com/releases/v6.6.0/css/all.css">
-<link href="../css/style.css" rel="stylesheet" type="text/css">
-<link href="../css/gallery.css" rel="stylesheet" type="text/css">
-<link href='../css/participant_style.css' rel='stylesheet' type='text/css'>
-
-<title>Omnes Mundi</title>
-</head>
-<body>
-	<div class="topnav" id="myTopnav">
-		<div id="left">
-			<a href="#home" target="_blank" style="padding: 11px 5px 11px 5px;"
-				class="always_show"> 
-				<img src="../images/bv.ico" width="30"
-				height="30" />
-			</a> 
-			
-			<span style="padding: 11px 5px 11px 5px; font-size: 5vw; color: white">
-				<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show">Omnes Mundi</a>
-			</span>
-		</div>
-		<div id="right">
-			<a href="javascript:void(0);" style="font-size: 15px;" class="icon"
-				onclick="myFunction()">&#9776;</a>
-
-		</div>
-	</div>
 
 	<script>
-function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
-
-
 function morelessFunction() {
   var moreText = document.getElementById("more");
   var morelesstxt = document.getElementById("morelesstxt");
@@ -104,8 +68,13 @@ function openTab(evt, tabName) {
 	        $_SESSION['PersonId'] = $current_person->Id;
 	    }
 	    
-	    $groups = Group::getGroupsForPerson($current_person->Id, $current_larp->CampaignId);
-	    $roles = $current_person->getRoles($current_larp);
+	    if (isset($current_larp)) {
+    	    $groups = Group::getGroupsForPerson($current_person->Id, $current_larp->CampaignId);
+    	    $roles = $current_person->getRoles($current_larp);
+	    } else {
+	        $groups = array();
+	        $roles = array();
+	    }
 	    
 	    //Först den aktiva personen
 	    $item = "<div class='itemcontainer'>";
@@ -124,8 +93,10 @@ function openTab(evt, tabName) {
     	foreach ($persons as $person) {
     	    if ($person->Id == $current_person->Id) continue;
     	    $item = "<div class='itemcontainer'>";
-     	    $item .= "<form method='post' action='logic/select_person.php'><input type='radio' onclick='submit()' id='PersonId_$person->Id' name='PersonId' value='$person->Id> ";
-     	    $item .=  "<label for='PersonId_$person->Id'>$person->Name</label></form>";
+     	    $item .= "<form method='post' action='logic/select_person.php'>";
+     	    $item .= "<input type='radio' onclick='submit()' id='PersonId_$person->Id' name='PersonId' value='$person->Id> ";
+     	    $item .= "<label for='PersonId_$person->Id'>$person->Name</label>";
+     	    $item .= "</form>";
      	    $item .=  "</div>";
      	    $items[] = $item;
     	}
@@ -165,35 +136,35 @@ function openTab(evt, tabName) {
 		</div>
 		<?php if (isset($current_larp)) {
 		  echo "<div class='itemcontainer itemname'>$current_larp->Name</div>";
-		}
 
-		if ($current_larp->isEnded()) {
-		    echo "<div class='larpinfo'><span>Lajvet är över.</span>";
-		    help_icon("Hoppas att du hade roligt. Gå gärna och och skriv vad som hände.");
-		    echo "</div>";
-		}elseif ($current_larp->isPastLatestRegistrationDate() && !$current_larp->mayRegister()) {
-		    echo "<div class='larpinfo'><span>Sista anmälningsdag har passerat</span>";
-		    echo "</div>";
-		} elseif ($current_larp->isPastLatestRegistrationDate()) {
-		    echo "<div class='larpinfo'><span>Sista anmälningsdag har passerat</span>";
-		    help_icon("Du kan göra en anmälan så att du hamnar på reservlistan. Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.");
-		    echo "</div>";
-		} elseif ($current_larp->isFull() && $current_larp->RegistrationOpen == 0) {
-		    
-		    echo "<div class='larpinfo'><span>Anmälan är stängd</span>";
-		    echo "</div>";
-		} elseif ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
-		    
-		    echo "<div class='larpinfo'><span>Lajvet är fullt.</span>";
-		    help_icon("Du kan göra en anmälan så att du hamnar på reservlistan. Om någon annan avbokar kan du kanske få en plats. Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.");
-		    echo "</div>";
-		} elseif ($current_larp->RegistrationOpen == 0) {
-		    
-		    echo "<div class='larpinfo'><span>Anmälan inte öppen</span>";
-		    help_icon("Du kan registrera deltagare, grupper och karaktärer i väntan på att anmälan ska öppna. OBS! En karaktär kan bara bli medlem i en grupp om den är anmäld. Så det får du editera efter att anmälan har öppnat. Men övrig information kan du fylla i så länge.");
-		    echo "</div>";
+
+    		if ($current_larp->isEnded()) {
+    		    echo "<div class='larpinfo'><span>Lajvet är över.</span>";
+    		    help_icon("Hoppas att du hade roligt. Gå gärna och och skriv vad som hände.");
+    		    echo "</div>";
+    		}elseif ($current_larp->isPastLatestRegistrationDate() && !$current_larp->mayRegister()) {
+    		    echo "<div class='larpinfo'><span>Sista anmälningsdag har passerat</span>";
+    		    echo "</div>";
+    		} elseif ($current_larp->isPastLatestRegistrationDate()) {
+    		    echo "<div class='larpinfo'><span>Sista anmälningsdag har passerat</span>";
+    		    help_icon("Du kan göra en anmälan så att du hamnar på reservlistan. Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.");
+    		    echo "</div>";
+    		} elseif ($current_larp->isFull() && $current_larp->RegistrationOpen == 0) {
+    		    
+    		    echo "<div class='larpinfo'><span>Anmälan är stängd</span>";
+    		    echo "</div>";
+    		} elseif ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {
+    		    
+    		    echo "<div class='larpinfo'><span>Lajvet är fullt.</span>";
+    		    help_icon("Du kan göra en anmälan så att du hamnar på reservlistan. Om någon annan avbokar kan du kanske få en plats. Arrangörerna väljer vilka som plockas in. Vilken plats man har på reservlistan spelar ingen roll.");
+    		    echo "</div>";
+    		} elseif ($current_larp->RegistrationOpen == 0) {
+    		    
+    		    echo "<div class='larpinfo'><span>Anmälan inte öppen</span>";
+    		    help_icon("Du kan registrera deltagare, grupper och karaktärer i väntan på att anmälan ska öppna. OBS! En karaktär kan bara bli medlem i en grupp om den är anmäld. Så det får du editera efter att anmälan har öppnat. Men övrig information kan du fylla i så länge.");
+    		    echo "</div>";
+    		}
 		}
-		
 		
 		
 		?>
@@ -483,7 +454,7 @@ function openTab(evt, tabName) {
 
             
             //Utvärdering
-            if ($current_larp->isEnded() && !(AccessControl::hasAccessLarp($current_user, $current_larp) && (sizeof($persons) == 1 || $current_user->Name==$person->Name))) {
+            if ($current_larp->isEnded() && !(AccessControl::hasAccessLarp($current_person, $current_larp))) {
        
                 echo "<div class='itemcontainer'>";
                 echo "<div class='itemname'>Utvärdering</div>";

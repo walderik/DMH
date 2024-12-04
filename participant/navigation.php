@@ -18,6 +18,8 @@
 	}
     ?>
 
+  <?php if (isset($current_larp)) {?>	
+
 	  <div class="dropdown">
 	    <button class="dropbtn">Registrera 
 	      <i class="fa fa-caret-down"></i>
@@ -28,8 +30,9 @@
 	      <a href="group_form.php">Grupp</a>
 	    </div>
 	  </div> 
+    <?php }?>
 	
-  <?php if ($current_larp->mayRegister()) {?>	
+  <?php if (isset($current_larp) && $current_larp->mayRegister()) {?>	
 	  <div class="dropdown">
 	    <button class="dropbtn">Anmäl 
 	      <i class="fa fa-caret-down"></i>

@@ -210,7 +210,7 @@ div.border
     			 
     			 
     			 
-    			 if (AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) {
+    			 if (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)) {
     			     echo "<h3>OM Admin</h3>";
     			     echo "<p>Eftersom du är OM admin har du tillgång till alla lajv.</p>";
     			     echo "<form action='../includes/set_larp.php' method='POST'>";
