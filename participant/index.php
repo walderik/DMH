@@ -185,7 +185,10 @@ function openTab(evt, tabName) {
 	    echo "<button class='tablinks' ";
 	    if (!$registration->hasSpotAtLarp()) echo "id='defaultOpen' ";
 	    echo "onclick='openTab(event, \"Registration\")'>Anmälan</button>";
-	    if ($registration->hasSpotAtLarp()) echo "<button class='tablinks' id='defaultOpen' onclick='openTab(event, \"BeforeLARP\")'>Inför lajvet</button>";
+	    if ($registration->hasSpotAtLarp()) echo "<button class='tablinks' ";
+	    if ($registration->hasSpotAtLarp() && !$current_larp->isEnded()) echo "id='defaultOpen' ";
+	    echo "onclick='openTab(event, \"BeforeLARP\")'>Inför lajvet</button>";
+	    if ($registration->hasSpotAtLarp() && $current_larp->isEnded()) echo "<button class='tablinks' id='defaultOpen' onclick='openTab(event, \"AfterLARP\")'>Efter lajvet</button>";
 	    echo "</div>";
 	    
 	    
@@ -294,22 +297,6 @@ function openTab(evt, tabName) {
         		}
         		
         		
-        		
-        		if ($role->isRegistered($current_larp) && $current_larp->isEnded()) {
-        		    echo "<a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a> ".
-        		  		    showParticipantStatusIcon($role->hasRegisteredWhatHappened($current_larp), "Inte noterat vad som hände") .
-        		  		    "<br>";
-        		} else {
-        		    
-        		    if ($person->isRegistered($current_larp)) {
-        		        echo "<br>";
-        		        //echo "<td style='font-weight: normal; padding-right: 0px;'>";
-        		        if ($role->isRegistered($current_larp)) echo "Anmäld till lajvet";
-        		        else echo "Inte med på lajvet";
-        		        echo "<br>";
-        		    }
-        		}
-        		
         		echo "</td></tr></table>";
         		echo "</div>\n";
     		}
@@ -400,26 +387,6 @@ function openTab(evt, tabName) {
         
         if (!$current_person->isNotComing($current_larp)) {
 
-            
-            //Utvärdering
-            if ($current_larp->isEnded() && !(AccessControl::hasAccessLarp($current_person, $current_larp))) {
-       
-                echo "<div class='itemcontainer'>";
-                echo "<div class='itemname'>Utvärdering</div>";
-                if ($current_larp->isEvaluationOpen()) {
-                    if ($registration->hasDoneEvaluation()) {
-                        echo showStatusIcon(true);
-                        echo "Utvärderingen är inlämnad";
-                    } elseif ($current_larp->useInternalEvaluation()) {
-                        echo showParticipantStatusIcon(false, "Utvärderingen är inte gjord");
-                        echo "<br><a href='evaluation.php?PersonId=$current_person->Id'>Gör utvärdering";
-                    } else {
-                        echo "<a target='_blank' href='$current_larp->EvaluationLink'>Gör utvärdering (extern länk)";
-                    }
-                } else echo "Utvärderingen öppnar $current_larp->EvaluationOpenDate";
-                echo "</div>\n";
-                
-            }
             
             //Ansvarig vuxen
             if ($current_person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)  {
@@ -864,6 +831,58 @@ function openTab(evt, tabName) {
 	</div>
 	<?php } ?>
 
+	<?php if (!empty($registration) && $registration->hasSpotAtLarp() && $current_larp->isEnded()) { ?>
+	<div id="AfterLARP" class="tabcontent">
+
+		<?php 
+
+            //Utvärdering
+            if ($current_larp->isEnded() && !(AccessControl::hasAccessLarp($current_person, $current_larp))) {
+                echo "<div class='itemselector'>";
+                echo "<div class='header'>";
+                
+                echo "<i class='fa-solid fa-person'></i> Utvärdering</div>";
+
+                
+                echo "<div class='itemcontainer'>";
+
+                if ($current_larp->isEvaluationOpen()) {
+                    if ($registration->hasDoneEvaluation()) {
+                        echo "Utvärderingen är inlämnad";
+                    } elseif ($current_larp->useInternalEvaluation()) {
+                        echo "<a href='evaluation.php?PersonId=$current_person->Id'>Gör utvärdering</a><br>";
+                        echo showParticipantStatusIcon(false, "Utvärderingen är inte gjord");
+
+                    } else {
+                        echo "<a target='_blank' href='$current_larp->EvaluationLink'>Gör utvärdering (extern länk)</a>";
+                    }
+                } else echo "Utvärderingen öppnar $current_larp->EvaluationOpenDate";
+                echo "</div>\n";
+                
+            }
+
+            echo "<div class='itemselector'>";
+            echo "<div class='header'><i class='fa-solid fa-landmark'></i> Vad hände?";
+            help_icon("Skriv in vad som hände så snart som möjligt och så detaljerat som möjligt. Det är till hjälp för dig nästa gång du ska spela karaktären och för arrangörerna när de ska skriva intriger."); 
+            echo "</div>";
+             foreach ($registered_roles as $role) {
+                echo "<div class='itemcontainer borderbottom'>";
+                //Namn på karaktären
+                echo "<div class='itemname'>";
+                echo $role->getViewLink();
+                echo "</div>";
+    		    echo "<a href='larp_report_form.php?roleId=$role->Id'>Vad hände?</a> ";
+    		    if (!$role->hasRegisteredWhatHappened($current_larp))
+    		  		    echo "<br>".showParticipantStatusIcon(false, "Inte noterat vad som hände");
+    
+      		    echo "</div>";
+            }
+            echo "</div>";
+        		
+        		?>
+
+	</div>
+	<?php } ?>
 
 
 

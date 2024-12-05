@@ -814,4 +814,39 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, $larpIds);
     }
     
+    
+    public function isMemberSubdivision($subdivision) {
+        //Kollar om personen har en karaktär som är med i grupperingen
+        if (!isset($subdivision)) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_role, regsys_subdivisionmember WHERE ".
+            "regsys_subdivisionmember.SubdivisionId=? AND ".
+            "regsys_role.Id=regsys_subdivisionmember.RoleId AND ".
+            "regsys_role.PersonId = ?;";
+        
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($subdivision->Id, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+            
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+        
+        
+        if ($res[0]['Num'] == 0) return false;
+        return true;
+    }
+    
+    
+    
+    
 }

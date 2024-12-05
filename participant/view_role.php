@@ -519,13 +519,13 @@ include 'navigation.php';
 		        echo "<div class='border'><h3>Tidigare</h3>";
 		        echo "<p>".nl2br(htmlspecialchars($role->PreviousLarps))."</p></div>";
 		    }
+		    echo "</div>";
+		    echo "</div>";
 		}
 			    
 			
 			
 		?>
-		</div>
-	</div>
 
 
 </body>
