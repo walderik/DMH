@@ -127,7 +127,7 @@ div.border
       			foreach (array_reverse($past_larp_array) as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
-    			     echo "</select>";
+    			     echo "</select> ";
     			     echo '<input type="submit" value="Välj">';
     			     echo "<br><hr>";
     			 }
@@ -164,7 +164,7 @@ div.border
         			 foreach (array_reverse($larps_organizer) as $larp) {
         			     echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
         			 }
-        			 echo "</select>";
+        			 echo "</select> ";
         			 echo '<input type="submit" value="Välj">';
         			 echo "<br><hr>";
         			 echo "</form>";
@@ -183,7 +183,7 @@ div.border
     			     foreach (array_reverse($larps) as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
-    			     echo "</select>";
+    			     echo "</select> ";
     			     echo '<input type="submit" value="Välj">';
     			     echo "<br><hr>";
     			     echo "</form>";
