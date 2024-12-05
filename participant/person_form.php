@@ -10,7 +10,7 @@
         }
         if ($operation == 'new') {
         } elseif ($operation == 'update') {
-            $person = Person::loadById($_GET['id']);           
+            $person = $current_person;          
         } else {
         }
     }
@@ -50,7 +50,7 @@
 ?>
 
 	<div class="content">
-		<h1>Registrering av deltagare</h1>
+		<h1><?php default_value('action'); ?> person</h1>
 		<form action="logic/person_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $person->Id; ?>">
@@ -59,7 +59,7 @@
 
 			<p>
 
-			Vi behöver veta en del saker om dig som person som är skilt från de karaktärer du spelar.<br>
+			Vi behöver veta en del saker om dig som person som är skilt från de karaktärer du spelar. Och som gäller generellt för alla lajv och alla kampanjer.<br>
 			Du kan sjäv redigera de här uppgifterna när något ändrar sig eller om det är något du inte vill att Berghems Vänner ska veta om dig längre. Det enda du inte kan ändra är ditt personnummer. Om du behöver ändra det får du kontakta Berghems Vänner så löser vi det.<br>
 			Kontrollera gärna inför varje lajv att uppgiftera fortfarande stämmer. </p>
 			<h2>Personuppgifter</h2>
