@@ -5,17 +5,14 @@
 	<link href="../css/navigation_participant.css" rel="stylesheet" type="text/css">
 	<link href='../css/participant_style.css' rel='stylesheet' type='text/css'>
 	
-	<?php 
+	<?php
+	
 	include '../common/navigation_beginning.php';
-	$all_persons = $current_user->getPersons();
-	if (!empty($all_persons)) {
-	    foreach ($all_persons as $person1) {	
-	        $houses = $person1->housesOf();
-	        if (!empty($houses)) {
-	            foreach ($houses as $persons_house) echo "<a href='view_house.php?id=$persons_house->Id'>$persons_house->Name</a>";
-	        }
-	    }
-	}
+	
+        $houses = $current_person->housesOf();
+        if (!empty($houses)) {
+            foreach ($houses as $persons_house) echo "<a href='view_house.php?id=$persons_house->Id'>$persons_house->Name</a>";
+        }
     ?>
 
   <?php if (isset($current_larp)) {?>	

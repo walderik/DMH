@@ -255,7 +255,7 @@ function openTab(evt, tabName) {
         		$role_group_name = "Inte med i någon grupp";
         		if (isset($role_group) && $role->isRegistered($current_larp)) {
         		    $role_group_name = $role_group->getViewLink() .
-        		    "<a href='group_sheet.php?id=" . $role_group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $role_group->Name'></i></a>\n";
+        		    " <a href='group_sheet.php?id=" . $role_group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $role_group->Name'></i></a>\n";
         		}
         		elseif (isset($role_group)) {
         		    $role_group_name = "$role_group->Name";
@@ -268,72 +268,20 @@ function openTab(evt, tabName) {
         		    $magician = Magic_Magician::getForRole($role);
         		    echo "<a href='view_magician.php?id=$role->Id'>Magiker</a> ";
         		    echo "<a href='magic_magician_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
-        		    if ($magician->StaffApproved && $magician->hasDoneWorkshop())  echo showStatusIcon(true);
-        		    else {
-        		        if (!$magician->StaffApproved) {
-        		            if ($isMob) echo "<br>";
-        		            echo showParticipantStatusIcon(false, "Staven är inte godkänd");
-        		        }
-        		        if (!$magician->hasDoneWorkshop()) {
-        		            if ($isMob) echo "<br>";
-        		            echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi");
-        		        }
-        		    }
-        		    echo "<br>";
+         		    echo "<br>";
         		}
         		if (Alchemy_Supplier::isSupplier($role)) {
         		    $supplier = Alchemy_Supplier::getForRole($role);
         		    echo "<a href='view_alchemy_supplier.php?id=$role->Id'>Löjverist</a> ";
         		    echo "<a href='alchemy_supplier_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Lövjeristblad för $role->Name'></i></a> ";
-        		    echo " ";
-        		    if ($supplier->allAmountOfIngredientsApproved($current_larp) &&
-        		        $supplier->hasDoneWorkshop() &&
-        		        $supplier->hasIngredientList($current_larp)) echo showStatusIcon(true);
-        		        else {
-        		            if (!$supplier->hasIngredientList($current_larp)) {
-        		                if ($isMob) echo "<br>";
-        		                echo showParticipantStatusIcon(false,"Du har ingen ingredienslista");
-        		            }
-        		            if (!$supplier->allAmountOfIngredientsApproved($current_larp)) {
-        		                if ($isMob) echo "<br>";
-        		                echo showParticipantStatusIcon(false,"Antalet ingredienser är ännu inte godkänt");
-        		            }
-        		            if (!$supplier->hasDoneWorkshop()) {
-        		                if ($isMob) echo "<br>";
-        		                echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om lövjeri");
-        		            }
-        		        }
-        		        echo "<br>";
+    		        echo "<br>";
         		}
         		if (Alchemy_Alchemist::isAlchemist($role)) {
         		    $alchemist = Alchemy_Alchemist::getForRole($role);
         		    echo "<a href='view_alchemist.php?id=$role->Id'>Alkemist</a> ";
         		    echo "<a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
-        		    echo " ";
-        		    $recipes = $alchemist->getRecipes(false);
-        		    if ($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop() &&
-        		        !empty($recipes)) echo showStatusIcon(true);
-        		        else {
-        		            if (empty($recipes)) {
-        		                if ($isMob) echo "<br>";
-        		                echo showParticipantStatusIcon(false, "Din receptlist är tom");
-        		            }
-        		            if (!$alchemist->recipeListApproved()) {
-        		                if ($isMob) echo "<br>";
-        		                echo showParticipantStatusIcon(false,"Din receptlista är inte godkänd, än");
-        		            }
-        		            if (!$alchemist->hasDoneWorkshop()) {
-        		                if ($isMob) echo "<br>";
-        		                echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om alkemi");
-        		            }
-        		        }
-        		        echo "<br>";
+    		        echo "<br>";
         		}
-        		if (Vision::hasVisions($current_larp, $role)) {
-        		    echo "<a href='view_visions.php?id=$role->Id'>Syner</a> ";
-        		    echo "<br>";
-        		}
-        		
         		
         		//Grupperingar
         		$subdivisions = Subdivision::allVisibleForRole($role);
@@ -600,10 +548,319 @@ function openTab(evt, tabName) {
 	<div id="BeforeLARP" class="tabcontent">
 	
 	
+
+	
+	<div class='itemselector'>
+    	<div class="header">
+    	
+    	<i class="fa-solid fa-people-group"></i> Bildgallerier
+    	</div>
+    	<div class='itemcontainer'>
+    		<a href='participants.php' target='_blank'>Deltagare på lajvet</a><br>
+    		<a href='officials.php' target='_blank'>Funktionärer på lajvet</a>
+    	</div>
+	</div>
 	
 	
-  		<h3>Inför lajvet</h3>
-  		<p>Tokyo is the capital of Japan.</p>
+
+	<?php 
+    	//Karaktärer med specialkunskaper
+	    $registered_roles = $current_person->getRolesAtLarp($current_larp);
+        
+    	foreach ($registered_roles as $role) {
+        	if (Magic_Magician::isMagician($role)) {
+        	    echo "<div class='itemselector'>";
+        	    echo "<div class='header'>";
+        	    echo "<a href='view_magician.php?id=$role->Id'><i class='fa-solid fa-wand-sparkles'></i> Magiker $role->Name</a>";
+        	    echo " <a href='magic_magician_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
+        	    echo "</div>";
+        	    
+        	    echo "<div class='itemcontainer'>";
+        	    $magician = Magic_Magician::getForRole($role);
+        	    if ($magician->StaffApproved && $magician->hasDoneWorkshop())  echo "Allt godkänt";
+        	    else {
+        	        if (!$magician->StaffApproved) {
+        	            echo showParticipantStatusIcon(false, "Staven är inte godkänd");
+        	        }
+        	        if (!$magician->hasDoneWorkshop()) {
+        	            echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi");
+        	        }
+        	    }
+        	    echo "</div>";
+        	    echo "</div>";
+        	}
+        	if (Alchemy_Supplier::isSupplier($role)) {
+        	    echo "<div class='itemselector'>";
+        	    echo "<div class='header'>";
+        	    echo "<a href='view_alchemy_supplier.php?id=$role->Id'><i class='fa-solid fa-leaf'></i> Löjverist $role->Name</a>";
+        	    echo " <a href='alchemy_supplier_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Lövjeristblad för $role->Name'></i></a> ";
+        	    echo "</div>";
+        	    
+ 
+        	    echo "<div class='itemcontainer'>";
+        	    $supplier = Alchemy_Supplier::getForRole($role);
+        	    if ($supplier->allAmountOfIngredientsApproved($current_larp) &&
+        	        $supplier->hasDoneWorkshop() &&
+        	        $supplier->hasIngredientList($current_larp)) echo "Allt godkänt";
+    	        else {
+    	            if (!$supplier->hasIngredientList($current_larp)) {
+    	                echo showParticipantStatusIcon(false,"Du har ingen ingredienslista");
+    	            }
+    	            if (!$supplier->allAmountOfIngredientsApproved($current_larp)) {
+    	                echo showParticipantStatusIcon(false,"Antalet ingredienser är ännu inte godkänt");
+    	            }
+    	            if (!$supplier->hasDoneWorkshop()) {
+    	                echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om lövjeri");
+    	            }
+    	        }
+    	        echo "</div>";
+    	        echo "</div>";
+        	}
+        	if (Alchemy_Alchemist::isAlchemist($role)) {
+        	    echo "<div class='itemselector'>";
+        	    echo "<div class='header'>";
+        	    echo "<a href='view_magician.php?id=$role->Id'><i class='fa-solid fa-flask'></i> Alkemist $role->Name</a>";
+        	    echo " <a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
+        	    echo "</div>";
+        	    
+        	    echo "<div class='itemcontainer'>";
+        	    
+        	    $recipes = $alchemist->getRecipes(false);
+        	    if ($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop() &&
+        	        !empty($recipes)) echo "Allt godkänt";
+    	        else {
+    	            if (empty($recipes)) {
+    	                echo showParticipantStatusIcon(false, "Din receptlist är tom");
+    	            }
+    	            if (!$alchemist->recipeListApproved()) {
+    	                echo showParticipantStatusIcon(false,"Din receptlista är inte godkänd, än");
+    	            }
+    	            if (!$alchemist->hasDoneWorkshop()) {
+    	                echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om alkemi");
+    	            }
+    	        }
+    	        echo "</div>";
+    	        echo "</div>";
+        	}
+        	if (Vision::hasVisions($current_larp, $role)) {
+        	    echo "<div class='itemselector'>";
+        	    echo "<div class='header'>";
+        	    echo "<i class='fa-solid fa-eye'></i> Syner för $role->Name";
+        	    echo "</div>";
+        	    
+        	    echo "<div class='itemcontainer'>";
+        	    
+        	    echo "<a href='view_visions.php?id=$role->Id'>Syner</a> ";
+        	    echo "</div>";
+        	    echo "</div>";
+        	}
+        	
+    	}
+    	
+    	
+    	
+    	//NPC'er
+    	$npcs = NPC::getReleasedNPCsForPerson($person, $current_larp);
+    	if (isset($npcs) && count($npcs) > 0) {
+    	    
+    	    echo "<div class='itemselector'>";
+    	    echo "<div class='header'>";
+    	    echo "<i class='fa-solid fa-person'></i> NPC";
+    	    echo "</div>";
+    	    
+
+    	    foreach ($npcs as $npc)  {
+    	        echo "<div class='itemcontainer'>";
+    	        echo "<div class='itemname'><a href='view_npc.php?id=$npc->Id'>$npc->Name</a></div>";
+    	        echo ja_nej($role->isApproved());
+    	        
+    	        
+    	        if ($npc->hasImage()) {
+    	            echo "<img width='30' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
+    	            echo "<a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+    	        }
+    	        else {
+    	            echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+    	        }
+    	        
+    	        
+    	        if ($npc->IsInGroup()) {
+    	            $npc_group = $npc->getNPCGroup();
+    	            echo "<br><a href='view_npc_group.php?id=$npc->NPCGroupId'>$npc_group->Name</a>";
+    	        }
+    	        echo "</div>";
+    	        
+    	        
+    	    }
+    	    echo "</div>";
+    	    
+    	    
+    	}
+    	
+    	
+	  //Annonser	
+      $adtypes = AdvertismentType::allActive($current_larp);
+       if (!empty($adtypes)) {
+           echo "<div class='itemselector'>";
+           echo "<div class='header'>";
+           
+           echo "<i class='fa-solid fa-bullhorn'></i> Annonser";
+           echo "</div>";
+           echo "<div class='itemcontainer'>";
+           
+           
+           echo "<a href='advertisments.php'><b>Se alla annonser</b></i></a>\n";
+           $advertisment_array = $current_user->getAdvertismentsAtLarp($current_larp);
+           if(isset($advertisment_array) && count($advertisment_array) > 0) {
+               echo "<div>\n";
+               echo "<b>Annonser skapade av $current_user->Name:</b><br>\n";
+               echo "<table class='data' id='ads' align='left'>";
+               echo "<tr align='left'><th>Kontakt information</th><th>Text</th><th>Ändra/<br>Ta bort</th>";
+               echo "</tr>\n";
+               foreach ($advertisment_array as $advertisment) {
+                   echo "<tr>\n";
+                   echo "<td style='font-weight:normal'>$advertisment->ContactInformation</td>\n";
+                   echo "<td>$advertisment->Text</td>\n";
+                   echo "<td align='center'>";
+                   echo "<a href='advertisment_form.php?operation=update&id=" . $advertisment->Id . "'><i class='fa-solid fa-pen' title='Ändra annons'></i></a>";
+                   echo " <a href='logic/delete_advertisment.php?id=" . $advertisment->Id . "'><i class='fa-solid fa-trash' title='Ta bort annons'></i></a>";
+                   echo "</td>\n";
+                   echo "</tr>\n";
+               }
+               echo "</table></div>\n";
+               
+           }
+           echo "<div class='center'><a href='advertisment_form.php'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-bullhorn'></i> &nbsp;Skapa en annons</button></a></div>";
+           
+           
+           echo "</div>";
+           echo "</div>";
+           
+       }
+       
+       
+    //Rykten
+    if ($current_larp->hasRumours()) {
+        echo "<div class='itemselector'>";
+        echo "<div class='header'>";
+        
+        echo "<i class='fa-solid fa-comments'></i> Rykten";
+        help_icon("Rykten är kul. Sprid om dig eller andra.");
+        echo "</div>";
+        echo "<div class='itemcontainer'>";
+
+        $rumour_array = $current_user->getRumoursAtLarp($current_larp);
+        $antal = (isset($rumour_array)) ? count($rumour_array) : 0;
+        if($antal > 0) {
+            echo "<details><summary>Du har spridit $antal rykten</summary> ";
+            //     		        echo "<b>Rykten skapade av $current_user->Name:</b><br>\n";
+            echo "<table class='data' id='letters' align='left'>";
+            echo "<tr align='left'><th>Text</th><th>Ok</th><th>Ändra</th>";
+            echo "</tr>\n";
+            foreach ($rumour_array as $rumour) {
+                echo "<tr>\n";
+                echo "<td style='font-weight:normal'>$rumour->Text</td>\n";
+                echo "<td>" . showStatusIcon($rumour->Approved) . "</td>\n";
+                echo "<td align='center'>";
+                if (!$rumour->isApproved()) echo "<a href='rumour_suggestion.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></a>";
+                echo "</td>\n";
+                echo "</tr>\n";
+            }
+            echo "</table></p>\n";
+            echo "</details>\n";
+            
+        }
+        
+        echo "<div class='center'><a href='rumour_suggestion.php'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-comments'></i> &nbsp;Sprid ett rykte</button></a></div>";
+        
+        
+        echo "</div>";
+        echo "</div>";
+
+    }
+    
+    //Brev
+    if ($current_larp->hasLetters()) {
+        echo "<div class='itemselector'>";
+        echo "<div class='header'>";
+        
+        echo "<i class='fa-solid fa-envelope'></i> Brev";
+        help_icon("Någon gång under lajvet kommer förhoppningsvis det här brevet nå sin mottagare.");
+        echo "</div>";
+        echo "<div class='itemcontainer'>";
+        $letter_array = $current_user->getLettersAtLarp($current_larp);
+        $antal = (isset($letter_array)) ? count($letter_array) : 0;
+        if($antal > 0) {
+            echo "<details><summary>Du har skrivit $antal brev</summary> ";
+            // 		            echo "<b>Brev skapade av $current_user->Name:</b><br>\n";
+            echo "<table class='data' id='letters' align='left'>";
+            echo "<tr align='left'><th>Ort och datum</th><th>Hälsningsfras</th>";
+            echo "<th>Meddelande</th><th>Hälsning</th><th>Underskrift</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
+            foreach ($letter_array as $letter) {
+                echo "<tr>\n";
+                echo "<td style='font-weight:normal'>$letter->WhenWhere</td>\n";
+                echo "<td>$letter->Greeting</td>\n";
+                echo "<td>" . str_replace("\n", "<br>", $letter->Message) . "</td>\n";
+                echo "<td>$letter->EndingPhrase</td>\n";
+                echo "<td>$letter->Signature</td>\n";
+                echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
+                echo "<td align='center'>" . "<a href='letter_suggestion.php?operation=update&id=" . $letter->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                echo "<td align='center'>" . "<a href='logic/show_letter.php?id=" . $letter->Id . "'  target='_blank'><i class='fa-solid fa-file-pdf'></i></td>\n";
+                echo "</tr>\n";
+            }
+            echo "</table></p>\n";
+            echo "</details>\n";
+        }
+        echo "<div class='center'><a href='letter_suggestion.php'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-envelope'></i> &nbsp;Skriv ett brev</button></a></div>";
+        
+        
+        echo "</div>";
+        echo "</div>";
+    }
+    
+    //Telegram
+    if ($current_larp->hasTelegrams()) {
+        echo "<div class='itemselector'>";
+        echo "<div class='header'>";
+        
+        echo "<i class='fa-brands fa-telegram'></i> Telegram";
+        help_icon("På ett visst klockslag under lajvet kommer telegrammets mottagare att få ditt meddelande.");
+        echo "</div>";
+        echo "<div class='itemcontainer'>";
+        $telegram_array = $current_user->getTelegramsAtLarp($current_larp);
+        $antal = (isset($telegram_array)) ? count($telegram_array) : 0;
+        if($antal > 0) {
+            echo "<details><summary>Du har skapat $antal telegram</summary> ";
+            // 		            echo "<b>Telegram skapade av $current_user->Name:</b><br>\n";
+            echo "<table class='data' id='telegrams' align='left'>";
+            echo "<tr align='left'><th>Leveranstid</th><th>Avsändare</th><th>Mottagare</th>";
+            echo "<th>Meddelande</th><th>Ok</th><th>Ändra</th><th>Visa</th></tr>\n";
+            foreach ($telegram_array as $telegram) {
+                echo "<tr>\n";
+                echo "<td style='font-weight:normal'>" . $telegram->Deliverytime . "</td>\n";
+                echo "<td>" . $telegram->Sender ."<br>". $telegram->SenderCity. "</td>\n";
+                echo "<td>" . $telegram->Reciever ."<br>". $telegram->RecieverCity . "</td>\n";
+                echo "<td>" . str_replace("\n", "<br>", $telegram->Message) . "</td>\n";
+                echo "<td>" . showStatusIcon($telegram->Approved) . "</td>\n";
+                echo "<td align='center'>" . "<a href='telegram_suggestion.php?operation=update&id=" . $telegram->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                echo "<td align='center'>" . "<a href='logic/show_telegram.php?id=" . $telegram->Id . "'  target='_blank'><i class='fa-solid fa-file-pdf'></i></td>\n";
+                echo "</tr>\n";
+            }
+            echo "</table></p><br>";
+            echo "</details>\n";
+            
+        }
+ 
+        echo "<div class='center'><a href='telegram_suggestion.php'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-brands fa-telegram'></i> &nbsp;Skapa ett telegram</button></a></div>";
+        
+        
+        echo "</div>";
+        echo "</div>";
+    }
+    
+        
+        ?>
+	
 	</div>
 	<?php } ?>
 

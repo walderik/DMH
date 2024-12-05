@@ -35,105 +35,103 @@ $school = $magician->getMagicSchool();
 include 'navigation.php';
 ?>
 
-	<div class="content">
-		<h1><?php echo "Magiker $role->Name";?>
-				<a href='magic_magician_sheet.php?id=<?php echo $role->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för <?php $role->Name?>'></i></a>&nbsp;
-		
-		
-		</h1>
-		
+	<div class='itemselector'>
+		<div class="header">
 
-		<div>
-    		<table>
-    			<tr>
-    				<td>Nivå 
-    				</td>
-    				<td>
-    					<?php echo $magician->Level; ?>
-                    </td>
-    			</tr>
-    			<tr>
-    				<td>Magiskola 
-    				</td>
-    				<td>
-    					<?php if (!empty($school)) {
-    					    echo $school->Name; 
-    					    echo "<br><br>";
-    					    echo nl2br(htmlspecialchars($school->Description));
-    					}?>
-                    </td>
-    			</tr>
-    			<?php if (isset($master)) {?>
-    			<tr>
-    				<td>Mästare</td>
-    				<td><?php echo $masterRole->Name; ?></td>
-    			</tr>
-    			<?php }?>
+			<i class="fa-solid fa-wand-sparkles"></i>
+			<?php echo "Magiker $role->Name";?>
+			<a href='magic_magician_sheet.php?id=<?php echo $role->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för <?php $role->Name?>'></i></a>&nbsp;
+		</div>
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Nivå</div>
+			<?php echo $magician->Level; ?>
+			</div>
+			
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Magiskola</div>
+			<?php if (!empty($school)) {
+			    echo $school->Name; 
+			    echo "<br><br>";
+			    echo nl2br(htmlspecialchars($school->Description));
+			}?>
+			</div>
+			
+
+      			<?php if (isset($master)) {?>
+        	   		<div class='itemcontainer'>
+                   	<div class='itemname'>Mästare</div>
+        			<?php echo $masterRole->Name; ?>
+        			</div>
+      			<?php }?>
     			
     			<?php 
     			$apprenticeNames = $magician->getApprenticeNames();
     			if (isset($apprenticeNames)) {?>
-    			<tr>
-    				<td>Lärlingar</td>
-    				<td><?php echo implode(", ", $apprenticeNames); ?></td>
-    			</tr>
+        	   		<div class='itemcontainer'>
+                   	<div class='itemname'>Lärlingar</div>
+        			<?php echo implode(", ", $apprenticeNames); ?>
+        			</div>
     			<?php }?>
     			
     			
-				<tr>
-    				<td>Stav</td>
-    				<td>
-    					<?php 
-    					echo "<a href='upload_image.php?id=$magician->Id&type=magician'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
-    					if ($magician->hasStaffImage()) {
-    					    echo "<br>";
-    					    $image = Image::loadById($magician->ImageId);
-    
-					        echo "<img width='300' src='../includes/display_image.php?id=$magician->ImageId'/>\n";
-					        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-    
-					    }
-					    
-    					    ?>
-    					
-    				</td>
-    			</tr>
-    			<tr>
-    				<td>Stav godkänd datum</td>
-    				<td><?php 
-    				    echo showStatusIcon($magician->isStaffApproved())." ";
-    				    if ($magician->isStaffApproved()) echo $magician->StaffApproved; 
-    				    else echo "Staven är inte godkänd.";
-    				    ?></td>
-    			</tr>
-    			<tr>
-    				<td>Workshop datum</td>
-     				<td><?php 
-     				    echo showStatusIcon($magician->hasDoneWorkshop())." ";
-     				
-    				    if ($magician->hasDoneWorkshop()) echo $magician->Workshop; 
-    				    else echo "Du har inte deltagit i workshop om magi.";
-    				    ?></td>
-    			</tr>
-    		</table>
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Stav</div>
+			<?php 
+				if ($magician->hasStaffImage()) {
+				    $image = Image::loadById($magician->ImageId);
 
-			<h2>Magier</h2>
+			        echo "<img width='300' src='../includes/display_image.php?id=$magician->ImageId'/>\n";
+			        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+
+				} else {
+				    echo "<a href='upload_image.php?id=$magician->Id&type=magician'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+				}
+			    
+		    ?>
+			</div>
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Stav godkänd datum</div>
+			<?php 
+			    if ($magician->isStaffApproved()) echo $magician->StaffApproved; 
+			    else echo showParticipantStatusIcon(false, "Staven är inte godkänd.");
+		    ?>			
+			</div>
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Workshop datum</div>
+			<?php 
+			    if ($magician->isStaffApproved()) echo $magician->Workshop; 
+			    else echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi.");
+		    ?>			
+		</div>
+		</div>
+	<div class='itemselector'>
+		<div class="header">
+
+			<i class="fa-solid fa-scroll"></i> Magier
+			<a href='magic_magician_sheet.php?id=<?php echo $role->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för <?php $role->Name?>'></i></a>&nbsp;
+		</div>
+
+		<div  style='display:table'>
+			
 
 			<?php 
 			$spells = $magician->getSpells();
 			if (empty($spells)) {
 			    echo "Inga magier, än.";
 			} else {
-				echo "<table class='small_data'>";
-				echo "<tr><th>Magi</th><th>Nivå</th><th>Typ</th><th>Beskrivning</th></tr>";
+				echo "<table class='participant_table' style='width:93%;padding: 6px; margin: 16px 16px 0px;'>";
+				echo "<tr><th>Magi</th><th>Beskrivning</th></tr>";
 				foreach ($spells as $spell) {
-				    echo "<tr><td>$spell->Name</td><td>$spell->Level</td><td>".Magic_Spell::TYPES[$spell->Type]."</td><td>$spell->Description</td>";
+				    echo "<tr><td>$spell->Name<br>Nivå $spell->Level<br>(".Magic_Spell::TYPES[$spell->Type].")</td><td>$spell->Description</td>";
 				    echo "</tr>";
 				}
 				echo "</table>";
 			}
 			?>
-
+		</div>
 
 		</div>
 		

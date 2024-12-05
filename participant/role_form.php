@@ -377,7 +377,7 @@ Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och faceboo
 
 			<?php  if (RoleFunction::isInUse($current_larp)) {?>	
 			<div class="question intrigue">
-				<label for="RoleFunctionId">Har din karaktär någon särskild funktion eller syssla på lajvet?</label>&nbsp;<font style="color:red">*</font><br>
+				<label for="RoleFunctionId">Har din karaktär någon särskild funktion eller syssla på lajvet?</label><br>
        			<div class="explanation">   
        			</div>
                 <?php 

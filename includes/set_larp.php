@@ -1,6 +1,6 @@
 <?php
 
-global $root, $current_user;
+global $root, $current_user, $current_person;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 include_once $root . '/includes/all_includes.php';
 
@@ -27,6 +27,7 @@ $_SESSION['larp'] = $larp;
 
 $current_user = User::loadById($_SESSION['id']);
 $current_larp = LARP::loadById($_SESSION['larp']);
+if (isset($_SESSION['PersonId'])) $current_person = Person::loadById($_SESSION['PersonId']);
 
 if (isset($current_person) && AccessControl::hasAccessLarp($current_person, $current_larp) || AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)) header('Location: ../admin/index.php');
 else header('Location: ../participant/index.php');

@@ -76,7 +76,7 @@
   align-items: center;
   background-color: #0A66C2;
   border: 0;
-  border-radius: 100px;
+  border-radius: 10px;
   box-sizing: border-box;
   color: #ffffff;
   cursor: pointer;
@@ -87,12 +87,12 @@
   justify-content: center;
   line-height: 20px;
   max-width: 480px;
-  min-height: 40px;
+  min-height: 25px;
   min-width: 0px;
   overflow: hidden;
   padding: 0px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   text-align: center;
   touch-action: manipulation;
   transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
@@ -160,9 +160,31 @@
   animation: fadeEffect 1s; /* Fading effect takes 1 second */
 }
 
+
 /* Go from zero to full opacity */
 @keyframes fadeEffect {
   from {opacity: 0;}
   to {opacity: 1;}
 }
+
+
+.participant_table {
+  border-collapse: collapse;
+}
+
+.participant_table td, .participant_table th{
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.xx tr:hover {background-color: #ddd;}
+
+.participant_table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #808080;
+  color: white;
+}
+
 
