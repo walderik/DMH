@@ -182,12 +182,15 @@ function openTab(evt, tabName) {
 	} else {
 	    echo "<div class='tab'>";
 	    echo "<button class='tablinks' onclick='openTab(event, \"Characters\")'>Karaktärer</button>";
+	    
 	    echo "<button class='tablinks' ";
 	    if (!$registration->hasSpotAtLarp()) echo "id='defaultOpen' ";
 	    echo "onclick='openTab(event, \"Registration\")'>Anmälan</button>";
+	    
 	    if ($registration->hasSpotAtLarp()) echo "<button class='tablinks' ";
 	    if ($registration->hasSpotAtLarp() && !$current_larp->isEnded()) echo "id='defaultOpen' ";
-	    echo "onclick='openTab(event, \"BeforeLARP\")'>Inför lajvet</button>";
+	    if ($registration->hasSpotAtLarp()) echo "onclick='openTab(event, \"BeforeLARP\")'>Inför lajvet</button>";
+	    
 	    if ($registration->hasSpotAtLarp() && $current_larp->isEnded()) echo "<button class='tablinks' id='defaultOpen' onclick='openTab(event, \"AfterLARP\")'>Efter lajvet</button>";
 	    echo "</div>";
 	    
@@ -373,15 +376,15 @@ function openTab(evt, tabName) {
 		<div class='itemcontainer'>
 	  <?php 
 	   echo "<div class='itemname'>Status</div>";
-        if ($person->isReserve($current_larp)) {
+	   if ($current_person->isReserve($current_larp)) {
             echo "Reservlista";
         }
-        else if ($person->isNotComing($current_larp)) {
+        else if ($current_person->isNotComing($current_larp)) {
             echo "Avbokad";
         }
         else {
             echo "Anmäld<br>";
-            echo "<a href='view_registration.php?id=$person->Id'>Visa anmälan</a>";
+            echo "<a href='view_registration.php?id=$current_person->Id'>Visa anmälan</a>";
         }
         echo "</div>";
         
@@ -627,7 +630,7 @@ function openTab(evt, tabName) {
     	
     	
     	//NPC'er
-    	$npcs = NPC::getReleasedNPCsForPerson($person, $current_larp);
+    	$npcs = NPC::getReleasedNPCsForPerson($current_person, $current_larp);
     	if (isset($npcs) && count($npcs) > 0) {
     	    
     	    echo "<div class='itemselector'>";
