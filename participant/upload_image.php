@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 switch ($type) {
     case "role":
         $object = Role::loadById($id);
-        if (Person::loadById($object->PersonId)->UserId != $current_user->Id) {
+        if ($object->PersonId != $current_person->Id) {
             header('Location: ../index.php'); //Inte din karaktär
 
             exit;
@@ -42,7 +42,7 @@ switch ($type) {
         break;
     case "npc":
         $object = NPC::loadById($id);
-        if (Person::loadById($object->PersonId)->UserId != $current_user->Id) {
+        if ($object->PersonId != $current_person->Id) {
             header('Location: ../index.php');
             exit;
         }

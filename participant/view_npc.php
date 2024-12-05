@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $npc = NPC::loadById($NPCId);
 
-if (Person::loadById($npc->PersonId)->UserId != $current_user->Id) {
+if ($npc->PersonId != $current_person->Id) {
     header('Location: index.php'); //Inte din npc
     exit;
 }

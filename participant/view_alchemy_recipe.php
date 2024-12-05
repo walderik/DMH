@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $role = Role::loadById($RoleId);
 $person = $role->getPerson();
 
-if ($person->UserId != $current_user->Id) {
+if ($person->Id != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
     exit;
 }

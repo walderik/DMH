@@ -6,8 +6,8 @@ $person = $current_person;
 
 
 
-if (!$person->isRegistered($current_larp) && !$person->isReserve($current_larp) || $person->UserId != $current_user->Id) {
-    header('Location: index.php'); // personen är inte anmäld, eller det här är inte din person
+if (!$person->isRegistered($current_larp) && !$person->isReserve($current_larp)) {
+    header('Location: index.php'); // personen är inte anmäld
     exit;
 }
 
