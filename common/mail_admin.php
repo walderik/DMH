@@ -55,10 +55,18 @@ th {
 
 </style>
 
+
+<link href='../css/participant_style.css' rel='stylesheet' type='text/css'>
 <script src="../javascript/table_sort.js"></script>
 
-<div class="content">
-    <h1>E-post</h1>
+	<div class='itemselector'>
+		<div class="header">
+
+			<i class="fa-solid fa-envelope"></i> E-post
+		</div>
+
+   		<div class='itemcontainer'>
+		<div  style='display:table'>
     <?php 
         if (!empty($unsent_emails)) {
             echo "<strong>".count($unsent_emails) ."</strong> mail har ännu inte skickats iväg. <br>Sidan kommer automatiskt att laddas om tills alla har skickats. Du måste inte stanna på den här sidan, men gå gärna tillbaka hit efteråt så att du ser att alla mail verkligen har kommit iväg.";
@@ -71,50 +79,64 @@ th {
         }
         else $emails = Email::allCommon();
         
+        if (empty($emails)) {
+            echo "Du har inte fått några meddelanden.";
+        } else {
         
-	    $tableId = "mail";
-        echo "<table id='$tableId' class='data'>";
-        echo "<tr><th onclick='sortTable(0, \"$tableId\");' width='30%'>Till</th>".
-	    "<th onclick='sortTable(1, \"$tableId\")'>Ämne</th>".
-	    "<th onclick='sortTable(2, \"$tableId\")'></th>".
-	    "<th onclick='sortTable(3, \"$tableId\")'>Skickat av</th>".
-	    "<th onclick='sortTable(4, \"$tableId\")'>Skickat</th>".
-	    "<th onclick='sortTable(5, \"$tableId\")'>Fel</th>".
-        "</tr>\n";
-    	
-
-    	foreach (array_reverse($emails) as $email) {
-    	    $sendUserName = "";
-    	    if (isset($email->SenderUserId)) {
-    	       $user = User::loadById($email->SenderUserId);
-    	       $sendUserName = $user->Name;
-    	    }
-    	    
-    	    if (!($to_array = @unserialize($email->To))) {
-    	        $to = $email->To;
-    	    } elseif (!empty($to_array)) {
-    	        $to = implode(", ", $to_array);
-    	    }
-    	    if (!empty($to)) $to = "($to)";
-    	    
-    	    echo "<tr>";
-    	    echo "<td>$email->ToName $to</td>";
-    	    echo "<td><a href='view_email.php?id=$email->Id'>$email->Subject</a></td>";
-    	    
-    	    $attachements = $email->attachments();
-    	    echo "<td>";
-    	    if (!empty($attachements)) echo "<i class='fa-solid fa-paperclip'></i>";
-            echo "</td>";
-    	    echo "<td>$sendUserName</td>";
-    	    echo "<td>$email->SentAt</td>";
-    	    echo "<td>";
-    	    if (!is_null($email->ErrorMessage)) {
-    	        echo showStatusIcon(false);
-    	    }
-    	    echo "</td>";
-    	    //echo " <a href='mail_admin.php?operation=delete&id=" . $email->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
-    	    echo "</tr>";
-    	}  	
-    	
+    	    $tableId = "mail";
+            echo "<table id='$tableId' class='data'>";
+            //echo "<table id='$tableId' class='participant_table' style='width:93%;padding: 6px; margin: 16px 16px 0px;'>";
+            echo "<tr>";
+            $col = 0;
+            if ($_SESSION['navigation'] != Navigation::PARTICIPANT) echo "<th onclick='sortTable($col++, \"$tableId\");' width='30%'>Till</th>";
+            echo "<th onclick='sortTable($col++, \"$tableId\")'>Ämne</th>".
+    	    "<th onclick='sortTable($col++, \"$tableId\")'></th>".
+    	    "<th onclick='sortTable($col++, \"$tableId\")'>Skickat av</th>".
+    	    "<th onclick='sortTable($col++, \"$tableId\")'>Skickat</th>";
+            if ($_SESSION['navigation'] != Navigation::PARTICIPANT) echo "<th onclick='sortTable($col++, \"$tableId\")'>Fel</th>";
+            echo "</tr>\n";
+        	
+    
+        	foreach (array_reverse($emails) as $email) {
+        	    $sendUserName = "";
+        	    if (isset($email->SenderUserId)) {
+        	       $user = User::loadById($email->SenderUserId);
+        	       $sendUserName = $user->Name;
+        	    }
+        	    
+        	    echo "<tr>";
+        	    
+        	    if ($_SESSION['navigation'] != Navigation::PARTICIPANT) {
+            	    if (!($to_array = @unserialize($email->To))) {
+            	        $to = $email->To;
+            	    } elseif (!empty($to_array)) {
+            	        $to = implode(", ", $to_array);
+            	    }
+            	    if (!empty($to)) $to = "($to)";
+            	    
+            	    echo "<td>$email->ToName $to</td>";
+        	    }
+        	    echo "<td><a href='view_email.php?id=$email->Id'>$email->Subject</a></td>";
+        	    
+        	    $attachements = $email->attachments();
+        	    echo "<td>";
+        	    if (!empty($attachements)) echo "<i class='fa-solid fa-paperclip'></i>";
+                echo "</td>";
+        	    echo "<td>$sendUserName</td>";
+        	    echo "<td>$email->SentAt</td>";
+        	    if ($_SESSION['navigation'] != Navigation::PARTICIPANT) {
+            	    echo "<td>";
+            	    if (!is_null($email->ErrorMessage)) {
+            	        echo showStatusIcon(false);
+            	    }
+        	    }
+        	    echo "</td>";
+        	    //echo " <a href='mail_admin.php?operation=delete&id=" . $email->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+        	    echo "</tr>";
+        	} 
+        	echo "</table>";
+        }
     	?>
-	</table>
+
+</div>
+</div>
