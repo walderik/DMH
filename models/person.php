@@ -890,5 +890,17 @@ class Person extends BaseModel{
         return false;
     }
     
+    public function isComing(Larp $larp) {
+        if (is_null($larp)) return null;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE ".
+            "regsys_registration.PersonId = ? AND ".
+            "regsys_registration.SpotAtLARP = 1 AND ".
+            "regsys_registration.NotComing = 0 AND ".
+            "regsys_registration.LarpId=?;";
+        return static::existsQuery($sql, array($this->Id, $larp->Id));
+        
+    }
+    
+    
     
 }

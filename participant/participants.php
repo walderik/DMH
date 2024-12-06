@@ -2,7 +2,7 @@
 
 require 'header.php';
 
-if (!$current_user->isComing($current_larp)) {
+if (!$current_person->isComing($current_larp)) {
     header('Location: index.php');
     exit;
 }
