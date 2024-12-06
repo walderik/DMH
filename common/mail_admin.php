@@ -27,6 +27,9 @@ if ($_SESSION['navigation'] == Navigation::LARP) {
 } elseif ($_SESSION['navigation'] == Navigation::OM_ADMIN) {
     include '../site-admin/header.php';
     $navigation =  '../site-admin/navigation.php';
+} elseif ($_SESSION['navigation'] == Navigation::PARTICIPANT) {
+    include '../participant/header.php';
+    $navigation =  '../participant/navigation.php';
 } else {
     header('Location: ../participant/index.php');
     exit;
@@ -60,8 +63,9 @@ th {
         if (!empty($unsent_emails)) {
             echo "<strong>".count($unsent_emails) ."</strong> mail har ännu inte skickats iväg. <br>Sidan kommer automatiskt att laddas om tills alla har skickats. Du måste inte stanna på den här sidan, men gå gärna tillbaka hit efteråt så att du ser att alla mail verkligen har kommit iväg.";
         }
-        
-        if ($_SESSION['navigation'] == Navigation::LARP && !$onlyCommon) {
+        if ($_SESSION['navigation'] == Navigation::PARTICIPANT) {
+            $emails = Email::allForPersonAtLarp($current_person, $current_larp);
+        } elseif ($_SESSION['navigation'] == Navigation::LARP && !$onlyCommon) {
             $emails = Email::allBySelectedLARP($current_larp);
             echo "<a href='mail_admin.php?common=1'>Visa system-mail</a><br>";
         }

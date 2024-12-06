@@ -57,13 +57,7 @@
 	  
 	  ?>
 	  
-	  <a href="<?php echo $location; ?>index.php"><i class="fa-solid fa-house"></i> Hem</a>
 	  <?php 
-	  $uri = $_SERVER['REQUEST_URI'];
-	  
-	  if (str_contains($uri, "/participant/")) {
-	      //TODO bygg mail för deltagare
-	      //<a href="../participant/mail.php"><i class="fa-solid fa-envelope"></i> Epost</a>
-	  } else {
-        echo "<a href='../common/mail_admin.php'><i class='fa-solid fa-envelope'></i> Epost</a>";
-      }
+      echo "<a href='".$location."index.php' class='always_show'><i class='fa-solid fa-house'></i></a>";
+      echo "<a href='../common/mail_admin.php' class='always_show'><i class='fa-solid fa-envelope'></i></a>";
+      ?>

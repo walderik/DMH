@@ -152,12 +152,14 @@ body {margin:0;font-family:Arial}
 
 }
 
-@media only screen and (min-width: 600px) {
 #right {
 
     float: right
     
 }
+
+@media only screen and (min-width: 600px) {
+
 
 a.logo {
 	font-weight: 900;

@@ -4,6 +4,7 @@ require 'header.php';
 $_SESSION['navigation'] = Navigation::PARTICIPANT;
 $isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
 
+
 include 'navigation.php';
 ?>
 
@@ -71,9 +72,11 @@ function openTab(evt, tabName) {
 	    if (isset($current_larp)) {
     	    $groups = Group::getGroupsForPerson($current_person->Id, $current_larp->CampaignId);
     	    $roles = $current_person->getRoles($current_larp);
+    	    $registration = $current_person->getRegistration($current_larp);
 	    } else {
 	        $groups = array();
 	        $roles = array();
+	        $registration = null;
 	    }
 	    
 	    //Först den aktiva personen
@@ -86,6 +89,8 @@ function openTab(evt, tabName) {
 	        $item .=  "&nbsp;<a href='logic/delete_person.php?id=" . $current_person->Id . "'><i class='fa-solid fa-trash' title='Ta bort deltagare'></i></a>";
 	    }
 	    $item .= "</label>";
+	    if (empty($registration) && !empty($current_larp) && $current_larp->mayRegister() && !empty($roles)) $item .= " &nbsp;<a href='person_registration_form.php'><button class='button-18'>Anmäl</button></a>";
+	        
 	    $item .=  "</div>";
 	    $items[] = $item;
 	    
@@ -176,10 +181,8 @@ function openTab(evt, tabName) {
 	?>
 	
 	<?php 
-	$registration = $current_person->getRegistration($current_larp);
-	if (empty($registration)) {
-	    if ($current_larp->mayRegister() && !empty($roles)) echo "<div class='center'><a href='person_registration_form.php'><button class='button-18'>Anmäl</button></a></div>";
-	} else {
+
+	if (!empty($registration)) {
 	    echo "<div class='tab'>";
 	    echo "<button class='tablinks' onclick='openTab(event, \"Characters\")'>Karaktärer</button>";
 	    

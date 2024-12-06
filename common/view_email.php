@@ -5,7 +5,7 @@ $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require_once $root . '/includes/init.php';
 
 if (!isset($_SESSION['navigation'])) {
-    header('Location: ../participant/index.php?11');
+    header('Location: ../participant/index.php');
     exit;
 }
 
@@ -25,6 +25,9 @@ if ($_SESSION['navigation'] == Navigation::LARP) {
 } elseif ($_SESSION['navigation'] == Navigation::OM_ADMIN) {
     include '../site-admin/header.php';
     $navigation =  '../site-admin/navigation.php';
+} elseif ($_SESSION['navigation'] == Navigation::PARTICIPANT) {
+    include '../participant/header.php';
+    $navigation =  '../participant/navigation.php';
 } else {
     header('Location: ../participant/index.php');
     exit;
@@ -49,14 +52,14 @@ if ($_SESSION['navigation'] == Navigation::LARP) {
         exit;
     }
 } elseif ($_SESSION['navigation'] == Navigation::PARTICIPANT) {
-    $person = $email->toPerson($person, $larp);
-    if ($person->UserId != $current_user->Id) {
-        header('Location: ../participant/index.php?2'); //Emailet är inte för detta lajvet
+    $person = $email->toPerson();
+    if ($person->Id != $current_person->Id) {
+        header('Location: ../participant/index.php'); //Emailet är inte för dig
         exit;
     }
 } else {
     if (!is_null($email->LarpId)) {
-        header('Location: ../participant/index.php?3'); //Emailet är för ett lajv
+        header('Location: ../participant/index.php'); //Emailet är för ett lajv
         exit;
     }
 }

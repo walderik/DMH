@@ -203,7 +203,7 @@ class Email extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array());
     }
     
-    public static function toPerson() {
+    public function toPerson() {
         $sql = "SELECT * FROM regsys_person WHERE ID IN (SELECT PersonId FROM regsys_email_person WHERE EmailId=?);";
         return Person::getOneObjectQuery($sql, array($this->Id));
     }
