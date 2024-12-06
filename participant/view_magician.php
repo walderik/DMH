@@ -102,10 +102,10 @@ include 'navigation.php';
 	   		<div class='itemcontainer'>
            	<div class='itemname'>Workshop datum</div>
 			<?php 
-			    if ($magician->isStaffApproved()) echo $magician->Workshop; 
+			    if ($magician->hasDoneWorkshop()) echo $magician->Workshop; 
 			    else echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi.");
 		    ?>			
-		</div>
+			</div>
 		</div>
 	<div class='itemselector'>
 		<div class="header">
