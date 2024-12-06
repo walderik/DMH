@@ -178,9 +178,9 @@ include 'navigation.php';
 		            if ($intrigue->isActive()) {
 		                $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
 		                if (!empty($intrigue->CommonText)) echo "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+		                if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
 		                if (!empty($intrigueActor->OffInfo)) {
-		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
+		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
 		                }
 		                
 		                if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) {
@@ -368,10 +368,10 @@ include 'navigation.php';
 		        foreach($intrigues as $intrigue) {
 		            $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
 		            if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
-		                echo "<p><strong>Intrig</strong><br>".nl2br($intrigueActor->IntrigueText)."</p>";
+		                echo "<p><strong>Intrig</strong><br>".nl2br(htmlspecialchars($intrigueActor->IntrigueText))."</p>";
 		                
 		                echo "<p><strong>Vad hände med det?</strong><br>";
-		                if (!empty($intrigueActor->WhatHappened)) echo nl2br($intrigueActor->WhatHappened);
+		                if (!empty($intrigueActor->WhatHappened)) echo nl2br(htmlspecialchars($intrigueActor->WhatHappened));
 		                else echo "Inget rapporterat";
 		                echo "</p>";
 		            }

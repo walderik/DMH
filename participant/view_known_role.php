@@ -67,7 +67,7 @@ include 'navigation.php';
 
    		<div class='itemcontainer'>
        	<div class='itemname'>Beskrivning</div>
-		<?php echo nl2br($role->DescriptionForOthers);?>
+		<?php echo nl2br(htmlspecialchars($role->DescriptionForOthers));?>
 		</div>
 	</div>
 </body>

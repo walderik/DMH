@@ -95,8 +95,8 @@ textarea{
 	                echo "<div class='question'>";
 	                echo "<label for='IngtrigueActor_$intrigueActor->Id'><strong>Vad hände med det här?</strong></label>";
 	                echo "<div class='explanation'>";
-	                if (!empty($intrigue->CommonText)) echo nl2br($intrigue->CommonText)."<br>";
-	                echo nl2br($intrigueActor->IntrigueText);
+	                if (!empty($intrigue->CommonText)) echo nl2br(htmlspecialchars($intrigue->CommonText))."<br>";
+	                echo nl2br(htmlspecialchars($intrigueActor->IntrigueText));
 	                echo "</div>";
 	                echo "<textarea id='IngtrigueActor_$intrigueActor->Id' name='IngtrigueActor_$intrigueActor->Id' rows='10' cols='100' maxlength='60000'>$intrigueActor->WhatHappened</textarea>";
 	                echo "</div>";

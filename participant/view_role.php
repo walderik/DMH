@@ -88,40 +88,40 @@ include 'navigation.php';
 				</div>
 		<?php }?>
 
-		   <div class='itemcontainer'>
-           <div class='itemname'>Grupp</div>
-			<?php echo $role->Profession;?>
-			</div>
-			
-		   <div class='itemcontainer'>
-           <div class='itemname'>Beskrivning</div>
-		   <?php echo nl2br($role->Description);?>
-		   </div>
+	   <div class='itemcontainer'>
+       <div class='itemname'>Yrke</div>
+		<?php echo $role->Profession;?>
+		</div>
+		
+	   <div class='itemcontainer'>
+       <div class='itemname'>Beskrivning</div>
+	   <?php echo nl2br(htmlspecialchars($role->Description));?>
+	   </div>
 
-		   <div class='itemcontainer'>
-           <div class='itemname'>Beskrivning för gruppen</div>
-			<?php echo nl2br($role->DescriptionForGroup);?>
-			</div>
-			
-		   <div class='itemcontainer'>
-           <div class='itemname'>Beskrivning för andra</div>
-		   <?php echo nl2br($role->DescriptionForOthers);?>
-		   </div>
+	   <div class='itemcontainer'>
+       <div class='itemname'>Beskrivning för gruppen</div>
+		<?php echo nl2br(htmlspecialchars($role->DescriptionForGroup));?>
+		</div>
+		
+	   <div class='itemcontainer'>
+       <div class='itemname'>Beskrivning för andra</div>
+	   <?php echo nl2br(htmlspecialchars($role->DescriptionForOthers));?>
+	   </div>
 
-			<?php if (Race::isInUse($current_larp)) {?>
-			   <div class='itemcontainer'>
-               <div class='itemname'>Ras</div>
-    			<?php 
-    			$race = $role->getRace();
-    			if (!empty($race)) echo $race->Name;
-    			?>			   
-				</div>
-			
-			   <div class='itemcontainer'>
-               <div class='itemname'>Kommentar till ras</div>
-			   <?php echo $role->RaceComment;?>
-			   </div>
-			<?php } ?>
+		<?php if (Race::isInUse($current_larp)) {?>
+		   <div class='itemcontainer'>
+           <div class='itemname'>Ras</div>
+			<?php 
+			$race = $role->getRace();
+			if (!empty($race)) echo $race->Name;
+			?>			   
+			</div>
+		
+		   <div class='itemcontainer'>
+           <div class='itemname'>Kommentar till ras</div>
+		   <?php echo $role->RaceComment;?>
+		   </div>
+		<?php } ?>
 
 		<?php if (!$role->isMysLajvare()) {?>
 		
@@ -191,7 +191,7 @@ include 'navigation.php';
 
 		   <div class='itemcontainer'>
            <div class='itemname'>Mörk hemlighet - intrig idéer</div>
-		   <?php echo nl2br($role->DarkSecretIntrigueIdeas);?>
+		   <?php echo nl2br(htmlspecialchars($role->DarkSecretIntrigueIdeas));?>
 		   </div>
 			
 			
@@ -205,17 +205,17 @@ include 'navigation.php';
 
 		   <div class='itemcontainer'>
            <div class='itemname'>Intrigidéer</div>
-		   <?php echo nl2br($role->IntrigueSuggestions);?>
+		   <?php echo nl2br(htmlspecialchars($role->IntrigueSuggestions));?>
 		   </div>
 
 		   <div class='itemcontainer'>
            <div class='itemname'>Saker karaktären inte vill spela på</div>
-		   <?php echo nl2br($role->NotAcceptableIntrigues);?>
+		   <?php echo nl2br(htmlspecialchars($role->NotAcceptableIntrigues));?>
 		   </div>
 
 		   <div class='itemcontainer'>
            <div class='itemname'>Relationer med andra</div>
-		   <?php echo nl2br($role->CharactersWithRelations);?>
+		   <?php echo nl2br(htmlspecialchars($role->CharactersWithRelations));?>
 		   </div>
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
@@ -245,7 +245,7 @@ include 'navigation.php';
 
 		   <div class='itemcontainer'>
            <div class='itemname'>Annan information</div>
-		   <?php echo nl2br($role->OtherInformation);?>
+		   <?php echo nl2br(htmlspecialchars($role->OtherInformation));?>
 		   </div>
 
 		<?php }?>
@@ -259,7 +259,7 @@ include 'navigation.php';
 		</div>
 			<div class='itemcontainer'>
 			<?php if ($current_larp->isIntriguesReleased()) {
-			    echo "<p>".nl2br($larp_role->Intrigue) ."</p>"; 
+			    echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
 			    
 			    $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
 			    $intrigue_numbers = array();
@@ -267,9 +267,9 @@ include 'navigation.php';
 		            if ($intrigue->isActive()) {
 		                $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
 		                if (!empty($intrigue->CommonText) && !$role->inSubdivisionInIntrigue($intrigue)) echo "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+		                if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
 		                if (!empty($intrigueActor->OffInfo)) {
-		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
+		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
 		                }
 		                if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) {
 		                    $intrigue_numbers[] = $intrigue->Number;
@@ -299,9 +299,9 @@ include 'navigation.php';
 		                    $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
 		                    if ($subdivision->isVisibleToParticipants()) echo "<strong>För $subdivision->Name</strong><br>";
 		                    if (!empty($intrigue->CommonText)) echo "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                    if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+		                    if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
 		                    if (!empty($intrigueActor->OffInfo)) {
-		                        echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
+		                        echo "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
 		                    }
 		                    if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) {
 		                        $intrigue_numbers[] = $intrigue->Number;
@@ -506,17 +506,17 @@ include 'navigation.php';
 		        echo "<h3>$prevoius_larp->Name</h3>";
 		        if (!empty($previous_larp_role->Intrigue)) {
 		            echo "<strong>Intrig</strong><br>";
-		            echo "<p>".nl2br($previous_larp_role->Intrigue)."</p>";
+		            echo "<p>".nl2br(htmlspecialchars($previous_larp_role->Intrigue))."</p>";
 		        }
 		        
 		        $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $prevoius_larp->Id);
 		        foreach($intrigues as $intrigue) {
 		            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
 		            if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
-		                echo "<p><strong>Intrig</strong><br>".nl2br($intrigueActor->IntrigueText)."</p>";
+		                echo "<p><strong>Intrig</strong><br>".nl2br(htmlspecialchars($intrigueActor->IntrigueText))."</p>";
 		                
 		                echo "<p><strong>Vad hände med det?</strong><br>";
-		                if (!empty($intrigueActor->WhatHappened)) echo nl2br($intrigueActor->WhatHappened);
+		                if (!empty($intrigueActor->WhatHappened)) echo nl2br(htmlspecialchars($intrigueActor->WhatHappened));
 		                else echo "Inget rapporterat";
 		                echo "</p>";
 		            }
