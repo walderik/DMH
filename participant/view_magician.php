@@ -43,70 +43,70 @@ include 'navigation.php';
 			<a href='magic_magician_sheet.php?id=<?php echo $role->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för <?php $role->Name?>'></i></a>&nbsp;
 		</div>
 
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Nivå</div>
-			<?php echo $magician->Level; ?>
-			</div>
-			
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Magiskola</div>
-			<?php if (!empty($school)) {
-			    echo $school->Name; 
-			    echo "<br><br>";
-			    echo nl2br(htmlspecialchars($school->Description));
-			}?>
-			</div>
-			
-
-      			<?php if (isset($master)) {?>
-        	   		<div class='itemcontainer'>
-                   	<div class='itemname'>Mästare</div>
-        			<?php echo $masterRole->Name; ?>
-        			</div>
-      			<?php }?>
-    			
-    			<?php 
-    			$apprenticeNames = $magician->getApprenticeNames();
-    			if (isset($apprenticeNames)) {?>
-        	   		<div class='itemcontainer'>
-                   	<div class='itemname'>Lärlingar</div>
-        			<?php echo implode(", ", $apprenticeNames); ?>
-        			</div>
-    			<?php }?>
-    			
-    			
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Stav</div>
-			<?php 
-				if ($magician->hasStaffImage()) {
-				    $image = Image::loadById($magician->ImageId);
-
-			        echo "<img width='300' src='../includes/display_image.php?id=$magician->ImageId'/>\n";
-			        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-
-				} else {
-				    echo "<a href='upload_image.php?id=$magician->Id&type=magician'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
-				}
-			    
-		    ?>
-			</div>
-
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Stav godkänd datum</div>
-			<?php 
-			    if ($magician->isStaffApproved()) echo $magician->StaffApproved; 
-			    else echo showParticipantStatusIcon(false, "Staven är inte godkänd.");
-		    ?>			
-			</div>
-
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Workshop datum</div>
-			<?php 
-			    if ($magician->hasDoneWorkshop()) echo $magician->Workshop; 
-			    else echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi.");
-		    ?>			
-			</div>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Nivå</div>
+		<?php echo $magician->Level; ?>
 		</div>
+		
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Magiskola</div>
+		<?php if (!empty($school)) {
+		    echo $school->Name; 
+		    echo "<br><br>";
+		    echo nl2br(htmlspecialchars($school->Description));
+		}?>
+		</div>
+		
+
+		<?php if (isset($master)) {?>
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Mästare</div>
+			<?php echo $masterRole->Name; ?>
+			</div>
+		<?php }?>
+		
+		<?php 
+		$apprenticeNames = $magician->getApprenticeNames();
+		if (isset($apprenticeNames)) {?>
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Lärlingar</div>
+			<?php echo implode(", ", $apprenticeNames); ?>
+			</div>
+		<?php }?>
+			
+    			
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Stav</div>
+		<?php 
+			if ($magician->hasStaffImage()) {
+			    $image = Image::loadById($magician->ImageId);
+
+		        echo "<img width='300' src='../includes/display_image.php?id=$magician->ImageId'/>\n";
+		        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+
+			} else {
+			    echo "<a href='upload_image.php?id=$magician->Id&type=magician'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+			}
+		    
+	    ?>
+		</div>
+
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Stav godkänd datum</div>
+		<?php 
+		    if ($magician->isStaffApproved()) echo $magician->StaffApproved; 
+		    else echo showParticipantStatusIcon(false, "Staven är inte godkänd.");
+	    ?>			
+		</div>
+
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Workshop datum</div>
+		<?php 
+		    if ($magician->hasDoneWorkshop()) echo $magician->Workshop; 
+		    else echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi.");
+	    ?>			
+		</div>
+	</div>
 	<div class='itemselector'>
 		<div class="header">
 
