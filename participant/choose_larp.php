@@ -136,14 +136,14 @@ div.border
     			 ?>
 			 <?php 
 			     $larps_organizer = array();
-    			 $campaigns = Campaign::organizerForCampaigns($current_user);
+    			 $campaigns = Campaign::organizerForCampaigns($current_person);
     			 foreach ($campaigns as $campaign) {
     			     
 
     			     $larps_in_campaign=LARP::allByCampaign($campaign->Id);
     			     $larps_organizer = array_merge($larps_organizer, $larps_in_campaign);
     			 }
-    			 $larps = LARP::organizerForLarps($current_user);
+    			 $larps = LARP::organizerForLarps($current_person);
     			 $larps_organizer = array_merge($larps_organizer, $larps);
     			 
  
