@@ -6,8 +6,8 @@ require $root . '/includes/init.php';
 
 $future_larp_array = LARP::allFutureLARPs();
 //$future_closed_larp_array = LARP::allFutureNotYetOpenLARPs();
-$past_larp_array = LARP::allPastLarpsWithRegistrations($current_user);
-$current_participating_larp_array = LARP::currentParticipatingLARPs($current_user);
+$past_larp_array = LARP::allPastLarpsWithRegistrations($current_person);
+$current_participating_larp_array = LARP::currentParticipatingLARPs($current_person);
 
 $referer = '';
 if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
