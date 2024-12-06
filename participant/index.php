@@ -417,7 +417,7 @@ function openTab(evt, tabName) {
                     echo "<br>Avgiften är del av en faktura som betalas av $invoice->Recipient";
                 } else {
                     $campaign = $current_larp->getCampaign();
-                    echo "<br>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. Betalas senast ".$registration->paymentDueDate();
+                    echo "<br>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount.<br>Ange referens: <b>$registration->PaymentReference</b>.<br>Betalas senast ".$registration->paymentDueDate();
                     if (!empty($campaign->SwishNumber)) {
                         if ($isMob) echo "<br><a href = ".Swish::getSwishLink($registration, $campaign). "><button ><img style='padding:2px'  width='20' src='../images/Swish Logo.png'><span style='vertical-align: top'> Betala med swish </span></button></a>";
                         else echo "<br><img width='200' src='../includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/>\n";
@@ -519,17 +519,6 @@ function openTab(evt, tabName) {
 	
 	
 
-	
-	<div class='itemselector'>
-    	<div class="header">
-    	
-    	<i class="fa-solid fa-people-group"></i> Bildgallerier
-    	</div>
-    	<div class='itemcontainer'>
-    		<a href='participants.php' target='_blank'>Deltagare på lajvet</a><br>
-    		<a href='officials.php' target='_blank'>Funktionärer på lajvet</a>
-    	</div>
-	</div>
 	
 	
 
@@ -642,7 +631,6 @@ function openTab(evt, tabName) {
     	    foreach ($npcs as $npc)  {
     	        echo "<div class='itemcontainer'>";
     	        echo "<div class='itemname'><a href='view_npc.php?id=$npc->Id'>$npc->Name</a></div>";
-    	        echo ja_nej($role->isApproved());
     	        
     	        
     	        if ($npc->hasImage()) {
@@ -666,8 +654,20 @@ function openTab(evt, tabName) {
     	    
     	    
     	}
+    	?>
+    	<div class='itemselector'>
+    	<div class="header">
+    	
+    	<i class="fa-solid fa-people-group"></i> Bildgallerier
+    	</div>
+    	<div class='itemcontainer'>
+    	<a href='participants.php' target='_blank'>Deltagare på lajvet</a><br>
+    	<a href='officials.php' target='_blank'>Funktionärer på lajvet</a>
+    	</div>
+    	</div>
     	
     	
+    	<?php 
 	  //Annonser	
       $adtypes = AdvertismentType::allActive($current_larp);
        if (!empty($adtypes)) {

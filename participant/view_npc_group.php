@@ -27,10 +27,25 @@ if ($npc_group->LarpId != $current_larp->Id) {
 $group_members = $npc_group->getNPCsInGroup();
 
 
+$isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
+
+if($isMob){
+    $columns=2;
+    $type="Mobile";
+    //echo 'Using Mobile Device...';
+}else{
+    $columns=5;
+    $type="Computer";
+    //echo 'Using Desktop...';
+}
+$temp=0;
+
+
 function print_npc(NPC $npc) {
-    global $current_larp;
+    global $current_larp, $type;
     
-    echo "<li>\n";
+    if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+    else echo "<li style='display:table-cell; width:49%;'>\n";
     echo "<div class='name'>$npc->Name";    echo "</div>\n";
     $person = $npc->getPerson();
     if (isset($person)) echo "Spelas av $person->Name<br>";
@@ -52,37 +67,51 @@ function print_npc(NPC $npc) {
 include 'navigation.php';
 ?>
 
+    <div class='itemselector'>
+        <div class='header'>
+        <i class='fa-solid fa-people-group'></i> <?php echo $npc_group->Name;?>
+        </div>
+        
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Beskrivning</div>
+		<?php echo $npc_group->Description;?>
+		</div>
 
-	<div class="content">
-		<h1><?php echo $npc_group->Name;?></h1>
-		<table>
-			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $npc_group->Description;?></td></tr>
-			<tr><td valign="top" class="header">När ska gruppen spelas</td><td><?php echo $npc_group->Time;?></td></tr>
-		</table>		
-		
-		
-		<h2>NPC'er i gruppen</h2>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>När ska gruppen spelas</div>
+		<?php echo $npc_group->Time;?>
+		</div>
+        
+   		<div class='itemcontainer'>
+       	<div class='itemname'>NPC'er i gruppen</div>
 
 		<?php 
 
 		
-		echo "<div class='container' style ='background-color: #f3f4f7;box-shadow: none; margin: 0px; padding: 0px;'>\n";
+		echo "<div class='container'>\n";
 		if ((empty($group_members) or count($group_members)==0)) {
 		    echo "Inga anmälda i gruppen än.";
 		}
 		else {
-		    echo "<ul class='image-gallery'>\n";
+		    $temp=0;
+		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
 		    foreach ($group_members as $role) {
 		        print_npc($role);
+		        $temp++;
+		        if($temp==$columns)
+		        {
+		            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		            $temp=0;
+		        }
 		    }
 		    echo "</ul>\n";
 		}
 		
-		echo "</DIV>\n";
+		echo "</div>\n";
 		
 		
 		?>
-		    
+		</div>		    
 	</div>
 
 
