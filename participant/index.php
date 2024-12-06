@@ -518,13 +518,36 @@ function openTab(evt, tabName) {
 	<div id="BeforeLARP" class="tabcontent">
 	
 	
+	<?php 
+	$registered_roles = $current_person->getRolesAtLarp($current_larp);
+	
 
+    echo "<div class='itemselector'>";
+    echo "<div class='header'>";
+    echo "<i class='fa-solid fa-scroll'></i> Intriger";
+    echo "</div>";
+        
+        if ($current_larp->isIntriguesReleased()) {
+            foreach ($registered_roles as $role) {
+            echo "<div class='itemcontainer borderbottom'>";
+            echo $role->getViewLink();
+            $group = $role->getGroup();
+            if (isset($group)) echo "<br>". $group->getViewLink();
+            echo "</div>";
+        }
+
+        } else {
+            echo "Intrigerna är inte klara än.";
+        }
+        echo "</div>";
+            
+	?>
 	
 	
 
 	<?php 
     	//Karaktärer med specialkunskaper
-	    $registered_roles = $current_person->getRolesAtLarp($current_larp);
+
         
     	foreach ($registered_roles as $role) {
         	if (Magic_Magician::isMagician($role)) {
@@ -601,7 +624,7 @@ function openTab(evt, tabName) {
     	        echo "</div>";
     	        echo "</div>";
         	}
-        	if (Vision::hasVisions($current_larp, $role)) {
+        	if (Vision::hasVisions($current_larp, $role) && $current_larp->isIntriguesReleased()) {
         	    echo "<div class='itemselector'>";
         	    echo "<div class='header'>";
         	    echo "<i class='fa-solid fa-eye'></i> Syner för $role->Name";
