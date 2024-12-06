@@ -27,7 +27,7 @@ $temp=0;
 
 $group = Group::loadById($GroupId); 
 
-if (!$current_user->isMember($group) && !$current_user->isGroupLeader($group)) {
+if (!$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group)) {
     header('Location: index.php?error=no_member'); //Inte medlem i gruppen
     exit;
 }
@@ -40,13 +40,13 @@ $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($group, $current
 $allUnregisteredRoles = Role::getAllUnregisteredRolesInGroup($group, $current_larp);
 
 function print_role(Role $role, Group $group, $isComing) {
-    global $current_user, $current_larp, $type;
+    global $current_person, $current_larp, $type;
     
     if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
     else echo "<li style='display:table-cell; width:49%;'>\n";
     
     echo "<div class='name'>$role->Name";
-    if ($current_user->isGroupLeader($group)) {
+    if ($current_person->isGroupLeader($group)) {
         echo " <a href='logic/remove_group_member.php?groupID=".$group->Id."&roleID=".$role->Id."' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
         echo "<i class='fa-solid fa-trash-can'></i>";
         echo "</a>";
@@ -168,7 +168,7 @@ include 'navigation.php';
     	   </div>
 		<?php } ?>
 
-		<?php if ($current_user->isGroupLeader($group)) { ?>
+		<?php if ($current_person->isGroupLeader($group)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Intrigidéer</div>
     	   <?php echo nl2br(htmlspecialchars($group->IntrigueIdeas));?>

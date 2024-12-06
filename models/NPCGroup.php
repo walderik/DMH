@@ -109,16 +109,15 @@ class NPCGroup extends BaseModel{
         return NPC::getNPCsInGroup($this, $current_larp);
     }
     
-    public function IsMember(User $user) {
-        if (empty($user)) return false;
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_npc, regsys_person WHERE ".
+    public function IsMember(Person $person) {
+        if (empty($person)) return false;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_npc WHERE ".
             "regsys_npc.NPCGroupId=? AND ".
-            "regsys_npc.PersonId = regsys_person.Id AND ".
-            "regsys_person.UserId=?;";
+            "regsys_npc.PersonId = ?;";
             
             $stmt = static::connectStatic()->prepare($sql);
             
-            if (!$stmt->execute(array($this->Id, $user->Id))) {
+            if (!$stmt->execute(array($this->Id, $person->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();

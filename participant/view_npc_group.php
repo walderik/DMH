@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $npc_group = NPCGroup::loadById($NPCGroupId);
 
-if (!$npc_group->IsMember($current_user)) {
+if (!$npc_group->IsMember($current_person)) {
     header('Location: index.php?error=no_member'); //Inte medlem i gruppen
     exit;
 }

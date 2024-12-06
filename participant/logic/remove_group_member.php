@@ -20,7 +20,7 @@ if (!$current_group->isRegistered($current_larp)) {
     exit;
 }
 
-if (!$current_user->isGroupLeader($current_group)) {
+if (!$current_person->isGroupLeader($current_group)) {
     header('Location: ../index.php'); //Inte gruppledare i gruppen
     exit;
 }
@@ -29,7 +29,7 @@ $role = Role::loadById($RoleId);
 $role->GroupId = null;
 $role->update();
 
-header('Location: ' . $current_group->getViewLink());
+header('Location: ../view_group.php?id=' . $current_group->Id);
 
 
 

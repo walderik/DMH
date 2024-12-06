@@ -11,7 +11,7 @@ if (isset($_GET['id']))  {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" ) {
-    if (isset($_POST['operation']) && $_POST['operation']=='updateNotesToUser' && $house->IsHouse() && $current_user->hasEditRightToHouse($house) )  { # isset($_GET['NotesToUsers'])
+    if (isset($_POST['operation']) && $_POST['operation']=='updateNotesToUser' && $house->IsHouse() && $current_person->hasEditRightToHouse($house) )  { # isset($_GET['NotesToUsers'])
         $house->NotesToUsers = $_POST['NotesToUsers'];
         $house->update();
     }
@@ -39,7 +39,7 @@ ul.list {
 
 			<i class="fa-solid fa-house"></i>
 			<?php echo $house->Name;
-        	if ($house->IsHouse() && $current_user->hasEditRightToHouse($house)) {
+        	if ($house->IsHouse() && $current_person->hasEditRightToHouse($house)) {
         	    echo " &nbsp;<a href='house_form.php?operation=update&id=$house->Id' title='Redigera husbrevet'><i class='fa-solid fa-pen'> </i></a>";
         	}
     	   ?>
@@ -91,7 +91,7 @@ ul.list {
  			    echo "</div>";
 			} ?>
     		
-		<?php if ($house->IsHouse() && $current_user->hasEditRightToHouse($house)) {
+		<?php if ($house->IsHouse() && $current_person->hasEditRightToHouse($house)) {
     		    echo "<div class='itemcontainer'>";
     		    echo "<div class='itemname'>Husförvaltare</div>";
     		    $caretakers = $house->getHousecaretakers();

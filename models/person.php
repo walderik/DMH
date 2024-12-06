@@ -847,6 +847,48 @@ class Person extends BaseModel{
     }
     
     
+    public function hasEditRightToHouse(House $house) {
+        if (AccessControl::hasAccessOther($this, AccessControl::HOUSES)) return true;
+        
+        if ($house->getHousecaretakerForPerson($this)) return true;
+
+        if (AccessControl::hasAccessOther($this, AccessControl::ADMIN)) return true;
+        return false;
+    }
+    
+    public function isMemberGroup($group) {
+        //Kollar om personen har en karaktär som är med i gruppen
+        if (!isset($group)) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_role WHERE ".
+            "regsys_role.GroupId=? AND ".
+            "regsys_role.PersonId = ?;";
+        
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($group->Id, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+        
+        
+        if ($res[0]['Num'] == 0) return false;
+        return true;
+    }
+    
+    public function isGroupLeader($group) {
+        if ($group->PersonId == $this->Id) return true;
+        return false;
+    }
     
     
 }
