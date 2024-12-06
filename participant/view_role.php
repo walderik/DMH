@@ -32,6 +32,22 @@ if (isset($role->GroupId)) {
     $group=Group::loadById($role->GroupId);
 }
 
+
+$isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "mobile"));
+
+if($isMob){
+    $columns=2;
+    $type="Mobile";
+    //echo 'Using Mobile Device...';
+}else{
+    $columns=5;
+    $type="Computer";
+    //echo 'Using Desktop...';
+}
+$temp=0;
+
+
+
 include 'navigation.php';
 ?>
 	<div class='itemselector'>
@@ -40,27 +56,28 @@ include 'navigation.php';
 			<i class="fa-solid fa-person"></i>
 			<?php echo $role->Name;?>
 		</div>
-	   		<div class='itemcontainer'>
+ 
+		<?php 
+		if ($role->hasImage()) {
+		    echo "<div class='itemcontainer'>";
+		    
+		    $image = Image::loadById($role->ImageId);
+		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
+		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+		    echo "</div>";
+		}
+		?>
 
-    		<?php 
-    		if ($role->hasImage()) {
-    		    
-    		    $image = Image::loadById($role->ImageId);
-    		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
-    		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-    		}
-    		?>
-			</div>
 
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Godkänd</div>
-			<?php echo ja_nej($role->isApproved());?>
-			</div>
-		
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Spelas av</div>
-			<?php echo $person->Name;?>
-			</div>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Godkänd</div>
+		<?php echo ja_nej($role->isApproved());?>
+		</div>
+	
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Spelas av</div>
+		<?php echo $person->Name;?>
+		</div>
 			
 
 		<?php if (isset($group)) {?>
@@ -320,9 +337,9 @@ include 'navigation.php';
 			        echo "<h3>Känner till</h3>";
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
-			        $cols=5;
 			        foreach ($known_groups as $known_group) {
-			            echo "<li style='display:table-cell; width:19%;'>";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'><a href='view_known_group.php?id=$known_group->Id'>$known_group->Name</a></div>";
 			            echo "<div>Grupp</div>";
 			            if ($known_group->hasImage()) {
@@ -331,14 +348,15 @@ include 'navigation.php';
 			            echo "</li>";
 			            
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
 			            }
 			        }
 			        foreach ($known_roles as $known_role) {
-			            echo "<li style='display:table-cell; width:19%;'>";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'><a href='view_known_role.php?id=$known_role->Id'>$known_role->Name</a></div>";
 			            $role_group = $known_role->getGroup();
 			            if (!empty($role_group)) {
@@ -350,7 +368,7 @@ include 'navigation.php';
 			            }
 			            echo "</li>";
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
@@ -359,12 +377,13 @@ include 'navigation.php';
 			        
 			        foreach ($known_npcgroups as $known_npcgroup) {
 			            $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'>$npcgroup->Name</div>\n";
 			            echo "<div>NPC-grupp</div>";
 			            echo "</li>\n";
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
@@ -372,7 +391,8 @@ include 'navigation.php';
 			        }
 			        foreach ($known_npcs as $known_npc) {
 			            $npc=$known_npc->getIntrigueNPC()->getNPC();
-			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'>$npc->Name</div>\n";
 			            $npc_group = $npc->getNPCGroup();
 			            if (!empty($npc_group)) {
@@ -384,7 +404,7 @@ include 'navigation.php';
 			            }
 			            echo "</li>\n";
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
@@ -392,7 +412,8 @@ include 'navigation.php';
 			        }
 			        foreach ($known_props as $known_prop) {
 			            $prop = $known_prop->getIntrigueProp()->getProp();
-			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'>$prop->Name</div>\n";
 			            if ($prop->hasImage()) {
 			                echo "<td>";
@@ -400,7 +421,7 @@ include 'navigation.php';
 			            }
 			            echo "</li>\n";
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
@@ -428,10 +449,10 @@ include 'navigation.php';
 		            }
 		            echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 		            $temp=0;
-		            $cols=5;
 		            foreach ($checkin_props as $checkin_prop) {
 		                $prop=$checkin_prop->getIntrigueProp()->getProp();
-		                echo "<li style='display:table-cell; width:19%;'>\n";
+		                if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+		                else echo "<li style='display:table-cell; width:49%;'>\n";
 		                echo "<div class='name'>$prop->Name</div>\n";
 		                if ($prop->hasImage()) {
 		                    echo "<td>";
@@ -439,7 +460,7 @@ include 'navigation.php';
 		                }
 		                echo "</li>\n";
 		                $temp++;
-		                if($temp==$cols)
+		                if($temp==$columns)
 		                {
 		                    echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 		                    $temp=0;

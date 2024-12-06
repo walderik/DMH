@@ -38,17 +38,15 @@ include 'navigation.php';
         <i class='fa-solid fa-person'></i> <?php echo $npc->Name;?>
         </div>
 
-   		<div class='itemcontainer'>
-
 		<?php 
 		if ($npc->hasImage()) {
-		    
+		    echo "<div class='itemcontainer'>";
 		    $image = Image::loadById($npc->ImageId);
 		    echo "<img width='300' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+		    echo "</div>";
 		}
 		?>
-		</div>
 
    		<div class='itemcontainer'>
        	<div class='itemname'>Spelas av</div>
