@@ -69,6 +69,7 @@ $user = User::loadById($email->SenderUserId);
 include $navigation;
 
 ?>
+<link href='../css/participant_style.css' rel='stylesheet' type='text/css'>
 
 	<div class='itemselector'>
 		<div class="header">

@@ -13,19 +13,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 $attachment = Attachment::loadById($attachmentId); 
-$email = $attachment->getEmail();
 
 if (empty($attachment)) {
     header('Location: index.php');
     exit;
 }
 
-if (!$email->isForUser($current_user)) {
-    header('Location: index.php'); //Emailet är inte för någon person hos denna användare
+
+$email = $attachment->getEmail();
+if ($email->toPerson()->Id != $current_person->Id) {
+    header('Location: index.php'); //Emailet är inte för denna person
     exit;
     
 }
-
 
 
 $filename = $attachment->Filename;
