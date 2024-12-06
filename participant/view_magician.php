@@ -67,7 +67,7 @@ include 'navigation.php';
 		
 		<?php 
 		$apprenticeNames = $magician->getApprenticeNames();
-		if (isset($apprenticeNames)) {?>
+		if (!empty($apprenticeNames)) {?>
 	   		<div class='itemcontainer'>
            	<div class='itemname'>Lärlingar</div>
 			<?php echo implode(", ", $apprenticeNames); ?>

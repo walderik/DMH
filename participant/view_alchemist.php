@@ -38,81 +38,87 @@ if (isset($teacher)) $teacherRole = $teacher->getRole();
 include 'navigation.php';
 ?>
 
-	<div class="content">
-		<h1>Alkemist <?php echo $role->Name?></a>
-		</h1>
+	<div class='itemselector'>
+		<div class="header">
+
+			<i class="fa-solid fa-flask"></i>
+			<?php echo "Alkemist $role->Name";?>
+		</div>
+
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Typ</div>
+		<?php echo $alchemist->getAlchemistType(); ?>
+		</div>
+
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Nivå</div>
+		<?php echo $alchemist->Level; ?>
+		</div>
+
+		<?php if (isset($teacherRole)) {?>
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Lärare</div>
+			<?php echo $teacherRole->Name; ?>
+			</div>
+		<?php }?>
 		
+		<?php 
+		$students = $alchemist->getStudents();
+		if (!empty($students)) {?>
+		<div class='itemcontainer'>
+           	<div class='itemname'>Elever</div>
+			<?php 
+			    $studentLinks = array();
+			    foreach($students as $student) {
+			        $studenttype = $student->getAlchemistType();
+			        $str = $student->getRole()->Name." (";
+			        $str.=$studenttype.", ";
+			        $str.="nivå $student->Level)";
+			        $studentLinks[] = $str;
+			    }
+			    echo implode("<br>", $studentLinks); 
+			    
+		    ?>
+    	</div>
+		<?php }?>
 
-		<div>
-		
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Utrustning</div>
+		<?php 
+			if ($alchemist->hasEquipmentImage()) {
+			    echo "<br>";
+			    $image = Image::loadById($alchemist->ImageId);
 
-    		<table>
-    			<tr>
-    				<td>Typ 
-    				</td>
-    				<td><?php echo $alchemist->getAlchemistType() ?>
-                    </td>
-    			</tr>
-    			<tr>
-    				<td>Nivå 
-    				</td>
-    				<td>
-    					<?php echo nl2br(htmlspecialchars($alchemist->Level)); ?>
-                    </td>
-    			</tr>
-    			<?php if (isset($teacherRole)) { ?>
-   				<tr>
-    				<td>Lärare</td>
-    				<td><?php echo "$teacherRole->Name"; ?></td>
-    			</tr>
-    			<?php }?>
-    			<?php 
-    			$students = $alchemist->getStudents();
-    			if (isset($students)) {?>
-    			<tr>
-    				<td>Elever</td>
-    				<td><?php 
-    				    $studentLinks = array();
-    				    foreach($students as $student) {
-    				        $studenttype = $student->getAlchemistType();
-    				        $str = $student->getRole()->Name." (";
-    				        $str.=$studenttype.", ";
-    				        $str.="nivå $student->Level)";
-    				        $studentLinks[] = $str;
-    				    }
-    				    echo implode("<br>", $studentLinks); 
-    				    
-    				    ?></td>
-    			</tr>
-    			<?php }?>
-    							<tr>
-    				<td>Utrustning</td>
-    				<td>
-    					<?php 
-    					echo "<a href='upload_image.php?id=$alchemist->Id&type=alchemist'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
-    					if ($alchemist->hasEquipmentImage()) {
-    					    echo "<br>";
-    					    $image = Image::loadById($alchemist->ImageId);
-    
-    					        echo "<img width='300' src='../includes/display_image.php?id=$alchemist->ImageId'/>\n";
-    					        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-    
-    					}
-    					?>
-    					
-    				</td>
-    			</tr>
-     			<tr>
-    				<td>Workshop datum</td>
-    				<td><?php echo $alchemist->Workshop; ?></td>
-    			</tr>
-    			<tr><td></td></tr>
-    		</table>
+		        echo "<img width='300' src='../includes/display_image.php?id=$alchemist->ImageId'/>\n";
+		        if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+			} else {
+			    echo "<a href='upload_image.php?id=$alchemist->Id&type=alchemist'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+			}
+		?>
+		</div>
 
-			<h2>Recept du kan</h2>
-			Här är en lista på de recept du kan. Om något saknas kan du titta på listan med alla recept. Där kan du markera, blad de godkända recepten vilka du skulle vilja kunna. Och du kan även lägga till nya recept. 
-			Dessa kommer att godkännas av arrangörerna innan du får möjlighet att önska att du kan dem.<br>
-				<a href='alchemy_all_recipes.php?RoleId=<?php echo $role->Id?>'>Visa alla recept som finns / Önska recept du vill kunna / Skapa nya recept</a><br><br>
+   		<div class='itemcontainer'>
+           	<div class='itemname'>Workshop datum</div>
+			<?php 
+			if ($alchemist->hasDoneWorkshop()) echo $alchemist->Workshop; 
+			    else echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om alkemi/lövjeri");
+		    ?>			
+		</div>
+	</div> 
+
+	<div class='itemselector'>
+		<div class="header">
+
+			<i class="fa-solid fa-scroll"></i> Recept du kan
+		</div>
+   		<div class='itemcontainer'>
+		Här är en lista på de recept du kan. Om något saknas kan du titta på listan med alla recept. Där kan du markera, bland de godkända recepten vilka du skulle vilja kunna. Och du kan även lägga till nya recept. 
+		Dessa kommer att godkännas av arrangörerna innan du får möjlighet att önska att du kan dem.
+		</div>
+   		<div class='itemcontainer'>
+
+			<div  style='display:table'>
+			<a href='alchemy_all_recipes.php?RoleId=<?php echo $role->Id?>'>Visa alla recept som finns / Önska recept du vill kunna / Skapa nya recept</a><br><br>
 
 			<?php 
 			$recipes = $alchemist->getRecipes(false);
@@ -141,11 +147,23 @@ include 'navigation.php';
 				echo "</table>";
 			}
 			?>
+			</div>
+			</div>
+			</div>
 
+	<div class='itemselector'>
+		<div class="header">
 
-			<h2>Recept du har skapat</h2>
+			<i class="fa-solid fa-scroll"></i> Recept du har skapat
+		</div>
+   		<div class='itemcontainer'>
 			Här är alla recept du har skapat. När receptet är godkänt av arrangör går det inte längre att redigera. Om du vill ändra något på receptet efter att det är godkänt får du kontakta arrangör.<br>
 			Om du vill skapa ett nytt recept får du gå till sidan med alla recept, för att se så att det inte redan finns ett sådant recept.
+		</div>
+   		<div class='itemcontainer'>
+
+			<div  style='display:table'>
+
        <?php
     
        $recipes = Alchemy_Recipe::allByRole($role);
@@ -196,7 +214,8 @@ include 'navigation.php';
         ?>
 
 		</div>
-		
+		</div>		
+		</div>		
 
 
 </body>
