@@ -125,7 +125,7 @@ include 'navigation.php';
 			if (empty($recipes)) {
 			    echo "Inga recept, än.";
 			} else {
-				echo "<table class='small_data'>";
+			    echo "<table class='participant_table' style='width:93%;padding: 6px; margin: 16px 16px 0px;'>";
 				echo "<tr><th>Namn</th><th>Nivå</th><th>Typ</th><th>Effekt</th><th>Fick på/till<br>lajvet</th><th></th></tr>";
 				foreach ($recipes as $recipe) {
 				    echo "<tr><td><a href='view_alchemy_recipe.php?recipeId=$recipe->Id&id=$role->Id'>$recipe->Name</td><td>$recipe->Level</td><td>".$recipe->getRecipeType()."</td><td>$recipe->Effect</td>";
