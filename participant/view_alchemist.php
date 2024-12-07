@@ -116,35 +116,42 @@ include 'navigation.php';
 		Dessa kommer att godkännas av arrangörerna innan du får möjlighet att önska att du kan dem.
 		</div>
    		<div class='itemcontainer'>
-
-			<div  style='display:table'>
 			<a href='alchemy_all_recipes.php?RoleId=<?php echo $role->Id?>'>Visa alla recept som finns / Önska recept du vill kunna / Skapa nya recept</a><br><br>
-
+		</div>
 			<?php 
 			$recipes = $alchemist->getRecipes(false);
 			if (empty($recipes)) {
+			    echo "<div class='itemcontainer'>";
 			    echo "Inga recept, än.";
+			    echo "</div>";
 			} else {
-			    echo "<table class='participant_table' style='width:93%;padding: 6px; margin: 16px 16px 0px;'>";
-				echo "<tr><th>Namn</th><th>Nivå</th><th>Typ</th><th>Effekt</th><th>Fick på/till<br>lajvet</th><th></th></tr>";
 				foreach ($recipes as $recipe) {
-				    echo "<tr><td><a href='view_alchemy_recipe.php?recipeId=$recipe->Id&id=$role->Id'>$recipe->Name</td><td>$recipe->Level</td><td>".$recipe->getRecipeType()."</td><td>$recipe->Effect</td>";
-				    echo "<td>";
 				    $approvedLarpId = $alchemist->recipeApprovedLarp($recipe);
+				    echo "<div class='itemcontainer'>";
+				    
+				    echo "<details><summary><span class='itemname'><a href='view_alchemy_recipe.php?recipeId=$recipe->Id&id=$role->Id'>$recipe->Name</a> ";
+				    
+				    echo ", $recipe->Level ";
+				    echo substr($recipe->getRecipeType(), 0, 1);
+				    if (!isset($approvedLarpId)) {
+				        echo " <a href='view_alchemist.php?operation=remove_recipe&RecipeId=$recipe->Id&id=$role->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a>";
+				    }
+				    
+				    echo "</span></summary>";
+				    echo "Nivå: $recipe->Level<br>";
+				    echo "Typ: ".$recipe->getRecipeType()."<br>";
+				    echo "Effekt: $recipe->Effect<br>";
+				    echo "Fick receptet: ";
+
 				    if (isset($approvedLarpId)) {
 				        $larp = LARP::loadById($approvedLarpId);
 				        echo $larp->Name;
 				    } else {
-				        echo "Inte godkänt, än.";
+				        echo "Bara önskat. ". showStatusIcon(false);
 				    }
-				    echo "</td>\n";
-				    echo "<td>";
-				    if (!isset($approvedLarpId)) {
-				        echo "<a href='view_alchemist.php?operation=remove_recipe&RecipeId=$recipe->Id&id=$role->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a></td>";
-				    }
-				    echo "</tr>";
+				    echo "</details>";
+				    echo "</div>";
 				}
-				echo "</table>";
 			}
 			?>
 			</div>
@@ -160,56 +167,35 @@ include 'navigation.php';
 			Här är alla recept du har skapat. När receptet är godkänt av arrangör går det inte längre att redigera. Om du vill ändra något på receptet efter att det är godkänt får du kontakta arrangör.<br>
 			Om du vill skapa ett nytt recept får du gå till sidan med alla recept, för att se så att det inte redan finns ett sådant recept.
 		</div>
-   		<div class='itemcontainer'>
-
-			<div  style='display:table'>
-
        <?php
     
        $recipes = Alchemy_Recipe::allByRole($role);
        if (!empty($recipes)) {
-           $tableId = "recipes";
-           echo "<table id='$tableId' class='data'>";
-           echo "<tr>".
-               "<th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-               "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
-               "<th onclick='sortTable(2, \"$tableId\")'>Typ</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Effekt</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Ingredienser / Essenser<br>Nivån anges inom parentes</th>".
-               "<th onclick='sortTable(5, \"$tableId\")'>Godkänd/<br>Ännu inte godkänd</th>".
-               "";
            
            foreach ($recipes as $recipe) {
-                echo "<tr>\n";
-                echo "<td><a href='view_alchemy_recipe.php?recipeId=$recipe->Id&id=$role->Id'>$recipe->Name</a> ";
-                if (!$recipe->IsApproved()) {
-                    echo "<a href='alchemy_recipe_form.php?RoleId=$role->Id&recipeId=$recipe->Id'><i class='fa-solid fa-pen'></i></a>";
-                }
-                
-                echo "</td>\n";
-                echo "<td>$recipe->Level</td>\n";
-                echo "<td>";
-                if ($alchemist->AlchemistType == $recipe->AlchemistType) echo "<strong>";
-                echo $recipe->getRecipeType();
-                if ($alchemist->AlchemistType == $recipe->AlchemistType) echo "</strong>";
-                echo "</td>\n";
-                echo "<td>".nl2br(htmlspecialchars($recipe->Effect))."</td>";
-                echo "<td>";
-                echo $recipe->getComponentNames();
-                echo "</td>\n";
-                
-                echo "<td>";
-                echo showStatusIcon($recipe->isApproved());
-                echo "</td>\n";
-                echo "</tr>\n";
+               echo "<div class='itemcontainer'>";
+               echo "<div class='itemname'><a href='view_alchemy_recipe.php?recipeId=$recipe->Id&id=$role->Id'>$recipe->Name</a> ";
+               
+               if (!$recipe->IsApproved()) {
+                   echo "<a href='alchemy_recipe_form.php?RoleId=$role->Id&recipeId=$recipe->Id'><i class='fa-solid fa-pen'></i></a>";
+               }
+               
+               echo "</div>";
+               //echo "Nivå: $recipe->Level<br>";
+               //echo "Typ: ".$recipe->getRecipeType()."<br>";
+               echo "Godkännande: ";
+               
+               if ($recipe->isApproved()) {
+                   echo "Receptet är godkänt.";
+               } else {
+                   echo "Receptet inte godkänt, än.". showStatusIcon(false);
+               }
+               echo "</div>";
             }
-            echo "</table>";
-            echo "<br>";
-            echo "<input type='submit' value='Välj recept'></form>";
             
         }
         else {
-            echo "<p>Inga registrerade ännu</p>";
+            echo "<div class='itemcontainer'>Inga registrerade ännu</div>";
         }
         ?>
 
