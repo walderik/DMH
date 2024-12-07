@@ -181,6 +181,11 @@ function showStatusIcon($value, ?string $fix_url = NULL) {
     }
 }
 
+function showQuestionmarkIcon() {
+    return '<img src="../images/questionmark.jpeg" alt="?" width="20" height="20">';
+}
+
+
 function showParticipantStatusIcon($value, $message) {
     if ($value == true or $value == 1) {
         return '<img src="../images/ok-icon.png" alt="OK" width="20" height="20">';
