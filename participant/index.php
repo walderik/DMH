@@ -61,11 +61,11 @@ function openTab(evt, tabName) {
 	$persons = Person::getPersonsForUser($current_user->Id);
 	if (!empty($persons)) {
 	    if (empty($current_person)) {
-	        // ensure the pointer is at the first element
-	        reset($persons);
-	        
-	        // get the value of the element being pointed to
-	        $current_person = current($persons);
+	        //Sätt current_person till dne person som har lägst id
+	        foreach ($persons as $person) {
+	            if (empty($current_person)) $current_person = $person;
+	            elseif ($person->Id  < $current_person->Id) $current_person = $person;
+	        }
 	        $_SESSION['PersonId'] = $current_person->Id;
 	    }
 	    

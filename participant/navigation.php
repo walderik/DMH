@@ -9,11 +9,14 @@
 	
 	include '../common/navigation_beginning.php';
 	
-        $houses = $current_person->housesOf();
+	if (isset($current_person)) {
+	    $houses = $current_person->housesOf();
+
         if (!empty($houses)) {
             foreach ($houses as $persons_house) echo "<a href='view_house.php?id=$persons_house->Id'>$persons_house->Name</a>";
         }
-    ?>
+	}
+	?>
 
   <?php if (isset($current_larp)) {?>	
 
@@ -35,7 +38,7 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      <a href="select_person.php">Deltagare</a>
+	      <a href="person_registration_form.php">Deltagare</a>
 	      <a href="group_registration_form.php">Grupp</a>
 	    </div>
 	  </div> 
