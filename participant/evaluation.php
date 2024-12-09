@@ -99,8 +99,10 @@ label::before {
    		<div class='itemcontainer'>
 			Kontrollera att du lämnar in utvärdering för rätt lajv.<br><br>
 			Vi sparar inte vilka svar du har angett, bara att du har lämnat en utvärdering. Utvärderingen sparas anonymt.<br><br>
-			Skalan som används är:<br>    			
+			Skalan som används är:<br>  
+				0: Vet inte, inte aktuellt<br>  			
 				1: lägsta, sämst<br>
+				10: högsta, bästa
 		</div>
 
 		<form action="logic/evaluation_save.php" method="post">
@@ -109,7 +111,7 @@ label::before {
 
    		<div class='itemcontainer'>
             
-            <h2>Betygsätt lajvet: skala 1-10</h2>
+            <h2>Betygsätt lajvet:</h2>
             
  				
 			<?php slider("Arrangörerna (professionalism, bemötande, nåbarahet m.m)","larp_q1")?>
@@ -125,11 +127,6 @@ label::before {
 			<?php textQuestion("Övrigt/kommentarer", "larp_comment")?>
 
 		<h2>Hur väl stämmer följande påståenden överens med din upplevelse av <?php echo $current_larp->Name ?></h2>
-			<div class="explanation">
-			Om du inte vet eller inte kan svara på frågan lämna värdet på "Vet inte", (0).<br>
-			1: stämmer inte alls<br>
-			10: stämmer mycket väl överens
-			</div>
 			<?php slider("Det var ett välorganiserat lajv","exp_q1")?>
 			<?php slider("Det var ett nybörjarvänligt lajv","exp_q2")?>
 			<?php //slider("Det var ett nybörjarvänligt lajv","exp_q3")?>
