@@ -89,7 +89,7 @@ include_once 'header.php';
 
    		<div class='itemcontainer'>
        	<div class='itemname'>Mottagare</div>
-		<input type="text" id="Reciever" name="Reciever" value="<?php echo htmlspecialchars($telegram->Reciever); ?>" size="50" maxlength="50" required></td>
+		<input type="text" id="Reciever" name="Reciever" value="<?php echo htmlspecialchars($telegram->Reciever); ?>" size="50" maxlength="50" required>
 		</div>
 
    		<div class='itemcontainer'>
