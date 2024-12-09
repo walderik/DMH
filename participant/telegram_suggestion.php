@@ -101,7 +101,7 @@ include_once 'header.php';
 
    		<div class='itemcontainer'>
        	<div class='itemname'>Meddelande</div>
-		Tänk på att telegram var <strong>dyrt</strong> håll det kort och använd alla förkortningar du kan komma på.<br>
+		Tänk på att telegram var <strong>dyrt</strong>. Håll det kort och använd alla förkortningar du kan komma på.<br>
 		<textarea id="Message" name="Message" rows="4" style='width:100%;' maxlength="500"
 					 required><?php echo htmlspecialchars($telegram->Message); ?></textarea> 		
 		 </div>
