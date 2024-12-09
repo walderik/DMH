@@ -121,6 +121,11 @@ class Alchemy_Ingredient extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
+    public static function getAllIngredients(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_alchemy_ingredient WHERE CampaignId=? AND IsApproved=1 AND IsCatalyst=0 ORDER BY Level, Name";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
     
     
     public function mayDelete() {
@@ -245,6 +250,19 @@ class Alchemy_Ingredient extends BaseModel{
     public function countAtLarp(LARP $larp) {
         $sql = "SELECT Sum(Amount) as Num FROM regsys_alchemy_supplier_ingredient WHERE IngredientId=? AND LARPId=? AND IsApproved=1";
         return static::countQuery($sql, array($this->Id, $larp->Id));
+    }
+    
+    
+    public function hasIngredient(Alchemy_Supplier $supplier, Larp $larp) {
+        $sql = "SELECT count(IngredientId) as Num FROM regsys_alchemy_supplier_ingredient WHERE IngredientId=? AND SupplierId=? AND LarpId=? AND IsApproved=1;";
+        return static::existsQuery($sql, array($this->Id, $supplier->Id, $larp->Id));
+        
+    }
+    
+    public function wantsIngredient(Alchemy_Supplier $supplier, Larp $larp) {
+        $sql = "SELECT count(IngredientId) as Num FROM regsys_alchemy_supplier_ingredient WHERE IngredientId=? AND SupplierId=? AND LarpId=? AND IsApproved=0;";
+        return static::existsQuery($sql, array($this->Id, $supplier->Id, $larp->Id));
+        
     }
     
     
