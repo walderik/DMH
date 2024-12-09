@@ -22,7 +22,7 @@ if (!isset($group)) {
 }
 
 
-if (!$current_user->isGroupLeader($group)) {
+if (!$current_person->isGroupLeader($group)) {
     header('Location: ../index.php'); //Inte din grupp
     exit;
 }

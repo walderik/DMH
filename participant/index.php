@@ -454,7 +454,7 @@ function openTab(evt, tabName) {
             echo "<div class='itemname'>Plats på lajvet</div>";
             
             if ($registration->hasSpotAtLarp()) {
-                echo "$current_user->Name har plats på lajvet";
+                echo "$current_person->Name har plats på lajvet";
             } else {
                 echo showParticipantStatusIcon(false, "$current_person->Name har inte fått en plats på lajvet");
             }

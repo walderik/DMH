@@ -34,7 +34,7 @@ switch ($type) {
         break;
     case "group":
         $object = Group::loadById($id);
-        if (!$current_user->isGroupLeader($object)) {
+        if (!$current_person->isGroupLeader($object)) {
             header('Location: ../index.php');
             exit;
         }

@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
        $larp_role  = LARP_Role::loadByIds($role->Id, $current_larp->Id);
        
        
-       if (Person::loadById($role->PersonId)->UserId != $current_user->Id) {
+       if ($role->PersonId != $current_person->Id) {
            header('Location: index.php?error=not_yours'); //Inte din karaktär
            exit;
        }
@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $larp_group  = LARP_Group::loadByIds($group->Id, $current_larp->Id);
         
         
-        if (!$current_user->isGroupLeader($group)) {
+        if (!$current_person->isGroupLeader($group)) {
             header('Location: index.php'); //Inte din grupp
             exit;
         }

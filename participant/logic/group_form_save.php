@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         
         //Kolla om man är gruppledare annars får man inte ändra på gruppen
-        if (!$current_user->isGroupLeader($group)) {
+        if (!$current_person->isGroupLeader($group)) {
             header('Location: ../index.php');
             exit;
         }
