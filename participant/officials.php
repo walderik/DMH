@@ -64,9 +64,7 @@ $temp=0;
  session_destroy();*/
 
 function print_role($role) {
-    global $current_larp;
     global $type;
-    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
     if($type=="Computer")
     {
         echo "<li style='display:table-cell; width:19%;'>\n";
@@ -142,14 +140,16 @@ function print_role($role) {
                 foreach ($persons as $person) {
                     $role = $person->getMainRole($current_larp);
                     print_role($role);
-                   $temp++;
+                    $temp++;
                     if($temp==$columns)
                     {
                         echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
                         $temp=0;
-                    } 
-                    
+                    }
                 }
+                echo "</ul><ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
+                $temp=0;
+                echo "</ul>\n";
             }
             echo "</DIV>\n";
             
