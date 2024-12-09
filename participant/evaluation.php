@@ -9,37 +9,15 @@ if (!$current_larp->isEnded()) {
 $viewOnly = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['PersonId'])) {
-        $PersonId = $_POST['PersonId'];
-    }
     if (isset($_POST['ViewOnly'])) {
         $viewOnly = true;
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    
-    if (isset($_GET['PersonId'])) {
-        $PersonId = $_GET['PersonId'];
-    }
     if (isset($_GET['ViewOnly'])) {
         $viewOnly = true;
     }
-}
-
-
-$person = Person::newWithDefault();
-
-if (isset($PersonId)) {
-    $person = Person::loadById($PersonId);
-} elseif(!$viewOnly) {
-    header('Location: index.php');
-    exit;
-}
-
-if (!$viewOnly && $person->UserId != $current_user->Id) {
-    header('Location: index.php');
-    exit;
 }
 
 
@@ -70,7 +48,7 @@ function textQuestion($headline, $id) {
     
     echo "<div class='question'>\n";
     echo "<label for='$id'>$headline</label><br>\n";
-    echo "<textarea id='$id' name='$id' rows='4' cols='100' maxlength='2000'";
+    echo "<textarea id='$id' name='$id' rows='4' maxlength='2000' style='width:100%;'";
     if ($viewOnly) echo " disabled=disabled ";
     echo "></textarea>\n";
     echo "</div>\n";
@@ -114,21 +92,26 @@ label::before {
 }
 </style>
 
-	<div class="content">
-		<h1>Utvärdering av <span style='color:red'><?php echo $current_larp->Name; ?></span>  för <?php echo $person->Name; ?></h1>
-			<p>Kontrollera att du lämnar in utvärdering för rätt lajv.<br><br>Vi sparar inte vilka svar du har angett, bara att du har lämnat en utvärdering. Utvärderingen sparas anonymt.</p>
-			<form action="logic/evaluation_save.php" method="post">
-			<input type="hidden" id="Id" name="Id" value="<?php if (!$viewOnly) echo $person->getRegistration($current_larp)->Id ?>">
-			<input type="hidden" id="Age" name="Age" value="<?php if (!$viewOnly) echo $person->getAgeAtLarp($current_larp)?> ">
+	<div class='itemselector'>
+		<div class="header">
+			<i class="fa-solid fa-star"></i> Utvärdering av <span style='color:red'><?php echo $current_larp->Name; ?></span>  för <?php echo $current_person->Name; ?>
+		</div>
+   		<div class='itemcontainer'>
+			Kontrollera att du lämnar in utvärdering för rätt lajv.<br><br>
+			Vi sparar inte vilka svar du har angett, bara att du har lämnat en utvärdering. Utvärderingen sparas anonymt.<br><br>
+			Skalan som används är:<br>    			
+				1: lägsta, sämst<br>
+		</div>
 
+		<form action="logic/evaluation_save.php" method="post">
+		<input type="hidden" id="Id" name="Id" value="<?php if (!$viewOnly) echo $current_person->getRegistration($current_larp)->Id ?>">
+		<input type="hidden" id="Age" name="Age" value="<?php if (!$viewOnly) echo $current_person->getAgeAtLarp($current_larp)?> ">
+
+   		<div class='itemcontainer'>
             
             <h2>Betygsätt lajvet: skala 1-10</h2>
             
-    			<div class="explanation">
-				1: lägsta, sämst<br>
-				10: högsta, bäst
-				</div>
-				
+ 				
 			<?php slider("Arrangörerna (professionalism, bemötande, nåbarahet m.m)","larp_q1")?>
 			<?php slider("Hemsidan (information, navigering, lättläst m.m)","larp_q2")?>
 			<?php slider("Prissättning (1 = för högt pris)","larp_q3")?>
@@ -229,8 +212,11 @@ label::before {
 			<?php textQuestion("Övrigt/kommentarer", "finish_comment")?>
             
             <?php if (!$viewOnly) {?>
-            <input type="submit" value="Skicka in">
+            <input type="submit" class='button-18' value="Skicka in">
             <?php }?>
             </form>
-
-<p>Frågorna kommer från <a href="https://morgondagensgryning.se/" target="_blank">Morgondagens Gryning</a>. Åk gärna på deras lajv också.</p>
+	</div>
+	<div class='itemcontainer'>
+		Frågorna kommer från <a href="https://morgondagensgryning.se/" target="_blank">Morgondagens Gryning</a>. Åk gärna på deras lajv också.
+	</div>
+</div>
