@@ -42,7 +42,7 @@ include_once 'header.php';
                 break;
             case "action":
                 if (is_null($telegram->Id)) {
-                    $output = "Lägg till";
+                    $output = "Skapa";
                     break;
                 }
                 $output = "Uppdatera";
@@ -55,59 +55,65 @@ include_once 'header.php';
     include 'navigation.php';
     ?>
     
+    	<div class='itemselector'>
+		<div class="header">
 
-    <div class="content"> 
-    <h1><?php echo default_value('action');?> telegram</h1>
-    <p>Telegrammet kommer att granskas av arrangörerna innan det godkäns för lajvet.<br /></p>
+			<i class="fa-brands fa-telegram"></i>
+			<?php echo default_value('action');?> telegram
+		</div>
+
+   		<div class='itemcontainer'>
+    		Telegrammet kommer att granskas av arrangörerna innan det godkäns för lajvet.
+		</div>
 	<form action="logic/telegram_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php default_value('id'); ?>">
-		<table>
-			<tr>
-				<td><label for="Deliverytime">Leveranstid</label></td>
-				<td><input type="datetime-local" id="Deliverytime"
-					name="Deliverytime" value="<?php echo formatDateTimeForInput($telegram->Deliverytime); ?>" min="<?php echo formatDateTimeForInput($current_larp->StartTimeLARPTime);?>"
-					max="<?php echo formatDateTimeForInput($current_larp->EndTimeLARPTime);?>" size="50" required></td>
-			</tr>
-			<tr>
-				<td><label for="Sender">Avsändare</label></td>
-				<td><input type="text" id="Sender" name="Sender" value="<?php echo htmlspecialchars($telegram->Sender); ?>" size="50" maxlength="50" required></td>
-			</tr>
-			<tr>
+		
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Leveranstid</div>
+		<input type="datetime-local" id="Deliverytime"
+			name="Deliverytime" value="<?php echo formatDateTimeForInput($telegram->Deliverytime); ?>" min="<?php echo formatDateTimeForInput($current_larp->StartTimeLARPTime);?>"
+			max="<?php echo formatDateTimeForInput($current_larp->EndTimeLARPTime);?>" size="50" required>		
+		</div>
+		
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Avsändare</div>
+		<input type="text" id="Sender" name="Sender" value="<?php echo htmlspecialchars($telegram->Sender); ?>" size="50" maxlength="50" required>
+		</div>
 
-				<td><label for="SenderCity">Avsändarens stad</label></td>
-				<td><input type="text" id="SenderCity" name="SenderCity"
-					 value="<?php echo htmlspecialchars($telegram->SenderCity); ?>" size="50" maxlength="50" required></td>
-			</tr>
-			<tr>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Avsändarens stad</div>
+		<input type="text" id="SenderCity" name="SenderCity"
+					 value="<?php echo htmlspecialchars($telegram->SenderCity); ?>" size="50" maxlength="50" required>
+		</div>
 
-				<td><label for="Reciever">Mottagare</label></td>
-				<td><input type="text" id="Reciever" name="Reciever" value="<?php echo htmlspecialchars($telegram->Reciever); ?>" size="50" maxlength="50" required></td>
-			</tr>
-			<tr>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Mottagare</div>
+		<input type="text" id="Reciever" name="Reciever" value="<?php echo htmlspecialchars($telegram->Reciever); ?>" size="50" maxlength="50" required></td>
+		</div>
 
-				<td><label for="RecieverCity">Mottagarens stad</label></td>
-				<td><input type="text" id="RecieverCity" name="RecieverCity"
-					 value="<?php echo htmlspecialchars($telegram->RecieverCity); ?>" size="50" maxlength="50" required></td>
-			</tr>
-			<tr>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Mottagarens stad</div>
+		<input type="text" id="RecieverCity" name="RecieverCity"
+					 value="<?php echo htmlspecialchars($telegram->RecieverCity); ?>" size="50" maxlength="50" required>
+ 		</div>
 
-				<td><label for="Message">Meddelande</label></td>
-				<td>Tänk på att telegram var <strong>dyrt</strong> håll det kort och använd alla förkortningar du kan komma på.<br>
-				<textarea id="Message" name="Message" rows="4" cols="50" maxlength="500"
-					 required><?php echo htmlspecialchars($telegram->Message); ?></textarea></td>
-			</tr>
-			<tr>
 
-				<td><label for="OrganizerNotes">Anteckningar om telegrammet</label></td>
-				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
-						cols="50"><?php echo htmlspecialchars($telegram->OrganizerNotes); ?></textarea></td>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Meddelande</div>
+		Tänk på att telegram var <strong>dyrt</strong> håll det kort och använd alla förkortningar du kan komma på.<br>
+		<textarea id="Message" name="Message" rows="4" style='width:100%;' maxlength="500"
+					 required><?php echo htmlspecialchars($telegram->Message); ?></textarea> 		
+		 </div>
 
-			</tr>
- 
-		</table>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Anteckningar om telegrammet</div>
+		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
+						style='width:100%;'><?php echo htmlspecialchars($telegram->OrganizerNotes); ?></textarea>
+		 </div>
 
-		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
+
+		<div class='center'><input id="submit_button" type="submit" class='button-18' value="<?php default_value('action'); ?>"></div>
 	</form>
 	</div>
     </body>
