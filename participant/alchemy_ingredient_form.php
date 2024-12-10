@@ -91,10 +91,12 @@ img {
 }
 </style>
 
+	<div class='itemselector'>
+	<div class="header">
 
-    <div class="content"> 
-    <h1><?php echo default_value('action');?> <?php echo default_value('type');?> <a href="alchemy_ingredient_admin.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-    
+		<i class="fa-brands fa-telegram"></i>
+		<?php echo default_value('action');?> <?php echo default_value('type');?>
+	</div>
    
 	<form action="logic/alchemy_ingredient_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
@@ -103,57 +105,46 @@ img {
 		<input type="hidden" id="IsCatalyst" name="IsCatalyst" value="<?php echo $ingredient->IsCatalyst;?>">
 		<input type="hidden" id="IsApproved" name="IsApproved" value="0">
 		<input type="hidden" id="RoleId" name="RoleId" value="<?php echo $role->Id?>">
- 		<table>
-			<tr>
-				<td><label for="Name">Namn</label></td>
-				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($ingredient->Name); ?>" size="100" maxlength="250" required></td>
 
-			</tr>
-			<tr>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Namn</div>
+		<input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($ingredient->Name); ?>" maxlength="250" required>
+		</div>
 
-				<td><label for="Description">Beskrivning</label></td>
- 				<td><textarea id="Description" name="Description" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($ingredient->Description); ?></textarea></td>
-					 
-			</tr>
-			<tr>
-				<td><label for="Level">Nivå</label></td>
-				<td><input type="number" id="Level" name="Level" value="<?php echo $ingredient->Level; ?>" min="1" max="5" step="1" size="10" maxlength="250" required></td>
-			</tr>
-				<?php if ($ingredient->isIngredient()) { ?>
-			<tr>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Beskrivning</div>
+		<textarea id="Description" name="Description" rows="4" maxlength="60000" ><?php echo htmlspecialchars($ingredient->Description); ?></textarea>
+		</div>
 
-				<td><label for="StorageLocation">Essenser</label></td>
-				<td>
-				En ingrediens kan ha 1-3 essenser.<br>
-				
-				<?php 
-				$all_essences = Alchemy_Essence::allByCampaign($current_larp);
-				
-				selectionDropDownByArray('essence1', $all_essences, false, null); 
-				selectionDropDownByArray('essence2', $all_essences, false, null); 
-				selectionDropDownByArray('essence3', $all_essences, false, null); 
-				
-				
-				?>
-				</td>
-			</tr>
-			<?php } ?>
-			<tr>
-				<td><label for="ActualIngredient">Off-ingrediens</label></td>
-				<td>
-				Beskriv vad du faktiskt använder för något för att representera ingrediensen.<br>
-				<input type="text" id="ActualIngredient" name="ActualIngredient" value="<?php echo htmlspecialchars($ingredient->ActualIngredient); ?>" size="100" maxlength="250" required></td>
-			</tr>
-			<tr>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Nivå</div>
+		<input type="number" id="Level" name="Level" value="<?php echo $ingredient->Level; ?>" min="1" max="5" step="1" size="10" maxlength="250" required>
+		</div>
 
-				<td><label for="Info">Info</label></td>
-				<td><textarea id="Info" name="Info" rows="4" maxlength="60000"
-						cols="100"><?php echo htmlspecialchars($ingredient->Info); ?></textarea></td>
+		<?php if ($ingredient->isIngredient()) { ?>
 
-			</tr>
-		</table>
+  			<div class='itemcontainer'>
+       		<div class='itemname'>Essenser</div>
+			En ingrediens kan ha 1-3 essenser.<br>
+			
+			<?php 
+			$all_essences = Alchemy_Essence::allByCampaign($current_larp);
+			
+			selectionDropDownByArray('essence1', $all_essences, false, null); 
+			selectionDropDownByArray('essence2', $all_essences, false, null); 
+			selectionDropDownByArray('essence3', $all_essences, false, null); 
+			
+			
+			?>
+			</div>
+		<?php } ?>
+		
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Info</div>
+		<textarea id="Info" name="Info" rows="4" maxlength="60000" ><?php echo htmlspecialchars($ingredient->Info); ?></textarea>
+		</div>
 
-		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">
+		<div class='center'><input id="submit_button" type="submit" class='button-18' value="<?php default_value('action'); ?>"></div>
 	</form>
 	</div>
     </body>
