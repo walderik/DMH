@@ -102,14 +102,13 @@ include_once 'header.php';
    		<div class='itemcontainer'>
        	<div class='itemname'>Meddelande</div>
 		Tänk på att telegram var <strong>dyrt</strong>. Håll det kort och använd alla förkortningar du kan komma på.<br>
-		<textarea id="Message" name="Message" rows="4" style='width:100%;' maxlength="500"
+		<textarea id="Message" name="Message" rows="4" maxlength="500"
 					 required><?php echo htmlspecialchars($telegram->Message); ?></textarea> 		
 		 </div>
 
    		<div class='itemcontainer'>
        	<div class='itemname'>Anteckningar om telegrammet</div>
-		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
-						style='width:100%;'><?php echo htmlspecialchars($telegram->OrganizerNotes); ?></textarea>
+		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"><?php echo htmlspecialchars($telegram->OrganizerNotes); ?></textarea>
 		 </div>
 
 

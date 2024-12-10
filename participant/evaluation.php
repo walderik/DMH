@@ -48,7 +48,7 @@ function textQuestion($headline, $id) {
     
     echo "<div class='question'>\n";
     echo "<label for='$id'>$headline</label><br>\n";
-    echo "<textarea id='$id' name='$id' rows='4' maxlength='2000' style='width:100%;'";
+    echo "<textarea id='$id' name='$id' rows='4' maxlength='2000'";
     if ($viewOnly) echo " disabled=disabled ";
     echo "></textarea>\n";
     echo "</div>\n";

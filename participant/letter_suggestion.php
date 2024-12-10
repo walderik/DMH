@@ -86,7 +86,7 @@ include 'navigation.php';
 
    		<div class='itemcontainer'>
        	<div class='itemname'>Meddelande</div>
-		<textarea id="Message" name="Message" rows="4" style='width:100%;' maxlength="2000"
+		<textarea id="Message" name="Message" rows="4" maxlength="2000"
 					 required><?php echo htmlspecialchars($letter->Message); ?></textarea> 		
 		 </div>
 		
@@ -110,8 +110,7 @@ include 'navigation.php';
 
    		<div class='itemcontainer'>
        	<div class='itemname'>Anteckningar om brevet</div>
-		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"
-						style='width:100%;'><?php echo htmlspecialchars($letter->OrganizerNotes); ?></textarea>
+		<textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" maxlength="60000"><?php echo htmlspecialchars($letter->OrganizerNotes); ?></textarea>
 		 </div>
 
 

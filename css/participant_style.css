@@ -67,9 +67,13 @@
 
 #more {display: none;}
 
+textarea {
+	width:100%;
+}
 
-
-
+input[type='text'] {
+	width:100%;
+}
 
 /* CSS */
 .button-18 {

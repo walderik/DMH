@@ -48,7 +48,7 @@ function printIngredient(Alchemy_Ingredient $ingredient, Alchemy_Supplier $suppl
     echo "Beskrivning: $ingredient->Description<br>";
     echo "<br>";
     if ($ingredient->isIngredient()) {
-        echo "Essencer: ".$ingredient->getEssenceNames();
+        echo "Essenser: ".$ingredient->getEssenceNames();
     }
     echo "</details>";
     echo "</div>";

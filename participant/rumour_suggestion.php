@@ -75,13 +75,13 @@ include 'navigation.php';
 		
    		<div class='itemcontainer'>
        	<div class='itemname'>Text</div>
-		<textarea form='main' id="Text" name="Text" rows="4" style='width:100%;' maxlength="2000"
+		<textarea form='main' id="Text" name="Text" rows="4" maxlength="2000"
 					 required><?php echo htmlspecialchars($rumour->Text); ?></textarea>		
 		</div>
 		
   		<div class='itemcontainer'>
        	<div class='itemname'>Anteckningar<br>(Beskriv vad som är sant<br>och inte i ryktet.)</div>
-		<textarea form='main' id="Notes" name="Notes" rows="4" style='width:100%;' maxlength="2000"
+		<textarea form='main' id="Notes" name="Notes" rows="4" maxlength="2000"
 					 ><?php echo htmlspecialchars($rumour->Notes); ?></textarea>		
 		</div>
 
