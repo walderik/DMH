@@ -133,7 +133,7 @@ input[type=checkbox]:checked+label {
 	<div class='itemselector'>
 	<div class="header">
 
-		<i class="fa-solid fa-flask"></i>
+		<i class="fa-solid fa-scroll"></i>
 		<?php echo default_value('action');?> recept
 	</div>
     
