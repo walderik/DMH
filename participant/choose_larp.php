@@ -39,21 +39,24 @@ div.border
 
 </style>
 
-		<div class="content">
-			<h1>Välj lajv</h1>
-			
+
 		
     			<?php
     			
     			$resultCheck = count($current_participating_larp_array);
     			if ($resultCheck > 0) {
-    			    echo "<h3>Pågående lajv</h3>";
+    			    echo "<div class='itemselector'>";
+    			    echo "<div class='header'>";
     			    
+    			    echo "<i class='fa-solid fa-shield-halved'></i> Pågående lajv";
+	                echo "</div>";
+
     			    foreach ($current_participating_larp_array as $larp) {
-    			        echo "<div class='border'>";
+    			        echo "<div class='itemcontainer borderbottom'>";
+    			        echo "<div class='itemname'>$larp->Name</div>";
+    			        
     			        echo "<form action='../includes/set_larp.php' method='POST'>";
     			        echo "<input type='hidden' value='" . $larp->Id . "' name='larp' id='larp'>\n";
-    			        echo "<strong>$larp->Name</strong><br>\n";
     			        $startdate=date_create($larp->StartDate);
     			        $enddate=date_create($larp->EndDate);
     			        $fmt = new \IntlDateFormatter('sv_SE', NULL, NULL);
@@ -63,12 +66,12 @@ div.border
     			        echo $fmt->format($startdate) . " - " . $fmt->format($enddate)."<br>\n";
     			        echo "Kampanj: ".$larp->getCampaign()->Name."<br>\n";
     			        
+            			echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
+            			
+            			echo "</form>";
+            			echo "</div>";
     			    }
-        			echo "<br>";
-        			echo '<button type="submit">Välj</button>';
-        			echo "</form>";
-        			echo "</div>";
-        			echo "<br><hr>";
+    			    echo "</div>";
     			}
     			
 
@@ -78,13 +81,18 @@ div.border
     			$resultCheck = count($future_larp_array);
     			 if ($resultCheck > 0) {
 
-			        echo "<h3>Kommande lajv</h3>";
- 
+    			     echo "<div class='itemselector'>";
+    			     echo "<div class='header'>";
+    			     
+    			     echo "<i class='fa-solid fa-shield-halved'></i> Kommande lajv";
+    			     echo "</div>";
+    			     
 			        foreach ($future_larp_array as $larp) {
-			            echo "<div class='border'>";
+			            echo "<div class='itemcontainer borderbottom'>";
+			            echo "<div class='itemname'>$larp->Name</div>";
+			            
 			            echo "<form action='../includes/set_larp.php' method='POST'>";
 			            echo "<input type='hidden' value='" . $larp->Id . "' name='larp' id='larp'>\n";
-			            echo "<strong>$larp->Name</strong><br>\n";
 			            $startdate=date_create($larp->StartDate);
 			            $enddate=date_create($larp->EndDate);
 			            $fmt = new \IntlDateFormatter('sv_SE', NULL, NULL);
@@ -96,21 +104,21 @@ div.border
 			            if ($larp->mayRegister()) {
 			                echo "Anmälan är öppen.<br>\n";
 			                $lastregistration=date_create($larp->LatestRegistrationDate);
-			                echo "Sista anmälningsdag: ".$fmt->format($lastregistration)."<br>\n";
+			                echo "Sista anmälningsdag: ".$fmt->format($lastregistration)."\n";
 			            }
-			            if (isset($larp->Description)) {
+			            if (!empty(trim(($larp->Description)))) {
 			                echo "<br>";
 			                echo nl2br(htmlspecialchars($larp->Description));
-			                echo "<br>";
+
 			            }
 			            echo "<br>";
-			            echo '<button type="submit">Välj</button>';
+			            echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
 			            echo "</form>";
 			            echo "</div>";
 			            
 			        }
 			        
-    			     echo "<br><hr>";
+			        echo "</div>";
 
     			 }
     			 
@@ -118,22 +126,33 @@ div.border
     			 if ($resultCheck > 0) {
     			     ?>
      			 
-    			 <h3>Lajv du har varit på</h3> 
-    			 <p>Välj det här om du vill fylla i vad som hände på lajvet.</p>   
+		     	<div class='itemselector'>
+				<div class="header">
+
+				<i class="fa-solid fa-shield-halved"></i>
+				Lajv du har varit på
+				</div>
+     			 
+	    		<div class='itemcontainer'>
+    				Välj det här om du vill fylla i vad som hände på lajvet.
+				</div>   
+	    		<div class='itemcontainer'>
       			<?php  
       			echo "<form action='../includes/set_larp.php' method='POST'>";
-      			echo "<label for='larp'>Välj lajv: </label>";
       			echo "<select name='larp' id='larp'>";
       			foreach (array_reverse($past_larp_array) as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select> ";
-    			     echo '<input type="submit" value="Välj">';
+    			     echo "<button class='button-18' type='submit'>Välj</button>";
     			     echo "<br><hr>";
     			 }
     			 echo "</form>";
     			 
     			 ?>
+    			 </div>
+    			 </div>
+    			 
 			 <?php 
 			     $larps_organizer = array();
     			 $campaigns = Campaign::organizerForCampaigns($current_person);
@@ -155,38 +174,58 @@ div.border
 
     			 
     			 if (!empty($larps_organizer)) {
-        			 echo "<h3>Arrangör</h3>";
-        			 echo "<p>Eftersom du är arrangör kan du även välja bland dessa lajv.</p>";
+    			     echo "<div class='itemselector'>";
+    			     echo "<div class='header'>";
+    			     
+    			     echo "<i class='fa-solid fa-shield-halved'></i> Arrangör";
+    			     echo "</div>";
+    			     
+    			     
+                     echo "<div class='itemcontainer'>";
+        			 echo "Eftersom du är arrangör kan du även välja bland dessa lajv.";
+        			 echo "</div>";
+        			 
+        			 echo "<div class='itemcontainer'>";
         			 echo "<form action='../includes/set_larp.php' method='POST'>";
-        			 echo "<label for='larp'>Välj lajv: </label>";
         			 echo "<select name='larp' id='larp'>";
         			 
         			 foreach (array_reverse($larps_organizer) as $larp) {
         			     echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
         			 }
         			 echo "</select> ";
-        			 echo '<input type="submit" value="Välj">';
-        			 echo "<br><hr>";
+        			 echo "<button class='button-18' type='submit'>Välj</button>";
         			 echo "</form>";
+        			 echo "</div>";
+        			 echo "</div>";
     			 
     			 }
     			 
     			 
     			 
     			 if (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)) {
-    			     echo "<h3>OM Admin</h3>";
-    			     echo "<p>Eftersom du är OM admin har du tillgång till alla lajv.</p>";
+    			     echo "<div class='itemselector'>";
+    			     echo "<div class='header'>";
+    			     
+    			     echo "<i class='fa-solid fa-shield-halved'></i> OM Admin";
+    			     echo "</div>";
+    			     
+    			     
+    			     echo "<div class='itemcontainer'>";
+    			     echo "Eftersom du är OM admin har du tillgång till alla lajv.";
+    			     echo "</div>";
+    			     
+    			     echo "<div class='itemcontainer'>";
     			     echo "<form action='../includes/set_larp.php' method='POST'>";
-    			     echo "<label for='larp'>Välj lajv: </label>";
     			     echo "<select name='larp' id='larp'>";
     			     $larps = LARP::all();
     			     foreach (array_reverse($larps) as $larp) {
     			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
     			     }
     			     echo "</select> ";
-    			     echo '<input type="submit" value="Välj">';
-    			     echo "<br><hr>";
+    			     echo "<button class='button-18' type='submit'>Välj</button>";
     			     echo "</form>";
+    			     echo "</div>";
+    			     echo "</div>";
     			     
     			 }
     			 
