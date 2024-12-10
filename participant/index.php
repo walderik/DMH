@@ -709,9 +709,9 @@ function openTab(evt, tabName) {
            $advertisment_array = $current_user->getAdvertismentsAtLarp($current_larp);
            if(isset($advertisment_array) && count($advertisment_array) > 0) {
                echo "<div>\n";
-               echo "<b>Annonser skapade av $current_user->Name:</b><br>\n";
+               echo "<br>Egna annonser:<br>\n";
                echo "<table class='data' id='ads' align='left'>";
-               echo "<tr align='left'><th>Kontakt information</th><th>Text</th><th>Ändra/<br>Ta bort</th>";
+               echo "<tr align='left'><th>Kontakt</th><th>Text</th><th></th>";
                echo "</tr>\n";
                foreach ($advertisment_array as $advertisment) {
                    echo "<tr>\n";
