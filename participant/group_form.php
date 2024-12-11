@@ -83,17 +83,17 @@ include 'navigation.php';
    			<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $group->PersonId; ?>">
 
 			<div class='itemcontainer'>
-	       	<div class='itemname'>Gruppens namn <font style="color:red">*</font></div>
+	       	<div class='itemname'><label for="Name">Gruppens namn</label> <font style="color:red">*</font></div>
 			<input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($group->Name); ?>" maxlength="20" required>
 			</div>
 			
 			<div class='itemcontainer'>
-	       	<div class='itemname'>Beskrivning av gruppen <font style="color:red">*</font></div>
+	       	<div class='itemname'><label for="Description">Beskrivning av gruppen</label> <font style="color:red">*</font></div>
 			<textarea id="Description" name="Description" rows="4" cols="50" maxlength="60000" required><?php echo htmlspecialchars($group->Description); ?></textarea>
 			</div>
 			
 			<div class='itemcontainer'>
-	       	<div class='itemname'>Beskrivning av gruppen för andra</div>
+	       	<div class='itemname'><label for="DescriptionForOthers">Beskrivning av gruppen för andra</label></div>
 	       	Vad är allmänt känt om gruppen? Beskriv sådant som de flesta vet om er. 
                          Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter med er och då får ni roligare spel.<br><br>
 					     Efter att gruppen är anmäld och godkänd kommer namnet på gruppen och den här beskrivningen 
@@ -102,13 +102,13 @@ include 'navigation.php';
 			</div>
 
 			<div class='itemcontainer'>
-	       	<div class='itemname'>Vänner</div>
+	       	<div class='itemname'><label for="Friends">Vänner</label></div>
 	       	Beskriv vilka gruppen anser vara sina vänner. Det vara både grupper och  beskrivning av egenskaper hos dem som är vänner.<br>
 			<textarea id="Friends" name="Friends" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Friends); ?></textarea>
 			</div>
 			
 			<div class='itemcontainer'>
-	       	<div class='itemname'>Fiender</div>
+	       	<div class='itemname'><label for="Enemies">Fiender</label></div>
 	       	Beskriv vilka gruppen anser vara sina fiender. Det vara både grupper och  beskrivning av egenskaper hos dem som är fiender.<br>
 			<textarea id="Enemies" name="Enemies" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->Enemies); ?></textarea>
 			</div>
@@ -116,7 +116,7 @@ include 'navigation.php';
 
 			<?php if (GroupType::isInUse($current_larp)) { ?>
     			<div class='itemcontainer'>
-    	       	<div class='itemname'>Typ av grupp<font style="color:red">*</font></div>
+    	       	<div class='itemname'><label for="GroupTypeId">Typ av grupp</label> <font style="color:red">*</font></div>
     	       	Vad är ni för typ av grupp? Vad är det som gör att ni är en enhet?<br>
                 <?php
                 GroupType::selectionDropdown($current_larp, false, true, $group->GroupTypeId);
@@ -126,7 +126,7 @@ include 'navigation.php';
 			
 			<?php if (ShipType::isInUse($current_larp)) { ?>
     			<div class='itemcontainer'>
-    	       	<div class='itemname'>Typ av skepp <font style="color:red">*</font></div>
+    	       	<div class='itemname'><label for="ShipTypeId">Typ av skepp</label> <font style="color:red">*</font></div>
     	       	Vilken typ av skepp seglar ni?<br>
                 <?php
                 ShipType::selectionDropdown($current_larp, false, true, $group->ShipTypeId);
@@ -136,7 +136,7 @@ include 'navigation.php';
 
 			<?php if ($current_larp->getCampaign()->is_me()) { ?>
     			<div class='itemcontainer'>
-    	       	<div class='itemname'>Färg&nbsp;<font style="color:red">*</font></div>
+    	       	<div class='itemname'><label for="Colour">Färg</label>&nbsp;<font style="color:red">*</font></div>
     	       	Som besättning kommer ni tilldelas en färg som skall symboliserar er både fysiskt i dräkt och på ert skepp. 
     			Färgen kan ses som ”gängsymbol” och bärs med stolthet. Färgen följer med er besättning så länge ni är aktiva i kampanjen. <br>
     			<br>
@@ -148,7 +148,7 @@ include 'navigation.php';
 
  			<?php if (Wealth::isInUse($current_larp)) { ?>
     			<div class='itemcontainer'>
-    	       	<div class='itemname'>Hur rik är gruppen?&nbsp;<font style="color:red">*</font></div>
+    	       	<div class='itemname'><label for="WealthId">Hur rik är gruppen?</label>&nbsp;<font style="color:red">*</font></div>
                 <?php
                 Wealth::selectionDropdown($current_larp, false, true, $group->WealthId);
                 ?> 
@@ -157,7 +157,7 @@ include 'navigation.php';
 			
 			<?php if (PlaceOfResidence::isInUse($current_larp)) { ?>
    				<div class='itemcontainer'>
-    	       	<div class='itemname'>Var bor gruppen?&nbsp;<font style="color:red">*</font></div>
+    	       	<div class='itemname'><label for="PlaceOfResidenceId">Var bor gruppen?</label>&nbsp;<font style="color:red">*</font></div>
     	       	Tänk typ folkbokföringsadress, dvs även om gruppen tillfälligt är på platsen så vill vi veta var gruppen har sitt hem.<br>
                 <?php
                 PlaceOfResidence::selectionDropdown($current_larp, false, true, $group->PlaceOfResidenceId);
@@ -167,7 +167,7 @@ include 'navigation.php';
 			
 			<?php if (IntrigueType::isInUseForGroup($current_larp)) { ?>
    				<div class='itemcontainer'>
-    	       	<div class='itemname'>Intrigtyper</div>
+    	       	<div class='itemname'><label for="IntrigueTypeId">Intrigtyper</label></div>
     	       	Vilken typ av intriger vill gruppen helst ha?<br>
                 <?php
                 IntrigueType::selectionDropdownGroup($current_larp, true, false, $group->getSelectedIntrigueTypeIds());
@@ -177,13 +177,13 @@ include 'navigation.php';
 			
 
 			<div class='itemcontainer'>
-	       	<div class='itemname'>Intrigidéer</div>
+	       	<div class='itemname'><label for="IntrigueIdeas">Intrigidéer</label></div>
 	       	Har ni några idé för intriger som skulle passa gruppen? <br>Denna del är inte synlig för medlemmarna i gruppen.<br>
 			<textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->IntrigueIdeas); ?></textarea>
 			</div>
 			
 			<div class='itemcontainer'>
-	       	<div class='itemname'>Något annat arrangörerna bör veta om er grupp?</div>
+	       	<div class='itemname'><label for="OtherInformation">Något annat arrangörerna bör veta om er grupp?</label></div>
 			<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->OtherInformation); ?></textarea>
 			</div>
 			 
