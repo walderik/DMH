@@ -67,24 +67,30 @@ textarea{
 }
 </style>
 
+	<div class='itemselector'>
+	<div class="header">
 
-	<div class="content">
-		<h1>Vad hände för <?php echo $name ?> på <?php echo $current_larp->Name; ?></h1>
-		<form action="logic/larp_report_form_save.php" method="post">
-				<?php 
-				if (isset($role)) {
-				?>
-		
-    		<input type="hidden" id="RoleId" name="RoleId" value="<?php echo $role->Id; ?>">
-				<?php } else {?>
+		<i class="fa-solid fa-landmark"></i>
+		Vad hände för <?php echo $name ?> på <?php echo $current_larp->Name; ?>
+	</div>
+
+	<form action="logic/larp_report_form_save.php" method="post">
+    		<?php 
+    		if (isset($role)) {
+    		?>
+    
+    	<input type="hidden" id="RoleId" name="RoleId" value="<?php echo $role->Id; ?>">
+    		<?php } else {?>
+    	
+    	<input type="hidden" id="GroupId" name="GroupId" value="<?php echo $group->Id; ?>">
+    		<?php } ?>
     		
-    		<input type="hidden" id="GroupId" name="GroupId" value="<?php echo $group->Id; ?>">
-				<?php } ?>
-    		
-    		<p>För att vi arrangörer ska kunna göra nya spännande intriger som bygger på 
-    		det som har hänt behöver vi vet behöver vad just den här karaktären har varit med om.<br>
-    		Först kommer olika delar av din intrig så att du kan skriva om vad som hände i just den delen.<br>
-    		Efter det får du möjlighet att beskriva andra intressant saker som hände dig och andra.</p>
+    	<div class='itemcontainer'>
+    	För att vi arrangörer ska kunna göra nya spännande intriger som bygger på 
+		det som har hänt behöver vi vet behöver vad just den här karaktären har varit med om.<br>
+		Först kommer olika delar av din intrig så att du kan skriva om vad som hände i just den delen.<br>
+		Efter det får du möjlighet att beskriva andra intressant saker som hände dig och andra.
+		</div>
     		 
     		 <?php 
     		 
@@ -92,50 +98,56 @@ textarea{
  			    foreach ($intrigueActors as $intrigueActor) {
  			        $intrigue = $intrigueActor->getIntrigue();
 	                echo "<input type='hidden' id='IngtrigueActorId$intrigueActor->Id' name='IngtrigueActorId[]' value='$intrigueActor->Id'>";
-	                echo "<div class='question'>";
-	                echo "<label for='IngtrigueActor_$intrigueActor->Id'><strong>Vad hände med det här?</strong></label>";
-	                echo "<div class='explanation'>";
+	                echo "<div class='itemcontainer'>";
+	                echo "<div class='itemname'><label for='IngtrigueActor_$intrigueActor->Id'>Vad hände med det här?</label></div>";
+
 	                if (!empty($intrigue->CommonText)) echo nl2br(htmlspecialchars($intrigue->CommonText))."<br>";
 	                echo nl2br(htmlspecialchars($intrigueActor->IntrigueText));
-	                echo "</div>";
+	                echo "<br>";
 	                echo "<textarea id='IngtrigueActor_$intrigueActor->Id' name='IngtrigueActor_$intrigueActor->Id' rows='10' cols='100' maxlength='60000'>$intrigueActor->WhatHappened</textarea>";
 	                echo "</div>";
 		        }
-		                ?>
+            ?>
     		 
     		 
-			<div class="question">
-				<?php 
-				if (isset($role)) {
-				?>
-				<label for="WhatHappened"><strong>Vad hände med/för <?php echo $role->Name; ?>?</strong></label><br> 
-				<div class="explanation">Beskriv allt annat intressant som hände karaktären.  
+
+			<?php 
+			if (isset($role)) {
+			?>
+				<div class='itemcontainer'>
+	       		<div class='itemname'><label for="WhatHappened">Vad hände med/för <?php echo $role->Name; ?>?</label></div>
+	       		Beskriv allt annat intressant som hände karaktären.  
 				Skriv så mycket du kan. Det kan dessutom vara till hjälp om du ska spela karaktären vid ett 
-				senare tillfälle.</div>
+				senare tillfälle.<br>
 				<textarea id="WhatHappened" name="WhatHappened" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappened); ?></textarea>
-				<?php } else {?>
-				<label for="WhatHappened"><strong>Vad hände med/för <?php echo $group->Name; ?>?</strong></label><br> 
-				<div class="explanation">Beskriv allt annat intressant som hände gruppen.  
-				Skriv så mycket du kan. Det kan dessutom vara till hjälp nästa gång gruppen är med på ett lajv och när det kommer nya in i gruppen.</div>
+				</div>
+			<?php } else {?>
+				<div class='itemcontainer'>
+	       		<div class='itemname'><label for="WhatHappened">Vad hände med/för <?php echo $group->Name; ?>?</label></div>
+				Beskriv allt annat intressant som hände gruppen.  
+				Skriv så mycket du kan. Det kan dessutom vara till hjälp nästa gång gruppen är med på ett lajv och när det kommer nya in i gruppen.<br>
 				<textarea id="WhatHappened" name="WhatHappened" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappened); ?></textarea>
-				<?php } ?>
-			</div>
+				</div>
+			<?php } ?>
 
-			<div class="question">
-				<?php 
-				if (isset($role)) {
-				?>
-				<label for="WhatHappendToOthers"><strong>Vad såg du hände med andra?</strong></label><br> 
-				<div class="explanation">Var du med om, eller såg något som hände en annan karkatär. Berätta! Vi vill veta allt. :)</div>
+
+			<?php 
+			if (isset($role)) {
+			?>
+				<div class='itemcontainer'>
+	       		<div class='itemname'><label for="WhatHappendToOthers">Vad såg du hände med andra?</label></div>
+				Var du med om, eller såg något som hände en annan karkatär. Berätta! Vi vill veta allt. :)<br>
 				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappendToOthers); ?></textarea>
+				</div>
 				<?php } else {?>
-				<label for="WhatHappendToOthers"><strong>Vad såg ni hände med andra?</strong></label><br> 
-				<div class="explanation">Var ni med om, eller såg något som hände en annan karkatär eller grupp. Berätta! Vi vill veta allt. :)</div>
+				<div class='itemcontainer'>
+	       		<div class='itemname'><label for="WhatHappendToOthers">Vad såg ni hände med andra?</label></div>
+				Var ni med om, eller såg något som hände en annan karkatär eller grupp. Berätta! Vi vill veta allt. :)<br>
 				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappendToOthers); ?></textarea>
-				<?php } ?>
-			</div>
+				</div>
+			<?php } ?>
 
-			<input type="submit" value="Spara">
+			 <div class='center'><input type="submit" class='button-18' value="Spara"></div>
 		</form>
 	</div>
 
