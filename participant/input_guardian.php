@@ -23,7 +23,7 @@ include 'navigation.php';
 		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $current_person->Id ?>">
 
 			<div class='itemcontainer'>
-	       	<div class='itemname'><label for="Name">Ansvarig vuxen</label> <font style="color:red">*</font></div>
+	       	<div class='itemname'><label for="GuardianInfo">Ansvarig vuxen</label> <font style="color:red">*</font></div>
 	       	Eftersom <?php echo $current_person->Name; ?> bara är <?php  echo $current_person->getAgeAtLarp($current_larp); ?> år på lajvet behövs en ansvarig vuxen. 
     			Den ansvarige måste vara tillfrågad och accepera ansvaret.<br>
     			Skriv in namn eller personnummer på den ansvarige. Personnummer anges på formen ÅÅÅÅMMDD-NNNN.
