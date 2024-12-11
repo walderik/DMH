@@ -159,6 +159,12 @@ input[type=checkbox]:checked+label {
  
 		<div class='itemcontainer'>
        	<div class='itemname'>Nivå</div>
+       	1. Grundläggande alkemi – Milt sinnesförändrande effekt.<br>
+        2. Lätt alkemi – Starkt sinnesförändrande.<br>
+        3. Svår alkemi – Effekten är spelpåverkande.<br>
+        4. Avancerad alkemi – Denna nivån påverkar spelet i stor utsträckning.<br>
+        5. Fulländad alkemi – Det man skapar med fulländad alkemi blir en artefakt som kan användas flera gånger och/eller som kraftigt påverkar spelet över flera lajv. Se sektionen för artefakter.
+       	<br><br>
 		<select id="Level" name="Level" style='width:100%'>
 		<?php 
 		for ($i=1; $i<=5; $i++) {
@@ -173,7 +179,7 @@ input[type=checkbox]:checked+label {
 		</div>
 
 		<div class='itemcontainer'>
-       	<div class='itemname'>Summa poäng<br>ingredienser</div>
+       	<div class='itemname'>Summa poäng ingredienser</div>
 		<?php 
 		echo "<span id='points'>";
 		echo $recipe->calculatePoints(); 
