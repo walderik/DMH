@@ -21,6 +21,12 @@
     background-color: rgb(255, 255, 255);
 }
 
+.itemselector .subheader {
+   font-weight: bold;
+    border-bottom: 2px solid #2f3947;
+    margin: 16px 16px 0px;	
+}
+
 .itemcontainer {
     padding: 16px 16px 8px 24px;
 }
@@ -72,6 +78,9 @@ textarea {
 }
 
 input[type='text'] {
+	width:100%;
+}
+input[type='email'] {
 	width:100%;
 }
 
