@@ -30,7 +30,7 @@ img {
 	<div class='itemselector'>
 	<div class="header">
 
-		<i class="fa-solid fa-people-group"></i>
+		<i class="fa-solid fa-house"></i>
 		Ändra husbrevet för <?php echo $house->Name ?>
 	</div>
 
