@@ -274,15 +274,6 @@ div.linklist {
 	  line-height: 2;
 }
 
-div.intrigue {
-    border: 1px solid #ccc !important;
-    border-radius: 1em;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
-    padding-left: 1em;
-    padding-right: 1em;
-}
-
 [data-tooltip]:hover::after {
   display: inline-block;
   position: absolute;
