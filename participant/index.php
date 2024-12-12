@@ -237,6 +237,9 @@ function openTab(evt, tabName) {
         		}
         		echo "<br>";
         		echo "</div>";
+        		if ($role->isApproved()) {
+        		    echo "Karaktären är godkänd.<br>";
+         		}
         		
         		if ($role->hasImage()) {
         		    echo "<br>";
@@ -489,9 +492,10 @@ function openTab(evt, tabName) {
             $roles = $current_person->getRoles($current_larp);
             foreach ($roles as $role) {
                 echo $role->getViewLink();
+                if ($role->isMain($current_larp)) echo " (Huvudkaraktär)";
                 echo "<br>";
                 if ($role->isApproved()) echo "Karaktären är godkänd";
-                else showParticipantStatusIcon(false, "$role->Name är inte godkänd");
+                else echo showParticipantStatusIcon(false, "$role->Name är inte godkänd");
                 echo "<br><br>";
             }
             
@@ -507,7 +511,7 @@ function openTab(evt, tabName) {
                 foreach ($groups as $group) {
                     echo $group->getViewLink();
                     echo "<br>";
-                    if ($group->isApproved()) echo "Karaktären är godkänd";
+                    if ($group->isApproved()) echo "Gruppen är godkänd";
                     else showParticipantStatusIcon(false, "$group->Name är inte godkänd");
                     echo "<br><br>";
                 }
