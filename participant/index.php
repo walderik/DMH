@@ -492,7 +492,7 @@ function openTab(evt, tabName) {
             $roles = $current_person->getRoles($current_larp);
             foreach ($roles as $role) {
                 echo $role->getViewLink();
-                if ($role->isMain($current_larp)) echo " (Huvudkaraktär)";
+                if (sizeof($roles) > 1 && $role->isMain($current_larp)) echo " (Huvudkaraktär)";
                 echo "<br>";
                 if ($role->isApproved()) echo "Karaktären är godkänd";
                 else echo showParticipantStatusIcon(false, "$role->Name är inte godkänd");
