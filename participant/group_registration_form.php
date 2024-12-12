@@ -121,12 +121,6 @@ include 'navigation.php';
 
 		<div class='itemcontainer'>
        	<div class='itemname'><label for="TentHousing">Vilka ska bo i tältet</label></div>
-       	Om gruppen har tält. Hur stort är tältet/tälten?<br>
-		<input type="text" id="TentSize" name="TentSize"  maxlength="200">
-		</div>
-			
-		<div class='itemcontainer'>
-       	<div class='itemname'><label for="TentHousing">Vilka ska bo i tältet</label></div>
        	Om gruppen har tält. Vilka ska bo i det?<br>
 		<textarea id="TentHousing" name="TentHousing" rows="4" cols="100" maxlength="60000"></textarea>
 		</div>
