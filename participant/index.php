@@ -334,6 +334,12 @@ function openTab(evt, tabName) {
 	      }
 		  echo "</div>";
 		  if (!$group->isRegistered($current_larp)) echo "<div class='center'><a href='group_registration_form.php?id=$group->Id'><button class='button-18'>Anmäl gruppen</button></a></div>";
+		  if ($group->isApproved()) {
+		      echo "Gruppen är godkänd.<br>";
+		  } else {
+		      echo showParticipantStatusIcon(false, "Gruppen är inte godkänd");
+		      
+		  }
 		  if ($group->hasImage()) {
 		      echo "<br><img width='30' src='../includes/display_image.php?id=$group->ImageId'/>\n";
 		      echo " <a href='../common/logic/rotate_image.php?id=$group->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$group->Id&type=group'>Ta bort bild</a></td>\n";

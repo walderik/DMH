@@ -138,7 +138,7 @@ include 'navigation.php';
 			förmedlat dessa till mina gruppmedlemmar. Vi har även alla godkänt
 			dem och är införstådda med vad som förväntas av oss som grupp av
 			deltagare på lajvet. Om jag inte har läst reglerna så kryssar jag
-			inte i denna ruta.&nbsp;<font style="color:red">*</font>		
+			inte i denna ruta.&nbsp;<font style="color:red">*</font><br>		
 			<input type="checkbox" id="rules" name="rules" value="Ja" required>
   			<label for="rules">Jag lovar</label> 
 		</div>
