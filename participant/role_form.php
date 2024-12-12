@@ -229,7 +229,7 @@ include 'navigation.php';
         Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste</strong> då ändra den efter att gruppen är anmäld och 
         innan du anmäler dig så att karaktären kommer med i gruppen. Ändra den gör du genom att du klickar på 
         namnet på karaktären från huvudsidan.<br>
-    	<?php selectionDropDownByArray('Group', Group::getAllRegisteredApproved($current_larp), false, false, $role->GroupId); ?>
+    	<?php selectionDropDownByArray('GroupId', Group::getAllRegisteredApproved($current_larp), false, false, $role->GroupId); ?>
     	</div>
 
 				
