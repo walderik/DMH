@@ -262,8 +262,7 @@ function openTab(evt, tabName) {
         		$role_group = $role->getGroup();
         		$role_group_name = "Inte med i någon grupp";
         		if (isset($role_group) && $role->isRegistered($current_larp)) {
-        		    $role_group_name = $role_group->getViewLink() .
-        		    " <a href='group_sheet.php?id=" . $role_group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $role_group->Name'></i></a>\n";
+        		    $role_group_name = $role_group->getViewLink();
         		}
         		elseif (isset($role_group)) {
         		    $role_group_name = "$role_group->Name";
