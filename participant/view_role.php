@@ -20,13 +20,7 @@ if ($person->Id != $current_person->Id) {
     exit;
 }
 
-if (!$role->isRegistered($current_larp)) {
-    header('Location: index.php'); // karaktären är inte anmäld
-    exit;
-}
-
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
-if (empty($larp_role)) $larp_role = Reserve_LARP_Role::loadByIds($role->Id, $current_larp->Id);
 
 if (isset($role->GroupId)) {
     $group=Group::loadById($role->GroupId);
@@ -54,7 +48,11 @@ include 'navigation.php';
 		<div class="header">
 
 			<i class="fa-solid fa-person"></i>
-			<?php echo $role->Name;?>
+			<?php 
+			echo $role->Name;
+    		//Karaktärsblad
+    		echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
+		?>
 		</div>
  
 		<?php 
@@ -251,14 +249,16 @@ include 'navigation.php';
 		<?php }?>
 		</div>
 		
-		
+		<?php 
+		if (isset($larp_role)) {
+		?>
 		<div class='itemselector'>
 		<div class="header">
 
 			<i class="fa-solid fa-scroll"></i> Intrig
 		</div>
 			<div class='itemcontainer'>
-			<?php if ($current_larp->isIntriguesReleased()) {
+			<?php if ( $current_larp->isIntriguesReleased()) {
 			    echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
 			    
 			    $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
@@ -487,6 +487,11 @@ include 'navigation.php';
 			?>
 			</div>
 		</div>
+		<?php 
+		}
+		?>
+		
+		
 		<?php 
 		$previous_larps = $role->getPreviousLarps();
 		if (isset($previous_larps) && count($previous_larps) > 0 || !empty($role->PreviousLarps)) { 

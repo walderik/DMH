@@ -231,10 +231,6 @@ function openTab(evt, tabName) {
         		if($role->isNeverRegistered()) {
         		    echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
         		}
-        		//Karaktärsblad
-        		if (!empty($registration) && $registration->SpotAtLARP==1) {
-        		    echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
-        		}
         		echo "<br>";
         		echo "</div>";
         		if ($role->isApproved()) {
@@ -545,7 +541,7 @@ function openTab(evt, tabName) {
         
         if ($current_larp->isIntriguesReleased()) {
             foreach ($registered_roles as $role) {
-            echo "<div class='itemcontainer borderbottom'>";
+            echo "<div class='itemcontainer'>";
             echo $role->getViewLink();
             $group = $role->getGroup();
             if (isset($group)) echo "<br>". $group->getViewLink();
