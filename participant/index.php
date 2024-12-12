@@ -550,7 +550,9 @@ function openTab(evt, tabName) {
         }
 
         } else {
+            echo "<div class='itemcontainer'>";
             echo "Intrigerna är inte klara än.";
+            echo "</div>";
         }
         echo "</div>";
             
