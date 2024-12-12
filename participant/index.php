@@ -470,23 +470,6 @@ function openTab(evt, tabName) {
             echo "</div>";
             
             echo "<div class='itemcontainer'>";
-            echo "<div class='itemname'>Boende</div>";
-
-            if ($current_larp->isHousingReleased()) {
-                $house = House::getHouseAtLarp($current_person, $current_larp);
-                if (empty($house)) {
-                    echo "Inget tilldelat";
-                } else {
-                    echo "<a href='view_house.php?id=$house->Id'>$house->Name</a>";
-                }
-            } else {
-                echo "Inte klart än";
-            }
-            echo "</div>";
-
-            
-            
-            echo "<div class='itemcontainer'>";
             echo "<div class='itemname'>Anmälda karaktärer</div>";
             
             $roles = $current_person->getRoles($current_larp);
@@ -533,6 +516,26 @@ function openTab(evt, tabName) {
 	
 	<?php 
 	$registered_roles = $current_person->getRolesAtLarp($current_larp);
+	
+	
+	echo "<div class='itemselector'>";
+	echo "<div class='header'>";
+	echo "<i class='fa-solid fa-house'></i> Boende";
+	echo "</div>";
+	echo "<div class='itemcontainer'>";
+	
+	if ($current_larp->isHousingReleased()) {
+	    $house = House::getHouseAtLarp($current_person, $current_larp);
+	    if (empty($house)) {
+	        echo "Inget tilldelat";
+	    } else {
+	        echo "<a href='view_house.php?id=$house->Id'>$house->Name</a>";
+	    }
+	} else {
+	    echo "Inte klart än";
+	}
+	echo "</div>";
+	echo "</div>";
 	
 
     echo "<div class='itemselector'>";
