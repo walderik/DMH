@@ -132,6 +132,14 @@ body {margin:0;font-family:Arial}
   }
   
   
+  .topnav.responsive select {
+	  display: none;
+  }
+
+  .topnav.responsive a.expand_hide {
+	  display: none;
+  }
+  
   .topnav.responsive #larp_name {
 	  display: none;
   }

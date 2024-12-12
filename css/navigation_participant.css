@@ -133,10 +133,20 @@ body {margin:0;font-family:Arial}
     text-align: left;
   }
   
+
+  .topnav.responsive select {
+	  display: none;
+  }
+
+  .topnav.responsive a.expand_hide {
+	  display: none;
+  }
   
   .topnav.responsive #larp_name {
 	  display: none;
   }
+
+
 }
 
 #larp_name {

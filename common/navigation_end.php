@@ -1,5 +1,7 @@
     	<div class="dropdown">
-    		<button class="dropbtn"><i class="fa-solid fa-user" title="<?php echo $current_user->Name?>"></i> <?php echo $current_user->Name?></button>
+    		<button class="dropbtn"><i class="fa-solid fa-user" title="<?php echo $current_user->Name?>"></i> <?php echo $current_user->Name?>
+    		<i class="fa fa-caret-down"></i>
+    		</button>
 		    <div class="dropdown-content">
 		    	<a href="../includes/logout.php"><i class="fa-solid fa-right-from-bracket"></i>Logga ut&nbsp;&nbsp;&nbsp;&nbsp;</a>
     		</div>
