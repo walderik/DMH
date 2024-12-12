@@ -119,7 +119,8 @@ function help_icon($help_text) {
 function selectionDropDownByArray(String $name, Array $selectionDatas, $required=true, $selected=null, ?String $formIdentifier="") {
     // lägg till tomt val om det inte är required
     if (!$required){
-        $empty_object = clone $selectionDatas[0];
+        if (!empty($selectionDatas)) $empty_object = clone $selectionDatas[0];
+        else $empty_object = Religion::newWithDefault();
         $empty_object->Id = "null";
         $empty_object->Name = "[ Ingen / Inget ]";
         array_unshift($selectionDatas , $empty_object);
