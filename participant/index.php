@@ -467,7 +467,7 @@ function openTab(evt, tabName) {
             echo "<div class='itemcontainer'>";
             echo "<div class='itemname'>Anmälda karaktärer</div>";
             
-            $roles = $current_person->getRoles($current_larp);
+            $roles = $current_person->getRolesAtLarp($current_larp);
             foreach ($roles as $role) {
                 echo $role->getViewLink();
                 if (sizeof($roles) > 1 && $role->isMain($current_larp)) echo " (Huvudkaraktär)";
