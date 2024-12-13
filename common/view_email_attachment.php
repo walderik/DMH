@@ -1,6 +1,38 @@
 <?php
 
-include_once 'header.php';
+global $root;
+$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+
+require_once $root . '/includes/init.php';
+
+if (!isset($_SESSION['navigation'])) {
+    header('Location: ../participant/index.php');
+    exit;
+}
+
+
+if ($_SESSION['navigation'] == Navigation::LARP) {
+    include '../admin/header.php';
+    $navigation = '../admin/navigation.php';
+} elseif ($_SESSION['navigation'] == Navigation::CAMPAIGN) {
+    include '../campaign/header.php';
+    $navigation =  '../campaign/navigation.php';
+} elseif ($_SESSION['navigation'] == Navigation::BOARD) {
+    include '../board/header.php';
+    $navigation =  '../board/navigation.php';
+} elseif ($_SESSION['navigation'] == Navigation::HOUSES) {
+    include '../houses/header.php';
+    $navigation =  '../houses/navigation.php';
+} elseif ($_SESSION['navigation'] == Navigation::OM_ADMIN) {
+    include '../site-admin/header.php';
+    $navigation =  '../site-admin/navigation.php';
+} elseif ($_SESSION['navigation'] == Navigation::PARTICIPANT) {
+    include '../participant/header.php';
+    $navigation =  '../participant/navigation.php';
+} else {
+    header('Location: ../participant/index.php');
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {

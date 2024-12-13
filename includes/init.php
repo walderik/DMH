@@ -45,6 +45,9 @@ if (!isset($_SESSION['larp']) &&
     strpos($url, "participant/person_form.php") == false && 
     strpos($url, "participant/logic/person_form_save.php") == false && 
     strpos($url, "participant/logic/delete_person.php") == false &&
+    strpos($url, "mail_admin.php") == false &&
+    strpos($url, "view_email.php") == false &&
+    strpos($url, "view_email_attachment.php") == false &&
     strpos($url, "larp_admin.php") == false && 
     strpos($url, "larp_form.php") == false) {
     header('Location: '. $home_url .'/participant/index.php');

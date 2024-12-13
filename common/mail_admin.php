@@ -72,7 +72,8 @@ th {
             echo "<strong>".count($unsent_emails) ."</strong> mail har ännu inte skickats iväg. <br>Sidan kommer automatiskt att laddas om tills alla har skickats. Du måste inte stanna på den här sidan, men gå gärna tillbaka hit efteråt så att du ser att alla mail verkligen har kommit iväg.";
         }
         if ($_SESSION['navigation'] == Navigation::PARTICIPANT) {
-            $emails = Email::allForPersonAtLarp($current_person, $current_larp);
+            if (isset($current_larp)) $emails = Email::allForPersonAtLarp($current_person, $current_larp);
+            else $emails = Email::allForPerson($current_person);
         } elseif ($_SESSION['navigation'] == Navigation::LARP && !$onlyCommon) {
             $emails = Email::allBySelectedLARP($current_larp);
             echo "<a href='mail_admin.php?common=1'>Visa system-mail</a><br>";

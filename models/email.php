@@ -216,6 +216,11 @@ class Email extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $person->Id));
     }
     
+    public static function allForPerson(Person $person) {
+        $sql = "SELECT * FROM regsys_email WHERE ID IN (SELECT EmailId FROM regsys_email_person WHERE PersonId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id));
+    }
+    
     
     public function getRecipients() {
         $sql = "SELECT * FROM regsys_person WHERE Id IN (SELECT PersonId FROM regsys_email_person WHERE EmailId=?);";
