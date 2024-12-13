@@ -441,7 +441,7 @@ function openTab(evt, tabName) {
             if ($registration->isMember()) {
                 echo "Medlemsskap betalat";
             } else {
-                echo showParticipantStatusIcon(false, "$current_person->Name är inte medlem i Berghems Vänner");
+                echo showParticipantStatusIcon(false, "Inte medlem i Berghems Vänner");
                 $currentYear = date("Y");
                 $larpYear = substr($current_larp->StartDate, 0, 4);
                 if ($currentYear == $larpYear) {
@@ -460,7 +460,7 @@ function openTab(evt, tabName) {
             if ($registration->hasSpotAtLarp()) {
                 echo "$current_person->Name har plats på lajvet";
             } else {
-                echo showParticipantStatusIcon(false, "$current_person->Name har inte fått en plats på lajvet");
+                echo showParticipantStatusIcon(false, "Inte fått en plats på lajvet");
             }
             echo "</div>";
             
