@@ -33,7 +33,6 @@ ul.list {
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>  
 
-
 	<div class='itemselector'>
 		<div class="header">
 
@@ -90,6 +89,7 @@ ul.list {
  			    echo "<div id='osm-map'></div>"; 
  			    echo "</div>";
 			} ?>
+
     		
 		<?php if ($house->IsHouse() && $current_person->hasEditRightToHouse($house)) {
     		    echo "<div class='itemcontainer'>";
