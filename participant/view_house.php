@@ -105,7 +105,7 @@ ul.list {
     			echo "</div>";
 			} ?>
 			
-		<?php if ($current_larp->isHousingReleased()) {
+		<?php if (isset($current_larp) && $current_larp->isHousingReleased()) {
     		    echo "<div class='itemcontainer'>";
     		    echo "<div class='itemname'>Boende under $current_larp->Name är</div>";
     		    $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);

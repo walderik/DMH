@@ -13,7 +13,7 @@
 	    $houses = $current_person->housesOf();
 
         if (!empty($houses)) {
-            foreach ($houses as $persons_house) echo "<a href='view_house.php?id=$persons_house->Id'>$persons_house->Name</a>";
+            foreach ($houses as $persons_house) echo "<a href='../participant/view_house.php?id=$persons_house->Id'>$persons_house->Name</a>";
         }
 	}
 	?>
@@ -25,9 +25,9 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      <a href="person_form.php">Deltagare</a>
-	      <a href="role_form.php">Karaktär</a>
-	      <a href="group_form.php">Grupp</a>
+	      <a href="../participant/person_form.php">Deltagare</a>
+	      <a href="../participant/role_form.php">Karaktär</a>
+	      <a href="../participant/group_form.php">Grupp</a>
 	    </div>
 	  </div> 
     <?php }?>
@@ -38,12 +38,12 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-	      <a href="person_registration_form.php">Deltagare</a>
-	      <a href="group_registration_form.php">Grupp</a>
+	      <a href="../participant/person_registration_form.php">Deltagare</a>
+	      <a href="../participant/group_registration_form.php">Grupp</a>
 	    </div>
 	  </div> 
     <?php }?>
-	  <a href="help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a>
+	  <a href="../participant/help.php"><i class="fa-solid fa-circle-info"></i> Hjälp</a>
 	  
 	<?php include '../common/navigation_site_part_selector.php';?>  
 	<?php include '../common/navigation_end.php';?> 
