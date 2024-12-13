@@ -1,11 +1,11 @@
 <?php
 
-global $root;
+global $root, $current_person;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
 //If the user isnt admin it may not use this page
-if (!AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) {
+if (!AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)) {
     header('Location: ../../participant/index.php');
     exit;
 }

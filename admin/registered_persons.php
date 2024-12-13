@@ -118,7 +118,6 @@ th {
         		        }
         		        else {
             		        echo showStatusIcon(false);
-            		        echo "</td><td>";
             		        if ($registration->allChecksPassed()) {
                 		        echo "<form method='post' action='logic/give_spot.php'>";
                 		        echo "<input type='hidden' id='RegistrationId' name='RegistrationId' value='$registration->Id'>";

@@ -24,8 +24,7 @@ if (empty($role)) {
 }
 
 # Kolla behörigheten
-$person = $role->getPerson();
-if ($current_user->IsAdmin==0 && $person->UserId != $current_user->Id) {
+if ($role->PersonId != $current_person->Id) {
     header("Location: index.php"); # Inte din karaktär
     exit;
 }

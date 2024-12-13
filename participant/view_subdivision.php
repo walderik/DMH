@@ -28,7 +28,7 @@ $temp=0;
 
 $subdivision = Subdivision::loadById($subdivisionId); 
 
-if (!$current_user->isMemberSubdivision($subdivision)) {
+if (!$current_person->isMemberSubdivision($subdivision)) {
     header('Location: index.php'); //Inte medlem i grupperingen
     exit;
 }
@@ -97,21 +97,23 @@ function print_role(Role $role, bool $isComing) {
 include 'navigation.php';
 ?>
 
+	<div class='itemselector'>
+		<div class="header">
 
-	<div class="content">
-		<h1><?php echo $subdivision->Name;?> 
-		</h1>
-		<div>
-		<table>
-			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br(htmlspecialchars($subdivision->Description));?></td></tr>
-		</table>		
-		
-		
+			<i class="fa-solid fa-people-group"></i>
+			<?php echo $subdivision->Name;?>
+		</div>
+	   <div class='itemcontainer'>
+       <div class='itemname'>Beskrivning</div>
+	   <?php echo nl2br(htmlspecialchars($subdivision->Description));?>
+	   </div>
+
 
 		<?php 
 		
 		if (!empty($registered_characters_in_subdivision)) {
-		    echo "<h2>Medlemmar som kommer på lajvet</h2>";
+		    echo "<div class='itemcontainer'>";
+		    echo "<div class='itemname'>Medlemmar som kommer på lajvet</div>";
 		    
 		    echo "<div class='container'>\n";
 		    
@@ -130,13 +132,14 @@ include 'navigation.php';
 		    
 		    echo "</ul>\n";
 	       echo "</div>\n";
+	       echo "</div>";
 		}
 		
 		if (!empty($not_registered_characters)) {
-		    echo "<h2>Medlemmar som inte är anmälda</h2>";
+		    echo "<div class='itemcontainer'>";
+		    echo "<div class='itemname'>Medlemmar som inte är anmälda</div>";
 		    
 		    echo "<div class='container'>\n";
-		    
 		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
 		    foreach ($not_registered_characters as $role) {
 		        print_role($role, false);
@@ -159,8 +162,12 @@ include 'navigation.php';
 
 		</div>    
 
-		<h2>Intrig</h2>
-		<div>
+		<div class='itemselector'>
+		<div class="header">
+
+			<i class="fa-solid fa-scroll"></i> Intrig
+		</div>
+			<div class='itemcontainer'>
 
 			<?php 
 			if ($current_larp->isIntriguesReleased()) {
@@ -171,9 +178,9 @@ include 'navigation.php';
 		            if ($intrigue->isActive()) {
 		                $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
 		                if (!empty($intrigue->CommonText)) echo "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+		                if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
 		                if (!empty($intrigueActor->OffInfo)) {
-		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
+		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
 		                }
 		                
 		                if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) {
@@ -201,9 +208,9 @@ include 'navigation.php';
 			        echo "<h3>Känner till</h3>";
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
-			        $cols=5;
 			        foreach ($known_groups as $known_group) {
-			            echo "<li style='display:table-cell; width:19%;'>";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'>$known_group->Name</div>";
 			            echo "<div>Grupp</div>";
 			            if ($known_group->hasImage()) {
@@ -212,14 +219,15 @@ include 'navigation.php';
 			            echo "</li>";
 			            
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
 			            }
 			        }
 			        foreach ($known_roles as $known_role) {
-			            echo "<li style='display:table-cell; width:19%;'>";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'>$known_role->Name</div>";
 			            $role_group = $known_role->getGroup();
 			            if (!empty($role_group)) {
@@ -231,7 +239,7 @@ include 'navigation.php';
 			            }
 			            echo "</li>";
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
@@ -239,12 +247,13 @@ include 'navigation.php';
 			        }
 			        foreach ($known_npcgroups as $known_npcgroup) {
 			            $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'>$npcgroup->Name</div>\n";
 			            echo "<div>NPC-grupp</div>";
 			            echo "</li>\n";
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
@@ -252,7 +261,8 @@ include 'navigation.php';
 			        }
 			        foreach ($known_npcs as $known_npc) {
 			            $npc=$known_npc->getIntrigueNPC()->getNPC();
-			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'>$npc->Name</div>\n";
 			            $npc_group = $npc->getNPCGroup();
 			            if (!empty($npc_group)) {
@@ -264,7 +274,7 @@ include 'navigation.php';
 			            }
 			            echo "</li>\n";
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
@@ -272,7 +282,8 @@ include 'navigation.php';
 			        }
 			        foreach ($known_props as $known_prop) {
 			            $prop = $known_prop->getIntrigueProp()->getProp();
-			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
+			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'>$prop->Name</div>\n";
 			            if ($prop->hasImage()) {
 			                $image = Image::loadById($prop->ImageId);
@@ -281,7 +292,7 @@ include 'navigation.php';
 			            }
 			            echo "</li>\n";
 			            $temp++;
-			            if($temp==$cols)
+			            if($temp==$columns)
 			            {
 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			                $temp=0;
@@ -309,7 +320,6 @@ include 'navigation.php';
 		            }
 		            echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 		            $temp=0;
-		            $cols=5;
 		            foreach ($checkin_props as $checkin_prop) {
 		                $prop=$checkin_prop->getIntrigueProp()->getProp();
 		                echo "<li style='display:table-cell; width:19%;'>\n";
@@ -321,7 +331,7 @@ include 'navigation.php';
 		                }
 		                echo "</li>\n";
 		                $temp++;
-		                if($temp==$cols)
+		                if($temp==$columns)
 		                {
 		                    echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 		                    $temp=0;
@@ -336,13 +346,19 @@ include 'navigation.php';
 			}
 			?>
 			</div>
+			</div>
 			
 			
 					<?php 
 		$previous_larps = LARP::getPreviousLarpsInCampaign($current_larp);
 		if (isset($previous_larps) && count($previous_larps) > 0) {
+		    echo "<div class='itemselector'>";
+		    echo "<div class='header'>";
 		    
-		    echo "<h2>Historik</h2>";
+		    echo "<i class='fa-solid fa-landmark'></i> Historik";
+		    echo "</div>";
+		    echo "<div class='itemcontainer'>";
+		    
 		    foreach ($previous_larps as $prevoius_larp) {
 		        $intrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $prevoius_larp->Id);
 		        if (empty($intrigues)) continue;
@@ -352,10 +368,10 @@ include 'navigation.php';
 		        foreach($intrigues as $intrigue) {
 		            $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
 		            if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
-		                echo "<p><strong>Intrig</strong><br>".nl2br($intrigueActor->IntrigueText)."</p>";
+		                echo "<p><strong>Intrig</strong><br>".nl2br(htmlspecialchars($intrigueActor->IntrigueText))."</p>";
 		                
 		                echo "<p><strong>Vad hände med det?</strong><br>";
-		                if (!empty($intrigueActor->WhatHappened)) echo nl2br($intrigueActor->WhatHappened);
+		                if (!empty($intrigueActor->WhatHappened)) echo nl2br(htmlspecialchars($intrigueActor->WhatHappened));
 		                else echo "Inget rapporterat";
 		                echo "</p>";
 		            }
@@ -364,6 +380,10 @@ include 'navigation.php';
 	            echo "</div>";
 		                
 		    }
+		    
+		    echo "</div>";
+		    echo "</div>";
+		    
 		}
 			    
 			
@@ -371,10 +391,6 @@ include 'navigation.php';
 		?>
 			
 			
-			
-		</div>
-
-	</div>
 
 
 </body>

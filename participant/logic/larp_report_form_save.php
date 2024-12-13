@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $group = Group::loadById($larp_group->GroupId);
         
-        if (!$current_user->isGroupLeader($group)) {
+        if (!$current_person->isGroupLeader($group)) {
             header('Location: index.php'); //Inte din grupp
             exit;
         }

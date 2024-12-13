@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 switch ($type) {
     case "role":
         $object = Role::loadById($id);
-        if (Person::loadById($object->PersonId)->UserId != $current_user->Id) {
+        if ($object->PersonId != $current_person->Id) {
             header('Location: ../index.php'); //Inte din karaktär
 
             exit;
@@ -34,7 +34,7 @@ switch ($type) {
         break;
     case "group":
         $object = Group::loadById($id);
-        if (!$current_user->isGroupLeader($object)) {
+        if (!$current_person->isGroupLeader($object)) {
             header('Location: ../index.php');
             exit;
         }
@@ -42,7 +42,7 @@ switch ($type) {
         break;
     case "npc":
         $object = NPC::loadById($id);
-        if (Person::loadById($object->PersonId)->UserId != $current_user->Id) {
+        if ($object->PersonId != $current_person->Id) {
             header('Location: ../index.php');
             exit;
         }
@@ -103,29 +103,37 @@ else {
 include 'navigation.php';
 ?>
 
+	<div class='itemselector'>
+		<div class="header">
 
-	<div class="content">
-		<h1>Ladda upp bild för <?php echo $name;?> <a href="<?php echo $referer; ?>"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
-	  <?php if (isset($error_message) && strlen($error_message)>0) {
-	      echo '<div class="error">'.$error_message.'</div>';
-	  }?>
-	  <?php if (isset($message_message) && strlen($message_message)>0) {
-	      echo '<div class="message">'.$message_message.'</div>';
-	  }?>
+			<i class="fa-solid fa-portrait"></i>
+			Ladda upp bild för <?php echo $name;?>
+		</div>
 
-    	<form method="post" enctype="multipart/form-data">
-        	<input type="hidden" id="id" name="id" value="<?php echo $object->Id; ?>">
-        	<input type="hidden" id="type" name="type" value="<?php echo $type; ?>">
-        	<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-          	<input type="file" name="upload" required><br><br>
-				<label for=Photographer>Fotograf</label>
-				
-				<input class="input_field" type="text" id="Photographer" name="Photographer" value=""  size="25" maxlength="100">
-          	<br><br>
-          	<input type="submit" name="submit" value="Ladda upp bild">
-          	<p><strong>OBS:</strong> Bara .jpg, .jpeg, .gif, .png bilder är tillåtna.</p>
-        </form>
-    </div>
+   		<div class='itemcontainer'>
+
+    
+    	  <?php if (isset($error_message) && strlen($error_message)>0) {
+    	      echo '<div class="error">'.$error_message.'</div>';
+    	  }?>
+    	  <?php if (isset($message_message) && strlen($message_message)>0) {
+    	      echo '<div class="message">'.$message_message.'</div>';
+    	  }?>
+    
+        	<form method="post" enctype="multipart/form-data">
+            	<input type="hidden" id="id" name="id" value="<?php echo $object->Id; ?>">
+            	<input type="hidden" id="type" name="type" value="<?php echo $type; ?>">
+            	<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+              	<input type="file" name="upload" required accept="image/png, image/gif, image/jpeg"><br><br>
+    				<label for=Photographer>Fotograf</label>
+    				
+    				<input class="input_field" type="text" id="Photographer" name="Photographer" value=""  size="25" maxlength="100">
+              	<br><br>
+              	<input type="submit" name="submit" value="Ladda upp bild">
+              	<p><strong>OBS:</strong> Bara .jpg, .jpeg, .gif, .png bilder är tillåtna.</p>
+            </form>
+	    </div>
+	</div>
 </body>
 </html>
   

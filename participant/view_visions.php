@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $role = Role::loadById($RoleId);
 $person = $role->getPerson();
 
-if ($person->UserId != $current_user->Id) {
+if ($person->Id != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
     exit;
 }
@@ -31,27 +31,28 @@ if (!$role->isRegistered($current_larp)) {
 include 'navigation.php';
 ?>
 
-	<div class="content">
-		<h1><?php echo "Syner för $role->Name";?>
-		</h1>
-		
+	<div class='itemselector'>
+		<div class="header">
+			<i class="fa-solid fa-eye"></i>
+			 <?php echo "Syner för $role->Name";?>
+		</div>
+   		<div class='itemcontainer'>
 
-		<div>
-		<p>
-		<strong>Tider du ska ha syner</strong><br>
-		<?php 
-		
-		$visions = Vision::allVisionsByRole($current_larp, $role);
-		foreach ($visions as $vision) {
-		    echo $vision->getWhenStr() . "<br>";
-		}
-		?>
-		<br><br>
-		<strong>Gå till sekretariatet och hämta ut synen vid den anvisade tiden.</strong>
+    		<strong>Tider du ska ha syner</strong><br>
+    		<?php 
+    		
+    		$visions = Vision::allVisionsByRole($current_larp, $role);
+    		foreach ($visions as $vision) {
+    		    echo $vision->getWhenStr() . "<br>";
+    		}
+    		?>
+    		<br><br>
+    		<strong>Gå till sekretariatet och hämta ut synen vid den anvisade tiden.</strong>
 		
  
 
 		</div>
+	</div>
 		
 
 

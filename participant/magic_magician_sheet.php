@@ -1,7 +1,7 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-global $root, $current_user, $current_larp;
+global $root, $current_person, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 require_once $root . '/pdf/magic_magician_sheet_pdf.php';
@@ -25,7 +25,7 @@ if (empty($role)) {
 
 # Kolla behörigheten
 $person = $role->getPerson();
-if ($current_user->IsAdmin==0 && $person->UserId != $current_user->Id) {
+if ($person->Id != $current_person->Id) {
     header("Location: index.php"); # Inte din karaktär
     exit;
 }

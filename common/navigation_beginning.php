@@ -29,7 +29,7 @@
     	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show"><?php echo $current_larp->Name;?></a>
     	<?php } else {?>
     	<img src="../images/bv.ico" width="30" height="30"/></a>
-    	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show">Välj lajv</a>
+    	<a href="../participant/choose_larp.php" id="larp_name" class="logo always_show">Omnes Mundi</a>
     	<?php }?>
     </div>
     <div id="right">
@@ -57,13 +57,7 @@
 	  
 	  ?>
 	  
-	  <a href="<?php echo $location; ?>index.php"><i class="fa-solid fa-house"></i> Hem</a>
 	  <?php 
-	  $uri = $_SERVER['REQUEST_URI'];
-	  
-	  if (str_contains($uri, "/participant/")) {
-	      //TODO bygg mail för deltagare
-	      //<a href="../participant/mail.php"><i class="fa-solid fa-envelope"></i> Epost</a>
-	  } else {
-        echo "<a href='../common/mail_admin.php'><i class='fa-solid fa-envelope'></i> Epost</a>";
-      }
+      echo "<a href='".$location."index.php' class='expand_hide always_show'><i class='fa-solid fa-house'></i></a>";
+      echo "<a href='../common/mail_admin.php' class='expand_hide always_show'><i class='fa-solid fa-envelope'></i></a>";
+      ?>

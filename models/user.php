@@ -143,76 +143,6 @@ class User extends BaseModel{
         return $code;
     }
     
-    public function isGroupLeader($group) {
-        $person = Person::loadById($group->PersonId);
-        if ($person->UserId == $this->Id) return true;
-        return false;
-    }
-    
-    public function isMember($group) {
-        //Kollar om användaren har en person som har en karaktär som är med i gruppen
-        if (!isset($group)) return false;
-        
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_role, regsys_person WHERE ".
-        "regsys_role.GroupId=? AND ".
-        "regsys_role.PersonId = regsys_person.Id AND ".
-        "regsys_person.UserId=?;";
-
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($group->Id, $this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return false;
-        }   
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $stmt = null;
-
-
-        if ($res[0]['Num'] == 0) return false;
-        return true;
-    }
-    
-    public function isMemberSubdivision($subdivision) {
-        //Kollar om användaren har en person som har en karaktär som är med i grupperingen
-        if (!isset($subdivision)) return false;
-        
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_role, regsys_person, regsys_subdivisionmember WHERE ".
-            "regsys_subdivisionmember.SubdivisionId=? AND ".
-            "regsys_role.Id=regsys_subdivisionmember.RoleId AND ".
-            "regsys_role.PersonId = regsys_person.Id AND ".
-            "regsys_person.UserId=?;";
-
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($subdivision->Id, $this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return false;
-            
-        }
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $stmt = null;
-        
-        
-        if ($res[0]['Num'] == 0) return false;
-        return true;
-    }
-    
-    
-    
     public function isComing(Larp $larp) {
         if (is_null($larp)) return null;
         $sql = "SELECT COUNT(*) AS Num FROM regsys_person, regsys_registration WHERE ".
@@ -232,15 +162,4 @@ class User extends BaseModel{
         return null;
     }
     
-    public function hasEditRightToHouse(House $house) {
-        global $current_user;
-        if (AccessControl::hasAccessOther($current_user->Id, AccessControl::HOUSES)) return true;
-
-        $persons = $this->getPersons();
-        foreach ($persons as $person) {
-            if (null !== ($house->getHousecaretakerForPerson($person))) return true;
-        }
-        if (AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) return true;
-        return false;
-    }
-}
+ }

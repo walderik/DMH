@@ -16,6 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $person->create();
         $person->saveAllNormalAllergyTypes($_POST);
+        $current_person = $person;
+        $_SESSION['PersonId'] = $person->Id;
+        
     } elseif ($operation == 'update') {
         $person=Person::loadById($_POST['Id']);
 

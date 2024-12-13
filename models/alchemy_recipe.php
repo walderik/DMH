@@ -455,4 +455,17 @@ class Alchemy_Recipe extends BaseModel{
         }
     }
     
+    public function isKnown(Alchemy_Alchemist $alchemist) {
+        $sql = "SELECT AlchemyRecipelId as Num FROM regsys_alchemy_alchemist_recipe WHERE AlchemyRecipelId=? AND AlchemyAlchemistId=? AND GrantedLarpId IS NOT NULL;";
+        return static::existsQuery($sql, array($this->Id, $alchemist->Id));
+        
+    }
+
+    public function isWishedFor(Alchemy_Alchemist $alchemist) {
+        $sql = "SELECT AlchemyRecipelId as Num FROM regsys_alchemy_alchemist_recipe WHERE AlchemyRecipelId=? AND AlchemyAlchemistId=? AND GrantedLarpId IS NULL;";
+        return static::existsQuery($sql, array($this->Id, $alchemist->Id));
+        
+    }
+    
+    
 }

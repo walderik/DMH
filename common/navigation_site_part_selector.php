@@ -50,20 +50,20 @@ switch ($_SESSION['navigation']) {
 }
 
 
-if (AccessControl::isMoreThanParticipant($current_user, $current_larp)) {
+if (isset($current_larp) && isset($current_person) && AccessControl::isMoreThanParticipant($current_person, $current_larp)) {
 
 	  
     echo "<select name='part' id='part' onchange='changePart()'>\n";
   	echo "<option value='../participant/' $participant_selected>Deltagare</option>\n";
-  	if (AccessControl::hasAccessLarp($current_user, $current_larp) || (AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)))  
+  	if (AccessControl::hasAccessLarp($current_person, $current_larp) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)))  
         echo "<option value='../admin/' $admin_selected>Arrangör</option>\n";
-        if (AccessControl::hasAccessLarp($current_user, $current_larp) || (AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)))
+        if (AccessControl::hasAccessLarp($current_person, $current_larp) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)))
         echo "<option value='../campaign/' $campaign_selected>Kampanj</option>\n";
-        if (AccessControl::hasAccessOther($current_user->Id, AccessControl::BOARD) || (AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN))) 
+        if (AccessControl::hasAccessOther($current_person, AccessControl::BOARD) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN))) 
         echo "<option value='../board/' $board_selected>Styrelse</option>\n";
-        if (AccessControl::hasAccessOther($current_user->Id, AccessControl::HOUSES) || (AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN))) 
+        if (AccessControl::hasAccessOther($current_person, AccessControl::HOUSES) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN))) 
         echo "<option value='../houses/' $houses_selected>Hus & Läger</option>\n";
-    if (AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) 
+        if (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)) 
         echo "<option value='../site-admin/' $site_admin_selected>OM Admin</option>\n";
 
 	 echo "</select>\n";

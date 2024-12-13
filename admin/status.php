@@ -4,7 +4,7 @@ include_once 'header.php';
 
 include 'navigation.php';
 
-if (!AccessControl::hasAccessCampaign($current_user->Id, $current_larp->CampaignId) && !AccessControl::hasAccessOther($current_user->Id, AccessControl::ADMIN)) {
+if (!AccessControl::hasAccessCampaign($current_person, $current_larp->CampaignId) && !AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)) {
     exit;
 }
 

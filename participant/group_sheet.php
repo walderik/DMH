@@ -1,7 +1,7 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-global $root, $current_user, $current_larp;
+global $root, $current_person, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 include_once 'header.php';
@@ -20,12 +20,12 @@ if (isset($_GET['id'])) {
 }
 
 if (empty($group)) {
-    header('Location: index.php'); // Karaktären finns inte
+    header('Location: index.php'); // Gruppen finns inte
     exit;
 }
 
 
-if (!$current_user->isMember($group) && !$current_user->isGroupLeader($group)) {
+if (!$current_person->isMember($group) && !$current_person->isGroupLeader($group)) {
     header('Location: index.php?error=no_member'); //Inte medlem i gruppen
     exit;
 }

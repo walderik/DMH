@@ -198,6 +198,7 @@ class Registration extends BaseModel{
     
     
     public function hasSpotAtLarp() {
+        if ($this->NotComing == 1) return false;
         if ($this->SpotAtLARP == 1) return true;
         return false;
     }

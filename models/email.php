@@ -203,7 +203,7 @@ class Email extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array());
     }
     
-    public static function toPerson() {
+    public function toPerson() {
         $sql = "SELECT * FROM regsys_person WHERE ID IN (SELECT PersonId FROM regsys_email_person WHERE EmailId=?);";
         return Person::getOneObjectQuery($sql, array($this->Id));
     }
@@ -216,12 +216,11 @@ class Email extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $person->Id));
     }
     
-    public function isForUser(User $user) {
-        if (is_null($user)) return false;
-        $sql = "SELECT count(*) as Num FROM regsys_email_person WHERE EmailId=? AND PersonId IN (SELECT Id FROM regsys_person WHERE UserId = ?);";
-        return static::existsQuery($sql, array($this->Id, $user->Id));
+    public static function allForPerson(Person $person) {
+        $sql = "SELECT * FROM regsys_email WHERE ID IN (SELECT EmailId FROM regsys_email_person WHERE PersonId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id));
     }
-
+    
     
     public function getRecipients() {
         $sql = "SELECT * FROM regsys_person WHERE Id IN (SELECT PersonId FROM regsys_email_person WHERE EmailId=?);";

@@ -1,6 +1,6 @@
 <?php
 
-global $root, $current_user;
+global $root, $current_person;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
@@ -27,21 +27,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 switch ($type) {
     case "role":
         $object = Role::loadById($id);
-        if (Person::loadById($object->PersonId)->UserId != $current_user->Id) {
+        if ($object->PersonId != $current_person->Id) {
             header('Location: ../index.php'); //Inte din karaktär
             exit;
         }
         break;
     case "group":
         $object = Group::loadById($id);
-        if (!$current_user->isGroupLeader($object)) {
+        if (!$current_person->isGroupLeader($object)) {
             header('Location: ../index.php');
             exit;
         }
         break;
     case "npc":
         $object = NPC::loadById($id);
-        if (Person::loadById($object->PersonId)->UserId != $current_user->Id) {
+        if ($object->PersonId != $current_person->Id) {
             header('Location: ../index.php');
             exit;
         }

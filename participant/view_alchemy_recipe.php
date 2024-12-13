@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $role = Role::loadById($RoleId);
 $person = $role->getPerson();
 
-if ($person->UserId != $current_user->Id) {
+if ($person->Id != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
     exit;
 }
@@ -43,128 +43,115 @@ if ($recipe->CampaignId != $current_larp->CampaignId) {
 include 'navigation.php';
 ?>
 
-	<div class="content">
-		<h1>Recept för <?php echo $recipe->Name?></a>
-		</h1>
-		
+	<div class='itemselector'>
+		<div class="header">
 
-		<div>
-		
-
-    		<table>
-    			<tr>
-    				<td>Skapat av 
-    				</td>
-    				<td>
-    					<?php 
-    					$author = $recipe->getAuthorRole();
-    					if (isset($author)) echo $author->Name;
-    					?>
-                    </td>
-    			</tr>
-     			<tr>
-    				<td>Hemligt 
-    				</td>
-    				<td>
-    					<?php 
-    					echo ja_nej($recipe->isSecret());
-    					?>
-                    </td>
-    			</tr>
-    			<tr>
-    				<td>Typ 
-    				</td>
-    				<td><?php echo $recipe->getRecipeType() ?>
-                    </td>
-    			</tr>
-    			<tr>
-    				<td>Nivå 
-    				</td>
-    				<td>
-    					<?php echo $recipe->Level; ?>
-                    </td>
-    			</tr>
-
-				<tr>
-    				<td>Tillverkas av</td>
-    				<td>
-    				
-					<?php 
-					echo "<table>";
-					if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { 
-					    $ingredients = $recipe->getSelectedIngredients();
-					    foreach ($ingredients as $ingredient) {
-					        echo "<tr>";
-					        echo "<td>$ingredient->Name</td><td>Nivå $ingredient->Level</td>";
-					        if ($ingredient->isCatalyst()) echo "<td>Katalysator</td>";
-					        else echo "<td>".$ingredient->getEssenceNames()."</td>";
-					        echo "</tr>";
-					    }
-					} elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
-
-					    $essences = Alchemy_Essence::all();
-					    
-					    $selectedEssences = $recipe->getSelectedEssenceIds();
-					    foreach($selectedEssences as $selectedEssenceArr) {
-					        $selectedEssence = null;
-					        foreach ($essences as $essence) {
-					            if ($essence->Id == $selectedEssenceArr[0]) {
-					                $selectedEssence = $essence;
-					                break;
-					            }
-					        }
-					        
-					        echo "<tr><td>$selectedEssence->Name</td><td>Nivå ".$selectedEssenceArr[1]."</td></tr>";
-					    }
-					    echo "<tr><td>Katalysator</td><td>Nivå $recipe->Level</td></tr>";
-
-					    
-					}
-					echo "</table>";
-					if ($recipe->containsOppositeEssences()) echo "<br>".showStatusIcon(false) . " Receptet innehåller motsatta essenser.";
-
-    					?>
-    					
-    				</td>
-    			</tr>
-   			<tr>
-    				<td>Summa poäng<br>ingredienser 
-    				</td>
-    				<td>
-    					<?php 
-    					
-    					echo $recipe->calculatePoints(); 
-    					echo " poäng<br>";
-    					echo "Receptets nivå kräver ";
-    					echo Alchemy_Recipe::LEVEL_REQUIREMENTS[$recipe->Level];
-     					
-    					?>
-    				
-    				
-                    </td>
-    			</tr>
-    			<tr>
-    				<td>Beskrivning</td>
-    				<td><?php echo nl2br(htmlspecialchars($recipe->Description)); ?></td>
-    			</tr>
-     			<tr>
-    				<td>Beredning</td>
-    				<td><?php echo nl2br(htmlspecialchars($recipe->Preparation)); ?></td>
-    			</tr>
-     			<tr>
-    				<td>Effekt</td>
-    				<td><?php echo nl2br(htmlspecialchars($recipe->Effect)); ?></td>
-    			</tr>
-			<?php if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { ?>
-     			<tr>
-    				<td>Bieffekt</td>
-    				<td><?php echo nl2br(htmlspecialchars($recipe->SideEffect)); ?></td>
-    			</tr>
-			<?php } ?>
-    			<tr><td></td></tr>
-    		</table>
-
+			<i class="fa-solid fa-scroll"></i>
+			Recept för <?php echo $recipe->Name?>
 		</div>
+
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Skapat av</div>
+		<?php 
+			$author = $recipe->getAuthorRole();
+			if (isset($author)) echo $author->Name;
+		?>
+		</div>
+
+  		<div class='itemcontainer'>
+       	<div class='itemname'>Hemligt</div>
+		<?php echo ja_nej($recipe->isSecret()); ?>
+		</div>
+ 
+  		<div class='itemcontainer'>
+       	<div class='itemname'>Typ</div>
+		<?php echo $recipe->getRecipeType() ?>
+		</div>
+
+ 		<div class='itemcontainer'>
+       	<div class='itemname'>Nivå</div>
+		<?php echo $recipe->Level; ?>
+		</div>
+
+ 		<div class='itemcontainer'>
+       	<div class='itemname'>Tillverkas av</div>
+		<?php 
+    		echo "<table class='small_data'>";
+    		if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { 
+    		    echo "<tr><th>Ingrediens</th><th>Nivå</th><th>Essens</th></tr>";
+    		    $ingredients = $recipe->getSelectedIngredients();
+    		    foreach ($ingredients as $ingredient) {
+    		        echo "<tr>";
+    		        echo "<td>$ingredient->Name</td><td>$ingredient->Level</td>";
+    		        if ($ingredient->isCatalyst()) echo "<td>Katalysator</td>";
+    		        else echo "<td>".$ingredient->getEssenceNames()."</td>";
+    		        echo "</tr>";
+    		    }
+    		} elseif ($recipe->AlchemistType == Alchemy_Alchemist::ESSENCE_ALCHEMY) {
+    		    echo "<tr><th>Essens</th><th>Nivå</th></tr>";
+    		    
+    		    $essences = Alchemy_Essence::all();
+    		    
+    		    $selectedEssences = $recipe->getSelectedEssenceIds();
+    		    foreach($selectedEssences as $selectedEssenceArr) {
+    		        $selectedEssence = null;
+    		        foreach ($essences as $essence) {
+    		            if ($essence->Id == $selectedEssenceArr[0]) {
+    		                $selectedEssence = $essence;
+    		                break;
+    		            }
+    		        }
+    		        
+    		        echo "<tr><td>$selectedEssence->Name</td><td>".$selectedEssenceArr[1]."</td></tr>";
+    		    }
+    		    echo "<tr><td>Katalysator</td><td>Nivå $recipe->Level</td></tr>";
+    
+    		    
+    		}
+    		echo "</table>";
+    		if ($recipe->containsOppositeEssences()) echo "<br>".showStatusIcon(false) . " Receptet innehåller motsatta essenser.";
+    
+		?>
+		</div>
+
+		<div class='itemcontainer'>
+       	<div class='itemname'>Summa poäng ingredienser</div>
+		<?php 
+		
+		echo $recipe->calculatePoints(); 
+		echo " poäng<br>";
+		echo "Receptets nivå kräver ";
+		echo Alchemy_Recipe::LEVEL_REQUIREMENTS[$recipe->Level];
+		
+		?>
+ 		</div>
+
+  		<div class='itemcontainer'>
+       	<div class='itemname'>Beskrivning</div>
+		<?php echo nl2br(htmlspecialchars($recipe->Description)); ?>
+		</div>
+
+  		<div class='itemcontainer'>
+       	<div class='itemname'>Beredning</div>
+		<?php echo nl2br(htmlspecialchars($recipe->Preparation)); ?>
+		</div>
+
+  		<div class='itemcontainer'>
+       	<div class='itemname'>Effekt</div>
+		<?php echo nl2br(htmlspecialchars($recipe->Effect)); ?>
+		</div>
+
+		<?php if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) { ?>
+      		<div class='itemcontainer'>
+           	<div class='itemname'>Bieffekt</div>
+    		<?php echo nl2br(htmlspecialchars($recipe->SideEffect)); ?>
+    		</div>
+		<?php } ?>
+
+
+
+
+	</div>
 		
 
 

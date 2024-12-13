@@ -14,15 +14,15 @@ class AccessControl extends Dbh {
     
    
     public static function accessControlCampaign() {
-        global $current_user, $current_larp;
-        if (empty($current_larp) or (empty($current_user))) {
+        global $current_person, $current_larp;
+        if (empty($current_larp) or (empty($current_person))) {
             header('Location: ../index.php');
             exit;
         }
-        //If the user has admin privielieges they may always see
-        if (static::hasAccessOther($current_user->Id, AccessControl::ADMIN)) return;
+        //If the person has admin privielieges they may always see
+        if (static::hasAccessOther($current_person, AccessControl::ADMIN)) return;
         
-        if (static::hasAccessCampaign($current_user->Id, $current_larp->CampaignId)) return;
+        if (static::hasAccessCampaign($current_person, $current_larp->CampaignId)) return;
     
         //Does not have access send to participant
         header('Location: ../participant/index.php');
@@ -31,15 +31,15 @@ class AccessControl extends Dbh {
     }
 
     public static function accessControlLarp() {
-        global $current_user, $current_larp;
-        if (empty($current_larp) or (empty($current_user))) {
+        global $current_person, $current_larp;
+        if (empty($current_larp) or (empty($current_person))) {
             header('Location: ../index.php');
             exit;
         }
-        //If the user has admin privielieges they may always see
-        if (static::hasAccessOther($current_user->Id, AccessControl::ADMIN)) return;
+        //If the person has admin privielieges they may always see
+        if (static::hasAccessOther($current_person, AccessControl::ADMIN)) return;
 
-        if (static::hasAccessLarp($current_user, $current_larp)) return;
+        if (static::hasAccessLarp($current_person, $current_larp)) return;
 
         //Does not have access send to participant
         header('Location: ../participant/index.php');
@@ -48,15 +48,15 @@ class AccessControl extends Dbh {
     }
     
     public static function accessControlOther($access) {
-        global $current_user, $current_larp;
-        if (empty($current_larp) or (empty($current_user))) {
+        global $current_person, $current_larp;
+        if (empty($current_larp) or (empty($current_person))) {
             header('Location: ../index.php');
             exit;
         }
-        //If the user has admin privielieges they may always see
-        if (static::hasAccessOther($current_user->Id, AccessControl::ADMIN)) return;
+        //If the person has admin privielieges they may always see
+        if (static::hasAccessOther($current_person, AccessControl::ADMIN)) return;
         
-        if (static::hasAccessOther($current_user->Id, $access)) return;
+        if (static::hasAccessOther($current_person, $access)) return;
         
         //Does not have access send to participant
         header('Location: ../participant/index.php');
@@ -65,47 +65,44 @@ class AccessControl extends Dbh {
         
     }
     
-    public static function isMoreThanParticipant(User $user, LARP $larp) {
-        if (static::hasAccessLarp($user, $larp)) return true;
+    public static function isMoreThanParticipant(Person $person, LARP $larp) {
+        if (static::hasAccessLarp($person, $larp)) return true;
         foreach (AccessControl::ACCESS_TYPES as $key => $value) {
-            if (static::hasAccessOther($user->Id, $key)) return true;
+            if (static::hasAccessOther($person, $key)) return true;
         }
         return false;
     }
         
-    public static function hasAccessCampaign($userId, $campaignId) {
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_campaign, regsys_person WHERE ".
-            "regsys_access_control_campaign.PersonId = regsys_person.Id AND ".
-            "regsys_person.UserId = ? AND ".
+    public static function hasAccessCampaign(Person $person, $campaignId) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_campaign WHERE ".
+            "regsys_access_control_campaign.PersonId = ? AND ".
             "CampaignId=?;";
-        return static::existsQuery($sql, array($userId, $campaignId));
+        return static::existsQuery($sql, array($person->Id, $campaignId));
     }
     
-    public static function hasAccessLarp(User $user, LARP $larp) {
-        if (static::hasAccessCampaign($user->Id, $larp->CampaignId)) return true;
+    public static function hasAccessLarp(Person $person, LARP $larp) {
+        if (static::hasAccessCampaign($person, $larp->CampaignId)) return true;
         
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_larp, regsys_person WHERE ".
-            "regsys_access_control_larp.PersonId = regsys_person.Id AND ".
-            "regsys_person.UserId = ? AND ".
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_larp WHERE ".
+            "regsys_access_control_larp.PersonId = ? AND ".
             "LarpId=?;";
-        return static::existsQuery($sql, array($user->Id, $larp->Id));
+        return static::existsQuery($sql, array($person->Id, $larp->Id));
         
     }
     
-    public static function hasAccessOther($userId, int $access) {
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_other, regsys_person WHERE ".
-            "regsys_access_control_other.PersonId = regsys_person.Id AND ".
-            "regsys_person.UserId = ? AND ".
+    public static function hasAccessOther(Person $person, int $access) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_access_control_other WHERE ".
+            "regsys_access_control_other.PersonId = ? AND ".
             "(Permission=?);";
         
-        return static::existsQuery($sql, array($userId, $access));
+        return static::existsQuery($sql, array($person->Id, $access));
         
     }
     
     public static function grantCampaign($personId, $campaignId) { 
         if (empty($personId)) return;
         $person = Person::loadById($personId);
-        if (AccessControl::hasAccessCampaign($person->UserId, $campaignId)) return;
+        if (AccessControl::hasAccessCampaign($person, $campaignId)) return;
             
         $connection = static::connectStatic();
         $stmt = $connection->prepare("INSERT INTO regsys_access_control_campaign (PersonId, CampaignId) VALUES (?,?)");
@@ -135,7 +132,7 @@ class AccessControl extends Dbh {
     
  
     public static function grantLarp(Person $person, Larp $larp) {
-        if (AccessControl::hasAccessLarp($person->getUser(), $larp)) return;
+        if (AccessControl::hasAccessLarp($person, $larp)) return;
             
         $connection = static::connectStatic();
         $stmt = $connection->prepare("INSERT INTO regsys_access_control_larp (PersonId, LarpId) VALUES (?,?)");
@@ -166,7 +163,7 @@ class AccessControl extends Dbh {
     public static function grantOther($personId, $access) {
         if (empty($personId)) return;
         $person = Person::loadById($personId);
-        if (static::hasAccessOther($person->UserId, $access)) return;
+        if (static::hasAccessOther($person, $access)) return;
         
         $connection = static::connectStatic();
         

@@ -34,33 +34,41 @@ if (isset($role->GroupId)) {
 include 'navigation.php';
 ?>
 
-	<div class="content">
-		<h1><?php echo $role->Name;?>
-		</h1>
-		<div>
-		<table>
-			<tr><td valign="top" class="header">Spelas av</td><td>
-			
-			<?php if ($person->hasPermissionShowName()) echo $person->Name; else echo "(Vill inte visa sitt namn)";?></td>
-		<?php 
-		if ($role->hasImage()) {
-		    
-		    $image = Image::loadById($role->ImageId);
-		    echo "<td rowspan='20' valign='top'>";
-		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
-		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-		    echo "</td>";
-		}
-		?>
-			
-			</tr>
-		<?php if (isset($group)) {?>
-			<tr><td valign="top" class="header">Grupp</td><td><a href ="view_known_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a></td></tr>
-		<?php }?>
-			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br($role->DescriptionForOthers);?></td></tr>
-		</table>		
+
+	<div class='itemselector'>
+		<div class="header">
+
+			<i class="fa-solid fa-person"></i>
+			<?php echo $role->Name;?>
 		</div>
 
+		<?php 
+		if ($role->hasImage()) {
+		    echo "<div class='itemcontainer'>";
+		    $image = Image::loadById($role->ImageId);
+		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
+		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+		    echo "</div>";
+		}
+		?>
 
+
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Spelas av</div>
+		<?php if ($person->hasPermissionShowName()) echo $person->Name; else echo "(Vill inte visa sitt namn)";?>
+		</div>
+
+		<?php if (isset($group)) {?>
+       		<div class='itemcontainer'>
+           	<div class='itemname'>Grupp</div>
+    		<a href ="view_known_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a>
+    		</div>
+		<?php }?>
+
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Beskrivning</div>
+		<?php echo nl2br(htmlspecialchars($role->DescriptionForOthers));?>
+		</div>
+	</div>
 </body>
 </html>

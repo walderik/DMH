@@ -10,7 +10,7 @@ body {margin:0;font-family:Arial}
   display: block;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  padding: 14px 8px;
   text-decoration: none;
   font-size: 17px;
 }
@@ -133,10 +133,20 @@ body {margin:0;font-family:Arial}
     text-align: left;
   }
   
+
+  .topnav.responsive select {
+	  display: none;
+  }
+
+  .topnav.responsive a.expand_hide {
+	  display: none;
+  }
   
   .topnav.responsive #larp_name {
 	  display: none;
   }
+
+
 }
 
 #larp_name {
@@ -152,12 +162,14 @@ body {margin:0;font-family:Arial}
 
 }
 
-@media only screen and (min-width: 600px) {
 #right {
 
     float: right
     
 }
+
+@media only screen and (min-width: 600px) {
+
 
 a.logo {
 	font-weight: 900;

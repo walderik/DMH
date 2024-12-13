@@ -758,8 +758,7 @@ class Person extends BaseModel{
         $year = substr($larp->StartDate, 0, 4);
         
         $current_year = date("Y");
-        
-        if ($year >= $current_year) return false;
+        if ($year > $current_year) return false;
         
         return $this->IsMember();
     }
@@ -773,17 +772,11 @@ class Person extends BaseModel{
         if (($current_year > $last_checked_year) && $this->IsMember == 1) {
             $this->IsMember = 0;
         }
-        
         //Vi har fått svar på att man har betalat medlemsavgift för året. Behöver inte kolla fler gånger.
         if ($this->IsMember == 1) return true;
         
-        
-        
-        
         //Kolla inte oftare än en gång per kvart
         if (isset($this->MembershipCheckedAt) && (time()-strtotime($this->MembershipCheckedAt) < 15*60)) return false;
-        
-
         
         $val = check_membership($this->SocialSecurityNumber, $current_year);
         
@@ -797,7 +790,6 @@ class Person extends BaseModel{
         $now = new Datetime();
         $this->MembershipCheckedAt = date_format($now,"Y-m-d H:i:s");
         $this->update();
-        
         if ($this->IsMember == 1) return true;
         return false;
         
@@ -813,5 +805,94 @@ class Person extends BaseModel{
         $sql .= " ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, $larpIds);
     }
+    
+    
+    public function isMemberSubdivision($subdivision) {
+        //Kollar om personen har en karaktär som är med i grupperingen
+        if (!isset($subdivision)) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_role, regsys_subdivisionmember WHERE ".
+            "regsys_subdivisionmember.SubdivisionId=? AND ".
+            "regsys_role.Id=regsys_subdivisionmember.RoleId AND ".
+            "regsys_role.PersonId = ?;";
+        
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($subdivision->Id, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+            
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+        
+        
+        if ($res[0]['Num'] == 0) return false;
+        return true;
+    }
+    
+    
+    public function hasEditRightToHouse(House $house) {
+        if (AccessControl::hasAccessOther($this, AccessControl::HOUSES)) return true;
+        
+        if ($house->getHousecaretakerForPerson($this)) return true;
+
+        if (AccessControl::hasAccessOther($this, AccessControl::ADMIN)) return true;
+        return false;
+    }
+    
+    public function isMemberGroup($group) {
+        //Kollar om personen har en karaktär som är med i gruppen
+        if (!isset($group)) return false;
+        
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_role WHERE ".
+            "regsys_role.GroupId=? AND ".
+            "regsys_role.PersonId = ?;";
+        
+        $stmt = static::connectStatic()->prepare($sql);
+        
+        if (!$stmt->execute(array($group->Id, $this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return false;
+        }
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $stmt = null;
+        
+        
+        if ($res[0]['Num'] == 0) return false;
+        return true;
+    }
+    
+    public function isGroupLeader($group) {
+        if ($group->PersonId == $this->Id) return true;
+        return false;
+    }
+    
+    public function isComing(Larp $larp) {
+        if (is_null($larp)) return null;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE ".
+            "regsys_registration.PersonId = ? AND ".
+            "regsys_registration.SpotAtLARP = 1 AND ".
+            "regsys_registration.NotComing = 0 AND ".
+            "regsys_registration.LarpId=?;";
+        return static::existsQuery($sql, array($this->Id, $larp->Id));
+        
+    }
+    
+    
     
 }
