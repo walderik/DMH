@@ -139,12 +139,11 @@ div.border
 	    		<div class='itemcontainer'>
       			<?php  
       			echo "<form action='../includes/set_larp.php' method='POST'>";
-      			echo "<select name='larp' id='larp'>";
       			foreach (array_reverse($past_larp_array) as $larp) {
-    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
-    			     }
-    			     echo "</select> ";
-    			     echo "<button class='button-18' type='submit'>Välj</button>";
+      			    echo "<input type='radio' id='pastlarp_$larp->Id' name='larp' value='$larp->Id'>";
+      			    echo "<label for='pastlarp_$larp->Id'>$larp->Name</label><br>\n";
+     			     }
+    			     echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
     			     echo "<br><hr>";
     			 }
     			 echo "</form>";
@@ -187,13 +186,11 @@ div.border
         			 
         			 echo "<div class='itemcontainer'>";
         			 echo "<form action='../includes/set_larp.php' method='POST'>";
-        			 echo "<select name='larp' id='larp'>";
-        			 
         			 foreach (array_reverse($larps_organizer) as $larp) {
-        			     echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
+        			     echo "<input type='radio' id='orglarp_$larp->Id' name='larp' value='$larp->Id'>";
+        			     echo "<label for='orglarp_$larp->Id'>$larp->Name</label><br>\n";
         			 }
-        			 echo "</select> ";
-        			 echo "<button class='button-18' type='submit'>Välj</button>";
+        			 echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
         			 echo "</form>";
         			 echo "</div>";
         			 echo "</div>";
@@ -216,13 +213,12 @@ div.border
     			     
     			     echo "<div class='itemcontainer'>";
     			     echo "<form action='../includes/set_larp.php' method='POST'>";
-    			     echo "<select name='larp' id='larp'>";
     			     $larps = LARP::all();
     			     foreach (array_reverse($larps) as $larp) {
-    			         echo "<option value='" . $larp->Id . "'>". $larp->Name . "</option>\n";
+    			         echo "<input type='radio' id='omlarp_$larp->Id' name='larp' value='$larp->Id'>";
+    			         echo "<label for='omlarp_$larp->Id'>$larp->Name</label><br>\n";
     			     }
-    			     echo "</select> ";
-    			     echo "<button class='button-18' type='submit'>Välj</button>";
+    			     echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
     			     echo "</form>";
     			     echo "</div>";
     			     echo "</div>";
