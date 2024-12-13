@@ -36,7 +36,12 @@
 }
 
 .borderbottom {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 8px;
+}
+
+.borderbottom:last-child{
+    border: 0;
 }
 
 .itemname {
