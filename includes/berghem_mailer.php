@@ -504,7 +504,7 @@ class BerghemMailer {
                 $pdf->init('Omnes Mundi', $name, $larp->Name, false);
                 $pdf->AddPage();
                 $pdf->printInfo($name, $house->NotesToUsers);
-                $sheets["Husbrev"] = $pdf->Output($house->Name.'.pdf','S');
+                $sheets[scrub($house->Name)] = $pdf->Output($house->Name.'.pdf','S');
             }
             
             BerghemMailer::send($larp, $receivers, $greeting, $housetext, $subject_house, $senderText, BerghemMailer::DaysAutomatic, $sheets);

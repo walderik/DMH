@@ -19,8 +19,7 @@ if (isset($_GET['houseId'])) {
 
 $pdf = new HouseInfo();
 
-if (isset($_GET['general'])) $pdf->init($current_person->Name, $house->Name, '', false);
-else $pdf->init($current_person->Name, $house->Name, $current_larp->Name, false);
+$pdf->init($current_person->Name, $house->Name, $current_larp->Name, false);
 
 
 if (!empty(trim($house->NotesToUsers))) {
