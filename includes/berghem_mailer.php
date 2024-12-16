@@ -11,6 +11,7 @@ require_once $root . '/pdf/invoice_pdf.php';
 require_once $root . '/pdf/alchemy_supplier_sheet_pdf.php';
 require_once $root . '/pdf/alchemy_alchemist_sheet_pdf.php';
 require_once $root . '/pdf/magic_magician_sheet_pdf.php';
+require_once $root . '/pdf/house_info.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -494,7 +495,19 @@ class BerghemMailer {
             
             $subject_house = $subject . " ($house->Name)";
             
-            BerghemMailer::send($larp, $receivers, $greeting, $housetext, $subject_house, $senderText, BerghemMailer::DaysAutomatic);
+            $sheets = array();
+            if (!empty(trim($house->NotesToUsers))) {
+                $name = 'Husbrev';
+                
+                $pdf = new HouseInfo();
+                $name = "Husbrev för $house->Name";
+                $pdf->init('Omnes Mundi', $name, $larp->Name, false);
+                $pdf->AddPage();
+                $pdf->printInfo($name, $house->NotesToUsers);
+                $sheets["Husbrev"] = $pdf->Output($house->Name.'.pdf','S');
+            }
+            
+            BerghemMailer::send($larp, $receivers, $greeting, $housetext, $subject_house, $senderText, BerghemMailer::DaysAutomatic, $sheets);
         }
     }
     

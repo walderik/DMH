@@ -42,6 +42,10 @@ ul.list {
         	    echo " &nbsp;<a href='house_form.php?operation=update&id=$house->Id' title='Redigera husbrevet'><i class='fa-solid fa-pen'> </i></a>";
         	}
     	   ?>
+	   		<?php if (!empty(trim($house->NotesToUsers))) {?>
+	   			<a href="../common/reports/house_info.php?houseId=<?php echo $house->Id ?>" target="_blank"><i class="fa-solid fa-file-pdf"></i></a>
+   			<?php } ?>
+    	   
 		</div>
 
 		<?php 
