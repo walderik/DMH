@@ -10,7 +10,6 @@ class Rumour extends BaseModel{
     public  $UserId;
     public  $IntrigueId;
     
-//     public static $tableName = 'telegrams';
     public static $orderListBy = 'Id';
     
     public static function newFromArray($post) {
@@ -37,10 +36,10 @@ class Rumour extends BaseModel{
     public static function newWithDefault() {
         global $current_larp, $current_user;
         
-        $telegram = new self();
-        $telegram->LARPid = $current_larp->Id;
-        $telegram->UserId = $current_user->Id;
-        return $telegram;
+        $rumour = new self();
+        $rumour->LARPid = $current_larp->Id;
+        $rumour->UserId = $current_user->Id;
+        return $rumour;
     }
     
     
@@ -114,7 +113,7 @@ class Rumour extends BaseModel{
     
     
     
-    # Update an existing telegram in db
+    # Update an existing rumour in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_rumour SET Text=?, Notes=?, Approved=?, IntrigueId=? WHERE Id = ?");
         
@@ -127,7 +126,7 @@ class Rumour extends BaseModel{
         $stmt = null;
     }
     
-    # Create a new telegram in db
+    # Create a new rumour in db
     public function create() {
         $connection = $this->connect();
         $stmt =  $connection->prepare("INSERT INTO regsys_rumour (Text, Notes, Approved, UserId, LARPid, IntrigueId) VALUES (?,?,?, ?, ?, ?)");
