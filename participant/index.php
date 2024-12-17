@@ -760,7 +760,7 @@ function openTab(evt, tabName) {
         if($antal > 0) {
             echo "<details><summary>Du har spridit $antal rykten</summary> ";
             //     		        echo "<b>Rykten skapade av $current_user->Name:</b><br>\n";
-            echo "<table class='data' id='letters' align='left'>";
+            echo "<table class='data' id='rumours' align='left'>";
             echo "<tr align='left'><th>Text</th><th>Ok</th><th>Ändra</th>";
             echo "</tr>\n";
             foreach ($rumour_array as $rumour) {
@@ -794,7 +794,7 @@ function openTab(evt, tabName) {
         help_icon("Någon gång under lajvet kommer förhoppningsvis det här brevet nå sin mottagare.");
         echo "</div>";
         echo "<div class='itemcontainer'>";
-        $letter_array = $current_user->getLettersAtLarp($current_larp);
+        $letter_array = $current_person->getLettersAtLarp($current_larp);
         $antal = (isset($letter_array)) ? count($letter_array) : 0;
         if($antal > 0) {
             echo "<details><summary>Du har skrivit $antal brev</summary> ";
