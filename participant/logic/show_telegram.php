@@ -1,7 +1,7 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-global $root, $current_user, $current_larp;
+global $root, $current_person, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require_once $root . '/pdf/telegram_pdf.php';
@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     $telegram=Telegram::loadById($_GET['id']);
 
-    if ($telegram->UserId != $current_user->Id) {
+    if ($telegram->PersonId != $current_person->Id) {
         header('Location: index.php'); //Inte ditt telegram
         exit;
     }

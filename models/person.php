@@ -894,7 +894,11 @@ class Person extends BaseModel{
     }
     
     public function getAdvertismentsAtLarp($larp) {
-        return Advertisment::allBySelectedUserIdAndLARP($this->Id, $larp);
+        return Advertisment::allBySelectedPersonIdAndLARP($this->Id, $larp);
+    }
+    
+    public function getTelegramsAtLarp($larp) {
+        return Telegram::allBySelectedPersonIdAndLARP($this->Id, $larp);
     }
     
     

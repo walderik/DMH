@@ -833,7 +833,7 @@ function openTab(evt, tabName) {
         help_icon("På ett visst klockslag under lajvet kommer telegrammets mottagare att få ditt meddelande.");
         echo "</div>";
         echo "<div class='itemcontainer'>";
-        $telegram_array = $current_user->getTelegramsAtLarp($current_larp);
+        $telegram_array = $current_person->getTelegramsAtLarp($current_larp);
         $antal = (isset($telegram_array)) ? count($telegram_array) : 0;
         if($antal > 0) {
             echo "<details><summary>Du har skapat $antal telegram</summary> ";

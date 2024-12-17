@@ -229,7 +229,7 @@ class Intrigue extends BaseModel{
                     $newTelegram->Sender = $oldTelegram->Sender;
                     $newTelegram->SenderCity = $oldTelegram->SenderCity;
                     $newTelegram->OrganizerNotes = $oldTelegram->OrganizerNotes;
-                    $newTelegram->UserId = $oldTelegram->UserId;
+                    $newTelegram->PersonId = $oldTelegram->PersonId;
                     $newTelegram->Approved = $oldTelegram->Approved;
                     $newTelegram->create();
                     

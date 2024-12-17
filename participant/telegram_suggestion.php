@@ -11,7 +11,7 @@ include_once 'header.php';
         if ($operation == 'new') {
         } elseif ($operation == 'update') {
             $telegram = Telegram::loadById($_GET['id']);
-            if ($telegram->UserId != $current_user->Id) {
+            if ($telegram->PersonId != $current_person->Id) {
                 header('Location: index.php'); //Inte ditt telegram
                 exit;
             }

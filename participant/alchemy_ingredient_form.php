@@ -94,7 +94,7 @@ img {
 	<div class='itemselector'>
 	<div class="header">
 
-		<i class="fa-brands fa-telegram"></i>
+		<i class="fa-solid fa-leaf"></i>
 		<?php echo default_value('action');?> <?php echo default_value('type');?>
 	</div>
    

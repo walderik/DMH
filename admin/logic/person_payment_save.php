@@ -37,19 +37,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $registration->update();
         
         if ($registration->isNotComing()) {
-            //Kontrollera om användaren har någon annan deltagare som kommer, annars ska brev och telegram sättas till icke-godkänd
-            $user = $registration->getPerson()->getUser();
-            if (!$user->isComing($current_larp)) {
-                $telegrams = $user->getTelegramsAtLarp($current_larp);
-                foreach ($telegrams as $telegram) {
-                    $telegram->Approved = 0;
-                    $telegram->update();
-                }
-                $letters = $user->getLettersAtLarp($current_larp);
-                foreach ($letters as $letter) {
-                    $letter->Approved = 0;
-                    $letter->update();
-                }
+            $person = $registration->getPerson();
+            $user = $person->getUser();
+            //brev och telegram ska sättas till icke-godkänd
+            $telegrams = $person->getTelegramsAtLarp($current_larp);
+            foreach ($telegrams as $telegram) {
+                $telegram->Approved = 0;
+                $telegram->update();
+            }
+            $letters = $user->getLettersAtLarp($current_larp);
+            foreach ($letters as $letter) {
+                $letter->Approved = 0;
+                $letter->update();
             }
         }
 

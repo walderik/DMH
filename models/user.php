@@ -114,10 +114,6 @@ class User extends BaseModel{
         return $unregistered_persons;
     }
     
-    public function getTelegramsAtLarp($larp) {
-        return Telegram::allBySelectedUserIdAndLARP($this->Id, $larp);
-    }
-    
     public function getLettersAtLarp($larp) {
         return Letter::allBySelectedUserIdAndLARP($this->Id, $larp);
     }
