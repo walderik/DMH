@@ -12,7 +12,7 @@ class Advertisment extends BaseModel{
 
     
 
-    public static $orderListBy = 'AdvertismentTypeId, UserId';
+    public static $orderListBy = 'AdvertismentTypeId, PersonId';
     
     public static function newFromArray($post) {
         $obj = static::newWithDefault();
@@ -51,7 +51,7 @@ class Advertisment extends BaseModel{
     }
     
     
-     public static function allBySelectedUserIdAndLARP($person_id, Larp $larp) {
+     public static function allBySelectedPersonIdAndLARP($person_id, Larp $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_advertisment WHERE LARPid = ? and PersonId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $person_id));
