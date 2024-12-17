@@ -97,12 +97,12 @@ include 'navigation.php';
                 echo "<td>" . $letter->Signature . "</td>\n";
                 echo "<td>" . $letter->Font . "</td>\n";
                 echo "<td>";
-                $user = $letter->getUser();
-                if ($user->isComing($current_larp)) {
-                    echo $user->Name;
+                $person = $letter->getPerson();
+                if ($person->isComing($current_larp)) {
+                    echo $person->Name;
                 }
                 else {
-                    echo "<s>$user->Name</s>";
+                    echo "<s>$person->Name</s>";
                 }
                 echo "</td>\n";
                 echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";

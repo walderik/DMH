@@ -10,19 +10,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $letter = Letter::newFromArray($_POST);
         $letter->Approved = 0;
-        $letter->UserId = $current_user->Id;
+        $letter->PersonId = $current_person->Id;
         $letter->create();
         
     } elseif ($operation == 'update') {
         $letter=Letter::loadById($_POST['Id']);
-        if ($letter->UserId != $current_user->Id) {
+        if ($letter->PersonId != $current_person->Id) {
             header('Location: index.php'); //Inte ditt brev
             exit;
         }
         
         $letter->setValuesByArray($_POST);
         $letter->Approved = 0;
-        $letter->UserId = $current_user->Id;
+        $letter->PersonId = $current_person->Id;
         $letter->update();
     }
 }

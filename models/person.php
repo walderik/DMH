@@ -901,6 +901,10 @@ class Person extends BaseModel{
         return Telegram::allBySelectedPersonIdAndLARP($this->Id, $larp);
     }
     
+    public function getLettersAtLarp($larp) {
+        return Letter::allBySelectedPersonIdAndLARP($this->Id, $larp);
+    }
+    
     
     
 }

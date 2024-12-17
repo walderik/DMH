@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($operation == 'new') {
     } elseif ($operation == 'update') {
         $letter = Letter::loadById($_GET['id']);
-        if ($letter->UserId != $current_user->Id) {
+        if ($letter->PersonId != $current_user->Id) {
             header('Location: index.php'); //Inte ditt brev
             exit;
         }

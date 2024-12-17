@@ -13,7 +13,7 @@ class Letter extends BaseModel{
     public  $Approved = 1;
     public  $LARPid;
     public  $Font;
-    public  $UserId; 
+    public  $PersonId; 
     public  $Recipient;
 
     
@@ -36,7 +36,7 @@ class Letter extends BaseModel{
         if (isset($arr['Approved'])) $this->Approved = $arr['Approved'];
         if (isset($arr['Font'])) $this->Font = $arr['Font'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
-        if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
+        if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
         if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
         if (isset($arr['Recipient'])) $this->Recipient = $arr['Recipient'];
         
@@ -45,12 +45,12 @@ class Letter extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_larp, $current_user;
+        global $current_larp, $current_person;
         
         $letter = new self();
         $letter->Deliverytime = $current_larp->StartTimeLARPTime;
         $letter->LARPid = $current_larp->Id;
-        $letter->UserId = $current_user->Id;
+        $letter->PersonId = $current_person->Id;
         return $letter;
     }
     
@@ -69,10 +69,10 @@ class Letter extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
-    public static function allBySelectedUserIdAndLARP($user_id, Larp $larp) {
+    public static function allBySelectedPersonIdAndLARP($person_id, Larp $larp) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_letter WHERE LARPid = ? and UserId = ? ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $user_id));
+        $sql = "SELECT * FROM regsys_letter WHERE LARPid = ? and PersonId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $person_id));
     }
     
     public static function getAllToApprove(Larp $larp) {
@@ -87,9 +87,9 @@ class Letter extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_letter SET WhenWhere=?, Greeting=?, EndingPhrase=?, Signature=?, Message=?, Font=?, OrganizerNotes=?, Approved=?, UserId=?, Recipient=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_letter SET WhenWhere=?, Greeting=?, EndingPhrase=?, Signature=?, Message=?, Font=?, OrganizerNotes=?, Approved=?, PersonId=?, Recipient=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->Recipient, $this->Id))) {
+        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->PersonId, $this->Recipient, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -101,9 +101,9 @@ class Letter extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_letter (WhenWhere, Greeting, EndingPhrase, Signature, Message, Font, OrganizerNotes, Approved, UserId, LARPid, Recipient) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_letter (WhenWhere, Greeting, EndingPhrase, Signature, Message, Font, OrganizerNotes, Approved, PersonId, LARPid, Recipient) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->UserId, $this->LARPid, $this->Recipient))) {
+        if (!$stmt->execute(array($this->WhenWhere, $this->Greeting, $this->EndingPhrase, $this->Signature, $this->Message, $this->Font, $this->OrganizerNotes, $this->Approved, $this->PersonId, $this->LARPid, $this->Recipient))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -112,8 +112,8 @@ class Letter extends BaseModel{
         $stmt = null;
     }
     
-    public function getUser() {
-        return User::loadById($this->UserId);
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
     }
     
     public static function getAllCheckinLettersForIntrigueActor(IntrigueActor $intrigueActor) {

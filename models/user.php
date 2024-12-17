@@ -114,10 +114,6 @@ class User extends BaseModel{
         return $unregistered_persons;
     }
     
-    public function getLettersAtLarp($larp) {
-        return Letter::allBySelectedUserIdAndLARP($this->Id, $larp);
-    }
-    
     public function getRumoursAtLarp($larp) {
         return Rumour::allBySelectedUserIdAndLARP($this->Id, $larp);
     }
