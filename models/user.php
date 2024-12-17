@@ -126,10 +126,6 @@ class User extends BaseModel{
         return Rumour::allBySelectedUserIdAndLARP($this->Id, $larp);
     }
     
-    public function getAdvertismentsAtLarp($larp) {
-        return Advertisment::allBySelectedUserIdAndLARP($this->Id, $larp);
-    }
-    
     
     public function isActivated() {
         if ($this->ActivationCode == 'activated') return true;

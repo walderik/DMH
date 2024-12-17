@@ -716,7 +716,7 @@ function openTab(evt, tabName) {
            
            
            echo "<a href='advertisments.php'><b>Se alla annonser</b></i></a>\n";
-           $advertisment_array = $current_user->getAdvertismentsAtLarp($current_larp);
+           $advertisment_array = $current_person->getAdvertismentsAtLarp($current_larp);
            if(isset($advertisment_array) && count($advertisment_array) > 0) {
                echo "<div>\n";
                echo "<br>Egna annonser:<br>\n";

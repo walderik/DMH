@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     if ($operation == 'update') {
         $advertisment = Advertisment::loadById($_GET['id']);
-        if ($advertisment->UserId != $current_user->Id) {
+        if ($advertisment->PersonId != $current_person->Id) {
             header('Location: index.php'); //Inte din annons
             exit;
         } 

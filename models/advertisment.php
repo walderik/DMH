@@ -6,7 +6,7 @@ class Advertisment extends BaseModel{
 
     public  $ContactInformation;
     public  $Text;
-    public  $UserId;
+    public  $PersonId;
     public  $LarpId;
     public  $AdvertismentTypeId;
 
@@ -25,7 +25,7 @@ class Advertisment extends BaseModel{
         if (isset($arr['Text'])) $this->Text = $arr['Text'];
 
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
-        if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
+        if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
         if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
         if (isset($arr['AdvertismentTypeId'])) $this->AdvertismentTypeId = $arr['AdvertismentTypeId'];
         
@@ -34,11 +34,11 @@ class Advertisment extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_larp, $current_user;
+        global $current_larp, $current_person;
         
         $obj = new self();
         $obj->LARPid = $current_larp->Id;
-        $obj->UserId = $current_user->Id;
+        $obj->PersonId = $current_person->Id;
         return $obj;
     }
     
@@ -51,10 +51,10 @@ class Advertisment extends BaseModel{
     }
     
     
-     public static function allBySelectedUserIdAndLARP($user_id, Larp $larp) {
+     public static function allBySelectedUserIdAndLARP($person_id, Larp $larp) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_advertisment WHERE LARPid = ? and UserId = ? ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $user_id));
+        $sql = "SELECT * FROM regsys_advertisment WHERE LARPid = ? and PersonId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $person_id));
     }
     
     
@@ -74,9 +74,9 @@ class Advertisment extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_advertisment (ContactInformation, Text, UserId, LARPid, AdvertismentTypeId) VALUES (?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_advertisment (ContactInformation, Text, PersonId, LARPid, AdvertismentTypeId) VALUES (?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->ContactInformation, $this->Text, $this->UserId, $this->LARPid, $this->AdvertismentTypeId))) {
+        if (!$stmt->execute(array($this->ContactInformation, $this->Text, $this->PersonId, $this->LARPid, $this->AdvertismentTypeId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -85,8 +85,8 @@ class Advertisment extends BaseModel{
         $stmt = null;
     }
     
-    public function getUser() {
-        return User::loadById($this->UserId);
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
     }
     
 }
