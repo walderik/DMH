@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $email = Email::loadById($emailId); 
 $attachements = $email->attachments();
 
-$user = User::loadById($email->SenderUserId);
+$person = Person::loadById($email->SenderPersonId);
 
 include 'navigation.php';
 ?>
@@ -35,7 +35,7 @@ include 'navigation.php';
     		?>
 			<tr><td>Skickat av</td><td>
 				<?php 
-				if (!empty($user)) echo $user->Name;
+				if (!empty($person)) echo $person->Name;
 				else echo "Omnes Mundi";
 				?>
 				</td></tr>

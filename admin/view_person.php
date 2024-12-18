@@ -245,10 +245,10 @@ include 'navigation.php';
         		            "<th onclick='sortTable(3, \"$tableId\")'>Skickat</th>".
         		            "</tr>\n";
     		            foreach (array_reverse($emails) as $email) {
-    		                $sendUserName = "";
-    		                if (isset($email->SenderUserId)) {
-    		                    $user = User::loadById($email->SenderUserId);
-    		                    $sendUserName = $user->Name;
+    		                $senderName = "";
+    		                if (isset($email->SenderPersonId)) {
+    		                    $sender = Person::loadById($email->SenderPersonId);
+    		                    $senderName = $sender->Name;
     		                }
     		                
     		                echo "<tr>";
@@ -258,7 +258,7 @@ include 'navigation.php';
     		                echo "<td>";
     		                if (!empty($attachements)) echo "<i class='fa-solid fa-paperclip'></i>";
     		                echo "</td>";
-    		                echo "<td>$sendUserName</td>";
+    		                echo "<td>$senderName</td>";
     		                echo "<td>$email->SentAt</td>";
     		            }
     		            echo "</table>";

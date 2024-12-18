@@ -64,7 +64,7 @@ if ($_SESSION['navigation'] == Navigation::LARP) {
     }
 }
 
-$user = User::loadById($email->SenderUserId);
+$person = Person::loadById($email->SenderPersonId);
 
 include $navigation;
 
@@ -82,7 +82,7 @@ include $navigation;
        	<div class='itemname'>Skickat av</div>
     		<?php 
     		if (isset($user)) {
-			 echo "$user->Name";
+			 echo "$person->Name";
 			} else {
 			    echo "Systemet";
 			}

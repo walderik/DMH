@@ -55,9 +55,9 @@ th {
     	$emails = Email::all();
     	foreach (array_reverse($emails) as $email) {
     	    $sendUserName = "";
-    	    if (isset($email->SenderUserId)) {
-    	       $user = User::loadById($email->SenderUserId);
-    	       $sendUserName = $user->Name;
+    	    if (isset($email->SenderPersonId)) {
+    	        $person = Person::loadById($email->SenderPersonId);
+    	       $senderName = $person->Name;
     	    }
     	    
     	    if (!($to_array = @unserialize($email->To))) {
@@ -74,7 +74,7 @@ th {
     	    echo "<td>";
     	    if (!empty($attachements)) echo "<i class='fa-solid fa-paperclip'></i>";
             echo "</td>";
-    	    echo "<td>$sendUserName</td>";
+    	    echo "<td>$senderName</td>";
     	    echo "<td>$email->SentAt</td>";
     	    echo "<td>";
     	    if (!empty($email->ErrorMessage)) {

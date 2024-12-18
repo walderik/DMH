@@ -5,7 +5,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Email extends BaseModel{
     
     public  $Id;
-    public  $SenderUserId;
+    public  $SenderPersonId;
     public  $LarpId;
     public  $From;
     public  $To; # Skall vara endera EN epostadress som en sträng eller en serialised array av epost-strängar. https://www.w3schools.com/php/func_var_serialize.asp
@@ -30,7 +30,7 @@ class Email extends BaseModel{
     
     public function setValuesByArray($arr) {
         if (array_key_exists('LarpId', $arr)) $this->LarpId = $arr['LarpId'];
-        if (array_key_exists('SenderUserId', $arr)) $this->SenderUserId = $arr['SenderUserId'];
+        if (array_key_exists('SenderPersonId', $arr)) $this->SenderPersonId = $arr['SenderPersonId'];
         if (isset($arr['From'])) $this->From = $arr['From'];
         if (isset($arr['To'])) $this->To = $arr['To'];
         if (isset($arr['ToName'])) $this->ToName = $arr['ToName'];
@@ -49,11 +49,11 @@ class Email extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_user;
+        global $current_person;
         
         $email = new self();
         
-        if (!is_null($current_user)) $email->SenderUserId = $current_user->Id;
+        if (!is_null($current_person)) $email->SenderPersonId = $current_person->Id;
         
 
         $email->From = 'info@berghemsvanner.se';
@@ -284,9 +284,9 @@ class Email extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_email SET SentAt=?, DeletesAt=?, SenderUserId=?, LarpId=?, `From`=?, `To`=?, `Greeting`=?, `CC`=?, Subject=?, Text=?, SenderText=?, ErrorMessage=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_email SET SentAt=?, DeletesAt=?, SenderPersonId=?, LarpId=?, `From`=?, `To`=?, `Greeting`=?, `CC`=?, Subject=?, Text=?, SenderText=?, ErrorMessage=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->SentAt, $this->DeletesAt, $this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->Greeting, $this->CC, $this->Subject, 
+        if (!$stmt->execute(array($this->SentAt, $this->DeletesAt, $this->SenderPersonId, $this->LarpId, $this->From, $this->To, $this->Greeting, $this->CC, $this->Subject, 
                                   $this->Text, $this->SenderText, $this->ErrorMessage, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -299,9 +299,9 @@ class Email extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_email (SenderUserId, LarpId, `From`, `To`, ToName, Greeting, CC, Subject, Text, SenderText, CreatedAt, DeletesAt, SentAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_email (SenderPersonId, LarpId, `From`, `To`, ToName, Greeting, CC, Subject, Text, SenderText, CreatedAt, DeletesAt, SentAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->SenderUserId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->Greeting, $this->CC, $this->Subject, $this->Text, $this->SenderText, date_format(new Datetime(),"Y-m-d H:i:s"), $this->DeletesAt, $this->SentAt))) {
+        if (!$stmt->execute(array($this->SenderPersonId, $this->LarpId, $this->From, $this->To, $this->ToName, $this->Greeting, $this->CC, $this->Subject, $this->Text, $this->SenderText, date_format(new Datetime(),"Y-m-d H:i:s"), $this->DeletesAt, $this->SentAt))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -353,7 +353,7 @@ class Email extends BaseModel{
     
 
     public function sendNow() { 
-        global $current_user;
+        global $current_person;
         
         if (empty($this->To)) {
             $this->SentAt = $this->CreatedAt;
@@ -377,8 +377,8 @@ class Email extends BaseModel{
         //Om test, skicka bara till inloggad användare
         if (Dbh::isLocal()) {
             # Fixa så inga mail går iväg om man utvecklar
-            if (isset($current_user)) {
-                $mailer->addAddress($current_user->Email, $current_user->Name);
+            if (isset($current_person)) {
+                $mailer->addAddress($current_person->Email, $current_person->Name);
             } else {
                 $mailer->addAddress("karin@tellen.se", "Karin Rappe");
             }

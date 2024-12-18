@@ -100,9 +100,9 @@ th {
     
         	foreach (array_reverse($emails) as $email) {
         	    $sendUserName = "";
-        	    if (isset($email->SenderUserId)) {
-        	       $user = User::loadById($email->SenderUserId);
-        	       $sendUserName = $user->Name;
+        	    if (isset($email->SenderPersonId)) {
+        	        $person = Person::loadById($email->SenderPersonId);
+        	        $senderName = $person->Name;
         	    }
         	    
         	    echo "<tr>";
@@ -123,7 +123,7 @@ th {
         	    echo "<td>";
         	    if (!empty($attachements)) echo "<i class='fa-solid fa-paperclip'></i>";
                 echo "</td>";
-        	    echo "<td>$sendUserName</td>";
+        	    echo "<td>$senderName</td>";
         	    echo "<td>$email->SentAt</td>";
         	    if ($_SESSION['navigation'] != Navigation::PARTICIPANT) {
             	    echo "<td>";

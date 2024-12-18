@@ -20,7 +20,7 @@ if ($current_larp->Id != $email->LarpId && !is_null($email->LarpId)) {
     exit;
 }
 
-$user = User::loadById($email->SenderUserId);
+$person = Person::loadById($email->SenderPersonId);
 
 include 'navigation.php';
 ?>
@@ -39,8 +39,8 @@ include 'navigation.php';
     		}
     		?>
     		<?php 
-    		if (isset($user)) {
-			 echo "<tr><td>Skickat av</td><td>$user->Name</td></tr>";
+    		if (isset($person)) {
+			 echo "<tr><td>Skickat av</td><td>$person->Name</td></tr>";
 			} else {
 			    echo "<tr><td>Skickat av</td><td>Systemet</td></tr>";
 			}
