@@ -46,6 +46,13 @@ function openTab(evt, tabName) {
 
 </script>
 
+	  <?php if (isset($error_message) && strlen($error_message)>0) {
+	      echo '<div class="error">'.$error_message.'</div>';
+	  }
+	  if (isset($message_message) && strlen($message_message)>0) {
+	      echo '<div class="message">'.$message_message.'</div>';
+	  }
+	  ?>
 
 	<div class='itemselector'>
 		<div class="header">

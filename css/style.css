@@ -206,6 +206,7 @@ table.helpBox td {
     font-weight: bold;
 	background-color: #f2f2f2;
 	padding: 2px 2px 2px 2px;
+	margin-top: 4px;
 	color: red;
 	text-align: center;
 
@@ -216,6 +217,7 @@ table.helpBox td {
     font-weight: bold;
 	background-color: #f2f2f2;
 	padding: 2px 2px 2px 2px;
+	margin-top: 4px;
 	color: green;
 	text-align: center;
 }
