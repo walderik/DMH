@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($operation == 'new') {
     } elseif ($operation == 'update') {
         $rumour = Rumour::loadById($_GET['id']);
-        if ($rumour->UserId != $current_user->Id) {
+        if ($rumour->PersonId != $current_person->Id) {
             header('Location: index.php'); //Inte ditt rykte
             exit;
         } elseif ($rumour->isApproved()) {

@@ -905,6 +905,12 @@ class Person extends BaseModel{
         return Letter::allBySelectedPersonIdAndLARP($this->Id, $larp);
     }
     
+    public function getRumoursAtLarp($larp) {
+        return Rumour::allBySelectedPersonIdAndLARP($this->Id, $larp);
+    }
+    
+    
+    
     
     
 }

@@ -10,19 +10,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $rumour = Rumour::newFromArray($_POST);
         $rumour->Approved = 0;
-        $rumour->UserId = $current_user->Id;
+        $rumour->PersonId = $current_person->Id;
         $rumour->create();
         
     } elseif ($operation == 'update') {
         $rumour=Rumour::loadById($_POST['Id']);
-        if ($rumour->UserId != $current_user->Id) {
+        if ($rumour->PersonId != $current_person->Id) {
             header('Location: index.php'); //Inte ditt brev
             exit;
         }
         
         $rumour->setValuesByArray($_POST);
         $rumour->Approved = 0;
-        $rumour->UserId = $current_user->Id;
+        $rumour->PersonId = $current_person->Id;
         $rumour->update();
     }
 }

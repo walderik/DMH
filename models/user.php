@@ -114,11 +114,6 @@ class User extends BaseModel{
         return $unregistered_persons;
     }
     
-    public function getRumoursAtLarp($larp) {
-        return Rumour::allBySelectedUserIdAndLARP($this->Id, $larp);
-    }
-    
-    
     public function isActivated() {
         if ($this->ActivationCode == 'activated') return true;
         return false;

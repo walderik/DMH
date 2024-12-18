@@ -762,7 +762,7 @@ function openTab(evt, tabName) {
         echo "</div>";
         echo "<div class='itemcontainer'>";
 
-        $rumour_array = $current_user->getRumoursAtLarp($current_larp);
+        $rumour_array = $current_person->getRumoursAtLarp($current_larp);
         $antal = (isset($rumour_array)) ? count($rumour_array) : 0;
         if($antal > 0) {
             echo "<details><summary>Du har spridit $antal rykten</summary> ";

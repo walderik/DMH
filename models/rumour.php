@@ -7,7 +7,7 @@ class Rumour extends BaseModel{
     public  $Notes = ""; 
     public  $Approved = 0;
     public  $LARPid;
-    public  $UserId;
+    public  $PersonId;
     public  $IntrigueId;
     
     public static $orderListBy = 'Id';
@@ -23,7 +23,7 @@ class Rumour extends BaseModel{
         if (isset($arr['Notes'])) $this->Notes = $arr['Notes'];
         if (isset($arr['Approved'])) $this->Approved = $arr['Approved'];
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
-        if (isset($arr['UserId'])) $this->UserId = $arr['UserId'];
+        if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
         if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
         if (isset($arr['IntrigueId'])) $this->IntrigueId = $arr['IntrigueId'];
         
@@ -34,11 +34,11 @@ class Rumour extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_larp, $current_user;
+        global $current_larp, $current_person;
         
         $rumour = new self();
         $rumour->LARPid = $current_larp->Id;
-        $rumour->UserId = $current_user->Id;
+        $rumour->PersonId = $current_person->Id;
         return $rumour;
     }
     
@@ -49,10 +49,10 @@ class Rumour extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
-    public static function allBySelectedUserIdAndLARP($user_id, Larp $larp) {
+    public static function allBySelectedPersonIdAndLARP($person_id, Larp $larp) {
         if (is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_rumour WHERE LARPid = ? and UserId = ? ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $user_id));
+        $sql = "SELECT * FROM regsys_rumour WHERE LARPid = ? and PersonId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $person_id));
     }
     
     public static function getAllToApprove(Larp $larp) {
@@ -129,9 +129,9 @@ class Rumour extends BaseModel{
     # Create a new rumour in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_rumour (Text, Notes, Approved, UserId, LARPid, IntrigueId) VALUES (?,?,?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_rumour (Text, Notes, Approved, PersonId, LARPid, IntrigueId) VALUES (?,?,?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->Text, $this->Notes, $this->Approved, $this->UserId, $this->LARPid,$this->IntrigueId))) {
+        if (!$stmt->execute(array($this->Text, $this->Notes, $this->Approved, $this->PersonId, $this->LARPid,$this->IntrigueId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -144,8 +144,8 @@ class Rumour extends BaseModel{
         return $this->Approved == 1;
     }
     
-    public function getUser() {
-        return User::loadById($this->UserId);
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
     }
     
     public function getIntrigue() {

@@ -89,12 +89,12 @@ include 'navigation.php';
                 }
                 echo "<td>" . "<a href='rumour_form.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></td>\n";
                 echo "<td>";
-                $user = $rumour->getUser();
-                if ($user->isComing($current_larp)) {
-                    echo $user->Name;
+                $person = $rumour->getPerson();
+                if ($person->isComing($current_larp)) {
+                    echo $person->Name;
                 }
                 else {
-                    echo "<s>$user->Name</s>";
+                    echo "<s>$person->Name</s>";
                 }
                 echo "</td>\n";
                 echo "<td>";
