@@ -21,7 +21,7 @@ class Group extends BaseModel{
     public $OrganizerNotes;
     public $ImageId;
     public $IsApproved = 0;
-    public $ApprovedByUserId;
+    public $ApprovedByPersonId;
     public $ApprovedDate;
     
 //     public static $tableName = 'group';
@@ -53,7 +53,7 @@ class Group extends BaseModel{
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
-        if (isset($arr['ApprovedByUserId'])) $this->ApprovedByUserId = $arr['ApprovedByUserId'];
+        if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
         
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
@@ -75,12 +75,12 @@ class Group extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_group SET Name=?, Friends=?, Enemies=?,
                     Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?, WealthId=?, PlaceOfResidenceId=?, 
                     GroupTypeId=?, ShipTypeId=?, Colour=?, PersonId=?, 
-                    CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, IsApproved=?, ApprovedByUserId=?, ApprovedDate=? WHERE Id = ?");
+                    CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, IsApproved=?, ApprovedByPersonId=?, ApprovedDate=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
             $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, 
             $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->PersonId, 
-            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->ApprovedByUserId, $this->ApprovedDate, $this->Id))) {
+            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -95,13 +95,13 @@ class Group extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_group (Name,  
                          Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
                          WealthId, PlaceOfResidenceId, GroupTypeId, ShipTypeId, Colour, PersonId, CampaignId, 
-                         IsDead, OrganizerNotes, ImageId, IsApproved, ApprovedByUserId, ApprovedDate) 
+                         IsDead, OrganizerNotes, ImageId, IsApproved, ApprovedByPersonId, ApprovedDate) 
                          VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
             $this->PlaceOfResidenceId, $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->PersonId, $this->CampaignId, 
-            $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->ApprovedByUserId, $this->ApprovedDate))) {
+            $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -462,12 +462,12 @@ class Group extends BaseModel{
          return false;
      }
      
-     public function approve($larp, $user) {
+     public function approve($larp, $person) {
          $oldCopy = $this->getOldApprovedGroup();
          if (isset($oldCopy)) GroupApprovedCopy::delete($oldCopy->Id);
          
          $this->IsApproved = 1;
-         $this->ApprovedByUserId = $user->Id;
+         $this->ApprovedByPersonId = $person->Id;
          $now = new Datetime();
          $this->ApprovedDate = date_format($now,"Y-m-d H:i:s");
          $this->update();
@@ -477,7 +477,7 @@ class Group extends BaseModel{
      
      public function unapprove($larp, $sendMail) {
          $this->IsApproved = 0;
-         $this->ApprovedByUserId = null;
+         $this->ApprovedByPersonId = null;
          $this->ApprovedDate = null;
          $this->update();
          

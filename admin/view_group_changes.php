@@ -63,9 +63,9 @@ del {
 		<?php 
 		if ($group->isApproved()) {
 		  echo "<strong>Godkänd</strong>";
-		  if (!empty($group->ApprovedByUserId) && !empty($group->ApprovedDate)) {
-		      $approvedUser = User::loadById($group->ApprovedByUserId);
-		      echo " av $approvedUser->Name, ".substr($group->ApprovedDate,0, 10); 
+		  if (!empty($group->ApprovedByPersonId) && !empty($group->ApprovedDate)) {
+		      $approver = Person::loadById($group->ApprovedByPersonId);
+		      echo " av $approver->Name, ".substr($group->ApprovedDate,0, 10); 
 		  }
 		  $editButton = "Ta bort godkännandet";
 		}
@@ -75,9 +75,9 @@ del {
 		}		
 		?>
         <form action="logic/toggle_approve_role.php" method="post"><input type="hidden" id="groupId" name="groupId" value="<?php echo $group->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
-	  	<?php if (!empty($oldGroupCopy->ApprovedByUserId) && !empty($oldGroupCopy->ApprovedDate)) {
-		      $approvedUser = User::loadById($oldGroupCopy->ApprovedByUserId);
-		      echo "Tidigare godkänd av $approvedUser->Name, ".substr($oldGroupCopy->ApprovedDate,0, 10); 
+	  	<?php if (!empty($oldGroupCopy->ApprovedByPersonId) && !empty($oldGroupCopy->ApprovedDate)) {
+	  	    $approver = Person::loadById($oldGroupCopy->ApprovedByPersonId);
+		      echo "Tidigare godkänd av $approver->Name, ".substr($oldGroupCopy->ApprovedDate,0, 10); 
 		  }
 	  ?>
 		

@@ -92,9 +92,9 @@ include 'navigation.php';
 		<?php 
 		if ($group->isApproved()) {
 		  echo "<strong>Godkänd</strong>";
-		  if (!empty($group->ApprovedByUserId) && !empty($group->ApprovedDate)) {
-		      $approvedUser = User::loadById($group->ApprovedByUserId);
-		      echo " av $approvedUser->Name, ".substr($group->ApprovedDate,0, 10); 
+		  if (!empty($group->ApprovedByPersonId) && !empty($group->ApprovedDate)) {
+		      $approver = Person::loadById($group->ApprovedByPersonId);
+		      echo " av $approver->Name, ".substr($group->ApprovedDate,0, 10); 
 		  }
 		  $editButton = "Ta bort godkännandet";
 		}

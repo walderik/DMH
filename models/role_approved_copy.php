@@ -38,7 +38,7 @@ class RoleApprovedCopy extends BaseModel {
     public $RaceComment;
     public $AbilityComment;
     public $IsApproved = 0;
-    public $ApprovedByUserId;
+    public $ApprovedByPersonId;
     public $ApprovedDate;
     
     
@@ -88,7 +88,7 @@ class RoleApprovedCopy extends BaseModel {
         if (isset($arr['RaceComment'])) $this->RaceComment = $arr['RaceComment'];
         if (isset($arr['AbilityComment'])) $this->AbilityComment = $arr['AbilityComment'];
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
-        if (isset($arr['ApprovedByUserId'])) $this->ApprovedByUserId = $arr['ApprovedByUserId'];
+        if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
         
         if (isset($this->LarperTypeId) && $this->LarperTypeId=='null') $this->LarperTypeId = null;
@@ -116,7 +116,7 @@ class RoleApprovedCopy extends BaseModel {
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId, 
                                                             RoleFunctionComment, Birthplace, CharactersWithRelations,
-                                    NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, ApprovedByUserId, ApprovedDate)
+                                    NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, ApprovedByPersonId, ApprovedDate)
                                     VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->RoleId, $this->Name, $this->Profession, $this->Description,
@@ -126,7 +126,7 @@ class RoleApprovedCopy extends BaseModel {
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations,
             $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
-            $this->RaceComment, $this->AbilityComment, $this->ApprovedByUserId, $this->ApprovedDate
+            $this->RaceComment, $this->AbilityComment, $this->ApprovedByPersonId, $this->ApprovedDate
         ))) {
             $this->connect()->rollBack();
             $stmt = null;

@@ -47,9 +47,9 @@ include 'navigation.php';
 		<?php 
 		if ($role->isApproved()) {
 		  echo "<strong>Godkänd</strong>";
-		  if (!empty($role->ApprovedByUserId) && !empty($role->ApprovedDate)) {
-		      $approvedUser = User::loadById($role->ApprovedByUserId);
-		      echo " av $approvedUser->Name, ".substr($role->ApprovedDate,0, 10); 
+		  if (!empty($role->ApprovedByPersonId) && !empty($role->ApprovedDate)) {
+		      $approver = Person::loadById($role->ApprovedByPersonId);
+		      echo " av $approver->Name, ".substr($role->ApprovedDate,0, 10); 
 		  }
 		  $editButton = "Ta bort godkännandet";
 		}

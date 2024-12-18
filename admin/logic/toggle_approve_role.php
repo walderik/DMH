@@ -10,14 +10,12 @@ if (isset($_POST['roleId'])) {
     $role = Role::loadById($_POST['roleId']);
 
     if ($role->isApproved()) $role->unapprove($current_larp, true);
-    else $role->approve($current_larp, $current_user);
-    $location = $role->getViewLink();
+    else $role->approve($current_larp, $current_person);
 } elseif (isset($_POST['groupId'])) {
     $group = Group::loadById($_POST['groupId']);
     
     if ($group->isApproved()) $group->unapprove($current_larp, true);
-    else $group->approve($current_larp, $current_user);
-    $location = $group->getViewLink();
+    else $group->approve($current_larp, $current_person);
 }
 
 header('Location: ../approval.php');

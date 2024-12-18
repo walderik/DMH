@@ -37,7 +37,7 @@ class Role extends BaseModel{
     public $RaceComment;
     public $AbilityComment;
     public $IsApproved = 0;
-    public $ApprovedByUserId;
+    public $ApprovedByPersonId;
     public $ApprovedDate;
     
 
@@ -86,7 +86,7 @@ class Role extends BaseModel{
         if (isset($arr['RaceComment'])) $this->RaceComment = $arr['RaceComment'];
         if (isset($arr['AbilityComment'])) $this->AbilityComment = $arr['AbilityComment'];
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
-        if (isset($arr['ApprovedByUserId'])) $this->ApprovedByUserId = $arr['ApprovedByUserId'];
+        if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
         
         if (isset($this->LarperTypeId) && $this->LarperTypeId=='null') $this->LarperTypeId = null;
@@ -116,7 +116,7 @@ class Role extends BaseModel{
                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, RoleFunctionComment=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
-                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=?, ApprovedByUserId=?, ApprovedDate=? WHERE Id = ?;");
+                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=?, ApprovedByPersonId=?, ApprovedDate=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
@@ -125,7 +125,7 @@ class Role extends BaseModel{
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,  
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
             $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
-            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByUserId, $this->ApprovedDate, $this->Id))) {
+            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -142,7 +142,7 @@ class Role extends BaseModel{
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId,  
                                                             RoleFunctionComment, Birthplace, CharactersWithRelations, CampaignId, ImageId, 
-                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, IsApproved, ApprovedByUserId, ApprovedDate) 
+                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, IsApproved, ApprovedByPersonId, ApprovedDate) 
                                     VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
@@ -152,7 +152,7 @@ class Role extends BaseModel{
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
             $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
-            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByUserId, $this->ApprovedDate
+            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate
         ))) {
                 $this->connect()->rollBack();
                 $stmt = null;
@@ -880,12 +880,12 @@ class Role extends BaseModel{
         }
     }
     
-    public function approve($larp, $user) {
+    public function approve($larp, $person) {
         $oldCopy = $this->getOldApprovedRole();
         if (isset($oldCopy)) RoleApprovedCopy::delete($oldCopy->Id);
         
         $this->IsApproved = 1;
-        $this->ApprovedByUserId = $user->Id;
+        $this->ApprovedByPersonId = $person->Id;
         $now = new Datetime();
         $this->ApprovedDate = date_format($now,"Y-m-d H:i:s");
         $this->update();
@@ -895,7 +895,7 @@ class Role extends BaseModel{
     
     public function unapprove($larp, $sendMail) {
         $this->IsApproved = 0;
-        $this->ApprovedByUserId = null;
+        $this->ApprovedByPersonId = null;
         $this->ApprovedDate = null;
         $this->update();
         

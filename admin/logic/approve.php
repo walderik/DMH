@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $groupId = $_POST['GroupId'];
         $group = Group::loadById($groupId);
         if (isset($group)) {
-            $group->approve($current_larp, $current_user);
+            $group->approve($current_larp, $current_person);
             header('Location: ../approval.php');
             exit;
         }
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $roleId = $_POST['RoleId'];
         $role = Role::loadById($roleId);
         if (isset($role)) {
-            $role->approve($current_larp, $current_user);
+            $role->approve($current_larp, $current_person);
             header('Location: ../approval.php');
             exit;
             

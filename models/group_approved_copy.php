@@ -16,7 +16,7 @@ class GroupApprovedCopy extends BaseModel{
     public $GroupTypeId;
     public $ShipTypeId;
     public $Colour;
-    public $ApprovedByUserId;
+    public $ApprovedByPersonId;
     public $ApprovedDate;
     
 //     public static $tableName = 'group';
@@ -43,7 +43,7 @@ class GroupApprovedCopy extends BaseModel{
         if (isset($arr['GroupTypeId'])) $this->GroupTypeId = $arr['GroupTypeId'];
         if (isset($arr['ShipTypeId'])) $this->ShipTypeId = $arr['ShipTypeId'];
         if (isset($arr['Colour'])) $this->Colour = $arr['Colour'];
-        if (isset($arr['ApprovedByUserId'])) $this->ApprovedByUserId = $arr['ApprovedByUserId'];
+        if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
         
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
@@ -63,12 +63,12 @@ class GroupApprovedCopy extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_groupapprovedcopy (GroupId, Name,  
                          Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
-                         WealthId, PlaceOfResidenceId, GroupTypeId, ShipTypeId, Colour, ApprovedByUserId, ApprovedDate) 
+                         WealthId, PlaceOfResidenceId, GroupTypeId, ShipTypeId, Colour, ApprovedByPersonId, ApprovedDate) 
                          VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->GroupId, $this->Name,  
             $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
-            $this->PlaceOfResidenceId, $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->ApprovedByUserId, $this->ApprovedDate))) {
+            $this->PlaceOfResidenceId, $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->ApprovedByPersonId, $this->ApprovedDate))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
