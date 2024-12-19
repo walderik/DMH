@@ -16,7 +16,7 @@
 	      	<a href="../board/economy_overview.php">Ekonomisk översikt</a>
 	      	<a href="../board/permissions.php">Behörigheter</a>
 	      	<a href="../board/classic.php">Berghemsklassikern</a>
-		    <a href="../board/ssn_check.php">Medlemskontroll</a> 
+		    <a href="../board/membership.php">Medlemsskap</a> 
 	    </div>
 	  </div> 
 

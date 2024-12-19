@@ -923,8 +923,28 @@ class Person extends BaseModel{
         return Rumour::allBySelectedPersonIdAndLARP($this->Id, $larp);
     }
     
+    public static function allManualMemberships() {
+        $current_year = date("Y");
+        $sql = "SELECT * FROM regsys_person WHERE MembershipCheckedAt = '".$current_year."-01-01 00:00:00' ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array());
+    }
     
-    
+    public function setManualMembership() {
+        if ($this->isMember()) return;
+        $current_year = date("Y");
+        $this->IsMember = true;
+        $this->MembershipCheckedAt = $current_year."-01-01 00:00:00";
+        $this->update();
+    }
+ 
+    public function removeManualMembership() {
+        $current_year = date("Y");
+        if ($this->MembershipCheckedAt == $current_year."-01-01 00:00:00") {
+            $this->IsMember = false;
+            $this->MembershipCheckedAt = NULL;
+            $this->update();
+        }
+    }
     
     
 }
