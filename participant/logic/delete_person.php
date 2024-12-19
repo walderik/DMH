@@ -1,6 +1,6 @@
 <?php
 
-global $root, $current_user;
+global $root, $current_person;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
@@ -22,7 +22,7 @@ if (!isset($person)) {
 }
 
 
-if ($person->UserId != $current_user->Id) {
+if ($person->Id != $current_person->Id) {
     header('Location: ../index.php'); //Inte din person
     exit;
 }

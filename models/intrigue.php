@@ -203,7 +203,7 @@ class Intrigue extends BaseModel{
                     $newLetter->Font = $oldLetter->Font;
                     $newLetter->EndingPhrase = $oldLetter->EndingPhrase;
                     $newLetter->OrganizerNotes = $oldLetter->OrganizerNotes;
-                    $newLetter->UserId = $oldLetter->UserId;
+                    $newLetter->PersonId = $oldLetter->PersonId;
                     $newLetter->Approved = $oldLetter->Approved;
                     $newLetter->create();
                     
@@ -250,7 +250,7 @@ class Intrigue extends BaseModel{
                     $newRumour->LARPid = $newIntrigue->LarpId;
                     $newRumour->Text = $rumour->Text;
                     $newRumour->Notes = $rumour->Notes;
-                    $newRumour->UserId = $rumour->UserId;
+                    $newRumour->PersonId = $rumour->PersonId;
                     $newRumour->Approved = $rumour->Approved;
                     $newRumour->create();
                 }

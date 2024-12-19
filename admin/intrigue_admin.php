@@ -38,7 +38,7 @@ include 'navigation.php';
                 $show = true;
                 $responsiblePerson = $intrigue->getResponsiblePerson();
                 
-                if (($current_user->Id != $responsiblePerson->UserId || !$intrigue->isActive()) && !$intrigue->isMainIntrigue()) {
+                if (($current_person->Id != $responsiblePerson->Id || !$intrigue->isActive()) && !$intrigue->isMainIntrigue()) {
                     $show = false;
                 }
                 if ($show) echo "<tr>\n";

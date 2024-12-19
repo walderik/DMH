@@ -50,11 +50,11 @@ class Bookkeeping extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_larp, $current_user;
+        global $current_larp, $current_person;
         $obj = new self();
         $obj->CreationDate = date("Y-m-d");
         $obj->LarpId = $current_larp->Id;
-        $obj->UserId=$current_user->Id;
+        $obj->PersonId=$current_person->Id;
         return $obj;
     }
     
