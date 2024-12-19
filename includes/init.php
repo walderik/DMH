@@ -31,7 +31,11 @@ $current_user->Password = null;
 $url = $_SERVER['REQUEST_URI'];
 
 //Man måste välja person först
-if (!isset($current_person) && strpos($url, "participant/index.php") == false) {
+if (!isset($current_person) && 
+    strpos($url, "participant/logic/select_person.php") == false &&
+    strpos($url, "participant/person_form.php") == false &&
+    strpos($url, "participant/logic/person_form_save.php") == false &&
+    strpos($url, "participant/index.php") == false) {
     header('Location: '. $home_url .'/participant/index.php');
     exit;
 }
