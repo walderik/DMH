@@ -17,6 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
 
     $_SESSION['id'] = $user->Id;
+    unset($_SESSION['PersonId']);
+    unset($_SESSION['larp']);
 
     header('Location: ../../participant/index.php');
     exit;
