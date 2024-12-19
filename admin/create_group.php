@@ -5,7 +5,8 @@ include_once 'header.php';
 
 $group = Group::newWithDefault();
 $larp_group = LARP_Group::newWithDefault();
-$persons_in_group = Person::getPersonsForUser($current_user->Id);
+$persons_in_group = array();
+$persons_in_group[] = $current_person;
     
 
 
