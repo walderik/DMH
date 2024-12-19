@@ -162,6 +162,8 @@ class Intrigue_Pdf extends BaseModel{
         if ($count > 0) return true;
         
         
+        //TODO kolla dynamiska medlemmar i grupperingar
+        
         return false;
     }
 }
