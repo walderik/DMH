@@ -139,10 +139,4 @@ class User extends BaseModel{
     }
     
     
-    public function getOrganizer(Larp $larp) {
-        $organizers = Person::getAllWithAccessToLarp($larp);
-        foreach ($organizers as $organizer)  if ($organizer->UserId == $this->Id) return $organizer;
-        return null;
-    }
-    
  }

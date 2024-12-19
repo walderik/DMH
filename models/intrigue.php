@@ -122,7 +122,7 @@ class Intrigue extends BaseModel{
 
     }
     
-    public static function continueIntrigues($intrigueIds, LARP $larp, User $user) {
+    public static function continueIntrigues($intrigueIds, LARP $larp, Person $person) {
         foreach($intrigueIds as $intrigueId) {
             $previousIntrigue = Intrigue::loadById($intrigueId);
             $newIntrigue = Intrigue::newWithDefault();
@@ -133,7 +133,7 @@ class Intrigue extends BaseModel{
             $newIntrigue->CommonText = $previousIntrigue->CommonText;
             $newIntrigue->Notes = $previousIntrigue->Notes;
             $newIntrigue->LarpId = $larp->Id;
-            $newIntrigue->ResponsiblePersonId = $user->getOrganizer($larp)->Id;
+            $newIntrigue->ResponsiblePersonId = $person->Id;
             $newIntrigue->PreviousInstanceId = $previousIntrigue->Id;
             $newIntrigue->create();
             

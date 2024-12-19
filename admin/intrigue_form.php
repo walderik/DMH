@@ -106,8 +106,7 @@ include 'navigation.php';
 			<td><?php 
 			
 			if (empty($intrigue->ResponsiblePersonId)) {
-			    $current_user_organizer = $current_user->getOrganizer($current_larp);
-			    if (isset($current_user_organizer)) $intrigue->ResponsiblePersonId = $current_user_organizer->Id;
+			    $intrigue->ResponsiblePersonId = $current_person->Id;
 			}
 		     $organizers = Person::getAllWithAccessToLarp($current_larp);
 		     selectionDropDownByArray('ResponsiblePersonId', $organizers, true, $intrigue->ResponsiblePersonId) ?></td>

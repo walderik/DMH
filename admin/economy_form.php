@@ -117,8 +117,7 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 			<td><label for="PersonId">Ansvarig</label></td>
 			<td><?php 
     			if (empty($bookkeeping->PersonId)) {
-    			    $current_user_organizer = $current_user->getOrganizer($current_larp);
-    			    if (isset($current_user_organizer)) $bookkeeping->PersonId = $current_user_organizer->Id;
+    			    $bookkeeping->PersonId = $current_person->Id;
     			}
 			
 			     $organizers = Person::getAllWithAccessToLarp($current_larp);
