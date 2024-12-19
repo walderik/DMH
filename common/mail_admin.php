@@ -99,7 +99,7 @@ th {
         	
     
         	foreach (array_reverse($emails) as $email) {
-        	    $senderName = "";
+        	    $senderName = "Omnes Mundi";
         	    if (isset($email->SenderPersonId)) {
         	        $person = Person::loadById($email->SenderPersonId);
         	        $senderName = $person->Name;

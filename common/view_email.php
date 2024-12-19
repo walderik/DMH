@@ -84,7 +84,7 @@ include $navigation;
     		if (isset($person)) {
 			 echo "$person->Name";
 			} else {
-			    echo "Systemet";
+			    echo "Omnes Mundi";
 			}
 			?>
 		</div>
