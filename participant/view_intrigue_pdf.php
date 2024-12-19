@@ -29,7 +29,7 @@ if ($pdf->getIntrigue()->LarpId != $current_larp->Id) {
     exit;
 }
 
-if (!$pdf->mayView($current_user)) {
+if (!$pdf->mayView($current_person)) {
     header('Location: index.php');
     exit;
 }

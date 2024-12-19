@@ -125,32 +125,43 @@ class Intrigue_Pdf extends BaseModel{
     }
     
     
-    public function mayView(User $user) {
+    public function mayView(Person $person) {
         
-        //Kontrollera om användaren har en roll som får se 
+        //Kontrollera om personen har en roll som får se 
         $sql = "SELECT Count(regsys_intrigueactor_knownpdf.IntriguePdfId) as Num FROM ".
-            "regsys_person, regsys_role, regsys_intrigueactor, regsys_intrigueactor_knownpdf WHERE ".
-            "regsys_person.UserId = ? AND ".
-            "regsys_person.Id = regsys_role.PersonId AND ".
+            "regsys_role, regsys_intrigueactor, regsys_intrigueactor_knownpdf WHERE ".
+            "regsys_role.PersonId = ? AND ".
             "regsys_role.Id = regsys_intrigueactor.RoleId AND ".
             "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
             "regsys_intrigueactor_knownpdf.IntriguePdfId = ?;";
 
-        $count = static::countQuery($sql, array($user->Id, $this->Id));
+        $count = static::countQuery($sql, array($person->Id, $this->Id));
         if ($count > 0) return true;
         
-        //Kontrollera om användaren har en roll i en grupp som får se
+        //Kontrollera om personen har en roll i en grupp som får se
         $sql = "SELECT Count(regsys_intrigueactor_knownpdf.IntriguePdfId) as Num FROM ".
-            "regsys_person, regsys_role, regsys_intrigueactor, regsys_intrigueactor_knownpdf WHERE ".
-            "regsys_person.UserId = ? AND ".
-            "regsys_person.Id = regsys_role.PersonId AND ".
+            "regsys_role, regsys_intrigueactor, regsys_intrigueactor_knownpdf WHERE ".
+            "regsys_role.PersonId = ? AND ".
             "regsys_role.GroupId = regsys_intrigueactor.GroupId AND ".
             "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
             "regsys_intrigueactor_knownpdf.IntriguePdfId = ?;";
         
-        $count = static::countQuery($sql, array($user->Id, $this->Id));
+        $count = static::countQuery($sql, array($person->Id, $this->Id));
         if ($count > 0) return true;
 
+        //Kontrollera om personen har en roll i en gruppering som får se
+        $sql = "SELECT Count(regsys_intrigueactor_knownpdf.IntriguePdfId) as Num FROM ".
+            "regsys_role, regsys_subdivisionmember, regsys_intrigueactor, regsys_intrigueactor_knownpdf WHERE ".
+            "regsys_role.PersonId = ? AND ".
+            "regsys_subdivisionmember.RoleId = regsys_role.Id AND ".
+            "regsys_subdivisionmember.SubdivisionId = regsys_intrigueactor.SubdivisionId AND ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownpdf.IntriguePdfId = ?;";
+        
+        $count = static::countQuery($sql, array($person->Id, $this->Id));
+        if ($count > 0) return true;
+        
+        
         return false;
     }
 }
