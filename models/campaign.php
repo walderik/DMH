@@ -173,9 +173,9 @@ class Campaign extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($person->Id));
     }
     
-    public function isMainOrganizer(User $user) {
+    public function isMainOrganizer(Person $person) {
         $mainOrganizer = $this->getMainOrganizer();
-        if (isset($mainOrganizer) && ($user->Id == $mainOrganizer->UserId)) return true;
+        if (isset($mainOrganizer) && ($person->Id == $mainOrganizer->Id)) return true;
         return false;
     }
     

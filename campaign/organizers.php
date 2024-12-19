@@ -3,7 +3,7 @@
 include_once 'header.php';
 
 $campaign = $current_larp->getCampaign();
-$isMainOrganizer = $campaign->isMainOrganizer($current_user);
+$isMainOrganizer = $campaign->isMainOrganizer($current_person);
 $choosen_year = date("Y");
 
 
@@ -61,7 +61,7 @@ if (isset($message_message) && strlen($message_message)>0) {
 	     foreach ($organizers as $organizer) {
 	         echo $organizer->Name;
 	         echo " ".contactEmailIcon($organizer, BerghemMailer::CAMPAIGN);
-	         if ($isMainOrganizer && ($organizer->UserId != $current_user->Id)) {
+	         if ($isMainOrganizer && ($organizer->Id != $current_person->Id)) {
 	             echo "<form method='post' style='display:inline-block'>";
 	             echo "<input type='hidden' name='operation' value='remove_campaign_organizer'>\n";
 	             echo "<input type='hidden' name='person_id' value='$organizer->Id'>\n";
