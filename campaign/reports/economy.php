@@ -1,7 +1,7 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-global $root, $current_user, $current_larp;
+global $root, $current_person, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require_once $root . '/pdf/report_tcpdf_pdf.php';
@@ -24,7 +24,7 @@ $name = "Redovisning av $campaign->Name för $year";
 
 $pdf = new Report_TCP_PDF();
 
-$pdf->init($current_user->Name, $name, $campaign->Name, false);
+$pdf->init($current_person->Name, $name, $campaign->Name, false);
 
 $bookkeepings = Bookkeeping::allFinishedCampaign($campaign, $year);
 

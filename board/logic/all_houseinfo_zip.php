@@ -1,5 +1,5 @@
 <?php
-global $root, $current_user, $current_larp;
+global $root;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 

@@ -42,7 +42,7 @@ class Vision extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_larp, $current_user;
+        global $current_larp;
         
         $object = new self();
         $object->LARPid = $current_larp->Id;

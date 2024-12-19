@@ -471,6 +471,20 @@ class Person extends BaseModel{
     public function getUnregisteredRolesAtLarp($larp) {
         return Role::getUnregistredRolesForPerson($this, $larp);
     }
+    
+    public function getUnregisteredAliveGroups(LARP $larp) {
+        $unregistered_groups = Array();
+        $groups = Group::getGroupsForPerson($this->Id, $larp->CampaignId);
+        foreach ($groups as $group) {
+            if (!$group->isRegistered($larp) && $group->IsDead==0) {
+                array_push($unregistered_groups,$group);
+            }
+        }
+        return $unregistered_groups;
+    }
+    
+    
+    
 
     public function getReserveRolesAtLarp($larp) {
         return Role::getReserveRegistredRolesForPerson($this, $larp);
