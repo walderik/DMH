@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $larp_role->create();   
 
     
-    BerghemMailer::send_added_role_mail($role, $current_larp);
+    BerghemMailer::send_added_role_mail($role, $current_larp, $current_person->Id);
         
     header('Location: ../not_registered_roles.php');
     exit;

@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
 
-        if ($oldAmount != $registration->AmountToPay) BerghemMailer::send_updatedpayment_mail($registration);
+        if ($oldAmount != $registration->AmountToPay) BerghemMailer::send_updatedpayment_mail($registration, $current_person->Id);
         
         if (isset($_POST['Referer']) && $_POST['Referer']!="") {
             header('Location: ' . $_POST['Referer']);

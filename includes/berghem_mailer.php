@@ -31,35 +31,27 @@ class BerghemMailer {
     # Normalt bör man inte anropa den här direkt utan newWithDefault
     # Attachments skall vara en array med namnen på filerna som nyckel.
     # to_email kan vara en sträng med en epostadress eller en array av sådana strängar
-    public static function send($larp, $toPersonIds, string $greeting, string $text, string $subject, string $senderText, int $noOfDaysKept, ?array $attachments=[], ?string $cc="") {
+    public static function send($larp, $senderId, $toPersonIds, string $greeting, string $text, string $subject, string $senderText, int $noOfDaysKept, ?array $attachments=[], ?string $cc="") {
         if (is_array($toPersonIds)) {
             foreach ($toPersonIds as $toPersonId) {
-                Email::normalCreate($toPersonId, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+                Email::normalCreate($toPersonId, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
             }
-            # Om man skickar in en array av epostadresser skapar vi ett mail per 15 adresser.
-            //foreach( array_chunk($toPersonIds,15) as $personIds_to) {
-            //    Email::normalCreate($personIds_to, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
-            //}
             return true;
         }
 
-        Email::normalCreate($toPersonIds, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+        Email::normalCreate($toPersonIds, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
 
         return true;   
     }
  
-    public static function sendSimpleEmail($larp, $toEmails, $name, string $greeting, string $text, string $subject, string $senderText, int $noOfDaysKept, ?array $attachments=[], ?string $cc="") {
+    public static function sendSimpleEmail($larp, $senderId, $toEmails, $name, string $greeting, string $text, string $subject, string $senderText, int $noOfDaysKept, ?array $attachments=[], ?string $cc="") {
         if (is_array($toEmails)) {
             foreach ($toEmails as $toEmail) {
-                Email::normalCreateSimple($toEmail, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+                Email::normalCreateSimple($toEmail, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
             }
-            # Om man skickar in en array av epostadresser skapar vi ett mail per 15 adresser.
-            //foreach( array_chunk($toEmails,15) as $emails_to) {
-            //    Email::normalCreateSimple($emails_to, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
-            //}
             return true;
         }
-        Email::normalCreateSimple($toEmails, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp);
+        Email::normalCreateSimple($toEmails, $name, $greeting, $subject, $text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
         
         return true;
     }
@@ -72,11 +64,11 @@ class BerghemMailer {
         $text .= "<br>\n";
         
         
-        BerghemMailer::send($larp, $guardian->Id, "Hej ".$guardian->Name, $text, "Ansvarig vuxen för $minor->Name på $larp->Name", "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, NULL, $guardian->Id, "Hej ".$guardian->Name, $text, "Ansvarig vuxen för $minor->Name på $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
     
-    public static function send_added_role_mail(Role $role, Larp $larp) {
+    public static function send_added_role_mail(Role $role, Larp $larp, $senderId) {
         $person = $role->getPerson();
         
         $text  = "Arrangörerna har lagt till en karaktär till din anmälan till lajvet $larp->Name<br>\n";
@@ -92,7 +84,7 @@ class BerghemMailer {
         $text .= "<br>\n";
 
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Tilläggsanmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Tilläggsanmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
     public static function send_registration_information_mail_to_group(Role $role, Group $group, Larp $larp) {
@@ -108,7 +100,7 @@ class BerghemMailer {
         $text .= "Du kan manuellt ta bort karaktären ur gruppen om det är fel.";
         $text .= "<br>\n";
         
-        BerghemMailer::send($larp, $admin_person->Id, "Hej ".$admin_person->Name, $text, "Anmälan till $group->Name i $larp->Name", "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, null, $admin_person->Id, "Hej ".$admin_person->Name, $text, "Anmälan till $group->Name i $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
     public static function send_registration_mail(Registration $registration) {
@@ -161,11 +153,11 @@ class BerghemMailer {
             $text .= "<br>\n";
         }
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Bekräftan av anmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, null, $person->Id, "Hej ".$person->Name, $text, "Bekräftan av anmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
  
-    public static function send_updatedpayment_mail(Registration $registration) {
+    public static function send_updatedpayment_mail(Registration $registration, $senderId) {
         $person = $registration->getPerson();
         
         $larp = $registration->getLARP();
@@ -192,7 +184,7 @@ class BerghemMailer {
         }
         $text .= "<br>\n";
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Uppdaterad avgift till $larp->Name", "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Uppdaterad avgift till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
     
@@ -221,12 +213,12 @@ class BerghemMailer {
             $text .= "<br>\n";
         }
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Bekräftan av reservanmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, null, $person->Id, "Hej ".$person->Name, $text, "Bekräftan av reservanmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
     
     
-    public static function send_role_approval_mail(Role $role, LARP $larp) {
+    public static function send_role_approval_mail(Role $role, LARP $larp, $senderId) {
         $person = $role->getPerson();
         $mail = $person->Email;
        
@@ -236,35 +228,35 @@ class BerghemMailer {
         
         $sheets = static::getAllSheets(array($role), $larp);
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Godkänd karaktär till ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);
+        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Godkänd karaktär till ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);
     }
     
-    public static function send_role_unapproval_mail(Role $role, LARP $larp) {
+    public static function send_role_unapproval_mail(Role $role, LARP $larp, $senderId) {
         $person = $role->getPerson();
         $text  = "Din karaktär $role->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din karaktär godkänd.\n";
         
         $sheets = static::getAllSheets(array($role), $larp);
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Icke godkänd karaktär till ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);
+        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Icke godkänd karaktär till ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);
     }
     
-    public static function send_group_approval_mail(Group $group, LARP $larp) {
+    public static function send_group_approval_mail(Group $group, LARP $larp, $senderId) {
         $person = $group->getPerson();
         
         $text  = "Din grupp $group->Name är nu godkänd för att vara med i lajvet $larp->Name.\n";
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Godkänd grupp till ".$larp->Name, "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Godkänd grupp till ".$larp->Name, "", BerghemMailer::DaysAutomatic);
     } 
     
-    public static function send_group_unapproval_mail(Group $group, LARP $larp) {
+    public static function send_group_unapproval_mail(Group $group, LARP $larp, $senderId) {
         $person = $group->getPerson();
         
         $text  = "Din grupp $group->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din grupp godkänd.\n";
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Godkänd grupp till ".$larp->Name, "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Godkänd grupp till ".$larp->Name, "", BerghemMailer::DaysAutomatic);
     }
     
-    public static function send_spot_at_larp(Registration $registration) {
+    public static function send_spot_at_larp(Registration $registration, $senderId) {
         $person = $registration->getPerson();
         
         $larp = $registration->getLARP();
@@ -279,11 +271,11 @@ class BerghemMailer {
 
         $sheets = static::getAllSheets($roles, $larp); 
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "Plats på ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);        
+        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Plats på ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);        
     }
     
     
-    public static function sendNPCMail(NPC $npc) {
+    public static function sendNPCMail(NPC $npc, $senderId) {
  
         $person = $npc->getPerson();
         
@@ -300,12 +292,12 @@ class BerghemMailer {
         $text .= "<br>\n";
         
         
-        BerghemMailer::send($larp, $person->Id, "Hej ".$person->Name, $text, "NPC på ".$larp->Name, "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "NPC på ".$larp->Name, "", BerghemMailer::DaysAutomatic);
     }
     
     # Skicka mail till någon
-    public static function sendContactMailToSomeone($personId, String $greeting, String $subject, String $text, $senderText, $larp) {
-        BerghemMailer::send($larp, $personId, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
+    public static function sendContactMailToSomeone($personId, String $greeting, String $subject, String $text, $senderText, $larp, $senderId) {
+        BerghemMailer::send($larp, $senderId, $personId, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
     
     public static function sendContactMailToSomeoneUnknown($email, String $greeting, String $subject, String $text, $senderText, $larp) {
@@ -313,7 +305,7 @@ class BerghemMailer {
     }
     
     # Skicka mail till alla deltagare
-    public static function sendContactMailToAll(String $greeting, String $subject, String $text, $senderText, $larp) {
+    public static function sendContactMailToAll(String $greeting, String $subject, String $text, $senderText, $larp, $senderId) {
         $campaign = $larp->getCampaign();
         if (empty($subject)) $subject = "Meddelande från $campaign->Name";
         
@@ -327,24 +319,17 @@ class BerghemMailer {
             $receivers[] = $person->Id;
         }
         if (empty($receivers)) return;
-        BerghemMailer::send($larp, $receivers, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
+        BerghemMailer::send($larp, $senderId, $receivers, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
 
     
-    public static function sendContactMailToSeveral($personIdArr, String $greeting, String $subject, String $text, $senderText, $larp) {
+    public static function sendContactMailToSeveral($personIdArr, String $greeting, String $subject, String $text, $senderText, $larp, $senderId) {
         if (empty($personIdArr)) return;
         
-        BerghemMailer::send($larp, $personIdArr, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
+        BerghemMailer::send($larp, $senderId, $personIdArr, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
     }
     
-    public static function sendContactMailToSeveralUnknown($emailArr, String $greeting, String $subject, String $text, $senderText, $larp) {
-        if (empty($emailArr)) return;
-        
-        BerghemMailer::sendSimpleEmail($larp, $emailArr, $greeting, $text, $subject, $senderText, BerghemMailer::DaysManual, BerghemMailer::findAttachment());
-    }
-    
-    
-    # Plocka fram standardbilagorna
+     # Plocka fram standardbilagorna
     public static function findAttachment() {        
         if(!isset($_FILES['bilaga'])) return array();
         if ($_FILES["bilaga"]["size"] > 5242880) return array();
@@ -375,7 +360,7 @@ class BerghemMailer {
     
     
     # Skicka ut intrigerna/karaktärsbladen till alla deltagare
-    public static function sendIntrigues($greeting, $subject, $text, $senderText, LARP $larp) {
+    public static function sendIntrigues($greeting, $subject, $text, $senderText, LARP $larp, $senderId) {
         $subject = "Intriger för $larp->Name";
         
         $persons = Person::getAllRegistered($larp, false);
@@ -422,12 +407,12 @@ class BerghemMailer {
             
             $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
 
-            BerghemMailer::send($larp, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+            BerghemMailer::send($larp, $senderId, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic, $sheets);
         }
     }
     
     
-    public static function sendInvoice(Invoice $invoice) {
+    public static function sendInvoice(Invoice $invoice, $senderId) {
         if ($invoice->isSent()) return;
         $larp = $invoice->getLarp();
         $person = $invoice->getContactPerson();
@@ -448,12 +433,12 @@ class BerghemMailer {
         
         $invoice->setSent();
 
-        BerghemMailer::send($larp, array($person->Id), "Hej ".$person->Name, $sendtext, $subject, "", BerghemMailer::DaysAutomatic, $sheets);
+        BerghemMailer::send($larp, $senderId, array($person->Id), "Hej ".$person->Name, $sendtext, $subject, "", BerghemMailer::DaysAutomatic, $sheets);
     }
     
 
     # Skicka ut boendet till alla deltagare
-    public static function sendHousing($greeting, $subject, $text, $senderText, LARP $larp) {
+    public static function sendHousing($greeting, $subject, $text, $senderText, LARP $larp, $senderId) {
 
         
         $houses = House::all();
@@ -507,7 +492,7 @@ class BerghemMailer {
                 $sheets[scrub($house->Name)] = $pdf->Output($house->Name.'.pdf','S');
             }
             
-            BerghemMailer::send($larp, $receivers, $greeting, $housetext, $subject_house, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+            BerghemMailer::send($larp, $senderId, $receivers, $greeting, $housetext, $subject_house, $senderText, BerghemMailer::DaysAutomatic, $sheets);
         }
     }
     

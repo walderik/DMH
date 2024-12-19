@@ -73,17 +73,17 @@ if ($sender == BerghemMailer::LARP) {
     $campaign = $current_larp->getCampaign();
     $hej = $campaign->hej();
     
-    $senderTexts = ["$current_user->Name för arrangörsgruppen av $current_larp->Name", "Arrangörerna av $current_larp->Name"]; 
+    $senderTexts = ["$current_person->Name för arrangörsgruppen av $current_larp->Name", "Arrangörerna av $current_larp->Name"]; 
     if (!isset($subject)) $subject = "Meddelande från $campaign->Name";
 } elseif ($sender == BerghemMailer::CAMPAIGN) {
     $campaign = $current_larp->getCampaign();
     $hej = $campaign->hej();
     
-    $senderTexts = ["$current_user->Name för arrangörsgruppen för $campaign->Name", "Arrangörerna av $campaign->Name"];
+    $senderTexts = ["$current_person->Name för arrangörsgruppen för $campaign->Name", "Arrangörerna av $campaign->Name"];
     if (!isset($subject)) $subject = "Meddelande från $campaign->Name";   
 } else {
     $hej = "Hej";
-    $senderTexts = ["$current_user->Name för Berghems Vänner", "Berghems Vänner"];
+    $senderTexts = ["$current_person->Name för Berghems Vänner", "Berghems Vänner"];
     if (!isset($subject)) $subject = "Meddelande från Berghems Vänner";
 }
 

@@ -472,16 +472,19 @@ class Group extends BaseModel{
          $this->ApprovedDate = date_format($now,"Y-m-d H:i:s");
          $this->update();
          
-         BerghemMailer::send_group_approval_mail($this, $larp);
+         BerghemMailer::send_group_approval_mail($this, $larp, $person->Id);
      }
      
-     public function unapprove($larp, $sendMail) {
+     public function unapprove($larp, $sendMail, $person) {
          $this->IsApproved = 0;
          $this->ApprovedByPersonId = null;
          $this->ApprovedDate = null;
          $this->update();
          
-         if ($sendMail) BerghemMailer::send_group_unapproval_mail($this, $larp);
+         $senderId = NULL;
+         if (isset($person)) $senderId = $person->Id;
+         
+         if ($sendMail) BerghemMailer::send_group_unapproval_mail($this, $larp, $senderId);
      }
      
     public function getViewLink() {

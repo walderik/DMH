@@ -81,7 +81,7 @@ include $navigation;
   		<div class='itemcontainer'>
        	<div class='itemname'>Skickat av</div>
     		<?php 
-    		if (isset($user)) {
+    		if (isset($person)) {
 			 echo "$person->Name";
 			} else {
 			    echo "Systemet";

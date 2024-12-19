@@ -49,48 +49,32 @@ class Email extends BaseModel{
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
     public static function newWithDefault() {
-        global $current_person;
-        
         $email = new self();
-        
-        if (!is_null($current_person)) $email->SenderPersonId = $current_person->Id;
-        
-
         $email->From = 'info@berghemsvanner.se';
-        
-//         if (!is_null($larp)) {
-//             $email->LarpId = $larp->Id;
-//             $campaign = $larp->getCampaign();
-//             if (!is_null($campaign)) {
-//                 $email->From = scrub($campaign->Email);
-//             }
-//         }
-//         $myName = $email->myName();
-//         $email->Subject = "Meddelande från $myName"; 
         return $email;
     }
     
     # Normala sättet att skapa ett mail som kommer skickas vid ett senare tillfälle.
     # Attachments skall vara en array med namnen på filerna som nyckel.
     # Just nu tillåter vi bara pdf:er som bilagor.
-    public static function normalCreate($ToPersonId, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
+    public static function normalCreate($ToPersonId, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId) {
         
 
         $person = Person::loadById($ToPersonId);
         $ToEmail = $person->Email;
         $name = $person->Name;
         
-        if ($person->isSubscribed()) $email = Email::createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
-        else $email = Email::createMessage($name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
+        if ($person->isSubscribed()) $email = Email::createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
+        else $email = Email::createMessage($name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
         
         $email->connectToPerson($ToPersonId);
      }
 
-     public static function normalCreateSimple($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
-         Email::createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp);
+     public static function normalCreateSimple($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId) {
+         Email::createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
       }
      
-      private static function createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
+      private static function createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId) {
           $email = self::newWithDefault();
           
           $email->To = $ToEmail;
@@ -100,6 +84,7 @@ class Email extends BaseModel{
           $email->Subject = $Subject;
           $email->Text = $Text;
           $email->SenderText = $senderText;
+          $email->SenderPersonId = $senderId;
           $now = new Datetime();
           
           if (!is_null($larp)) {
@@ -143,7 +128,7 @@ class Email extends BaseModel{
       
       
     //Ett mail som inte skickas eftersom personen inte vill ha epost 
-    private static function createMessage($name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp) {
+      private static function createMessage($name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId) {
         $email = self::newWithDefault();
 
         $email->To = "";
@@ -153,6 +138,7 @@ class Email extends BaseModel{
         $email->Subject = $Subject;
         $email->Text = $Text;
         $email->SenderText = $senderText;
+        $email->SenderPersonId = $senderId;
 
         $now = new Datetime();
         $email->SentAt = date_format($now,"Y-m-d H:i:s");

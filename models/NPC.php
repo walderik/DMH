@@ -146,11 +146,12 @@ class NPC extends BaseModel{
     }
     
     public function release() {
+        global $current_person;
         if ($this->IsReleased()) return;
         $this->IsReleased = 1;
         $this->update();
 
-        BerghemMailer::sendNPCMail($this);
+        BerghemMailer::sendNPCMail($this, $current_person->Id);
   
     }
     

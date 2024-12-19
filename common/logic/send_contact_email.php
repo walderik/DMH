@@ -45,27 +45,27 @@ switch ($type) {
             $current_larp->DisplayIntrigues = 1;
             $current_larp->update();
         }
-        BerghemMailer::sendIntrigues($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
+        BerghemMailer::sendIntrigues($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id);
         break;
     case "housing":
         if (!$current_larp->isHousingReleased()) {
             $current_larp->DisplayHousing = 1;
             $current_larp->update();
         }
-        BerghemMailer::sendHousing($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
+        BerghemMailer::sendHousing($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id);
         break;
     case "one":
-        if ($sender==BerghemMailer::LARP) BerghemMailer::sendContactMailToSomeone($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
-        else BerghemMailer::sendContactMailToSomeone($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, null);
+        if ($sender==BerghemMailer::LARP) BerghemMailer::sendContactMailToSomeone($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id);
+        else BerghemMailer::sendContactMailToSomeone($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, null, $current_person->Id);
         header('Location: ' . $referer);
         exit;
         break;
     case "all":
-        BerghemMailer::sendContactMailToAll($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
+        BerghemMailer::sendContactMailToAll($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id);
         break;
     case "several":
-        if ($sender==BerghemMailer::LARP) BerghemMailer::sendContactMailToSeveral($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp);
-        else BerghemMailer::sendContactMailToSeveral($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, null);
+        if ($sender==BerghemMailer::LARP) BerghemMailer::sendContactMailToSeveral($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id);
+        else BerghemMailer::sendContactMailToSeveral($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, null, $current_person->Id);
         break;
 }
 

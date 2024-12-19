@@ -16,7 +16,7 @@ if (empty($registration)) {
 $registration->SpotAtLARP = 1;
 $registration->update();
 
-BerghemMailer::send_spot_at_larp($registration);
+BerghemMailer::send_spot_at_larp($registration, $current_person->Id);
 
 
 header('Location: ../registered_persons.php');
