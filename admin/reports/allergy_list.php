@@ -1,7 +1,7 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-global $root, $current_user, $current_larp;
+global $root, $current_person, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require_once $root . '/pdf/report_tcpdf_pdf.php';
@@ -32,7 +32,7 @@ foreach($foodChoises as $foodChoise) {
 if ($variant == 1) $pdf = new Report_TCP_PDF();
 else $pdf = new Report_TCP_PDF('L');
 
-$pdf->init($current_user->Name, $name, $current_larp->Name, true);
+$pdf->init($current_person->Name, $name, $current_larp->Name, true);
 
 if (NormalAllergyType::isInUse()){
     $allAllergies = NormalAllergyType::all();

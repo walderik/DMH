@@ -1,7 +1,7 @@
 <?php
 # Läs mer på http://www.fpdf.org/
 
-global $root, $current_user, $current_larp;
+global $root, $current_person, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require_once $root . '/pdf/report_tcpdf_pdf.php';
@@ -17,7 +17,7 @@ $name = 'Lista';
 
 $pdf = new Report_TCP_PDF();
 
-$pdf->init($current_user->Name, $name, $current_larp->Name, false);
+$pdf->init($current_person->Name, $name, $current_larp->Name, false);
 
 
 
