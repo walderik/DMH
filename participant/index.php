@@ -331,19 +331,16 @@ function openTab(evt, tabName) {
 		<?php 
 	  if (!empty($groups)) {
 	      foreach ($groups as $group) {
-		  echo "<div class='itemcontainer'>";
+		  echo "<div class='itemcontainer borderbottom'>";
 		  echo "<div class='itemname'>";
 		  echo  $group->getViewLink();
 	      if($group->isNeverRegistered()) {
 	          echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
 	      }
 		  echo "</div>";
-		  if (!$group->isRegistered($current_larp)) echo "<div class='center'><a href='group_registration_form.php?id=$group->Id'><button class='button-18'>Anmäl gruppen</button></a></div>";
+		  if (!$group->isRegistered($current_larp)) echo "<div class='center'><a href='group_registration_form.php?id=$group->Id'><button class='button-18'>Anmäl $group->Name</button></a></div>";
 		  if ($group->isApproved()) {
 		      echo "Gruppen är godkänd.<br>";
-		  } else {
-		      echo showParticipantStatusIcon(false, "Gruppen är inte godkänd");
-		      
 		  }
 		  if ($group->hasImage()) {
 		      echo "<br><img width='30' src='../includes/display_image.php?id=$group->ImageId'/>\n";
