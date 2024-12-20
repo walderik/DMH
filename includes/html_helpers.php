@@ -31,7 +31,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
         echo htmlspecialchars($selectionDatas[$first_key]->Name) . "<br>\n";
         echo "<input type='hidden' id='" .$name_in.$selectionDatas[$first_key]->Id . "' name='" . $name . "' value=" .  $selectionDatas[$first_key]->Id . ">";
         echo "</td>";
-        if (isset($selectionDatas[$first_key]->Description)) echo "<td>".nl2br(htmlspecialchars($selectionDatas[$first_key]->Description))."</td>";
+        if (($name_in!='Group') && isset($selectionDatas[$first_key]->Description)) echo "<td>".nl2br(htmlspecialchars($selectionDatas[$first_key]->Description))."</td>";
         echo "</tr>";
         echo "</table>\n";
         return;

@@ -11,7 +11,18 @@ if (!$current_larp->mayRegister() && !$admin) {
     exit;
 }
 
-$current_groups = $current_person->getUnregisteredAliveGroups($current_larp);
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    
+    if (isset($_GET['id'])) {
+        $GroupId = $_GET['id'];
+    }
+}
+
+if (isset($GroupId)) {
+  $group = Group::loadById($GroupId) ;
+  $current_groups = array();
+  $current_groups[] = $group;
+} else $current_groups = $current_person->getUnregisteredAliveGroups($current_larp);
 
 if (empty($current_groups) && !$admin) {
     header('Location: index.php?error=no_group');
