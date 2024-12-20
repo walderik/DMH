@@ -38,14 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if ($registration->isNotComing()) {
             $person = $registration->getPerson();
-            $user = $person->getUser();
             //brev och telegram ska sättas till icke-godkänd
             $telegrams = $person->getTelegramsAtLarp($current_larp);
             foreach ($telegrams as $telegram) {
                 $telegram->Approved = 0;
                 $telegram->update();
             }
-            $letters = $user->getLettersAtLarp($current_larp);
+            $letters = $person->getLettersAtLarp($current_larp);
             foreach ($letters as $letter) {
                 $letter->Approved = 0;
                 $letter->update();
