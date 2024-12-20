@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
         else {
-            header('Location: ../group_registration_form.php?new_group='.$group->Id);
+            header('Location: ../group_registration_form.php?id='.$group->Id);
             exit;
         }
         exit;
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
         else {
-            header('Location: ../group_registration_form.php?new_group='.$group->Id);
+            header('Location: ../group_registration_form.php?id='.$group->Id);
             exit;
         }
         exit;

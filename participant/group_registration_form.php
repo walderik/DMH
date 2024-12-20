@@ -7,39 +7,31 @@ if (isset($_GET['admin'])) $admin = true;
 
 
 if (!$current_larp->mayRegister() && !$admin) {
-    header('Location: index.php');
+    header('Location: index.php?error=registration_not_open');
     exit;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    
+$group = null;
+if ($admin) $group = Group::newWithDefault();
+elseif ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
-        $GroupId = $_GET['id'];
+        $group = Group::loadById($_GET['id']);
+        if (!$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group) || $group->CampaignId != $current_larp->CampaignId) {
+            header('Location: index.php?error=no_member'); //Inte medlem i gruppen
+            exit;
+        }
+        if ($group->isRegistered($current_larp)) {
+            header('Location: index.php?error=already_registered'); //Gruppen är anmäld, man borde inte kunna komma hit
+            exit;
+        }
     }
 }
 
-if (isset($GroupId)) {
-  $group = Group::loadById($GroupId) ;
-  $current_groups = array();
-  $current_groups[] = $group;
-} else $current_groups = $current_person->getUnregisteredAliveGroups($current_larp);
-
-if (empty($current_groups) && !$admin) {
-    header('Location: index.php?error=no_group');
-    exit;
-}
-
-if ($current_larp->RegistrationOpen == 0 && !$admin) {
-    header('Location: index.php?error=registration_not_open');
-    exit;   
-}
-
-$new_group = null;
-if ($admin) $new_group = Group::newWithDefault();
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['new_group'])) {
-        $new_group = Group::loadById($_GET['new_group']);
+if (!isset($group)) {
+    $current_groups = $current_person->getUnregisteredAliveGroups($current_larp);
+    if (empty($current_groups) && !$admin) {
+        header('Location: index.php?error=no_group');
+        exit;
     }
 }
 
@@ -51,8 +43,8 @@ include 'navigation.php';
 
 		<i class="fa-solid fa-people-group"></i>
 		<?php 
-		if (isset($new_group) && !is_null($new_group)) {
-            echo "Anmälan av gruppen $new_group->Name";
+		if (isset($group) && !is_null($group)) {
+            echo "Anmälan av gruppen $group->Name";
         } else {
             echo "Anmälan av grupp till $current_larp->Name";
 		} ?>
@@ -72,8 +64,8 @@ include 'navigation.php';
 		
 
 		<?php 
-		if (isset($new_group) && !is_null($new_group)) {
-		    echo "<input type='hidden' id='GroupId' name='GroupId' value='$new_group->Id'>";
+		if (isset($group) && !is_null($group)) {
+		    echo "<input type='hidden' id='GroupId' name='GroupId' value='$group->Id'>";
 		} else {
 		    echo "<div class='itemcontainer'>";
 		    echo "<div class='itemname'><label for='GroupId'>Grupp <font style='color:red'>*</font></div>";
