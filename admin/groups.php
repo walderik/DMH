@@ -55,7 +55,12 @@ th {
     		        echo "<a href='group_sheet.php?id=" . $group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $group->Name'></i></a>\n";
     		        echo "</td>\n";
     		        $person = $group->getPerson();
-    		        echo "<td>" . $person->Name . " " . contactEmailIcon($person) . "</td>\n";
+    		        echo "<td>";
+    		        $registration = $person->getRegistration($current_larp);
+    		        if (isset($registration) && !$registration->isNotComing()) echo $person->Name;
+    		        elseif (!isset($registration)) echo "<s>$person->Name</s> (inte anmäld)";
+    		        else echo "<s>$person->Name</s> (avbokad)";
+    		        echo " " . contactEmailIcon($person) . "</td>\n";
 					echo "<td>" . $group->countAllRolesInGroup($current_larp) . "</td>\n";
     		        if (Wealth::isInUse($current_larp)) echo "<td>" . $group->getWealth()->Name . "</td>\n";
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);

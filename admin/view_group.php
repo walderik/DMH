@@ -123,11 +123,16 @@ include 'navigation.php';
 		<table>
 		<?php 
 		$groupleader = $group->getPerson();
+		$groupleader_registration = $groupleader->getRegistration($current_larp);
+		
 		?>
 			<tr><td valign="top" class="header">Gruppansvarig</td><td>
-			<?php if ($isRegistered) {?>
-			<a href ="view_person.php?id=<?php echo $group->PersonId;?>"><?php echo $groupleader->Name;?></a> 
-			<?php } else {
+			<?php if ($isRegistered) {
+			    if (isset($groupleader_registration) && !$groupleader_registration->isNotComing()) {
+			        echo "<a href ='view_person.php?id=$group->PersonId'>$groupleader->Name</a>";
+			    } elseif (!isset($groupleader_registration)) echo "<s>$groupleader->Name</s> (inte anmäld)";
+			    else echo "<s>$groupleader->Name</s> (avbokad)";
+			 } else {
 			    echo $groupleader->Name;
 			}
 			?>
