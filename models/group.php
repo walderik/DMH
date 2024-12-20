@@ -258,6 +258,17 @@ class Group extends BaseModel{
          return static::getSeveralObjectsqQuery($sql, array($personId, $campaignId));
      }
      
+     
+     public static function getAllRegisteredGroupsForPerson($personId, $larp) {
+         
+         if (is_null($larp)) return Array();
+         $sql = "SELECT * FROM regsys_group WHERE PersonId = ? ". 
+            "AND CampaignId = ? AND regsys_group.Id IN ".
+            "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
+          return static::getSeveralObjectsqQuery($sql, array($personId, $larp->CampaignId, $larp->Id));
+     }
+     
+     
      public function isNeverRegistered() {         
          $sql = "SELECT COUNT(*) AS Num FROM regsys_larp_group WHERE GroupId=?;";
          

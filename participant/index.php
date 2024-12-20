@@ -486,7 +486,7 @@ function openTab(evt, tabName) {
             
             echo "</div>";
 
-            $groups = $current_person->getGroups($current_larp);
+            $groups = $current_person->getAllRegisteredGroups($current_larp);
             
             if (!empty($groups)) {
         

@@ -503,6 +503,10 @@ class Person extends BaseModel{
         return Group::getGroupsForPerson($this->Id, $larp->CampaignId);
     }
     
+    public function getAllRegisteredGroups(Larp $larp) {
+        return Group::getAllRegisteredGroupsForPerson($this->Id, $larp);
+    }
+    
     public function getAgeAtLarp(LARP $larp) {
         return getAge(substr($this->SocialSecurityNumber, 0, 8), $larp->StartDate);
     }
