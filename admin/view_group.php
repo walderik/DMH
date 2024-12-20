@@ -130,8 +130,11 @@ include 'navigation.php';
 			<?php if ($isRegistered) {
 			    if (isset($groupleader_registration) && !$groupleader_registration->isNotComing()) {
 			        echo "<a href ='view_person.php?id=$group->PersonId'>$groupleader->Name</a>";
-			    } elseif (!isset($groupleader_registration)) echo "<s>$groupleader->Name</s> (inte anmäld)";
-			    else echo "<s>$groupleader->Name</s> (avbokad)";
+			    } elseif (!isset($groupleader_registration)) {
+			        $reserveregistration = Reserve_Registration::loadByIds($groupleader->Id, $current_larp->Id);
+    			    if (isset($reserveregistration)) echo "<s>$groupleader->Name</s> (på reservlistan)";
+    			    else echo "<s>$groupleader->Name</s> (inte anmäld)";
+			    } else echo "<s>$groupleader->Name</s> (avbokad)";
 			 } else {
 			    echo $groupleader->Name;
 			}

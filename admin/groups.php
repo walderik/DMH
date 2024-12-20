@@ -58,7 +58,11 @@ th {
     		        echo "<td>";
     		        $registration = $person->getRegistration($current_larp);
     		        if (isset($registration) && !$registration->isNotComing()) echo $person->Name;
-    		        elseif (!isset($registration)) echo "<s>$person->Name</s> (inte anmäld)";
+    		        elseif (!isset($registration)) {
+    		            $reserveregistration = Reserve_Registration::loadByIds($person->Id, $current_larp->Id);
+    		            if (isset($reserveregistration)) echo "<s>$person->Name</s> (på reservlistan)";
+    		            else echo "<s>$person->Name</s> (inte anmäld)";
+    		        }
     		        else echo "<s>$person->Name</s> (avbokad)";
     		        echo " " . contactEmailIcon($person) . "</td>\n";
 					echo "<td>" . $group->countAllRolesInGroup($current_larp) . "</td>\n";
