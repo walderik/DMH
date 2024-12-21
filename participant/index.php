@@ -495,6 +495,7 @@ function openTab(evt, tabName) {
                 foreach ($groups as $group) {
                     echo $group->getViewLink();
                     echo "<br>";
+                    echo "<a href = 'view_group_registration.php?id=$group->Id'>Visa anmälan</a><br>";
                     if ($group->isApproved()) echo "Gruppen är godkänd";
                     else showParticipantStatusIcon(false, "$group->Name är inte godkänd");
                     echo "<br><br>";

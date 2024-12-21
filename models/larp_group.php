@@ -134,5 +134,18 @@ class LARP_Group extends BaseModel{
         
     }
     
+    public function getGroup() {
+        return Group::loadById($this->GroupId);
+    }
+    
+    public function getLarp() {
+        return LARP::loadById($this->LARPId);
+    }
+    
+    public function getHousingRequest() {
+        if (is_null($this->HousingRequestId)) return null;
+        return HousingRequest::loadById($this->HousingRequestId);
+    }
+    
     
 }

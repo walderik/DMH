@@ -1,6 +1,6 @@
 <?php
 
-global $root, $current_user;
+global $root;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 require $root . '/includes/init.php';
 
@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $larp_group = LARP_Group::newFromArray($_POST);
         $larp_group->create();
+        BerghemMailer::send_groupregistration_mail($larp_group, $current_person);
     } 
     header('Location: ../index.php');
 }

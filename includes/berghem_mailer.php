@@ -156,6 +156,29 @@ class BerghemMailer {
         BerghemMailer::send($larp, null, $person->Id, "Hej ".$person->Name, $text, "Bekräftan av anmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
+    public static function send_groupregistration_mail(LARP_Group $larp_group, Person $sender) {
+        $group = $larp_group->getGroup();
+        $group_leader = $group->getPerson();
+        $larp = $larp_group->getLARP();
+        $campaign = $larp->getCampaign();
+        
+        $text  = "Gruppen $group->Name är nu anmäld för att vara med i lajvet $larp->Name<br>\n";
+        if ($group_leader->Id != $sender->Id) {
+            $text  .= "Gruppen har anmälts av $sender->Name.<br>\n";
+            
+        }
+        $text .= "<br>\n";
+        if (!$group->isApproved()) {
+            $text .= "Vi kommer nu att kontrollera att gruppen är godkänd. När den är godkänd kan gruppens medlemmar anmäla sig.\n";
+        } else {
+            $text .= "Nu kan gruppens medlemmar anmäla sig.\n";
+        }
+         
+        BerghemMailer::send($larp, null, $group_leader->Id, "Hej ".$group_leader->Name, $text, "Bekräftan av gruppanmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
+    }
+    
+    
+    
  
     public static function send_updatedpayment_mail(Registration $registration, $senderId) {
         $person = $registration->getPerson();
