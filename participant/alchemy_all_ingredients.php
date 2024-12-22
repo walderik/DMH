@@ -21,6 +21,10 @@ if (!Alchemy_Supplier::isSupplier($role)) {
     header('Location: index.php'); // karaktären är inte lövjerist
     exit;
 }
+if (!$current_larp->isAlchemySupplierInputOpen()) {
+    header('Location: index.php'); // sista datum för lövjerister är passerat
+    exit;
+}
 
 $supplier = Alchemy_Supplier::getForRole($role);
 

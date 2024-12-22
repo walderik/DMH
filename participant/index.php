@@ -608,15 +608,15 @@ function openTab(evt, tabName) {
         	        $supplier->hasDoneWorkshop() &&
         	        $supplier->hasIngredientList($current_larp)) {
         	            echo "Allt godkänt";
-        	            if (!empty($supplierLastDay)) echo "<br>Du kan lägga till ingredienser fram till den $supplierLastDay.<br>";
+        	            if (!empty($supplierLastDay) && $current_larp->isAlchemySupplierInputOpen()) echo "<br>Du kan lägga till ingredienser fram till den $supplierLastDay.<br>";
     	        } else {
     	            if (!$supplier->hasIngredientList($current_larp)) {
     	                echo showParticipantStatusIcon(false,"Du har ingen ingredienslista");
-    	                if (!empty($supplierLastDay)) echo "<br>Sista dag att mata in ingredienser är $supplierLastDay.<br>";
+    	                if (!empty($supplierLastDay) && $current_larp->isAlchemySupplierInputOpen()) echo "<br>Sista dag att mata in ingredienser är $supplierLastDay.<br>";
     	            }
     	            if (!$supplier->allAmountOfIngredientsApproved($current_larp)) {
     	                echo showParticipantStatusIcon(false,"Antalet ingredienser är ännu inte godkänt");
-    	                if (!empty($supplierLastDay)) echo "<br>Du kan ändra fram till den $supplierLastDay eller tills det är godkänt.<br>";
+    	                if (!empty($supplierLastDay) && $current_larp->isAlchemySupplierInputOpen()) echo "<br>Du kan ändra fram till den $supplierLastDay eller tills det är godkänt.<br>";
     	            }
     	            if (!$supplier->hasDoneWorkshop()) {
     	                echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om lövjeri");
@@ -639,15 +639,16 @@ function openTab(evt, tabName) {
         	    if ($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop() &&
         	        !empty($recipes)) {
         	            echo "Allt godkänt";
-        	            if (!empty($alchemistLastDay)) echo "<br>Du kan skapa/önska recept fram till den $alchemistLastDay.<br>";
+        	            if (!empty($alchemistLastDay) && $current_larp->isAlchemyInputOpen()) echo "<br>Du kan skapa/önska recept fram till den $alchemistLastDay.<br>";
         	            
     	        } else {
     	            if (empty($recipes)) {
     	                echo showParticipantStatusIcon(false, "Din receptlista är tom");
-    	                if (!empty($alchemistLastDay)) echo "<br>Sista dag att skap/önska recept är $alchemistLastDay.<br>";
+    	                if (!empty($alchemistLastDay) && $current_larp->isAlchemyInputOpen()) echo "<br>Sista dag att skapa/önska recept är $alchemistLastDay.<br>";
     	            }
     	            if (!$alchemist->recipeListApproved()) {
     	                echo showParticipantStatusIcon(false,"Din receptlista är inte godkänd, än");
+    	                if (!empty($alchemistLastDay) && $current_larp->isAlchemyInputOpen()) echo "<br>Sista dag att skapa/önska recept är $alchemistLastDay.<br>";
     	            }
     	            if (!$alchemist->hasDoneWorkshop()) {
     	                echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om alkemi");

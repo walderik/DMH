@@ -188,12 +188,14 @@ class LARP extends BaseModel{
     }
     
     public function isAlchemyInputOpen() {
+        if (empty($this->getLastDayAlchemy())) return true;
         $now = date("Y-m-d");
         if ($now > $this->LastDayAlchemy) return false;
         return true;
     }
     
     public function isAlchemySupplierInputOpen() {
+        if (empty($this->getLastDayAlchemySupplier())) return true;
         $now = date("Y-m-d");
         if ($now > $this->LastDayAlchemySupplier) return false;
         return true;

@@ -64,10 +64,13 @@ input {
 
 			<i class="fa-solid fa-leaf"></i> Ingredienser till <?php echo $current_larp->Name?>
 		</div>
+		<?php if ($current_larp->isAlchemySupplierInputOpen()) {?>
    		<div class='itemcontainer'>
-		Lägg till de ingredienser som du tänker ta med till lajvet. Arrangörerna godkänner sedan att du får ta med ingrediensen och hur många du får ta med.<br>
-		<a href='alchemy_all_ingredients.php?RoleId=<?php echo $role->Id?>'>Visa alla ingredienser som finns / Välj ingredienser att ta med</a><br>
+		Lägg till de ingredienser som du tänker ta med till lajvet. Arrangörerna godkänner sedan att du får ta med ingrediensen 
+		och hur många du får ta med.<br>
+		<a href='alchemy_all_ingredients.php?RoleId=<?php echo $role->Id?>'>Visa alla ingredienser som finns / Välj ingredienser att ta med</a>
 		</div>
+		<?php } ?>
    		<div class='itemcontainer'>
 
 			<div  style='display:table'>
@@ -78,8 +81,11 @@ input {
 			if (empty($amounts)) {
 			    echo "Inga valda ingredenser, än.";
 			} else {
-			    echo "Så länge arrangörerna inte har godkänt att du får ta med dig ingrediensen och hur många du tar med dig, så kan du ändra hur många du vill ha med dig och du kan även ta bort den helt från din lista. Om du vill ändra efter att den är godkänd behöver du kontakta arrangörerna.";
-
+			    if (!empty($current_larp->getLastDayAlchemySupplier())) {
+			        echo "Fram till ".$current_larp->getLastDayAlchemySupplier()." har du möjlighet att redigera din ingredienslista.<br>";
+			    } 
+		         echo "Så länge arrangörerna inte har godkänt att du får ta med dig ingrediensen och hur många du tar med dig, så kan du ändra hur många du vill ha med dig och du kan även ta bort den helt från din lista. Om du vill ändra efter att den är godkänd behöver du kontakta arrangörerna.";
+			    
 			    echo "<table class='participant_table' style='width:100%;'>";
 				echo "<tr><th>Ingrediens</th><th>Essenser</th><th>Antal</th><th>Godkänd/<br>Ännu inte godkänd</th><th></th></tr>";
 				foreach ($amounts as $amount) {
@@ -97,7 +103,7 @@ input {
 				    }
 				    echo "</td>\n";
 				    echo "<td>";
-				    if ($amount->isApproved()) echo $amount->Amount;
+				    if ($amount->isApproved() || !$current_larp->isAlchemySupplierInputOpen()) echo $amount->Amount;
 				    else {
 				        echo "<input type='number' id='$amount->Id' min='1' value='$amount->Amount' onchange='saveAmount(this)' maxlength='3' size='4'>";
 				    }
@@ -109,7 +115,7 @@ input {
 				    
 				    echo "</td>\n";
 				    echo "<td>";
-				    if (!$amount->isApproved()) echo "<a href='view_alchemy_supplier.php?operation=delete&supplierIngredientId=$amount->Id&id=$role->Id'><i class='fa-solid fa-trash'></i>";
+				    if (!$amount->isApproved() && $current_larp->isAlchemySupplierInputOpen()) echo "<a href='view_alchemy_supplier.php?operation=delete&supplierIngredientId=$amount->Id&id=$role->Id'><i class='fa-solid fa-trash'></i>";
 				    
 				    
 				    echo "</td>\n";

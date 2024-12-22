@@ -39,8 +39,12 @@ if ($role->Id != $recipe->AuthorRoleId) {
 if ($recipe->isApproved()) {
     header('Location: index.php'); // receptet får inte redigeras
     exit;
-    
 }
+if (!$current_larp->isAlchemyInputOpen()) {
+    header('Location: index.php'); // sista datum för alkemister har passerat
+    exit;
+}
+
 
 $alchemist = Alchemy_Alchemist::getForRole($role);
 

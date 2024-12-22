@@ -114,10 +114,16 @@ include 'navigation.php';
    		<div class='itemcontainer'>
 		Här är en lista på de recept du kan. Om något saknas kan du titta på listan med alla recept. Där kan du markera, bland de godkända recepten vilka du skulle vilja kunna. Och du kan även lägga till nya recept. 
 		Dessa kommer att godkännas av arrangörerna innan du får möjlighet att önska att du kan dem.
+	    <?php if (!empty($current_larp->getLastDayAlchemy())) {
+	        echo "<br>Fram till ".$current_larp->getLastDayAlchemy()." har du möjlighet att önska recept.<br>";
+	    } ?>
+		
 		</div>
+		<?php if ($current_larp->isAlchemyInputOpen()) {?>
    		<div class='itemcontainer'>
 			<a href='alchemy_all_recipes.php?RoleId=<?php echo $role->Id?>'>Visa alla recept som finns / Önska recept du vill kunna / Skapa nya recept</a><br><br>
 		</div>
+		<?php } ?>
 			<?php 
 			$recipes = $alchemist->getRecipes(false);
 			if (empty($recipes)) {
@@ -133,7 +139,7 @@ include 'navigation.php';
 				    
 				    echo ", $recipe->Level ";
 				    echo substr($recipe->getRecipeType(), 0, 1);
-				    if (!isset($approvedLarpId)) {
+				    if (!isset($approvedLarpId) && $current_larp->isAlchemyInputOpen()) {
 				        echo " <a href='view_alchemist.php?operation=remove_recipe&RecipeId=$recipe->Id&id=$role->Id'><i class='fa-solid fa-xmark' title='Ta bort recept från alkemis'></i></a>";
 				    }
 				    
@@ -166,6 +172,9 @@ include 'navigation.php';
    		<div class='itemcontainer'>
 			Här är alla recept du har skapat. När receptet är godkänt av arrangör går det inte längre att redigera. Om du vill ändra något på receptet efter att det är godkänt får du kontakta arrangör.<br>
 			Om du vill skapa ett nytt recept får du gå till sidan med alla recept, för att se så att det inte redan finns ett sådant recept.
+    	    <?php if (!empty($current_larp->getLastDayAlchemy())) {
+    	        echo "<br>Fram till ".$current_larp->getLastDayAlchemy()." har du möjlighet att skapa recept.<br>";
+    	    } ?>
 		</div>
        <?php
     
@@ -176,7 +185,7 @@ include 'navigation.php';
                echo "<div class='itemcontainer'>";
                echo "<div class='itemname'><a href='view_alchemy_recipe.php?recipeId=$recipe->Id&id=$role->Id'>$recipe->Name</a> ";
                
-               if (!$recipe->IsApproved()) {
+               if (!$recipe->IsApproved() && $current_larp->isAlchemyInputOpen()) {
                    echo "<a href='alchemy_recipe_form.php?RoleId=$role->Id&recipeId=$recipe->Id'><i class='fa-solid fa-pen'></i></a>";
                }
                

@@ -1,6 +1,7 @@
 <?php
 include_once 'header.php';
 
+
 $ingredient = Alchemy_Ingredient::newWithDefault();;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -38,6 +39,11 @@ if (!Alchemy_Supplier::isSupplier($role)) {
     header('Location: index.php'); // karaktären är inte lövjerist
     exit;
 }
+if (!$current_larp->isAlchemySupplierInputOpen()) {
+    header('Location: index.php'); // sista datum för lövjerister är passerat
+    exit;
+}
+
 
 
 
