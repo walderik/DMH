@@ -33,7 +33,24 @@ require_once $root . '/pdf/alchemy_ingredient_pdf.php';
 		lövjerister och 
 		<?php echo count(Alchemy_Alchemist::allByComingToLarp($current_larp)); ?> 
 		 alkemister på lajvet.
-
+		 <br><br>
+		<?php 
+		if (isset($current_larp->LastDayAlchemySupplier)) {
+		  echo "Sista dag för lövjerister att välja ingredienser är $current_larp->LastDayAlchemySupplier.";
+		} else {
+		    echo "Sista dag för lövjerister att välja ingredienser är inte satt.";
+		    
+		}
+		?>
+		 <br>
+		<?php 
+		if (isset($current_larp->LastDayAlchemy)) {
+		  echo "Sista dag för alkemister att mata in och önska recept är $current_larp->LastDayAlchemy.<br>";
+		} else {
+		    echo "Sista dag för alkemister att mata in och önska recept är inte satt.<br>";
+		    
+		}
+		?>
 		</p>
 		<h3>Ingrediensöversikter</h3>
 		<div class='linklist'>

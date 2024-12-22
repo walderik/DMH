@@ -23,6 +23,8 @@ class LARP extends BaseModel{
     public  $HasLetters = 1;
     public  $HasRumours = 1;
     public  $HasAlchemy = 0;
+    public  $LastDayAlchemy;
+    public  $LastDayAlchemySupplier;
     public  $HasMagic = 0;
     public  $HasVisions = 0;
     public  $HasCommerce = 0;
@@ -65,6 +67,8 @@ class LARP extends BaseModel{
         if (isset($arr['HasLetters'])) $this->HasLetters = $arr['HasLetters'];
         if (isset($arr['HasRumours'])) $this->HasRumours = $arr['HasRumours'];
         if (isset($arr['HasAlchemy'])) $this->HasAlchemy = $arr['HasAlchemy'];
+        if (isset($arr['LastDayAlchemy'])) $this->LastDayAlchemy = $arr['LastDayAlchemy'];
+        if (isset($arr['LastDayAlchemySupplier'])) $this->LastDayAlchemySupplier = $arr['LastDayAlchemySupplier'];
         if (isset($arr['HasMagic'])) $this->HasMagic = $arr['HasMagic'];
         if (isset($arr['HasVisions'])) $this->HasVisions = $arr['HasVisions'];
         if (isset($arr['HasCommerce'])) $this->HasCommerce = $arr['HasCommerce'];
@@ -78,6 +82,8 @@ class LARP extends BaseModel{
         if ($this->EvaluationOpenDate == '') $this->EvaluationOpenDate = null;
         if ($this->StartTimeLARPTime == '') $this->StartTimeLARPTime = null;
         if ($this->EndTimeLARPTime == '') $this->EndTimeLARPTime = null;
+        if ($this->LastDayAlchemy == '') $this->LastDayAlchemy = null;
+        if ($this->LastDayAlchemySupplier == '') $this->LastDayAlchemySupplie = null;
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -94,7 +100,7 @@ class LARP extends BaseModel{
                  "MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, ".
                  "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, VisibleToParticipants=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=?, ".
                  "LastPaymentDate=?, HasTelegrams=?, HasLetters=?, HasRumours=?, 
-                    HasAlchemy=?, HasMagic=?, HasVisions=?, HasCommerce=?,
+                    HasAlchemy=?, LastDayAlchemy=?, LastDayAlchemySupplier=?, HasMagic=?, HasVisions=?, HasCommerce=?,
                     ChooseParticipationDates=?, Description=?, ContentDescription=?, EvaluationOpenDate=?, EvaluationLink=?  WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
@@ -102,7 +108,7 @@ class LARP extends BaseModel{
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
             $this->VisibleToParticipants, $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, 
             $this->LastPaymentDate, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, 
-            $this->HasAlchemy, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
+            $this->HasAlchemy, $this->LastDayAlchemy, $this->LastDayAlchemySupplier, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
             $this->ChooseParticipationDates,
             $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink, $this->Id))) {
                 $stmt = null;
@@ -120,16 +126,16 @@ class LARP extends BaseModel{
             LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, DisplayHousing, CampaignId, 
             VisibleToParticipants, RegistrationOpen, PaymentReferencePrefix, NetDays, LastPaymentDate, HasTelegrams, 
             HasLetters, HasRumours, 
-            HasAlchemy, HasMagic, HasVisions, HasCommerce, 
+            HasAlchemy, LastDayAlchemy, LastDayAlchemySupplier, HasMagic, HasVisions, HasCommerce, 
             ChooseParticipationDates, Description, ContentDescription,EvaluationOpenDate,EvaluationLink) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)");
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
             $this->VisibleToParticipants, $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->LastPaymentDate, $this->HasTelegrams, 
             $this->HasLetters, $this->HasRumours, 
-            $this->HasAlchemy, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
+            $this->HasAlchemy, $this->LastDayAlchemy, $this->LastDayAlchemySupplier, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
             $this->ChooseParticipationDates, $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -171,7 +177,6 @@ class LARP extends BaseModel{
         $now = date("Y-m-d H:i:s");
         if ($now < $this->EndDate) return false;
         return true;
-        
     }
     
     public function isEvaluationOpen() {
@@ -180,6 +185,30 @@ class LARP extends BaseModel{
         $now = date("Y-m-d");
         if ($now < $this->EvaluationOpenDate) return false;
         return true;
+    }
+    
+    public function isAlchemyInputOpen() {
+        $now = date("Y-m-d");
+        if ($now > $this->LastDayAlchemy) return false;
+        return true;
+    }
+    
+    public function isAlchemySupplierInputOpen() {
+        $now = date("Y-m-d");
+        if ($now > $this->LastDayAlchemySupplier) return false;
+        return true;
+    }
+    
+    public function getLastDayAlchemy() {
+        if (empty($this->LastDayAlchemy)) return null;
+        if ($this->LastDayAlchemy == '0000-00-00') return null;
+        return $this->LastDayAlchemy;
+    }
+    
+    public function getLastDayAlchemySupplier() {
+        if (empty($this->LastDayAlchemySupplier)) return null;
+        if ($this->LastDayAlchemySupplier == '0000-00-00') return null;
+        return $this->LastDayAlchemySupplier;
     }
     
     public function useInternalEvaluation() {

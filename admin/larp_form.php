@@ -75,11 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     			</tr>
     			<tr>
     				<td><label for="Name">Beskrivning</label><br>Om det står något i det här fältet visas det när man väljer bland kommande lajv. Beskriv gärna kortfattat miljö (tex medeltid, vilda västern) och stämning (tex familjevänligt, tungt förtrycksspel).</td>
-    				<td><textarea id="ContentDescription" name="Description" rows="4" cols="150" maxlength="60000" ><?php echo htmlspecialchars($larp->Description); ?></textarea></td>
+    				<td><textarea id="ContentDescription" name="Description" rows="4" style='width:80%;' maxlength="60000" ><?php echo htmlspecialchars($larp->Description); ?></textarea></td>
     			</tr>
     			<tr>
     				<td><label for="Name">Innehåll</label><br>Om det står något i det här fältet kommer alla deltagare vid anmälan behöva bocka i att de förstår vilken typ av lajv det är de anmäler sig till. Beskriv gärna kortfattat miljö (tex medeltid, vilda västern) och stämning (tex familjevänligt, tungt förtrycksspel).</td>
-    				<td><textarea id="ContentDescription" name="ContentDescription" rows="4" cols="150" maxlength="60000" ><?php echo htmlspecialchars($larp->ContentDescription); ?></textarea></td>
+    				<td><textarea id="ContentDescription" name="ContentDescription" rows="4" style='width:80%;' maxlength="60000" ><?php echo htmlspecialchars($larp->ContentDescription); ?></textarea></td>
     			</tr>
     			<tr>
     				<td><label for="StartDate">Startdatum</label></td>
@@ -186,6 +186,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             			<input type="radio" id="HasAlchemy_no" name="HasAlchemy" value="0" <?php if (!$larp->hasAlchemy()) echo 'checked="checked"'?>> 
             			<label for="HasAlchemy_no">Nej</label>
 					</td>
+    			</tr>
+    			<tr>
+    				<td><label for="LastDayAlchemySupplier">Sista dag för lövjeristinformaiton</label><br>Sista dagen som lövjeristerna får lägga upp vilka ingredienser de tar med sig.</td>
+    				<td><input type="date" id="LastDayAlchemySupplier"
+    					name="LastDayAlchemySupplier" value="<?php echo $larp->LastDayAlchemySupplier; ?>" size="50"></td>
+    			</tr>
+    			<tr>
+    				<td><label for="LastDayAlchemySupplier">Sista dag för alkemistinformaiton</label><br>Sista dagen som alkemisterna får lägga upp och önska recept.</td>
+    				<td><input type="date" id="LastDayAlchemy"
+    					name="LastDayAlchemy" value="<?php echo $larp->LastDayAlchemy; ?>" size="50"></td>
     			</tr>
     			<tr>
     				<td><label for=HasMagic>Magi</label></td>

@@ -80,10 +80,12 @@ function openTab(evt, tabName) {
     	    $groups = Group::getGroupsForPerson($current_person->Id, $current_larp->CampaignId);
     	    $roles = $current_person->getRoles($current_larp);
     	    $registration = $current_person->getRegistration($current_larp);
+    	    $reserve_registration = $current_person->getReserveRegistration($current_larp);
 	    } else {
 	        $groups = array();
 	        $roles = array();
 	        $registration = null;
+	        $reserve_registration = null;
 	    }
 	    
 	    //Först den aktiva personen
@@ -96,8 +98,8 @@ function openTab(evt, tabName) {
 	        $item .=  "&nbsp;<a href='logic/delete_person.php?id=" . $current_person->Id . "'><i class='fa-solid fa-trash' title='Ta bort deltagare'></i></a>";
 	    }
 	    $item .= "</label>";
-	    if (empty($registration) && !empty($current_larp) && $current_larp->mayRegister() && !empty($roles)) $item .= " &nbsp;<a href='person_registration_form.php'><button class='button-18'>Anmäl</button></a>";
-	        
+	    if (empty($registration) && empty($reserve_registration) && !empty($current_larp) && $current_larp->mayRegister() && !empty($roles)) $item .= " &nbsp;<a href='person_registration_form.php'><button class='button-18'>Anmäl</button></a>";
+	    if (!empty($reserve_registration)) $item .=  " (Står på reservlistan)";    
 	    $item .=  "</div>";
 	    $items[] = $item;
 	    
@@ -601,15 +603,20 @@ function openTab(evt, tabName) {
  
         	    echo "<div class='itemcontainer'>";
         	    $supplier = Alchemy_Supplier::getForRole($role);
+        	    $supplierLastDay = $current_larp->getLastDayAlchemySupplier();
         	    if ($supplier->allAmountOfIngredientsApproved($current_larp) &&
         	        $supplier->hasDoneWorkshop() &&
-        	        $supplier->hasIngredientList($current_larp)) echo "Allt godkänt";
-    	        else {
+        	        $supplier->hasIngredientList($current_larp)) {
+        	            echo "Allt godkänt";
+        	            if (!empty($supplierLastDay)) echo "<br>Du kan lägga till ingredienser fram till den $supplierLastDay.<br>";
+    	        } else {
     	            if (!$supplier->hasIngredientList($current_larp)) {
     	                echo showParticipantStatusIcon(false,"Du har ingen ingredienslista");
+    	                if (!empty($supplierLastDay)) echo "<br>Sista dag att mata in ingredienser är $supplierLastDay.<br>";
     	            }
     	            if (!$supplier->allAmountOfIngredientsApproved($current_larp)) {
     	                echo showParticipantStatusIcon(false,"Antalet ingredienser är ännu inte godkänt");
+    	                if (!empty($supplierLastDay)) echo "<br>Du kan ändra fram till den $supplierLastDay eller tills det är godkänt.<br>";
     	            }
     	            if (!$supplier->hasDoneWorkshop()) {
     	                echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om lövjeri");
@@ -628,11 +635,16 @@ function openTab(evt, tabName) {
         	    echo "<div class='itemcontainer'>";
         	    
         	    $recipes = $alchemist->getRecipes(false);
+        	    $alchemistLastDay = $current_larp->getLastDayAlchemy();
         	    if ($alchemist->recipeListApproved() && $alchemist->hasDoneWorkshop() &&
-        	        !empty($recipes)) echo "Allt godkänt";
-    	        else {
+        	        !empty($recipes)) {
+        	            echo "Allt godkänt";
+        	            if (!empty($alchemistLastDay)) echo "<br>Du kan skapa/önska recept fram till den $alchemistLastDay.<br>";
+        	            
+    	        } else {
     	            if (empty($recipes)) {
-    	                echo showParticipantStatusIcon(false, "Din receptlist är tom");
+    	                echo showParticipantStatusIcon(false, "Din receptlista är tom");
+    	                if (!empty($alchemistLastDay)) echo "<br>Sista dag att skap/önska recept är $alchemistLastDay.<br>";
     	            }
     	            if (!$alchemist->recipeListApproved()) {
     	                echo showParticipantStatusIcon(false,"Din receptlista är inte godkänd, än");
