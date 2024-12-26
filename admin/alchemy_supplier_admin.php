@@ -91,8 +91,12 @@ include 'alchemy_navigation.php';
                     echo "</form>\n";
                 }
                 echo "</td>\n";
-                echo "<td>".$supplier->appoximateValue($current_larp)." $currency</td>\n";
-                echo "<td>". showStatusIcon($supplier->allAmountOfIngredientsApproved($current_larp)) ."</td>\n";
+                echo "<td>";
+                if ($hasAmount) echo $supplier->appoximateValue($current_larp)." $currency";
+                echo "</td>\n";
+                echo "<td>";
+                if ($hasAmount) echo showStatusIcon($supplier->allAmountOfIngredientsApproved($current_larp));
+                echo "</td>\n";
                 echo "<td>" . showStatusIcon($supplier->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='alchemy_supplier_admin.php?operation=delete&Id=" . $supplier->Id . "' onclick='return confirm(\"Är du säker på att du vill ta bort $role->Name som lövjerist?\");'><i  class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
@@ -108,10 +112,7 @@ include 'alchemy_navigation.php';
             echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                 "<th onclick='sortTable(1, \"$tableId\")'>Grupp</th>".
                 "<th onclick='sortTable(2, \"$tableId\")'>Spelas av</th>".
-                "<th onclick='sortTable(3, \"$tableId\")'>Antal ingredienser<br>per nivå</th>".
-                "<th onclick='sortTable(4, \"$tableId\")'>Ungefärligt värde<br>på ingredienser</th>".
-                "<th onclick='sortTable(5, \"$tableId\")'>Ingredienslistan<br>är godkänd</th>".
-                "<th onclick='sortTable(6, \"$tableId\")'>Workshop<br>deltagit</th>".
+                "<th onclick='sortTable(3, \"$tableId\")'>Workshop<br>deltagit</th>".
                 "<th></th>";
             
             foreach ($suppliersNotComing as $supplier) {
@@ -132,22 +133,6 @@ include 'alchemy_navigation.php';
                 echo "<td>";
                 echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person);
                 echo "</td>";
-                echo "<td>";
-                $hasAmount = false;
-                $amount_per_level = $supplier->numberOfIngredientsPerLevel($current_larp);
-                foreach ($amount_per_level as $level => $amount) {
-                    if ($amount == 0) continue;
-                    $hasAmount = true;
-                    echo "Nivå $level: $amount st<br>";
-                }
-                if ($roleNotComing && $hasAmount) {
-                    echo "<form action='logic/clear_supplier_ingredient_list.php' method='post' style='display:inline-block'><input type='hidden' name='SupplierId' value='$supplier->Id'>\n";
-                    echo "<button type='submit'>Töm listan</button>";
-                    echo "</form>\n";
-                }
-                echo "</td>\n";
-                echo "<td>".$supplier->appoximateValue($current_larp)." $currency</td>\n";
-                echo "<td>". showStatusIcon($supplier->allAmountOfIngredientsApproved($current_larp)) ."</td>\n";
                 echo "<td>" . showStatusIcon($supplier->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='alchemy_supplier_admin.php?operation=delete&Id=" . $supplier->Id . "' onclick='return confirm(\"Är du säker på att du vill ta bort $role->Name som lövjerist?\");'><i  class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";

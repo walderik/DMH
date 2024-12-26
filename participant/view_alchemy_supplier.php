@@ -110,9 +110,7 @@ input {
 				    echo "</td>";
 				    
 				    echo "<td>";
-				    if ($amount->isApproved()) echo showStatusIcon(true);
-				    else echo showQuestionmarkIcon();
-				    
+				    echo showStatusIcon($amount->isApproved());
 				    echo "</td>\n";
 				    echo "<td>";
 				    if (!$amount->isApproved() && $current_larp->isAlchemySupplierInputOpen()) echo "<a href='view_alchemy_supplier.php?operation=delete&supplierIngredientId=$amount->Id&id=$role->Id'><i class='fa-solid fa-trash'></i>";
