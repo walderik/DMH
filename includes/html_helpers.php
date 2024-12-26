@@ -170,15 +170,18 @@ function ja_nej($val) {
 }
 
 
-function showStatusIcon($value, ?string $fix_url = NULL) {
+function showStatusIcon($value, ?string $fix_url = NULL, ?string $unfix_url = NULL) {
     if ($value == true or $value == 1) {
-        return '<img src="../images/ok-icon.png" alt="OK" width="20" height="20">';
+        if (isset($unfix_url) && !is_null($unfix_url)) {
+            return "<a href='$unfix_url'><img src='../images/ok-icon.png' alt='OK' width='20' height='20'></a>";
+        }
+        else return '<img src="../images/ok-icon.png" alt="OK" width="20" height="20">';
     }
     if ($value == false or $value == 0) {
         if (isset($fix_url) && !is_null($fix_url)) {
             return "<a href='$fix_url'><img src='../images/alert-icon.png' alt='Varning' width='20' height='20'></a>";
         }
-        return '<img src="../images/alert-icon.png" alt="Varning" width="20" height="20">';
+        else return '<img src="../images/alert-icon.png" alt="Varning" width="20" height="20">';
     }
 }
 
