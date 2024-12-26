@@ -165,8 +165,8 @@ class AlchemyRecipe_PDF extends FPDF {
         $this->MultiCell(100,6,encode_utf_to_iso($larpname),0); # 1- ger ram runt rutan så vi ser hur stor den är
 
         $this->SetXY($left-4, 260);
-        $txt = "OFF: Alkemiskt recept nivå $recipe->Level. Har du hittat det är det en del av en intrig. Se till det används";
-        $this->MultiCell(50,4,encode_utf_to_iso($txt),0); # 1- ger ram runt rutan så vi ser hur stor den är
+        $txt = "OFF: Alkemiskt recept nivå $recipe->Level. Har du hittat det är det en del av en intrig. Se till att det används";
+        $this->MultiCell(46,3,encode_utf_to_iso($txt),0); # 1- ger ram runt rutan så vi ser hur stor den är
         
     }
      
