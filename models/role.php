@@ -983,7 +983,7 @@ class Role extends BaseModel{
     
     public function hasRegisteredWhatHappened(LARP $larp) {
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
-        if (!empty($larp_role->WhatHappened) OR !empty($larp_role->WhatHappendToOthers)) return true;
+        if (!empty($larp_role->WhatHappened) OR !empty($larp_role->WhatHappendToOthers) || !empty($larp_role->WhatHappensAfterLarp)) return true;
         
         $intrigues = Intrigue::getAllIntriguesForRole($this->Id, $larp->Id);
         foreach ($intrigues as $intrigue) {

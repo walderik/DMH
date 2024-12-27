@@ -182,6 +182,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
 
 			<tr><td valign="top" class="header">Kvarvarande intriger</td><td><?php echo $larp_group->RemainingIntrigues; ?></td></tr>
+			<tr><td valign="top" class="header">Vad har hänt sedan senaste lajvet?</td><td><?php echo $larp_group->WhatHappenedSinceLastLarp; ?></td></tr>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $group->OtherInformation;?></td></tr>
 			<tr><td valign="top" class="header">Uppskattat<br>antal medlemmar</td><td><?php echo $larp_group->ApproximateNumberOfMembers;?></td></tr>
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
@@ -248,11 +249,13 @@ include 'navigation.php';
 		<h2>Intrig <a href='edit_group_intrigue.php?id=<?php echo $group->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php echo $larp_group->Intrigue; ?>		<?php 
-		if (!empty($larp_group->WhatHappened) || !empty($larp_group->WhatHappendToOthers)) {
+		if (!empty($larp_group->WhatHappened) || !empty($larp_group->WhatHappendToOthers) || !empty($larp_group->WhatHappensAfterLarp)) {
 		    echo "<h3>Vad hände med/för $group->Name ?</h3>";
 		    echo  nl2br(htmlspecialchars($larp_group->WhatHappened));
 		    echo "<h3>Vad hände med/för andra?</h3>";
 		    echo  nl2br(htmlspecialchars($larp_group->WhatHappendToOthers));
+		    echo "<h3>Vad händer fram till nästa lajv?</h3>";
+		    echo  nl2br(htmlspecialchars($larp_group->WhatHappensAfterLarp));
 		}
 		    ?>
 		

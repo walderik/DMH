@@ -191,6 +191,11 @@ include 'navigation.php';
     	   <?php echo nl2br(htmlspecialchars($larp_group->RemainingIntrigues)); ?>
     	   </div>
     
+   	   	   <div class='itemcontainer'>
+           <div class='itemname'>Vad har hänt?</div>
+    	   <?php echo nl2br(htmlspecialchars($larp_group->WhatHappenedSinceLastLarp)); ?>
+    	   </div>
+    
     
     	   <div class='itemcontainer'>
            <div class='itemname'>Uppskattat antal medlemmar på lajvet</div>
@@ -523,12 +528,16 @@ include 'navigation.php';
 		        echo "<br><strong>Vad hände för $group->Name?</strong><br>";
 		        if (isset($previous_larp_group->WhatHappened) && $previous_larp_group->WhatHappened != "")
 		            echo nl2br(htmlspecialchars($previous_larp_group->WhatHappened));
-		            else echo "Inget rapporterat";
+	            else echo "Inget rapporterat";
 	            echo "<br><strong>Vad hände för andra?</strong><br>";
 	            if (isset($previous_larp_group->WhatHappendToOthers) && $previous_larp_group->WhatHappendToOthers != "")
 	                echo nl2br(htmlspecialchars($previous_larp_group->WhatHappendToOthers));
-	                else echo "Inget rapporterat";
-	            echo "</div>";
+                else echo "Inget rapporterat";
+                echo "<br><strong>Vad händer fram till nästa lajv?</strong><br>";
+                if (isset($previous_larp_group->WhatHappensAfterLarp) && $previous_larp_group->WhatHappensAfterLarp != "")
+                    echo nl2br(htmlspecialchars($previous_larp_group->WhatHappensAfterLarp));
+                else echo "Inget rapporterat";
+                echo "</div>";
 		                
 		    }
 		}

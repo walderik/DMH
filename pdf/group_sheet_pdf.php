@@ -477,7 +477,7 @@ class Group_PDF extends PDF_MemImage {
                             
                             
                             $text = (isset($intrigueActor->WhatHappened) && $intrigueActor->WhatHappened != "") ? $intrigueActor->WhatHappened : "Inget rapporterat";
-                            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                            $this->MultiCell(0, static::$cell_y-1, encode_utf_to_iso($text), 0, 'L');
                             $y = $this->GetY() + $space;
                             $this->SetXY($left, $y);
                             
@@ -498,7 +498,7 @@ class Group_PDF extends PDF_MemImage {
                     $this->SetFont('Helvetica','',static::$text_fontsize);
                     
                     $text = (isset($previous_larp_group->WhatHappened) && $previous_larp_group->WhatHappened != "") ? $previous_larp_group->WhatHappened : "Inget rapporterat";
-                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                    $this->MultiCell(0, static::$cell_y-1, encode_utf_to_iso($text), 0, 'L');
                     $y = $this->GetY() + $space;
                     $this->SetXY($left, $y);
                     
@@ -513,10 +513,24 @@ class Group_PDF extends PDF_MemImage {
                     $this->SetFont('Helvetica','',static::$text_fontsize);
                     
                     $text = (isset($previous_larp_group->WhatHappendToOthers) && $previous_larp_group->WhatHappendToOthers != "") ? $previous_larp_group->WhatHappendToOthers : "Inget rapporterat";
-                    $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                    $this->MultiCell(0, static::$cell_y-1, encode_utf_to_iso($text), 0, 'L');
                     $y = $this->GetY() + $space;
                     $this->SetXY($left, $y);
-                 }
+
+                    $this->current_left = $left;
+                    $this->SetXY($this->current_left, $y);
+                    $this->SetFont('Helvetica','B',static::$text_fontsize);
+                    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad händer efter lajvet?"),0,0,'L');
+                    
+                    $y = $this->GetY() + $space*3;
+                    $this->SetXY($this->current_left, $y);
+                    $this->SetFont('Helvetica','',static::$text_fontsize);
+                    
+                    $text = (isset($previous_larp_group->WhatHappensAfterLarp) && $previous_larp_group->WhatHappensAfterLarp != "") ? $previous_larp_group->WhatHappensAfterLarp : "Inget rapporterat";
+                    $this->MultiCell(0, static::$cell_y-1, encode_utf_to_iso($text), 0, 'L');
+                    $y = $this->GetY() + $space;
+                    $this->SetXY($left, $y);
+                }
                 
             }
         }

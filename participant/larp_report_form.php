@@ -147,6 +147,24 @@ textarea{
 				</div>
 			<?php } ?>
 
+			<?php 
+			if (isset($role)) {
+			?>
+				<div class='itemcontainer'>
+	       		<div class='itemname'><label for="WhatHappensAfterLarp">Vad gör <?php echo $role->Name; ?> efter lajvet?</label></div>
+	       		Vad gör <?php echo $role->Name; ?> fram till nästa lajv? Skriv det du vill att vi ska försöka ta hänsyn till i intrigerna.<br>
+				<textarea id="WhatHappensAfterLarp" name="WhatHappensAfterLarp" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappensAfterLarp); ?></textarea>
+				</div>
+			<?php } else {?>
+				<div class='itemcontainer'>
+	       		<div class='itemname'><label for="WhatHappensAfterLarp">Vad gör <?php echo $group->Name; ?> efter lajvet?</label></div>
+				Vad gör <?php echo $group->Name; ?> fram till nästa lajv? Skriv det du vill att vi ska försöka ta hänsyn till i intrigerna.<br>
+				<textarea id="WhatHappensAfterLarp" name="WhatHappensAfterLarp" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappensAfterLarp); ?></textarea>
+				</div>
+			<?php } ?>
+
+
+
 			 <div class='center'><input type="submit" class='button-18' value="Spara"></div>
 		</form>
 	</div>

@@ -18,8 +18,10 @@ class LARP_Group extends BaseModel{
     public $StartingMoney;
     public $EndingMoney;
     public $Result;
+    public $WhatHappenedSinceLastLarp;
     public $WhatHappened;
     public $WhatHappendToOthers;
+    public $WhatHappensAfterLarp;
     
     public static $orderListBy = 'GroupId';
     
@@ -47,8 +49,10 @@ class LARP_Group extends BaseModel{
         if (isset($arr['StartingMoney'])) $this->StartingMoney = $arr['StartingMoney'];
         if (isset($arr['EndingMoney'])) $this->EndingMoney = $arr['EndingMoney'];
         if (isset($arr['Result'])) $this->Result = $arr['Result'];
+        if (isset($arr['WhatHappenedSinceLastLarp'])) $this->WhatHappenedSinceLastLarp = $arr['WhatHappenedSinceLastLarp'];
         if (isset($arr['WhatHappened'])) $this->WhatHappened = $arr['WhatHappened'];
         if (isset($arr['WhatHappendToOthers'])) $this->WhatHappendToOthers = $arr['WhatHappendToOthers'];
+        if (isset($arr['WhatHappensAfterLarp'])) $this->WhatHappensAfterLarp = $arr['WhatHappensAfterLarp'];
         
     }
     
@@ -78,13 +82,13 @@ class LARP_Group extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_larp_group SET WantIntrigue=?, Intrigue=?, HousingRequestId=?, 
             TentType=?, TentSize=?, TentHousing=?, TentPlace=?, RemainingIntrigues=? , 
             ApproximateNumberOfMembers=?, NeedFireplace=?, UserMayEdit=?, StartingMoney=?, EndingMoney=?, Result=?,
-            WhatHappened=?, WhatHappendToOthers=?
+            WhatHappenedSinceLastLarp=?, WhatHappened=?, WhatHappendToOthers=?, WhatHappensAfterLarp=?
             WHERE GroupId=? AND LARPId=?;");
         
         if (!$stmt->execute(array($this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, 
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, $this->RemainingIntrigues, 
             $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, $this->StartingMoney, $this->EndingMoney, $this->Result,
-            $this->WhatHappened, $this->WhatHappendToOthers,
+            $this->WhatHappenedSinceLastLarp, $this->WhatHappened, $this->WhatHappendToOthers, $this->WhatHappensAfterLarp,
             $this->GroupId, $this->LARPId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -98,12 +102,12 @@ class LARP_Group extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp_group (GroupId, LARPId, WantIntrigue, Intrigue, 
             HousingRequestId, TentType, TentSize, TentHousing, TentPlace, RemainingIntrigues, ApproximateNumberOfMembers, NeedFireplace, UserMayEdit, 
-            StartingMoney, EndingMoney, Result, WhatHappened, WhatHappendToOthers) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?);");
+            StartingMoney, EndingMoney, Result, WhatHappenedSinceLastLarp, WhatHappened, WhatHappendToOthers, WhatHappensAfterLarp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, 
             $this->HousingRequestId, $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, 
-            $this->StartingMoney, $this->EndingMoney, $this->Result, $this->WhatHappened, $this->WhatHappendToOthers))) {
+            $this->StartingMoney, $this->EndingMoney, $this->Result, $this->WhatHappenedSinceLastLarp, $this->WhatHappened, $this->WhatHappendToOthers, $this->WhatHappensAfterLarp))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");

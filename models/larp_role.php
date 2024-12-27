@@ -8,6 +8,7 @@ class LARP_Role extends BaseModel{
     public $Intrigue;
     public $WhatHappened;
     public $WhatHappendToOthers;
+    public $WhatHappensAfterLarp;
     public $StartingMoney;
     public $EndingMoney;
     public $Result;
@@ -24,6 +25,7 @@ class LARP_Role extends BaseModel{
         if (isset($post['Intrigue'])) $larp_role->Intrigue = $post['Intrigue']; 
         if (isset($post['WhatHappened'])) $larp_role->WhatHappened = $post['WhatHappened']; 
         if (isset($post['WhatHappendToOthers'])) $larp_role->WhatHappendToOthers = $post['WhatHappendToOthers']; 
+        if (isset($post['WhatHappensAfterLarp'])) $larp_role->WhatHappensAfterLarp = $post['WhatHappensAfterLarp'];
         if (isset($post['StartingMoney'])) $larp_role->StartingMoney = $post['StartingMoney']; 
         if (isset($post['EndingMoney'])) $larp_role->EndingMoney = $post['EndingMoney']; 
         if (isset($post['Result'])) $larp_role->Result = $post['Result'];
@@ -79,11 +81,11 @@ class LARP_Role extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_larp_role SET Intrigue=?, WhatHappened=?,
-                                                                  WhatHappendToOthers=?, StartingMoney=?, EndingMoney=?, Result=?, 
+                                                                  WhatHappendToOthers=?, WhatHappensAfterLarp=?, StartingMoney=?, EndingMoney=?, Result=?, 
                                                                   IsMainRole=?, UserMayEdit=? WHERE LARPId=? AND RoleId=?;");
         
         if (!$stmt->execute(array($this->Intrigue, $this->WhatHappened, 
-                                    $this->WhatHappendToOthers, $this->StartingMoney, $this->EndingMoney, $this->Result, 
+            $this->WhatHappendToOthers, $this->WhatHappensAfterLarp, $this->StartingMoney, $this->EndingMoney, $this->Result, 
             $this->IsMainRole, $this->UserMayEdit, $this->LARPId, $this->RoleId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -96,11 +98,11 @@ class LARP_Role extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp_role (LARPId, RoleId, Intrigue, WhatHappened,
-                                                                WhatHappendToOthers, StartingMoney, EndingMoney, Result, 
-                                                                IsMainRole, UserMayEdit) VALUES (?,?,?,?,?,?,?,?,?,?);");
+                                                                WhatHappendToOthers, WhatHappensAfterLarp, StartingMoney, EndingMoney, Result, 
+                                                                IsMainRole, UserMayEdit) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Intrigue, $this->WhatHappened,
-                                    $this->WhatHappendToOthers, $this->StartingMoney, $this->EndingMoney, $this->Result,
+            $this->WhatHappendToOthers, $this->WhatHappensAfterLarp, $this->StartingMoney, $this->EndingMoney, $this->Result,
                                     $this->IsMainRole, $this->UserMayEdit))) {
                 $this->connect()->rollBack();
                 $stmt = null;

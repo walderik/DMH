@@ -37,6 +37,10 @@ function whatHappenedGroup(Group $group) {
             echo "<h3>Vad såg $group->Name hände med andra?</h3>";
             echo nl2br($larp_group->WhatHappenedToOthers);
         }
+        if (!empty($larp_group->WhatHappensAfterLarp)) {
+            echo "<h3>Vad gör $group->Name fram till nästa lajv?</h3>";
+            echo nl2br($larp_group->WhatHappensAfterLarp);
+        }
         echo "</div>";
     }
 }
@@ -76,6 +80,10 @@ function whatHappenedRole(Role $role) {
         if (!empty($larp_role->WhatHappenedToOthers)) {
             echo "<h3>Vad såg $role->Name hände med andra?</h3>";
             echo nl2br($larp_role->WhatHappenedToOthers);
+        }
+        if (!empty($larp_role->WhatHappensAfterLarp)) {
+            echo "<h3>Vad gör $role->Name fram till nästa lajv?</h3>";
+            echo nl2br($larp_role->WhatHappensAfterLarp);
         }
         echo "</div>";
     }

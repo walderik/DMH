@@ -626,6 +626,20 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
                 
+                $this->current_left = $left;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','B',static::$text_fontsize);
+                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso("Vad händer efter lajvet?"),0,0,'L');
+                
+                $y = $this->GetY() + $space*3;
+                $this->SetXY($this->current_left, $y);
+                $this->SetFont('Helvetica','',static::$text_fontsize);
+                
+                $text = encode_utf_to_iso((isset($previous_larp_role->WhatHappensAfterLarp) && $previous_larp_role->WhatHappensAfterLarp != "") ? $previous_larp_role->WhatHappensAfterLarp : "Inget rapporterat");
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+                
             }
         
         }

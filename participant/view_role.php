@@ -537,7 +537,12 @@ include 'navigation.php';
 	                echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
                 else echo "Inget rapporterat";
                 echo "</p>";
-	            echo "</div>";
+                echo "<p><strong>Vad händer efter lajvet?</strong><br>";
+                if (isset($previous_larp_role->WhatHappensAfterLarp) && $previous_larp_role->WhatHappensAfterLarp != "")
+                    echo nl2br(htmlspecialchars($previous_larp_role->WhatHappensAfterLarp));
+                else echo "Inget rapporterat";
+                echo "</p>";
+                echo "</div>";
 		                
 		    }
 		    

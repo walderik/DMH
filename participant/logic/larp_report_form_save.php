@@ -19,6 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $larp_role->WhatHappened = $_POST['WhatHappened'];
         $larp_role->WhatHappendToOthers = $_POST['WhatHappendToOthers'];
+        $larp_role->WhatHappensAfterLarp = $_POST['WhatHappensAfterLarp'];
         $larp_role->update();
     
         if (isset($_POST['IngtrigueActorId'])) {

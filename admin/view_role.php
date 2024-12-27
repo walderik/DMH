@@ -86,11 +86,13 @@ include 'navigation.php';
     		<div>
     		<?php    echo nl2br(htmlspecialchars($larp_role->Intrigue)); ?>
     		<?php 
-    		if (!empty($larp_role->WhatHappened) || !empty($larp_role->WhatHappendToOthers)) {
+    		if (!empty($larp_role->WhatHappened) || !empty($larp_role->WhatHappendToOthers) || !empty($larp_role->WhatHappensAfterLarp)) {
     		    echo "<h3>Vad hände med/för $role->Name ?</h3>";
     		    echo  nl2br(htmlspecialchars($larp_role->WhatHappened));
     		    echo "<h3>Vad hände med/för andra?</h3>";
     		    echo  nl2br(htmlspecialchars($larp_role->WhatHappendToOthers));
+    		    echo "<h3>Vad händer fram till nästa lajv?</h3>";
+    		    echo  nl2br(htmlspecialchars($larp_role->WhatHappensAfterLarp));
     		}
     		    ?>
     		

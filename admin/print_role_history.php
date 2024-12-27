@@ -31,12 +31,16 @@ if (isset($previous_larps) && count($previous_larps) > 0) {
         echo "<br><strong>Vad hände för $role->Name?</strong><br>";
         if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
             echo nl2br(htmlspecialchars($previous_larp_role->WhatHappened));
-            else echo "Inget rapporterat";
-            echo "<br><strong>Vad hände för andra?</strong><br>";
-            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
-                echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
-                else echo "Inget rapporterat";
-                echo "</div>";
+        else echo "Inget rapporterat";
+        echo "<br><strong>Vad hände för andra?</strong><br>";
+        if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
+            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
+        else echo "Inget rapporterat";
+        echo "<br><strong>Vad händer fram till nästa lajv?</strong><br>";
+        if (isset($previous_larp_role->WhatHappensAfterLarp) && $previous_larp_role->WhatHappensAfterLarp != "")
+            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappensAfterLarp));
+        else echo "Inget rapporterat";
+        echo "</div>";
                 
     }
     if (!empty($role->PreviousLarps)) {

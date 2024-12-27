@@ -43,8 +43,12 @@
 	            echo "<br><strong>Vad hände för andra?</strong><br>";
 	            if (isset($previous_larp_group->WhatHappendToOthers) && $previous_larp_group->WhatHappendToOthers != "")
 	                echo nl2br(htmlspecialchars($previous_larp_group->WhatHappendToOthers));
-	                else echo "Inget rapporterat";
-	            echo "</div>";
+                else echo "Inget rapporterat";
+                echo "<br><strong>Vad händer fram till nästa lajv?</strong><br>";
+                if (isset($previous_larp_group->WhatHappensAfterLarp) && $previous_larp_group->WhatHappensAfterLarp != "")
+                    echo nl2br(htmlspecialchars($previous_larp_group->WhatHappensAfterLarp));
+                else echo "Inget rapporterat";
+                echo "</div>";
 		                
 		    }
 		}

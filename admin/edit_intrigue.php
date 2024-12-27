@@ -99,8 +99,12 @@ include 'navigation.php';
 	            echo "<br><strong>Vad hände för andra?</strong><br>";
 	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
 	                echo $previous_larp_role->WhatHappendToOthers;
-	                else echo "Inget rapporterat";
-	            echo "</div>";
+                else echo "Inget rapporterat";
+                echo "<br><strong>Vad händer fram till nästa lajv?</strong><br>";
+                if (isset($previous_larp_role->WhatHappensAfterLarp) && $previous_larp_role->WhatHappensAfterLarp != "")
+                    echo $previous_larp_role->WhatHappensAfterLarp;
+                else echo "Inget rapporterat";
+                echo "</div>";
 		                
 		    }
 		}

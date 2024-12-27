@@ -49,6 +49,11 @@ include 'navigation.php';
 			</div>
 
 	   		<div class='itemcontainer'>
+           	<div class='itemname'>Vad har hänt?</div>
+			<?php echo nl2br(htmlspecialchars($larp_group->WhatHappenedSinceLastLarp));?>
+			</div>
+
+	   		<div class='itemcontainer'>
            	<div class='itemname'>Antal medlemmar</div>
 			<?php echo $larp_group->ApproximateNumberOfMembers;?>
 			</div>

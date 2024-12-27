@@ -91,6 +91,12 @@ include 'navigation.php';
 		</div>
  
 		<div class='itemcontainer'>
+       	<div class='itemname'><label for="WhatHappenedSinceLastLarp">Vad har hänt?</label></div>
+       	Vad har hänt för gruppen sedan senaste lajvet? Om gruppen är ny behöver ni inte skriva något här.<br>
+		<textarea id="WhatHappenedSinceLastLarp" name="WhatHappenedSinceLastLarp" rows="4" cols="100" maxlength="60000"></textarea>
+		</div>
+			
+		<div class='itemcontainer'>
        	<div class='itemname'><label for="ApproximateNumberOfMembers">Antal medlemmar</label>&nbsp;<font style="color:red">*</font></div>
        	Ungefär hur många gruppmedlemmar kommer ni att bli?<br>
 		<input type="number" id="ApproximateNumberOfMembers" name="ApproximateNumberOfMembers"  maxlength="5" min="1" max="40" required>
