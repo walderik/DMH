@@ -92,7 +92,7 @@ include 'navigation.php';
  
 		<div class='itemcontainer'>
        	<div class='itemname'><label for="WhatHappenedSinceLastLarp">Vad har hänt?</label></div>
-       	Vad har hänt för gruppen sedan senaste lajvet? Om gruppen är ny behöver ni inte skriva något här.<br>
+       	Vad har hänt för gruppen sedan senaste lajvet? Skriv det du vill att vi ska försöka ta hänsyn till i intrigerna. Om gruppen är ny behöver ni inte skriva något här.<br>
 		<textarea id="WhatHappenedSinceLastLarp" name="WhatHappenedSinceLastLarp" rows="4" cols="100" maxlength="60000"></textarea>
 		</div>
 			
