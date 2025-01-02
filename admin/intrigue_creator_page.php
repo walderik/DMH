@@ -30,7 +30,7 @@ th {
             echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Intrigidéer</th>";
             echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Mörk Hemlighet</th>";
             echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Mörk Hemlighet idéer</th>";
-            // echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Anteckningar</th>";
+            echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Anteckningar</th>";
             
             foreach ($characters as $character) {
                 echo "<tr>";
@@ -54,13 +54,18 @@ th {
                 echo "<td>";
                 echo $character->DarkSecretIntrigueIdeas;
                 echo "</td>\n";
+
+                $referer = '../intrigue_creator_page.php';
+                echo "<td>";
+                echo "<form action='logic/edit_intrigue_save.php' method='post'>";
+                echo "<input type='hidden' id='Id' name='Id' value='" . $character->Id . "'>";
+                echo "<input type='hidden' id='Referer' name='Referer' value='" . htmlspecialchars($referer) . "'>";
+                echo "<textarea id='OrganizerNotes' name='OrganizerNotes' rows='5' cols='50' maxlength='60000'>" . htmlspecialchars($character->OrganizerNotes) . "</textarea><br>";
+                echo "<input type='submit' value='Spara'>";
+                echo "</form>";
+                echo "</td>";
                 
                 echo "</tr>";
-
-                //TODO
-                // echo "<td>";
-                // echo $character->OrganizerNotes;
-                // echo "</td>\n";
                 }
             
                 echo "</table>";
