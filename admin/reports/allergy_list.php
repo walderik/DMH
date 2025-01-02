@@ -38,12 +38,12 @@ if (NormalAllergyType::isInUse()){
     $allAllergies = NormalAllergyType::all();
     
     foreach($allAllergies as $allergy) {
-        $persons = Person::getAllWithSingleAllergy($allergy, $current_larp);
+        $persons = Person::getAllWithSingleAllergyWithoutComment($allergy, $current_larp);
         if (isset($persons) && count($persons) > 0) {
             $rows = array();
             
             if ($variant == 1) {
-                $header = array('Namn','Ålder', 'Epost','Övrigt','Vald Mat');
+                $header = array('Namn','Ålder', 'Epost','Vald Mat');
                 if ($hasFoodChoices) $header[] = 'Matalternativ';
             } else {
                 $header = array('Namn-in','Namn-off','Grupp','Ålder','Vald Mat');
@@ -56,7 +56,7 @@ if (NormalAllergyType::isInUse()){
                 $registration=$person->getRegistration($current_larp);
                 if ($variant == 1) {
                     $personrow = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email,
-                        $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
+                        $registration->getTypeOfFood()->Name);
                     if ($hasFoodChoices) $personrow[] = $registration->FoodChoice;
                 } else {
                     $role = $person->getMainRole($current_larp);
@@ -79,31 +79,28 @@ if (NormalAllergyType::isInUse()){
         }
     }
     
-    //Multipla allergier
-    $persons = Person::getAllWithMultipleAllergies($current_larp);
+    //Multipla allergier, utan kommentar
+    $persons = Person::getAllWithMultipleAllergiesWithoutComment($current_larp);
     if (!empty($persons) && count($persons) > 0) {
         $rows = array();
 
         if ($variant == 1) {
-            $header = array('Namn','Ålder', 'Epost','Allergier','Övrigt','Vald Mat');
+            $header = array('Namn','Ålder', 'Epost','Allergier','Vald Mat');
             if ($hasFoodChoices) $header[] = 'Matalternativ';
         } else {
             $header = array('Namn-in','Namn-off','Grupp','Ålder','Vald Mat');
             if ($hasFoodChoices) $header[] = 'Matalternativ';
             $header[] = 'Allergier';
-            $header[] = 'Övrigt';
             if ($current_larp->ChooseParticipationDates) $header[] = 'Frånvarande';
         }
 
         
-        if ($hasFoodChoices) $rows[] = array('Namn','Ålder', 'Epost','Allergier','Övrigt','Vald Mat', 'Matalternativ');
-        else $rows[] = array('Namn','Ålder','Epost','Allergier','Övrigt','Vald Mat');
         
         foreach($persons as $person) {
             $registration=$person->getRegistration($current_larp);
             if ($variant == 1) {
                 $personrow = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email, commaStringFromArrayObject($person->getNormalAllergyTypes()),
-                    $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
+                    $registration->getTypeOfFood()->Name);
                 
                 if ($hasFoodChoices) $personrow[] = $registration->FoodChoice;
             } else {
@@ -114,7 +111,6 @@ if (NormalAllergyType::isInUse()){
                 $personrow = array($person->Name, $role->Name, $groupname, $person->getAgeAtLarp($current_larp), $registration->getTypeOfFood()->Name);
                 if ($hasFoodChoices) $personrow[] = $registration->FoodChoice;
                 $personrow[] = commaStringFromArrayObject($person->getNormalAllergyTypes());
-                $personrow[] = $person->FoodAllergiesOther;
                 if ($current_larp->ChooseParticipationDates) $personrow[]=$registration->LarpPartNotAttending;
                 
             }
@@ -130,8 +126,8 @@ if (NormalAllergyType::isInUse()){
     }
 }
 
-//Hitta alla som inte har någon vald allergi, men som har en kommentar
-$persons = Person::getAllWithoutAllergiesButWithComment($current_larp);
+//Hitta alla som inte har har en kommentar
+$persons = Person::getAllWithAllergyComment($current_larp);
 if (!empty($persons) && count($persons) > 0) {
     $rows = array();
     
@@ -149,10 +145,12 @@ if (!empty($persons) && count($persons) > 0) {
     
     foreach($persons as $person) {
         $registration=$person->getRegistration($current_larp);
-        
+        $allergies = commaStringFromArrayObject($person->getNormalAllergyTypes());
+        if (!empty($allergies)) $allergies = implode(", ", array($allergies, $person->FoodAllergiesOther));
+        else $allergies = $person->FoodAllergiesOther;
         if ($variant == 1) {
             $personrow = array($person->Name, $person->getAgeAtLarp($current_larp), $person->Email, 
-                $person->FoodAllergiesOther, $registration->getTypeOfFood()->Name);
+                $allergies, $registration->getTypeOfFood()->Name);
             
             if ($hasFoodChoices) $personrow[] = $registration->FoodChoice;
         } else {
@@ -162,7 +160,7 @@ if (!empty($persons) && count($persons) > 0) {
             if (isset($group)) $groupname = $group->Name;
             $personrow = array($person->Name, $role->Name, $groupname, $person->getAgeAtLarp($current_larp), $registration->getTypeOfFood()->Name);
             if ($hasFoodChoices) $personrow[] = $registration->FoodChoice;
-            $personrow[] = $person->FoodAllergiesOther;
+            $personrow[] = $allergies;
             if ($current_larp->ChooseParticipationDates) $personrow[]=$registration->LarpPartNotAttending;
             
         }
@@ -170,7 +168,7 @@ if (!empty($persons) && count($persons) > 0) {
         $rows[] = $personrow;
     }
     // add a page
-    $pdf->AddPage('s');
+    $pdf->AddPage('L');
     // print table
     $pdf->Table("Special", $header, $rows);
     

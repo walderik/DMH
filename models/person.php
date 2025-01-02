@@ -606,6 +606,23 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($allergy->Id, $larp->Id));
     }
     
+    public static function getAllWithSingleAllergyWithoutComment(NormalAllergyType $allergy, LARP $larp) {
+        if (is_null($allergy) OR is_null($larp)) return Array();
+        
+        $sql="SELECT * FROM regsys_person WHERE id IN ".
+            "(SELECT regsys_normalallergytype_person.PersonId FROM ".
+            "regsys_normalallergytype_person, regsys_registration, ".
+            "(SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".
+            "regsys_normalallergytype_person GROUP BY PersonId) as Counted WHERE amount = 1 AND Counted.PersonId = ".
+            "regsys_normalallergytype_person.PersonId AND ".
+            "regsys_normalallergytype_person.NormalAllergyTypeId=? AND ".
+            "regsys_registration.PersonId=regsys_normalallergytype_person.PersonId AND ".
+            "regsys_registration.NotComing = 0 AND ".
+            "regsys_registration.LARPId=?) AND FoodAllergiesOther = '' ORDER BY ".static::$orderListBy.";";
+        
+        return static::getSeveralObjectsqQuery($sql, array($allergy->Id, $larp->Id));
+    }
+    
     public static function getAllWithMultipleAllergies(LARP $larp) {
         if (is_null($larp)) return Array();
         
@@ -618,6 +635,21 @@ class Person extends BaseModel{
             "regsys_registration.PersonId = regsys_normalallergytype_person.PersonId AND ".
             "regsys_registration.NotComing = 0 AND ".
             "regsys_registration.LARPId=?) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    public static function getAllWithMultipleAllergiesWithoutComment(LARP $larp) {
+        if (is_null($larp)) return Array();
+        
+        $sql="SELECT * FROM regsys_person WHERE id IN ".
+            "(SELECT regsys_normalallergytype_person.PersonId FROM ".
+            "regsys_normalallergytype_person, regsys_registration, ".
+            "(SELECT PersonId, count(NormalAllergyTypeId) AS amount FROM ".
+            "regsys_normalallergytype_person GROUP BY PersonId) AS Counted WHERE amount > 1 AND ".
+            "Counted.PersonId = regsys_normalallergytype_person.PersonId AND ".
+            "regsys_registration.PersonId = regsys_normalallergytype_person.PersonId AND ".
+            "regsys_registration.NotComing = 0 AND ".
+            "regsys_registration.LARPId=?) AND FoodAllergiesOther = '' ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
@@ -635,8 +667,7 @@ class Person extends BaseModel{
          if (is_null($larp)) return Array();
          
          $sql="SELECT * FROM regsys_person WHERE id IN ".
-             "(SELECT PersonId from regsys_registration WHERE LarpId =? AND NotComing = 0 AND PersonId NOT IN ".
-             "(SELECT PersonId FROM regsys_normalallergytype_person)) AND FoodAllergiesOther !='' ".
+             "(SELECT PersonId from regsys_registration WHERE LarpId =? AND NotComing = 0) AND FoodAllergiesOther !='' ".
              "ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
