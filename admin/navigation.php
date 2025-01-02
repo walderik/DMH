@@ -52,6 +52,7 @@
             <a href="../admin/subdivision_admin.php">Grupperingar</a>
             <a href="../admin/search_role_selectiondata.php">Sökning på karaktärer</a>
             <a href="../admin/intrigue_admin.php">Intrigspår</a>
+            <a href="../admin/intrigue_creator_page.php">Intrigskapare</a>
             <a href="../admin/timeline_admin.php">Körschema</a>
             <a href="../admin/commerce.php">Handel</a>
             
