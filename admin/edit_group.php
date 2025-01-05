@@ -55,8 +55,7 @@ function print_role($group_member) {
     echo " - ";
     echo $group_member->Profession;
 	echo ". Spelas av ";
-	echo "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>";
-	echo $group_member->getPerson()->Name . "</a>";
+	echo $group_member->getPerson()->getViewLink();
         
 	if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		echo ", ansvarig vuxen är ";

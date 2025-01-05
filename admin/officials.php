@@ -49,7 +49,8 @@ include 'navigation.php';
     foreach($persons as $person) {
         $registration = $person->getRegistration($current_larp);
         echo "<tr><td>\n";
-        echo "<a href ='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
+        echo $person->getViewLink();
+        echo "</td>\n";
         echo "<td>$person->Email ".contactEmailIcon($person)."</td><td>$person->PhoneNumber</td><td>\n";
         if (OfficialType::isInUse($current_larp)) echo commaStringFromArrayObject($registration->getOfficialTypes());
         echo "&nbsp;<a href='edit_official.php?id=$registration->Id' title='Redigera vald funktionärstyp'><i class='fa-solid fa-pen'></i></a>\n".
@@ -73,7 +74,7 @@ include 'navigation.php';
     foreach($persons as $person) {
         $registration = $person->getRegistration($current_larp);
         echo "<tr><td>";
-        echo "<a href ='view_person.php?id=$person->Id'>$person->Name</a>";
+        echo $person->getViewLink();
         echo "</td><td>$person->Email ".contactEmailIcon($person)."</td><td>$person->PhoneNumber</td>";
         if (OfficialType::isInUse($current_larp)) echo "<td>".commaStringFromArrayObject($registration->getOfficialTypes())."</td>";
         echo "<td>";

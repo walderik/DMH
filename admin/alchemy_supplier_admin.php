@@ -75,7 +75,7 @@ include 'alchemy_navigation.php';
 
                 echo "</td>";
                 echo "<td>";
-                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person);
+                echo $person->getViewLink().contactEmailIcon($person);
                 echo "</td>";
                 echo "<td>";
                 $hasAmount = false; 
@@ -131,7 +131,7 @@ include 'alchemy_navigation.php';
                 
                 echo "</td>";
                 echo "<td>";
-                echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person);
+                echo $person->getViewLink().contactEmailIcon($person);
                 echo "</td>";
                 echo "<td>" . showStatusIcon($supplier->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='alchemy_supplier_admin.php?operation=delete&Id=" . $supplier->Id . "' onclick='return confirm(\"Är du säker på att du vill ta bort $role->Name som lövjerist?\");'><i  class='fa-solid fa-trash'></i></td>\n";

@@ -50,16 +50,15 @@ function print_role($role, $group) {
     echo "<td>$role->Profession</td>";
 
     $person = $role->getPerson();
-    echo "<td><a href ='view_person.php?id=$person->Id'>$person->Name</a> </td>";
+    echo "<td>" . $person->getViewLink() . "</td>";
         
-    
     echo "<td>";
     if ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         echo "Ansvarig vuxen är ";
         $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
         if (!empty($registration->GuardianId)) { 
             $guardian = $registration->getGuardian();   
-            echo "<a href ='view_person.php?id=$guardian->Id'>$guardian->Name</a>"; 
+            echo $guardian->getViewLink();
         } else echo showStatusIcon(false);
         
     }
@@ -129,7 +128,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Gruppansvarig</td><td>
 			<?php if ($isRegistered) {
 			    if (isset($groupleader_registration) && !$groupleader_registration->isNotComing()) {
-			        echo "<a href ='view_person.php?id=$group->PersonId'>$groupleader->Name</a>";
+					echo $groupleader->getViewLink();
 			    } elseif (!isset($groupleader_registration)) {
 			        $reserveregistration = Reserve_Registration::loadByIds($groupleader->Id, $current_larp->Id);
     			    if (isset($reserveregistration)) echo "<s>$groupleader->Name</s> (på reservlistan)";

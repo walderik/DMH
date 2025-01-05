@@ -93,7 +93,7 @@ function openTab(evt, tabName) {
 	    $item .= "<input type='radio' id='PersonId_$current_person->Id' name='PersonId' value='$current_person->Id'";
 	    $item .=  'checked="checked"';
 	    $item .=  "> ";
-	    $item .=  "<label class='itemname' for='PersonId_$current_person->Id'><a href='view_person.php?id=" . $current_person->Id . "'>$current_person->Name</a>";
+	    $item .=  "<label class='itemname' for='PersonId_$current_person->Id'>" . $current_person->getViewLink();
 	    if($current_person->isNeverRegistered() && (!isset($roles) or count($roles) == 0) && (!isset($groups) or count($groups) == 0)) {
 	        $item .=  "&nbsp;<a href='logic/delete_person.php?id=" . $current_person->Id . "'><i class='fa-solid fa-trash' title='Ta bort deltagare'></i></a>";
 	    }
