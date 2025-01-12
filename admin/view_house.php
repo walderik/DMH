@@ -66,7 +66,7 @@ img {
     				    foreach ($personsInHouse as $personInHouse) {
         				    if ($personInHouse->isNotComing($current_larp)) continue;
         				    $personIdArr[] = $personInHouse->Id;
-        				    echo "<a href='view_person.php?id=$personInHouse->Id'>$personInHouse->Name</a>";
+        				    echo $personInHouse->getViewLink();
         				    
         				    echo "<br>";
         				}

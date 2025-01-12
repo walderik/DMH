@@ -73,7 +73,7 @@ function print_role($role, $subdivision, $isAtLarp, $mayRemove) {
     echo "<td>$role->Profession</td>";
     
     $person = $role->getPerson();
-    echo "<td><a href ='view_person.php?id=$person->Id'>$person->Name</a></td>";
+    echo "<td>" . $person->getViewLink() ."</td>";
     
     
     echo "<td>";
@@ -82,7 +82,7 @@ function print_role($role, $subdivision, $isAtLarp, $mayRemove) {
         $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
         if (!empty($registration->GuardianId)) {
             $guardian = $registration->getGuardian();
-            echo "<a href ='view_person.php?id=$guardian->Id'>$guardian->Name</a>";
+            echo $guardian->getViewLink();
         } else echo showStatusIcon(false);
         
     }

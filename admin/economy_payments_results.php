@@ -118,10 +118,7 @@ th {
     		        $amountToPay = $registration->AmountToPay;
     		        echo "<tr>\n";
     		        echo "<td>";
-    		        echo "<a href='view_person.php?id=$person->Id'>";
-    		        
-    		        echo $person->Name;
-    		        echo "</a>";
+    		        echo $person->getViewLink();
     		        echo "</td>\n";
     		        echo "<td>";
     		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";

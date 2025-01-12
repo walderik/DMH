@@ -75,7 +75,7 @@ include 'navigation.php';
                     echo "Avgifter för:<br>";
                     foreach ($concerns_array as $registration) {
                         $person = $registration->getPerson();
-                        echo "<a href=view_person.php?id=$person->Id'>$person->Name</a> $registration->AmountToPay SEK<br>";
+                        echo $person->getViewLink() . ": " . $registration->AmountToPay . " SEK<br>";
                     }
                 }
                 echo "</td>";

@@ -36,9 +36,15 @@ th {
                 echo "<tr>";
                 echo "<td>";
                 echo $character->getViewLink();
+                $player = $character->getPerson();
+                echo "<br>";
+                echo "Spelas av: ";
+                echo $player->getViewLink();
+
                 $group = $character->getGroup();
                 if (!is_null($group)){
                     echo "<br>";
+                    echo "Grupp: ";
                     echo $group->getViewLink();
                 }
                 echo "</td\n>";
