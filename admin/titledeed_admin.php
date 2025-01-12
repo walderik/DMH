@@ -49,7 +49,8 @@ th {
         
         <p>Ikoner:<br>
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
-        <i class='fa-solid fa-house'></i> - Handelsstation
+        <i class='fa-solid fa-house'></i> - Handelsstation<br>
+        <i class="fa-solid fa-recycle"></i> - Generisk
         </p>
         <p>
         <a href="titledeed_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a><br>
@@ -92,6 +93,9 @@ th {
                 }
                 if ($titledeed->IsTradingPost == 1) {
                     echo " <i class='fa-solid fa-house'></i>";
+                }
+                if ($titledeed->isGeneric()) {
+                    echo " <i class='fa-solid fa-recycle'></i>";
                 }
                 echo "<br><br><small>";
                 if (!empty($titledeed->Type)) echo "$titledeed->Type ";

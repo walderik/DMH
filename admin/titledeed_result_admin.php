@@ -68,6 +68,7 @@ th {
                 "<th onclick='sortTable(4, \"$tableId\")'>Ägare</th>".
                 "</tr>\n";
             foreach ($titledeed_array as $titledeed) {
+                if ($titledeed->isGeneric()) continue;
                 $titledeedresult = $titledeed->getResult($current_larp);
                 if ($titledeed->isInUse()) echo "<tr>\n";
                 else echo "<tr class='show_hide hidden'>\n";

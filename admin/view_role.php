@@ -363,9 +363,11 @@ include 'navigation.php';
 		$currency = $current_larp->getCampaign()->Currency;
 		$titledeeds = Titledeed::getAllForRole($role);
 		foreach ($titledeeds as $titledeed) {
-		    $numberOfOwners = $titledeed->numberOfOwners();
 		    echo "<a href='view_titledeed.php?id=$titledeed->Id'>$titledeed->Name</a>";
-		    if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
+		    if (!$titledeed->isGeneric()) {
+	           $numberOfOwners = $titledeed->numberOfOwners();
+	           if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
+		    }
 		    echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
 		    echo "<br>";
 		    $produces_normally = $titledeed->ProducesNormally();

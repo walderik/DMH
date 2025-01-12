@@ -18,7 +18,8 @@ th {
         <p>Tabellen visar enbart de verksamheter som är i spel.</p>
         <p>Ikoner:<br>
         <i class='fa-solid fa-money-bill-wave'></i> - Kan inte säljas<br>
-        <i class='fa-solid fa-house'></i> - Handelsstation
+        <i class='fa-solid fa-house'></i> - Handelsstation<br>
+        <i class="fa-solid fa-recycle"></i> - Generisk
         </p>
         <p>
         <a href="resource_titledeed_overview_normal.php">Översikt - normala resurser</a> &nbsp; 
@@ -50,6 +51,10 @@ th {
                     if ($titledeed->IsTradingPost == 1) {
                         echo " <i class='fa-solid fa-house'></i>";
                     }
+                    if ($titledeed->isGeneric()) {
+                        echo " <i class='fa-solid fa-recycle'></i>";
+                    }
+                    
                     echo "<td>$titledeed->Size</td>\n";
                     
                     echo "<td>" . $titledeed->calculateProduces() ." $currency</td>";

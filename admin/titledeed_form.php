@@ -98,6 +98,17 @@ include_once 'header.php';
 
 			<tr>
 
+				<td><label for="IsGeneric">Generisk</label><br>En typisk verksamhet av den här typen. Varje ägare har sin egen.</td>
+    			<td>
+    				<input type="radio" id="IsGeneric_yes" name="IsGeneric" value="1" <?php if ($titledeed->isGeneric()) echo 'checked="checked"'?>> 
+        			<label for="IsGeneric_yes">Ja</label><br> 
+        			<input type="radio" id="IsGeneric_no" name="IsGeneric" value="0" <?php if (!$titledeed->isGeneric()) echo 'checked="checked"'?>> 
+        			<label for="IsGeneric_no">Nej</label>
+    			</td>
+			</tr>
+
+			<tr>
+
 				<td><label for="Tradeable">Kan säljas</label></td>
     			<td>
     				<input type="radio" id="Tradeable_yes" name="Tradeable" value="1" <?php if ($titledeed->Tradeable == 1) echo 'checked="checked"'?>> 
@@ -105,7 +116,6 @@ include_once 'header.php';
         			<input type="radio" id="Tradeable_no" name="Tradeable" value="0" <?php if ($titledeed->Tradeable == 0) echo 'checked="checked"'?>> 
         			<label for="Tradeable_no">Nej</label>
     			</td>
-			</tr>
 			</tr>
 			<tr>
 

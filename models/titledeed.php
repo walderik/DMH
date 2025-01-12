@@ -19,6 +19,7 @@ class Titledeed extends BaseModel{
     public $IsInUse = 1;
     public $Dividend;
     public $TitledeedPlaceId;
+    public $IsGeneric;
     
     
     public static $orderListBy = 'Name';
@@ -49,6 +50,7 @@ class Titledeed extends BaseModel{
         if (isset($arr['IsInUse'])) $this->IsInUse = $arr['IsInUse'];
         if (isset($arr['Dividend'])) $this->Dividend = $arr['Dividend'];
         if (isset($arr['TitledeedPlaceId'])) $this->TitledeedPlaceId = $arr['TitledeedPlaceId'];
+        if (isset($arr['IsGeneric'])) $this->IsGeneric = $arr['IsGeneric'];
         
         if (empty($this->Level)) $this->Level = null;
     }
@@ -67,11 +69,11 @@ class Titledeed extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_titledeed SET Name=?, Location=?, Tradeable=?, IsTradingPost=?,
                   Level=?, CampaignId=?, Money=?, MoneyForUpgrade=?, OrganizerNotes=?, PublicNotes=?, SpecialUpgradeRequirements=?, 
-                  `Type`=?, Size=?, IsInUse=?, TitledeedPlaceId=?, Dividend=? WHERE Id = ?;");
+                  `Type`=?, Size=?, IsInUse=?, TitledeedPlaceId=?, Dividend=?, IsGeneric=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
             $this->Level, $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes, 
-            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId, $this->Dividend, $this->Id))) {
+            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId, $this->Dividend, $this->IsGeneric, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -83,11 +85,11 @@ class Titledeed extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_titledeed (Name, Location, Tradeable, IsTradingPost, 
-            Level, CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements, `Type`, Size, IsInUse, TitledeedPlaceId, Dividend) VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
+            Level, CampaignId, Money, MoneyForUpgrade, OrganizerNotes, PublicNotes, SpecialUpgradeRequirements, `Type`, Size, IsInUse, TitledeedPlaceId, Dividend, IsGeneric) VALUES (?,?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->Location, $this->Tradeable, $this->IsTradingPost, 
             $this->Level, $this->CampaignId, $this->Money, $this->MoneyForUpgrade, $this->OrganizerNotes, $this->PublicNotes,
-            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId, $this->Dividend))) {
+            $this->SpecialUpgradeRequirements, $this->Type, $this->Size, $this->IsInUse, $this->TitledeedPlaceId, $this->Dividend, $this->IsGeneric))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -107,6 +109,11 @@ class Titledeed extends BaseModel{
     
     public function isInUse() {
         if ($this->IsInUse == 1) return true;
+        return false;
+    }
+    
+    public function isGeneric() {
+        if ($this->IsGeneric == 1) return true;
         return false;
     }
     
