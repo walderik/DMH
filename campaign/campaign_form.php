@@ -83,7 +83,7 @@ include_once 'header.php';
     			<tr>
     				<td><label for="Bankaccount">Swishnummer</label></td>
     				<td><input type="text" id="SwishNumber"
-    					name="SwishNumber" value="<?php echo htmlspecialchars($campaign->SwishNumber); ?>"  size="50" required></td>
+    					name="SwishNumber" value="<?php echo htmlspecialchars($campaign->SwishNumber); ?>"  size="50"></td>
     			</tr>
     			<tr>
     				<td><label for="MinimumAge">Minsta ålder</label></td>
