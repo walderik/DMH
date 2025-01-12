@@ -55,7 +55,12 @@ th {
 		<?php 
 		
 		foreach ($titledeeds as $titledeed) {
-		    echo "<tr><th style='text-align:left'><a href='view_titledeed.php?id=$titledeed->Id'>$titledeed->Name</a></th>";
+		    echo "<tr><th style='text-align:left'><a href='view_titledeed.php?id=$titledeed->Id'>$titledeed->Name</a>";
+		    if ($titledeed->isGeneric()) {
+		        $numberOfOwners = $titledeed->numberOfOwners();
+		        if ($numberOfOwners > 1) echo " ($numberOfOwners st)";
+		    }
+		    echo "</th>";
 		    foreach ($resources as $key => $resource) {
 		        $resource_titledeed = Resource_Titledeed::loadByIds($resource->Id, $titledeed->Id);
 		        $quantity = 0;
@@ -85,7 +90,7 @@ th {
 		echo "<tr>\n";
 		echo "<th></th>\n";
 		foreach ($resources as $key => $resource) {
-		    echo "<th><a href='resource_form.php?operation=update&Id=$resource->Id'>$resource->Name</a><br>$resource->Price</th>\n";
+		    echo "<th><a href='resource_form.php?operation=update&Id=$resource->Id'>$resource->Name</a></th>\n";
 		}
 		echo "</tr>\n";
 		
