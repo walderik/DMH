@@ -107,6 +107,12 @@ class Titledeed extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
     
+    public static function getAllGeneric(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_titledeed WHERE CampaignId = ? AND IsInUse = 1 AND IsGeneric=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
     public function isInUse() {
         if ($this->IsInUse == 1) return true;
         return false;
@@ -433,20 +439,33 @@ class Titledeed extends BaseModel{
     public function moneySum(LARP $larp) {
         if (is_null($larp)) return 0;
         $sql = "SELECT Sum(regsys_titledeed.Money) as Num FROM regsys_titledeed WHERE ".
-            "regsys_titledeed.CampaignId = ? AND IsInUse=1";
-        $count = static::countQuery($sql, array($larp->CampaignId));
-        if (isset($count)) return $count;
-        return 0;
-        
+            "regsys_titledeed.CampaignId = ? AND IsInUse=1 AND IsGeneric=0";
+        $sum = static::countQuery($sql, array($larp->CampaignId));
+        if (!isset($sum)) $sum = 0;
+        $titledeeds = static::getAllGeneric($larp);
+        if (!empty($titledeeds)) {
+            foreach ($titledeeds as $titledeed) {
+                $numberOfOwners = $titledeed->numberOfOwners();
+                $sum += $titledeed->Money * $numberOfOwners;
+            }
+        }
+        return $sum;
     }
         
     public function moneySumUpgrade(LARP $larp) {
         if (is_null($larp)) return 0;
         $sql = "SELECT Sum(regsys_titledeed.MoneyForUpgrade) as Num FROM regsys_titledeed WHERE ".
             "regsys_titledeed.CampaignId = ?  AND IsInUse = 1";
-        $count = static::countQuery($sql, array($larp->CampaignId));
-        if (isset($count)) return $count;
-        return 0;
+        $sum = static::countQuery($sql, array($larp->CampaignId));
+        if (!isset($sum)) $sum = 0;
+        $titledeeds = static::getAllGeneric($larp);
+        if (!empty($titledeeds)) {
+            foreach ($titledeeds as $titledeed) {
+                $numberOfOwners = $titledeed->numberOfOwners();
+                $sum += $titledeed->MoneyForUpgrade * $numberOfOwners;
+            }
+        }
+        return $sum;
         
     }
     

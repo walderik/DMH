@@ -138,11 +138,20 @@ class Resource extends BaseModel{
             "regsys_resource_titledeed.ResourceId = ? AND ".
             "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
             "regsys_titledeed.IsInUse = 1 AND ".
+            "regsys_titledeed.IsGeneric = 0 AND ".
             "regsys_titledeed.CampaignId = ? AND ".
             "regsys_resource_titledeed.Quantity > 0 ";
         $count = static::countQuery($sql, array($this->Id, $larp->CampaignId));
-        if (isset($count)) return $count;
-        return 0;
+        if (!isset($count)) $count = 0;
+        $titledeeds = Titledeed::getAllGeneric($larp);
+        if (!empty($titledeeds)) {
+            foreach ($titledeeds as $titledeed) {
+                $numberOfOwners = $titledeed->numberOfOwners();
+                $resource_titledeed = Resource_Titledeed::loadByIds($this->Id, $titledeed->Id);
+                if (isset($resource_titledeed) && $resource_titledeed->Quantity > 0) $count += $resource_titledeed->Quantity * $numberOfOwners;
+            }
+        }
+        return $count;
     }
     
     public function countBalance(LARP $larp) {
@@ -159,10 +168,19 @@ class Resource extends BaseModel{
             "regsys_resource_titledeed.ResourceId = ? AND ".
             "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
             "regsys_titledeed.IsInUse = 1 AND ".
+            "regsys_titledeed.IsGeneric = 0 AND ".
             "regsys_titledeed.CampaignId = ?";
         $count = static::countQuery($sql, array($this->Id, $larp->CampaignId));
-        if (isset($count)) return $count;
-        return 0;
+        if (!isset($count)) $count = 0;
+        $titledeeds = Titledeed::getAllGeneric($larp);
+        if (!empty($titledeeds)) {
+            foreach ($titledeeds as $titledeed) {
+                $numberOfOwners = $titledeed->numberOfOwners();
+                $resource_titledeed = Resource_Titledeed::loadByIds($this->Id, $titledeed->Id);
+                if (isset($resource_titledeed)) $count += $resource_titledeed->Quantity * $numberOfOwners;
+            }
+        }
+        return $count;
     }
     
 
@@ -172,10 +190,19 @@ class Resource extends BaseModel{
             "regsys_resource_titledeed.ResourceId = ? AND ".
             "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
             "regsys_titledeed.IsInUse = 1 AND ".
+            "regsys_titledeed.IsGeneric = 0 AND ".
             "regsys_titledeed.CampaignId = ? AND ".
             "regsys_resource_titledeed.QuantityForUpgrade > 0 ";
         $countForUpgrade = static::countQuery($sql, array($this->Id, $larp->CampaignId));
         if (!isset($countForUpgrade)) $countForUpgrade = 0;
+        $titledeeds = Titledeed::getAllGeneric($larp);
+        if (!empty($titledeeds)) {
+            foreach ($titledeeds as $titledeed) {
+                $numberOfOwners = $titledeed->numberOfOwners();
+                $resource_titledeed = Resource_Titledeed::loadByIds($this->Id, $titledeed->Id);
+                if (isset($resource_titledeed)) $countForUpgrade += $resource_titledeed->QuantityForUpgrade * $numberOfOwners;
+            }
+        }
         $countProduces = $this->countNumberOfCards($larp);
         return $countProduces - $countForUpgrade;
     }
@@ -187,9 +214,19 @@ class Resource extends BaseModel{
             "regsys_resource_titledeed.ResourceId = ? AND ".
             "regsys_resource_titledeed.TitleDeedId = regsys_titledeed.Id AND ".
             "regsys_titledeed.IsInUse = 1 AND ".
+            "regsys_titledeed.IsGeneric = 0 AND ".
             "regsys_titledeed.CampaignId = ? AND ".
             "regsys_resource_titledeed.QuantityForUpgrade > 0 ";
         $countForUpgrade = static::countQuery($sql, array($this->Id, $larp->CampaignId));
+        if (!isset($countForUpgrade)) $countForUpgrade = 0;
+        $titledeeds = Titledeed::getAllGeneric($larp);
+        if (!empty($titledeeds)) {
+            foreach ($titledeeds as $titledeed) {
+                $numberOfOwners = $titledeed->numberOfOwners();
+                $resource_titledeed = Resource_Titledeed::loadByIds($this->Id, $titledeed->Id);
+                if (isset($resource_titledeed)) $countForUpgrade += $resource_titledeed->QuantityForUpgrade * $numberOfOwners;
+            }
+        }
         return $countForUpgrade;
     }
     

@@ -75,7 +75,12 @@ th {
 		<?php 
 		
 		foreach ($titledeeds as $titledeed) {
-		    echo "<tr><td style='text-align:left'><a href='view_titledeed.php?id=$titledeed->Id'>$titledeed->Name</a></td>";
+		    echo "<tr><td style='text-align:left'><a href='view_titledeed.php?id=$titledeed->Id'>$titledeed->Name</a>";
+		    if ($titledeed->isGeneric()) {
+		        $numberOfOwners = $titledeed->numberOfOwners();
+		        if ($numberOfOwners > 1) echo " ($numberOfOwners st)";
+            }
+		    "</td>";
 		    echo "<th valign='top' style='text-align:left'>";
 		    echo "<input type='number' id='$titledeed->Id' value='$titledeed->Money' onchange='recalculateMoney(this, $current_larp->Id)'>";
 		    echo "</th>\n";
