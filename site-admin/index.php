@@ -18,6 +18,7 @@ if (isset($message_message) && strlen($message_message)>0) {
 				<a href="campaign_admin.php">Kampanjer</a><br><br>
 			    <a href="user_admin.php">Användare / Logins /Admin behörighet</a><br><br>
 			    <a href="mail_admin.php">Alla skickade mail</a><br><br>
+			    <a href="find_user.php">Hitta användare för person</a><br><br>
 			    <br><br>
 				<a href="dev-tools/doBackup.php">Ta en backup</a>
 		    </p>
