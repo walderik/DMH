@@ -39,8 +39,7 @@ function print_role($group_member) {
     echo $group_member->getViewLink();
 	echo " - " .
         $group_member->Profession . " spelas av " .
-        "<a href ='view_person.php?id=" . $group_member->getPerson()->Id . "'>" .
-        $group_member->getPerson()->Name . "</a>";
+        $group_member->getPerson()->getViewLink();
         
         if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
             echo ", ansvarig vuxen är ";
@@ -60,7 +59,7 @@ include 'navigation.php';
 			<?php echo $current_group->Name . " " . $current_group->getEditLinkPen(true) ?>
 		</h1>
 		<table>
-			<tr><td valign="top" class="header">Gruppansvarig</td><td><a href ="view_person.php?id=<?php echo $current_group->PersonId;?>"><?php echo $current_group->getPerson()->Name;?></a></td></tr>
+			<tr><td valign="top" class="header">Gruppansvarig</td><td><?php echo $current_group->getPerson()->getViewLink()?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo $current_group->DescriptionForOthers;?></td></tr>
 			<tr><td valign="top" class="header">Vänner</td><td><?php echo $current_group->Friends;?></td></tr>

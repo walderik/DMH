@@ -981,5 +981,9 @@ class Person extends BaseModel{
         }
     }
     
-    
+    public function getViewLink() {
+        $vperson = "<a href='view_person.php?id={$this->Id}'>{$this->Name}</a>";
+        
+        return $vperson;
+    }
 }

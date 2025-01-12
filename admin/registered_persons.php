@@ -49,9 +49,8 @@ th {
     		        if ($registration->isNotComing()) {
     		            echo "<s>";
     		        } else {
-    		            echo "<a href='view_person.php?id=$person->Id'>";
+    		            echo $person->getViewLink();
     		        }
-    		        echo $person->Name;
     		        if ($registration->isNotComing()) {
     		            echo "</s>";
     		        } else {

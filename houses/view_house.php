@@ -154,7 +154,7 @@ ul.list {
 //                 				$caretakers = $house->getHousecaretakers();
                 				foreach ($persons as $person) {
                 				    echo "<tr>\n";
-                				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
+                				    echo "  <td>". $person->getViewLink() ."</td>\n";
                 				    echo "  <td>";
                 				   
                 				    echo showStatusIcon($person->isMember());
@@ -195,7 +195,7 @@ ul.list {
             				    
             				    foreach ($personsInHouse as $person) {
                 				    echo "<tr>\n";
-                				    echo "  <td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
+                				    echo "  <td>". $person->getViewLink() ."</td>\n";
                 				    echo "  <td>".contactEmailIcon($person, BerghemMailer::ASSOCIATION)."</td>\n";
                 				    echo "</tr>\n";
                 				}

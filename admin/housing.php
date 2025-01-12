@@ -71,10 +71,11 @@ function print_individual(Person $person, $group, $house) {
     if (isset($house)) $id = $id."_$house->Id";
     
     echo "<div class='person' id='$id' draggable='true' ondragstart='drag(event)'>\n";
-    echo "  <div class='name'><a href='view_person.php?id=$person->Id' draggable='false'>";
-    if ($registration->isNotComing()) echo "<s>$person->Name</s>";
-    else echo "$person->Name";
-    echo "</a>\n";
+    echo "  <div class='name' draggable='false'>";
+    echo $registration->isNotComing() ? 
+        "<s>" . $person->getViewLink() . "</s>" 
+        : $person->getViewLink();
+    echo "\n";
     
     $comment = $person->getFullHousingComment($current_larp);
     if (!empty($comment)) {
@@ -202,7 +203,7 @@ div.housing-group {
         "</tr>";
     foreach ($caretaking_persons as $person) {
         $group = $person->getMainRole($current_larp)->getGroup();
-        echo "<tr><td><a href='view_person.php?id=$person->Id'>$person->Name ".contactEmailIcon($person)."</a></td>\n";
+        echo "<tr><td>" . $person->getViewLink().contactEmailIcon($person)."</td>\n";
         $houses = $person->housesOf();
         $houseslinks = array();
         foreach ($houses as $house) {

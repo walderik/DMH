@@ -80,7 +80,7 @@ include 'navigation.php';
     		        $oldApprovedRole = $role->getOldApprovedRole();
     		        if (!empty($oldApprovedRole)) echo "Karaktären har tidigare varit godkänd. <a href='view_role_changes.php?id=$role->Id'>Visa ändringar</a><br>";
     		        echo "<br><br>";
-    		        echo "Spelas av <a href='view_person.php?id=$person->Id'>$person->Name</a>, ".$person->getAgeAtLarp($current_larp)." år ";
+    		        echo "Spelas av ", $person->getViewLink(), ", ".$person->getAgeAtLarp($current_larp)." år ";
     		        echo "<br>\n";
     		        echo "Epost: $person->Email, Telefon: $person->PhoneNumber <br>\n";
     		        

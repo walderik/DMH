@@ -43,7 +43,7 @@ include 'navigation.php';
 		    ?>
 			<tr><td valign="top" class="header">Ansvarig vuxen</td><td>
 			
-			<?php if (!empty($activeRegistration->GuardianId)) echo "<a href='view_person.php?id=$activeRegistration->GuardianId'>".$activeRegistration->getGuardian()->Name."</a>"; else echo showStatusIcon(false); ?>
+			<?php if (!empty($activeRegistration->GuardianId)) echo $activeRegistration->getGuardian()->getViewLink(); else echo showStatusIcon(false); ?>
 			
 			</td></tr>
 		    
@@ -57,7 +57,7 @@ include 'navigation.php';
     			echo "<tr><td valign='top' class='header'>Ansvarig för</td><td>";
     			$minor_str_arr = array();
     			foreach ($minors as $minor) {
-    			     $minor_str_arr[] = "<a href='view_person.php?id=".$minor->Id."'>".$minor->Name."</a>";
+    			     $minor_str_arr[] = $minor->getViewLink();
     			}
     			echo implode(", ", $minor_str_arr);
     			echo "</td></tr>";

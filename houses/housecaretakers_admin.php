@@ -76,7 +76,7 @@ if ($resultCheck > 0) {
             $person = $housecaretaker->getPerson();
             $house = $housecaretaker->getHouse();
             echo "<tr>\n";
-            echo "<td><a href='view_person.php?id=$person->Id'>$person->Name</a></td>\n";
+            echo "<td>". $person->getViewLink() ."</td>\n";
             echo "<td>" . showStatusIcon($person->isMember()) . "</td>\n";
             echo "<td>";
             

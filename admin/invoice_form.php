@@ -128,7 +128,7 @@ img {
 					if ($operation=='update') {
 					    if (isset($invoice->ContactPersonId)) {
 					        $contactPerson = Person::loadById($invoice->ContactPersonId);
-					        echo "<a href='view_person.php?id=$contactPerson->Id'>$contactPerson->Name</a>";
+					        echo $contactPerson->getViewLink();
 					    }
 					    echo "<a class='no_underline' href='choose_persons.php?operation=invoice_contact&Id=$invoice->Id'><i class='fa-solid fa-pen' title='Välj kontaktperson'></i></a>";
 					} else {
