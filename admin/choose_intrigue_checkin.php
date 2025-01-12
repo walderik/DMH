@@ -28,7 +28,7 @@ include 'navigation.php';
      		<?php 
      		$intrigue_props = $intrigue->getAllProps();
      		if (empty($intrigue_props)) {
-     		    echo "Ingen registrerad rekvisita";
+     		    echo "Ingen registrerad rekvisita i intrigspåret";
      		} else {
      		    ?>
     		    <table class='data'>
@@ -44,16 +44,17 @@ include 'navigation.php';
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";
-    		}
+    		    echo "<br>";
+    		    echo "<input type='submit' value='Lägg till'>";
+     		}
     		?>
-    		<br>
-			<input type="submit" value="Lägg till">
 			
+		<?php if ($current_larp->hasLetters()) {?>
         <h2>Brev</h2>
      		<?php 
      		$intrigue_letters = $intrigue->getAllLetters();
      		if (empty($intrigue_letters)) {
-     		    echo "Inga registrerade brev";
+     		    echo "Inga registrerade brev i intrigspåret";
      		} else {
      		    ?>
     		    <table class='data'>
@@ -70,17 +71,20 @@ include 'navigation.php';
     		        echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
     		        echo "</tr>\n";
     		    }
+    		    echo "</table>";
+    		    echo "<br>";
+    		    echo "<input type='submit' value='Lägg till'>";
+    		    
     		}
     		?>
-    		</table>
-    		<br>
-			<input type="submit" value="Lägg till">
+		<?php } ?>
 			
+		<?php if ($current_larp->hasTelegrams()) {?>
         <h2>Telegram</h2>
      		<?php 
      		$intrigue_telegrams = $intrigue->getAllTelegrams();
      		if (empty($intrigue_telegrams)) {
-     		    echo "Inga registrerade telegram";
+     		    echo "Inga registrerade telegram i intrigspåret";
      		} else {
      		    ?>
     		    <table class='data'>
@@ -99,12 +103,12 @@ include 'navigation.php';
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";
+    		    echo "<br>";
+    		    echo "<input type='submit' value='Lägg till'>";
      		}
      		?>
-    		<br>
-			<input type="submit" value="Lägg till">
 			
-			
+			<?php  } ?>
 			
 			
 			
