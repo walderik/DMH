@@ -110,7 +110,7 @@ div.border
 						if (!empty(trim($larp->Description))) {
 							echo "<br>";
 							echo "<span class='full-description' style='display:none;'>" . nl2br(htmlspecialchars($larp->Description)) . "</span>";
-							echo "<button type='button' class='read-more'>Läs mer</button>";
+							echo "<button type='button' class='read-more'>Visa beskrivning</button>";
 						}
 					
 			            echo "<br>";
@@ -235,10 +235,10 @@ div.border
 							var fullDescription = this.previousElementSibling;
 							if (fullDescription.style.display === 'none') {
 								fullDescription.style.display = 'block';
-								this.textContent = 'Läs mindre';
+								this.textContent = 'Dölj beskrivning';
 							} else {
 								fullDescription.style.display = 'none';
-								this.textContent = 'Läs mer';
+								this.textContent = 'Visa beskrivning';
 							}
 						});
 					});
