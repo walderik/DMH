@@ -106,20 +106,20 @@ div.border
 			                $lastregistration=date_create($larp->LatestRegistrationDate);
 			                echo "Sista anmälningsdag: ".$fmt->format($lastregistration)."\n";
 			            }
-			            if (!empty(trim(($larp->Description)))) {
-			                echo "<br>";
-			                echo nl2br(htmlspecialchars($larp->Description));
-
-			            }
+			            
+						if (!empty(trim($larp->Description))) {
+							echo "<br>";
+							echo "<span class='full-description' style='display:none;'>" . nl2br(htmlspecialchars($larp->Description)) . "</span>";
+							echo "<button type='button' class='read-more'>Visa beskrivning</button>";
+						}
+					
 			            echo "<br>";
 			            echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
 			            echo "</form>";
-			            echo "</div>";
-			            
+			            echo "</div>"; 
 			        }
 			        
 			        echo "</div>";
-
     			 }
     			 
     			$resultCheck = count($past_larp_array);
@@ -227,10 +227,22 @@ div.border
     			 
     			 
     			 ?>
-    			     
-  
-			 
 			 </div>
-
+			 <script>
+				document.addEventListener('DOMContentLoaded', function() {
+					document.querySelectorAll('.read-more').forEach(function(button) {
+						button.addEventListener('click', function() {
+							var fullDescription = this.previousElementSibling;
+							if (fullDescription.style.display === 'none') {
+								fullDescription.style.display = 'block';
+								this.textContent = 'Dölj beskrivning';
+							} else {
+								fullDescription.style.display = 'none';
+								this.textContent = 'Visa beskrivning';
+							}
+						});
+					});
+				});
+			</script>
 	</body>
 </html>
