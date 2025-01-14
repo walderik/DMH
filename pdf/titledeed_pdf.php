@@ -16,7 +16,7 @@ class TITLEDEED_PDF extends FPDF {
 //         $this->Image($root . '/images/telegram.png',null,null,200);
     }
     
-    function SetTextDMH(Titledeed $titledeed, LARP $larp, bool $odd) {
+    function SetTextDMH(Titledeed $titledeed, LARP $larp, bool $odd, $owners) {
         global $root;
         
         $left = 11;
@@ -90,13 +90,13 @@ class TITLEDEED_PDF extends FPDF {
         $y += 14;
         $this->SetXY($left, $y);
         $this->Cell(80,10,encode_utf_to_iso('Ägare'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
-        $owners = array();
-        foreach ($titledeed->getGroupOwners() as $owner_group) $owners[] = $owner_group->Name;
-        foreach ( $titledeed->getRoleOwners() as $owner_role)  $owners[] = $owner_role->Name;
-        if (!empty($owners)) {
+        if (empty($owners)) {
+            $txt = 'Ingen';
+            
+        } elseif (is_array($owners)) {
             $txt = join(', ', $owners);
         } else {
-            $txt = 'Ingen';
+            $txt = $owners;
         }
         $this->SetXY($left2, $y+1);
         $this->MultiCell(0,8,encode_utf_to_iso($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
@@ -148,7 +148,7 @@ class TITLEDEED_PDF extends FPDF {
         
     }
     
-    function SetTextDOH(Titledeed $titledeed, Campaign $campaign, bool $odd) {
+    function SetTextDOH(Titledeed $titledeed, Campaign $campaign, bool $odd, $owners) {
         
         $page_height = $this->GetPageHeight();
         $y = $odd ? 0 : ($page_height/2);
@@ -257,13 +257,30 @@ class TITLEDEED_PDF extends FPDF {
 	    //         $this->AddPage('L','A5',270);
 	    $odd = true;
 	    foreach ($titledeeds as $titledeed) {
-	        if ($odd) {
-	            $this->AddPage();
-	            $odd = false;
+	        $owners = array();
+	        foreach ($titledeed->getGroupOwners() as $owner_group) $owners[] = $owner_group->Name;
+	        foreach ( $titledeed->getRoleOwners() as $owner_role)  $owners[] = $owner_role->Name;
+	        
+	        if ($titledeed->isGeneric() && !empty($owners) && (sizeof($owners)> 1)) {
+	          foreach ($owners as $owner) {
+	              if ($odd) {
+	                  $this->AddPage();
+	                  $odd = false;
+	              } else {
+	                  $odd = true;
+	              }
+	              $this->SetTextDMH($titledeed, $larp, !$odd, $owner);
+	              
+	          }
 	        } else {
-	            $odd = true;
+    	        if ($odd) {
+    	            $this->AddPage();
+    	            $odd = false;
+    	        } else {
+    	            $odd = true;
+    	        }
+    	        $this->SetTextDMH($titledeed, $larp, !$odd, $owners);
 	        }
-	        $this->SetTextDMH($titledeed, $larp, !$odd);
 	    }
 	}
 
@@ -275,13 +292,30 @@ class TITLEDEED_PDF extends FPDF {
 	    //         $this->AddPage('L','A5',270);
 	    $odd = true;
 	    foreach ($titledeeds as $titledeed) {
-	        if ($odd) {
-	            $this->AddPage();
-	            $odd = false;
+	        $owners = array();
+	        foreach ($titledeed->getGroupOwners() as $owner_group) $owners[] = $owner_group->Name;
+	        foreach ( $titledeed->getRoleOwners() as $owner_role)  $owners[] = $owner_role->Name;
+	        
+	        if ($titledeed->isGeneric() && !empty($owners) && (sizeof($owners)> 1)) {
+	            foreach ($owners as $owner) {
+	                if ($odd) {
+	                    $this->AddPage();
+	                    $odd = false;
+	                } else {
+	                    $odd = true;
+	                }
+	                $this->SetTextDOH($titledeed, $larp, !$odd, $owner);
+	                
+	            }
 	        } else {
-	            $odd = true;
+	            if ($odd) {
+	                $this->AddPage();
+	                $odd = false;
+	            } else {
+	                $odd = true;
+	            }
+	            $this->SetTextDOH($titledeed, $larp, !$odd, $owners);
 	        }
-	        $this->SetTextDOH($titledeed, $campaign, !$odd);
 	    }
 	}
 	
