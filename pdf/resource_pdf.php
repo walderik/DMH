@@ -50,7 +50,7 @@ class RESOURCE_PDF extends PDF_MemImage {
         $this->Cell(0, 10, 'Sidan '.$this->PageNo(), 0, 0, 'R');
     }
     
-    function SetText(Titledeed $titledeed, $type, LARP $larp) {
+    function SetText(Titledeed $titledeed, $type, LARP $larp, $owner) {
         global $root;
         $is_dmh = false;
         $dmh_image = $root . '/images/resurs_bakgrund_dmh.jpeg';
@@ -71,7 +71,9 @@ class RESOURCE_PDF extends PDF_MemImage {
         }
         if ($check_total <= 0) return;
         
-        $this->title = $titledeed->Name;
+        
+        if ($titledeed->isGeneric()) $this->title = $titledeed->Name . " - ".$owner;
+        else $this->title = $titledeed->Name;
         $this->AddPage();
 
         $height = $this->GetPageHeight();
@@ -97,7 +99,8 @@ class RESOURCE_PDF extends PDF_MemImage {
         # Header på sidan
         $this->SetXY($this->margin, 0);
         $this->SetFont('Arial','B',11);
-        $this->Cell(0,10,encode_utf_to_iso($titledeed->Name),0,1,'L');
+        $this->Cell(0,10,encode_utf_to_iso($this->title),0,1,'L');
+        
         
         
         # Rita rutor
@@ -184,8 +187,9 @@ class RESOURCE_PDF extends PDF_MemImage {
                         
                         $size=10;
                         $this->SetFont('specialelite','',$size);
+                        if ($titledeed->isGeneric()) $txt = $owner;
+                        else $txt = $titledeed->Name;
                         
-                        $txt = $titledeed->Name;
                         $slen = $this->GetStringWidth($txt,0);
                         while ($slen > $rut_width-7) {
                             $size -= 1;
@@ -193,7 +197,7 @@ class RESOURCE_PDF extends PDF_MemImage {
                             $slen = $this->GetStringWidth($txt,0);
                         }
                         $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY-2);
-                        $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($titledeed->Name)),0,1,'L');
+                        $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'L');
                     }
                 } elseif ($type == RESOURCE_PDF::Calligraphy) {
                     $this->SetFont($font,'',11);
@@ -202,8 +206,8 @@ class RESOURCE_PDF extends PDF_MemImage {
                     
                     $size=10;
                     $this->SetFont($font,'',$size);
-                    
-                    $txt = $titledeed->Name;
+                    if ($titledeed->isGeneric()) $txt = $owner;
+                    else $txt = $titledeed->Name;
                     $slen = $this->GetStringWidth($txt,0);
                     while ($slen > $rut_width-3) {
                         $size -= 1;
@@ -211,7 +215,7 @@ class RESOURCE_PDF extends PDF_MemImage {
                         $slen = $this->GetStringWidth($txt,0);
                     }
                     $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
-                    $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($titledeed->Name)),0,1,'L');
+                    $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'L');
                     
                 }
                 
@@ -266,7 +270,14 @@ class RESOURCE_PDF extends PDF_MemImage {
 	    elseif ($type == RESOURCE_PDF::Calligraphy) foreach ($this->calligraphyfonts as $font) $this->AddFont($font,'');
 	    //         $this->AddPage('L','A5',270);
 	    foreach ($titledeeds as $titledeed) {
-    	    $this->SetText($titledeed, $type, $larp);
+	        $owners = array();
+	        foreach ($titledeed->getGroupOwners() as $owner_group) $owners[] = $owner_group->Name;
+	        foreach ($titledeed->getRoleOwners() as $owner_role)  $owners[] = $owner_role->Name;
+	        
+	        if ($titledeed->isGeneric() && !empty($owners) && (sizeof($owners)> 1)) {
+	            foreach ($owners as $owner) $this->SetText($titledeed, $type, $larp, $owner);
+	        }
+    	    else $this->SetText($titledeed, $type, $larp, null);
 	    }
 	}
 }
