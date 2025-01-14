@@ -234,6 +234,96 @@ class TITLEDEED_PDF extends FPDF {
         $y = max($y1, $y2);
     }
     
+    function GroupSummary(Group $group, LARP $larp, bool $odd) {
+        global $root;
+        
+        $titledeeds = Titledeed::getAllForGroup($group);
+        
+        $left = 11;
+        $page_height = $this->GetPageHeight();
+        $y = $odd ? 0 : ($page_height/2);
+        $y_bottom = $odd ? ($page_height/2) : $page_height;
+        
+        $left2 = $left + 30;
+        
+        $txt_font = 'Helvetica';
+        $y += 13;
+        $this->SetFont($txt_font,'',20);
+        
+        $this->SetXY($left, $y);
+        $this->Cell(80,10,encode_utf_to_iso($group->Name),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        
+        $this->SetFont($txt_font,'',12);
+        $y += 14;
+        $this->SetXY($left, $y);
+        $this->Cell(80,10,encode_utf_to_iso('Behov'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        
+        $needs = array();
+        foreach ($titledeeds as $titledeed) {
+            $titledeedNeed = $titledeed->RequiresString();
+            if (!empty($titledeedNeed)) $needs[] = $titledeed->Name .": ".$titledeedNeed;
+        }
+        if (empty($needs)) {
+            $txt = 'Inget';
+            
+        } else {
+            $txt = join("\n", $needs);
+        }
+        $this->SetXY($left2, $y+1);
+        $this->MultiCell(0,8,encode_utf_to_iso($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $y = $this->GetY();
+        //$y += 14;
+        
+        $this->SetXY($left, $y);
+        $this->Cell(80,10,encode_utf_to_iso('Producerar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+        
+        $produces = array();
+        foreach ($titledeeds as $titledeed) {
+            $titledeedProduce = $titledeed->ProducesString();
+            if (!empty($titledeedProduce)) $produces[] = $titledeed->Name .": ".$titledeedProduce;
+        }
+        
+        if (empty($produces)) {
+            $txt = 'Inget';
+            
+        } else {
+            $txt = join("\n", $produces);
+        }
+        $this->SetXY($left2, $y+1);
+        $this->MultiCell(0,8,encode_utf_to_iso($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        
+        $y = $this->GetY();
+        //$y += 14;
+        
+        
+        $currency = $larp->getCampaign()->Currency;
+        $dividends = array();
+        foreach ($titledeeds as $titledeed) {
+            $titledeedNeed = $titledeed->Dividend;
+            if (!empty($titledeed->Dividend)) $dividends[] = $titledeed->Name .": ".$titledeed->Dividend . " ".$currency;
+        }
+        if (!empty($dividends)) {
+            $txt = join("\n", $dividends);
+
+           $this->SetXY($left, $y);
+           $this->Cell(80,10,encode_utf_to_iso('Utdelning'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
+           $this->SetXY($left2, $y+1);
+           $this->MultiCell(0,8,encode_utf_to_iso($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        }
+        
+        
+        $size=5;
+        $this->SetFont($txt_font,'',$size);
+        
+        
+        $txt = $larp->Name;
+        $slen = $this->GetStringWidth($txt,0);
+        $this->SetXY(($this->GetPageWidth()-$slen)/2, $y_bottom-35);
+        $this->Cell(($this->GetPageWidth()- $slen)/2,10,encode_utf_to_iso($txt),0,1,'L');
+        
+        
+    }
+    
     
     
     function new_titledeed(Titledeed $titledeed, LARP $larp)
@@ -316,6 +406,30 @@ class TITLEDEED_PDF extends FPDF {
 	            }
 	            $this->SetTextDOH($titledeed, $larp, !$odd, $owners);
 	        }
+	    }
+	}
+
+	
+	function groupSummaries(LARP $larp)
+	{
+	    $campaign = $larp->getCampaign();
+	    $this->AddFont('KaiserzeitGotisch');
+	    $this->AddFont('ComicRunes');
+	    $this->AddFont('Smokum','');
+	    $this->SetMargins(0, 0);
+	    
+	    //         $this->AddPage('L','A5',270);
+	    $odd = true;
+	    $groups = Group::getAllRegistered($larp);
+	    
+	    foreach ($groups as $group) {
+            if ($odd) {
+                $this->AddPage();
+                $odd = false;
+            } else {
+                $odd = true;
+            }
+            $this->GroupSummary($group, $larp, !$odd);
 	    }
 	}
 	
