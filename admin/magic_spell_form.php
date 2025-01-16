@@ -88,7 +88,7 @@ $spell = Magic_Spell::newWithDefault();;
 			</tr>
 			<tr>
 				<td><label for="Special">Speciella krav</label><br></td>
-				<td><textarea id="Special" name="Special" value="<?php echo htmlspecialchars($spell->Special); ?>" rows="4" size="100" maxlength="60000" cols="100"></textarea></td>
+				<td><textarea id="Special" name="Special" rows="4" size="100" maxlength="60000" cols="100"><?php echo htmlspecialchars($spell->Special); ?></textarea></td>
 			</tr>
 
 			<tr>
