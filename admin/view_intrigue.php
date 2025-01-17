@@ -72,7 +72,7 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
     $knownPdfs = $intrigueActor->getAllPdfsThatAreKnown();
     printAllPdfs($knownPdfs, $intrigueActor, $section);
     echo "</td></tr>\n";
-    echo "<tr><td>Karaktärer mfl aktören känner till<br><br>Kommer visas med bild på intrigen så man lätt hittar varandra.</td><td colspan='2'>\n";
+    echo "<tr><td>Karaktärer mfl aktören känner till<br><br>Kommer visas med bild så man lättare kan känna igen de man borde känna.</td><td colspan='2'>\n";
     echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrigueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownActors = $intrigueActor->getAllKnownActors();
     printAllKnownActors($knownActors, $intrigueActor, $section);
