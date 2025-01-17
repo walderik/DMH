@@ -65,14 +65,14 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
     printAllTelegrams($checkinTelegrams, $intrigueActor, $section);
     
     echo "</td></tr>\n";
-    echo "<tr><td>Rekvisita och PDF aktören känner till<br>PDF'er kommer att mailas till deltagaren vid intrigutskicket</td><td colspan='2'>\n";
+    echo "<tr><td>Rekvisita och PDF aktören känner till<br><br>PDF'er kommer att mailas till deltagaren vid intrigutskicket</td><td colspan='2'>\n";
     echo "<a href='choose_intrigue_props.php?IntrigueActorId=$intrigueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownProps = $intrigueActor->getAllPropsThatAreKnown();
     printAllProps($knownProps, $intrigueActor, false, $section);
     $knownPdfs = $intrigueActor->getAllPdfsThatAreKnown();
     printAllPdfs($knownPdfs, $intrigueActor, $section);
     echo "</td></tr>\n";
-    echo "<tr><td>Karaktärer aktören känner till</td><td colspan='2'>\n";
+    echo "<tr><td>Karaktärer mfl aktören känner till<br><br>Kommer visas med bild på intrigen så man lätt hittar varandra.</td><td colspan='2'>\n";
     echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrigueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownActors = $intrigueActor->getAllKnownActors();
     printAllKnownActors($knownActors, $intrigueActor, $section);
