@@ -52,7 +52,10 @@ include 'navigation.php';
 			echo $role->Name;
     		//Karaktärsblad
     		echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
-		?>
+    		if (!$role->isRegistered($current_larp) || $role->userMayEdit($current_larp)) {
+    		    echo " " . $role->getEditLinkPen(false);
+    		}
+    		?>
 		</div>
  
 		<?php 

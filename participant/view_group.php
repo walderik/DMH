@@ -88,7 +88,13 @@ include 'navigation.php';
 
 			<i class="fa-solid fa-people-group"></i>
 			<?php echo $group->Name;?>
-			<a href='group_sheet.php?id=<?php echo $current_group->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad'></i></a>
+			<a href='group_sheet.php?id=<?php echo $group->Id;?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad'></i></a>
+			<?php 
+			if ($current_person->isGroupLeader($group) && (!$group->isRegistered($current_larp) || $group->userMayEdit($current_larp))) {
+			    echo " " . $group->getEditLinkPen(false);
+			}
+			?>
+    		
 		</div>
 		
 		<?php 

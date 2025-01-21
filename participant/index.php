@@ -341,7 +341,10 @@ function openTab(evt, tabName) {
 	      if($group->isNeverRegistered()) {
 	          echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
 	      }
-		  echo "</div>";
+	      if ($current_person->isGroupLeader($group) && (!$group->isRegistered($current_larp) || $group->userMayEdit($current_larp))) {
+	          echo " " . $group->getEditLinkPen(false);
+	      }
+	      echo "</div>";
 		  if (!$group->isRegistered($current_larp)) echo "<div class='center'><a href='group_registration_form.php?id=$group->Id'><button class='button-18'>Anmäl $group->Name</button></a></div>";
 		  if ($group->isApproved()) {
 		      echo "Gruppen är godkänd.<br>";
