@@ -281,8 +281,9 @@ include 'navigation.php';
 				
 		<?php  if (Ability::isInUse($current_larp)) {?>	
       		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Specialförmågor är sådant som påverkar speltekniken. Exempelvis "tål ett extra slag", men inte "har bättre luktsinne". Om du ska vara magi- eller alkemikunnig ska du innan din anmälan fått detta godkänt av magi-/alkemiarrangör, via e-post doh@berghemsvanner.se.
-Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och facebook-sidan.<br>
+           	<div class='itemname'>Specialförmågor</div>
+           	Specialförmågor är sådant som påverkar speltekniken. Exempelvis "tål ett extra slag", men inte "har bättre luktsinne". Om du ska vara magi- eller alkemikunnig ska du innan din anmälan fått detta godkänt av magi-/alkemiarrangör, via e-post doh@berghemsvanner.se.
+			Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och facebook-sidan.<br>
         	<?php selectionByArray('Ability' , Ability::allActive($current_larp), true, false, $role->getSelectedAbilityIds()); ?>
         	</div>
 
