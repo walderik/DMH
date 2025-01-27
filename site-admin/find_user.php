@@ -44,7 +44,7 @@ if (isset($message_message) && strlen($message_message)>0) {
 	 }
 	 echo "<br>";
 	 foreach ($persons as $person) {
-	   echo "$person->Name, $person->SocialSecurityNumber<br>";
+	   echo "Id: $person->Id, $person->Name, $person->SocialSecurityNumber<br>";
 	 }
 	 
 	 ?>
