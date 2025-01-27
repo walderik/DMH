@@ -482,6 +482,12 @@ class Titledeed extends BaseModel{
             "SELECT TitledeedId FROM regsys_titledeed_group WHERE GroupId=?) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($group->Id));
     }
+
+    public static function getAllActiveForGroup(Group $group) {
+        $sql = "SELECT * FROM regsys_titledeed WHERE Id IN (".
+            "SELECT TitledeedId FROM regsys_titledeed_group WHERE GroupId=?) AND IsInUse=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id));
+    }
     
     public static function delete($titledeedId) {
         //Ta bort tidigare resultat

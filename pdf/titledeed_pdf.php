@@ -429,7 +429,7 @@ class TITLEDEED_PDF extends FPDF {
 	    $groups = Group::getAllRegistered($larp);
 	    
 	    foreach ($groups as $group) {
-	        $titledeeds = Titledeed::getAllForGroup($group);
+	        $titledeeds = Titledeed::getAllActiveForGroup($group);
 	        if ($type != 1 && empty($titledeeds)) continue;
 	        
             if ($odd) $this->AddPage();
