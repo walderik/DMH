@@ -234,19 +234,27 @@ class TITLEDEED_PDF extends FPDF {
         $y = max($y1, $y2);
     }
     
-    function GroupSummary(Group $group, LARP $larp, bool $odd) {
+    function GroupSummary(Group $group, LARP $larp, bool $odd, $type) {
         global $root;
         
         $titledeeds = Titledeed::getAllForGroup($group);
         
+        $fullpage = false;
+        if ((sizeof($titledeeds) > 3)) $fullpage = true;
+        if ($fullpage && !$odd) {
+            $this->AddPage();
+            $odd = true;
+        }
+        
         $left = 11;
         $page_height = $this->GetPageHeight();
         $y = $odd ? 0 : ($page_height/2);
-        $y_bottom = $odd ? ($page_height/2) : $page_height;
+        $y_bottom = $odd && !$fullpage ? ($page_height/2) : $page_height;
         
         $left2 = $left + 30;
         
-        $txt_font = 'Helvetica';
+        if ($type == 1) $txt_font = 'KaiserzeitGotisch';
+        else $txt_font = 'Helvetica';
         $y += 13;
         $this->SetFont($txt_font,'',20);
         
@@ -272,7 +280,7 @@ class TITLEDEED_PDF extends FPDF {
         $this->SetXY($left2, $y+1);
         $this->MultiCell(0,8,encode_utf_to_iso($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         $y = $this->GetY();
-        //$y += 14;
+        $y += 7;
         
         $this->SetXY($left, $y);
         $this->Cell(80,10,encode_utf_to_iso('Producerar'),0,1); # 0 - No border, 1 -  to the beginning of the next line, C - Centrerad
@@ -293,7 +301,7 @@ class TITLEDEED_PDF extends FPDF {
         $this->MultiCell(0,8,encode_utf_to_iso($txt),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         
         $y = $this->GetY();
-        //$y += 14;
+        $y += 7;
         
         
         $currency = $larp->getCampaign()->Currency;
@@ -321,6 +329,7 @@ class TITLEDEED_PDF extends FPDF {
         $this->SetXY(($this->GetPageWidth()-$slen)/2, $y_bottom-35);
         $this->Cell(($this->GetPageWidth()- $slen)/2,10,encode_utf_to_iso($txt),0,1,'L');
         
+        if ($fullpage) $odd = true;
         
     }
     
@@ -353,22 +362,14 @@ class TITLEDEED_PDF extends FPDF {
 	        
 	        if ($titledeed->isGeneric() && !empty($owners) && (sizeof($owners)> 1)) {
 	          foreach ($owners as $owner) {
-	              if ($odd) {
-	                  $this->AddPage();
-	                  $odd = false;
-	              } else {
-	                  $odd = true;
-	              }
+	              if ($odd) $this->AddPage();
+                  $odd = !$odd;
 	              $this->SetTextDMH($titledeed, $larp, !$odd, $owner);
 	              
 	          }
 	        } else {
-    	        if ($odd) {
-    	            $this->AddPage();
-    	            $odd = false;
-    	        } else {
-    	            $odd = true;
-    	        }
+    	        if ($odd) $this->AddPage();
+    	        $odd = !$odd;
     	        $this->SetTextDMH($titledeed, $larp, !$odd, $owners);
 	        }
 	    }
@@ -410,12 +411,17 @@ class TITLEDEED_PDF extends FPDF {
 	}
 
 	
-	function groupSummaries(LARP $larp)
+	function groupSummaries(LARP $larp, $type)
 	{
+	    $this->SetMargins(10, 10, 40);
 	    $campaign = $larp->getCampaign();
-	    $this->AddFont('KaiserzeitGotisch');
-	    $this->AddFont('ComicRunes');
-	    $this->AddFont('Smokum','');
+	    if ($type == 1) {
+    	    $this->AddFont('KaiserzeitGotisch');
+    	    $this->AddFont('ComicRunes');
+	    } else {
+	        $this->AddFont('Smokum','');
+	        $this->AddFont('SpecialElite');
+	    }
 	    $this->SetMargins(0, 0);
 	    
 	    //         $this->AddPage('L','A5',270);
@@ -423,13 +429,12 @@ class TITLEDEED_PDF extends FPDF {
 	    $groups = Group::getAllRegistered($larp);
 	    
 	    foreach ($groups as $group) {
-            if ($odd) {
-                $this->AddPage();
-                $odd = false;
-            } else {
-                $odd = true;
-            }
-            $this->GroupSummary($group, $larp, !$odd);
+	        $titledeeds = Titledeed::getAllForGroup($group);
+	        if ($type != 1 && empty($titledeeds)) continue;
+	        
+            if ($odd) $this->AddPage();
+            $odd = !$odd;
+            $this->GroupSummary($group, $larp, !$odd, $type);
 	    }
 	}
 	

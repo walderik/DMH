@@ -26,7 +26,8 @@ include 'navigation.php';
         <a href="titledeed_dividend.php">Utdelning på verksamheter</a><br>
         <br>
 
-        <a href="logic/all_titledeeds_group_summary_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera gruppsammanfattningar</a><br>
+        <a href="logic/all_titledeeds_group_summary_pdf.php?type=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera gruppsammanfattningar, variant 1</a><br>
+        <a href="logic/all_titledeeds_group_summary_pdf.php?type=2" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera gruppsammanfattningar, varaint 2</a><br>
         <a href="logic/all_titledeeds_dmh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Maskinskrivna)</a><br>
         <a href="logic/all_titledeeds_doh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Kalligrafi / Runor)</a><br>
         <a href="logic/all_resources_pdf.php?type=<?php echo RESOURCE_PDF::Handwriting?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till verksamheterna (Handskrift / Maskinskrift)</a><br> 
