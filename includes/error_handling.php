@@ -167,6 +167,9 @@ function getErrorText($code) {
         case "group_already_exists_own":
             $output = "Du har redan en grupp med det namnet. Använd den istället.";
             break;
+        case "swishNotInstalled":
+            $output = "Swish finns inte installerat på den här telefonen. Betala med de uppgifter som anges.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }

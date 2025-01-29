@@ -43,7 +43,6 @@ function openTab(evt, tabName) {
 	  evt.currentTarget.className += " active";
 	}
 
-
 </script>
 
 	  <?php if (isset($error_message) && strlen($error_message)>0) {
@@ -437,7 +436,7 @@ function openTab(evt, tabName) {
                     $campaign = $current_larp->getCampaign();
                     echo "<br>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount.<br>Ange referens: <b>$registration->PaymentReference</b>.<br>Betalas senast ".$registration->paymentDueDate();
                     if (!empty($campaign->SwishNumber)) {
-                        if ($isMob) echo "<br><a href = ".Swish::getSwishLink($registration, $campaign). "><button ><img style='padding:2px'  width='20' src='../images/Swish Logo.png'><span style='vertical-align: top'> Betala med swish </span></button></a>";
+                        if ($isMob) echo "<br><button onclick='doSwish()'><img style='padding:2px'  width='20' src='../images/Swish Logo.png'><span style='vertical-align: top'> Betala med swish </span></button>";
                         else echo "<br><img width='200' src='../includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/>\n";
                     }
                     
@@ -955,4 +954,17 @@ function openTab(evt, tabName) {
 <script>
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
+</script>
+
+<script>
+
+function doSwish() {
+<!-- Deep link URL for existing users with app already installed on their device -->
+<?php if (isset($registration)) {?>
+window.location = '<?php echo Swish::getSwishLink($registration, $campaign)?>';
+<?php } ?>
+<!-- Download URL (TUNE link) for new users to download the app -->
+setTimeout("window.location = 'index.php?error=swishNotInstalled';", 1000);
+}
+
 </script>
