@@ -109,6 +109,7 @@ th {
                 		        echo "</td>\n";
         		            }
         		        }
+        		        $hasOtherIntrigues = false;
        		           $group = $role->getGroup();
         		        if (is_null($group)) {
         		            echo "<td>&nbsp;</td>\n";
@@ -120,7 +121,10 @@ th {
         		            if (!empty($intrigues)) echo "Intrig: ";
         		            foreach ($intrigues as $intrigue) {
         		                echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
-        		                if ($intrigue->isActive()) echo $intrigue->Number;
+        		                if ($intrigue->isActive()) {
+        		                    echo $intrigue->Number;
+        		                    $hasOtherIntrigues = true;
+        		                }
         		                else echo "<s>$intrigue->Number</s>";
         		                echo "</a>";
         		                echo " ";
@@ -143,7 +147,10 @@ th {
         		                if (!empty($intrigues)) echo "Intrig: ";
         		                foreach ($intrigues as $intrigue) {
         		                    echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
-        		                    if ($intrigue->isActive()) echo $intrigue->Number;
+        		                    if ($intrigue->isActive()) {
+        		                        echo $intrigue->Number;
+        		                        $hasOtherIntrigues = true;
+        		                    }
         		                    else echo "<s>$intrigue->Number</s>";
         		                    echo "</a>";
         		                    echo " ";
@@ -160,7 +167,10 @@ th {
         		        if ($role->isMysLajvare()) {
         		            echo "<td colspan=2>N/A</td>\n";
         		        } else {
-        		            echo "<td>" . showStatusIcon($role->hasIntrigue($current_larp));
+        		            echo "<td>"; 
+        		            if ($role->hasIntrigue($current_larp)) echo showStatusIcon(true);
+        		            elseif ($hasOtherIntrigues) echo showWarningIcon();
+        		            else echo showStatusIcon(false);
         		            $intrigueWords = $role->intrigueWords($current_larp);
         		            
         		            if (!empty($intrigueWords)) echo "<br>$intrigueWords ord";

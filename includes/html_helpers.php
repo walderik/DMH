@@ -191,6 +191,10 @@ function showStatusIcon($value, ?string $fix_url = NULL, ?string $unfix_url = NU
     }
 }
 
+function showWarningIcon() {
+    return '<img src="../images/warning.png" alt="Varning" width="20" height="20">';
+}
+
 function showQuestionmarkIcon() {
     return '<img src="../images/questionmark.jpeg" alt="?" width="20" height="20">';
 }
