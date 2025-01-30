@@ -116,7 +116,7 @@ function help_icon($help_text) {
 // }
 
 # En selector där man kan välja i en array av objekt
-function selectionDropDownByArray(String $name, Array $selectionDatas, $required=true, $selected=null, ?String $formIdentifier="") {
+function selectionDropDownByArray(String $name, Array $selectionDatas, $required=true, $selected=null, ?String $selectedValue = null, ?String $formIdentifier="") {
     // lägg till tomt val om det inte är required
     if (!$required){
         if (!empty($selectionDatas)) $empty_object = clone $selectionDatas[0];
@@ -126,14 +126,20 @@ function selectionDropDownByArray(String $name, Array $selectionDatas, $required
         array_unshift($selectionDatas , $empty_object);
     }
     
+   $selectedFound = false;
+   if (empty($selected)) $selectedFound = true;
    echo "<select $formIdentifier name='$name' id='$name'>\n";
     foreach ($selectionDatas as $selectionData) {
         $row_option = '';
-        if (!empty($selected) && $selectionData->Id == $selected)
+        if (!empty($selected) && $selectionData->Id == $selected) {
             $row_option = 'selected';
+            $selectedFound = true;
+        }
             
      echo "   <option value='$selectionData->Id' $row_option>".htmlspecialchars($selectionData->Name)."</option>\n";
     }
+    
+    if (!$selectedFound && !empty($selectedValue)) echo "   <option value='$selected' selected>".htmlspecialchars($selectedValue)."</option>\n";
     echo "</select>\n";
     
 }

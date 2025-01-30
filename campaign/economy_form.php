@@ -122,7 +122,10 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 			    $bookkeeping->PersonId = $current_person->Id;
 			}
 			$organizers = Person::getAllWithAccessToCampaign($current_larp->getCampaign());
-		    selectionDropDownByArray('PersonId', $organizers, true, $bookkeeping->PersonId) ?></td>
+			$responsiblePerson = $bookkeeping->getPerson();
+			$personName = null;
+			if (isset($responsiblePerson)) $personName=$responsiblePerson->Name;
+			selectionDropDownByArray('PersonId', $organizers, true, $bookkeeping->PersonId, $personName) ?></td>
 
 			</tr>
 
