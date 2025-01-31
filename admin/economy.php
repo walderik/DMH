@@ -69,12 +69,6 @@ function saveReceipt(Bookkeeping $bookkeeping) {
 include 'navigation.php';
 ?>
 
-<style>
-.amount {
-  text-align: right;
-}
-
-</style>
 
     <div class="content">
         <h1>Kassabok</h1>

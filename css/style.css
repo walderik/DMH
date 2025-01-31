@@ -200,7 +200,8 @@ table.helpBox td {
 }
 
 
-
+.amount {
+  text-align: right;
 
 .error {
     font-weight: bold;

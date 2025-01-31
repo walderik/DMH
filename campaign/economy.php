@@ -79,12 +79,6 @@ $campaign = $current_larp->getCampaign();
 include 'navigation.php';
 ?>
 
-<style>
-.amount {
-  text-align: right;
-}
-
-</style>
 
     <div class="content">
         <h1>Kassabok</h1>
