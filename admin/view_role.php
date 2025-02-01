@@ -368,7 +368,8 @@ include 'navigation.php';
 	           $numberOfOwners = $titledeed->numberOfOwners();
 	           if ($numberOfOwners > 1) echo " 1/$numberOfOwners";
 		    }
-		    echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
+		    if ($titledeed->isInUse()) echo ", <a href='resource_titledeed_form.php?Id=$titledeed->Id'>Resultat ".$titledeed->calculateResult()." $currency</a>";
+		    else echo ", ej i spel";
 		    echo "<br>";
 		    $produces_normally = $titledeed->ProducesNormally();
 		    if (!empty($produces_normally)) echo "Tillgångar: ". commaStringFromArrayObject($produces_normally) . "<br>\n";
