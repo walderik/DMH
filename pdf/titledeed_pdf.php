@@ -237,7 +237,7 @@ class TITLEDEED_PDF extends FPDF {
     function GroupSummary(Group $group, LARP $larp, bool $odd, $type) {
         global $root;
         
-        $titledeeds = Titledeed::getAllForGroup($group);
+        $titledeeds = Titledeed::getAllActiveForGroup($group);
         
         $fullpage = false;
         if ((sizeof($titledeeds) > 3)) $fullpage = true;
