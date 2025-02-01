@@ -26,7 +26,7 @@ $pdf->init($current_person->Name, $name, $current_larp->Name, false);
 
 //Vem bor var?
 
-$titledeed_array = Titledeed::allByCampaign($current_larp, true);
+$titledeed_array = Titledeed::allByCampaign($current_larp, false);
 $currency = $current_larp->getCampaign()->Currency;
 
 $rows = array();
@@ -46,9 +46,14 @@ foreach ($titledeed_array as $titledeed) {
         $owners[] = $owner_role->Name;
     }
     
-    $owner_str = implode(", ", $owners);
-    if ($titledeed->Tradeable == 0) $owner_str = "Kan inte säljas.\n" . $owner_str;
-    
+    if ($titledeed->isGeneric()) {
+        $tradeStr = "";
+        if ($titledeed->Tradeable == 0) $tradeStr = "\nKan inte säljas.\n";
+    } else {
+        $owner_str = implode(", ", $owners);
+        if ($titledeed->Tradeable == 0) $owner_str = "Kan inte säljas.\n" . $owner_str;
+    }
+
     
     if ($all_info) {
         $prod_needs = "";
@@ -58,10 +63,19 @@ foreach ($titledeed_array as $titledeed) {
         $prod_needs = $prod_needs.  $titledeed->RequiresString()."\n";
         $prod_needs = $prod_needs.  "För uppgradering: ";
         $prod_needs = $prod_needs.  $titledeed->RequiresForUpgradeString();
-        
-        $rows[] = array($titledeed->Name, $titledeed->Location, $owner_str, $prod_needs);
+        if ($titledeed->isGeneric()) {
+            foreach ($owners as $owner) $rows[] = array($titledeed->Name, $titledeed->Location, $owner.$tradeStr, $prod_needs);
+        }
+        else {
+            $rows[] = array($titledeed->Name, $titledeed->Location, $owner_str, $prod_needs);
+        }
     } else {
-        $rows[] = array($titledeed->Name, $titledeed->Location, $owner_str);
+        if ($titledeed->isGeneric()) {
+            foreach ($owners as $owner) $rows[] = array($titledeed->Name, $titledeed->Location, $owner.$tradeStr);
+        }
+        else {
+            $rows[] = array($titledeed->Name, $titledeed->Location, $owner_str);
+        }
     }
 }
 // add a page
