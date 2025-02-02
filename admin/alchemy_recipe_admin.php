@@ -35,6 +35,7 @@ include 'alchemy_navigation.php';
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
                "<th onclick='sortTable(2, \"$tableId\")'>Typ</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Skapare</th>".
                "<th onclick='sortTable(3, \"$tableId\")'>Hemligt</th>".
                "<th onclick='sortTable(4, \"$tableId\")'>Effekt</th>".
                "<th onclick='sortTable(5, \"$tableId\")'>Ingredienser/Essenser<br>Nivån anges inom parentes</th>".
@@ -51,6 +52,15 @@ include 'alchemy_navigation.php';
                 echo "<td>$recipe->Level</td>\n";
                 echo "<td>";
                 echo $recipe->getRecipeType();
+                echo "</td>\n";
+
+                echo "<td>";
+                $authorRole = $recipe->getAuthorRole();
+                if (isset($authorRole)) {
+                    $alchemist = Alchemy_Alchemist::getForRole($authorRole);
+                    if (isset($alchemist)) echo "<a href='view_alchemist.php?id=$alchemist->Id'>$authorRole->Name</a>";
+                    else echo $authorRole->getViewLink()." (ej alkemist)";
+                }
                 echo "</td>\n";
                 
                 echo "<td>";

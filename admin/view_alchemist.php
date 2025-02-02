@@ -27,7 +27,7 @@ include 'alchemy_navigation.php';
 
 	<div class="content">
 		<h1>
-		<?php echo "Alkemist" . $role->getViewLink() . "&nbsp";?>
+		<?php echo "Alkemist " . $role->getViewLink() . "&nbsp";?>
 		<a href='alchemy_alchemist_sheet.php?id=<?php echo $alchemist->Id ?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Alkemistblad för <?php $role->Name?>'></i></a>&nbsp;
 
 		<a href='alchemy_alchemist_form.php?Id=<?php echo $alchemist->Id;?>&operation=update'>
@@ -115,7 +115,7 @@ include 'alchemy_navigation.php';
     		</table>
 
 			<h2>Recept</h2>
-
+			recept markerade med <i class="fa-solid fa-star"></i> är skapade av alkemisten.
 			<?php 
 			$recipes = $alchemist->getRecipes(false);
 			if (empty($recipes)) {
@@ -124,7 +124,9 @@ include 'alchemy_navigation.php';
 				echo "<table class='small_data'>";
 				echo "<tr><th>Namn</th><th>Nivå</th><th>Typ</th><th>Effekt</th><th>Fick på/till<br>lajvet</th><th></th></tr>";
 				foreach ($recipes as $recipe) {
-				    echo "<tr><td><a href='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</td><td>$recipe->Level</td><td>".$recipe->getRecipeType()."</td><td>$recipe->Effect</td>";
+				    echo "<tr><td><a href='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</a>";
+				    if ($recipe->AuthorRoleId == $alchemist->RoleId) echo " <i class='fa-solid fa-star'></i>";
+				    echo "</td><td>$recipe->Level</td><td>".$recipe->getRecipeType()."</td><td>$recipe->Effect</td>";
 				    echo "<td>";
 				    $approvedLarpId = $alchemist->recipeApprovedLarp($recipe);
 				    if (isset($approvedLarpId)) {
@@ -147,6 +149,29 @@ include 'alchemy_navigation.php';
 			?>
 			<p>
 			<a href='choose_alchemy_recipe.php?id=<?php echo $alchemist->Id ?>&operation=add_alchemist_recipe'>Lägg till recept</a>
+
+			<h2>Recept skapade av <?php echo $role->Name?> </h2>
+
+			<?php 
+			$recipes = Alchemy_Recipe::allByRole($role);
+			if (empty($recipes)) {
+			    echo "Inga recept, än.";
+			} else {
+				echo "<table class='small_data'>";
+				echo "<tr><th>Namn</th><th>Nivå</th><th>Typ</th><th>Effekt</th><th>Godkänt</th></tr>";
+				foreach ($recipes as $recipe) {
+				    echo "<tr><td><a href='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</td><td>$recipe->Level</td><td>".$recipe->getRecipeType()."</td><td>$recipe->Effect</td>";
+				    echo "<td>";
+				    echo showStatusIcon($recipe->isApproved(),  "logic/toggle_approve_recipe.php?recipeId=$recipe->Id") . "\n";
+				    
+				    echo "</td>\n";
+				    
+				    
+				    echo "</tr>";
+				}
+				echo "</table>";
+			}
+			?>
 
 
 		</div>
