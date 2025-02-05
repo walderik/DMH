@@ -77,7 +77,7 @@ if ($type == "house") {
         if ($resultCheck > 0) {
             echo "<table id='houses' class='data'>";
             echo "<tr><th>Namn</th>";
-            if ($type == "house") echo "<th>Sovplatser</th>";
+            if ($type == "house") echo "<th>Komfortantal</th><th>Maxantal</th>";
             else echo "<th>Tältplatser</th>";
             echo "<th>Plats</th><th>Beskrivning</th><th>Kartpunkt</th>";
             if ($type == "house") echo "<th>Förvaltare</th>";
@@ -85,9 +85,10 @@ if ($type == "house") {
             foreach ($house_array as $house) {
                 
                 echo "<tr>\n";
-                echo "<td><a href='view_house.php?operation=update&id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
+                echo "<td><a href='view_house.php?id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
 
-                echo "<td width='8%'>" . $house->NumberOfBeds . "</td>\n";
+                if ($type == "house") echo "<td>$house->ComfortNumber</td><td>$house->MaxNumber</td>\n";
+                else echo "<td width='8%'>" . $house->NumberOfBeds . "</td>\n";
                 echo "<td width='20%' style='word-break: break-all';>" . $house->PositionInVillage . "</td>\n";
                 echo "<td>" . $house->Description . "</td>\n";
                 echo "<td>" . showStatusIcon($house->Lat != NULL) . "</td>\n";

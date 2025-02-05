@@ -60,15 +60,16 @@ ul.list {
 
 		
 	   <div class='itemcontainer'>
-       <div class='itemname'>Antal 
-			<?php 
-			if ($house->IsHouse()) echo "sovplatser"; 
-			else echo "tältplatser";
-			?>
-		</div>
-		<?php echo htmlspecialchars($house->NumberOfBeds); 
-		if ($house->IsHouse()) echo " (Hus)";
-        else echo " (Lägerplats)";?>
+		<?php 
+		if ($house->IsHouse()) {
+		    echo "<div class='itemname'>Antal sovplatser</div>";
+		    if ($house->ComfortNumber != $house->MaxNumber) echo "$house->ComfortNumber - $house->MaxNumber";
+		    else echo $house->ComfortNumber;
+		} else {
+		    echo "<div class='itemname'>Antal tältplatser</div>";
+		    echo $house->NumberOfBeds;
+		}
+	     ?>
 	   </div>
 		
 	   <div class='itemcontainer'>

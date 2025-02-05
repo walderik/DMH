@@ -27,18 +27,18 @@ img {
     		<td>
     		<table>
     			<tr>
-    			
-    				<td>Antal 
     				<?php 
-    				if ($house->IsHouse()) echo "sovplatser"; 
-    				else echo "tältplatser";
-    				?>
-    				</td>
-    				<td>
-    					<?php echo htmlspecialchars($house->NumberOfBeds); 
-        					if ($house->IsHouse()) echo " (Hus)";
-                            else echo " (Lägerplats)";?>
-                    </td>
+    				if ($house->IsHouse()) {
+    				   echo "<td>Komfortantal</td><td>$house->ComfortNumber</td>";
+    				   echo "</tr>";
+                       echo "<tr>"; 
+    				   echo "<td>Maxantal</td><td>$house->MaxNumber</td>";
+
+    				} else {
+    				    echo "<td>Antal tältplatser</td><td>$house->NumberOfBeds</td>";
+    				}
+
+                    ?>
     			</tr>
     			<tr>
     				<td>Plats</td>

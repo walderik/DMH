@@ -82,8 +82,16 @@ img {
                 			</td>
             			</tr>
             			<tr>
-            				<td><label for="NumberOfBeds" class="header">Antal sovplatser/<br>tältplatser</label></td>
+            				<td><label for="NumberOfBeds" class="header">Antal tältplatser<br>Används för lägerplatser</label></td>
             				<td><input type="text" id="NumberOfBeds" name="NumberOfBeds" value="<?php echo htmlspecialchars($house->NumberOfBeds); ?>" required></td>
+            			</tr>
+            			<tr>
+            				<td><label for="ComfortNumber" class="header">Komfortantal<br>Används för hus</label></td>
+            				<td><input type="number" id="ComfortNumber" name="ComfortNumber" value="<?php echo htmlspecialchars($house->ComfortNumber); ?>" maxlength="5" min="0" required></td>
+            			</tr>
+            			<tr>
+            				<td><label for="MaxNumber" class="header">Maxantal<br>Används för hus</label></td>
+            				<td><input type="number" id="MaxNumber" name="MaxNumber" value="<?php echo htmlspecialchars($house->MaxNumber); ?>" maxlength="5" min="0" required></td>
             			</tr>
             			<tr>
             				<td><label for="PositionInVillage" class="header">Plats</label></td>

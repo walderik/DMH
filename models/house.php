@@ -5,6 +5,8 @@ class House extends BaseModel{
     public $Id;
     public $Name;
     public $NumberOfBeds;
+    public $ComfortNumber = 0;
+    public $MaxNumber = 0;
     public $PositionInVillage;
     public $Description;
     public $ImageId;
@@ -30,6 +32,8 @@ class House extends BaseModel{
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
         if (isset($arr['NumberOfBeds'])) $this->NumberOfBeds = $arr['NumberOfBeds'];
+        if (isset($arr['ComfortNumber'])) $this->ComfortNumber = $arr['ComfortNumber'];
+        if (isset($arr['MaxNumber'])) $this->MaxNumber = $arr['MaxNumber'];
         if (isset($arr['PositionInVillage'])) $this->PositionInVillage = $arr['PositionInVillage'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
@@ -52,10 +56,10 @@ class House extends BaseModel{
     
     # Update an existing house in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_house SET Name=?, NumberOfBeds=?, PositionInVillage=?, Description=?, 
+        $stmt = $this->connect()->prepare("UPDATE regsys_house SET Name=?, NumberOfBeds=?, ComfortNumber=?, MaxNumber=?, PositionInVillage=?, Description=?, 
                 ImageId=?, IsHouse=?, NotesToUsers=?, History=?, DeletedAt=?, InspectionNotes=?, Lat=?, Lon=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, 
+        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->ComfortNumber, $this->MaxNumber, $this->PositionInVillage, $this->Description, 
             $this->ImageId, $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Lat, $this->Lon, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -68,10 +72,10 @@ class House extends BaseModel{
     # Create a new house in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_house (Name, NumberOfBeds, PositionInVillage, Description, 
-            IsHouse, NotesToUsers, History, DeletedAt, InspectionNotes, Lat, Lon) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_house (Name, NumberOfBeds, ComfortNumber, MaxNumber, PositionInVillage, Description, 
+            IsHouse, NotesToUsers, History, DeletedAt, InspectionNotes, Lat, Lon) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->PositionInVillage, $this->Description, 
+        if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->ComfortNumber, $this->MaxNumber, $this->PositionInVillage, $this->Description, 
             $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Lat, $this->Lon))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");

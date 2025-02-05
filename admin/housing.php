@@ -110,8 +110,10 @@ function print_house($house) {
     
     echo "<div class='house' id='house_$house->Id' ondrop='drop_in_house(event, this)' ondragover='allowDrop(event)'>\n";
     echo "<div class='name'><a href='view_house.php?id=$house->Id'>$house->Name</a> <button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>\n";
-    echo "<div>Antal platser: $house->NumberOfBeds";
-    echo "</div>\n";
+    if ($house->isHouse()) {
+        echo "<div>Platser: $house->ComfortNumber (komfort), $house->MaxNumber (max)</div>\n";
+    }
+    else echo "<div>Antal tältplatser: $house->NumberOfBeds</div>\n";
 
     echo "<div id='count_house_$house->Id'>".count($personsInHouse)." pers";
     if ($notComingWarning) echo " ".showStatusIcon(false);
