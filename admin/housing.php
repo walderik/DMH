@@ -96,17 +96,7 @@ function print_individual(Person $person, $group, $house) {
     
     
 }
-function caretakerInHouse(House $house, $personsInHouse) {
-    $caretakers = $house->getCaretakerPersons();
-    $caretakersInHouse =  array_uintersect($personsInHouse, $caretakers,
-        function ($objOne, $objTwo) {
-            return $objOne->Id - $objTwo->Id;
-        });
-    if (count($caretakersInHouse) == 0) return false;
-    //echo "<br>Förvaltare i hus: $house->Name<br>";
-    //foreach ($caretakersInHouse as $person) echo $person->Name."<br>";
-    return true;
-}
+
 
 function print_house($house) {
     global $current_larp;
@@ -130,12 +120,7 @@ function print_house($house) {
         $numInHouse = count($personsInHouse);
         if ($numInHouse <= $house->ComfortNumber) echo showStatusIcon(true);
         elseif ($numInHouse > $house->MaxNumber) echo showStatusIcon(false);
-        else {
-            if (caretakerInHouse($house, $personsInHouse)) {
-                if (count($groupsInHouse) > 1) echo showStatusIcon(false);
-                else echo showWarningIcon();
-            } else echo showWarningIcon();
-        }
+        else echo showWarningIcon();
         echo "</div>\n";
     }
     else echo "<div>Antal tältplatser: $house->NumberOfBeds</div>\n";
