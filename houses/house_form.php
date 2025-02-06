@@ -109,14 +109,14 @@ img {
             			<tr>
             				<td><label for="NotesToUsers" class="header">Husbrev<br>(Information till deltagare som ska bo i huset)</label></td>
             				<td>
-            					<textarea id="NotesToUsers" name="NotesToUsers" rows="6" cols="50" maxlength="600000" required><?php echo htmlspecialchars($house->NotesToUsers); ?></textarea>
+            					<textarea id="NotesToUsers" name="NotesToUsers" rows="6" cols="50" maxlength="600000"><?php echo htmlspecialchars($house->NotesToUsers); ?></textarea>
             				</td>
             			</tr>
 
             			<tr>
             				<td><label for="InspectionNotes" class="header">Noteringar från besiktning</label></td>
             				<td>
-            					<textarea id="InspectionNotes" name="InspectionNotes" rows="6" cols="50" maxlength="60000" required><?php echo htmlspecialchars($house->InspectionNotes); ?></textarea>
+            					<textarea id="InspectionNotes" name="InspectionNotes" rows="6" cols="50" maxlength="60000"><?php echo htmlspecialchars($house->InspectionNotes); ?></textarea>
             				</td>
             			</tr>
             			<?php }?>
