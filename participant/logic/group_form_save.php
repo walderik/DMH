@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $group->update();
         $group->unapprove($current_larp, false, null);
         $group->deleteAllIntrigueTypes();
-        $group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+        if (isset($_POST['IntrigueTypeId'])) $group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         
         if (!empty($larp_group)) {
             $larp_group->UserMayEdit = 0;
