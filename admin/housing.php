@@ -121,7 +121,10 @@ function print_house($house) {
     $groupsInHouse = Group::getGroupsInHouse($house, $current_larp);
     
     echo "<div class='house' id='house_$house->Id' ondrop='drop_in_house(event, this)' ondragover='allowDrop(event)'>\n";
-    echo "<div class='name'><a href='view_house.php?id=$house->Id'>$house->Name</a> <button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>\n";
+    echo "<div class='name'><a href='view_house.php?id=$house->Id'>$house->Name</a> ";
+    if ($notComingWarning) echo showStatusIcon(false);
+    
+    echo "<button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>\n";
     if ($house->isHouse()) {
         echo "<div>Platser: $house->ComfortNumber (komfort), $house->MaxNumber (max)";
         $numInHouse = count($personsInHouse);
@@ -138,7 +141,6 @@ function print_house($house) {
     else echo "<div>Antal tältplatser: $house->NumberOfBeds</div>\n";
 
     echo "<div id='count_house_$house->Id'>".count($personsInHouse)." pers";
-    if ($notComingWarning) echo " ".showStatusIcon(false);
     echo "</div>";
     
 
@@ -288,7 +290,8 @@ div.housing-group {
 	?>
 	</td><td width='45%'>
 	<h2>Tilldelat boende</h2>
-	Om det är ett <?php echo showStatusIcon(false)?> efter antalet som är placerade i ett boende betyder det att minst en person i huset har blivit avbokad.
+	Om det är ett <?php echo showStatusIcon(false)?> efter namnet på huset/lägerplatsen betyder det att minst en person i huset har blivit avbokad.<br>
+	Ikonen efter antalet platser i huset anger hur fullt huset är. Om det är <?php echo showStatusIcon(false)?> är det över max-antal i huset.
 	<div class='housing-group clearfix'>
 	
 	<h3>Hus <?php echo " <span onclick='show_hide_area(\"houses\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>";?></h3>
