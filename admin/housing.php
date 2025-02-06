@@ -96,6 +96,17 @@ function print_individual(Person $person, $group, $house) {
     
     
 }
+function caretakerInHouse(House $house, $personsInHouse) {
+    $caretakers = $house->getCaretakerPersons();
+    $caretakersInHouse =  array_uintersect($personsInHouse, $caretakers,
+        function ($objOne, $objTwo) {
+            return $objOne->Id - $objTwo->Id;
+        });
+    if (count($caretakersInHouse) == 0) return false;
+    //echo "<br>Förvaltare i hus: $house->Name<br>";
+    //foreach ($caretakersInHouse as $person) echo $person->Name."<br>";
+    return true;
+}
 
 function print_house($house) {
     global $current_larp;
@@ -107,11 +118,22 @@ function print_house($house) {
             break;
         }
     }
+    $groupsInHouse = Group::getGroupsInHouse($house, $current_larp);
     
     echo "<div class='house' id='house_$house->Id' ondrop='drop_in_house(event, this)' ondragover='allowDrop(event)'>\n";
     echo "<div class='name'><a href='view_house.php?id=$house->Id'>$house->Name</a> <button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>\n";
     if ($house->isHouse()) {
-        echo "<div>Platser: $house->ComfortNumber (komfort), $house->MaxNumber (max)</div>\n";
+        echo "<div>Platser: $house->ComfortNumber (komfort), $house->MaxNumber (max)";
+        $numInHouse = count($personsInHouse);
+        if ($numInHouse <= $house->ComfortNumber) echo showStatusIcon(true);
+        elseif ($numInHouse > $house->MaxNumber) echo showStatusIcon(false);
+        else {
+            if (caretakerInHouse($house, $personsInHouse)) {
+                if (count($groupsInHouse) > 1) echo showStatusIcon(false);
+                else echo showWarningIcon();
+            } else echo showWarningIcon();
+        }
+        echo "</div>\n";
     }
     else echo "<div>Antal tältplatser: $house->NumberOfBeds</div>\n";
 
@@ -119,7 +141,7 @@ function print_house($house) {
     if ($notComingWarning) echo " ".showStatusIcon(false);
     echo "</div>";
     
-    $groupsInHouse = Group::getGroupsInHouse($house, $current_larp);
+
     
     echo "<div id='in_house_$house->Id' class='in_house clearfix'>\n";
     foreach($groupsInHouse as $group) {
