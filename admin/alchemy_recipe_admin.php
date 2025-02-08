@@ -48,6 +48,8 @@ include 'alchemy_navigation.php';
                 echo "<td>";
                 echo "<a href ='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</a> ";
                 echo "<a href ='alchemy_recipe_form.php?operation=update&id=$recipe->Id'><i class='fa-solid fa-pen'></i></a>";
+                echo " <a href='reports/alchemy_recipe_pdf.php?RecipeId=<?php echo $recipe->Id?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Receptet som skrolla'></i></a>";
+                
                 echo "</td>\n";
                 echo "<td>$recipe->Level</td>\n";
                 echo "<td>";
