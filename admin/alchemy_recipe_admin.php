@@ -35,12 +35,12 @@ include 'alchemy_navigation.php';
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
                "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
                "<th onclick='sortTable(2, \"$tableId\")'>Typ</th>".
-               "<th onclick='sortTable(2, \"$tableId\")'>Skapare</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Hemligt</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Effekt</th>".
-               "<th onclick='sortTable(5, \"$tableId\")'>Ingredienser/Essenser<br>Nivån anges inom parentes</th>".
-               "<th onclick='sortTable(6, \"$tableId\")'>Godkänd</th>".
-               "<th onclick='sortTable(7, \"$tableId\")'>Alla ingredienser finns på lajvet/<br>Vilka ingredienser saknas</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Skapare</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Hemligt</th>".
+               "<th onclick='sortTable(5, \"$tableId\")'>Effekt</th>".
+               "<th onclick='sortTable(6, \"$tableId\")'>Ingredienser/Essenser<br>Nivån anges inom parentes</th>".
+               "<th onclick='sortTable(7, \"$tableId\")'>Godkänd</th>".
+               "<th onclick='sortTable(8, \"$tableId\")'>Alla ingredienser finns på lajvet/<br>Vilka ingredienser saknas</th>".
                "<th></th>";
            
            foreach ($recipes as $recipe) {
