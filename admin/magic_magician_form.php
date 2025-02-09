@@ -100,7 +100,7 @@ $magician = Magic_Magician::newWithDefault();;
 				</td>
 			</tr>
 			<tr>
-				<td>Stav</td>
+				<td>Magifokus</td>
 				<td>
 					<?php 
 					if ($magician->hasStaffImage()) {
@@ -117,7 +117,7 @@ $magician = Magic_Magician::newWithDefault();;
 				</td>
 			</tr>
 			<tr>
-				<td><label for="StaffApproved">Stav godkänd datum</label></td>
+				<td><label for="StaffApproved">Magifokus godkänt datum</label></td>
 				<td>
 					<input type="date" id="StaffApproved" name="StaffApproved" value="<?php echo $magician->StaffApproved; ?>"  size="15" maxlength="250">
 				</td>

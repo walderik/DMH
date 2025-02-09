@@ -90,7 +90,7 @@ include 'magic_navigation.php';
     			<?php }?>
 
 				<tr>
-    				<td>Stav</td>
+    				<td>Magifokus</td>
     				<td>
     					<?php 
     					echo "<a href='upload_image.php?id=$magician->Id&type=magician'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
@@ -107,7 +107,7 @@ include 'magic_navigation.php';
     				</td>
     			</tr>
     			<tr>
-    				<td>Stav godkänd datum</td>
+    				<td>Magifokus godkänt datum</td>
     				<td><?php echo $magician->StaffApproved; ?></td>
     			</tr>
     			<tr>

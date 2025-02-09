@@ -340,7 +340,7 @@ line-height: 1.8;
         		                else {
         		                    if (!$magician->StaffApproved) {
         		                        if ($isMob) echo "<br>";
-        		                        echo showParticipantStatusIcon(false, "Staven är inte godkänd");
+        		                        echo showParticipantStatusIcon(false, "Magifokus är inte godkänt");
         		                    }
         		                    if (!$magician->hasDoneWorkshop()) {
         		                        if ($isMob) echo "<br>";

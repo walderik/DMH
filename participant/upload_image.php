@@ -50,7 +50,7 @@ switch ($type) {
         break;
     case "magician":
         $object = Magic_Magician::loadById($id);
-        $name = "stav";
+        $name = "magifokus";
         break;
 }
         
