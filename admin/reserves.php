@@ -14,7 +14,19 @@ th {
 <script src="../javascript/table_sort.js"></script>
 
     <div class="content">   
-        <h1>Reservlistan</h1>
+        <h1>Reservlistan 
+			<?php 
+			$personIdArr = array();
+			$persons = Person::getAllReserves($current_larp);
+
+			foreach($persons as $person) {
+				$personIdArr[] = $person->Id;
+			}
+			$ikon = contactSeveralEmailIcon("", $personIdArr, "du som är anmäld i reservlistan", "Meddelande till alla på reservlistan till $current_larp->Name");
+			
+			echo "$ikon &nbsp; &nbsp;";
+			?>
+		</h1>
         Detta är listan med deltagare som har gjort en anmälan efter att lajvet är fullt. De har fått meddelande om att de står på reservplats. Listan tar inte hänsyn till i vilken ordning de har komit in på den.<br><br>
         Genom att klicka på "Gör till en anmälan" omvandlas deltagare på reservlistan till en vanlig anmälan. Den får sedan hanteras i vanlig ordning med eventuella godkännanden.
      		<?php 
@@ -73,6 +85,15 @@ th {
     		        
     		        echo "<input type='submit' value='Gör till en anmälan'>";
     		        echo "</form>";
+
+					echo "<br>";
+
+					echo "<form method='post' action='logic/remove_from_reserves.php'>";
+    		        echo "<input type='hidden' id='Reserve_RegistrationId' name='Reserve_RegistrationId' value='$reserve_registration->Id'>";
+    		        
+    		        echo "<input type='submit' value='Ta bort från reservlistan'>";
+    		        echo "</form>";
+
     		        echo "</td>";
     		            
     		        echo "</tr>\n";

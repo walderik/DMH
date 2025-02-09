@@ -231,8 +231,6 @@ class Reserve_Registration extends BaseModel{
         
         return $resultArray;
     }
-    
-    
 
     public function turnIntoRegistration() {
         
@@ -263,7 +261,6 @@ class Reserve_Registration extends BaseModel{
         
         $registration->PaymentReference = $registration->createPaymentReference();
 
-        
         $registration->create();
 
         //Official types
@@ -289,8 +286,20 @@ class Reserve_Registration extends BaseModel{
         foreach($reserve_larp_roles as $reserve_larp_role) {
             Reserve_LARP_Role::deleteByIds($reserve_larp_role->LARPId, $reserve_larp_role->RoleId);
         }
-        
-        
     }
-    
+
+    public function removeFromReserves($sender_id) {
+        $this->deleteAllOfficialTypes();
+        Reserve_Registration::delete($this->Id);
+
+        $reserve_larp_roles = Reserve_LARP_Role::getReserveRolesForPerson($this->LARPId, $this->PersonId);
+        foreach($reserve_larp_roles as $reserve_larp_role) {
+            Reserve_LARP_Role::deleteByIds($reserve_larp_role->LARPId, $reserve_larp_role->RoleId);
+        }
+
+        $person = Person::loadById($this->PersonId);
+        $larp = LARP::loadById($this->LARPId);
+
+        BerghemMailer::send_remove_reserve_registration_mail($this, $sender_id);
+    }
 }
