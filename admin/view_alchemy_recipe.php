@@ -159,6 +159,10 @@ include 'alchemy_navigation.php';
     				<td><?php echo nl2br(htmlspecialchars($recipe->SideEffect)); ?></td>
     			</tr>
 			<?php } ?>
+				<tr>
+    				<td>Arrangörsanteckningar</td>
+    				<td><?php echo nl2br(htmlspecialchars($recipe->OrganizerNotes)); ?></td>
+    			</tr>
     			<tr><td></td></tr>
     		</table>
 
