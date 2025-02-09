@@ -288,7 +288,7 @@ class Reserve_Registration extends BaseModel{
         }
     }
 
-    public function removeFromReserves() {
+    public function removeFromReserves($sender_id) {
         $this->deleteAllOfficialTypes();
         Reserve_Registration::delete($this->Id);
 
@@ -299,9 +299,7 @@ class Reserve_Registration extends BaseModel{
 
         $person = Person::loadById($this->PersonId);
         $larp = LARP::loadById($this->LARPId);
-        $senderId = NULL;
-        if (isset($person)) $senderId = $person->Id;
 
-        BerghemMailer::send_remove_reserve_registration_mail($this);
+        BerghemMailer::send_remove_reserve_registration_mail($this, $sender_id);
     }
 }

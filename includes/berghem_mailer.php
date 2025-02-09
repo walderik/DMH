@@ -232,13 +232,13 @@ class BerghemMailer {
         BerghemMailer::send($larp, null, $person->Id, "Hej ".$person->Name, $text, "Bekräftan av reservanmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
-    public static function send_remove_reserve_registration_mail(Reserve_Registration $reserve_registration) {
+    public static function send_remove_reserve_registration_mail(Reserve_Registration $reserve_registration, $sender_id) {
         $person = $reserve_registration->getPerson();
         $larp = $reserve_registration->getLARP();
 
         $text  = "Du är inte längre registrerad på reservlistan för lajvet $larp->Name.<br><br>Kontakta arrangörerna på ".$larp->getCampaign()->Email." ifall du har frågor och funderingar.\n";
         
-        BerghemMailer::send($larp, null, $person->Id, "Hej, ".$person->Name, $text, "Borttagen från reservlistan för ".$larp->Name, "", BerghemMailer::DaysAutomatic);
+        BerghemMailer::send($larp, $sender_id, $person->Id, "Hej, ".$person->Name, $text, "Borttagen från reservlistan för ".$larp->Name, "", BerghemMailer::DaysAutomatic);
     }
     
     public static function send_role_approval_mail(Role $role, LARP $larp, $senderId) {
