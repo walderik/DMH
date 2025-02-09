@@ -76,7 +76,7 @@ include 'navigation.php';
 			
     			
    		<div class='itemcontainer'>
-       	<div class='itemname'>Stav</div>
+       	<div class='itemname'>Magifokus</div>
 		<?php 
 			if ($magician->hasStaffImage()) {
 			    $image = Image::loadById($magician->ImageId);
@@ -92,10 +92,10 @@ include 'navigation.php';
 		</div>
 
    		<div class='itemcontainer'>
-       	<div class='itemname'>Stav godkänd datum</div>
+       	<div class='itemname'>Magifokus godkänt datum</div>
 		<?php 
 		    if ($magician->isStaffApproved()) echo $magician->StaffApproved; 
-		    else echo showParticipantStatusIcon(false, "Staven är inte godkänd.");
+		    else echo showParticipantStatusIcon(false, "Magifokus är inte godkänt.");
 	    ?>			
 		</div>
 

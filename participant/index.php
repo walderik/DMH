@@ -586,7 +586,7 @@ function openTab(evt, tabName) {
         	    if ($magician->StaffApproved && $magician->hasDoneWorkshop())  echo "Allt godkänt";
         	    else {
         	        if (!$magician->StaffApproved) {
-        	            echo showParticipantStatusIcon(false, "Staven är inte godkänd");
+        	            echo showParticipantStatusIcon(false, "Magifokus är inte godkänt");
         	        }
         	        if (!$magician->hasDoneWorkshop()) {
         	            echo showParticipantStatusIcon(false, "Du har inte deltagit i workshop om magi");

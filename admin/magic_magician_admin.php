@@ -50,7 +50,7 @@ include 'magic_navigation.php';
                "<th onclick='sortTable(3, \"$tableId\")'>Nivå</th>".
                "<th onclick='sortTable(4, \"$tableId\")'>Skola</th>".
                "<th onclick='sortTable(5, \"$tableId\")'>Mästare</th>".
-               "<th onclick='sortTable(6, \"$tableId\")'>Stav<br>godkänd</th>".
+               "<th onclick='sortTable(6, \"$tableId\")'>Magifokus<br>godkänt</th>".
                "<th onclick='sortTable(7, \"$tableId\")'>Workshop<br>deltagit</th>".
                "<th></th><th></th>";
            
@@ -97,7 +97,7 @@ include 'magic_navigation.php';
                 "<th onclick='sortTable(3, \"$tableId\")'>Nivå</th>".
                 "<th onclick='sortTable(4, \"$tableId\")'>Skola</th>".
                 "<th onclick='sortTable(5, \"$tableId\")'>Mästare</th>".
-                "<th onclick='sortTable(6, \"$tableId\")'>Stav<br>godkänd</th>".
+                "<th onclick='sortTable(6, \"$tableId\")'>Magifokus<br>godkänt</th>".
                 "<th onclick='sortTable(7, \"$tableId\")'>Workshop<br>deltagit</th>".
                 "<th></th><th></th>";
             
