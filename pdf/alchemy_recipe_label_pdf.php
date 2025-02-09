@@ -9,11 +9,11 @@ require $root . '/includes/init.php';
 
 class AlchemyRecipeLabels extends FPDF {
     
-    public static $col_1_x = 18;
+    public static $col_1_x = 7;
     
-    public static $row_1_y = 32;
-    public static $row_2_y = 127;
-    public static $row_3_y = 222;
+    public static $row_1_y = 20;
+    public static $row_2_y = 115;
+    public static $row_3_y = 213;
     
     
     public $row_y;
@@ -21,7 +21,7 @@ class AlchemyRecipeLabels extends FPDF {
     function Header()
     {
         global $root;
-        $this->Image($root . '/images/alkemi_preparat_standing_3_2.jpg',null,null,208);
+        $this->Image($root . '/images/alkemi_preparat_standing_3_3.jpg',null,null,208);
     }
     
  
@@ -43,26 +43,26 @@ class AlchemyRecipeLabels extends FPDF {
         //elseif (strlen($recipe->Effect)<500) $size = 6;
         else $size = 6;
         $this->SetFont('Times','',$size);
-        $this->SetXY($x+133, $y);
+        $this->SetXY($x+153, $y);
         $this->MultiCell(39,4,encode_utf_to_iso($recipe->SideEffect),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
         
         $this->SetFont('Times','',14);
-        $this->SetXY($x+40, $y-5);
+        $this->SetXY($x+48, $y-13);
         $this->MultiCell(40,5,encode_utf_to_iso($recipe->Name),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
 
         $this->SetFont('Times','',18);
-        $this->SetXY($x+72, $y+29);
+        $this->SetXY($x+81, $y+45);
         $this->MultiCell(29,3,encode_utf_to_iso($recipe->Level),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
 
         
-        $this->SetFont('Times','',8);
-        $this->SetXY($x+40, $y+57);
-        $this->MultiCell(40,3,encode_utf_to_iso($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
+        // $this->SetFont('Times','',8);
+        // $this->SetXY($x+40, $y+57);
+        // $this->MultiCell(40,3,encode_utf_to_iso($larpname),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
 
         if (!empty($alchemistName)) {
             $this->SetFont('Times','',8);
-            $this->SetXY($x, $y+54);
-            $this->MultiCell(40,3,encode_utf_to_iso("Tillverkad av ".$alchemistName),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
+            $this->SetXY($x, $y+72);
+            $this->MultiCell(40,3,encode_utf_to_iso("Tillverkad av " . $alchemistName),0,'C'); # 1- ger ram runt rutan så vi ser hur stor den är
         }
         
         if (!empty($warning)) {
