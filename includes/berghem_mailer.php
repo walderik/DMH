@@ -56,7 +56,6 @@ class BerghemMailer {
         return true;
     }
     
-    
     public static function send_guardian_mail(Person $guardian, Person $minor, LARP $larp) {
         $text  = "$minor->Name har angett dig som ansvarig vuxen på lajvet $larp->Name<br>\n";
         $text .= "Om det inte stämmer måste du kontakta arrangörerna på ".$larp->getCampaign()->Email.
@@ -177,9 +176,6 @@ class BerghemMailer {
         BerghemMailer::send($larp, null, $group_leader->Id, "Hej ".$group_leader->Name, $text, "Bekräftan av gruppanmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
-    
-    
- 
     public static function send_updatedpayment_mail(Registration $registration, $senderId) {
         $person = $registration->getPerson();
         
@@ -210,9 +206,6 @@ class BerghemMailer {
         BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Uppdaterad avgift till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
-    
-    
-    
     public static function send_reserve_registration_mail(Reserve_Registration $reserve_registration) {
         $person = $reserve_registration->getPerson();
         
@@ -239,13 +232,18 @@ class BerghemMailer {
         BerghemMailer::send($larp, null, $person->Id, "Hej ".$person->Name, $text, "Bekräftan av reservanmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
-    
+    public static function send_remove_reserve_registration_mail(Reserve_Registration $reserve_registration) {
+        $person = $reserve_registration->getPerson();
+        $larp = $reserve_registration->getLARP();
+
+        $text  = "Du är inte längre registrerad på reservlistan för lajvet $larp->Name.<br><br>Kontakta arrangörerna på ".$larp->getCampaign()->Email." ifall du har frågor och funderingar.\n";
+        
+        BerghemMailer::send($larp, null, $person->Id, "Hej, ".$person->Name, $text, "Borttagen från reservlistan för ".$larp->Name, "", BerghemMailer::DaysAutomatic);
+    }
     
     public static function send_role_approval_mail(Role $role, LARP $larp, $senderId) {
         $person = $role->getPerson();
         $mail = $person->Email;
-       
-        
         
         $text  = "Din karaktär $role->Name är nu godkänd för att vara med i lajvet $larp->Name<br>\n";
         

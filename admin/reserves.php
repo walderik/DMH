@@ -85,6 +85,15 @@ th {
     		        
     		        echo "<input type='submit' value='Gör till en anmälan'>";
     		        echo "</form>";
+
+					echo "<br>";
+
+					echo "<form method='post' action='logic/remove_from_reserves.php'>";
+    		        echo "<input type='hidden' id='Reserve_RegistrationId' name='Reserve_RegistrationId' value='$reserve_registration->Id'>";
+    		        
+    		        echo "<input type='submit' value='Ta bort från reservlistan'>";
+    		        echo "</form>";
+
     		        echo "</td>";
     		            
     		        echo "</tr>\n";

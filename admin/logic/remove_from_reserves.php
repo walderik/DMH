@@ -7,7 +7,6 @@ if (!isset( $_POST['Reserve_RegistrationId'])) {
 }
 
 $reserve_registration = Reserve_Registration::loadById($_POST['Reserve_RegistrationId']);
-$reserve_registration->turnIntoRegistration();
-
+$reserve_registration->removeFromReserves();
 
 header('Location: ../reserves.php');
