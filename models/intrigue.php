@@ -5,6 +5,7 @@ class Intrigue extends BaseModel{
     public $Id;
     public $Number;
     public $Name;
+    public $Status;
     public $Active = 1;
     public $MainIntrigue = 0;
     public $CommonText;
@@ -15,6 +16,19 @@ class Intrigue extends BaseModel{
     
     public static $orderListBy = 'Number';
     
+    
+    
+    const STATUS_TYPES = [
+        0 => "Ny",
+        1 => "Påbörjad",
+        2 => "I behov av fler aktörer",
+        3 => "Utveckla texterna",
+        4 => "Hjälp mig",
+        5 => "Kolla med aktör",
+        6 => "Klar för granskning",
+        7 => "Färdig"
+    ];
+   
     public static function newFromArray($post){
         $intrigue = static::newWithDefault();
         $intrigue->setValuesByArray($post);
@@ -25,6 +39,7 @@ class Intrigue extends BaseModel{
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['Number'])) $this->Number = $arr['Number'];
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
+        if (isset($arr['Status'])) $this->Status = $arr['Status'];
         if (isset($arr['Active'])) $this->Active = $arr['Active'];
         if (isset($arr['MainIntrigue'])) $this->MainIntrigue = $arr['MainIntrigue'];
         if (isset($arr['CommonText'])) $this->CommonText = $arr['CommonText'];
@@ -45,9 +60,9 @@ class Intrigue extends BaseModel{
     
     # Update an existing intrigue in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Active=?, MainIntrigue=?, CommonText=?, Notes=?, LarpId=?, ResponsiblePersonId=?, PreviousInstanceId=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigue SET Number=?, Name=?, Status=?, Active=?, MainIntrigue=?, CommonText=?, Notes=?, LarpId=?, ResponsiblePersonId=?, PreviousInstanceId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsiblePersonId, $this->PreviousInstanceId, $this->Id))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Status, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsiblePersonId, $this->PreviousInstanceId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -62,9 +77,9 @@ class Intrigue extends BaseModel{
         
         $connection = $this->connect();
         
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Active, MainIntrigue, CommonText, Notes, LarpId, ResponsiblePersonId, PreviousInstanceId) VALUES (?,?,?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigue (Number, Name, Status, Active, MainIntrigue, CommonText, Notes, LarpId, ResponsiblePersonId, PreviousInstanceId) VALUES (?,?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->Number, $this->Name, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsiblePersonId, $this->PreviousInstanceId))) {
+        if (!$stmt->execute(array($this->Number, $this->Name, $this->Status, $this->Active, $this->MainIntrigue, $this->CommonText, $this->Notes, $this->LarpId, $this->ResponsiblePersonId, $this->PreviousInstanceId))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

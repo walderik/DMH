@@ -330,6 +330,7 @@ th, td {
 ?>
 
 
+<tr><td width="10%">Status</td><td><?php echo Intrigue::STATUS_TYPES[$intrigue->Status]; ?></td></tr>
 <tr><td width="10%">Aktuell</td><td><?php echo ja_nej($intrigue->isActive()); ?></td></tr>
 <tr><td>Huvudintrig</td><td><?php echo ja_nej($intrigue->MainIntrigue); ?></td></tr>
 <tr><td>Intrigtyp</td><td><?php echo commaStringFromArrayObject($intrigue->getIntriguetypes())?></td></tr>

@@ -66,6 +66,22 @@ include 'navigation.php';
 				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($intrigue->Name); ?>" size="50" maxlength="250" required></td>
 			</tr>
 			<tr>
+				<td><label for="Status">Status</label></td>
+				<td>
+					<select id="Status" name="Status">
+					<?php 
+					for ($i=1; $i<sizeof(Intrigue::STATUS_TYPES); $i++) {
+					    echo "<option value='$i' ";
+					    if ($intrigue->Status==$i) echo "selected";
+					    echo ">";
+					    echo Intrigue::STATUS_TYPES[$i];
+					    echo "</option>";
+					}
+					?>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td><label for="Active">Aktuell</label><br>(Kommer att visas för deltagarna när intrigerna släpps.<br>Intrigspår går inte att radera, bara att sättas till inte aktuell.)</td>
 				<td>
 					<input type="radio" id="Active_yes" name="Active" value="1" <?php if ($intrigue->Active == 1) echo 'checked="checked"'?>> 

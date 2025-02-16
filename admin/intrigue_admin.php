@@ -10,6 +10,7 @@ function print_intrigue(Intrigue $intrigue, $responsiblePerson) {
     
     echo "<td>" . $intrigue->Number . "</td>\n";
     echo "<td><a href='view_intrigue.php?Id=" . $intrigue->Id . "'>$intrigue->Name</a></td>\n";
+    echo "<td>" . Intrigue::STATUS_TYPES[$intrigue->Status] . "</td>\n";
     echo "<td>" . ja_nej($intrigue->isActive()) . "</td>\n";
     echo "<td>" . ja_nej($intrigue->MainIntrigue) . "</td>\n";
     echo "<td>" . commaStringFromArrayObject($intrigue->getIntriguetypes()) . "</td>\n";
@@ -46,7 +47,7 @@ function print_intrigue(Intrigue $intrigue, $responsiblePerson) {
            echo "<table class='data'>";
             
             
-            echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th></th></tr>\n";
+            echo "<tr><th>Nummer</td><th>Namn</th><th>Status</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th></th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
                 $responsiblePerson = $intrigue->getResponsiblePerson();
                 
@@ -60,7 +61,7 @@ function print_intrigue(Intrigue $intrigue, $responsiblePerson) {
             echo "<table class='data'>";
             
             
-            echo "<tr><th>Nummer</td><th>Namn</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th><th></th></tr>\n";
+            echo "<tr><th>Nummer</td><th>Namn</th><th>Status</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th>Ansvarig</th><th></th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
                 $responsiblePerson = $intrigue->getResponsiblePerson();
                 
