@@ -6,6 +6,7 @@ class Alchemy_Ingredient extends BaseModel{
     public $CampaignId;
     public $Name;
     public $Description;
+    public $Effect = "";
     public $Level;
     public $IsCatalyst = 0;
     public $ActualIngredient;
@@ -29,6 +30,7 @@ class Alchemy_Ingredient extends BaseModel{
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
+        if (isset($arr['Effect'])) $this->Effect = $arr['Effect'];
         if (isset($arr['Level'])) $this->Level = $arr['Level'];
         if (isset($arr['IsCatalyst'])) $this->IsCatalyst = $arr['IsCatalyst'];
         if (isset($arr['ActualIngredient'])) $this->ActualIngredient = $arr['ActualIngredient'];
@@ -49,10 +51,10 @@ class Alchemy_Ingredient extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_ingredient SET Name=?, Description=?, Level=?, IsCatalyst=?, ActualIngredient=?,
+        $stmt = $this->connect()->prepare("UPDATE regsys_alchemy_ingredient SET Name=?, Description=?, Effect=?, Level=?, IsCatalyst=?, ActualIngredient=?,
                     Info=?, IsApproved=?, OrganizerNotes=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->Name, $this->Description, $this->Level, $this->IsCatalyst, $this->ActualIngredient,
+        if (!$stmt->execute(array($this->Name, $this->Description, $this->Effect, $this->Level, $this->IsCatalyst, $this->ActualIngredient,
             $this->Info, $this->IsApproved, $this->OrganizerNotes, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -66,10 +68,10 @@ class Alchemy_Ingredient extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_alchemy_ingredient (CampaignId, Name, Description, Level,
-            IsCatalyst, ActualIngredient, Info, IsApproved, OrganizerNotes) VALUES (?,?,?,?,?, ?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_alchemy_ingredient (CampaignId, Name, Description, Effect, Level,
+            IsCatalyst, ActualIngredient, Info, IsApproved, OrganizerNotes) VALUES (?,?,?,?,?, ?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->CampaignId, $this->Name, $this->Description, $this->Level,
+        if (!$stmt->execute(array($this->CampaignId, $this->Name, $this->Description, $this->Effect, $this->Level,
             $this->IsCatalyst, $this->ActualIngredient,
             $this->Info, $this->IsApproved, $this->OrganizerNotes))) {
                 $this->connect()->rollBack();

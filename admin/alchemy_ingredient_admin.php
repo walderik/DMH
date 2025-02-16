@@ -37,7 +37,8 @@ include 'alchemy_navigation.php';
                "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
                "<th onclick='sortTable(2, \"$tableId\")'>Ingrediens/Katalysator</th>".
                "<th onclick='sortTable(3, \"$tableId\")'>Essenser</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Godkänd</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Effekt</th>".
+               "<th onclick='sortTable(5, \"$tableId\")'>Godkänd</th>".
                "<th></th>";
            
            foreach ($ingredients as $ingredient) {
@@ -53,6 +54,7 @@ include 'alchemy_navigation.php';
                     echo $ingredient->getEssenceNames();
                 }
                 echo "</td>\n";
+                echo "<td>$ingredient->Effect</td>\n";
                 
                 echo "<td>";
                 echo showStatusIcon($ingredient->isApproved());

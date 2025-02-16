@@ -44,15 +44,17 @@ function printIngredient(Alchemy_Ingredient $ingredient, Alchemy_Supplier $suppl
     echo "<span class='itemname'>$ingredient->Name";
     echo "</span></summary>";
     
-    echo "Nivå: $ingredient->Level<br>";
-    echo "Typ: ";
+    echo "<strong>Nivå:</strong> $ingredient->Level<br>";
+    echo "<strong>Typ:</strong> ";
     if ($ingredient->isCatalyst()) echo "Katalysator";
     else echo "Ingrediens";
     echo "<br>";
-    echo "Beskrivning: $ingredient->Description<br>";
-    echo "<br>";
+    echo "<strong>Beskrivning:</strong> $ingredient->Description<br>";
+
+    echo "<strong>Effekt:</strong> $ingredient->Effect<br>";
+
     if ($ingredient->isIngredient()) {
-        echo "Essenser: ".$ingredient->getEssenceNames();
+        echo "<strong>Essenser:</strong> ".$ingredient->getEssenceNames();
     }
     echo "</details>";
     echo "</div>";

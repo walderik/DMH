@@ -94,6 +94,11 @@ img {
 					 
 			</tr>
 			<tr>
+				<td><label for="Name">Effekt</label><br>Vad har ingrediensen för effekt i sig utan att användas i alkemi?</td>
+				<td><input type="text" id="Effect" name="Effect" value="<?php echo htmlspecialchars($ingredient->Effect); ?>" size="20" maxlength="20" required></td>
+
+			</tr>
+			<tr>
 				<td><label for="Level">Nivå</label></td>
 				<td><input type="number" id="Level" name="Level" value="<?php echo $ingredient->Level; ?>" min="1" max="5" step="1" size="10" maxlength="250" required></td>
 			</tr>
@@ -114,10 +119,6 @@ img {
 				</td>
 			</tr>
 			<?php } ?>
-			<tr>
-				<td><label for="ActualIngredient">Off-ingrediens</label></td>
-				<td><input type="text" id="ActualIngredient" name="ActualIngredient" value="<?php echo htmlspecialchars($ingredient->ActualIngredient); ?>" size="100" maxlength="250" required></td>
-			</tr>
 			<tr>
 
 				<td><label for="IsApproved">Godkänd</label></td>

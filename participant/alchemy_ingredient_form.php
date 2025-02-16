@@ -123,6 +123,13 @@ img {
 		</div>
 
    		<div class='itemcontainer'>
+       	<div class='itemname'>Effekt</div>
+       	Vad har ingrediensen för effekt i sig utan att användas i alkemi?<br>
+		<input type="text" id="Effect" name="Effect" value="<?php echo htmlspecialchars($ingredient->Effect); ?>" maxlength="20" required>
+		</div>
+
+
+   		<div class='itemcontainer'>
        	<div class='itemname'>Nivå</div>
 		<input type="number" id="Level" name="Level" value="<?php echo $ingredient->Level; ?>" min="1" max="5" step="1" size="10" maxlength="250" required>
 		</div>

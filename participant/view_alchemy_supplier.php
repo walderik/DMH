@@ -87,7 +87,7 @@ input {
 		         echo "Så länge arrangörerna inte har godkänt att du får ta med dig ingrediensen och hur många du tar med dig, så kan du ändra hur många du vill ha med dig och du kan även ta bort den helt från din lista. Om du vill ändra efter att den är godkänd behöver du kontakta arrangörerna.";
 			    
 			    echo "<table class='participant_table' style='width:100%;'>";
-				echo "<tr><th>Ingrediens</th><th>Essenser</th><th>Antal</th><th>Godkänd/<br>Ännu inte godkänd</th><th></th></tr>";
+				echo "<tr><th>Ingrediens</th><th>Essenser</th><th>Effekt</th><th>Antal</th><th>Godkänd/<br>Ännu inte godkänd</th><th></th></tr>";
 				foreach ($amounts as $amount) {
 				    $ingredient = $amount->getIngredient();
 				    echo "<tr>";
@@ -102,13 +102,14 @@ input {
 				        echo $ingredient->getEssenceNames();
 				    }
 				    echo "</td>\n";
+				    echo "<td>$ingredient->Effect</td>";
 				    echo "<td>";
 				    if ($amount->isApproved() || !$current_larp->isAlchemySupplierInputOpen()) echo $amount->Amount;
 				    else {
 				        echo "<input type='number' id='$amount->Id' min='1' value='$amount->Amount' onchange='saveAmount(this)' maxlength='3' size='4'>";
 				    }
 				    echo "</td>";
-				    
+
 				    echo "<td>";
 				    echo showStatusIcon($amount->isApproved());
 				    echo "</td>\n";
