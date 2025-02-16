@@ -294,7 +294,7 @@ include 'navigation.php';
 		        $checkin_props = $role->getAllCheckinProps($current_larp);
 		        
 		        
-		        $subdivisions = Subdivision::allForRole($role);
+		        $subdivisions = Subdivision::allForRole($role, $current_larp);
 		        foreach ($subdivisions as $subdivision) {
 		            $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id);
 		            foreach ($subdivisionIntrigues as $intrigue) {

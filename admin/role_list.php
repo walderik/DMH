@@ -20,7 +20,7 @@ include 'navigation.php';
 		    if (isset($role->GroupId)) {
 		        $group=Group::loadById($role->GroupId);
 		    }
-		    
+		    $subdivisions = Subdivision::allForRole($role, $current_larp);
 		    
 		    ?>
 		<h2>

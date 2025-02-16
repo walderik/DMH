@@ -84,7 +84,7 @@ foreach ($roles as $role) {
     }
     
     //Dokument från grupperingar
-    $subdivisions = Subdivision::allForRole($role);
+    $subdivisions = Subdivision::allForRole($role, $current_larp);
     foreach ($subdivisions as $subdivision) {
         //Intrighandouts
         $intrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id);
@@ -193,7 +193,7 @@ foreach ($roles as $role) {
     }
     
     //Dokument från grupperingar
-    $subdivisions = Subdivision::allForRole($role);
+    $subdivisions = Subdivision::allForRole($role, $current_larp);
     foreach ($subdivisions as $subdivision) {
         //Intrighandouts
         $intrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id);

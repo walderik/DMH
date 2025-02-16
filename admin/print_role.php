@@ -11,7 +11,7 @@ if (isset($role->GroupId)) {
 $person = $role->getPerson();
 
 $isRegistered = $role->isRegistered($current_larp);
-$subdivisions = Subdivision::allForRole($role);
+//$subdivisions = Subdivision::allForRole($role, $current_larp);
 
 ?>
 <table>

@@ -23,6 +23,8 @@ if (isset($role->GroupId)) {
     $group=Group::loadById($role->GroupId);
 }
 
+$subdivisions = Subdivision::allForRole($role, $current_larp);
+
 if (isset($_SERVER['HTTP_REFERER'])) {
     $referer = $_SERVER['HTTP_REFERER'];
 }

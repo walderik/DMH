@@ -233,16 +233,30 @@ class Subdivision extends BaseModel{
         return Role::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id, $larp->Id));
     }
     
-    public static function allForRole(Role $role) {
+    public static function allForRole(Role $role, Larp $larp) {
         if (is_null($role)) return Array();
         $sql = "SELECT * FROM regsys_subdivision WHERE Id IN (SELECT SubdivisionId FROM  regsys_subdivisionmember WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($role->Id));
+        $manual_subdivisions = static::getSeveralObjectsqQuery($sql, array($role->Id));
+        $all_subdivisions = static::allByCampaign($larp);
+        $member_subdivisions = array();
+        foreach ($all_subdivisions as $subdivision) {
+            if (in_array($subdivision, $manual_subdivisions)) $member_subdivisions[] = $subdivision;
+            else {
+                $members = $subdivision->getAllAutomaticRegisteredMembers($larp);
+                if (in_array($role, $members)) $member_subdivisions[] = $subdivision;
+            }
+        }
+        return $member_subdivisions;
     }
     
-    public static function allVisibleForRole(Role $role) {
+    public static function allVisibleForRole(Role $role, Larp $larp) {
         if (is_null($role)) return Array();
-        $sql = "SELECT * FROM regsys_subdivision WHERE IsVisibleToParticipants=1 AND Id IN (SELECT SubdivisionId FROM  regsys_subdivisionmember WHERE RoleId=?) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($role->Id));
+        $member_subdivisions = static::allForRole($role, $larp);
+        $visible_subdivisions = array();
+        foreach ($member_subdivisions as $subdivision) {
+            if ($subdivision->isVisibleToParticipants()) $visible_subdivisions[] = $subdivision;
+        }
+        return $visible_subdivisions;
     }
     
     

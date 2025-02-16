@@ -24,7 +24,7 @@ if (!$role->isRegistered($current_larp)) {
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 
 $isRegistered = $role->isRegistered($current_larp);
-
+$subdivisions = Subdivision::allForRole($role, $current_larp);
 
 include 'navigation.php';
 ?>
@@ -144,7 +144,7 @@ include 'navigation.php';
            $checkin_props = $role->getAllCheckinProps($current_larp);
            
            
-           $subdivisions = Subdivision::allForRole($role);
+           $subdivisions = Subdivision::allForRole($role, $current_larp);
            foreach ($subdivisions as $subdivision) {
                $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id);
                foreach ($subdivisionIntrigues as $intrigue) {

@@ -134,7 +134,7 @@ th {
         		            echo "</td>\n";
         		        }
         		        
-        		        $subdivisions = Subdivision::allForRole($role);
+        		        $subdivisions = Subdivision::allForRole($role, $current_larp);
         		        if (empty($subdivisions)) {
         		            echo "<td>&nbsp;</td>\n";
         		        } else {

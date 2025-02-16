@@ -301,11 +301,11 @@ function openTab(evt, tabName) {
         		}
         		
         		//Grupperingar
-        		$subdivisions = Subdivision::allVisibleForRole($role);
+        		$subdivisions = Subdivision::allVisibleForRole($role, $current_larp);
         		if (!empty($subdivisions)) {
         		    $subdivisionLinks = array();
         		    foreach ($subdivisions as $subdivision) {
-        		        if ($subdivision->isVisibleToParticipants()) $subdivisionLinks[] = "<a href='view_subdivision.php?id=$subdivision->Id'>$subdivision->Name</a>";
+        		        $subdivisionLinks[] = "<a href='view_subdivision.php?id=$subdivision->Id'>$subdivision->Name</a>";
         		    }
         		    if (!empty($subdivisionLinks)) echo implode(", ", $subdivisionLinks)."<br>";
         		}

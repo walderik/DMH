@@ -653,7 +653,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->person = $this->role->getPerson();
         $this->isMyslajvare = $this->role->isMysLajvare();
         $this->larp = $larp_in;
-        $this->subdivisions = Subdivision::allForRole($this->role);
+        $this->subdivisions = Subdivision::allForRole($this->role, $this->larp);
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $this->current_cell_height = $this->cell_y_space;
         
@@ -697,7 +697,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->person = $this->role->getPerson();
         $this->isMyslajvare = $this->role->isMysLajvare();
         $this->larp = $larp_in;
-        $this->subdivisions = Subdivision::allForRole($this->role);
+        $this->subdivisions = Subdivision::allForRole($this->role, $this->larp);
         $this->all = $all_information;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $this->current_cell_height = $this->cell_y_space;
