@@ -70,11 +70,11 @@ include 'navigation.php';
 				<td>
 					<select id="Status" name="Status">
 					<?php 
-					for ($i=1; $i<sizeof(Intrigue::STATUS_TYPES); $i++) {
-					    echo "<option value='$i' ";
-					    if ($intrigue->Status==$i) echo "selected";
+					foreach (Intrigue::STATUS_TYPES as $key => $value) {
+					    echo "<option value='$key' ";
+					    if ($intrigue->Status==$key) echo "selected";
 					    echo ">";
-					    echo Intrigue::STATUS_TYPES[$i];
+					    echo $value;
 					    echo "</option>";
 					}
 					?>

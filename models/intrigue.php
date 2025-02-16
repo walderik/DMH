@@ -20,13 +20,13 @@ class Intrigue extends BaseModel{
     
     const STATUS_TYPES = [
         0 => "Ny",
-        1 => "Påbörjad",
-        2 => "I behov av fler aktörer",
-        3 => "Utveckla texterna",
-        4 => "Hjälp mig",
-        5 => "Kolla med aktör",
-        6 => "Klar för granskning",
-        7 => "Färdig"
+        10 => "Påbörjad",
+        20 => "I behov av fler aktörer",
+        30 => "Utveckla texterna",
+        40 => "Hjälp mig",
+        50 => "Kolla med aktör",
+        60 => "Klar för granskning",
+        100 => "Färdig"
     ];
    
     public static function newFromArray($post){
