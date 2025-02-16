@@ -5,7 +5,7 @@ class Intrigue extends BaseModel{
     public $Id;
     public $Number;
     public $Name;
-    public $Status;
+    public $Status = 0;
     public $Active = 1;
     public $MainIntrigue = 0;
     public $CommonText;
