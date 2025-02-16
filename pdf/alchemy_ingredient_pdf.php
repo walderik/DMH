@@ -158,12 +158,20 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
                  $this->SetXY($squareX, ($rut_height/2)+13 + $squareY);
                  $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'C');
                  
+                 //Skriv ut effekt
+                 if (!empty(trim($ingredient->Effect))) {
+                     $txt = "Effekt: ".$ingredient->Effect;
+                     $this->SetFont($font,'',10);
+                     $this->SetXY($squareX, ($rut_height/2)+18 + $squareY);
+                     $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'C');
+                 }
+                 
                  //Skriv ut från 
-                $this->SetFont($font,'',8);
-                $this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
-                $this->Cell($rut_width,10,encode_utf_to_iso(ucfirst("Från")),0,1,'L');
+                //$this->SetFont($font,'',8);
+                //$this->SetXY( 3+$squareX, ($rut_height-4) + $squareY);
+                //$this->Cell($rut_width,10,encode_utf_to_iso(ucfirst("Från")),0,1,'L');
 
-                $size=10;
+                $size=8;
                 $this->SetFont($font,'',$size);
                 
                 $txt = $name;
@@ -173,7 +181,7 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
                     $this->SetFont($font,'',$size);
                     $slen = $this->GetStringWidth($txt,0);
                 }
-                $this->SetXY( 3+$squareX, ($rut_height+1) + $squareY);
+                $this->SetXY( 3+$squareX, 8 + $squareY);
                 $this->Cell($rut_width,10,encode_utf_to_iso($txt),0,1,'L');
                     
                 $size=5;
