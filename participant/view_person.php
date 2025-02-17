@@ -77,6 +77,8 @@ include 'navigation.php';
 		<?php echo ja_nej($current_person->isSubscribed());?>
 		</div>
 
+		<div class='center'><a href='change_person_user.php'><button class='button-18'>Byt konto på personen</button></a></div>
+
 	</div>
 
 

@@ -986,4 +986,10 @@ class Person extends BaseModel{
         
         return $vperson;
     }
+    
+    public function changeUser(User $user) {
+        $this->UserId = $user->Id;
+        $this->update();
+        BerghemMailer::send_user_changed($this, $user);
+    }
 }

@@ -56,6 +56,9 @@ if (!isset($_SESSION['larp']) &&
     strpos($url, "participant/house_form.php") == false &&
     strpos($url, "participant/logic/house_form_save.php") == false &&
     strpos($url, "display_image.php") == false &&
+    strpos($url, "view_person.php") == false &&
+    strpos($url, "change_person_user.php") == false &&
+    strpos($url, "change_person_user_save.php") == false &&
     strpos($url, "help.php") == false &&
     strpos($url, "larp_admin.php") == false && 
     strpos($url, "larp_form.php") == false) {

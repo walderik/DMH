@@ -66,6 +66,13 @@ class BerghemMailer {
         BerghemMailer::send($larp, NULL, $guardian->Id, "Hej ".$guardian->Name, $text, "Ansvarig vuxen för $minor->Name på $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
+    public static function send_user_changed(Person $person, User $new_user) {
+        $text  = "Du har nu $person->Name på ditt konto i Omnes Mundi.\n";
+        $text .= "<br>\n";
+        
+        BerghemMailer::sendSimpleEmail(NULL, NULL, array($new_user->Email), $new_user->Name, 'Hej', $text, "Byte av konto för $person->Name", "", BerghemMailer::DaysAutomatic);
+    }
+    
     
     public static function send_added_role_mail(Role $role, Larp $larp, $senderId) {
         $person = $role->getPerson();

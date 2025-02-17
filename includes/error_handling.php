@@ -61,6 +61,9 @@ function getMessageText($code) {
         case "registration_done":
             $output = "Anmälan har registrerats.";
             break;
+        case "user_changed":
+            $output = "Personen har flyttats till ett annat konto.";
+            break;
         default:
             $output = "Okänt meddelande: ". $code;
     }
@@ -169,6 +172,12 @@ function getErrorText($code) {
             break;
         case "swishNotInstalled":
             $output = "Swish finns inte installerat på den här telefonen. Betala med de uppgifter som anges.";
+            break;
+        case "same_user":
+            $output = "Du har angett ditt eget konto.";
+            break;
+        case "user_missing":
+            $output = "Det finns inget konto med den epostadressen.";
             break;
         default:
             $output = "Okänt fel: ". $code;
