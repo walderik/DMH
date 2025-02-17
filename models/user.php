@@ -124,5 +124,11 @@ class User extends BaseModel{
         
     }
     
+    public static function allWithoutPersons() {
+        $sql = "SELECT * from regsys_user WHERE Id NOT IN (".
+            "SELECT UserId FROM regsys_person) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, null);
+    }
+    
     
  }
