@@ -9,6 +9,8 @@ require_once $root . '/includes/init.php';
 
 class Receipt_PDF extends FPDF {
     
+    public static $x_min = 5;
+    public static $x_max = 291;
     
     function Header()
     {
@@ -19,12 +21,27 @@ class Receipt_PDF extends FPDF {
     
     function Footer()
     {
+        global $y;
         // Go to 1.5 cm from bottom
-        $this->SetY(-15);
+        //$this->SetY(-50);
+        $this->setXY(11, -30);
+        $y = $this->GetY();
+        $this->bar();
+        
         // Select Arial italic 8
-        $this->SetFont('Arial', 'I', 8);
+        $this->SetFont('Helvetica', '', 10);
+        
+        $this->setXY(11, -25);
+        $this->MultiCell(60,4,encode_utf_to_iso("Berghems Vänner\nc/o Martin Gabrielsson\nTrädgårdsgatan 17\n567 93 Hok"),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        
+        $this->setXY(80, -25);
+        $this->MultiCell(40,4,encode_utf_to_iso("Organisationsnummer\n802488-4846"),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        
+        $this->setXY(140, -25);
+        $this->MultiCell(60,4,encode_utf_to_iso("Webbplats\nmain.berghemsvanner.se\nEpost\ninfo@berghemsvanner.se"),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        
         // Print centered page number
-        $this->Cell(0, 10, encode_utf_to_iso('Genererad av Omnes Mundi för Berghems Vänner'), 0, 0, 'C');
+        //$this->Cell(0, 10, encode_utf_to_iso('Genererad av Omnes Mundi för Berghems Vänner'), 0, 0, 'C');
     }
     
     function SetText(string $headline, $matter, $who, $specification, $amount, $date, $larp) {
@@ -113,6 +130,13 @@ class Receipt_PDF extends FPDF {
         $larp = $invoice->getLARP();
         $this->SetText("Kvitto", "Faktura $invoice->Number", $invoice->Recipient, $invoice->Matter, $invoice->AmountPayed, $invoice->PayedDate, $larp);
     }
+    
+    # Dra en linje tvärs över arket på höjd $y
+    private function bar() {
+        global $y;
+        $this->Line(static::$x_min, $y, static::$x_max, $y);
+    }
+    
     
 }
 
