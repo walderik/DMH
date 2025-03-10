@@ -21,6 +21,7 @@ class Person extends BaseModel{
     public $UnsubscribeCode;
     public $MembershipCheckedAt;
     public $IsMember;
+    public $OfficialDetails;
 
     public static $orderListBy = 'Name';
     
@@ -59,6 +60,7 @@ class Person extends BaseModel{
         if (isset($arr['UnsubscribeCode'])) $this->UnsubscribeCode = $arr['UnsubscribeCode'];
         if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
         if (isset($arr['MembershipCheckedAt'])) $this->MembershipCheckedAt = $arr['MembershipCheckedAt'];
+        if (isset($arr['OfficialDetails'])) $this->OfficialDetails = $arr['OfficialDetails'];
         
         if (isset($this->HouseId) && $this->HouseId=='null') $this->HouseId = null;
         
@@ -309,14 +311,14 @@ class Person extends BaseModel{
             FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
             UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, 
             HasPermissionShowName=?, IsSubscribed=?, UnsubscribeCode=?,
-            MembershipCheckedAt=?, IsMember=? WHERE Id = ?;");
+            MembershipCheckedAt=?, IsMember=?, OfficialDetails=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, 
             $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId,
             $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
             $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode, 
-            $this->MembershipCheckedAt, $this->IsMember, $this->Id))) {
+            $this->MembershipCheckedAt, $this->IsMember, $this->OfficialDetails, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
