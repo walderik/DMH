@@ -19,7 +19,7 @@ class Registration extends BaseModel{
     public $RefundAmount = 0;
     public $RefundDate; 
     public $IsOfficial = 0;
-    public $OfficialDetails;
+    public $OfficialDetails = "";
     public $NPCDesire;
     public $HousingRequestId;
     public $LarpHousingComment;
