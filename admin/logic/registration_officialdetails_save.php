@@ -5,12 +5,12 @@ include_once $root . '/includes/all_includes.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $officialDetails = $_POST['OfficialDetails'];
-    $personId = $_POST['Id'];
-    $person = Person::loadById($personId);
+    $registrationId = $_POST['Id'];
+    $registration = Registration::loadById($registrationId);
 
-    if (isset($person)) {
-        $person->OfficialDetails = $officialDetails;
-        $person->update();
+    if (isset($registration)) {
+        $registration->OfficialDetails = $officialDetails;
+        $registration->update();
     }
 }
 

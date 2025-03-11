@@ -56,10 +56,10 @@ include 'navigation.php';
         echo "&nbsp;<a href='edit_official.php?id=$registration->Id' title='Redigera vald funktionärstyp'><i class='fa-solid fa-pen'></i></a>\n".
         "&nbsp;<a href='person_payment.php?id=$person->Id' title='Justera betalning till $person->Name'><i class='fa-solid fa-money-check-dollar'></i></a></td>";
         ?>
-        <form method="post" action="logic/person_officialdetails_save.php">
+        <form method="post" action="logic/registration_officialdetails_save.php">
             <td>
-                <input type="text" id="OfficialDetails" name="OfficialDetails" value="<?php echo htmlspecialchars($person->OfficialDetails); ?>" size="50" maxlength="250" required>
-                <input type="hidden" id="Id" name="Id" value="<?php echo $person->Id;?>">
+                <input type="text" id="OfficialDetails" name="OfficialDetails" value="<?php echo htmlspecialchars($registration->OfficialDetails); ?>" size="50" maxlength="250" required>
+                <input type="hidden" id="Id" name="Id" value="<?php echo $registration->Id;?>">
                 <input type="submit" name="submit" value="Spara">
             </td>
         </form>

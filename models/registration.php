@@ -19,6 +19,7 @@ class Registration extends BaseModel{
     public $RefundAmount = 0;
     public $RefundDate; 
     public $IsOfficial = 0;
+    public $OfficialDetails;
     public $NPCDesire;
     public $HousingRequestId;
     public $LarpHousingComment;
@@ -60,6 +61,7 @@ class Registration extends BaseModel{
         if (isset($arr['RefundAmount'])) $this->RefundAmount = $arr['RefundAmount'];
         if (isset($arr['RefundDate'])) $this->RefundDate = $arr['RefundDate'];
         if (isset($arr['IsOfficial'])) $this->IsOfficial = $arr['IsOfficial'];
+        if (isset($arr['OfficialDetails'])) $this->OfficialDetails = $arr['OfficialDetails'];
         if (isset($arr['NPCDesire'])) $this->NPCDesire = $arr['NPCDesire'];
         if (isset($arr['HousingRequestId'])) $this->HousingRequestId = $arr['HousingRequestId'];
         if (isset($arr['LarpHousingComment'])) $this->LarpHousingComment = $arr['LarpHousingComment'];
@@ -110,14 +112,14 @@ class Registration extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?,  
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
                 Payed=?, PaymentComment=?, IsMember=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
-                RefundDate=?, IsOfficial=?, NPCDesire=?, HousingRequestId=?, LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?, 
+                RefundDate=?, IsOfficial=?, OfficialDetails=?, NPCDesire=?, HousingRequestId=?, LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?, 
                 GuardianId=?, NotComingReason=?,
                 SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, LarpPartNotAttending=?, LarpPartAcknowledged=?, EvaluationDone=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId,  
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
             $this->Payed, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment, 
+            $this->RefundDate, $this->IsOfficial, $this->OfficialDetails, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment, 
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, 
             $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, $this->Id))) {
@@ -136,14 +138,14 @@ class Registration extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, RegisteredAt, 
             PaymentReference, AmountToPay, AmountPayed, Payed, PaymentComment, IsMember,
-            NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, 
+            NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, OfficialDetails, 
             NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, NotComingReason, 
             SpotAtLARP, TypeOfFoodId, FoodChoice, LarpPartNotAttending, LarpPartAcknowledged, EvaluationDone) 
             VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
-            $this->RefundDate, $this->IsOfficial, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment,
+            $this->RefundDate, $this->IsOfficial, $this->OfficialDetails, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment,
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason,
             $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone))) {
