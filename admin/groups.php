@@ -40,7 +40,8 @@ th {
     		    $colnum++;
     		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Gruppledare</th>";
 				echo "<th onclick='sortTableNumbers(". $colnum++ .", \"$tableId\")'>Antal medlemmar</th>";
-    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>";
+    		    if (Wealth::isInUse($current_larp)) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rikedom</th>"; 
+				if ($current_larp->hasCommerce()) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Har verksamhet</th>"; 
     		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($groups as $group)  {
     		        echo "<tr>\n";
@@ -66,7 +67,15 @@ th {
     		        else echo "<s>$person->Name</s> (avbokad)";
     		        echo " " . contactEmailIcon($person) . "</td>\n";
 					echo "<td>" . $group->countAllRolesInGroup($current_larp) . "</td>\n";
-    		        if (Wealth::isInUse($current_larp)) echo "<td>" . $group->getWealth()->Name . "</td>\n";
+    		        if (Wealth::isInUse($current_larp)) {
+						echo "<td>" . $group->getWealth()->Name . "</td>\n";
+					}
+					if ($current_larp->hasCommerce())
+					{
+						$titledeeds = Titledeed::getAllForGroup($group);
+						$hasTitleDeed = empty($titledeeds) ? 'Nej' : 'Ja';
+						echo "<td>" . $hasTitleDeed . "</td>\n";
+					}
     		        $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
     		        echo "<td>" . showStatusIcon($group->hasIntrigue($current_larp));
     		        $intrigueWords = $group->intrigueWords($current_larp);
