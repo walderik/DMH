@@ -45,7 +45,7 @@ include 'navigation.php';
         echo "<br>\n";
     }
 
-    echo "<table class='data'><tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Typ av funktionär</th><th></th></tr>\n";
+    echo "<table class='data'><tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Typ av funktionär</th><th>Anteckningar</th><th></th></tr>\n";
     foreach($persons as $person) {
         $registration = $person->getRegistration($current_larp);
         echo "<tr><td>\n";
@@ -54,8 +54,16 @@ include 'navigation.php';
         echo "<td>$person->Email ".contactEmailIcon($person)."</td><td>$person->PhoneNumber</td><td>\n";
         if (OfficialType::isInUse($current_larp)) echo commaStringFromArrayObject($registration->getOfficialTypes());
         echo "&nbsp;<a href='edit_official.php?id=$registration->Id' title='Redigera vald funktionärstyp'><i class='fa-solid fa-pen'></i></a>\n".
-        "&nbsp;<a href='person_payment.php?id=$person->Id' title='Justera betalning till $person->Name'><i class='fa-solid fa-money-check-dollar'></i></a></td><td>\n";
+        "&nbsp;<a href='person_payment.php?id=$person->Id' title='Justera betalning till $person->Name'><i class='fa-solid fa-money-check-dollar'></i></a></td>";
         ?>
+        <form method="post" action="logic/registration_officialdetails_save.php">
+            <td>
+                <input type="text" id="OfficialDetails" name="OfficialDetails" value="<?php echo htmlspecialchars($registration->OfficialDetails); ?>" size="50" maxlength="250" required>
+                <input type="hidden" id="Id" name="Id" value="<?php echo $registration->Id;?>">
+                <input type="submit" name="submit" value="Spara">
+            </td>
+        </form>
+        <?php echo "<td>\n"; ?>
         <form action="logic/official_save.php" method="post">
         <input type="hidden" id="Id" name="Id" value="<?php echo $registration->Id;?>">
         <input type="hidden" id="type" name="type" value="single"><input type="submit" value="Ta bort"></form>
