@@ -32,19 +32,6 @@ class Dbh {
             self::$dbName = "berghemsvanner_";
             
         }
-        /*
-         *             self::$dbServername = "miroku.oderland.com";
-            self::$dbUsername = "berghems_omtest";
-            self::$dbPassword = "TvhM9m65IJUM";
-            self::$dbName = "berghems_omtest";
-        }  else {
-            self::$dbServername = "localhost";
-            self::$dbUsername = "berghems_om";
-            self::$dbPassword = "zmlWc.2n*Z/k72Rm";
-            self::$dbName = "berghems_om";
-         * 
-         * 
-         */
     }
     
  # Om vi behöver längre timout :   
