@@ -1,6 +1,6 @@
 <?php
 
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 require_once $root . '/includes/fpdf185/fpdf.php';
 require_once $root . '/includes/init.php';
 require_once $root . '/includes/FPDI-2.4.1/src/autoload.php';

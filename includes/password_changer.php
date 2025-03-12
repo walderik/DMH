@@ -6,7 +6,7 @@ if (!isset($_POST['the_code']) || !isset($_POST['submit']) || !isset($_POST['pas
 }
 
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 include_once $root . '/includes/all_includes.php';
 
 //Grabbing the data

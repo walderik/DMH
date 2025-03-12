@@ -5,7 +5,7 @@
 # $larp->isIntriguesReleased()
 
 global $root, $current_user, $current_larp;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 
 require_once $root . '/includes/fpdf185/fpdf.php';
 require_once $root . '/includes/fpdf185/script/mem_image.php';

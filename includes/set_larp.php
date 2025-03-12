@@ -1,7 +1,7 @@
 <?php
 
 global $root, $current_user, $current_person;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 include_once $root . '/includes/all_includes.php';
 
 session_start([

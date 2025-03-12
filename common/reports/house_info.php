@@ -2,7 +2,7 @@
 # Läs mer på http://www.fpdf.org/
 
 global $root, $current_person, $current_larp;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 
 require_once $root . '/pdf/house_info.php';
 require_once $root . '/includes/init.php';

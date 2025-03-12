@@ -2,7 +2,7 @@
 # Läs mer på http://www.fpdf.org/
 
 global $root, $current_user, $current_larp;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 
 include_once '../header.php';
 

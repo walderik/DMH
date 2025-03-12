@@ -391,12 +391,12 @@ class Email extends BaseModel{
         
         $recipients = $this->getRecipients();
         $unsubscribeText = "";
-        $site = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]";
+        $host = Environment::getHost();
         if (sizeof($recipients) == 1) {
             $mailer->CharSet = 'UTF-8';
             $person = $recipients[0];
             $code = $person->getUnsubscribeCode();
-            $unsubLink = $site.'/regsys/unsubscribe.php?personId='.$person->Id.'&code='.$code; 
+            $unsubLink = $host.'/unsubscribe.php?personId='.$person->Id.'&code='.$code; 
             $mailer->addCustomHeader(
                 'List-Unsubscribe',
                 "<$unsubLink>"

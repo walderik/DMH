@@ -1,6 +1,6 @@
 <?php
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 require_once $root . '/includes/fpdf185/fpdf.php';
 
 // Stream handler to read from global variables

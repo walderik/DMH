@@ -2,7 +2,7 @@
 
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
 
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 
 
 
