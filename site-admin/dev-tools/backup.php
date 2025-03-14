@@ -27,6 +27,80 @@ class Backup extends Dbh {
         Backup::downloadBackup($backup_file_name);
     }
     
+    public static function doParitialBackupRest() {
+        global $root;
+        $tables = Backup::getTableNames();
+        
+        $backup_file_name = $root . '/tmp/OM_backup_rest_' . time() . '.sql';
+        
+        //Make backup
+        $dumpSettings = array(
+            'include-tables' => $tables, 
+            'exclude-tables' => array('regsys_image', 'regsys_attachment')
+        );
+        
+        $dump = new Ifsnop\Mysqldump\Mysqldump('mysql:host='.Dbh::$dbServername.';dbname='.Dbh::$dbName, Dbh::$dbUsername, Dbh::$dbPassword, $dumpSettings);
+        $dump->start($backup_file_name);
+        
+        //$sqlScript = Backup::makeBackupScript($tables);
+        Backup::downloadBackup($backup_file_name);
+    }
+    
+    public static function doParitialBackupAttachements() {
+        global $root;
+        
+        $backup_file_name = $root . '/tmp/OM_backup_atttachments_' . time() . '.sql';
+       
+        
+        //Make backup
+        $dumpSettings = array(
+            'include-tables' => array('regsys_attachment')
+        );
+        
+        $dump = new Ifsnop\Mysqldump\Mysqldump('mysql:host='.Dbh::$dbServername.';dbname='.Dbh::$dbName, Dbh::$dbUsername, Dbh::$dbPassword, $dumpSettings);
+        $dump->start($backup_file_name);
+        
+        //$sqlScript = Backup::makeBackupScript($tables);
+        Backup::downloadBackup($backup_file_name);
+    }
+
+    
+    public static function doParitialBackupImages($alt, $num1, $num2) {
+        global $root;
+        
+        $backup_file_name = $root . '/tmp/OM_backup_images_'.$alt.'_' . time() . '.sql';
+        
+        //Make backup
+        $dumpSettings = array(
+            'include-tables' => array('regsys_image')
+        );
+        
+        $dump = new Ifsnop\Mysqldump\Mysqldump('mysql:host='.Dbh::$dbServername.';dbname='.Dbh::$dbName, Dbh::$dbUsername, Dbh::$dbPassword, $dumpSettings);
+        
+        if ($alt == 1) {
+                $dump->setTableWheres(array(
+                    'regsys_image' => 'id <= '.$num1
+                ));
+        } elseif ($alt == 2) {
+            $dump->setTableWheres(array(
+                'regsys_image' => 'id > '.$num1.' AND id <= '.$num2
+            ));
+            
+        } else {
+            $dump->setTableWheres(array(
+                'regsys_image' => 'id > '.$num2
+            ));
+            
+        }
+        
+        
+        $dump->start($backup_file_name);
+        
+        //$sqlScript = Backup::makeBackupScript($tables);
+        Backup::downloadBackup($backup_file_name);
+    }
+    
+    
     private static function getTableNames() {
         $sql = "SHOW TABLES";
         
