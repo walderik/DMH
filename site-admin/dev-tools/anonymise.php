@@ -13,7 +13,7 @@ if (!AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)) {
     exit;
 }
 
-if (!Dbh::isLocal()) exit;
+if (!Environment::isTest()) exit;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     echo "Anonymiserar data i databasen...<br>";

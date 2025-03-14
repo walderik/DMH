@@ -361,7 +361,7 @@ class Email extends BaseModel{
         
         
         //Om test, skicka bara till inloggad användare
-        if (Dbh::isLocal()) {
+        if (Environment::isTest()) {
             # Fixa så inga mail går iväg om man utvecklar
             if (isset($current_person)) {
                 $mailer->addAddress($current_person->Email, $current_person->Name);
