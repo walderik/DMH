@@ -7,7 +7,8 @@ class Environment {
     }
     
     public static function getDbConnectionData() {
-        $ini_array = parse_ini_file("../.htsettings.ini");
+        global $root;
+        $ini_array = parse_ini_file($root . "/.htsettings.ini");
         
         $connectionData = new DatabaseConnectionData();
         $connectionData->ServerName = $ini_array['Servername'];
@@ -18,8 +19,9 @@ class Environment {
     }
     
     public static function isTest() {
-        $ini_array = parse_ini_file("../.htsettings.ini");
-        if (self::$ini_array['test'] == "false") return false;
+        global $root;
+        $ini_array = parse_ini_file($root . "/.htsettings.ini");
+        if ($ini_array['test'] == "false") return false;
         return true;
     }
     
