@@ -1,5 +1,5 @@
 <?php
-global $root, $current_user;
+global $root, $current_person;
 $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
 
 require $root . '/includes/init.php';
@@ -13,4 +13,16 @@ if (!AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)) {
     exit;
 }
 
-Backup::doBackup();
+if (isset($_GET['alt'])) {
+    $alt = $_GET['alt'];
+    if ($alt == 1 || $alt == 2 || $alt==3) {
+        $num1 = $_GET['num1'];
+        $num2 = $_GET['num2'];
+        Backup::doParitialBackupImages($alt, $num1, $num2);
+    } elseif ($alt  == 4) {
+        Backup::doParitialBackupAttachements();
+    } else {
+        Backup::doParitialBackupRest();
+    }
+}
+ Backup::doBackup();
