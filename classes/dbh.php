@@ -12,26 +12,13 @@ class Dbh {
 //     public static $dbPassword = "Y2K0U1!";
 //     public static $dbName = "berghemsvanner_";
     
-    public static function isLocal() {
-        if (str_contains($_SERVER['HTTP_HOST'], 'localhost') || str_contains($_SERVER['HTTP_HOST'], '192.168') || str_contains($_SERVER['HTTP_HOST'], '155.4.119.71')) {
-            return true;
-        } else return false;
-            
-    }
-    
+   
     private static function setUpConnection() {
-        if (static::isLocal()) {
-            self::$dbServername = "localhost";
-            self::$dbUsername = "regsys";
-            //self::$dbPassword = "zmlWc.2n*Z/k72Rm";
-            self::$dbName = "berghemsvanner_";
-        } else {
-            self::$dbServername = "berghemsvanner.se.mysql.service.one.com";
-            self::$dbUsername = "berghemsvanner_";
-            self::$dbPassword = "Y2K0U1!";
-            self::$dbName = "berghemsvanner_";
-            
-        }
+        $dbConnectionData = Environment::getDbConnectionData();
+        self::$dbServername = $dbConnectionData->ServerName;
+        self::$dbUsername = $dbConnectionData->UserName;
+        self::$dbPassword = $dbConnectionData->Password;
+        self::$dbName = $dbConnectionData->DBName;
     }
     
  # Om vi behöver längre timout :   

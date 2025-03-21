@@ -1,6 +1,6 @@
 <?php
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 
 require $root . '/includes/init.php';
 
@@ -12,7 +12,7 @@ $current_participating_larp_array = LARP::currentParticipatingLARPs($current_per
 $referer = '';
 if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
 
-if (sizeof($current_participating_larp_array) == 1 AND str_contains($referer, '/regsys/index.php')) {
+if (sizeof($current_participating_larp_array) == 1 AND str_contains($referer, '/index.php')) {
     header('Location: ../includes/set_larp.php?larp='.$current_participating_larp_array[0]->Id);
     exit;
 }

@@ -1,6 +1,6 @@
 <?php
 global $root, $current_person;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 
 require $root . '/includes/init.php';
 
@@ -13,7 +13,7 @@ if (!AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)) {
     exit;
 }
 
-if (!Dbh::isLocal()) exit;
+if (!Environment::isTest()) exit;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     echo "Anonymiserar data i databasen...<br>";
@@ -182,18 +182,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     
     echo "Bilder<br>";
-    $sql = "SELECT * FROM regsys_image";
-    $stmt = BaseModel::connectStatic()->prepare($sql);
+    $sql = "SELECT Id FROM regsys_image";
     
-    if (!$stmt->execute()) {
-        $stmt = null;
-        header("location: ../index.php?error=stmtfailed");
-        exit();
-    }
-    
-    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $image = Image::newFromArray($row);
-        if ($image->Id != $firstImageId) Image::delete($image->Id);
+    $idArr = Image::getIdArray($sql, null);
+
+    foreach ($idArr as $imageId) {
+        if ($imageId != $firstImageId) Image::delete($imageId);
     }
 
 }

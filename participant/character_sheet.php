@@ -2,7 +2,7 @@
 # Läs mer på http://www.fpdf.org/
 
 global $root, $current_person, $current_larp;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 require $root . '/includes/init.php';
 require_once $root . '/pdf/character_sheet_pdf.php';
 

@@ -1,6 +1,6 @@
 <?php
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 
 include_once $root . '/includes/all_includes.php';
 
@@ -150,7 +150,7 @@ class SignupController {
             "%s://%s%s",
             isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
             $_SERVER['SERVER_NAME'],
-            "/regsys/includes/activate.php?email=$email&code=$activationCode"
+            "/includes/activate.php?email=$email&code=$activationCode"
             );
     }
     

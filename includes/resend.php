@@ -3,7 +3,7 @@
 session_start();
 
 global $root, $current_person;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 include_once $root . '/includes/all_includes.php';
 
 // Now we check if the data was submitted, isset() function will check if the data exists.
@@ -86,7 +86,7 @@ function send_activation(User $user)  {
         "%s://%s%s",
         isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
         $_SERVER['SERVER_NAME'],
-        "/regsys/includes/activate.php?email=$mail&code=$code"
+        "/includes/activate.php?email=$mail&code=$code"
         );
     
     $text  = "Du har begärt en ny aktiveringslänk för att kunna aktivera ditt konto.<br>\n";
@@ -104,7 +104,7 @@ function send_change_password(User $user) {
         "%s://%s%s",
         isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
         $_SERVER['SERVER_NAME'],
-        "/regsys/change_password.php?email=$mail&code=$code"
+        "/change_password.php?email=$mail&code=$code"
         );
     
     $text  = "Du har begärt en länk för att kunna byta lösenord på ditt konto.<br>\n";

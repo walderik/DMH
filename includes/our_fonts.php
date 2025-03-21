@@ -5,7 +5,7 @@ class OurFonts {
     public static function fontArray() {
         
         global $root;
-        $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+        $root = $_SERVER['DOCUMENT_ROOT'];
         $path = $root . '/includes/fpdf185/font';
 
         $files = array_diff(scandir($path), array('.', '..'));
@@ -27,7 +27,7 @@ class OurFonts {
     # Alltså dom fonterna vi lagt till själva i font-biblioteket
     public static function fontsToLoad() {
         global $root;
-        $root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+        $root = $_SERVER['DOCUMENT_ROOT'];
         $path = $root . '/includes/fpdf185/font';
         
         $files = array_diff(scandir($path), array('.', '..'));

@@ -1,7 +1,7 @@
 <?php
 
 global $root, $current_person, $current_larp;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 require $root . '/includes/init.php';
 
 

@@ -97,7 +97,7 @@ include "navigation.php";
 		<br>&nbsp;<br>
 		<?php if (AccessControl::hasAccessCampaign($current_person, $current_larp->CampaignId)) {
 		    
-		    echo "<a href='https://docs.google.com/document/d/1kcoqIp-dVs_CMS2AyKYlyw8gR9mmQV2KiLpSqfazMBU/edit' target='_blank'>Synpunktsdokumentet</a>";
+		    echo "<a href='https://trello.com/invite/b/67dc31463c19a63ecfa737b1/ATTI99353bf607691bb3b81bc87283cae538366B6C19/omnes-mundi' target='_blank'>Förslag till utveckling</a>";
 		}
 		?>
 

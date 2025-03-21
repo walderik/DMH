@@ -2,6 +2,7 @@
 
 global $root;
 
+include_once $root . '/classes/environment.php';
 include_once $root . '/includes/navigation_control.php';
 
 include_once $root . '/includes/swish.php';

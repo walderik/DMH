@@ -1,6 +1,6 @@
 <?php
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 include_once $root . '/includes/all_includes.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

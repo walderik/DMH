@@ -7,7 +7,7 @@ session_start();
 session_unset();
 
 global $root;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 include_once $root . '/includes/all_includes.php';
 
 include_once $root . '/includes/error_handling.php';

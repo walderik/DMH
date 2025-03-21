@@ -21,13 +21,13 @@ Svara kanske på någon mer fråga i Github Desktop
 Klicka på finish
 Välj ”Clone a repository from the internet” (eller om du missade det, File->Clone Repository)
 Välj URL-fliken. Ange ”walderik/DMH”
-Som mål skall du ange "C:\xampp\htdocs\regsys" (Ja, det blev inte perfekta namn)
+Som mål skall du ange "C:\xampp\htdocs\" 
 
 Nu ska du ha koden som behövs på plats.
 Dags fixa databasen.
 
 
-4. Med en text-editor Öppna filen regsys/doc/Anmälningssystem.ddl (Kan ha sparats med något annat liknande namn)
+4. Med en text-editor Öppna filen doc/Anmälningssystem.ddl (Kan ha sparats med något annat liknande namn)
 Kopiera all text i filen (Ctrl-a & Ctrl-c). Det är SQL_koden för att skapa en lokal databas.
 
 5. I XAMPP väljer du raden för MySQL och klicka på knappen för "Admin".
@@ -43,7 +43,7 @@ Nu ska du ha en databas redo
 
 
 Nu ska du konna testa din nya lokal site med att starta Apache i XAMPP. och surfa till din lokala server på 
-http://localhost/regsys/index.php
+http://localhost/index.php
 
 
 8. Dags skaffa en bra editor. Här i Skirebo kör vi med Eclipse PDT eftersom vi är vana vid den, men vilket EDI som helst funkar.

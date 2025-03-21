@@ -83,7 +83,7 @@ class BaseModel extends Dbh{
         static::delete($this->Id);
     }
 
-    protected static function getIdArray($sql, $var_array) {
+    public static function getIdArray($sql, $var_array) {
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute($var_array)) {

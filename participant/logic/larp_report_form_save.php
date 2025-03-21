@@ -1,7 +1,7 @@
 <?php
 
 global $root, $current_person;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 require $root . '/includes/init.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

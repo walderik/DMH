@@ -34,7 +34,7 @@ if (isset($message_message) && strlen($message_message)>0) {
     		    <a href="selection_data_general_admin.php?type=normalallergytypes">Vanliga allergier</a>	<br><br>
     		    <a href="selection_data_general_admin.php?type=experiences">Erfarenhet som lajvare</a>	<br>
 		    </p>
-		    <?php  if (Dbh::isLocal()) { ?>
+		    <?php  if (Environment::isTest()) { ?>
 		    <h2>Devtools</h2>
 		    <p>	    			
     		    <a href="dev-tools/anonymise.php">Anonymisera databasen</a>	

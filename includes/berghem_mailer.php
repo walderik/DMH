@@ -4,7 +4,7 @@ require_once 'PHPMailer/src/Exception.php';
 require_once 'PHPMailer/src/PHPMailer.php';
 require_once 'PHPMailer/src/SMTP.php';
 
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+$root = $_SERVER['DOCUMENT_ROOT'];
 require_once $root . '/pdf/character_sheet_pdf.php';
 require_once $root . '/pdf/group_sheet_pdf.php';
 require_once $root . '/pdf/invoice_pdf.php';
@@ -125,8 +125,8 @@ class BerghemMailer {
         } else {
             $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. ";
             $text .= "Betalas senast ".$registration->paymentDueDate()."<br>\n";
-            $host = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]";
-            if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/regsys/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
+            $host = Environment::getHost();
+            if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
         }
         
             $text .= "Din anmälan som deltagare innebär inte att din karaktär är godkänd, utan det är en separat process.</b><br>\n";
@@ -196,8 +196,8 @@ class BerghemMailer {
         } else {
             $text .= "Du ska nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. ";
             $text .= "Betalas senast ".$registration->paymentDueDate()."<br>\n";
-            $host = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]";
-            if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/regsys/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
+            $host = Environment::getHost();
+            if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
         }
         if (!$registration->isMember()) {
             $currentYear = date("Y");
@@ -482,12 +482,13 @@ class BerghemMailer {
                 $type = "lägerplats";
                 $preposition = "på";
             }
+            $host = Environment::getHost();
             $count_others = count($personsInHouse) - 1;    
             $housetext = $text . "<br><br>Du kommer att bo $preposition $type $house->Name tillsammans med $count_others andra personer.<br><br>".
 		      "Beskrivning av $house->Name: $house->Description<br><br>".
 		      "Vägbeskrivning: $house->PositionInVillage<br><br>".
-		      "Om du vill veta mer om ditt hus kan du titta på <a href='http://main.berghemsvanner.se/husen-i-byn/'>http://main.berghemsvanner.se/husen-i-byn/</a> ".
-		      "eller logga in i Omnes Mundi <a href='https://www.berghemsvanner.se/regsys/'>https://www.berghemsvanner.se/regsys/</a>.";
+		      "Om du vill veta mer om ditt hus kan du titta på <a href='http://www.berghemsvanner.se/husen-i-byn/'>http://www.berghemsvanner.se/husen-i-byn/</a> ".
+		      "eller logga in i Omnes Mundi <a href='$host'>$host</a>.";
 
             
             $receivers = array();

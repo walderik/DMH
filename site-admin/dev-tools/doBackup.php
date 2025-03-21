@@ -1,6 +1,7 @@
 <?php
-global $root, $current_person;
-$root = $_SERVER['DOCUMENT_ROOT'] . "/regsys";
+
+global $root, $current_user;
+$root = $_SERVER['DOCUMENT_ROOT'];
 
 require $root . '/includes/init.php';
 
