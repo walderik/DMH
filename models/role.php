@@ -871,6 +871,11 @@ class Role extends BaseModel{
         return $vrole;
     }
     
+    public function getLink() {
+        return "view_role.php?id=$this->Id";
+    }
+    
+    
     public function getEditLinkPen($isAdmin) {
         if($isAdmin) {
             return "<a href='edit_role.php?id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";

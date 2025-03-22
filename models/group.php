@@ -507,6 +507,11 @@ class Group extends BaseModel{
 
         return $vgroup;
     }
+
+    public function getLink() {
+        return "view_group.php?id=$this->Id";
+    }
+    
     
     public function getEditLinkPen($isAdmin) {
         if($isAdmin) {
