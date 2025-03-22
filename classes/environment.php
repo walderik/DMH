@@ -21,8 +21,9 @@ class Environment {
     public static function isTest() {
         global $root;
         $ini_array = parse_ini_file($root . "/.htsettings.ini");
-        if ($ini_array['test'] == "false") return false;
-        return true;
+        print_r($ini_array);
+        if ($ini_array['test'] == "1") return true;
+        return false;
     }
     
 }
