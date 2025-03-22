@@ -36,7 +36,7 @@
                 break;            
             case "action":
                 if (is_null($person->Id)) {
-                    $output = "Registrera";
+                    $output = "Skapa";
                     break;
                 }
                 $output = "Uppdatera";

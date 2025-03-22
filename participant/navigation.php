@@ -21,7 +21,7 @@
   <?php if (isset($current_larp)) {?>	
 
 	  <div class="dropdown">
-	    <button class="dropbtn">Registrera 
+	    <button class="dropbtn">Skapa 
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">

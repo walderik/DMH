@@ -174,7 +174,7 @@ function openTab(evt, tabName) {
     		} elseif ($current_larp->RegistrationOpen == 0) {
     		    
     		    echo "<div class='larpinfo'><span>Anmälan inte öppen</span>";
-    		    help_icon("Du kan registrera deltagare, grupper och karaktärer i väntan på att anmälan ska öppna. OBS! En karaktär kan bara bli medlem i en grupp om den är anmäld. Så det får du editera efter att anmälan har öppnat. Men övrig information kan du fylla i så länge.");
+    		    help_icon("Du kan skapa deltagare, grupper och karaktärer i väntan på att anmälan ska öppna. OBS! En karaktär kan bara bli medlem i en grupp om den är anmäld. Så det får du ändra efter att anmälan har öppnat. Men övrig information kan du fylla i så länge.");
     		    echo "</div>";
     		}
 		}

@@ -27,23 +27,23 @@ include 'navigation.php';
 
 	<div class='subheader'>Första gången</div>
     <div class='itemcontainer'>
-		<div class='itemname'>1. Registrera deltagare</div>
-		Under fliken "registrera" kan du välja "deltagare". Där kan du registrera dina personuppgifter. 
+		<div class='itemname'>1. Skapa deltagare</div>
+		Under fliken "skapa" kan du välja "deltagare". Där kan du skriva in dina personuppgifter. 
 		Dessa uppgifter kan sedan användas av alla lajv som använder sig av systemet. 
-		Du kan registrera mer än en deltagare per konto. Det vanligaste exemplet är att en vårdnadshavare kan 
-		registrera sina barn på ett och samma konto.
+		Du kan ha mer än en deltagare per konto. Det vanligaste exemplet är att en vårdnadshavare kan 
+		hantera sina barn på ett och samma konto.
 	</div>
 
     <div class='itemcontainer'>
-		<div class='itemname'>2. Om du är gruppledare - Registrera och anmäl grupp</div>
-		Under fliken "registrera" kan du välja "grupp". Där kan du som tänkt vara gruppledare (=off-kontaktperson) 
-		för en grupp registrera en grupp. Denna grupp är knuten till den valda lajvkampanjen. 
+		<div class='itemname'>2. Om du är gruppledare - Skapa och anmäl grupp</div>
+		Under fliken "skapa" kan du välja "grupp". Där kan du som tänkt vara gruppledare (=off-kontaktperson) 
+		för en grupp skriva in uppgifterna för en grupp. Denna grupp är knuten till den valda lajvkampanjen. 
 		Gruppen måste anmälas och godkännas innan någon karaktär kan välja att vara med i gruppen.
 	</div>
 
     <div class='itemcontainer'>
-		<div class='itemname'>3. Registrera karaktär</div>
-		Under fliken "registrera" kan du välja "karaktär". Där kan du registrera en eller flera karaktärer. 
+		<div class='itemname'>3. Skapa karaktär</div>
+		Under fliken "skapa" kan du välja "karaktär". Där kan du skapa en eller flera karaktärer. 
 		Dessa karaktärer är knutna till den valda lajvkampanjen. Om karaktären är knuten till en grupp väljer du detta vid registreringen. 
 	</div>
 
@@ -96,7 +96,7 @@ include 'navigation.php';
 	<div class='subheader'>Liten ordförklaring</div>  
    <div class='itemcontainer'>
         En <b>deltagare</b> är en fysisk person som tänkt åka på ett lajv. Här fyller du i personuppgifter kopplat till dig själv. 
-        Du kan även registrera <b>flera deltagare</b> på samma inloggningskonto. Ett typiskt exempel är en förälder som även registrerar sina barn.
+        Du kan även hantera <b>flera deltagare</b> på samma inloggningskonto. Ett typiskt exempel är en förälder som även har hand sina barns anmälningar.
 	</div>
 
    <div class='itemcontainer'>
@@ -111,12 +111,12 @@ include 'navigation.php';
 	</div>
 
    <div class='itemcontainer'>
-    <b>Registrera</b> betyder att man lägger in en deltagare, grupp eller karaktär i systemet. Det är <b>inte</b> samma som att anmäla sig till lajvet.<br>
-    Det som är registrerat kommer att ligga kvar till framtida lajv. Deltagare är gemansamt för alla kampanjer som använder systemet, medan grupper och karaktärer hör till en specifik kampanj, men kan anmälas till alla lajv i kampanjen.
+    <b>Skapa</b> betyder att man lägger in en deltagare, grupp eller karaktär i systemet. Det är <b>inte</b> samma som att anmäla sig till lajvet.<br>
+    Det som är skapat kommer att ligga kvar till framtida lajv. Deltagare är gemansamt för alla kampanjer som använder systemet, medan grupper och karaktärer hör till en specifik kampanj, men kan anmälas till alla lajv i kampanjen.
 	</div>
 
    <div class='itemcontainer'>
-    För att få åka på lajvet behöver du <b>anmäla</b> (och betala för) alla deltagare som ska åka på lajvet. Det räcker inte att bara registrera karaktären.
+    För att få åka på lajvet behöver du <b>anmäla</b> (och betala för) alla deltagare som ska åka på lajvet. Det räcker inte att bara skapa karaktären.
     Vid anmälan av en deltagare väljer du vilken eller vilka karaktärer du (och andra deltagare du anmäler) vill spela under det aktuella lajvet.
 	</div>
 	</div>
