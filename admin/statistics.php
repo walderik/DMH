@@ -78,187 +78,39 @@ Det är <?php echo Statistics::countParticipantHasSpot($current_larp)?> helt kla
 	<br>
 	I nedanstående tabell finns huvudkaraktärer i första kolumnen och sidokaraktärer i andra. Bakgrundslajvare är inte medräknade.
     	
-    	<table>
+	<table>
 
-    	<?php  if (Wealth::isInUse($current_larp)) { ?>
-        	<tr><th colspan="2"><h3>Rikedom</h3></th></tr>
-        	<tr>
-        	<td>
-        <?php 
-        $count = Wealth::countByTypeOnRoles($current_larp, true);
-        foreach($count as $item) {
-            echo $item['Name'].": ".$item['Num']." st<br>";
-        }
-        
-        
-        ?>
-        	</td>
-        	<td>
-        <?php 
-        $count = Wealth::countByTypeOnRoles($current_larp, false);
-        foreach($count as $item) {
-            echo $item['Name'].": ".$item['Num']." st<br>";
-        }
-        ?>
+<?php 
+function printRoleStatistics($type, $headline, $larp) {
+    if (!call_user_func($type."::isInUse", $larp)) return;
     
-    </td></tr>
-     <?php  }
-    ?>
+    echo "<tr><th colspan='2'><h3>$headline</h3></th></tr>";
+    echo "<tr>";
+    echo "<td>";
+    
+    $count = call_user_func($type."::countByTypeOnRoles",$larp, true);
+    foreach($count as $item) {
+        echo $item['Name'].": ".$item['Num']." st<br>";
+    }
+    echo "</td><td>";
+    $count = call_user_func($type."::countByTypeOnRoles",$larp, false);
+    foreach($count as $item) {
+        echo $item['Name'].": ".$item['Num']." st<br>";
+    }
+    echo "</td></tr>";
+    
+}
 
-    	<?php  if (Religion::isInUse($current_larp)) { ?>
-        	<tr><th colspan="2"><h3>Religion</h3></th></tr>
-        	<tr>
-        	<td>
-        <?php 
-        $count = Religion::countByTypeOnRoles($current_larp, true);
-        foreach($count as $item) {
-            echo $item['Name'].": ".$item['Num']." st<br>";
-        }
-        
-        
-        ?>
-        	</td>
-        	<td>
-        <?php 
-        $count = Religion::countByTypeOnRoles($current_larp, false);
-        foreach($count as $item) {
-            echo $item['Name'].": ".$item['Num']." st<br>";
-        }
-        ?>
-    
-    </td></tr>
-     <?php  }
-    ?>
-    	
-     	<?php  if (Race::isInUse($current_larp)) { ?>
-        	<tr><th colspan="2"><h3>Ras</h3></th></tr>
-        	<tr>
-        	<td>
-        <?php 
-        $count = Race::countByTypeOnRoles($current_larp, true);
-        foreach($count as $item) {
-            echo $item['Name'].": ".$item['Num']." st<br>";
-        }
-        
-        
-        ?>
-        	</td>
-        	<td>
-        <?php 
-        $count = Race::countByTypeOnRoles($current_larp, false);
-        foreach($count as $item) {
-            echo $item['Name'].": ".$item['Num']." st<br>";
-        }
-        ?>
-    
-    </td></tr>
-     <?php  }
-    ?>
-    	
-    	
-    	
-    	<tr><th colspan="2"><h3>Var karaktären bor</h3></th></tr>
-    	<tr>
-    	<td>
 
-    <?php 
-    $count = PlaceOfResidence::countByTypeOnRoles($current_larp, true);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
-    
-    
-    ?>
-    	</td>
-    	<td>
-    <?php 
-    $count = PlaceOfResidence::countByTypeOnRoles($current_larp, false);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
-    
-    
-    ?>
-    	</td>
-    	<tr><th colspan="2"><h3>Typ av lajvare</h3></th></tr>
-    	<tr>
-    	<td>
 
-    <?php 
-    $count = LarperType::countByTypeOnRoles($current_larp, true);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
-    
-    
-    ?>
-    	</td>
-    	<td>
 
-    <?php 
-    $count = LarperType::countByTypeOnRoles($current_larp, false);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
-    
-    
-    ?>
-    	</td>
-    	<tr><th colspan="2"><h3>Intrigtyper</h3></th></tr>
-    	<tr>
-    	<td>
-
-    <?php 
-    
-    $count = IntrigueType::countByTypeOnRoles($current_larp, true);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
-    
-    
-    ?>
-    	</td>
-    	<td>
-    <?php 
-    
-    $count = IntrigueType::countByTypeOnRoles($current_larp, false);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
-    
-    
-    ?>
-    </td>
-    </tr>
-    
-        	<tr><th colspan="2"><h3>Kunskaper</h3></th></tr>
-    	<tr>
-    	<td>
-
-    <?php 
-    
-    $count = Ability::countByTypeOnRoles($current_larp, true);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
-    
-    
-    ?>
-    	</td>
-    	<td>
-    <?php 
-    
-    $count = Ability::countByTypeOnRoles($current_larp, false);
-    foreach($count as $item) {
-        echo $item['Name'].": ".$item['Num']." st<br>";
-    }
-    
-    
-    ?>
-    </td>
-    </tr>
-    
-    
+	$types = getAllTypesForRoles($current_larp);
+	foreach ($types as $key => $type) {	
+	    printRoleStatistics($key, $type, $current_larp);
+	}
+		    
+?>
+     
     </table>
      
     
@@ -270,17 +122,28 @@ Det är <?php echo Statistics::countParticipantHasSpot($current_larp)?> helt kla
    	Just nu är <?php echo count(Group::getAllRegistered($current_larp))?> grupper anmälda.<br>
  <!-- storleksfördelning på grupperna osv. --> 
   
-  	<h3>Intrigtyper</h3>
-    <?php 
+  <?php 
+function printGroupStatistics($type, $headline, $larp) {
+    if (!call_user_func($type."::isInUse", $larp)) return;
     
-    $count = IntrigueType::countByTypeOnGroups($current_larp);
+    echo "<h3>$headline</h3>";
+    $count = call_user_func($type."::countByTypeOnGroups",$larp);
     foreach($count as $item) {
         echo $item['Name'].": ".$item['Num']." st<br>";
     }
-    
-    
+}
+
+
+
+
+	$types = getAllTypesForGroups($current_larp);
+	foreach ($types as $key => $type) {	
+	    printGroupStatistics($key, $type, $current_larp);
+	}
+		    
     ?>
-     
+  
+
 
   <h2>Funktionärer</h2>
   	<h3>Tillsatta funktionärer</h3>

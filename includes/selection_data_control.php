@@ -5,7 +5,7 @@ function getObjectName($name) {
     switch ($name) {
         case "wealth" : return "Rikedom";
         case "typesoffood" : return "Matalternativ";
-        case "placeofresidence" : return "Vad karaktärer/grupper bor"; 
+        case "placeofresidence" : return "Var karaktärer/grupper bor"; 
         case "officialtypes" : return "Typ av funktionärer"; 
         case "normalallergytypes" : return "Vanliga allergier";
         case "larpertypes" : return "Typ av lajvare";
@@ -62,6 +62,20 @@ function getAllTypesForRoles(Larp $larp) {
     
     return $types;
 }
+
+function getAllTypesForGroups(Larp $larp) {
+    $types = array();
+    if (Wealth::isInUse($larp)) $types["Wealth"] = "Rikedom";
+    if (PlaceOfResidence::isInUse($larp)) $types["PlaceOfResidence"] = "Vad karaktärer bor";
+    if (IntrigueType::isInUse($larp)) $types["IntrigueType"] = "Typ av intriger";
+    if (GroupType::isInUse($larp)) $types["GroupType"] = "Typ av grupp";
+    if (ShipType::isInUse($larp)) $types["ShipType"] = "Typ av skepp";
+    if (HousingRequest::isInUse($larp)) $types["HousingRequest"] = "Boendeönskemål";
+    
+    return $types;
+}
+
+
 
 function getAllOptionsForRoles(Larp $larp) {
     $options = array();

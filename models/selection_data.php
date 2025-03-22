@@ -217,6 +217,42 @@ class SelectionData extends BaseModel{
         
     }
     
+    
+    
+    public static function countByTypeOnGroups(LARP $larp) {
+        if (is_null($larp)) return Array();
+        
+
+        $type = static::class."Id";
+        
+        $sql = "select count(regsys_larp_group.GroupId) AS Num, regsys_".strtolower(static::class). ".Name AS Name FROM ".
+            "regsys_larp_group, regsys_group, regsys_".strtolower(static::class)." WHERE ".
+            "larpId=? AND ".
+            "GroupId = regsys_group.Id AND ".
+            "regsys_".strtolower(static::class).".Id=".$type." GROUP BY ".$type.";";
+            
+            $stmt = static::connectStatic()->prepare($sql);
+            
+            if (!$stmt->execute(Array($larp->Id))) {
+                $stmt = null;
+                header("location: ../index.php?error=stmtfailed");
+                exit();
+            }
+            
+            
+            if ($stmt->rowCount() == 0) {
+                $stmt = null;
+                return array();
+            }
+            
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $rows;
+            
+            
+    }
+    
+    
     public function mayDelete() {
         return false;
     }
