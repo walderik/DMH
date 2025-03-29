@@ -251,4 +251,12 @@ class Invoice extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
         
     }
+
+    public static function getInvoiceSum(LARP $larp) {
+        $sql = "SELECT SUM(AmountPayed) AS Num FROM regsys_invoice WHERE InvoiceType = ".Invoice::NORMAL_INVOICE .
+        " AND LARPId=? AND FixedAmount <= AmountPayed ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array($larp->Id));
+        
+    }
+    
 }

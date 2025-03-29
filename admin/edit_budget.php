@@ -18,13 +18,13 @@ include 'navigation.php';
 
 	<div class="content">
 		<h1>Budget för <?php echo $current_larp->Name?></h1>
-		
+		<p>Skriv "-" om det är utgifter och "+" om det är inkomster.</p>
 		<form action="logic/edit_budget_save.php" method="post">
 			<table>
 			<tr><td>Konto</td><td>Fast summa</td><td>Summa per person<br>Både deltagare och funktionärer</td></tr>
     		<?php 
     		$budgets = Budget::getAll($current_larp);
-    		$accounts = Bookkeeping_Account::allActive($current_larp);
+    		$accounts = Bookkeeping_Account::allActiveIncludeCommon($current_larp);
 
     		
     		foreach ($accounts as $account) {

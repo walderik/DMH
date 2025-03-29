@@ -10,6 +10,13 @@ class Bookkeeping_Account extends BaseModel{
     public  $Active = 1;
     public  $CampaignId;
     
+    const FEES_ACCOUNT = -3;
+    const RETURNED_FEES_ACCOUNT = -2;
+    const INVOICE_ACCOUNT = -3;
+    
+    const COMMON_ACCOUNTS = [Bookkeeping_Account::FEES_ACCOUNT, Bookkeeping_Account::RETURNED_FEES_ACCOUNT, Bookkeeping_Account::INVOICE_ACCOUNT];
+        
+    
     public static $orderListBy = 'Name';
     
     public static function newFromArray($post){
@@ -92,6 +99,15 @@ class Bookkeeping_Account extends BaseModel{
     public static function allActive(LARP $larp) {
         $sql = "SELECT * FROM regsys_bookkeeping_account WHERE active = 1 AND CampaignId=? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+
+    public static function allActiveIncludeCommon(LARP $larp) {
+         return array_merge(static::getCommon(), static::allActive($larp));
+    }
+
+    public static function getCommon() {
+        $sql = "SELECT * FROM regsys_bookkeeping_account WHERE active = 1 AND CampaignId IS NULL ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, NULL);
     }
     
 }
