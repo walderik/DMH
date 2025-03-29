@@ -183,5 +183,9 @@ class Bookkeeping extends BaseModel{
         
     }
     
+    public static function amountOnAccount(LARP $larp, Bookkeeping_Account $account) {
+        $sql = "SELECT SUM(Amount) as Num FROM regsys_bookkeeping WHERE LarpId = ? AND AccountingDate IS NOT NULL AND BookkeepingAccountId = ? ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array($larp->Id, $account->Id));
+    }
      
 }

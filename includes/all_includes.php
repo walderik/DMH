@@ -33,6 +33,7 @@ include_once $root . '/models/alchemy_supplier_ingredient.php';
 include_once $root . '/models/belief.php';
 include_once $root . '/models/bookkeeping.php';
 include_once $root . '/models/bookkeeping_account.php';
+include_once $root . '/models/budget.php';
 include_once $root . '/models/campaign.php';
 include_once $root . '/models/selection_data.php';
 include_once $root . '/models/email.php';
