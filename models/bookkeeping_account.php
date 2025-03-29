@@ -40,7 +40,9 @@ class Bookkeeping_Account extends BaseModel{
         
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
+
         if (isset($arr['CampaignId'])) $this->CampaignId = $arr['CampaignId'];
+        else $this->CampaignId = null;
         
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         
