@@ -84,6 +84,7 @@ include 'navigation.php';
         Konton läggs upp under kampanj. Under kampanj finns även rapporter att skicka in till Berghems Vänners kassör vid årets slut.</a></p>
         <p>
         <a href="economy_payments.php">Kontrollera bankfil mot obetalade avgifter</a><br>
+        <a href="view_budget.php">Budget</a><br>
         <a href="economy_by_account.php">Visa kassabok uppdelad på konto</a><br>
         <a href="economy_form.php?operation=add_income"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a> &nbsp; 
         <a href="economy_form.php?operation=add_expense"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a><br>
