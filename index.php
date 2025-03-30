@@ -15,6 +15,12 @@ if (!Email::handleEmailQueue()) {
     //     echo "<h1>Failing sending Email</h1>"; # Vad gör vi nu? Skicka felnotering till admin?
 }
 */
+
+if (Environment::isTest()) {
+    $text = "OBS! Testmiljö<br>";
+    if (isset($message_message)) $message_message = $text.$message_message;
+    else $message_message = $text;
+}
 ?>
 
 
