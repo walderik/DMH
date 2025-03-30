@@ -37,7 +37,7 @@ include "navigation.php";
         
         <?php
         
-        $account_array = Bookkeeping_Account::getAll($current_larp);
+        $account_array = array_merge(Bookkeeping_Account::getCommon(), Bookkeeping_Account::getAll($current_larp));
         $resultCheck = count($account_array);
         if ($resultCheck > 0) {
             echo "<table id='accounts' class='data'>";
@@ -47,13 +47,15 @@ include "navigation.php";
                 echo "<td>" . $account->Id . "</td>\n";
                 echo "<td>" . $account->Name . "</td>\n";
                 echo "<td>" . $account->Description . "</td>\n";
-                echo "<td>" . ja_nej($account->Active) . "</td>\n";
-                
-                
-                echo "<td>" . "<a href='bookkeeping_account_form.php?operation=update&id=" . $account->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>";
-                if (!$account->inUse()) echo "<a href='bookkeeping_account_admin.php?operation=delete&id=" . $account->Id . "'><i class='fa-solid fa-trash'></i>";
-                echo "</td>\n";
+                if (!is_null($account->CampaignId)) {
+                    echo "<td>" . ja_nej($account->Active) . "</td>\n";
+                    echo "<td>" . "<a href='bookkeeping_account_form.php?operation=update&id=" . $account->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
+                    echo "<td>";
+                    if (!$account->inUse()) echo "<a href='bookkeeping_account_admin.php?operation=delete&id=" . $account->Id . "'><i class='fa-solid fa-trash'></i>";
+                    echo "</td>\n";
+                } else {
+                    echo "<td colspan='3'>Systemkonto</td>\n";
+                }
                 echo "</tr>\n";
             }
             echo "</table>";
