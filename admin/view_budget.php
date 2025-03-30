@@ -28,22 +28,22 @@ include 'navigation.php';
 		
 		<div>
 			<table  class='data'>
-			<tr><td></td><td>Budget för det här lajvet</td>
-			<td>
+			<tr><td rowspan='2'></td><td rowspan='2'>Budget för det här lajvet</td>
+			<td colspan='2'>
     			<form method="POST">
         			<select name='comparison' id='comparison'>
         
         				<?php 
         				echo "<option value='0'";
         				if ($comparison == 0) echo " selected ";
-        				echo ">Utfall $current_larp->Name</option>\n";
+        				echo ">Utfall för det här lajvet</option>\n";
         				
         				$larps = LARP::allByCampaign($current_larp->CampaignId);
         				foreach ($larps as $larp) {
         				    if ($larp->Id != $current_larp->Id) {
         				        echo "<option value='$larp->Id'";
         				        if ($comparison == $larp->Id) echo " selected ";
-        				        echo ">Budget $larp->Name</option>\n";
+        				        echo ">Budget och utfall $larp->Name</option>\n";
         				    }
         				}
         				?>
@@ -54,6 +54,12 @@ include 'navigation.php';
 			
 			</td>
 			</tr>
+
+    			<tr>
+			<?php if ($comparison != 0) { ?>
+			    			<td style='font-weight: normal; background-color: #ffffff;'>Budget</td><td style='font-weight: normal; background-color: #ffffff;'>Utfall</td>
+			<?php }?>
+    			</tr>
     		<?php 
     		$budgets = Budget::getAll($current_larp);
     		$accounts = Bookkeeping_Account::allActiveIncludeCommon($current_larp);
@@ -65,6 +71,7 @@ include 'navigation.php';
     		}
     		$sum = 0;
     		$comparisonSum = 0;
+    		$comparisonSum2 = 0;
     		
     		foreach ($accounts as $account) {
     		    echo "<tr>";
@@ -105,14 +112,32 @@ include 'navigation.php';
     		    echo "'>". number_format((float)$comparisonAmount, 2, ',', '')."</td>";
     		    $comparisonSum += $comparisonAmount;
     		    
+    		    
+    		    if ($comparison != 0) {
+    		        $comparisonAmount = Bookkeeping::amountOnAccount($comparisonLarp, $account);
+    		        echo "<td style='text-align: right;";
+    		        if ($comparisonAmount < 0) echo "color:red;";
+    		        echo "'>". number_format((float)$comparisonAmount, 2, ',', '')."</td>";
+    		        $comparisonSum2 += $comparisonAmount;
+    		    }
+    		    
     		    echo "</tr>";
     		}
     		
     		echo "<tr><th>Summa</th><th style='text-align: right;";
     		if ($sum < 0) echo "color:red;";
-    		echo "'>". number_format((float)$sum, 2, ',', '')."</th><th style='text-align: right;";
+    		echo "'>". number_format((float)$sum, 2, ',', '')."</th>";
+    		echo "<th style='text-align: right;";
     		if ($comparisonSum < 0) echo "color:red;";
-    		echo "'>". number_format((float)$comparisonSum, 2, ',', '')."</th></tr>";
+    		echo "'>". number_format((float)$comparisonSum, 2, ',', '')."</th>";
+
+    		if ($comparison != 0) {
+    		    echo "<th style='text-align: right;";
+        		if ($comparisonSum2 < 0) echo "color:red;";
+        		echo "'>". number_format((float)$comparisonSum2, 2, ',', '')."</th>";
+    		}
+    		
+    		echo "</tr>";
     		
     		?>
 
