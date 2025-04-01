@@ -98,11 +98,12 @@ foreach ($rumourIdArr as $rumourId) {
                 
             }
             $person = $role->getPerson();
-            $age = $person->getAgeAtLarp($current_larp);
-            if (($age <= 6) && !$age0_6) continue;
-            if (($age >= 7) && ($age <= 15) && !$age7_15) continue;
-            if (($age >= 16) && !$age16_) continue;
-            
+            if (!is_null($person)) {
+                $age = $person->getAgeAtLarp($current_larp);
+                if (($age <= 6) && !$age0_6) continue;
+                if (($age >= 7) && ($age <= 15) && !$age7_15) continue;
+                if (($age >= 16) && !$age16_) continue;
+            }
             //Rollen matchar kriterierna
             if (rand(1,100) <= $percent) {
                 $knows = Rumour_knows::newWithDefault();

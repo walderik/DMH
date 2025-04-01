@@ -170,7 +170,8 @@ class Role extends BaseModel{
     }
     
     public function getPerson() {
-        return Person::loadById($this->PersonId);
+        if (isset($this->PersonId)) return Person::loadById($this->PersonId);
+        else return null;
     }
     
     public function getCampaign() {

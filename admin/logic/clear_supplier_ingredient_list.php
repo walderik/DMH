@@ -20,7 +20,7 @@ if (!isset($supplier) && !isset($person)) {
     exit;
 }
 
-if ($person->isNotComing($current_larp)) {
+if (!is_null($person) && $person->isNotComing($current_larp)) {
     Alchemy_Supplier_Ingredient::deleteAllForSupplier($supplier->Id);
 }
 
