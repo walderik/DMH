@@ -213,6 +213,42 @@ class BerghemMailer {
         BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Uppdaterad avgift till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
+    public static function send_unregistration_mail(Registration $registration) {
+        $person = $registration->getPerson();
+        
+        $larp = $registration->getLARP();
+        $campaign = $larp->getCampaign();
+        $roles = $person->getRolesAtLarp($larp);
+        
+       
+        $text  = "Du har nu blivit avanmäld från lajvet $larp->Name<br>\n".
+            "För ev återbetalning av lajvavgiften (om det är aktuellt) behöver vi dina kontouppgifter. Skicka dem till $campaign->Email.<br>\n";
+
+        
+        foreach ($roles as $role) {
+            if (isset($role->GroupId)) {
+                $group = $role->getGroup();
+                static::send_unregistration_information_mail_to_group($role, $group, $larp);
+            }
+        }
+        
+        BerghemMailer::send($larp, null, $person->Id, "Hej ".$person->Name, $text, "Avanmälan från $larp->Name", "", BerghemMailer::DaysAutomatic);
+    }
+    
+    public static function send_unregistration_information_mail_to_group(Role $role, Group $group, Larp $larp) {
+        $admin_person = $group->getPerson();
+        $player = $role->getPerson();
+        $text  = "$role->Name ";
+        if ($player->hasPermissionShowName()) {
+            $text .= "spelad av $player->Name ";
+        }
+        $text .= "är avanmäld från lajvet $larp->Name.<br>\n";
+        $text .= "<br>\n";
+        
+        BerghemMailer::send($larp, null, $admin_person->Id, "Hej ".$admin_person->Name, $text, "Avanmälan från $group->Name i $larp->Name", "", BerghemMailer::DaysAutomatic);
+    }
+    
+    
     public static function send_reserve_registration_mail(Reserve_Registration $reserve_registration) {
         $person = $reserve_registration->getPerson();
         
