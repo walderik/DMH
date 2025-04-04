@@ -56,9 +56,13 @@ function print_role(Role $role, Group $group, $isComing) {
     if ($role->isMain($current_larp)==0) {
         echo "Sidokaraktär<br>";
     }
-    echo "Spelas av ".$role->getPerson()->Name."<br>";
+    echo "Spelas av ";
+    $person =  $role->getPerson();
+    if (!is_null($person)) echo $person->Name;
+    else echo "NPC";
+    echo "<br>";
     
-    if ($isComing && $role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    if ($isComing && !is_null($person) && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         $guardian = $role->getRegistration($current_larp)->getGuardian();
         if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
         else echo "Ansvarig vuxen är inte utpekad.";

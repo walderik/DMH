@@ -157,6 +157,7 @@ class Vision extends BaseModel{
         $i = 0;
         foreach ($vision_has as $role) {
             $person = $role->getPerson();
+            if (is_null($person)) continue;
             $registration=$person->getRegistration($current_larp);
             if ($registration->isNotComing()) continue;
             $i++;

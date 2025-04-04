@@ -54,7 +54,8 @@ if ($operation == "search") {
         if ($type == "Ability") $resTable .="<td>$role->AbilityComment</td>";
         if ($type == "RoleFunction") $resTable .="<td>$role->RoleFunctionComment</td>";
         $resTable .= "</tr>";
-        $personIdArr[] = $role->getPerson()->Id;
+        $person = $role->getPerson();
+        if (!is_null($person)) $personIdArr[] = $person->Id;
     }
     $resTable .="</table>";
     

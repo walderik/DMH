@@ -51,7 +51,7 @@ function print_role(Role $role, Group $group) {
     echo "Yrke: ".$role->Profession . "<br>";
 
     $person = $role->getPerson();
-    if ($person->hasPermissionShowName()) echo "Spelas av ".$role->getPerson()->Name."<br>";
+    if (!is_null($person) && $person->hasPermissionShowName()) echo "Spelas av ".$person->Name."<br>";
     
     if ($role->hasImage()) {
         $image = Image::loadById($role->ImageId);

@@ -55,7 +55,11 @@ include 'navigation.php';
 
    		<div class='itemcontainer'>
        	<div class='itemname'>Spelas av</div>
-		<?php if ($person->hasPermissionShowName()) echo $person->Name; else echo "(Vill inte visa sitt namn)";?>
+		<?php 
+		if (is_null($person)) echo "NPC";
+		elseif ($person->hasPermissionShowName()) echo $person->Name; 
+		else echo "(Vill inte visa sitt namn)";
+		?>
 		</div>
 
 		<?php if (isset($group)) {?>
