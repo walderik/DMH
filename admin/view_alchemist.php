@@ -43,7 +43,10 @@ include 'alchemy_navigation.php';
     				<td>Spelas av 
     				</td>
     				<td>
-                		<?php echo "<a href='view_person.php?id=$person->Id'>$person->Name</a> ".contactEmailIcon($person); ?>
+                		<?php 
+                		if (!is_null($person)) echo $person->getViewLink()." ".contactEmailIcon($person); 
+                		else echo "NPC";
+                		?>
                     </td>
                 </tr>
      			<tr>

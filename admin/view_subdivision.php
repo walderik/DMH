@@ -73,11 +73,14 @@ function print_role($role, $subdivision, $isAtLarp, $mayRemove) {
     echo "<td>$role->Profession</td>";
     
     $person = $role->getPerson();
-    echo "<td>" . $person->getViewLink() ."</td>";
+    echo "<td>";
+    if (!is_null($person)) echo $person->getViewLink();
+    else echo "NPC";
+    echo "</td>";
     
     
     echo "<td>";
-    if ($isAtLarp && $role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    if ($isAtLarp && !is_null($person) && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         echo "Ansvarig vuxen är ";
         $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
         if (!empty($registration->GuardianId)) {
@@ -130,6 +133,7 @@ include 'navigation.php';
 	    }
 	    foreach ($registered_manual_characters_in_subdivision as $role) {
 	        $person = $role->getPerson();
+	        if (is_null($person)) continue;
 	        if ($person->isNotComing($current_larp)) continue;
 	        $personIdArr[] = $person->Id;
 	    }

@@ -35,7 +35,7 @@ include 'magic_navigation.php';
            $personIdArr = array();
            foreach ($magiciansComing as $magician) {
                $person = $magician->getRole()->getPerson();
-               $personIdArr[] = $person->Id;
+               if (!is_null($person)) $personIdArr[] = $person->Id;
            }
            echo "<h2>Magiker som är anmälda</h2>";
            
@@ -66,7 +66,8 @@ include 'magic_navigation.php';
                 if (isset($group)) echo $group->getViewLink();
                 echo "</td>";
                 echo "<td>";
-                echo $person->getViewLink().contactEmailIcon($person);
+                if (!is_null($person)) echo $person->getViewLink().contactEmailIcon($person);
+                else echo "NPC";
                 echo "</td>";
                 echo "<td>" . $magician->Level . "</td>\n";
                 echo "<td>"; 
@@ -113,7 +114,8 @@ include 'magic_navigation.php';
                 if (isset($group)) echo $group->getViewLink();
                 echo "</td>";
                 echo "<td>";
-                echo $person->getViewLink().contactEmailIcon($person);
+                if (!is_null($person)) echo $person->getViewLink().contactEmailIcon($person);
+                else echo "NPC";
                 echo "</td>";
                 echo "<td>" . $magician->Level . "</td>\n";
                 echo "<td>";

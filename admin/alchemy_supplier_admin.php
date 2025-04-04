@@ -43,7 +43,7 @@ include 'alchemy_navigation.php';
            $personIdArr = array();
            foreach ($suppliersComing as $supplier) {
                $person = $supplier->getRole()->getPerson();
-               $personIdArr[] = $person->Id;
+               if (!is_null($person)) $personIdArr[] = $person->Id;
            }
            echo "<h2>Lövjerister som är anmälda</h2>";
            echo contactSeveralEmailIcon('Skicka mail till alla anmälda lövjerister', $personIdArr, 'Lövjerist', "Meddelande till alla lövjerister i $current_larp->Name");
@@ -131,7 +131,10 @@ include 'alchemy_navigation.php';
                 
                 echo "</td>";
                 echo "<td>";
-                echo $person->getViewLink().contactEmailIcon($person);
+                if (!is_null($person)) {
+                    echo $person->getViewLink();
+                    echo "(".$person->getAgeAtLarp($current_larp)." år)".contactEmailIcon($person);
+                } else echo "NPC";
                 echo "</td>";
                 echo "<td>" . showStatusIcon($supplier->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='alchemy_supplier_admin.php?operation=delete&Id=" . $supplier->Id . "' onclick='return confirm(\"Är du säker på att du vill ta bort $role->Name som lövjerist?\");'><i  class='fa-solid fa-trash'></i></td>\n";

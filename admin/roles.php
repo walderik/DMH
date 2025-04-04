@@ -45,6 +45,7 @@ th {
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Gruppering</th>".
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
+    		        //Sidan visar bara anmälda karaktärer, aldrig npc.
     		        $person = $role->getPerson();
     		        $registration=$person->getRegistration($current_larp);
     		        echo "<tr>\n";
@@ -217,6 +218,7 @@ th {
     		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
+    		        //Sidan visar bara anmälda karaktärer, aldrig npc.
     		        $person = $role->getPerson();
     		        $registration=$person->getRegistration($current_larp);
     		        echo "<tr>\n";

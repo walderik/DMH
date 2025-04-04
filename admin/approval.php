@@ -25,7 +25,9 @@ include 'navigation.php';
     		        echo "<form action='logic/approve.php' method='post'>";
     		        echo "<input type='hidden' id='GroupId' name='GroupId' value='$group->Id'>";
     		        
-    		        echo $group->getViewLink() . ", Gruppledare ".$group->getPerson()->Name;
+    		        echo $group->getViewLink();
+    		        $groupLeader = $group->getPerson();
+    		        if (!is_null($groupLeader)) echo ", Gruppledare ".$groupLeader->Name;
     		        echo "<br>\n";
     		        if (empty($group->getPreviousLarps())) echo "Helt ny grupp.<br>";
     		        $oldApprovedGroup = $group->getOldApprovedGroup();
@@ -48,7 +50,6 @@ include 'navigation.php';
         Annars följer inte länkar i intrigspår och "Vad hände" med som det ska. </p>
      		<?php 
      		$roles = Role::getAllToApprove($current_larp);
-    		//$persons = Person::getAllToApprove($current_larp);
     		if (empty($roles)) {
     		    echo "<p>Alla anmälda är godkända</p>";
     		} else {
@@ -80,9 +81,19 @@ include 'navigation.php';
     		        $oldApprovedRole = $role->getOldApprovedRole();
     		        if (!empty($oldApprovedRole)) echo "Karaktären har tidigare varit godkänd. <a href='view_role_changes.php?id=$role->Id'>Visa ändringar</a><br>";
     		        echo "<br><br>";
-    		        echo "Spelas av ", $person->getViewLink(), ", ".$person->getAgeAtLarp($current_larp)." år ";
-    		        echo "<br>\n";
-    		        echo "Epost: $person->Email, Telefon: $person->PhoneNumber <br>\n";
+    		        if (!is_null($person)) {
+        		        echo "Spelas av ", $person->getViewLink(), ", ".$person->getAgeAtLarp($current_larp)." år ";
+        		        echo "<br>\n";
+        		        echo "Epost: $person->Email, Telefon: $person->PhoneNumber <br>\n";
+    		        } else {
+    		            $creator = $role->getCreator();
+    		            echo "NPC<br>\n";
+    		            if (!is_null($creator)) {
+    		            echo "Skapad av av ", $creator->getViewLink();
+        		        echo "<br>\n";
+        		        echo "Epost: $creator->Email, Telefon: $creator->PhoneNumber <br>\n";  
+    		            }
+    		        }
     		        
     		        if ($role->userMayEdit($current_larp)) {
     		            echo "Spelare får ändra på karaktären och därför kan den inte godkännas.";

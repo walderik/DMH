@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
-$name = 'Lista';
+$listname = 'Lista';
 
 $pdf = new Report_TCP_PDF();
 
@@ -28,14 +28,17 @@ $rows = array();
 $header = array("Karaktär", "Deltagare", "");
 
 foreach ($roles as $role) {
-    $rows[] = array($role->Name, $role->getPerson()->Name,"                                           ");
+    $person = $role->getPerson();
+    if (is_null($person)) $name = "NPC";
+    else $name = $person->Name;
+    $rows[] = array($role->Name, $name,"                                           ");
 }
 // add a page
 $pdf->AddPage();
 // print table
-$pdf->Table($name, $header, $rows);
+$pdf->Table($listname, $header, $rows);
 
 
 
 // close and output PDF document
-$pdf->Output($name.'.pdf', 'I');
+$pdf->Output($listname.'.pdf', 'I');
