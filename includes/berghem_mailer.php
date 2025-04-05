@@ -534,14 +534,13 @@ class BerghemMailer {
                 if (empty($registration)) continue;
                 if (!$registration->hasSpotAtLarp()) continue;
                 if ($registration->NotComing == 1) continue;
-                $receivers[] = $person->Id;
+                $receivers[] = $person;
                 if ($person->hasPermissionShowName()) $names_in_house[] = $person->Name;
                 else $names_in_house[] = "(Vill inte visa sitt namn)";
             }
             if (empty($receivers)) continue;
             
             $housetext = $housetext . "<br><br>De som bor i huset är: ".implode(", ", $names_in_house);
-            
             
             $subject_house = $subject . " ($house->Name)";
             
@@ -557,7 +556,12 @@ class BerghemMailer {
                 $sheets[scrub($house->Name)] = $pdf->Output($house->Name.'.pdf','S');
             }
             
-            BerghemMailer::send($larp, $senderId, $receivers, $greeting, $housetext, $subject_house, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+            foreach ($receivers as $reciever) {
+                if ($reciever->hasPermissionShowName()) $message = $housetext;
+                else $message = $housetext . "<br><br>Eftersom du har valt att inte visa ditt namn kommer de andra som bor i huset inte se vem du är.";
+                BerghemMailer::send($larp, $senderId, $reciever->Id, $greeting, $message, $subject_house, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+                
+            }
         }
     }
     
