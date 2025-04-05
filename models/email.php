@@ -405,7 +405,7 @@ class Email extends BaseModel{
                 'List-Unsubscribe-Post',
                 'List-Unsubscribe=One-Click'
                 );
-            $unsubscribeText = "<br><br>Om du inte vill ha fler mail från oss kan du klicka på den här länken: <a href='$unsubLink'>Avstå från uskick</a>";
+            $unsubscribeText = "<br><br>Om du inte vill ha fler mail från oss kan du klicka på den här länken: <a href='$unsubLink'>Avstå från utskick</a>";
             
             
         }
