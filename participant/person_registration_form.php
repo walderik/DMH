@@ -116,7 +116,7 @@ include 'navigation.php';
 		    <?php 
 		    }
 		    ?>
-			
+			<hr>
 				
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="RoleId">Karaktärer</label> <font style="color:red">*</font></div>
@@ -151,7 +151,7 @@ include 'navigation.php';
         			?>
         		</table>
         	</div>
-			
+			<hr>
 			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
     			<div class='itemcontainer'>
     	       	<div class='itemname'><label for="TypesOfFoodId">Viken typ av mat vill du äta?</label> <font style="color:red">*</font></div>
@@ -200,7 +200,7 @@ include 'navigation.php';
 			    echo "</div>";
 			}
 			?>
-			
+			<hr>
 			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
     			<div class='itemcontainer'>
@@ -246,7 +246,7 @@ include 'navigation.php';
 			<input type="text" id="TentPlace" name="TentPlace"  maxlength="200">
 			</div>
 
-			
+			<hr>
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="NPCDesire">NPC</label></div>
 			Kan du tänka dig att ställa upp som NPC? Vad vill du i så fall göra?<br>
@@ -273,7 +273,7 @@ include 'navigation.php';
 			
 			
 		
-
+			<hr>
 			<div class='itemcontainer'>
 	       	<div class='itemname'>Godkända karaktärer&nbsp;<font style="color:red">*</font></div>
 			Alla karaktärer ska godkännas. Du kommer att får ett mail när någon i arrangörsgruppen har 
