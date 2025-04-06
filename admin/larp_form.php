@@ -136,9 +136,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     			</tr>
      			<tr>
     				<?php $hasRegistration = $larp->hasRegistrations(); ?>
-    				<td><label for='VisibleToParticipants'>Ska lajvet vara synligt för deltagare och därmed synas under kommande lajv?</label>
+    				<td><label for='VisibleToParticipants'>Ska lajvet synas i Omnes Mundis kalendarium?</label>
     				     
-    				     <?php if ($hasRegistration) echo "<br>(Lajvet har anmälningar och kan därför inte göras osynligt.)"?>
+    				     <?php if ($hasRegistration) echo "<br><span style='font-style: italic;'>(Lajvet har anmälningar och kan därför inte göras osynligt.)</span>"?>
     				</td>
     				<td>
 						<input type="radio" id="VisibleToParticipants_yes" name="VisibleToParticipants" value="1" <?php if ($larp->isVisibleToParticipants()) echo 'checked="checked"'?> <?php if ($hasRegistration) echo " disabled ";?>> 
