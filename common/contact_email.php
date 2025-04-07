@@ -107,21 +107,27 @@ include $navigation;
 		    case "housing":
 		        echo "<h1>Skicka ut boendet till alla deltagarna.</h1>\n";
 		        echo "Det kommer att skickas ett mail för varje hus/lägerplats.<br>\n";
-		        echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
-		        echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        if ($campaign->is_kir()) {
+		            echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
+		            echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        }
 		        break;
 		    case "one":
 		        echo "<h1>Skicka ett mail till $name ($email)</h1>";
 		        break;
 		    case "all":
 		        echo "<h1>Skicka ett utskick till alla deltagarna.</h1>\n";
-		        echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
-		        echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        if ($campaign->is_kir()) {
+		            echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
+		            echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        }
 		        break;
 		    case "several":
 		        echo "<h1>Skicka ett utskick till alla $name</h1>\n";
-		        echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
-		        echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        if ($campaign->is_kir()) {
+		            echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
+		            echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
+		        }
 		        break;
 		}
 		
