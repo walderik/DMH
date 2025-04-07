@@ -121,6 +121,8 @@ class Email extends BaseModel{
               $email->SentAt = null;
               $email->update();
           }
+          
+          if (!$email->isKiR()) $email->sendNow();
           return $email;
           
       }
@@ -231,9 +233,9 @@ class Email extends BaseModel{
     # 1500 recipients / 1 hour
     # Med 250 mail per timma blir det 4.17 mail per minut eller ett var 15 sekund som max.
     # Eftersom man kan ha 1500 mottagare per timma blir det optimalt med 6 mottagare per mail om man gör massmail
-    public static function okToSendNow() {
+    public static function okToSendKiRNow() {
         # Först hittar vi tiden för när vi senast skickade något, om någonsin
-        $sql = "SELECT * FROM regsys_email WHERE `SentAt` is not null ORDER BY `SentAt` DESC LIMIT 1;";
+        $sql = "SELECT * FROM regsys_email WHERE `SentAt` is not null AND `From` ='kontakt@kampeniringen.se' ORDER BY `SentAt` DESC LIMIT 1;";
         $lastestSentEmail = static::getOneObjectQuery($sql, array());
         if (is_null($lastestSentEmail)) return true;
         
@@ -242,6 +244,11 @@ class Email extends BaseModel{
         $diff = $now->getTimestamp() - $sent_at_date_time->getTimestamp();
 //         echo "<h1>$diff</h1>\n";
         if ($diff > 14) return true;
+        return false;
+    }
+    
+    private function isKiR() {
+        if ($this->From =='kontakt@kampeniringen.se') return true;
         return false;
     }
     
@@ -470,7 +477,7 @@ class Email extends BaseModel{
         Email::deleteOldMails();
         $current_queue = static::allUnsent();
         if (empty($current_queue)) return;
-        if (!static::okToSendNow()) return;
+        if (!static::okToSendKiRNow()) return;
         //     echo "Send an email";
         $to_send = array_pop($current_queue); # Hämta äldsta mailet i kön
         return $to_send->sendNow();
