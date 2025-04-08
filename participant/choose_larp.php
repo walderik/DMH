@@ -111,7 +111,7 @@ div.border
 			            
 						if (!empty(trim($larp->Description))) {
 							echo "<br>";
-							echo "<span class='full-description' style='display:none;'><br>" . nl2br(htmlspecialchars($larp->Description)) . "</span>";
+							echo "<span class='full-description' style='display:none;'><br>" . nl2br(linkify(htmlspecialchars($larp->Description))) . "<br><br></span>";
 							echo "<button type='button' class='read-more'>Visa beskrivning</button>";
 						}
 					

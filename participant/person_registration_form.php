@@ -89,7 +89,7 @@ include 'navigation.php';
 			?>
 			<div class='itemcontainer'>
 	       	<div class='itemname'>Lajvets innehåll <font style="color:red">*</font></div>
-			<?php echo nl2br(htmlspecialchars($current_larp->ContentDescription)) ?><br>
+			<?php echo nl2br(linkify(htmlspecialchars($current_larp->ContentDescription))) ?><br>
 
 			<input type="checkbox" id="Content" name="Content" value="Ja" required>
   			<label for="Content">Jag är införstådd med vad det är för typ av lajv</label> 

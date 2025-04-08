@@ -369,3 +369,9 @@ function remove_housecaretaker(Person $person, House $house) {
     $i = "<i class='fa-solid fa-trash' title='Ta bort $person->Name som husförvaltare för $house->Name'></i>";
     return " <a href='logic/remove_caretaker.php?person_id=$person->Id&houseId=$house->Id' $confirm>$i</a>";
 }
+
+function linkify($str) {
+    $url_pattern = '/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/';
+    $str= preg_replace($url_pattern, '<a href="$0" target="_blank">$0</a>', $str);
+    return $str;
+}
