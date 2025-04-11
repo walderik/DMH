@@ -4,42 +4,43 @@
 
  $csv = array();
  
- $file_format = $_POST['file_format'];
- 
- // check there are no errors
- if($_FILES['csv']['error'] == 0){
-     //$name = $_FILES['csv']['name'];
-     //$ext = strtolower(end(explode('.', $name)));
-     $type = $_FILES['csv']['type'];
-     $tmpName = $_FILES['csv']['tmp_name'];
+ if (isset($_POST['file_format']) && isset($_FILES['csv'])) {
+     $file_format = $_POST['file_format'];
      
-     // check the file is a csv
-     if($type === 'text/csv'){
-         if(($handle = fopen($tmpName, 'r')) !== FALSE) {
-             // necessary if a large csv file
-             set_time_limit(0);
-             
-             $row = 0;
-             
-             while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
-                 // number of fields in the csv
-                 $col_count = count($data);
-                 $data = array_map( "convert", $data );
-                 for($col=0;$col<=($col_count-1);$col++) {
-                     // get the values from the csv
-                     $csv[$row][$col] = $data[$col];
+     // check there are no errors
+     if($_FILES['csv']['error'] == 0){
+         //$name = $_FILES['csv']['name'];
+         //$ext = strtolower(end(explode('.', $name)));
+         $type = $_FILES['csv']['type'];
+         $tmpName = $_FILES['csv']['tmp_name'];
+         
+         // check the file is a csv
+         if($type === 'text/csv'){
+             if(($handle = fopen($tmpName, 'r')) !== FALSE) {
+                 // necessary if a large csv file
+                 set_time_limit(0);
+                 
+                 $row = 0;
+                 
+                 while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+                     // number of fields in the csv
+                     $col_count = count($data);
+                     $data = array_map( "convert", $data );
+                     for($col=0;$col<=($col_count-1);$col++) {
+                         // get the values from the csv
+                         $csv[$row][$col] = $data[$col];
+                     }
+                     
+                     
+                     
+                     // inc the row
+                     $row++;
                  }
-                 
-                 
-                 
-                 // inc the row
-                 $row++;
+                 fclose($handle);
              }
-             fclose($handle);
          }
      }
  }
- 
  function convert( $str ) {
      return iconv( "Windows-1252", "UTF-8", $str );
  }
@@ -113,8 +114,8 @@ th {
     		      "</tr>\n";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
-    		        $paymentrow = findPayment($registration->PaymentReference);
     		        if ($registration->hasPayed() || $registration->isNotComing()) continue;
+    		        $paymentrow = findPayment($registration->PaymentReference);
     		        $amountToPay = $registration->AmountToPay;
     		        echo "<tr>\n";
     		        echo "<td>";
