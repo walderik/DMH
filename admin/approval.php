@@ -89,9 +89,9 @@ include 'navigation.php';
     		            $creator = $role->getCreator();
     		            echo "NPC<br>\n";
     		            if (!is_null($creator)) {
-    		            echo "Skapad av av ", $creator->getViewLink();
-        		        echo "<br>\n";
-        		        echo "Epost: $creator->Email, Telefon: $creator->PhoneNumber <br>\n";  
+        		            echo "Skapad av av ", $creator->getViewLink();
+            		        echo "<br>\n";
+            		        echo "Epost: $creator->Email, Telefon: $creator->PhoneNumber <br>\n";  
     		            }
     		        }
     		        
