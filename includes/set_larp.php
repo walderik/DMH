@@ -4,6 +4,8 @@ global $root, $current_user, $current_person;
 $root = $_SERVER['DOCUMENT_ROOT'];
 include_once $root . '/includes/all_includes.php';
 
+ini_set('session.gc_maxlifetime', 86400);
+session_set_cookie_params(86400);
 session_start([
     'cookie_lifetime' => 86400,
 ]);
