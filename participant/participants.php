@@ -130,10 +130,10 @@ function print_role($role) {
 		<?php 
 		$groups = Group::getAllRegisteredApproved($current_larp);
 		foreach ($groups as $group) {
-		    $roles = Role::getAllComingMainRolesInGroup($group, $current_larp);
+		    $roles = Role::getAllComingApprovedMainRolesInGroup($group, $current_larp);
 
 		    
-            if (!(empty($roles) && count($roles)>0)) {
+            if (!empty($roles)) {
 
                 echo "<h2>$group->Name</h2>\n";
                 if ($group->DescriptionForOthers !="") {
@@ -166,7 +166,7 @@ function print_role($role) {
 		
 		
 		/* Karaktärer utan grupp */	
-		$roles = Role::getAllComingMainRolesWithoutGroup($current_larp);
+		$roles = Role::getAllComingApprovedMainRolesWithoutGroup($current_larp);
 		
 
 		if ((!empty($roles) && count($roles)!=0)) {
