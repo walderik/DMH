@@ -97,6 +97,17 @@ class Alchemy_Recipe extends BaseModel{
         return Alchemy_Alchemist::getAlchemistsThatKnowsRecipe($this);
     }
     
+    public function IsAtLarp(LARP $larp) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_alchemy_alchemist, regsys_role, regsys_registration WHERE regsys_alchemy_alchemist.Id IN (".
+            "SELECT AlchemyAlchemistId FROM regsys_alchemy_alchemist_recipe WHERE AlchemyRecipelId=?) AND ".
+            "regsys_alchemy_alchemist.RoleId = regsys_role.Id AND ".
+            "regsys_role.PersonId = regsys_registration.PersonId AND ".
+            "regsys_registration.LarpId = ? AND ".
+            "regsys_registration.NotComing = 0;";
+        return static::existsQuery($sql, array($this->Id, $larp->Id));
+        
+    }
+    
     public function isApproved() {
         if ($this->IsApproved == 1) return true;
         return false;
