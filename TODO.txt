@@ -4,7 +4,7 @@
 Tips och ticks
 ===============
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON `berghemsvanner\_`.* TO 'regsys'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `om_test`.* TO 'regsys'@'%';
 Sätt lösenordet på regsys
 
 Tips jag hittade:
