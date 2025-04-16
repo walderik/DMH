@@ -38,14 +38,22 @@ $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
 $main_characters_in_group = Role::getAllMainRolesInGroup($group, $current_larp);
 $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($group, $current_larp);
 $allUnregisteredRoles = Role::getAllUnregisteredRolesInGroup($group, $current_larp);
+$NPCs_in_group = Role::getAllNPCsInGroup($group);
 
 function print_role(Role $role, Group $group, $isComing) {
     global $current_person, $current_larp, $type;
+    $isNPC = false;
+    if (is_null($role->PersonId)) $isNPC = true; 
     
     if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
     else echo "<li style='display:table-cell; width:49%;'>\n";
     
     echo "<div class='name'>$role->Name";
+    if ($isNPC) {
+        echo " <a href='role_form.php?action=update&id=".$role->Id."'>";
+        echo "<i class='fa-solid fa-pen'></i>";
+        echo "</a>";
+    }
     if ($current_person->isGroupLeader($group)) {
         echo " <a href='logic/remove_group_member.php?groupID=".$group->Id."&roleID=".$role->Id."' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
         echo "<i class='fa-solid fa-trash-can'></i>";
@@ -56,13 +64,17 @@ function print_role(Role $role, Group $group, $isComing) {
     if ($role->isMain($current_larp)==0) {
         echo "Sidokaraktär<br>";
     }
+
     echo "Spelas av ";
-    $person =  $role->getPerson();
-    if (!is_null($person)) echo $person->Name;
-    else echo "NPC";
+
+    if ($isNPC) echo "NPC";
+    else {
+        $person =  $role->getPerson();
+        $person->Name;
+    }
     echo "<br>";
     
-    if ($isComing && !is_null($person) && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    if ($isComing && !$isNPC && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         $guardian = $role->getRegistration($current_larp)->getGuardian();
         if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
         else echo "Ansvarig vuxen är inte utpekad.";
@@ -305,7 +317,43 @@ include 'navigation.php';
 			echo "</div>\n";
 		}
 		?>
+		
+		<div class='itemcontainer'>
+		<div class='itemname'>NPC'er i gruppen</div>
+
+		<?php 
+		echo "<div class='container' style ='box-shadow: none; margin: 0px; padding: 0px;'>\n";
+		if (empty($NPCs_in_group)) {
+		    echo "Det finns inga NPC'er i gruppen än.";
+		}
+		else {
+		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
+		    foreach ($NPCs_in_group as $role) {
+		        print_role($role, $group, true);
+		        $temp++;
+		        if($temp==$columns) {
+		            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		            $temp=0;
+		        }
+		    }
+		    $temp=0;
+		    echo "</ul>\n";
+
+		}
+		
+		echo "</div>\n";
+		?>
+
+
+		
 		</div>
+		
+		
+		
+		</div>
+		    
+		    
+		    
 		    
 		<div class='itemselector'>
 		<div class="header">
