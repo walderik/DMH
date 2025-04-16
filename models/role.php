@@ -561,6 +561,12 @@ class Role extends BaseModel{
             "regsys_larp_role.larpid=?)) ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id, $larp->Id));
     }
+
+    public static function getAllNPCsInGroup(Group $group) {
+        $sql = "SELECT * FROM regsys_role WHERE GroupId=? AND PersonId IS NULL  ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id));
+    }
+    
     
     public static function getTitledeedOwners(Titledeed $titledeed) {
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
