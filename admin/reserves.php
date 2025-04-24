@@ -39,8 +39,9 @@ th {
     		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
     		      "<th onclick='sortTable(1, \"$tableId\")'>Epost</th>".
     		      "<th onclick='sortTable(2, \"$tableId\")'>Ålder<br>på lajvet</th>".
-    		      "<th onclick='sortTable(2, \"$tableId\")'>Roller</th>".
-    		      "<th onclick='sortTable(3, \"$tableId\")'>Funktionärsönskemål</th>";
+    		      "<th onclick='sortTable(3, \"$tableId\")'>Roller</th>".
+    		      "<th onclick='sortTable(4, \"$tableId\")'>Funktionärsönskemål</th>".
+    		      "<th onclick='sortTable(5, \"$tableId\")'>Boendeönskemål</th>";
     		    echo "<th></th></tr>\n";
     		    foreach ($persons as $person)  {
     		        $reserve_registration = $person->getReserveRegistration($current_larp);
@@ -78,6 +79,8 @@ th {
     		        echo "</td>\n";
     		        
     		        echo "<td>" .  commaStringFromArrayObject($reserve_registration->getOfficialTypes()) . "</td>\n";
+    		        echo "<td>" .  $reserve_registration->getHousingRequest()->Name . "</td>\n";
+    		        
     		        
     		        echo "<td>";
     		        echo "<form method='post' action='logic/make_into_registration.php'>";
