@@ -11,7 +11,7 @@ include 'navigation.php';
     <a href="reports/allergy_list.php?variant=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Allergier & typ av mat (variant 1)</a><br>  
     <a href="reports/allergy_list.php?variant=2" target="_blank"><i class="fa-solid fa-file-pdf"></i>Allergier & typ av mat (variant 2)</a><br>  
     </div> 
-    
+    <a href="food_choice_persons.php">Alla deltagares matval som sorterbar tabell</a><br> 
     Totalt är det <?php echo Registration::countAllComing($current_larp); ?> anmälda personer.<br>
     <h2>Vald mat</h2>
     <?php 
