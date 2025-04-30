@@ -101,7 +101,7 @@ include $navigation;
 		    case "intrigues":
 		        echo "<h1>Skicka ut intrigerna till alla deltagarna.</h1>\n";
 		        echo "I mailet kommer karaktärsbladen till alla deras karaktärer och grupper som de är med i bifogas.<br>\n";
-		        echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund.<br>\n";
+		        if ($campaign->is_kir()) echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund.<br>\n";
 		        echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br>\n";
 		        break;
 		    case "housing":

@@ -11,6 +11,7 @@ require_once $root . '/pdf/invoice_pdf.php';
 require_once $root . '/pdf/alchemy_supplier_sheet_pdf.php';
 require_once $root . '/pdf/alchemy_alchemist_sheet_pdf.php';
 require_once $root . '/pdf/magic_magician_sheet_pdf.php';
+require_once $root . '/pdf/vision_sheet_pdf.php';
 require_once $root . '/pdf/house_info.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
