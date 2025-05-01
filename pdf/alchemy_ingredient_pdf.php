@@ -280,8 +280,9 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
         $this->Cell($this->rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'C');
         
         //Skriv ut essenser/"katalysator"
+        $size=15;
         if ($ingredient->isCatalyst()) $txt = "Katalysator";
-        else $txt = $ingredient->getEssenceNames();
+        else $txt = ' '.$ingredient->getEssenceNames().' ';
         
         $slen = $this->GetStringWidth($txt);
         while ($slen > ($this->rut_width-7)) {
@@ -293,6 +294,7 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
         $this->SetFont($font,'',10);
         $this->SetXY($squareX, ($this->rut_height/2)+8 + $squareY);
         $this->Cell($this->rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'C');
+        
          
         //Skriv ut nivå 
         $txt = "Nivå ".$ingredient->Level;         $this->SetFont($font,'',10);
