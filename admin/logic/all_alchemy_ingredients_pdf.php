@@ -19,7 +19,7 @@ $pdf->SetTitle(encode_utf_to_iso('Alla ingredienser för alla lövjerister'));
 $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->SetSubject(encode_utf_to_iso('Alla ingredienser för alla lövjerister'));
-$pdf->all_resources($arrayOfAlcheySuppliers, $type, $current_larp);
+$pdf->all_ingredients_for_all_suppliers($arrayOfAlcheySuppliers, $type, $current_larp);
 
 $pdf->Output();
 

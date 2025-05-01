@@ -25,7 +25,7 @@ $pdf->SetTitle(encode_utf_to_iso($ingredient->Name));
 $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
 $pdf->SetCreator('Omnes Mundi');
 $pdf->SetSubject(encode_utf_to_iso($ingredient->Name));
-$pdf->one_resource($ingredient, $type, $current_larp);
+$pdf->one_resource_on_one_page($ingredient, $type, $current_larp);
 
 $pdf->Output();
 
