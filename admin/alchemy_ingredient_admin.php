@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 include 'navigation.php';
 include 'alchemy_navigation.php';
+require_once $root . '/pdf/alchemy_ingredient_pdf.php';
 ?>
 
 <script src="../javascript/table_sort.js"></script>
@@ -34,16 +35,20 @@ include 'alchemy_navigation.php';
            $tableId = "ingredients";
            echo "<table id='$tableId' class='data'>";
            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-               "<th onclick='sortTable(1, \"$tableId\")'>Nivå</th>".
-               "<th onclick='sortTable(2, \"$tableId\")'>Ingrediens/Katalysator</th>".
-               "<th onclick='sortTable(3, \"$tableId\")'>Essenser</th>".
-               "<th onclick='sortTable(4, \"$tableId\")'>Effekt</th>".
-               "<th onclick='sortTable(5, \"$tableId\")'>Godkänd</th>".
+               "<th>PDF</th>".
+               "<th onclick='sortTable(2, \"$tableId\")'>Nivå</th>".
+               "<th onclick='sortTable(3, \"$tableId\")'>Ingrediens/Katalysator</th>".
+               "<th onclick='sortTable(4, \"$tableId\")'>Essenser</th>".
+               "<th onclick='sortTable(5, \"$tableId\")'>Effekt</th>".
+               "<th onclick='sortTable(6, \"$tableId\")'>Godkänd</th>".
                "<th></th>";
            
            foreach ($ingredients as $ingredient) {
                 echo "<tr>\n";
-                echo "<td><a href ='alchemy_ingredient_form.php?operation=update&id=$ingredient->Id'>$ingredient->Name</a></td>\n";
+                echo "<td><a href ='alchemy_ingredient_form.php?operation=update&id=$ingredient->Id'>$ingredient->Name</a></td>\n"; 
+                echo "<td><a href='logic/alchemy_ingredients_pdf.php?type=".ALCHEMY_INGREDIENT_PDF::Handwriting."&id=".$ingredient->Id."' target='_blank' title='Hela sida ".$ingredient->Name." Handskivet'><i class='fa-solid fa-file-pdf'></i></a> &nbsp;";
+                echo "<a href='logic/alchemy_ingredients_pdf.php?type=".ALCHEMY_INGREDIENT_PDF::Calligraphy."&id=".$ingredient->Id."' target='_blank' title='Hela sida ".$ingredient->Name." Kaligraferad'><i class='fa-solid fa-file-pdf'></i></a> &nbsp;";
+                echo "</td>\n";
                 echo "<td>$ingredient->Level</td>\n";
                 echo "<td>";
                 if ($ingredient->isCatalyst()) echo "Katalysator";
