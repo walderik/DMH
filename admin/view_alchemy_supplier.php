@@ -102,7 +102,47 @@ include 'alchemy_navigation.php';
 			<a href='choose_alchemy_ingredient.php?id=<?php echo $supplier->Id ?>&operation=add_supplier_ingredient'>Lägg till ingredienser</a>
 
 			<h2>Ingredienser på tidigare lajv</h2>
-<?php //TODO hämta upp ingredienser på tidigare lajv ?>
+		<?php 
+			$previous_larps = LARP::getPreviousLarpsInCampaign($current_larp);
+			foreach($previous_larps as $previous_larp) {
+			    $amounts = $supplier->getIngredientAmounts($previous_larp);
+			    if (empty($amounts)) {
+			        $person = $supplier->getRole()->getPerson();
+			        if (isset($person)) $registration = Registration::loadByIds($person->Id, $previous_larp->Id);
+			        if (isset($registration)) {
+			            echo "<h3>$previous_larp->Name</h3>";
+			            echo "Inga ingredienser";
+			            continue;
+			        }
+			    }
+			    echo "<h3>$previous_larp->Name</h3>";
+			    echo "<table class='small_data'>";
+			    echo "<tr><th>Ingrediens</th><th>Antal</th><th>Nivå</th><th>Ingrediens/Katalysator</th><th>Essenser</th></tr>";
+
+			    foreach ($amounts as $amount) {
+			        $ingredient = $amount->getIngredient();
+			        echo "<tr>";
+			        echo "<td>$ingredient->Name</td>";
+			        echo "<td>";
+			        echo $amount->Amount;
+			        echo "</td>";
+			        echo "<td>$ingredient->Level</td>\n";
+			        echo "<td>";
+			        if ($ingredient->isCatalyst()) echo "Katalysator";
+			        else echo "Ingrediens";
+			        echo "</td>\n";
+			        echo "<td>";
+			        if ($ingredient->isIngredient()) {
+			            echo $ingredient->getEssenceNames();
+			        }
+			        echo "</td>\n";
+			        
+			        echo "</tr>";
+			    }
+			    echo "</table>";
+			}
+			
+			 ?>
 		</div>
 		
 
