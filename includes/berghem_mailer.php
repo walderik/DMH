@@ -433,48 +433,70 @@ class BerghemMailer {
             $registration = $person->getRegistration($larp);
             if (empty($registration)) continue;
             if (!$registration->hasSpotAtLarp()) continue;
-            $roles = Role::getRegistredRolesForPerson($person, $larp); 
-            $rolesText = "";
             
-            if (!empty($roles)) {
-                $rolesText .= "De karaktärer du ska spela är:<br>\n";
-                $rolesText .= "<br>\n";
-                foreach ($roles as $role) {
-                    $rolesText .= '* '.$role->Name;
-                    if ($role->isMain($larp)) {
-                        $rolesText .= " - Din huvudkaraktär";
-                    }
-                    $rolesText .= "<br>\n";
-                }
-                
-            }
-            
-            $sheets = static::getAllSheets($roles, $larp);
-            
-            $npcs = NPC::getReleasedNPCsForPerson($person, $larp);
-            $npcText = "";
-            
-            if (!empty($npcs)) {
-                $npcText  = "<br>De NPC'er du ska spela är:<br>\n";
-                $npcText .= "<br>\n";
-                foreach($npcs as $npc) {
-                    $npcText .= "Namn: $npc->Name";
-                    $npcText .= "<br>\n";
-                    $npcText .= "Beskrivning: $npc->Description";
-                    $npcText .= "<br>\n";
-                    $npcText .= "Tiden när vi vill att du spelar npc'n: $npc->Time";
-                    $npcText .= "<br>\n";
-                
-                }
-            }
-            
-            $printText = "<br>Skriv ut de bifogade filerna och ta med till lajvet.<br>";
-            
-            $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
-
-            BerghemMailer::send($larp, $senderId, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+            $emailToCreate = Email_To_Create::newWithDefault();
+            $emailToCreate->EmailType = Email_To_Create::INTRIGUE;
+            $emailToCreate->LarpId = $larp->Id;
+            $emailToCreate->SenderPersonId = $senderId;
+            $emailToCreate->Subject = $subject;
+            $emailToCreate->Greeting = $greeting;
+            $emailToCreate->Text = $text;
+            $emailToCreate->SenderText = $senderText;
+            $emailToCreate->RegistrationId = $registration->Id;
+            $emailToCreate->create();
         }
     }
+    
+    
+    # Skicka ut intrigerna/karaktärsbladen till alla deltagare
+    public static function sendIntrigue($greeting, $subject, $text, $senderText, LARP $larp, $senderId, $registrationId) {
+        $registration = Registration::loadById($registrationId);
+        $person = $registration->getPerson();
+        if (empty($registration)) return;
+        if (!$registration->hasSpotAtLarp()) return;
+        $roles = Role::getRegistredRolesForPerson($person, $larp);
+        $rolesText = "";
+        
+        if (!empty($roles)) {
+            $rolesText .= "De karaktärer du ska spela är:<br>\n";
+            $rolesText .= "<br>\n";
+            foreach ($roles as $role) {
+                $rolesText .= '* '.$role->Name;
+                if ($role->isMain($larp)) {
+                    $rolesText .= " - Din huvudkaraktär";
+                }
+                $rolesText .= "<br>\n";
+            }
+            
+        }
+        
+        $sheets = static::getAllSheets($roles, $larp);
+        
+        $npcs = NPC::getReleasedNPCsForPerson($person, $larp);
+        $npcText = "";
+        
+        if (!empty($npcs)) {
+            $npcText  = "<br>De NPC'er du ska spela är:<br>\n";
+            $npcText .= "<br>\n";
+            foreach($npcs as $npc) {
+                $npcText .= "Namn: $npc->Name";
+                $npcText .= "<br>\n";
+                $npcText .= "Beskrivning: $npc->Description";
+                $npcText .= "<br>\n";
+                $npcText .= "Tiden när vi vill att du spelar npc'n: $npc->Time";
+                $npcText .= "<br>\n";
+                
+            }
+        }
+        
+        $printText = "<br>Skriv ut de bifogade filerna och ta med till lajvet.<br>";
+        
+        $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
+        
+        BerghemMailer::send($larp, $senderId, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+
+    }
+    
     
     
     public static function sendInvoice(Invoice $invoice, $senderId) {

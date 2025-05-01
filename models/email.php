@@ -475,6 +475,17 @@ class Email extends BaseModel{
     public static function handleEmailQueue() {
         //     return;
         Email::deleteOldMails();
+        
+        $email_to_createArr = Email_To_Create::getOldest50();
+        $time_start = microtime(true);
+        foreach ($email_to_createArr as $email_to_create) {
+            $email_to_create->createEmail();
+            $current_time = microtime(true);
+            $time_used = $current_time - $time_start;
+            if ($time_used > 5) break;
+        }
+        
+        
         $current_queue = static::allUnsent();
         if (empty($current_queue)) return;
         if (!static::okToSendKiRNow()) return;
