@@ -29,9 +29,10 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
         $this->SetAutoPageBreak(true , 1.5);
         $this->AddFont('Smokum','');
         $this->AddFont('specialelite','');
+        
         if ($type == ALCHEMY_INGREDIENT_PDF::Handwriting) foreach ($this->handfonts as $font) $this->AddFont($font,'');
         elseif ($type == ALCHEMY_INGREDIENT_PDF::Calligraphy) foreach ($this->calligraphyfonts as $font) $this->AddFont($font,'');
-        //         $this->AddPage('L','A5',270);
+        
         foreach ($alchemy_suppliers as $alchemy_supplier) {
             $this->all_ingredients_for_one_suppliers($alchemy_supplier, $type, $larp);
         }
@@ -43,14 +44,42 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
         $this->SetAutoPageBreak(true , 1.5);
         $this->AddFont('Smokum','');
         $this->AddFont('specialelite','');
+        
         if ($type == ALCHEMY_INGREDIENT_PDF::Handwriting) foreach ($this->handfonts as $font) $this->AddFont($font,'');
         elseif ($type == ALCHEMY_INGREDIENT_PDF::Calligraphy) foreach ($this->calligraphyfonts as $font) $this->AddFont($font,'');
         
         $this->print_many_of_ingredients(array($ingredient), $type, 21, $larp);
     }
     
-    
-    
+    static function cmp_by_name($a, $b)
+    {
+        if ($a->Name == $b->Name) {
+            return 0;
+        }
+        return ($a->Name < $b->Name) ? -1 : 1;
+    }
+
+    function extra_resources($type, LARP $larp) {
+        $this->SetAutoPageBreak(true , 1.5);
+        $this->AddFont('Smokum','');
+        $this->AddFont('specialelite','');
+        if ($type == ALCHEMY_INGREDIENT_PDF::Handwriting) foreach ($this->handfonts as $font) $this->AddFont($font,'');
+        elseif ($type == ALCHEMY_INGREDIENT_PDF::Calligraphy) foreach ($this->calligraphyfonts as $font) $this->AddFont($font,'');
+        
+        $ingredients = Alchemy_Ingredient::allApprovedByCampaign($larp);
+        usort($ingredients, array('ALCHEMY_INGREDIENT_PDF',"cmp_by_name"));
+        
+        for($level=1; $level<=5; $level++) {
+            $current_ingredients = array();
+            foreach ($ingredients as $ingredient) {
+                if ($ingredient->Level == $level) $current_ingredients[] = $ingredient;
+            }
+            $antal = 1;
+            if ($level == 1) {$antal = 3; }
+            elseif ( $level == 2) {$antal = 2; }
+            $this->print_many_of_ingredients($current_ingredients, $type, $antal, $larp);
+        }
+    }
     
     
     
@@ -238,11 +267,11 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
         
         # En bit kod för att säkerställa att inget hamnar utanför kanten på rutan
         $this->SetFont($font,'',$size);
-        $slen = $this->GetStringWidth($txt,0);
+        $slen = $this->GetStringWidth($txt);
         while ($slen > ($this->rut_width-7)) {
             $size -= 1;
             $this->SetFont($font,'',$size);
-            $slen = $this->GetStringWidth($txt,0);
+            $slen = $this->GetStringWidth($txt);
         }
         # Fix för font som alltid blir för stor
         if ($font == 'simplyglamorous' || $font == 'cherish') $this->SetFont($font,'',$size-2);
@@ -253,7 +282,14 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
         //Skriv ut essenser/"katalysator"
         if ($ingredient->isCatalyst()) $txt = "Katalysator";
         else $txt = $ingredient->getEssenceNames();
-     
+        
+        $slen = $this->GetStringWidth($txt);
+        while ($slen > ($this->rut_width-7)) {
+            $size -= 1;
+            $this->SetFont($font,'',$size);
+            $slen = $this->GetStringWidth($txt);
+        }
+        
         $this->SetFont($font,'',10);
         $this->SetXY($squareX, ($this->rut_height/2)+8 + $squareY);
         $this->Cell($this->rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'C');
@@ -261,7 +297,7 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
         //Skriv ut nivå 
         $txt = "Nivå ".$ingredient->Level;         $this->SetFont($font,'',10);
         $this->SetXY($squareX, ($this->rut_height/2)+13 + $squareY);
-        $this->Cell($this->rut_width,10,encode_utf_to_iso(ucfirst($txt)),0,1,'C');
+        $this->Cell($this->rut_width, 10, encode_utf_to_iso(ucfirst($txt)),0,1,'C');
         
         //Skriv ut effekt
         if (!empty(trim($ingredient->Effect))) {
@@ -275,11 +311,11 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
         $this->SetFont($font,'',$size);
         
         $txt = $seller_name;
-        $slen = $this->GetStringWidth($txt,0);
+        $slen = $this->GetStringWidth($txt);
         while ($slen > $this->rut_width-3) {
             $size -= 1;
             $this->SetFont($font,'',$size);
-            $slen = $this->GetStringWidth($txt,0);
+            $slen = $this->GetStringWidth($txt);
         }
         $this->SetXY( 3+$squareX, 8 + $squareY);
         $this->Cell($this->rut_width,10,encode_utf_to_iso($txt),0,1,'L');
@@ -288,11 +324,11 @@ class ALCHEMY_INGREDIENT_PDF extends PDF_MemImage {
         $this->SetFont($font,'',$size);
         
         $txt = $larp->Name;
-        $slen = $this->GetStringWidth($txt,0);
+        $slen = $this->GetStringWidth($txt);
         while ($slen > $this->rut_width-3) {
             $size -= 1;
             $this->SetFont($font,'',$size);
-            $slen = $this->GetStringWidth($txt,0);
+            $slen = $this->GetStringWidth($txt);
         }
         $this->SetXY($squareX + $this->rut_width - 3 - $slen, ($this->rut_height+3) + $squareY);
         $this->Cell($this->rut_width,10,encode_utf_to_iso($txt),0,1,'L');

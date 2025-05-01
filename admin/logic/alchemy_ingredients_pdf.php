@@ -17,9 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $pdf = new ALCHEMY_INGREDIENT_PDF();
 
-if (empty($ingredient)) {
+if (isset($_GET['extra_kort'])) {    
+    $pdf->SetTitle(encode_utf_to_iso('Extra ingredienskort'));
+    $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
+    $pdf->SetCreator('Omnes Mundi');
+    $pdf->SetSubject(encode_utf_to_iso('Extra ingredienskort'));
+    $pdf->extra_resources($type, $current_larp);    
+} elseif (empty($ingredient)) {
     $arrayOfAlcheySuppliers = Alchemy_Supplier::allByCampaign($current_larp, false);
-    
     $pdf->SetTitle(encode_utf_to_iso('Alla ingredienser för alla lövjerister'));
     $pdf->SetAuthor(encode_utf_to_iso($current_larp->Name));
     $pdf->SetCreator('Omnes Mundi');
