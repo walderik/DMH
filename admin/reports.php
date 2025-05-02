@@ -26,25 +26,31 @@ include 'navigation.php';
         <a href="reports/intrigues_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla intriger</a><br>  
         <a href='character_sheet.php?bara_intrig=japp' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla intriger (tar tid att generera)'></i> Alla intriger per karaktär</a><br>
         <a href='character_sheet.php?bara_intrig=japp&main=1' target='_blank'><i class='fa-solid fa-file-pdf' title='Intriger för huvudkaraktärer (tar tid att generera)'></i> Intriger för huvudkaraktärer</a><br>
-        <a href="logic/all_letters_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla godkända brev</a><br> 
-        <a href="logic/all_telegrams_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla godkända telegram</a><br>  
+        <?php if ($current_larp->HasLetters()) { ?>
+       	 	<a href="logic/all_letters_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla godkända brev</a><br> 
+        <?php } ?>
+        <?php if ($current_larp->HasTelegrams()) { ?>
+            <a href="logic/all_telegrams_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla godkända telegram</a><br>  
             <a href="reports/telegram_time.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Körschema för telegram</a><br>  
+        <?php } ?>
         <a href="logic/props_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Rekvisita</a><br>
         <a href="reports/npc_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla NPC'er som ska spelas</a> 
         </div>
-    <h3>Handel</h3>
-		<div class='linklist'>
-        <a href="logic/all_titledeeds_group_summary_pdf.php?type=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera gruppsammanfattningar, variant 1</a><br>
-        <a href="logic/all_titledeeds_group_summary_pdf.php?type=2" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera gruppsammanfattningar, varaint 2</a><br>
-        <a href="logic/all_titledeeds_dmh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Maskinskrivna)</a><br>
-        <a href="logic/all_titledeeds_doh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Kalligrafi / Runor)</a><br>
-        <a href="logic/all_resources_pdf.php?type=<?php echo RESOURCE_PDF::Handwriting?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till verksamheterna (Handskrift / Maskinskrift)</a><br> 
-        <a href="logic/all_resources_pdf.php?type=<?php echo RESOURCE_PDF::Calligraphy?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till verksamheterna (Kalligrafi)</a><br> 
-        <a href="reports/titledeeds_info_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Lista med verksamheter (för notarie)</a><br>  
-        <a href="reports/titledeeds_info_pdf.php?all_info=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Lista med verksamheter (för handelsansvarig)</a><br> 
-        <a href="reports/resources_info_pdf.php?all_info=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Prislista</a><br>
-        </div>
-	<?php if ($current_larp->hasMagic()) {?>
+    <?php if ($current_larp->HasCommerce()) { ?>
+        <h3>Handel</h3>
+    		<div class='linklist'>
+            <a href="logic/all_titledeeds_group_summary_pdf.php?type=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera gruppsammanfattningar, variant 1</a><br>
+            <a href="logic/all_titledeeds_group_summary_pdf.php?type=2" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera gruppsammanfattningar, varaint 2</a><br>
+            <a href="logic/all_titledeeds_dmh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Maskinskrivna)</a><br>
+            <a href="logic/all_titledeeds_doh_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ägarbevis till verksamheterna (Kalligrafi / Runor)</a><br>
+            <a href="logic/all_resources_pdf.php?type=<?php echo RESOURCE_PDF::Handwriting?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till verksamheterna (Handskrift / Maskinskrift)</a><br> 
+            <a href="logic/all_resources_pdf.php?type=<?php echo RESOURCE_PDF::Calligraphy?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera resurskort till verksamheterna (Kalligrafi)</a><br> 
+            <a href="reports/titledeeds_info_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Lista med verksamheter (för notarie)</a><br>  
+            <a href="reports/titledeeds_info_pdf.php?all_info=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Lista med verksamheter (för handelsansvarig)</a><br> 
+            <a href="reports/resources_info_pdf.php?all_info=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Prislista</a><br>
+            </div>
+    <?php } ?>
+	<?php if ($current_larp->hasMagic()) { ?>
 	<h3>Magi</h3>
 		<div class='linklist'>
 				<a href='magic_magician_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för alla magiker'></i>Magikerblad för alla magiker</a><br>
@@ -53,11 +59,14 @@ include 'navigation.php';
 		
 		</div>
 	<?php } ?>
-	<?php if ($current_larp->hasAlchemy()) {?>
+	<?php if ($current_larp->hasAlchemy()) { ?>
 	<h3>Alkemi</h3>
 		<div class='linklist'>
-            <a href="logic/all_alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Handwriting?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ingredienskort till lövjeristerna (Handskrift)</a><br> 
-            <a href="logic/all_alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Calligraphy?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Generera ingredienskort till lövjeristerna (Kalligrafi)</a> <br>
+            <a href="logic/alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Handwriting?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Ingredienskort till lövjeristerna (Handskrift)</a><br> 
+            <a href="logic/alchemy_ingredients_pdf.php?type=<?php echo ALCHEMY_INGREDIENT_PDF::Calligraphy?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Ingredienskort till lövjeristerna (Kalligrafi)</a> <br>
+            <a href="logic/alchemy_ingredients_pdf.php?extra_kort=1&type=<?php echo ALCHEMY_INGREDIENT_PDF::Handwriting?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Extra ingredienskort (Handskrift)</a><br> 
+            <a href="logic/alchemy_ingredients_pdf.php?extra_kort=1&type=<?php echo ALCHEMY_INGREDIENT_PDF::Calligraphy?>" target="_blank"><i class="fa-solid fa-file-pdf"></i>Extra ingredienskort (Kalligrafi)</a> <br>
+            
 			<a href='alchemy_alchemist_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Alkemistblad för alla alkemister'></i>Alkemistblad för alla alkemister</a><br>
 			<a href='alchemy_supplier_sheet.php' target='_blank'><i class='fa-solid fa-file-pdf' title='Lövjeristblad för alla lövjerister'></i>Lövjeristblad för alla lövjerister</a><br>
  			<a href="reports/alchemy_ingredients_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Ingredienser på lajvet</a><br>
