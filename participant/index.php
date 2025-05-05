@@ -296,7 +296,7 @@ function openTab(evt, tabName) {
         		if (Alchemy_Alchemist::isAlchemist($role)) {
         		    $alchemist = Alchemy_Alchemist::getForRole($role);
         		    echo "<a href='view_alchemist.php?id=$role->Id'>Alkemist</a> ";
-        		    echo "<a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
+        		    echo "<a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Alkemistblad för $role->Name'></i></a> ";
     		        echo "<br>";
         		}
         		
