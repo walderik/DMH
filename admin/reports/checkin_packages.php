@@ -147,6 +147,11 @@ foreach ($roles as $role) {
             $supplier = Alchemy_Supplier::getForRole($role);
             if ($supplier->hasIngredientList($current_larp) && $supplier->allAmountOfIngredientsApproved($current_larp)) $package .= "Lövjerist, ska ha sina etiketter.\n";
         }
+        if (Alchemy_Alchemist::isAlchemist($role)) {
+            $alchemist = Alchemy_Alchemist::getForRole($role);
+            $recipes = $alchemist->getRecipes(true);
+            if (!empty($recipes)) $package .= "Alkemist, ska ha sina recept.\n";
+        }
     }
     
     
@@ -270,6 +275,11 @@ foreach ($roles as $role) {
         if (Alchemy_Supplier::isSupplier($role)) {
             $supplier = Alchemy_Supplier::getForRole($role);
             if ($supplier->hasIngredientList($current_larp) && $supplier->allAmountOfIngredientsApproved($current_larp)) $package .= "Lövjerist, ska ha sina etiketter.\n";
+        }
+        if (Alchemy_Alchemist::isAlchemist($role)) {
+            $alchemist = Alchemy_Alchemist::getForRole($role);
+            $recipes = $alchemist->getRecipes(true);
+            if (!empty($recipes)) $package .= "Alkemist\n";
         }
     }
     
