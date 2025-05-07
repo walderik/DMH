@@ -106,6 +106,12 @@ include 'navigation.php';
 		<a href="reports/fees_payed.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Inbetalade och återbetalade deltagaravgifter</a><br>
         
 	</div>
+    <h3>Etiketter</h3>
+	<div class='linklist'>
+        <a href="reports/labels_pdf.php?type=groups" target="_blank"><i class="fa-solid fa-file-pdf"></i>Grupper</a><br>
+        <a href="reports/labels_pdf.php?type=roles" target="_blank"><i class="fa-solid fa-file-pdf"></i>Huvudkaraktärer</a><br>
+        <a href="reports/labels_pdf.php?type=persons" target="_blank"><i class="fa-solid fa-file-pdf"></i>Deltagare</a><br>
+	</div>
     <h3>Övrigt</h3>
 	<div class='linklist'>
 		<a href="reports/check_in_out_pdf.php?variant=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>In och utcheckning (variant 1)</a><br>
