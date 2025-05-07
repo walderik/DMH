@@ -48,7 +48,7 @@ class LABELS_PDF extends FPDF {
         $squareY = $this->y_nr * $this->rut_height;
         
                  
-        $size = 44;
+        $size = 20;
                 
         # En bit kod för att säkerställa att inget hamnar utanför kanten på rutan
         $this->SetFont($this->font,'',$size);
