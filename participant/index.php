@@ -101,6 +101,12 @@ function openTab(evt, tabName) {
 	    if (!empty($reserve_registration)) $item .=  " (Står på reservlistan)";    
 	    $item .=  "</div>";
 	    $items[] = $item;
+
+		//sen lägg till personen
+		$item = "<div class='itemcontainer'>";
+		$item .= "<a href='person_form.php'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-user'></i> Lägg till person</a>";
+		$item .= "</div>";
+		$items[] = $item;
 	    
     	//Sen alla andra
     	foreach ($persons as $person) {
@@ -116,19 +122,16 @@ function openTab(evt, tabName) {
 	}
 	
 	
-    $item = "<div class='itemcontainer'>";
-	$item .= "<a href='person_form.php'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-user'></i> Lägg till person</a>";
-	$item .= "</div>";
-    $items[] = $item;
+ 
     
     if (sizeof($items) == 1) {
         echo array_values($items)[0];
     } else {
-        $first = true;
+        $counter = 0;
         foreach ($items as $item) {
             echo $item;
-            if ($first) {
-                $first = false;
+            if ($counter++ == 1) {
+                
                 echo "<span id='more'>";
             }
         }
