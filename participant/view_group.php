@@ -343,6 +343,7 @@ include 'navigation.php';
 		
 		echo "</div>\n";
 		?>
+		<div class='center'><a href='role_form.php?action=insert&type=npc&groupId=<?php echo $group->Id ?>'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-person'></i> &nbsp;Skapa ny NPC i gruppen</button></a></div>
 
 
 		
