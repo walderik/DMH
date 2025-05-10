@@ -204,22 +204,23 @@ include 'navigation.php';
     	<input type="text" id="Profession" name="Profession" value="<?php echo htmlspecialchars($role->Profession); ?>" maxlength="50" required>
     	</div>
 
-    	<div class='itemcontainer'>
+		<?php if ($type != "npc" ||  !empty($role->Description)) { ?>
+	    	<div class='itemcontainer'>
        	<div class='itemname'>Beskrivning <font style="color:red">*</font></div>
        	Beskriv allt om karaktären som arrangörerna behöver veta.<br>
-         Allt som karaktären har råkat ut för är sådan som kan påverka händelser i karaktärens framtid. 
+        Allt som karaktären har råkat ut för är sådan som kan påverka händelser i karaktärens framtid. 
     	<?php if ($type == "pc") {?>
-         Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
-         att du därmed får en intressantare lajvupplevelse. 
-         <?php } ?>
-         <br>
+        Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
+        att du därmed får en intressantare lajvupplevelse. 
+        <?php } ?>
+        <br>
     	<textarea id="Description" name="Description" rows="4" maxlength="15000" required><?php echo htmlspecialchars($role->Description); ?></textarea>
     	</div>
+    	<?php } ?>
 
-		<?php if ($type != "npc" ||  !empty($role->DescriptionForGroup)) { ?>
     	<div class='itemcontainer'>
-       	<div class='itemname'>Beskrivning för din grupp</div>
-       	Vad vet din grupp om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar. 
+       	<div class='itemname'>Beskrivning för gruppen</div>
+       	Vad vet gruppen om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar. 
 		 Gärna roliga anekdoter från förr. Och vad de i gruppen gillar med karaktären, eller inte gillar.
 	     Ju mer ni vet om varandra desto roligare spel kan ni få i gruppen.<br><br>
      	<?php if ($type == "pc") {?>
@@ -227,24 +228,25 @@ include 'navigation.php';
 	     <?php } ?>
     	<textarea id="DescriptionForGroup" name="DescriptionForGroup" rows="4" maxlength="15000"><?php echo htmlspecialchars($role->DescriptionForGroup); ?></textarea>
     	</div>
-    	<?php } ?>
+
 
 		<?php if ($type != "npc" ||  !empty($role->DescriptionForOthers)) { ?>
     	<div class='itemcontainer'>
        	<div class='itemname'>Beskrivning för andra</div>
-       	Vad är allmänt känt om dig? Beskriv sådant som de flesta vet om dig. 
-         Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter mellan dig och då får du roligare spel.<br><br>
+       	Vad är allmänt känt om karaktären? Beskriv sådant som de flesta vet om dig. 
+         Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter mellan karaktärerna och då blir det roligare spel.<br><br>
+     	<?php if ($type == "pc") {?>
 	     När du har en plats på lajvet kommer den här beskrivningen 
 	     att synas för alla andra som har plats på lajvet. <br>
-	     Lägg gärna upp en bild på dig också så att de andra känner igen dig.<br>
+	     Lägg gärna upp en bild på dig också så att de andra känner igen dig.
+ 	     <?php } ?>
+	     <br>
     	<textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" maxlength="400"><?php echo htmlspecialchars($role->DescriptionForOthers); ?></textarea>
     	</div>
     	<?php } ?>
 				
 		<?php  if ($type == "npc") {  
 		    echo "<input type='hidden' id='GroupId' name='GroupId' value='$role->GroupId'>";
-
-		
 		} else {?>
     	<div class='itemcontainer'>
        	<div class='itemname'>Vilken grupp är karaktären med i?</div>
