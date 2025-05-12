@@ -12,9 +12,11 @@ $current_participating_larp_array = LARP::currentParticipatingLARPs($current_per
 $referer = '';
 if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
 
-if (sizeof($current_participating_larp_array) == 1 AND str_contains($referer, '/index.php')) {
-    header('Location: ../includes/set_larp.php?larp='.$current_participating_larp_array[0]->Id);
-    exit;
+if (sizeof($current_participating_larp_array) == 1 && str_contains($referer, '/index.php')) {
+    if (empty($current_larp)) {
+        header('Location: ../includes/set_larp.php?larp='.$current_participating_larp_array[0]->Id);
+        exit;
+    }
 }
 $current_larp = null;
 
