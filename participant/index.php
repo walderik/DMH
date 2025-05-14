@@ -64,6 +64,12 @@ function openTab(evt, tabName) {
 	<?php 
 	$items = array();
 	
+	//lägg till person
+	$addperson = "<div class='itemcontainer'>";
+	$addperson .= "<a href='person_form.php'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-user'></i> Lägg till person</a>";
+	$addperson .= "</div>";
+	
+	
 	$persons = Person::getPersonsForUser($current_user->Id);
 	if (!empty($persons)) {
 	    if (empty($current_person)) {
@@ -102,11 +108,8 @@ function openTab(evt, tabName) {
 	    $item .=  "</div>";
 	    $items[] = $item;
 
-		//sen lägg till personen
-		$item = "<div class='itemcontainer'>";
-		$item .= "<a href='person_form.php'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-user'></i> Lägg till person</a>";
-		$item .= "</div>";
-		$items[] = $item;
+	    //Sen lägg till person
+	    $items[] = $addperson;
 	    
     	//Sen alla andra
     	foreach ($persons as $person) {
@@ -119,6 +122,9 @@ function openTab(evt, tabName) {
      	    $item .=  "</div>";
      	    $items[] = $item;
     	}
+	} else {
+	    //Sen lägg till person
+	    $items[] = $addperson;
 	}
 	
 	
