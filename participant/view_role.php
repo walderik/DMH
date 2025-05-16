@@ -59,9 +59,10 @@ include 'navigation.php';
 			echo $role->Name;
     		//Karaktärsblad
     		if ($role->isPC()) echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
-    		if (!$role->isRegistered($current_larp) || $role->userMayEdit($current_larp)) {
+    		if (($role->isPC() && (!$role->isRegistered($current_larp) || $role->userMayEdit($current_larp))) ||
+    		    $role->isNPC()) {
     		    echo " " . $role->getEditLinkPen(false);
-    		}
+    		} 
     		?>
 		</div>
  
@@ -290,10 +291,12 @@ include 'navigation.php';
 				</div>
 			<?php } ?>
 
+			<?php if (!empty($role->RoleFunctionComment)) {?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Annan information</div>
 		   <?php echo nl2br(htmlspecialchars($role->OtherInformation));?>
 		   </div>
+		   <?php } ?>
 
 		<?php }?>
 		</div>
