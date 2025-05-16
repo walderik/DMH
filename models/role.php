@@ -226,6 +226,14 @@ class Role extends BaseModel{
         return false;
     }
     
+    public function isPC() {
+        return !$this->isNPC();
+    }
+    
+    public function isNPC() {
+        if (empty($this->PersonId)) return true;
+        return false;
+    }
     
     public function hasIntrigue(LARP $larp) {
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);

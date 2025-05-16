@@ -14,28 +14,31 @@ if (empty($current_person) && !$admin) {
 
 $role = Role::newWithDefault();
 $role->PersonId = $current_person->Id;
+$type = "pc";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $operation = "new";
+    $operation = "insert";
+    if (isset($_GET['type'])) {
+        $type = $_GET['type'];
+        if ($type == "npc" && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
+        if ($type == "npc") $role->PersonId = NULL;
+    }
+    
     if (isset($_GET['operation'])) {
         $operation = $_GET['operation'];
     }
     else {
 
     }
-    if ($operation == 'new') {
+    if ($operation == 'insert') {
     } elseif ($operation == 'update') {
         $role = Role::loadById($_GET['id']);
+        if (empty($role->PersonId)) $type = "npc";
     } else {
     }
 }
 
-$type = "pc";
-if (isset($_GET['type'])) {
-    $type = $_GET['type'];
-    if ($type == "npc" && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
-    if ($type == "npc") $role->PersonId = NULL;
-}
+
 
 if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
     header('Location: ' . $role->getViewLink());
@@ -46,6 +49,13 @@ if ($type == "pc" && $operation == 'update' && $role->PersonId != $current_perso
     header('Location: index.php'); //Inte din karaktär
     exit;
 }
+
+$group = $role->getGroup();
+if (empty($role->PersonId) && !empty($group) && !$current_person->isMemberGroup($group)) {
+    header('Location: ../index.php'); //NPC som inte är med i din grupp
+    exit;
+}
+
 
 function default_value($field) {
     GLOBAL $role;
@@ -204,7 +214,7 @@ include 'navigation.php';
     	<input type="text" id="Profession" name="Profession" value="<?php echo htmlspecialchars($role->Profession); ?>" maxlength="50" required>
     	</div>
 
-		<?php if ($type != "npc" ||  !empty($role->Description)) { ?>
+		<?php if ($role->isPC()) { ?>
 	    	<div class='itemcontainer'>
        	<div class='itemname'>Beskrivning <font style="color:red">*</font></div>
        	Beskriv allt om karaktären som arrangörerna behöver veta.<br>
@@ -230,7 +240,7 @@ include 'navigation.php';
     	</div>
 
 
-		<?php if ($type != "npc" ||  !empty($role->DescriptionForOthers)) { ?>
+		<?php if ($role->isPC() ||  !empty($role->DescriptionForOthers)) { ?>
     	<div class='itemcontainer'>
        	<div class='itemname'>Beskrivning för andra</div>
        	Vad är allmänt känt om karaktären? Beskriv sådant som de flesta vet om dig. 
@@ -245,7 +255,7 @@ include 'navigation.php';
     	</div>
     	<?php } ?>
 				
-		<?php  if ($type == "npc") {  
+		<?php  if ($role->isNPC()) {  
 		    echo "<input type='hidden' id='GroupId' name='GroupId' value='$role->GroupId'>";
 		} else {?>
     	<div class='itemcontainer'>
@@ -334,7 +344,7 @@ include 'navigation.php';
 		<?php } ?>	
 		<?php } ?>	
 		
-		<?php if ($type != "npc" ||  !empty($role->Birthplace)) { ?>	
+		<?php if ($role->isPC() ||  !empty($role->Birthplace)) { ?>	
  		<div class='itemcontainer intrigue'>
        	<div class='itemname'>Var är karaktären född?&nbsp;<font style="color:red">*</font></div>
        	Beskriv platsen om den inte är känd eller om den är relevant för rollen.<br>
@@ -350,7 +360,7 @@ include 'navigation.php';
         	</div>
 		<?php }?>
 		
-		<?php if ($type != "npc" ||  !empty($role->CharactersWithRelations)) { ?>	
+		<?php if ($role->isPC() ||  !empty($role->CharactersWithRelations)) { ?>	
  		<div class='itemcontainer intrigue'>
        	<div class='itemname'>Relationer med andra</div>
        	Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för karaktären och mycket kort hur vi kan ge spel på dessa karaktärer.<br>
@@ -358,7 +368,7 @@ include 'navigation.php';
     	</div>
 		<?php }?>
 		
-		<?php if ($type != "npc" ||  !empty($role->ReasonForBeingInSlowRiver)) { ?>
+		<?php if ($role->isPC() ||  !empty($role->ReasonForBeingInSlowRiver)) { ?>
  		<div class='itemcontainer intrigue'>
        	<div class='itemname'>Varför befinner sig karaktären på platsen?&nbsp;<font style="color:red">*</font></div>
        	Varför är karaktären på plats? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?<br>
@@ -405,7 +415,7 @@ include 'navigation.php';
 
 		<?php  if (RoleFunction::isInUse($current_larp)) {?>	
      		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Har karaktären någon särskild funktion eller syssla på lajvet?</div>
+           	<div class='itemname'>Har karaktären någon särskild funktion eller syssla?</div>
         	<?php selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedRoleFunctionIds()); ?>
         	</div>
 
@@ -416,7 +426,7 @@ include 'navigation.php';
         	</div>
 		<?php } ?>	
 
-		<?php if ($type != "npc") { ?>	
+		<?php if ($role->isPC()) { ?>	
  		<div class='itemcontainer intrigue'>
        	<div class='itemname'>Intrigideer</div>
        	Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar."<br>
@@ -425,7 +435,7 @@ include 'navigation.php';
 		<?php } ?>	
 
 
-		<?php if ($type != "npc" && IntrigueType::isInUseForRole($current_larp)) {?>
+		<?php if ($role->isPC() && IntrigueType::isInUseForRole($current_larp)) {?>
      		<div class='itemcontainer intrigue'>
            	<div class='itemname'>Intrigtyper</div>
            	Vilken typ av intriger vill du ha?<br>
@@ -433,7 +443,7 @@ include 'navigation.php';
         	</div>
 		<?php } ?>
 		
-		<?php if ($type != "npc" ||  !empty($role->NotAcceptableIntrigues)) { ?>
+		<?php if ($role->isPC() ||  !empty($role->NotAcceptableIntrigues)) { ?>
 		<div class='itemcontainer intrigue'>
        	<div class='itemname'>Saker karaktären absolut inte vill spela på</div>
        	Är det något karaktären aldrig skulle göra?<br>
@@ -442,7 +452,7 @@ include 'navigation.php';
 		
 		<?php } ?>
 		
-		<?php if ($type != "npc" ||  !empty($role->DarkSecret)) { ?>
+		<?php if ($role->isPC() ||  !empty($role->DarkSecret)) { ?>
 		<div class='itemcontainer intrigue'>
        	<div class='itemname'>Karaktärens (mörka) baksida&nbsp;<font style="color:red">*</font></div>
        	Har karaktären någon mörk hemlighet eller något personlighetsdrag som är till dennes nackdel? 
@@ -453,7 +463,7 @@ include 'navigation.php';
     	</div>
 		<?php } ?>
 		
-		<?php if ($type != "npc" ||  !empty($role->DarkSecretIntrigueIdeas)) { ?>
+		<?php if ($role->isPC() ||  !empty($role->DarkSecretIntrigueIdeas)) { ?>
 		<div class='itemcontainer intrigue'>
        	<div class='itemname'>Karaktärens (mörka) baksida - intrigidéer&nbsp;<font style="color:red">*</font></div>
        	Hur kan vi spela på karaktärens mörka baksida?<br>

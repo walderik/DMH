@@ -48,12 +48,10 @@ function print_role(Role $role, Group $group, $isComing) {
     if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
     else echo "<li style='display:table-cell; width:49%;'>\n";
     
-    echo "<div class='name'>$role->Name";
+    echo "<div class='name'>";
     if ($isNPC) {
-        echo " <a href='role_form.php?action=update&id=".$role->Id."'>";
-        echo "<i class='fa-solid fa-pen'></i>";
-        echo "</a>";
-    }
+        echo $role->getViewLink();
+    } else echo $role->Name;
     if ($current_person->isGroupLeader($group)) {
         echo " <a href='logic/remove_group_member.php?groupID=".$group->Id."&roleID=".$role->Id."' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
         echo "<i class='fa-solid fa-trash-can'></i>";

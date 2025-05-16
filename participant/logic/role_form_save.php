@@ -46,8 +46,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('Location: ../index.php?error=');
             exit;
         }
-        if ($role->PersonId != $current_person->Id) {
-            header('Location: index.php'); //Inte din karaktär
+        if ($role->isPC() && $role->PersonId != $current_person->Id) {
+            header('Location: ../index.php'); //Inte din karaktär
+            exit;
+        }
+        $group = $role->getGroup();
+        if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
+            header('Location: ../index.php'); //NPC som inte är med i din grupp
             exit;
         }
         if ($role->isApproved()) {
@@ -80,7 +85,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     
-    
-    
-    header('Location: ../index.php');
+    header('Location: ../view_role.php?id='.$role->Id);
 }
