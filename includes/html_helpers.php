@@ -369,3 +369,43 @@ function remove_housecaretaker(Person $person, House $house) {
     $i = "<i class='fa-solid fa-trash' title='Ta bort $person->Name som husförvaltare för $house->Name'></i>";
     return " <a href='logic/remove_caretaker.php?person_id=$person->Id&houseId=$house->Id' $confirm>$i</a>";
 }
+
+
+function print_participant_question_start(String $title, String $description, bool $isRequired, bool $isIntrigue) {
+    echo "<div class='itemcontainer ";
+    if ($isIntrigue) echo "intrigue";
+    echo "'>\n";
+    if ($isRequired) echo "<div class='itemname'>$title&nbsp;<font style='color:red'>*</font></div>\n";
+    else echo "<details><summary class='itemname'>$title</summary>";
+    if (!empty($description)) {
+        echo $description;
+        echo "<br>\n";
+    };
+}
+
+function print_participant_question_end(bool $isRequired) {
+    if (!$isRequired) echo "</details>";
+    echo "</div>\n";
+}
+
+function print_participant_text_input(String $title, String $description, String $id, $value, String $inputParams, bool $isRequired, bool $isIntrigue) {
+    print_participant_question_start($title, $description, $isRequired, $isIntrigue);
+    echo "<input ";
+    if ($isIntrigue && $isRequired) echo "class='requiredIntrigueField' ";
+    echo "type='text' id='$id' name='$id' value='".htmlspecialchars($value)."' $inputParams";
+    if ($isRequired) echo " required";
+    echo ">\n";
+    print_participant_question_end($isRequired);
+}
+
+function print_participant_textarea(String $title, String $description, String $id, $value, String $inputParams, bool $isRequired, $isIntrigue) {
+    print_participant_question_start($title, $description, $isRequired, $isIntrigue);
+    echo "<textarea ";
+    if ($isIntrigue && $isRequired) echo "class='requiredIntrigueField' ";
+    echo "type='text' id='$id' name='$id' $inputParams";
+    if ($isRequired) echo " required";
+    echo ">$value</textarea>\n";
+    print_participant_question_end($isRequired);
+ }
+
+

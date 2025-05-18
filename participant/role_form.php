@@ -197,98 +197,134 @@ include 'navigation.php';
 		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $role->PersonId; ?>">
 		<?php } ?>
 
-    	<div class='itemcontainer'>
-       	<div class='itemname'>Karaktärens namn <font style="color:red">*</font></div>
-    	<input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($role->Name); ?>" maxlength="40" required>
-    	</div>
-			
-    	<div class='itemcontainer'>
-       	<div class='itemname'>Yrke <font style="color:red">*</font></div>
-       	Vad jobbar karaktären med för att överleva?<br> 
-       	<?php if ($type == "pc") {?>
-		Vill du ha ett yrke som kan innebära en central karaktär i lajvet, 
-		så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.<br>
-		Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta 
-		spela att din karaktär har det yrket. <br>
-		<?php } ?>
-    	<input type="text" id="Profession" name="Profession" value="<?php echo htmlspecialchars($role->Profession); ?>" maxlength="50" required>
-    	</div>
+		<?php 
+		print_participant_text_input(
+		    "Karaktärens namn",
+		    "",
+		    "Name",
+		    $role->Name,
+		    "maxlength='40'",
+		    true,
+		    false);
+		
+		
+		$description = "Vad jobbar karaktären med för att överleva?";
+		if ($role->isPC()) {
+		    $description.="<br>".
+		  		    "Vill du ha ett yrke som kan innebära en central karaktär i lajvet, 
+		          så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.<br>
+		          Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta 
+		          spela att din karaktär har det yrket. ";
+		}
+		print_participant_text_input(
+		    "Yrke",
+		    $description,
+		    "Profession",
+		    $role->Profession,
+		    "maxlength='50'",
+		    true,
+		    false);
+		
+		if ($role->isPC()) { 
+		  $description = "Beskriv allt om karaktären som arrangörerna behöver veta.<br>
+                Allt som karaktären har råkat ut för är sådan som kan påverka händelser i karaktärens framtid.
+                Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
+                att du därmed får en intressantare lajvupplevelse.";
+		  print_participant_textarea(
+		      "Beskrivning",
+		      $description,
+		      "Description",
+		      $role->Description,
+		      "rows='4' maxlength='15000'",
+		      true,
+		      false);
+		}
 
-		<?php if ($role->isPC()) { ?>
-	    	<div class='itemcontainer'>
-       	<div class='itemname'>Beskrivning <font style="color:red">*</font></div>
-       	Beskriv allt om karaktären som arrangörerna behöver veta.<br>
-        Allt som karaktären har råkat ut för är sådan som kan påverka händelser i karaktärens framtid. 
-    	<?php if ($type == "pc") {?>
-        Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
-        att du därmed får en intressantare lajvupplevelse. 
-        <?php } ?>
-        <br>
-    	<textarea id="Description" name="Description" rows="4" maxlength="15000" required><?php echo htmlspecialchars($role->Description); ?></textarea>
-    	</div>
-    	<?php } ?>
+		$description = "Vad vet gruppen om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar.
+		      Gärna roliga anekdoter från förr. Och vad de i gruppen gillar med karaktären, eller inte gillar.
+		      Ju mer ni vet om varandra desto roligare spel kan ni få i gruppen.";
+		if ($type == "pc") {
+	       $description .= "<br><br>Efter att du är anmäld kan du gå in och titta på gruppen så får du se de andra som är anmälda och vad de har skrivit om sig. ";
+		}
+		print_participant_textarea(
+		    "Beskrivning för gruppen",
+		    $description,
+		    "DescriptionForGroup",
+		    $role->DescriptionForGroup,
+		    "rows='4' maxlength='15000'",
+		    true,
+		    false);
+		
+	    $description = "Vad är allmänt känt om karaktären? Beskriv sådant som de flesta vet om dig. 
+            Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter mellan karaktärerna och då blir det roligare spel.";
+	    if ($role->isPC()) {
+	        $description .= "<br><br>
+                När du har en plats på lajvet kommer den här beskrivningen 
+	           att synas för alla andra som har plats på lajvet. <br>
+	           Lägg gärna upp en bild på dig också så att de andra känner igen dig.";
+	    }
+		
+	    print_participant_textarea(
+	        "Beskrivning för andra",
+	        $description,
+	        "DescriptionForOthers",
+	        $role->DescriptionForOthers,
+	        "rows='4' maxlength='400'",
+	        false,
+	        false);
+	    
+		?>
 
-    	<div class='itemcontainer'>
-       	<div class='itemname'>Beskrivning för gruppen</div>
-       	Vad vet gruppen om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar. 
-		 Gärna roliga anekdoter från förr. Och vad de i gruppen gillar med karaktären, eller inte gillar.
-	     Ju mer ni vet om varandra desto roligare spel kan ni få i gruppen.<br><br>
-     	<?php if ($type == "pc") {?>
-	     Efter att du är anmäld kan du gå in och titta på gruppen så får du se de andra som är anmälda och vad de har skrivit om sig. <br>
-	     <?php } ?>
-    	<textarea id="DescriptionForGroup" name="DescriptionForGroup" rows="4" maxlength="15000"><?php echo htmlspecialchars($role->DescriptionForGroup); ?></textarea>
-    	</div>
-
-
-		<?php if ($role->isPC() ||  !empty($role->DescriptionForOthers)) { ?>
-    	<div class='itemcontainer'>
-       	<div class='itemname'>Beskrivning för andra</div>
-       	Vad är allmänt känt om karaktären? Beskriv sådant som de flesta vet om dig. 
-         Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter mellan karaktärerna och då blir det roligare spel.<br><br>
-     	<?php if ($type == "pc") {?>
-	     När du har en plats på lajvet kommer den här beskrivningen 
-	     att synas för alla andra som har plats på lajvet. <br>
-	     Lägg gärna upp en bild på dig också så att de andra känner igen dig.
- 	     <?php } ?>
-	     <br>
-    	<textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" maxlength="400"><?php echo htmlspecialchars($role->DescriptionForOthers); ?></textarea>
-    	</div>
-    	<?php } ?>
 				
 		<?php  if ($role->isNPC()) {  
 		    echo "<input type='hidden' id='GroupId' name='GroupId' value='$role->GroupId'>";
-		} else {?>
-    	<div class='itemcontainer'>
-       	<div class='itemname'>Vilken grupp är karaktären med i?</div>
-       	Finns inte din grupp med på anmälan ska du kontakta den som är ansvarig för din grupp och se till att den är anmäld innan du själv anmäler dig.    
-        Efter att gruppen är anmäld måste den godkännas av arrangörerna innan den syns här. Om det är ett tag sedan gruppen anmäldes och den 
-        fortfarande inte syns får gruppledaren kontakta arrangörerna.<br>
-        Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i 
-        det <a href="group_form.php">här formuläret</a>.
-        <br><br>
-        Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste</strong> då ändra den efter att gruppen är anmäld och 
-        innan du anmäler dig så att karaktären kommer med i gruppen. Ändra den gör du genom att du klickar på 
-        namnet på karaktären från huvudsidan.<br>
-    	<?php 
-    	$group = $role->getGroup();
-    	$groupName = "";
-    	if (isset($group)) $groupName = $group->Name;
-    	selectionDropDownByArray('GroupId', Group::getAllRegisteredApproved($current_larp), false, $role->GroupId, $groupName); ?>
-    	</div>
-		<?php  }?>
+		} else {
+		$description = "Finns inte din grupp med på anmälan ska du kontakta den som är ansvarig för din grupp och se till att den är anmäld innan du själv anmäler dig.    
+                Efter att gruppen är anmäld måste den godkännas av arrangörerna innan den syns här. Om det är ett tag sedan gruppen anmäldes och den 
+                fortfarande inte syns får gruppledaren kontakta arrangörerna.<br>
+                Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i 
+                det <a href='group_form.php'>här formuläret</a>.
+                <br><br>
+                Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste</strong> då ändra den efter att gruppen är anmäld och 
+                innan du anmäler dig så att karaktären kommer med i gruppen. Ändra den gör du genom att du klickar på 
+                namnet på karaktären från huvudsidan.";
+		    
+		    print_participant_question_start(
+		    	"Vilken grupp är karaktären med i?", 
+		    	$description, 
+		    	false, 
+		        false);
+
+        	$group = $role->getGroup();
+        	$groupName = "";
+        	if (isset($group)) $groupName = $group->Name;
+        	selectionDropDownByArray('GroupId', Group::getAllRegisteredApproved($current_larp), false, $role->GroupId, $groupName);
+        	print_participant_question_end(false);
+
+		}
+		 ?>
 				
-		<?php  if (Race::isInUse($current_larp)) {?>	
-       		<div class='itemcontainer'>
-           	<div class='itemname'>Vilken typ av varelse är karaktären? <font style="color:red">*</font></div>
-        	<?php Race::selectionDropdown($current_larp, false, true, $role->RaceId); ?>
-        	</div>
+		<?php  if (Race::isInUse($current_larp)) {
+		
+		    print_participant_question_start(
+		        "Vilken typ av varelse är karaktären?",
+		        "",
+		        true,
+		        false);
+		    Race::selectionDropdown($current_larp, false, true, $role->RaceId); 
+		    print_participant_question_end(true);
+		    
+			print_participant_text_input(
+			    "Specificera karaktärens varelse/ras närmare om du vill",
+			    "Exempelvis vilken typ av svartblod, troll eller alv du spelar",
+			    "RaceComment",
+			    $role->RaceComment,
+			    "size='100' maxlength='200'",
+			    true,
+			    false);
 			
-      		<div class='itemcontainer'>
-           	<div class='itemname'>Specificera karaktärens varelse/ras närmare om du vill.</div>
-           	Exempelvis vilken typ av svartblod, troll eller alv du spelar.<br>
-        	<input type="text" id="RaceComment" value="<?php echo htmlspecialchars($role->RaceComment); ?>" name="RaceComment"  size="100" maxlength="200">
-        	</div>
-		<?php } ?>	
+			?>
+ 		<?php } ?>	
 			
 		<?php if ($type != "npc") { ?>	
   		<div class='itemcontainer'>
@@ -463,13 +499,18 @@ include 'navigation.php';
     	</div>
 		<?php } ?>
 		
-		<?php if ($role->isPC() ||  !empty($role->DarkSecretIntrigueIdeas)) { ?>
-		<div class='itemcontainer intrigue'>
-       	<div class='itemname'>Karaktärens (mörka) baksida - intrigidéer&nbsp;<font style="color:red">*</font></div>
-       	Hur kan vi spela på karaktärens mörka baksida?<br>
-    	<input class="requiredIntrigueField" type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo htmlspecialchars($role->DarkSecretIntrigueIdeas); ?>"  size="100" maxlength="200" required>
-    	</div>
-		<?php } ?>
+		<?php 
+		if ($role->isPC() ||  !empty($role->DarkSecretIntrigueIdeas)) { 
+		    print_participant_text_input(
+		        "Karaktärens (mörka) baksida - intrigidéer", 
+		        "Hur kan vi spela på karaktärens mörka baksida?",
+		        "DarkSecretIntrigueIdeas",
+		        htmlspecialchars($role->DarkSecretIntrigueIdeas),
+		        "size='100' maxlength='200'",
+		        true,
+		        true);
+		 } 
+		 ?>
 		
 		<div class='itemcontainer intrigue'>
        	<div class='itemname'>Övrig information</div>
