@@ -59,13 +59,12 @@ include 'navigation.php';
 			echo $role->Name;
     		//Karaktärsblad
     		if ($role->isPC()) echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
-    		if (($role->isPC() && (!$role->isRegistered($current_larp) || $role->userMayEdit($current_larp))) ||
-    		    $role->isNPC()) {
-    		    echo " " . $role->getEditLinkPen(false);
-    		} 
+    		echo " " . $role->getEditLinkPen(false);
+
     		?>
 		</div>
- 
+
+
 		<?php 
 		if ($role->hasImage()) {
 		    echo "<div class='itemcontainer'>";

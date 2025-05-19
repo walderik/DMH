@@ -901,10 +901,15 @@ class Role extends BaseModel{
     
     
     public function getEditLinkPen($isAdmin) {
+        global $current_larp;
         if($isAdmin) {
             return "<a href='edit_role.php?id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";
         }
         else {
+            $larpBefore = $current_larp->LarpBeforeThisWithRegistration($this);
+            if ($this->isPC() && !$this->isRegistered($current_larp) && !empty($larpBefore)) {
+                return "<i class='fa-solid fa-pen' title='Får inte redigeras pga anmälan till $larpBefore->Name' style='text-decoration: line-through;'></i> ";
+            }
             return "<a href='role_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
         }
     }

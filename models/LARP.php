@@ -369,6 +369,21 @@ class LARP extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($roleId));
     }
     
+    public function LarpBeforeThisWithRegistration(Role $role) {
+        $sql = "SELECT * FROM regsys_larp WHERE ".
+            "(Id IN (SELECT regsys_larp_role.LarpId FROM regsys_larp_role, regsys_registration, regsys_role WHERE RoleId = ? AND ".
+            "regsys_larp_role.UserMayEdit = 0 AND ".
+            "regsys_larp_role.RoleId = regsys_role.Id AND ".
+            "regsys_role.PersonId = regsys_registration.PersonId AND ".
+            "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
+            "regsys_registration.NotComing = 0) OR ".
+            "Id IN (SELECT LarpId FROM regsys_reserve_larp_role WHERE RoleId = ?)) AND ".
+            "EndDate > '".date('Y-m-d')."' AND  ".
+            "Id != ?  ORDER BY StartDate DESC";
+        return static::getOneObjectQuery($sql, array($role->Id, $role->Id, $this->Id));
+    }
+    
+    
     public static function getPreviousLarpsGroup($groupId) {
         if (is_null($groupId)) return Array();
         
