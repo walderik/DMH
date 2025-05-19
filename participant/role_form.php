@@ -19,9 +19,9 @@ $role->PersonId = $current_person->Id;
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "insert";
     if (isset($_GET['type'])) {
-        $type = $_GET['type'];
-        if ($type == "npc" && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
-        if ($type == "npc") $role->PersonId = NULL;
+        if ($_GET['type'] == "npc") $role->PersonId = NULL;
+        if ($role->isNPC() && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
+
     }
     
     if (isset($_GET['operation'])) {
@@ -33,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($operation == 'insert') {
     } elseif ($operation == 'update') {
         $role = Role::loadById($_GET['id']);
-        if (empty($role->PersonId)) $type = "npc";
     } else {
     }
 }
@@ -245,7 +244,7 @@ include 'navigation.php';
 		$description = "Vad vet gruppen om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar.
 		      Gärna roliga anekdoter från förr. Och vad de i gruppen gillar med karaktären, eller inte gillar.
 		      Ju mer ni vet om varandra desto roligare spel kan ni få i gruppen.";
-		if ($type == "pc") {
+		if ($role->isPC()) {
 	       $description .= "<br><br>Efter att du är anmäld kan du gå in och titta på gruppen så får du se de andra som är anmälda och vad de har skrivit om sig. ";
 		}
 		print_participant_textarea(
@@ -289,13 +288,15 @@ include 'navigation.php';
                 innan du anmäler dig så att karaktären kommer med i gruppen. Ändra den gör du genom att du klickar på 
                 namnet på karaktären från huvudsidan.";
 		    
+		$group = $role->getGroup();
 		    print_participant_question_start(
 		    	"Vilken grupp är karaktären med i?", 
 		    	$description, 
 		    	false, 
-		        false);
+		        false,
+		        empty($group));
 
-        	$group = $role->getGroup();
+        	
         	$groupName = "";
         	if (isset($group)) $groupName = $group->Name;
         	selectionDropDownByArray('GroupId', Group::getAllRegisteredApproved($current_larp), false, $role->GroupId, $groupName);
@@ -308,7 +309,8 @@ include 'navigation.php';
 		        "Vilken typ av varelse är karaktären?",
 		        "",
 		        true,
-		        false);
+		        false,
+		        empty($role->RaceId));
 		    Race::selectionDropdown($current_larp, false, true, $role->RaceId); 
 		    print_participant_question_end(true);
 		    
@@ -328,6 +330,7 @@ include 'navigation.php';
 		        "Vill du lajva i bakgrunden, alltså inte få några skrivna intriger eller bli involverad i andras intriger? 
 		Du åker främst för att uppleva stämningen och finnas i bakgrunden, utan att vara en aktiv del av lajvet.",
 		        true,
+		        false,
 		        false);
 		    
 		    ?>	
@@ -350,7 +353,8 @@ include 'navigation.php';
        			Erfarenhetsmässigt brukar man som ny lajvare ha mer nytta av mycket intriger än en 
        			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.",
 		        $role->isPC(),
-		        true);
+		        true,
+		        empty($role->LarperTypeId));
 		    LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId);
 		    print_participant_question_end($role->isPC());
 		    
@@ -380,7 +384,8 @@ include 'navigation.php';
 		        "Specialförmågor",
 		        $description,
 		        false,
-		        true);
+		        true,
+		        empty($role->getSelectedAbilityIds()));
 		    selectionByArray('Ability' , Ability::allActive($current_larp), true, false, $role->getSelectedAbilityIds());
 		    print_participant_question_end(false);
 		    
@@ -408,7 +413,8 @@ include 'navigation.php';
 		        "Var bor karaktären?",
 		        "Tänk typ folkbokföringsadress, dvs även om karaktären tillfälligt är på platsen så vill vi veta var karaktären har sitt hem.",
 		        $role->isPC(),
-		        true);
+		        true,
+		        empty($role->PlaceOfResidenceId));
 		    PlaceOfResidence::selectionDropdown($current_larp, false, $role->isPC(), $role->PlaceOfResidenceId);
 		    print_participant_question_end($role->isPC());
 		}
@@ -436,7 +442,8 @@ include 'navigation.php';
 		        "Vilken religion har karaktären?",
 		        "Vissa religioner har bättre anseende än andra. Religionen kommer att påverka spel.",
 		        $role->isPC(),
-		        true);
+		        true,
+		        empty($role->ReligionId));
 		    Religion::selectionDropdown($current_larp, false, $role->isPC(), $role->ReligionId);
 		    print_participant_question_end($role->isPC());
 		    
@@ -455,7 +462,8 @@ include 'navigation.php';
 		        "Hur troende är karaktären?",
 		        "För vissa är religionen viktigare än andra. Hur är det för den här karaktären?",
 		        $role->isPC(),
-		        true);
+		        true,
+		        empty($role->BeliefId));
 		    Belief::selectionDropdown($current_larp, false,$role->isPC(), $role->BeliefId);
 		    print_participant_question_end($role->isPC());
 		} 
@@ -472,7 +480,8 @@ include 'navigation.php';
 		          "Hur rik är karaktären?",
 		          $description,
 		          $role->isPC(),
-		          true);
+		          true,
+		          $role->WealthId);
 		      Wealth::selectionDropdown($current_larp, false,$role->isPC(), $role->WealthId);
 		      print_participant_question_end($role->isPC());
 		      
@@ -483,7 +492,8 @@ include 'navigation.php';
 		        "Har karaktären någon särskild funktion eller syssla?",
 		        "",
 		        false,
-		        true);
+		        true,
+		        empty($role->getSelectedRoleFunctionIds()));
 		    selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedRoleFunctionIds()); 
 		    print_participant_question_end(false);
 		    
@@ -512,7 +522,8 @@ include 'navigation.php';
 		            "Intrigtyper",
 		            "Vilken typ av intriger vill du ha?",
 		            false,
-		            true);
+		            true,
+		            empty($role->getSelectedIntrigueTypeIds()));
 		        IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds());
 		        print_participant_question_end(false);
 		    }

@@ -371,12 +371,15 @@ function remove_housecaretaker(Person $person, House $house) {
 }
 
 
-function print_participant_question_start(String $title, String $description, bool $isRequired, bool $isIntrigue) {
+function print_participant_question_start(String $title, String $description, bool $isRequired, bool $isIntrigue, bool $mayCollapse) {
     echo "<div class='itemcontainer ";
     if ($isIntrigue) echo "intrigue";
     echo "'>\n";
-    if ($isRequired) echo "<div class='itemname'>$title&nbsp;<font style='color:red'>*</font></div>\n";
-    else echo "<details><summary class='itemname'>$title</summary>";
+    if ($isRequired || !$mayCollapse) {
+        echo "<div class='itemname'>$title&nbsp;";
+        if ($isRequired) echo "<font style='color:red'>*</font>";
+        echo "</div>\n";
+    } else echo "<details><summary class='itemname'>$title</summary>";
     if (!empty($description)) {
         echo $description;
         echo "<br>\n";
@@ -389,7 +392,7 @@ function print_participant_question_end(bool $isRequired) {
 }
 
 function print_participant_text_input(String $title, String $description, String $id, $value, String $inputParams, bool $isRequired, bool $isIntrigue) {
-    print_participant_question_start($title, $description, $isRequired, $isIntrigue);
+    print_participant_question_start($title, $description, $isRequired, $isIntrigue, empty($value));
     echo "<input ";
     if ($isIntrigue && $isRequired) echo "class='requiredIntrigueField' ";
     echo "type='text' id='$id' name='$id' value='".htmlspecialchars($value)."' $inputParams";
@@ -399,7 +402,7 @@ function print_participant_text_input(String $title, String $description, String
 }
 
 function print_participant_textarea(String $title, String $description, String $id, $value, String $inputParams, bool $isRequired, $isIntrigue) {
-    print_participant_question_start($title, $description, $isRequired, $isIntrigue);
+    print_participant_question_start($title, $description, $isRequired, $isIntrigue, empty($value));
     echo "<textarea ";
     if ($isIntrigue && $isRequired) echo "class='requiredIntrigueField' ";
     echo "type='text' id='$id' name='$id' $inputParams";
