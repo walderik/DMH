@@ -50,8 +50,8 @@ if ($role->isPC() && $operation == 'update' && $role->PersonId != $current_perso
 }
 
 $group = $role->getGroup();
-if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
-    header('Location: ../index.php'); //NPC som inte är med i din grupp
+if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group)) {
+    header('Location: index.php'); //NPC som inte är med i din grupp
     exit;
 }
 
