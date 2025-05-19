@@ -5,7 +5,6 @@ $root = $_SERVER['DOCUMENT_ROOT'];
 require $root . '/includes/init.php';
 
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];

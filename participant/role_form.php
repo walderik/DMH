@@ -14,7 +14,7 @@ if (empty($current_person) && !$admin) {
 
 $role = Role::newWithDefault();
 $role->PersonId = $current_person->Id;
-$type = "pc";
+
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "insert";
@@ -45,13 +45,13 @@ if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
     exit;
 }
 
-if ($type == "pc" && $operation == 'update' && $role->PersonId != $current_person->Id) {
+if ($role->isPC() && $operation == 'update' && $role->PersonId != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
     exit;
 }
 
 $group = $role->getGroup();
-if (empty($role->PersonId) && !empty($group) && !$current_person->isMemberGroup($group)) {
+if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
     header('Location: ../index.php'); //NPC som inte är med i din grupp
     exit;
 }
@@ -178,14 +178,14 @@ include 'navigation.php';
 		 ?>	
 	 </div>
 	<div class='itemcontainer'>
-	<?php if ($type == "pc") { ?>
+	<?php if ($role->isPC()) { ?>
 	Vi vill veta vilken karaktär du vill spela.<br />
 	Om du vill spela en av lajvets sökta karaktärer ber vi dig att kontakta arrangörerna innan du fyller i din anmälan.<br />
 	Tänk på att din karaktär också måste godkännas av arrangörerna.   <br>
 	<br>
 	Efter anmälan kommer du att kunna ladda upp en bild på din karaktär. 
-	<?php } elseif ($type == "npc") {?>
-	Bekriv NPC's så noggrant som möjligt. Dels för att alla i gruppen ska kunna veta vem det är och dels för att arrangörena ska få reda på vem det är.<br>
+	<?php } else {?>
+	Bekriv NPC'n så noggrant som möjligt. Dels för att alla i gruppen ska kunna veta vem det är och dels för att arrangörena ska få reda på vem det är.<br>
 	Precis som med spelade karaktärer kommer NPC'n att godkännas. 
 	<?php }?>
 	</div>
@@ -193,7 +193,7 @@ include 'navigation.php';
 	<form action="logic/role_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
-		<?php if ($type == "pc") { ?>
+		<?php if ($role->isPC()) { ?>
 		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $role->PersonId; ?>">
 		<?php } ?>
 
@@ -238,6 +238,8 @@ include 'navigation.php';
 		      "rows='4' maxlength='15000'",
 		      true,
 		      false);
+		} else {
+		    echo "<input type='hidden' id='Description' name='Description' value='$role->Description;'>";
 		}
 
 		$description = "Vad vet gruppen om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar.
@@ -273,10 +275,8 @@ include 'navigation.php';
 	        false,
 	        false);
 	    
-		?>
-
-				
-		<?php  if ($role->isNPC()) {  
+  
+		if ($role->isNPC()) {  
 		    echo "<input type='hidden' id='GroupId' name='GroupId' value='$role->GroupId'>";
 		} else {
 		$description = "Finns inte din grupp med på anmälan ska du kontakta den som är ansvarig för din grupp och se till att den är anmäld innan du själv anmäler dig.    
@@ -302,10 +302,8 @@ include 'navigation.php';
         	print_participant_question_end(false);
 
 		}
-		 ?>
-				
-		<?php  if (Race::isInUse($current_larp)) {
-		
+  
+		if (Race::isInUse($current_larp)) {
 		    print_participant_question_start(
 		        "Vilken typ av varelse är karaktären?",
 		        "",
@@ -320,205 +318,246 @@ include 'navigation.php';
 			    "RaceComment",
 			    $role->RaceComment,
 			    "size='100' maxlength='200'",
-			    true,
+			    false,
 			    false);
+		}
 			
-			?>
- 		<?php } ?>	
-			
-		<?php if ($type != "npc") { ?>	
-  		<div class='itemcontainer'>
-       	<div class='itemname'>Vill du hålla dig i bakgrunden?</div>
-       	Vill du lajva i bakgrunden, alltså inte få några skrivna intriger eller bli involverad i andras intriger? 
-		Du åker främst för att uppleva stämningen och finnas i bakgrunden, utan att vara en aktiv del av lajvet.<br>
+		if ($role->isPC()) { 
+		    print_participant_question_start(
+		        "Vill du hålla dig i bakgrunden?",
+		        "Vill du lajva i bakgrunden, alltså inte få några skrivna intriger eller bli involverad i andras intriger? 
+		Du åker främst för att uppleva stämningen och finnas i bakgrunden, utan att vara en aktiv del av lajvet.",
+		        true,
+		        false);
+		    
+		    ?>	
+
     	<input type="radio" id="myslajvare_yes" name="NoIntrigue" value="1" onclick="handleRadioClick()" <?php if ($role->isMysLajvare()) echo 'checked="checked"'?>>
     	<label for="myslajvare_yes">Ja</label><br>
     	<input type="radio" id="myslajvare_no" name="NoIntrigue" value="0" onclick="handleRadioClick()"<?php if (!$role->isMysLajvare()) echo 'checked="checked"'?>>
     	<label for="myslajvare_no">Nej</label>
-    	</div>
-	
-		<?php  if (LarperType::isInUse($current_larp)) {?>
-      		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Vilken typ av lajvare är du?&nbsp;<font style="color:red">*</font></div>
-           	Tänk igenom ditt val noga. Det är det här som i första hand kommer 
+    	
+		<?php 
+		  print_participant_question_end(true);
+		}   
+		
+		if (LarperType::isInUse($current_larp)) {
+		    print_participant_question_start(
+		        "Vilken typ av lajvare är du?",
+		        "Tänk igenom ditt val noga. Det är det här som i första hand kommer 
        			att avgöra hur mycket energi arrangörerna kommer lägga ner på dina intriger.     
        			Är du ny på lajv? Vi rekommenderar då att du att du väljer ett alternativ som ger mycket intriger. 
        			Erfarenhetsmässigt brukar man som ny lajvare ha mer nytta av mycket intriger än en 
-       			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.<br>
-        	<?php LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId); ?>
-        	</div>
-
-      		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Kommentar till typ av lajvare</div>
-           	Exempel:<br>
+       			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.",
+		        $role->isPC(),
+		        true);
+		    LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId);
+		    print_participant_question_end($role->isPC());
+		    
+		    print_participant_text_input(
+		        "Kommentar till typ av lajvare",
+		        "Exempel:<br>
              Jag är passiv lajvare, men kan tänka mig aktiva intriger som rör X, Y och Z.<br>
              Jag är karaktärslajvare och klarar mig utan intriger, men om ni har tankar om saker min karaktär kann vara involverad i som ger spel åt andra kan jag vara intresserad.<br>
              Jag är aktiv lajvare, men vill helst undvika våldsamma intriger.<br>
              Jag är action-lajvare och vill spela den sökta karaktären NN.<br>
-             Jag är action-lajvare och har inget emot en våldsam död.<br>
-        	<input type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="200">
-        	</div>
-		<?php } ?>	
-				
-		<?php  if (Ability::isInUse($current_larp)) {?>	
-      		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Specialförmågor</div>
-           	Specialförmågor är sådant som påverkar speltekniken. Exempelvis "tål ett extra slag", men inte "har bättre luktsinne". 
-     		<?php if ($type == "pc") {?>
-           	Om karaktären ska vara magi- eller alkemikunnig ska du innan din anmälan fått detta godkänt av magi-/alkemiarrangör, via e-post doh@berghemsvanner.se.
-			Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och facebook-sidan.
-			<?php } ?>
-			<br>
-        	<?php selectionByArray('Ability' , Ability::allActive($current_larp), true, false, $role->getSelectedAbilityIds()); ?>
-        	</div>
+             Jag är action-lajvare och har inget emot en våldsam död.",
+		        "TypeOfLarperComment",
+		        $role->TypeOfLarperComment,
+		        "size='100' maxlength='200'",
+		        false,
+		        true);
+        } 
+        
+		if (Ability::isInUse($current_larp)) {
+		    $description = 'Specialförmågor är sådant som påverkar speltekniken. Exempelvis "tål ett extra slag", men inte "har bättre luktsinne". ';
+     		if ($role->isPC()) {
+     		    $description .= "Om karaktären ska vara magi- eller alkemikunnig ska du innan din anmälan fått detta godkänt av magi-/alkemiarrangör, via e-post doh@berghemsvanner.se.
+			Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och facebook-sidan.";
+     		}
+     		
+		    print_participant_question_start(
+		        "Specialförmågor",
+		        $description,
+		        false,
+		        true);
+		    selectionByArray('Ability' , Ability::allActive($current_larp), true, false, $role->getSelectedAbilityIds());
+		    print_participant_question_end(false);
+		    
+		    print_participant_text_input(
+		        "Om du valde specialstyrka/-förmåga, specificera och beskriv den/dessa så utförligt som möjligt",
+		        "Motivera varför du har denna specialstyrka/-förmåga väl.",
+		        "AbilityComment",
+		        $role->AbilityComment,
+		        "size='100' maxlength='200'",
+		        false,
+		        true);
+        } 
+        
+        print_participant_text_input(
+		    "Var är karaktären född?",
+		    "Beskriv platsen om den inte är känd eller om den är relevant för rollen.",
+		    "Birthplace",
+		    $role->Birthplace,
+		    "size ='100' maxlength='100'",
+		    $role->isPC(),
+		    true);
 
-      		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Om du valde specialstyrka/-förmåga, specificera och beskriv den/dessa så utförligt som möjligt.</div>
-           	Motivera varför du har denna specialstyrka/-förmåga väl.<br>
-        	<input type="text" id="AbilityComment" value="<?php echo htmlspecialchars($role->AbilityComment); ?>" name="AbilityComment"  size="100" maxlength="200">
-        	</div>
-		<?php } ?>	
-		<?php } ?>	
+		if (PlaceOfResidence::isInUse($current_larp)) {
+		    print_participant_question_start(
+		        "Var bor karaktären?",
+		        "Tänk typ folkbokföringsadress, dvs även om karaktären tillfälligt är på platsen så vill vi veta var karaktären har sitt hem.",
+		        $role->isPC(),
+		        true);
+		    PlaceOfResidence::selectionDropdown($current_larp, false, $role->isPC(), $role->PlaceOfResidenceId);
+		    print_participant_question_end($role->isPC());
+		}
 		
-		<?php if ($role->isPC() ||  !empty($role->Birthplace)) { ?>	
- 		<div class='itemcontainer intrigue'>
-       	<div class='itemname'>Var är karaktären född?&nbsp;<font style="color:red">*</font></div>
-       	Beskriv platsen om den inte är känd eller om den är relevant för rollen.<br>
-    	<input class="requiredIntrigueField" type="text" id="Birthplace" name="Birthplace" value="<?php echo htmlspecialchars($role->Birthplace); ?>"  size="100" maxlength="100" required>
-    	</div>
-		<?php } ?>
+		print_participant_textarea(
+		    "Relationer med andra",
+		    "Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för karaktären och mycket kort hur vi kan ge spel på dessa karaktärer.",
+		    "CharactersWithRelations",
+		    $role->CharactersWithRelations,
+		    "rows='4' maxlength='60000'",
+		    $role->isPC(),
+		    true);
 
-		<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
-    		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Var bor karaktären?&nbsp;<font style="color:red">*</font></div>
-           	Tänk typ folkbokföringsadress, dvs även om karaktären tillfälligt är på platsen så vill vi veta var karaktären har sitt hem.<br>
-        	<?php PlaceOfResidence::selectionDropdown($current_larp, false, true, $role->PlaceOfResidenceId); ?> 
-        	</div>
-		<?php }?>
+		print_participant_textarea(
+		    "Varför befinner sig karaktären på platsen?",
+		    "Varför är karaktären på plats? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?",
+		    "ReasonForBeingInSlowRiver",
+		    $role->ReasonForBeingInSlowRiver,
+		    "rows='4' maxlength='60000'",
+		    $role->isPC(),
+		    true);
+
+		if (Religion::isInUse($current_larp)) {
+		    print_participant_question_start(
+		        "Vilken religion har karaktären?",
+		        "Vissa religioner har bättre anseende än andra. Religionen kommer att påverka spel.",
+		        $role->isPC(),
+		        true);
+		    Religion::selectionDropdown($current_larp, false, $role->isPC(), $role->ReligionId);
+		    print_participant_question_end($role->isPC());
+		    
+		    print_participant_text_input(
+		        "Religion förklaring",
+		        "Skriv så noggrant du kan om karaktären inte har en 'vanlig' religion.",
+		        "Religion",
+		        $role->Religion,
+		        "size='100' maxlength='200'",
+		        false,
+		        true);
+		}
+		 
+		if (Belief::isInUse($current_larp)) {
+		    print_participant_question_start(
+		        "Hur troende är karaktären?",
+		        "För vissa är religionen viktigare än andra. Hur är det för den här karaktären?",
+		        $role->isPC(),
+		        true);
+		    Belief::selectionDropdown($current_larp, false,$role->isPC(), $role->BeliefId);
+		    print_participant_question_end($role->isPC());
+		} 
 		
-		<?php if ($role->isPC() ||  !empty($role->CharactersWithRelations)) { ?>	
- 		<div class='itemcontainer intrigue'>
-       	<div class='itemname'>Relationer med andra</div>
-       	Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för karaktären och mycket kort hur vi kan ge spel på dessa karaktärer.<br>
-    	<textarea id="CharactersWithRelations" name="CharactersWithRelations" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->CharactersWithRelations); ?></textarea>
-    	</div>
-		<?php }?>
-		
-		<?php if ($role->isPC() ||  !empty($role->ReasonForBeingInSlowRiver)) { ?>
- 		<div class='itemcontainer intrigue'>
-       	<div class='itemname'>Varför befinner sig karaktären på platsen?&nbsp;<font style="color:red">*</font></div>
-       	Varför är karaktären på plats? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?<br>
-    	<textarea class="requiredIntrigueField" id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000" required><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea>
-    	</div>
-		<?php }?>	
-			
-		<?php if (Religion::isInUse($current_larp)) {?>
-     		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Vilken religion har karaktären?&nbsp;<font style="color:red">*</font></div>
-           	Vissa religioner har bättre anseende än andra. Religionen kommer att påverka spel. <br>
-        	<?php Religion::selectionDropdown($current_larp, false,true, $role->ReligionId); ?>
-        	</div>
-
-    		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Religion förklaring</div>
-           	Skriv så noggrant du kan om karaktären inte har en "vanlig" religion.<br>
-        	<input type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="200">
-        	</div>
-		<?php } ?>	
-
-		<?php if (Belief::isInUse($current_larp)) {?>
-     		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Hur troende är karaktären?&nbsp;<font style="color:red">*</font></div>
-           	För vissa är religionen viktigare än andra. Hur är det för den här karaktären? <br>
-        	<?php Belief::selectionDropdown($current_larp, false,true, $role->BeliefId); ?>
-        	</div>
-		<?php } ?>	
-				
-
-		<?php if (Wealth::isInUse($current_larp)) {?>
-     		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Hur rik är karaktären?&nbsp;<font style="color:red">*</font></div>
-   	     	<?php if ($type == "pc") {?>
-           	Om du är rik har du i regel ha någon form av affärer på gång. <br>
+		if (Wealth::isInUse($current_larp)) {
+		      $description = "";
+		      if ($role->isPC()) $description = "Om du är rik har du i regel ha någon form av affärer på gång. <br>
    			Det kommer att vara ett begränsat antal stenrika på lajvet och vi godkänner i regel inte nya. 
    			Undantag kan naturligtvis förekomma om det gynnar lajvet.   
-   			Däremot är <?php echo $campaign->Name ?> en kampanj så det går att spela sig till att bli stenrik. 
-   			Precis som det går att spela sig till rikedom går det att spela sig till att bli fattigare.<br>
-   			<?php } ?>
-        	<?php Wealth::selectionDropdown($current_larp, false,true, $role->WealthId); ?>
-        	</div>
-		<?php } ?>	
+   			Däremot är $campaign->Name en kampanj så det går att spela sig till att bli stenrik. 
+   			Precis som det går att spela sig till rikedom går det att spela sig till att bli fattigare.";
 
-		<?php  if (RoleFunction::isInUse($current_larp)) {?>	
-     		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Har karaktären någon särskild funktion eller syssla?</div>
-        	<?php selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedRoleFunctionIds()); ?>
-        	</div>
-
-    		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Funktioner förklaring</div>
-           	Vill du förtydliga något kring funktioner eller lägga till något?<br>
-        	<input type="text" id="RoleFunctionComment" name="RoleFunctionComment" value="<?php echo htmlspecialchars($role->RoleFunctionComment); ?>"  size="100" maxlength="200">
-        	</div>
-		<?php } ?>	
-
-		<?php if ($role->isPC()) { ?>	
- 		<div class='itemcontainer intrigue'>
-       	<div class='itemname'>Intrigideer</div>
-       	Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara "Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar."<br>
-    	<textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->IntrigueSuggestions); ?></textarea>
-    	</div>
-		<?php } ?>	
-
-
-		<?php if ($role->isPC() && IntrigueType::isInUseForRole($current_larp)) {?>
-     		<div class='itemcontainer intrigue'>
-           	<div class='itemname'>Intrigtyper</div>
-           	Vilken typ av intriger vill du ha?<br>
-        	<?php IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds()); ?>
-        	</div>
-		<?php } ?>
+		      print_participant_question_start(
+		          "Hur rik är karaktären?",
+		          $description,
+		          $role->isPC(),
+		          true);
+		      Wealth::selectionDropdown($current_larp, false,$role->isPC(), $role->WealthId);
+		      print_participant_question_end($role->isPC());
+		      
+		}
+		 
+		if (RoleFunction::isInUse($current_larp)) {
+		    print_participant_question_start(
+		        "Har karaktären någon särskild funktion eller syssla?",
+		        "",
+		        false,
+		        true);
+		    selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedRoleFunctionIds()); 
+		    print_participant_question_end(false);
+		    
+		    print_participant_text_input(
+		        "Funktioner förklaring",
+		        "Vill du förtydliga något kring funktioner eller lägga till något?",
+		        "RoleFunctionComment",
+		        $role->RoleFunctionComment,
+		        "size='100' maxlength='200'",
+		        false,
+		        true);
+		} 
 		
-		<?php if ($role->isPC() ||  !empty($role->NotAcceptableIntrigues)) { ?>
-		<div class='itemcontainer intrigue'>
-       	<div class='itemname'>Saker karaktären absolut inte vill spela på</div>
-       	Är det något karaktären aldrig skulle göra?<br>
-    	<input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo htmlspecialchars($role->NotAcceptableIntrigues); ?>"  size="100" maxlength="200">
-    	</div>
+		if ($role->isPC()) { 
+		    print_participant_textarea(
+		        "Intrigideer",
+		        "Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara 'Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar.'",
+		        "IntrigueSuggestions",
+		        $role->IntrigueSuggestions,
+		        "rows='4' maxlength='60000'",
+		        false,
+		        true);
+
+		    if (IntrigueType::isInUseForRole($current_larp)) {
+		        print_participant_question_start(
+		            "Intrigtyper",
+		            "Vilken typ av intriger vill du ha?",
+		            false,
+		            true);
+		        IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds());
+		        print_participant_question_end(false);
+		    }
+		} 
 		
-		<?php } ?>
+		print_participant_text_input(
+		    "Saker karaktären absolut inte vill spela på",
+		    "Är det något karaktären aldrig skulle göra?",
+		    "NotAcceptableIntrigues",
+		    $role->NotAcceptableIntrigues,
+		    "size='100' maxlength='200'",
+		    false,
+		    true);
+
 		
-		<?php if ($role->isPC() ||  !empty($role->DarkSecret)) { ?>
-		<div class='itemcontainer intrigue'>
-       	<div class='itemname'>Karaktärens (mörka) baksida&nbsp;<font style="color:red">*</font></div>
-       	Har karaktären någon mörk hemlighet eller något personlighetsdrag som är till dennes nackdel? 
+		print_participant_textarea(
+		    "Karaktärens (mörka) baksida",
+		    "Har karaktären någon mörk hemlighet eller något personlighetsdrag som är till dennes nackdel? 
        	Har hen en hemlig skuld, ett hetsigt humör som sätter den i problem eller har hen kanske begått något brott? 
        	Det kan kännas svårt att göra karaktären sårbar på det här sättet, men försök. 
-       	En mer nyanserad karaktär är ofta roligare och mer spännande att spela.<br>
-    	<textarea class="requiredIntrigueField" id="DarkSecret" name="DarkSecret" rows="4" maxlength="60000" required><?php echo htmlspecialchars($role->DarkSecret); ?> </textarea>
-    	</div>
-		<?php } ?>
-		
-		<?php 
-		if ($role->isPC() ||  !empty($role->DarkSecretIntrigueIdeas)) { 
-		    print_participant_text_input(
-		        "Karaktärens (mörka) baksida - intrigidéer", 
-		        "Hur kan vi spela på karaktärens mörka baksida?",
-		        "DarkSecretIntrigueIdeas",
-		        htmlspecialchars($role->DarkSecretIntrigueIdeas),
-		        "size='100' maxlength='200'",
-		        true,
-		        true);
-		 } 
-		 ?>
-		
-		<div class='itemcontainer intrigue'>
-       	<div class='itemname'>Övrig information</div>
-       	Är det något annat kring karaktären arrangörerna bör veta?<br>
-    	<textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->OtherInformation); ?></textarea>
-    	</div>
+       	En mer nyanserad karaktär är ofta roligare och mer spännande att spela.",
+		    "DarkSecret",
+		    $role->DarkSecret,
+		    "rows='4' maxlength='60000'",
+		    $role->isPC(),
+		    true);
 
-			<?php 
+		print_participant_text_input(
+		    "Karaktärens (mörka) baksida - intrigidéer",
+		    "Hur kan vi spela på karaktärens mörka baksida?",
+		    "DarkSecretIntrigueIdeas",
+		    $role->DarkSecretIntrigueIdeas,
+		    "size='100' maxlength='200'",
+		    $role->isPC(),
+		    true);
+
+		print_participant_textarea(
+		    "Övrig information",
+		    "Är det något annat kring karaktären arrangörerna bör veta om karaktären?",
+		    "OtherInformation",
+		    $role->OtherInformation,
+		    "rows='4' maxlength='60000'",
+		    false,
+		    true);
+
 			if ($admin) {
 			    //Om bara tittar på formuläret som arrangör får man inte lyckas skicka in
 			    $type = "button";
@@ -526,7 +565,7 @@ include 'navigation.php';
 			    $type = "submit";
 		    }
 		    
-			    ?>
+		    ?>
 
 
 			<div class='center'><input type='<?php echo $type ?>' class='button-18' value='<?php echo default_value('action') ?>'></div>
