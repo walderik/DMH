@@ -453,6 +453,7 @@ class Role extends BaseModel{
         if (is_null($group) or is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -467,6 +468,7 @@ class Role extends BaseModel{
         if (is_null($group) or is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -481,6 +483,7 @@ class Role extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -495,6 +498,7 @@ class Role extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -510,6 +514,7 @@ class Role extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -525,6 +530,7 @@ class Role extends BaseModel{
 
             $sql = "SELECT * FROM regsys_role WHERE Id IN ".
                 "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+                "regsys_role.PersonId IS NOT NULL AND ".
                 "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
                 "regsys_larp_role.RoleId = regsys_role.Id AND ".
                 "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -546,6 +552,7 @@ class Role extends BaseModel{
         else {
             $sql = "SELECT * FROM regsys_role WHERE Id IN ".
                 "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+                "regsys_role.PersonId IS NOT NULL AND ".
                 "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
                 "regsys_larp_role.RoleId = regsys_role.Id AND ".
                 "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -560,6 +567,7 @@ class Role extends BaseModel{
     public static function getAllUnregisteredRolesInGroup(Group $group, LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE GroupId=? AND ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "(Id NOT IN ".
             "(SELECT RoleId FROM regsys_larp_role WHERE ".
             "regsys_larp_role.larpid = ?) OR ID IN ".
