@@ -22,6 +22,9 @@ if (!$role->isRegistered($current_larp)) {
 */
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+$reserve_larp_role = Reserve_LARP_Role::loadByIds($role->Id, $current_larp->Id);
+if (isset($reserve_larp_role)) $isReserve = true;
+else $isReserve = false;
 
 $isRegistered = $role->isRegistered($current_larp);
 $subdivisions = Subdivision::allForRole($role, $current_larp);
@@ -62,7 +65,7 @@ include 'navigation.php';
 		<br>
 		
             <?php 
-            if ($isRegistered) {
+            if ($isRegistered && !$isReserve) {
                 if ($larp_role->UserMayEdit  == 1) {
                     echo "Deltagaren får ändra karaktären " . showStatusIcon(false);
                     $editButton = "Ta bort tillåtelsen att ändra";
@@ -81,7 +84,7 @@ include 'navigation.php';
 		
 		<?php 
 
-		if ($isRegistered) {?>
+		if ($isRegistered && !$isReserve) {?>
     		<h2>Intrig <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
     		<div>
     		<?php    echo nl2br(htmlspecialchars($larp_role->Intrigue)); ?>
@@ -356,7 +359,7 @@ include 'navigation.php';
 		</div>
 		<?php }?>
 		
-		<?php if ($isRegistered) {?>
+		<?php if ($isRegistered && !$isReserve) {?>
 		<h2>Handel</h2>
 		<div>
 		<?php 
