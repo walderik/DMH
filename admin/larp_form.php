@@ -193,7 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     					name="LastDayAlchemySupplier" value="<?php echo $larp->LastDayAlchemySupplier; ?>" size="50"></td>
     			</tr>
     			<tr>
-    				<td><label for="LastDayAlchemySupplier">Sista dag för alkemistinformaiton</label><br>Sista dagen som alkemisterna får lägga upp och önska recept.</td>
+    				<td><label for="LastDayAlchemySupplier">Sista dag för alkemistinformaiton</label><br>Sista dagen som alkemisterna får lägga upp och önska recept.<br>De kan även önska efter lajvet för att kunna lägga in sådant de har lärt sig under lajvet.</td>
     				<td><input type="date" id="LastDayAlchemy"
     					name="LastDayAlchemy" value="<?php echo $larp->LastDayAlchemy; ?>" size="50"></td>
     			</tr>
