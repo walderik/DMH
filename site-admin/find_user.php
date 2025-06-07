@@ -87,11 +87,11 @@ if (isset($message_message) && strlen($message_message)>0) {
     	 $persons = $searched_user->getPersons();
     	 if (empty($persons)) {
     	   echo "Har inga registrerade personer.";
-    	   exit;
-    	 }
-    
-    	 foreach ($persons as $person) {
-    	   echo "$person->Name, $person->SocialSecurityNumber<br>";
+    	 } else {
+        
+        	 foreach ($persons as $person) {
+        	   echo "$person->Name, $person->SocialSecurityNumber<br>";
+        	 }
     	 }
 	 
     	 ?>
