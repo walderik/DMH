@@ -29,7 +29,7 @@ include "navigation.php";
 
         </div>
 		<div class="content">
-			Just nu är det <?php echo Registration::countAllNonOfficials($current_larp); ?> anmälda deltagare och <?php echo Registration::countAllOfficials($current_larp); ?> funktionärer.<br> 
+			Just nu är det <?php echo Registration::countAllNonOfficials($current_larp); ?> anmälda deltagare (av <?php echo $current_larp->MaxParticipants?>) och <?php echo Registration::countAllOfficials($current_larp); ?> funktionärer.<br> 
         <?php 
 
             if ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp)) {

@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     					name="EndDate" value="<?php echo formatDateTimeForInput($larp->EndDate); ?>" size="50" required></td>
     			</tr>
     			<tr>
-    				<td><label for="MaxParticipants">Max antal deltagare</label></td>
+    				<td><label for="MaxParticipants">Max antal deltagare</label><br>Funktionärer räknas inte in i antal deltagare</td>
     				<td><input type="number" id="MaxParticipants" name="MaxParticipants" value="<?php echo $larp->MaxParticipants; ?>" size="100" maxlength="250" ></td>
     			</tr>
     			<tr>
