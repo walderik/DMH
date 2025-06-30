@@ -449,7 +449,7 @@ class Role extends BaseModel{
     }
     
  
-    public static function getAllComingMainRolesInGroup(Group $group, LARP $larp) {
+    public static function getAllComingApprovedMainRolesInGroup(Group $group, LARP $larp) {
         if (is_null($group) or is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
@@ -460,7 +460,8 @@ class Role extends BaseModel{
             "regsys_registration.NotComing = 0 AND ".
             "regsys_registration.SpotAtLARP = 1 AND ".
             "groupId =? AND ".
-            "regsys_larp_role.larpid=? AND IsMainRole=1) ORDER BY Name;";
+            "regsys_larp_role.larpid=? AND IsMainRole=1) AND ".
+            "IsApproved = 1 ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
@@ -494,7 +495,7 @@ class Role extends BaseModel{
     }
  
     
-    public static function getAllComingMainRolesWithoutGroup(LARP $larp) {
+    public static function getAllComingApprovedMainRolesWithoutGroup(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
@@ -505,7 +506,8 @@ class Role extends BaseModel{
             "regsys_registration.NotComing = 0 AND ".
             "regsys_registration.SpotAtLARP = 1 AND ".
             "groupId IS NULL AND ".
-            "regsys_larp_role.larpid=? AND IsMainRole=1) ORDER BY Name;";
+            "regsys_larp_role.larpid=? AND IsMainRole=1) AND ".
+            "IsApproved = 1 ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     

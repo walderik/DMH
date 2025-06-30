@@ -30,7 +30,7 @@ if ($isRegistered) {
 }
 
 
-function print_role($role, $group) {
+function print_role($role, $group, $isRegistered) {
     global $current_larp;
     echo "<tr>";
     echo "<td>";
@@ -64,8 +64,24 @@ function print_role($role, $group) {
             
         }
         
+
         echo "</td>";
     } else echo "<td>NPC</td>";
+
+    echo "<td>";
+    if ($isRegistered && ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)) {
+        echo "Ansvarig vuxen är ";
+        $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
+        if (!empty($registration->GuardianId)) { 
+            $guardian = $registration->getGuardian();   
+            echo $guardian->getViewLink();
+        } else echo showStatusIcon(false);
+        
+    }
+    
+    echo "</td>";
+
+
     echo "</tr>";
 }
 
@@ -218,7 +234,7 @@ include 'navigation.php';
         echo "<div>";
 		echo "<table>";
 		foreach($main_characters_in_group as $group_member) {
-		    print_role($group_member, $group);
+		    print_role($group_member, $group, true);
 		}
 		echo "</table>";
 		if (!empty($non_main_characters_in_group)) {
@@ -226,7 +242,7 @@ include 'navigation.php';
 		    
 		    echo "<table>";
 		    foreach($non_main_characters_in_group as $group_member) {
-		        print_role($group_member, $group);
+		        print_role($group_member, $group, false);
 		    }
 		    echo "</table>";
 		    
@@ -241,7 +257,7 @@ include 'navigation.php';
 			echo "<div>";
 			echo "<table>";
 			foreach($allUnregisteredRoles as $role) {
-				print_role($role, $group);
+				print_role($role, $group, false);
 			}
 			echo "</table>";
 			echo "</div>";

@@ -17,17 +17,25 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 include 'navigation.php';
 include 'alchemy_navigation.php';
 ?>
+<style>
 
+.NotAtLARP > td { 
+    background: lightgrey;
+    color: gray;
+}
+</style>
 <script src="../javascript/table_sort.js"></script>
 
  
     <div class="content">
         <h1>Recept <a href="alchemy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka till alkemi"></i></a></h1>
+        <p>Recept som ingen alkemist på lajvet har är utgråade och saknade ingredienser visas inte.</p>
 
             <a href="alchemy_recipe_form.php?operation=insert&type=<?php echo Alchemy_Alchemist::INGREDIENT_ALCHEMY?>"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt traditionellt recept</a>&nbsp;&nbsp;  
             <a href="alchemy_recipe_form.php?operation=insert&type=<?php echo Alchemy_Alchemist::ESSENCE_ALCHEMY?>"><i class="fa-solid fa-file-circle-plus"></i>Skapa nytt experimentellt recept</a>  
        <?php
     
+       $all_missing_ingredients = array();
        $recipes = Alchemy_Recipe::allByCampaign($current_larp);
        if (!empty($recipes)) {
            $tableId = "recipes";
@@ -44,11 +52,14 @@ include 'alchemy_navigation.php';
                "<th></th>";
            
            foreach ($recipes as $recipe) {
-                echo "<tr>\n";
+                $isReciepeAtLarp = $recipe->IsAtLARP($current_larp);
+                echo "<tr";
+                if (!$isReciepeAtLarp) echo " class=NotAtLARP ";
+                echo ">\n";
                 echo "<td>";
                 echo "<a href ='view_alchemy_recipe.php?id=$recipe->Id'>$recipe->Name</a> ";
                 echo "<a href ='alchemy_recipe_form.php?operation=update&id=$recipe->Id'><i class='fa-solid fa-pen'></i></a>";
-                echo " <a href='reports/alchemy_recipe_pdf.php?RecipeId=<?php echo $recipe->Id?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Receptet som skrolla'></i></a>";
+                echo " <a href='reports/alchemy_recipe_pdf.php?RecipeId=$recipe->Id?' target='_blank'><i class='fa-solid fa-file-pdf' title='Receptet som skrolla'></i></a>";
                 
                 echo "</td>\n";
                 echo "<td>$recipe->Level</td>\n";
@@ -80,11 +91,12 @@ include 'alchemy_navigation.php';
                 echo "</td>\n";
                 
                 echo "<td>";
-                if ($recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
+                if ($isReciepeAtLarp && $recipe->AlchemistType == Alchemy_Alchemist::INGREDIENT_ALCHEMY) {
                     $ingredients = $recipe->getMissingIngredients($current_larp);
                     if (empty($ingredients)) {
                         echo showStatusIcon(true);
                     } else {
+                        $all_missing_ingredients = array_merge($all_missing_ingredients, $ingredients);
                         foreach($ingredients as $ingredient) {
                             echo "<a href='alchemy_ingredient_form.php?operation=update&id=$ingredient->Id'>$ingredient->Name</a>, nivå $ingredient->Level<br>";
                         }
@@ -107,6 +119,24 @@ include 'alchemy_navigation.php';
             echo "<p>Inga registrerade ännu</p>";
         }
         ?>
+        <?php 
+        if (!empty($all_missing_ingredients)) {
+            $all_missing_ingredients = array_unique($all_missing_ingredients, SORT_REGULAR);
+            
+            function cmp(Alchemy_Ingredient $a, Alchemy_Ingredient $b) {
+                if ($a->Level == $b->Level) return strcmp($a->Name, $b->Name);
+                else return $a->Level > $b->Level;
+            }
+            
+            usort($all_missing_ingredients, "cmp");
+            echo "<h2>Alla ingredienser som saknas, sammanställning av ovanstående tabell</h2>";
+            foreach($all_missing_ingredients as $ingredient) {
+                echo "<a href='alchemy_ingredient_form.php?operation=update&id=$ingredient->Id'>$ingredient->Name</a>, nivå $ingredient->Level<br>";
+            }
+            
+            
+        }?>
+
     </div>
 	
 </body>

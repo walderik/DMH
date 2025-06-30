@@ -86,7 +86,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Typ av skepp</td><td><?php echo $current_group->getShipType()->Name; ?></td></tr>
 			<?php }?>
 			<?php if ($current_larp->getCampaign()->is_me()) { ?>
-			<tr><td valign="top" class="header">Färg</td><td><?php echo $current_group->getColour()->Name; ?></td></tr>
+			<tr><td valign="top" class="header">Färg</td><td><?php echo $current_group->Colour; ?></td></tr>
 			<?php }?>
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>
 			<?php if (IntrigueType::isInUse($current_larp)) { ?>

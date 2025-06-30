@@ -47,15 +47,9 @@ th {
     		        echo "<tr>\n";
     		        echo "<td>";
     		        if ($registration->isNotComing()) {
-    		            echo "<s>";
-    		        } else {
-    		            echo $person->getViewLink();
-    		        }
-    		        if ($registration->isNotComing()) {
-    		            echo "</s>";
-    		        } else {
-    		            echo "</a>";
-    		        }
+    		            echo "<s>$person->Name</s>";
+    		        } else echo $person->getViewLink();
+    		        
     		        echo "</td>\n";
     		        if ($registration->isNotComing()) {
     		            echo "<td></td>";

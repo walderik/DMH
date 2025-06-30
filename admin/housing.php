@@ -46,7 +46,10 @@ function print_group(Group $group,$group_members, $house) {
         echo " <i class='fa-solid fa-circle-info' title='".implode(", ", $comments)."'></i>";
     }
     echo "</div>\n";
-    echo "  <div>".HousingRequest::loadById($group_housing_requestId)->Name."</div>\n";
+    echo "  <div>";
+    if (!empty($group_housing_requestId)) echo HousingRequest::loadById($group_housing_requestId)->Name;
+    else echo "Inget boendealternativ valt";
+    echo "</div>\n";
     echo "<div>";
     if (empty($firstPaymentDate)) echo "Betalning saknas";
     elseif (empty($lastPaymentDate)) echo "Första betalade ".date_format($firstPaymentDate,"Y-m-d").", alla har inte betalat";

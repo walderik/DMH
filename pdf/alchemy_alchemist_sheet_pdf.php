@@ -57,17 +57,17 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
         $this->Line(static::$x_min-$space, static::$y_max+$space, static::$x_max+$space, static::$y_max+$space);
         $this->Line(static::$x_max+$space, static::$y_min-$space, static::$x_max+$space, static::$y_max+$space);
         
-        
-        $this->SetXY($mitten-15, 3);
+        $boxWidth = 80;
+        $this->SetXY($mitten-$boxWidth/2, 3);
         $this->SetFont('Helvetica','',static::$text_fontsize/1.1);
         $this->SetFillColor(255,255,255);
 
-        
-        $txt = 'Alkemist';
+        if (isset($this->alchemist)) $txt = 'Alkemist '.$this->alchemist->getRole()->Name;
+        else $txt = 'Alkemist';
        
         
 
-        $this->MultiCell(30, 4, encode_utf_to_iso($txt), 0, 'C', true);
+        $this->MultiCell($boxWidth, 4, encode_utf_to_iso($txt), 0, 'C', true);
         
         $this->SetXY($mitten-15,  static::$y_min + 2*static::$Margin);
         $y = $this->GetY();

@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $registration = Registration::loadById($registrationId);
     if (isset($registration)) {
         $oldAmount = $registration->AmountToPay;
+        $oldNotComing = $registration->isNotComing();
         $registration->AmountToPay = $_POST['AmountToPay'];
         if (empty($registration->AmountToPay)) $registration->AmountToPay=0;
         $registration->AmountPayed = $_POST['AmountPayed'];
@@ -36,7 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $registration->update();
         
-        if ($registration->isNotComing()) {
+        
+        //Avbokning
+        if (!$oldNotComing && $registration->isNotComing()) {
             $person = $registration->getPerson();
             //brev och telegram ska sättas till icke-godkänd
             $telegrams = $person->getTelegramsAtLarp($current_larp);
@@ -49,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $letter->Approved = 0;
                 $letter->update();
             }
+            BerghemMailer::send_unregistration_mail($registration);
         }
 
 

@@ -12,7 +12,9 @@ $person = $role->getPerson();
 
 $isRegistered = $role->isRegistered($current_larp);
 //$subdivisions = Subdivision::allForRole($role, $current_larp);
-
+$reserve_larp_role = Reserve_LARP_Role::loadByIds($role->Id, $current_larp->Id);
+if (isset($reserve_larp_role)) $isReserve = true;
+else $isReserve = false;
 ?>
 <table>
 <?php 
@@ -63,7 +65,11 @@ if ($role->isMysLajvare()) {
 		    
 		}?>
 		<?php if ($isRegistered) {?>
-			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
+			<tr><td valign="top" class="header">Huvudkaraktär</td><td>
+			<?php 
+			if ($isReserve) echo ja_nej($reserve_larp_role->IsMainRole);
+			else echo ja_nej($larp_role->IsMainRole);
+			?></td></tr>
 		<?php }?>
 
 			<tr><td valign="top" class="header">Yrke</td><td><?php echo $role->Profession;?></td></tr>

@@ -39,10 +39,14 @@ if ($_SESSION['navigation'] == Navigation::LARP) {
 include $navigation;
 
 $unsent_emails = Email::allUnsent();
+$uncreated_emails = Email_To_Create::all();
 
 if (!empty($unsent_emails)) {
     $currentPageUrl = 'http://' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
     echo "<meta http-equiv='refresh' content='15'; URL='$currentPageUrl'>";
+} elseif (!empty($uncreated_emails)) {
+    $currentPageUrl = 'http://' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+    echo "<meta http-equiv='refresh' content='5'; URL='$currentPageUrl'>";
 }
 
 
@@ -68,8 +72,8 @@ th {
    		<div class='itemcontainer'>
 		<div  style='display:table'>
     <?php 
-        if (!empty($unsent_emails)) {
-            echo "<strong>".count($unsent_emails) ."</strong> mail har ännu inte skickats iväg. <br>Sidan kommer automatiskt att laddas om tills alla har skickats. Du måste inte stanna på den här sidan, men gå gärna tillbaka hit efteråt så att du ser att alla mail verkligen har kommit iväg.";
+        if (!empty($unsent_emails) || !empty($uncreated_emails)) {
+            echo "<strong>".count($unsent_emails)+count($uncreated_emails) ."</strong> mail har ännu inte skickats iväg. <br>Sidan kommer automatiskt att laddas om tills alla har skickats. Du måste inte stanna på den här sidan, men gå gärna tillbaka hit efteråt så att du ser att alla mail verkligen har kommit iväg.<br>";
         }
         if ($_SESSION['navigation'] == Navigation::PARTICIPANT) {
             if (isset($current_larp)) $emails = Email::allForPersonAtLarp($current_person, $current_larp);

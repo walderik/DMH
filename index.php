@@ -16,6 +16,8 @@ if (!Email::handleEmailQueue()) {
 }
 */
 
+include_once $root . '/includes/error_handling.php';
+
 if (Environment::isTest()) {
     $text = "OBS! Testmiljö<br>";
     if (isset($message_message)) $message_message = $text.$message_message;

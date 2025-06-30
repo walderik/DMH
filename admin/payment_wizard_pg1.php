@@ -27,11 +27,13 @@ include 'navigation.php';
         <form action="payment_wizard_pg2.php" method="post" >
         <h2>Anmälningsdatum</h2>
 			<div class="question">
-				<label for="first_date">Första datum</label>&nbsp;<font style="color:red">*</font>
+				<label for="first_date">Första datum</label>&nbsp;<font style="color:red">*</font><br>
+				Det går bra att ha den från dagens datum även om anmälan inte är öppen. 
 				<br> <input type="date" id="first_date" name="first_date" value="<?php echo date("Y-m-d"); ?>" required>
 			</div>
 			<div class="question">
-				<label for="last_date">Sista datum</label>&nbsp;<font style="color:red">*</font>
+				<label for="last_date">Sista datum</label>&nbsp;<font style="color:red">*</font><br>
+				Sätt den gärna till startdatum för lajvet så att det alltid finns en avgift även när man tar in någon från reservlistan.
 				<br> <input type="date" id="last_date" name="last_date" value="<?php echo substr($current_larp->StartDate, 0, 10); ?>" required>
 			</div>
 			<div class="question">

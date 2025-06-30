@@ -57,7 +57,7 @@ if (isset($current_larp) && isset($current_person) && AccessControl::isMoreThanP
   	echo "<option value='../participant/' $participant_selected>Deltagare</option>\n";
   	if (AccessControl::hasAccessLarp($current_person, $current_larp) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)))  
         echo "<option value='../admin/' $admin_selected>Arrangör</option>\n";
-        if (AccessControl::hasAccessLarp($current_person, $current_larp) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)))
+        if (AccessControl::hasAccessCampaign($current_person, $current_larp->CampaignId) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)))
         echo "<option value='../campaign/' $campaign_selected>Kampanj</option>\n";
         if (AccessControl::hasAccessOther($current_person, AccessControl::BOARD) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN))) 
         echo "<option value='../board/' $board_selected>Styrelse</option>\n";

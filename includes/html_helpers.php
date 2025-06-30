@@ -371,6 +371,7 @@ function remove_housecaretaker(Person $person, House $house) {
 }
 
 
+
 function print_participant_question_start(String $title, String $description, bool $isRequired, bool $isIntrigue, bool $mayCollapse) {
     echo "<div class='itemcontainer ";
     if ($isIntrigue) echo "intrigue";
@@ -411,4 +412,10 @@ function print_participant_textarea(String $title, String $description, String $
     print_participant_question_end($isRequired);
  }
 
+
+function linkify($str) {
+    $url_pattern = '/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/';
+    $str= preg_replace($url_pattern, '<a href="$0" target="_blank">$0</a>', $str);
+    return $str;
+}
 

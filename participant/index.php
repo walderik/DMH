@@ -64,6 +64,12 @@ function openTab(evt, tabName) {
 	<?php 
 	$items = array();
 	
+	//lägg till person
+	$addperson = "<div class='itemcontainer'>";
+	$addperson .= "<a href='person_form.php'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-user'></i> Lägg till person</a>";
+	$addperson .= "</div>";
+	
+	
 	$persons = Person::getPersonsForUser($current_user->Id);
 	if (!empty($persons)) {
 	    if (empty($current_person)) {
@@ -101,6 +107,9 @@ function openTab(evt, tabName) {
 	    if (!empty($reserve_registration)) $item .=  " (Står på reservlistan)";    
 	    $item .=  "</div>";
 	    $items[] = $item;
+
+	    //Sen lägg till person
+	    $items[] = $addperson;
 	    
     	//Sen alla andra
     	foreach ($persons as $person) {
@@ -113,22 +122,22 @@ function openTab(evt, tabName) {
      	    $item .=  "</div>";
      	    $items[] = $item;
     	}
+	} else {
+	    //Sen lägg till person
+	    $items[] = $addperson;
 	}
 	
 	
-    $item = "<div class='itemcontainer'>";
-	$item .= "<a href='person_form.php'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-user'></i> Lägg till person</a>";
-	$item .= "</div>";
-    $items[] = $item;
+ 
     
     if (sizeof($items) == 1) {
         echo array_values($items)[0];
     } else {
-        $first = true;
+        $counter = 0;
         foreach ($items as $item) {
             echo $item;
-            if ($first) {
-                $first = false;
+            if ($counter++ == 1) {
+                
                 echo "<span id='more'>";
             }
         }
@@ -296,7 +305,7 @@ function openTab(evt, tabName) {
         		if (Alchemy_Alchemist::isAlchemist($role)) {
         		    $alchemist = Alchemy_Alchemist::getForRole($role);
         		    echo "<a href='view_alchemist.php?id=$role->Id'>Alkemist</a> ";
-        		    echo "<a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
+        		    echo "<a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Alkemistblad för $role->Name'></i></a> ";
     		        echo "<br>";
         		}
         		
@@ -631,7 +640,7 @@ function openTab(evt, tabName) {
         	    echo "<div class='itemselector'>";
         	    echo "<div class='header'>";
         	    echo "<a href='view_alchemist.php?id=$role->Id'><i class='fa-solid fa-flask'></i> Alkemist $role->Name</a>";
-        	    echo " <a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Magikerblad för $role->Name'></i></a> ";
+        	    echo " <a href='alchemy_alchemist_sheet.php?id=$role->Id' target='_blank'><i class='fa-solid fa-file-pdf' title='Alkemistblad för $role->Name'></i></a> ";
         	    echo "</div>";
         	    
         	    echo "<div class='itemcontainer'>";

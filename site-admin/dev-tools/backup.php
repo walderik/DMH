@@ -119,9 +119,12 @@ class Backup extends Dbh {
         }
         
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
         $tables = array();
+        $firstrow = true;
         foreach ($rows as $row) {
-            $tablename = $row['Tables_in_berghemsvanner_'];
+            if ($firstrow) $keyname = array_keys($row)[0];
+            $tablename = $row[$keyname];
             if (str_starts_with($tablename, "regsys_")) $tables[] = $tablename;
         }
         

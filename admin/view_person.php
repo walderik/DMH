@@ -196,7 +196,7 @@ include 'navigation.php';
 
         		        echo "<form style='display: inline-block;' action='remove_side_role.php' method='post'>";
         		        echo "<input type='hidden' id='PersonId' name='PersonId' value='$person->Id'>";
-        		        echo "<input type='submit' value='Ta bort sidokaraktär(er)'>";
+        		        echo "<input type='submit' value='Ta bort sidokaraktär(er) från lajvet'>";
         		        echo "</form>";
     		        }
 

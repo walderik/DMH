@@ -134,6 +134,26 @@ foreach ($roles as $role) {
     foreach($checkin_props as $checkin_prop) $props_txt_Arr[] = $checkin_prop->getIntrigueProp()->getProp()->Name;
     if (!empty($props_txt_Arr)) $package .= "Rekvisita: ". implode(", ", $props_txt_Arr);
 
+    //Magi
+    if ($current_larp->hasMagic()) {
+        if (Magic_Magician::isMagician($role)) {
+            $package .= "Magiker, ska ha sigill.\n";
+        }
+    }
+    
+    //Alkemi
+    if ($current_larp->hasAlchemy()) {
+        if (Alchemy_Supplier::isSupplier($role)) {
+            $supplier = Alchemy_Supplier::getForRole($role);
+            if ($supplier->hasIngredientList($current_larp) && $supplier->allAmountOfIngredientsApproved($current_larp)) $package .= "Lövjerist, ska ha sina etiketter.\n";
+        }
+        if (Alchemy_Alchemist::isAlchemist($role)) {
+            $alchemist = Alchemy_Alchemist::getForRole($role);
+            $recipes = $alchemist->getRecipes(true);
+            if (!empty($recipes)) $package .= "Alkemist, ska ha sina recept.\n";
+        }
+    }
+    
     
     $rows[] = array($role->Name, $package);
 }
@@ -242,6 +262,27 @@ foreach ($roles as $role) {
     $props_txt_Arr = array();
     foreach($checkin_props as $checkin_prop) $props_txt_Arr[] = $checkin_prop->getIntrigueProp()->getProp()->Name;
     if (!empty($props_txt_Arr)) $package .= "Rekvisita: ". implode(", ", array_unique($props_txt_Arr));
+    
+    //Magi
+    if ($current_larp->hasMagic()) {
+        if (Magic_Magician::isMagician($role)) {
+            $package .= "Magiker\n";
+        }
+    }
+    
+    //Alkemi
+    if ($current_larp->hasAlchemy()) {
+        if (Alchemy_Supplier::isSupplier($role)) {
+            $supplier = Alchemy_Supplier::getForRole($role);
+            if ($supplier->hasIngredientList($current_larp) && $supplier->allAmountOfIngredientsApproved($current_larp)) $package .= "Lövjerist, ska ha sina etiketter.\n";
+        }
+        if (Alchemy_Alchemist::isAlchemist($role)) {
+            $alchemist = Alchemy_Alchemist::getForRole($role);
+            $recipes = $alchemist->getRecipes(true);
+            if (!empty($recipes)) $package .= "Alkemist\n";
+        }
+    }
+    
     
     if (!empty($package)) $rows[] = array($role->Name." (S)", $package);
 }

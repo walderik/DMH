@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     					name="EndDate" value="<?php echo formatDateTimeForInput($larp->EndDate); ?>" size="50" required></td>
     			</tr>
     			<tr>
-    				<td><label for="MaxParticipants">Max antal deltagare</label></td>
+    				<td><label for="MaxParticipants">Max antal deltagare</label><br>Funktionärer räknas inte in i antal deltagare</td>
     				<td><input type="number" id="MaxParticipants" name="MaxParticipants" value="<?php echo $larp->MaxParticipants; ?>" size="100" maxlength="250" ></td>
     			</tr>
     			<tr>
@@ -136,9 +136,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     			</tr>
      			<tr>
     				<?php $hasRegistration = $larp->hasRegistrations(); ?>
-    				<td><label for='VisibleToParticipants'>Ska lajvet vara synligt för deltagare och därmed synas under kommande lajv?</label>
+    				<td><label for='VisibleToParticipants'>Ska lajvet synas i Omnes Mundis kalendarium?</label>
     				     
-    				     <?php if ($hasRegistration) echo "<br>(Lajvet har anmälningar och kan därför inte göras osynligt.)"?>
+    				     <?php if ($hasRegistration) echo "<br><span style='font-style: italic;'>(Lajvet har anmälningar och kan därför inte göras osynligt.)</span>"?>
     				</td>
     				<td>
 						<input type="radio" id="VisibleToParticipants_yes" name="VisibleToParticipants" value="1" <?php if ($larp->isVisibleToParticipants()) echo 'checked="checked"'?> <?php if ($hasRegistration) echo " disabled ";?>> 
@@ -193,7 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     					name="LastDayAlchemySupplier" value="<?php echo $larp->LastDayAlchemySupplier; ?>" size="50"></td>
     			</tr>
     			<tr>
-    				<td><label for="LastDayAlchemySupplier">Sista dag för alkemistinformaiton</label><br>Sista dagen som alkemisterna får lägga upp och önska recept.</td>
+    				<td><label for="LastDayAlchemySupplier">Sista dag för alkemistinformaiton</label><br>Sista dagen som alkemisterna får lägga upp och önska recept.<br>De kan även önska efter lajvet för att kunna lägga in sådant de har lärt sig under lajvet.</td>
     				<td><input type="date" id="LastDayAlchemy"
     					name="LastDayAlchemy" value="<?php echo $larp->LastDayAlchemy; ?>" size="50"></td>
     			</tr>

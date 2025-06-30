@@ -53,14 +53,22 @@ function default_value($field) {
 include 'navigation.php';
 
 $booking_accounts = Bookkeeping_Account::allActive($current_larp);
+if (empty($booking_accounts)) $error_message = "Bokföringskonton saknas. Be någon kampanjarrangör lägga upp konton.";
 ?>
     
 
 
     <div class="content"> 
     <h1><?php echo default_value('action');?> <?php echo default_value('sort');?> <a href="economy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+ 
+ 	  <?php if (isset($error_message) && strlen($error_message)>0) {
+	      echo '<div class="error">'.$error_message.'</div>';
+	  }?>
+	  <?php if (isset($message_message) && strlen($message_message)>0) {
+	      echo '<div class="message">'.$message_message.'</div>';
+	  }?>
     
-   
+
 	<form action="economy.php" method="post" enctype="multipart/form-data">
 		<input type="hidden" id="operation" name="operation" value="<?php echo $operation?>"> 
 		<input type="hidden" id="Photographer" name="Photographer" value="Kvitto"> 
@@ -82,7 +90,10 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 
 				<td><label for="BookkeepingAccountId">Konto</label></td>
 				
-				<td><?php  selectionDropDownByArray("BookkeepingAccountId", $booking_accounts, true, $bookkeeping->BookkeepingAccountId);?></td>
+				<td><?php  
+				    if (!empty($booking_accounts)) selectionDropDownByArray("BookkeepingAccountId", $booking_accounts, true, $bookkeeping->BookkeepingAccountId);
+				    else echo "Bokföringskonton saknas.";
+				    ?></td>
 			</tr>
 			<tr>
 				<td><label for="Who"><?php echo default_value('who');?></label></td>
@@ -129,8 +140,8 @@ $booking_accounts = Bookkeeping_Account::allActive($current_larp);
 
 		</table>
           	<br><br>
-
-		<input id="submit_button" type="submit" value="<?php echo default_value('action');?> <?php echo default_value('sort');?>">
+		
+		<input id="submit_button" type="submit" value="<?php echo default_value('action');?> <?php echo default_value('sort');?>" <?php if (empty($booking_accounts)) echo " disabled";?>>
 	</form>
 	</div>
     </body>

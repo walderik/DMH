@@ -12,10 +12,14 @@ $current_participating_larp_array = LARP::currentParticipatingLARPs($current_per
 $referer = '';
 if (isset($_SERVER['HTTP_REFERER'])) $referer = $_SERVER['HTTP_REFERER'];
 
-if (sizeof($current_participating_larp_array) == 1 AND str_contains($referer, '/index.php')) {
-    header('Location: ../includes/set_larp.php?larp='.$current_participating_larp_array[0]->Id);
-    exit;
+if (sizeof($current_participating_larp_array) == 1 && str_contains($referer, '/index.php')) {
+    if (empty($current_larp)) {
+        header('Location: ../includes/set_larp.php?larp='.$current_participating_larp_array[0]->Id);
+        exit;
+    }
 }
+$current_larp = null;
+
 include "navigation.php";
 
 ?>
@@ -109,7 +113,7 @@ div.border
 			            
 						if (!empty(trim($larp->Description))) {
 							echo "<br>";
-							echo "<span class='full-description' style='display:none;'>" . nl2br(htmlspecialchars($larp->Description)) . "</span>";
+							echo "<span class='full-description' style='display:none;'><br>" . nl2br(linkify(htmlspecialchars($larp->Description))) . "<br><br></span>";
 							echo "<button type='button' class='read-more'>Visa beskrivning</button>";
 						}
 					

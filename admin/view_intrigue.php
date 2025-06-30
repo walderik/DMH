@@ -305,7 +305,7 @@ th, td {
 </style>
 
     <div class="content">
-        <h1><a href="/admin/intrigue_admin.php">&gt; Intrigspår</a>: <?php echo "$intrigue->Number. $intrigue->Name" ?> 
+        <h1><a href="/admin/intrigue_admin.php">Intrigspår</a> : <?php echo "$intrigue->Number. $intrigue->Name" ?> 
         <a href="intrigue_form.php?operation=update&id=<?php echo $intrigue->Id ?>"><i class='fa-solid fa-pen' title='Redigera intrigen'></i></a>
         &nbsp; 
         <a href="reports/intrigues_pdf.php?Id=<?php echo $intrigue->Id;?>" target='_blank'><i class='fa-solid fa-file-pdf' title='Intrigen som PDF'></i></a>

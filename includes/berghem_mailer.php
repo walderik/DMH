@@ -11,6 +11,7 @@ require_once $root . '/pdf/invoice_pdf.php';
 require_once $root . '/pdf/alchemy_supplier_sheet_pdf.php';
 require_once $root . '/pdf/alchemy_alchemist_sheet_pdf.php';
 require_once $root . '/pdf/magic_magician_sheet_pdf.php';
+require_once $root . '/pdf/vision_sheet_pdf.php';
 require_once $root . '/pdf/house_info.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -215,6 +216,42 @@ class BerghemMailer {
         BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Uppdaterad avgift till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
+    public static function send_unregistration_mail(Registration $registration) {
+        $person = $registration->getPerson();
+        
+        $larp = $registration->getLARP();
+        $campaign = $larp->getCampaign();
+        $roles = $person->getRolesAtLarp($larp);
+        
+       
+        $text  = "Du har nu blivit avanmäld från lajvet $larp->Name<br>\n".
+            "För ev återbetalning av lajvavgiften (om det är aktuellt) behöver vi dina kontouppgifter. Skicka dem till $campaign->Email.<br>\n";
+
+        
+        foreach ($roles as $role) {
+            if (isset($role->GroupId)) {
+                $group = $role->getGroup();
+                static::send_unregistration_information_mail_to_group($role, $group, $larp);
+            }
+        }
+        
+        BerghemMailer::send($larp, null, $person->Id, "Hej ".$person->Name, $text, "Avanmälan från $larp->Name", "", BerghemMailer::DaysAutomatic);
+    }
+    
+    public static function send_unregistration_information_mail_to_group(Role $role, Group $group, Larp $larp) {
+        $admin_person = $group->getPerson();
+        $player = $role->getPerson();
+        $text  = "$role->Name ";
+        if ($player->hasPermissionShowName()) {
+            $text .= "spelad av $player->Name ";
+        }
+        $text .= "är avanmäld från lajvet $larp->Name.<br>\n";
+        $text .= "<br>\n";
+        
+        BerghemMailer::send($larp, null, $admin_person->Id, "Hej ".$admin_person->Name, $text, "Avanmälan från $group->Name i $larp->Name", "", BerghemMailer::DaysAutomatic);
+    }
+    
+    
     public static function send_reserve_registration_mail(Reserve_Registration $reserve_registration) {
         $person = $reserve_registration->getPerson();
         
@@ -402,48 +439,70 @@ class BerghemMailer {
             $registration = $person->getRegistration($larp);
             if (empty($registration)) continue;
             if (!$registration->hasSpotAtLarp()) continue;
-            $roles = Role::getRegistredRolesForPerson($person, $larp); 
-            $rolesText = "";
             
-            if (!empty($roles)) {
-                $rolesText .= "De karaktärer du ska spela är:<br>\n";
-                $rolesText .= "<br>\n";
-                foreach ($roles as $role) {
-                    $rolesText .= '* '.$role->Name;
-                    if ($role->isMain($larp)) {
-                        $rolesText .= " - Din huvudkaraktär";
-                    }
-                    $rolesText .= "<br>\n";
-                }
-                
-            }
-            
-            $sheets = static::getAllSheets($roles, $larp);
-            
-            $npcs = NPC::getReleasedNPCsForPerson($person, $larp);
-            $npcText = "";
-            
-            if (!empty($npcs)) {
-                $npcText  = "<br>De NPC'er du ska spela är:<br>\n";
-                $npcText .= "<br>\n";
-                foreach($npcs as $npc) {
-                    $npcText .= "Namn: $npc->Name";
-                    $npcText .= "<br>\n";
-                    $npcText .= "Beskrivning: $npc->Description";
-                    $npcText .= "<br>\n";
-                    $npcText .= "Tiden när vi vill att du spelar npc'n: $npc->Time";
-                    $npcText .= "<br>\n";
-                
-                }
-            }
-            
-            $printText = "<br>Skriv ut de bifogade filerna och ta med till lajvet.<br>";
-            
-            $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
-
-            BerghemMailer::send($larp, $senderId, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+            $emailToCreate = Email_To_Create::newWithDefault();
+            $emailToCreate->EmailType = Email_To_Create::INTRIGUE;
+            $emailToCreate->LarpId = $larp->Id;
+            $emailToCreate->SenderPersonId = $senderId;
+            $emailToCreate->Subject = $subject;
+            $emailToCreate->Greeting = $greeting;
+            $emailToCreate->Text = $text;
+            $emailToCreate->SenderText = $senderText;
+            $emailToCreate->RegistrationId = $registration->Id;
+            $emailToCreate->create();
         }
     }
+    
+    
+    # Skicka ut intrigerna/karaktärsbladen till alla deltagare
+    public static function sendIntrigue($greeting, $subject, $text, $senderText, LARP $larp, $senderId, $registrationId) {
+        $registration = Registration::loadById($registrationId);
+        $person = $registration->getPerson();
+        if (empty($registration)) return;
+        if (!$registration->hasSpotAtLarp()) return;
+        $roles = Role::getRegistredRolesForPerson($person, $larp);
+        $rolesText = "";
+        
+        if (!empty($roles)) {
+            $rolesText .= "De karaktärer du ska spela är:<br>\n";
+            $rolesText .= "<br>\n";
+            foreach ($roles as $role) {
+                $rolesText .= '* '.$role->Name;
+                if ($role->isMain($larp)) {
+                    $rolesText .= " - Din huvudkaraktär";
+                }
+                $rolesText .= "<br>\n";
+            }
+            
+        }
+        
+        $sheets = static::getAllSheets($roles, $larp);
+        
+        $npcs = NPC::getReleasedNPCsForPerson($person, $larp);
+        $npcText = "";
+        
+        if (!empty($npcs)) {
+            $npcText  = "<br>De NPC'er du ska spela är:<br>\n";
+            $npcText .= "<br>\n";
+            foreach($npcs as $npc) {
+                $npcText .= "Namn: $npc->Name";
+                $npcText .= "<br>\n";
+                $npcText .= "Beskrivning: $npc->Description";
+                $npcText .= "<br>\n";
+                $npcText .= "Tiden när vi vill att du spelar npc'n: $npc->Time";
+                $npcText .= "<br>\n";
+                
+            }
+        }
+        
+        $printText = "<br>Skriv ut de bifogade filerna och ta med till lajvet.<br>";
+        
+        $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
+        
+        BerghemMailer::send($larp, $senderId, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+
+    }
+    
     
     
     public static function sendInvoice(Invoice $invoice, $senderId) {
@@ -504,14 +563,13 @@ class BerghemMailer {
                 if (empty($registration)) continue;
                 if (!$registration->hasSpotAtLarp()) continue;
                 if ($registration->NotComing == 1) continue;
-                $receivers[] = $person->Id;
+                $receivers[] = $person;
                 if ($person->hasPermissionShowName()) $names_in_house[] = $person->Name;
                 else $names_in_house[] = "(Vill inte visa sitt namn)";
             }
             if (empty($receivers)) continue;
             
             $housetext = $housetext . "<br><br>De som bor i huset är: ".implode(", ", $names_in_house);
-            
             
             $subject_house = $subject . " ($house->Name)";
             
@@ -527,7 +585,12 @@ class BerghemMailer {
                 $sheets[scrub($house->Name)] = $pdf->Output($house->Name.'.pdf','S');
             }
             
-            BerghemMailer::send($larp, $senderId, $receivers, $greeting, $housetext, $subject_house, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+            foreach ($receivers as $reciever) {
+                if ($reciever->hasPermissionShowName()) $message = $housetext;
+                else $message = $housetext . "<br><br>Eftersom du har valt att inte visa ditt namn kommer de andra som bor i huset inte se vem du är.";
+                BerghemMailer::send($larp, $senderId, $reciever->Id, $greeting, $message, $subject_house, $senderText, BerghemMailer::DaysAutomatic, $sheets);
+                
+            }
         }
     }
     

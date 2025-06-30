@@ -53,7 +53,7 @@ if (empty($attachment)) {
 
 
 $email = $attachment->getEmail();
-if ($email->toPerson()->Id != $current_person->Id) {
+if ($email->toPerson()->Id != $current_person->Id && !AccessControl::hasAccessLarp($current_person, Larp::loadById($email->LarpId)) && !AccessControl::BOARD && !AccessControl::ADMIN) {
     header('Location: index.php'); //Emailet är inte för denna person
     exit;
     

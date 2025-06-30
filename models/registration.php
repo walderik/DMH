@@ -78,6 +78,7 @@ class Registration extends BaseModel{
         if (isset($arr['LarpPartAcknowledged'])) $this->LarpPartAcknowledged = $arr['LarpPartAcknowledged'];
         if (isset($arr['EvaluationDone'])) $this->EvaluationDone = $arr['EvaluationDone'];
         
+        if (empty($this->FoodChoice)) $this->FoodChoice = null;
         if (empty($this->LarpPartNotAttending)) $this->LarpPartNotAttending = null;
         
     }
@@ -91,6 +92,12 @@ class Registration extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_registration WHERE LARPid = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    public static function countAllComing(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_registration WHERE LARPid = ? AND NotComing=0;";
+        return static::countQuery($sql, array($larp->Id));
     }
     
     

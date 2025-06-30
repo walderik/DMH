@@ -173,7 +173,7 @@ include 'navigation.php';
 			if ($registration->isNotComing()) {
 			?>
 			<tr><td valign="top" class="header">Avbokad</td><td><?php echo ja_nej($registration->NotComing);?></td></tr>
-			<tr><td valign="top" class="header">Återbetalning</td><td><?php echo $registration->ToBeRefunded;?></td></tr>
+			<tr><td valign="top" class="header">Återbetalning</td><td><?php echo $registration->RefundAmount;?></td></tr>
 			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><?php echo $registration->RefundDate;?></td></tr>
 			<?php  }?>
 		</table>		
