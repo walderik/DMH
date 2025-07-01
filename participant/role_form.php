@@ -481,7 +481,7 @@ include 'navigation.php';
 		          $description,
 		          $role->isPC(),
 		          true,
-		          $role->WealthId);
+		          empty($role->WealthId));
 		      Wealth::selectionDropdown($current_larp, false,$role->isPC(), $role->WealthId);
 		      print_participant_question_end($role->isPC());
 		      
