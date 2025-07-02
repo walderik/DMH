@@ -178,7 +178,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $this->SetFont('Arial','',static::$text_fontsize);
         
-        $intrigue_numbers = array();
         
         foreach ($intrigues as $intrigue) {
             if (!$intrigue->isActive()) continue;
@@ -190,7 +189,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $isInSubdivision = $role->inSubdivisionInIntrigue($intrigue);
             
             if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || (!$isInSubdivision && !empty($intrigue->CommonText))) {
-                $intrigue_numbers[$intrigue->Number] = $intrigue->Number;
                 $this->printIntrigue($intrigue, $intrigueActor, true);
                 
                 $this->shortbar();
@@ -242,22 +240,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($this->larp));
             $known_props = array_merge($known_props,$subdivision->getAllKnownProps($this->larp));
         }
-
-        natsort($intrigue_numbers);
-        
-        if (!empty($intrigue_numbers)) {
-            //$this->bar();
-            $y = $this->GetY()+$space;
-            $this->SetXY($left, $y);
-            $this->SetFont('Arial','',static::$text_fontsize-3);
-            $text = encode_utf_to_iso("Intrignummer: " . implode(', ', $intrigue_numbers).".\nDet/dem kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet");
-            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-            $this->SetFont('Arial','',static::$text_fontsize);
-            $y = $this->GetY() + $space;
-            $this->SetXY($left, $y);
-        }
-        
-        
         
         # Dom man känner till från intrigerna
         if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props))) {
@@ -323,6 +305,14 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $role = $intrigueActor->getRole();
             $isInSubdivision = $role->inSubdivisionInIntrigue($intrigue);
         } else $isInSubdivision = false;
+        
+        
+        $text = trim(encode_utf_to_iso("Intrig ".$intrigue->Number.":"));
+        $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+        $y = $this->GetY() + $space;
+        $this->SetXY($left, $y);
+       
+        
         
         if (!empty($intrigue->CommonText) && !$isInSubdivision) {
             $text = trim(encode_utf_to_iso($intrigue->CommonText));
