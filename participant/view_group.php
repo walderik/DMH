@@ -366,25 +366,23 @@ include 'navigation.php';
 			    
 			    
 			    $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
-			    $intrigue_numbers = array();
+
 		        foreach ($intrigues as $intrigue) {
 		            if ($intrigue->isActive()) {
 		                $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $group);
-		                if (!empty($intrigue->CommonText)) echo "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+		                $txt = "";
+		                if (!empty($intrigue->CommonText)) $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                if (!empty($intrigueActor->IntrigueText)) $txt .=  "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
 		                if (!empty($intrigueActor->OffInfo)) {
-		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
+		                    $txt .=  "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
 		                }
 		                
-		                if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) {
-		                    $intrigue_numbers[] = $intrigue->Number;
-		                    echo "<hr>";
+		                if (!empty($txt)) {
+		                    echo "Intrig $intrigue->Number:<br>".$txt."<hr>";
+
 		                }
 		            }
 		        }
-		        if (!empty($intrigue_numbers)) {
-		            echo "<p>Intrignummer " . implode(', ', $intrigue_numbers).". De kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet.</p>";
-                }
                 
                 $known_groups = $group->getAllKnownGroups($current_larp);
                 $known_roles = $group->getAllKnownRoles($current_larp);

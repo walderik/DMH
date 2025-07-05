@@ -313,18 +313,17 @@ include 'navigation.php';
 			    echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
 			    
 			    $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
-			    $intrigue_numbers = array();
 		        foreach ($intrigues as $intrigue) {
 		            if ($intrigue->isActive()) {
 		                $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
-		                if (!empty($intrigue->CommonText) && !$role->inSubdivisionInIntrigue($intrigue)) echo "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
+		                $txt = "";
+		                if (!empty($intrigue->CommonText) && !$role->inSubdivisionInIntrigue($intrigue)) $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                if (!empty($intrigueActor->IntrigueText)) $txt .=  "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
 		                if (!empty($intrigueActor->OffInfo)) {
-		                    echo "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
+		                    $txt .=  "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
 		                }
-		                if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) {
-		                    $intrigue_numbers[] = $intrigue->Number;
-		                    echo "<hr>";
+		                if (!empty($txt)) {
+		                    echo "Intrig $intrigue->Number:<br>".$txt."<hr>";
 		                }
 		            }
 		        }
@@ -348,15 +347,15 @@ include 'navigation.php';
 		            foreach ($subdivisionIntrigues as $intrigue) {
 		                if ($intrigue->isActive()) {
 		                    $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
-		                    if ($subdivision->isVisibleToParticipants()) echo "<strong>För $subdivision->Name</strong><br>";
-		                    if (!empty($intrigue->CommonText)) echo "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                    if (!empty($intrigueActor->IntrigueText)) echo "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
+		                    $txt = "";
+		                    if ($subdivision->isVisibleToParticipants()) $txt .=   "<strong>För $subdivision->Name</strong><br>";
+		                    if (!empty($intrigue->CommonText)) $txt .=   "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                    if (!empty($intrigueActor->IntrigueText)) $txt .=   "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
 		                    if (!empty($intrigueActor->OffInfo)) {
-		                        echo "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
+		                        $txt .=   "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
 		                    }
-		                    if (!empty($intrigueActor->IntrigueText) || !empty($intrigue->CommonText) || !empty($intrigueActor->OffInfo)) {
-		                        $intrigue_numbers[] = $intrigue->Number;
-		                        echo "<hr>";
+		                    if (!empty($txt)) {
+		                        echo "Intrig $intrigue->Number:<br>".$txt."<hr>";
 		                    }
 		                }
 		            }
@@ -376,14 +375,7 @@ include 'navigation.php';
 		            
 		            
 		        }
-		        natsort($intrigue_numbers);
-
-		        if (!empty($intrigue_numbers)) {
-		            echo "<p>Intrignummer " . implode(', ', $intrigue_numbers).". De kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet.</p>";
-                }
-                
-                
-                
+		        
                 if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
 			        echo "<h3>Känner till</h3>";
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";

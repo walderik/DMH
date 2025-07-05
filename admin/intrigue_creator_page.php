@@ -27,9 +27,9 @@ th {
             echo "<table id='$tableId' class='data'>";
             echo "<tr>";
             echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Karaktär</th>";
+            echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Vill inte spela på</th>";
             echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Intrigidéer</th>";
-            echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Mörk Hemlighet</th>";
-            echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Mörk Hemlighet idéer</th>";
+            echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Mörk Hemlighet / Mörk Hemlighet idéer</th>";
             echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Anteckningar</th>";
             
             foreach ($characters as $character) {
@@ -51,14 +51,17 @@ th {
                 echo "</td\n>";
 
                 echo "<td>";
+                if (!empty($player->NotAcceptableIntrigues))  echo "Spelare: ".$player->NotAcceptableIntrigues."<br><br>";
+                if (!empty($character->NotAcceptableIntrigues))  echo "Karaktär: ".$character->NotAcceptableIntrigues;
+                echo "</td>\n";
+
+                echo "<td>";
                 echo $character->IntrigueSuggestions;
                 echo "</td>\n";
 
                 echo "<td>";
                 echo $character->DarkSecret;
-                echo "</td>\n";
-
-                echo "<td>";
+                echo "<br><br>";
                 echo $character->DarkSecretIntrigueIdeas;
                 echo "</td>\n";
 

@@ -145,7 +145,7 @@ class Group_PDF extends PDF_MemImage {
         end($intrigues);
         //fetch key of the last element of the array.
         $lastElementKey = key($intrigues);
-        $intrigue_numbers = array();
+
         
         foreach ($intrigues as $key => $intrigue) {
             if (!$intrigue->isActive()) continue;
@@ -154,7 +154,10 @@ class Group_PDF extends PDF_MemImage {
             if (empty($intrigueActor)) continue;
             
             if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) {
-                $intrigue_numbers[$intrigue->Number] = $intrigue->Number;
+                $text = trim(encode_utf_to_iso("Intrig ".$intrigue->Number.":"));
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
             }
             
             if (!empty($intrigue->CommonText)) {
@@ -178,31 +181,11 @@ class Group_PDF extends PDF_MemImage {
                 $this->SetXY($left, $y);
             }
             
-            /*
-            if($key != $lastElementKey && !empty($intrigueActor->IntrigueText)) {
-                $this->bar();
-                $y = $this->GetY()+$space*2;
-                $this->SetXY($left, $y);
-            }
-            */
             $this->shortbar();
             $y += 2;
             $this->SetXY($left, $y);
             
         }
-        
-        if (!empty($intrigue_numbers)) {
-            //$this->bar();
-            $y = $this->GetY()+$space;
-            $this->SetXY($left, $y);
-            $this->SetFont('Arial','',static::$text_fontsize-3);
-            $text = encode_utf_to_iso("Intrignummer: " . implode(', ', $intrigue_numbers).".\nDet/dem kan behövas om du behöver hjälp av arrangörerna med en intrig under lajvet");
-            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-            $this->SetFont('Arial','',static::$text_fontsize);
-            $y = $this->GetY() + $space;
-            $this->SetXY($left, $y);
-        }
-        
         
         $known_groups = $this->group->getAllKnownGroups($this->larp);
         $known_roles = $this->group->getAllKnownRoles($this->larp);
