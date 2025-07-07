@@ -40,8 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = Role::loadById($_POST['Id']);
         
         $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
-        if (!empty($larp_role) && $larp_role->UserMayEdit == 0) {
-            //Redan anmäld, utan tillåtelse att redigera
+        if (!$role->userMayEdit()) {
+            //Inte tillåtelse att redigera
             header('Location: ../index.php?error=');
             exit;
         }
@@ -60,6 +60,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $role->setValuesByArray($_POST);
 
+        if (!empty($larp_role)) {
+            $role->UserMayEdit = 0;
+        }
+        
         $role->update();
         $role->unapprove($current_larp, false, null);
 
@@ -76,13 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['RoleFunctionId'])) {
             $role->saveAllRoleFunctions($_POST['RoleFunctionId']);
         }
-        
-        
-        if (!empty($larp_role)) {
-            $larp_role->UserMayEdit = 0;
-            $larp_role->update();
-        }
-    }
+     }
     
     header('Location: ../view_role.php?id='.$role->Id);
 }

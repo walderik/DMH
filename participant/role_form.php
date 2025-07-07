@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 
 
-if ($role->isRegistered($current_larp) && !$role->userMayEdit($current_larp)) {
+if (!$role->userMayEdit()) {
     header('Location: ' . $role->getViewLink());
     exit;
 }

@@ -18,4 +18,10 @@ if (isset($_POST['roleId'])) {
     else $group->approve($current_larp, $current_person);
 }
 
+if (isset($_SERVER['HTTP_REFERER'])) {
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    exit;
+}
+
+
 header('Location: ../approval.php');

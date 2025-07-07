@@ -31,7 +31,7 @@ else {
 $roles = $person->getRolesAtLarp($current_larp);
 $userMayEdit = false;
 foreach($roles as $role) {
-    if ($role->userMayEdit($current_larp)) $userMayEdit = true;
+    if ($role->userMayEdit()) $userMayEdit = true;
 }
 
 include 'navigation.php';

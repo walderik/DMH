@@ -241,8 +241,8 @@ function openTab(evt, tabName) {
         		echo "<div class='itemname'>";
         		echo $role->getViewLink();
  
-        		if (!$role->isRegistered($current_larp) || $role->userMayEdit($current_larp)) {
-        		    echo " " . $role->getEditLinkPen(false);
+        		if ($role->userMayEdit()) {
+        		    echo " XX " . $role->getEditLinkPen(false);
         		}
         		
         		if($role->isNeverRegistered()) {

@@ -78,7 +78,7 @@ del {
 		}		
 		?>
 		<?php 
-		if ($role->userMayEdit($current_larp)) {
+		if ($role->userMayEdit()) {
 		    echo "Spelare får ändra på karaktären och därför kan den inte godkännas.";
 		} else {
 		?>

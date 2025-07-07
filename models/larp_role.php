@@ -13,7 +13,7 @@ class LARP_Role extends BaseModel{
     public $EndingMoney;
     public $Result;
     public $IsMainRole = 0;
-    public $UserMayEdit = 0;
+
 
     public static $orderListBy = 'RoleId';
     
@@ -57,13 +57,6 @@ class LARP_Role extends BaseModel{
         return true;
     }
  
-    public static function userMayEdit($roleId, $larpId) {
-        $larp_role = static::loadByIds($roleId, $larpId);
-        if (empty($larp_role)) return false;
-        if ($larp_role->UserMayEdit == 1) return true;
-        return false;
-    }
-    
     
     
     # Hämta relationen baserat på en roll på ett visst lajv
@@ -82,11 +75,11 @@ class LARP_Role extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_larp_role SET Intrigue=?, WhatHappened=?,
                                                                   WhatHappendToOthers=?, WhatHappensAfterLarp=?, StartingMoney=?, EndingMoney=?, Result=?, 
-                                                                  IsMainRole=?, UserMayEdit=? WHERE LARPId=? AND RoleId=?;");
+                                                                  IsMainRole=? WHERE LARPId=? AND RoleId=?;");
         
         if (!$stmt->execute(array($this->Intrigue, $this->WhatHappened, 
             $this->WhatHappendToOthers, $this->WhatHappensAfterLarp, $this->StartingMoney, $this->EndingMoney, $this->Result, 
-            $this->IsMainRole, $this->UserMayEdit, $this->LARPId, $this->RoleId))) {
+            $this->IsMainRole, $this->LARPId, $this->RoleId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -99,11 +92,11 @@ class LARP_Role extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp_role (LARPId, RoleId, Intrigue, WhatHappened,
                                                                 WhatHappendToOthers, WhatHappensAfterLarp, StartingMoney, EndingMoney, Result, 
-                                                                IsMainRole, UserMayEdit) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
+                                                                IsMainRole) VALUES (?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Intrigue, $this->WhatHappened,
             $this->WhatHappendToOthers, $this->WhatHappensAfterLarp, $this->StartingMoney, $this->EndingMoney, $this->Result,
-                                    $this->IsMainRole, $this->UserMayEdit))) {
+                                    $this->IsMainRole))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");

@@ -40,6 +40,7 @@ class Role extends BaseModel{
     public $ApprovedByPersonId;
     public $ApprovedDate;
     public $CreatorPersonId;
+    public $UserMayEdit = 1;
     
 
     public static $orderListBy = 'Name';
@@ -90,6 +91,7 @@ class Role extends BaseModel{
         if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
         if (isset($arr['CreatorPersonId'])) $this->CreatorPersonId = $arr['CreatorPersonId'];
+        if (isset($arr['UserMayEdit'])) $this->UserMayEdit = $arr['UserMayEdit'];
         
         if (isset($this->PersonId) && $this->PersonId=='null') $this->PersonId = null;
         if (isset($this->ReligionId) && $this->ReligionId=='null') $this->ReligionId = null;
@@ -121,7 +123,8 @@ class Role extends BaseModel{
                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, RoleFunctionComment=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
-                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=?, ApprovedByPersonId=?, ApprovedDate=?, CreatorPersonId=? WHERE Id = ?;");
+                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=?, 
+                              ApprovedByPersonId=?, ApprovedDate=?, CreatorPersonId=?, UserMayEdit=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
@@ -130,7 +133,8 @@ class Role extends BaseModel{
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,  
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
             $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
-            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->CreatorPersonId, $this->Id))) {
+            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, 
+            $this->CreatorPersonId, $this->UserMayEdit, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -147,8 +151,9 @@ class Role extends BaseModel{
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId,  
                                                             RoleFunctionComment, Birthplace, CharactersWithRelations, CampaignId, ImageId, 
-                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, IsApproved, ApprovedByPersonId, ApprovedDate, CreatorPersonId) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?);");
+                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, 
+                                    AbilityComment, IsApproved, ApprovedByPersonId, ApprovedDate, CreatorPersonId, UserMayEdit) 
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
@@ -157,7 +162,7 @@ class Role extends BaseModel{
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
             $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
-            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->CreatorPersonId
+            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->CreatorPersonId, $this->UserMayEdit
         ))) {
                 $this->connect()->rollBack();
                 $stmt = null;
@@ -194,8 +199,9 @@ class Role extends BaseModel{
         return false;
     } 
 
-    public function userMayEdit(LARP $larp) {
-        return LARP_Role::userMayEdit($this->Id, $larp->Id);
+    public function userMayEdit() {
+        if ($this->UserMayEdit == 1) return true;
+        return false;
     }
     
     public function getReligion() {
@@ -913,16 +919,14 @@ class Role extends BaseModel{
     
     
     public function getEditLinkPen($isAdmin) {
-        global $current_larp;
         if($isAdmin) {
             return "<a href='edit_role.php?id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";
         }
         else {
-            $larpBefore = $current_larp->LarpBeforeThisWithRegistration($this);
-            if ($this->isPC() && !$this->isRegistered($current_larp) && !empty($larpBefore)) {
-                return "<i class='fa-solid fa-pen' title='Får inte redigeras pga anmälan till $larpBefore->Name' style='text-decoration: line-through;'></i> ";
+            if ($this->userMayEdit()) {
+                return "<a href='role_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
             }
-            return "<a href='role_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
+            return "<i class='fa-solid fa-pen' title='Får inte redigeras. Du får be arrangörerna om tillåtelse' style='text-decoration: line-through;'></i> ";
         }
     }
     

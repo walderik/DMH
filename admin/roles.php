@@ -78,7 +78,7 @@ th {
     		        }
     		        else {
         		        echo $role->getViewLink();
-        		        if ($role->userMayEdit($current_larp)) echo "<br>Deltagaren får ändra karaktären " . showStatusIcon(false);
+        		        if ($role->userMayEdit()) echo "<br>Deltagaren får ändra karaktären " . showStatusIcon(false);
         		        echo "</td>\n";
         		        echo "<td nowrap>";
         		        echo $role->getEditLinkPen(true) . "\n";
