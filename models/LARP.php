@@ -33,6 +33,7 @@ class LARP extends BaseModel{
     public  $ContentDescription;
     public  $EvaluationOpenDate;
     public  $EvaluationLink;
+    public  $LarpHasEnded = 0;
 
     
 //     public static $tableName = 'larp';
@@ -77,6 +78,7 @@ class LARP extends BaseModel{
         if (isset($arr['ContentDescription'])) $this->ContentDescription = $arr['ContentDescription'];
         if (isset($arr['EvaluationOpenDate'])) $this->EvaluationOpenDate = $arr['EvaluationOpenDate'];
         if (isset($arr['EvaluationLink'])) $this->EvaluationLink = $arr['EvaluationLink'];
+        if (isset($arr['LarpHasEnded'])) $this->LarpHasEnded = $arr['LarpHasEnded'];
         
     
         if ($this->EvaluationOpenDate == '') $this->EvaluationOpenDate = null;
@@ -101,7 +103,7 @@ class LARP extends BaseModel{
                  "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, VisibleToParticipants=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=?, ".
                  "LastPaymentDate=?, HasTelegrams=?, HasLetters=?, HasRumours=?, 
                     HasAlchemy=?, LastDayAlchemy=?, LastDayAlchemySupplier=?, HasMagic=?, HasVisions=?, HasCommerce=?,
-                    ChooseParticipationDates=?, Description=?, ContentDescription=?, EvaluationOpenDate=?, EvaluationLink=?  WHERE Id = ?");
+                    ChooseParticipationDates=?, Description=?, ContentDescription=?, EvaluationOpenDate=?, EvaluationLink=?, LarpHasEnded=?  WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
@@ -110,7 +112,7 @@ class LARP extends BaseModel{
             $this->LastPaymentDate, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, 
             $this->HasAlchemy, $this->LastDayAlchemy, $this->LastDayAlchemySupplier, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
             $this->ChooseParticipationDates,
-            $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink, $this->Id))) {
+            $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink, $this->LarpHasEnded, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -127,8 +129,8 @@ class LARP extends BaseModel{
             VisibleToParticipants, RegistrationOpen, PaymentReferencePrefix, NetDays, LastPaymentDate, HasTelegrams, 
             HasLetters, HasRumours, 
             HasAlchemy, LastDayAlchemy, LastDayAlchemySupplier, HasMagic, HasVisions, HasCommerce, 
-            ChooseParticipationDates, Description, ContentDescription,EvaluationOpenDate,EvaluationLink) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?)");
+            ChooseParticipationDates, Description, ContentDescription,EvaluationOpenDate,EvaluationLink, LarpHasEnded) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
@@ -136,7 +138,7 @@ class LARP extends BaseModel{
             $this->VisibleToParticipants, $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->LastPaymentDate, $this->HasTelegrams, 
             $this->HasLetters, $this->HasRumours, 
             $this->HasAlchemy, $this->LastDayAlchemy, $this->LastDayAlchemySupplier, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
-            $this->ChooseParticipationDates, $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink))) {
+            $this->ChooseParticipationDates, $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink, $this->LarpHasEnded))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -431,9 +433,25 @@ class LARP extends BaseModel{
         return 7;
     }
     
+    public static function allLarpsThatHaveEnded() {
+        $sql = "SELECT * from regsys_larp WHERE LarpHasEnded = 0 and EndDate < NOW()";
+        return static::getSeveralObjectsqQuery($sql, null);
+    }
+    
+    //Här körs allt som ska ske efter att ett lajv är slut.
     public function endOfLarp() {
-        if ($larpEnded) exit;
-        if ()
+        if ($this->LarpHasEnded) exit;
+        if ($this->EndDate < now()) exit;
+        $roles = Role::getAllRoles($this);
+        foreach ($roles as $role) {
+            $comingLarps = Larp::comingLarps($role);
+            if (empty($comingLarps)) {
+                $role->UserMayEdit = 1;
+                $role->update();
+            }
+        }
+        $this->LarpHasEnded = 1;
+        $this->update();
     }
     
 }
