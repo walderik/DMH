@@ -595,7 +595,16 @@ include 'navigation.php';
 		    ?>
 
 
-			<div class='center'><input type='<?php echo $type ?>' class='button-18' value='<?php echo default_value('action') ?>'></div>
+			<div class='center'>
+			<input type='<?php echo $type ?>' name='SaveButton' class='button-18' value='<?php echo default_value('action') ?>'>
+			<?php 
+			if ($role->isNPC() || $role->isRegistered($current_larp)) {
+			    echo "<button type='$type' name='SaveAndLockButton' value='1' class='button-18'><i class='fa-solid fa-share'></i> ";
+			    default_value('action');
+			    echo " och skicka in för godkännande</button>";
+			}
+			?>
+			</div>
 		</form>
 	</div>
 

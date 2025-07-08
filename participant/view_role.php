@@ -59,7 +59,7 @@ include 'navigation.php';
 			echo $role->Name;
     		//Karaktärsblad
     		if ($role->isPC()) echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
-    		echo " " . $role->getEditLinkPen(false);
+    		if ($role->userMayEdit()) echo " " . $role->getEditLinkPen(false);
 
     		?>
 		</div>

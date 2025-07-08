@@ -4,7 +4,6 @@ global $root, $current_person, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'];
 require $root . '/includes/init.php';
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
@@ -38,8 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
     } elseif ($operation == 'update') {
         $role = Role::loadById($_POST['Id']);
-        
-        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+
         if (!$role->userMayEdit()) {
             //Inte tillåtelse att redigera
             header('Location: ../index.php?error=');
@@ -60,10 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $role->setValuesByArray($_POST);
 
-        if (!empty($larp_role)) {
-            $role->UserMayEdit = 0;
-        }
-        
         $role->update();
         $role->unapprove($current_larp, false, null);
 
@@ -80,6 +74,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['RoleFunctionId'])) {
             $role->saveAllRoleFunctions($_POST['RoleFunctionId']);
         }
+     }
+     
+     if (isset($_POST['SaveAndLockButton'])) {
+         $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+         if ($role->isNPC() || !empty($larp_role)) {
+             $role->UserMayEdit = 0;
+             $role->update();
+         }
+         
+         
      }
     
     header('Location: ../view_role.php?id='.$role->Id);
