@@ -30,7 +30,6 @@ class LARP_Role extends BaseModel{
         if (isset($post['EndingMoney'])) $larp_role->EndingMoney = $post['EndingMoney']; 
         if (isset($post['Result'])) $larp_role->Result = $post['Result'];
         if (isset($post['IsMainRole'])) $larp_role->IsMainRole = $post['IsMainRole']; 
-        if (isset($post['UserMayEdit'])) $larp_role->UserMayEdit = $post['UserMayEdit'];
         return $larp_role;
     }
     
