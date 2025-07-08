@@ -185,7 +185,7 @@ include 'navigation.php';
 	Efter anmälan kommer du att kunna ladda upp en bild på din karaktär. 
 	<?php } else {?>
 	Bekriv NPC'n så noggrant som möjligt. Dels för att alla i gruppen ska kunna veta vem det är och dels för att arrangörena ska få reda på vem det är.<br>
-	Precis som med spelade karaktärer kommer NPC'n att godkännas. 
+	Precis som med spelade karaktärer krävs det att NPC'n är godkända av arrangör. 
 	<?php }?>
 	</div>
 	
@@ -226,22 +226,27 @@ include 'navigation.php';
 		    true,
 		    false);
 		
-		if ($role->isPC()) { 
-		  $description = "Beskriv allt om karaktären som arrangörerna behöver veta.<br>
-                Allt som karaktären har råkat ut för är sådan som kan påverka händelser i karaktärens framtid.
-                Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
-                att du därmed får en intressantare lajvupplevelse.";
-		  print_participant_textarea(
-		      "Beskrivning",
-		      $description,
-		      "Description",
-		      $role->Description,
-		      "rows='4' maxlength='15000'",
-		      true,
-		      false);
-		} else {
-		    echo "<input type='hidden' id='Description' name='Description' value='$role->Description;'>";
-		}
+    	if ($role->isPC()) {
+           $description = "Beskriv allt om karaktären som arrangörerna behöver veta.<br>
+            Allt som karaktären har råkat ut för är sådan som kan påverka händelser i karaktärens framtid.
+            Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
+            att du därmed får en intressantare lajvupplevelse.";
+    	} else {
+    	    $description = "Beskriv allt om karaktären som arrangörerna behöver veta.<br>
+            Här vill vi att ni skriver allt som rör karaktären, vad för egenskaper denne har, hemliga agendor, Vad driver rollen, 
+    	    vad det är du/ni vill att denne är bra/dålig på osv. Detta för att vi som arrangörer skall förstå karaktären. 
+    	    Glöm inte heller att skriva vad för off:önskemål/tankar som finns kring karaktären.";
+     	}
+     	
+	  print_participant_textarea(
+	      "Beskrivning",
+	      $description,
+	      "Description",
+	      $role->Description,
+	      "rows='4' maxlength='15000'",
+	      true,
+	      false);
+
 
 		$description = "Vad vet gruppen om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar.
 		      Gärna roliga anekdoter från förr. Och vad de i gruppen gillar med karaktären, eller inte gillar.
@@ -258,7 +263,7 @@ include 'navigation.php';
 		    true,
 		    false);
 		
-	    $description = "Vad är allmänt känt om karaktären? Beskriv sådant som de flesta vet om dig. 
+	    $description = "Vad är allmänt känt om karaktären? Beskriv sådant som de flesta vet om eller kan ha hört om karaktären. 
             Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter mellan karaktärerna och då blir det roligare spel.";
 	    if ($role->isPC()) {
 	        $description .= "<br><br>
@@ -430,9 +435,18 @@ include 'navigation.php';
 		    $role->isPC(),
 		    true);
 
+		if ($role->isPC()) {
+		    $headline = "Varför befinner sig karaktären på platsen?";
+		    $description = "Varför är karaktären på plats? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?";
+		}
+		else {
+		    $headline = "Om karaktären finns på plats, varför?";
+		    $description = "Om karaktären är på plats varför är karaktären det? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?<br>".
+		                     "Om karaktären inte är på plats, var är den då?";
+		}
 		print_participant_textarea(
-		    "Varför befinner sig karaktären på platsen?",
-		    "Varför är karaktären på plats? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?",
+		    $headline,
+		    $description,
 		    "ReasonForBeingInSlowRiver",
 		    $role->ReasonForBeingInSlowRiver,
 		    "rows='4' maxlength='60000'",
