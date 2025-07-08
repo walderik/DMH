@@ -18,7 +18,7 @@ else $isReserve = false;
 ?>
 <table>
 <?php 
-if ($person->isNotComing($current_larp)) {
+if (!is_null($person) && $person->isNotComing($current_larp)) {
     echo "<tr><td></td><td><strong>Karaktären kommer inte på lajvet</strong></td></tr>";
 }
 ?>
@@ -27,18 +27,17 @@ if ($role->isMysLajvare()) {
     echo "<tr><td></td><td><strong>Bakgrundslajvare</strong></td></tr>";
 }?>
 		
-			<tr>
-    			<td valign="top" class="header">Spelas av</td>
-    			<td>
-    			<?php if ($isRegistered) { ?>
-    			
-    			<a href ="view_person.php?id=<?php echo $role->PersonId;?>">
-    			<?php } ?>
-    			<?php echo $person->Name; ?></a>&nbsp;
-    			<?php  echo contactEmailIcon($person); ?>&nbsp;
-    			
-    			(<?php echo $person->getAgeAtLarp($current_larp) ?> år), <?php echo $person->getExperience()->Name?>
-			</td>
+	<tr>
+		<td valign="top" class="header">Spelas av</td>
+		<td>
+		<?php 
+		if (!is_null($person) && $isRegistered) { 
+		     echo $person->getViewLink()." ";
+		     echo contactEmailIcon($person)." "; 
+		     echo "(".$person->getAgeAtLarp($current_larp)." år), ".$person->getExperience()->Name;
+		} elseif (is_null($person)) echo "NPC";
+		?>
+		</td>
 		<?php 
 		if ($role->hasImage()) {
 		    

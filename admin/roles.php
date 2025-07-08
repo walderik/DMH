@@ -45,6 +45,7 @@ th {
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Gruppering</th>".
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
+    		        //Sidan visar bara anmälda karaktärer, aldrig npc.
     		        $person = $role->getPerson();
     		        $registration=$person->getRegistration($current_larp);
     		        echo "<tr>\n";
@@ -77,7 +78,7 @@ th {
     		        }
     		        else {
         		        echo $role->getViewLink();
-        		        if ($role->userMayEdit($current_larp)) echo "<br>Deltagaren får ändra karaktären " . showStatusIcon(false);
+        		        if ($role->userMayEdit()) echo "<br>Deltagaren får ändra karaktären " . showStatusIcon(false);
         		        echo "</td>\n";
         		        echo "<td nowrap>";
         		        echo $role->getEditLinkPen(true) . "\n";
@@ -217,6 +218,7 @@ th {
     		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
+    		        //Sidan visar bara anmälda karaktärer, aldrig npc.
     		        $person = $role->getPerson();
     		        $registration=$person->getRegistration($current_larp);
     		        echo "<tr>\n";

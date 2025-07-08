@@ -5,14 +5,14 @@ $root = $_SERVER['DOCUMENT_ROOT'];
 require $root . '/includes/init.php';
 
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
     if ($operation == 'insert') {
         $role = Role::newFromArray($_POST);
         $person = $role->getPerson();
-        $previous_roles = $person->getAliveRoles($current_larp);
+        if (is_null($person)) $person = $current_person;
+        $previous_roles = $person->getAllRoles($current_larp);
         if (!empty($previous_roles)) {
             foreach ($previous_roles as $previous_role) {
                 if ($role->Name == $previous_role->Name) {
@@ -40,13 +40,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = Role::loadById($_POST['Id']);
         
         $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
-        if (!empty($larp_role) && $larp_role->UserMayEdit == 0) {
-            //Redan anmäld, utan tillåtelse att redigera
+        if (!$role->userMayEdit()) {
+            //Inte tillåtelse att redigera
             header('Location: ../index.php?error=');
             exit;
         }
-        if ($role->PersonId != $current_person->Id) {
-            header('Location: index.php'); //Inte din karaktär
+        if ($role->isPC() && $role->PersonId != $current_person->Id) {
+            header('Location: ../index.php'); //Inte din karaktär
+            exit;
+        }
+        $group = $role->getGroup();
+        if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
+            header('Location: ../index.php'); //NPC som inte är med i din grupp
             exit;
         }
         if ($role->isApproved()) {
@@ -55,6 +60,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $role->setValuesByArray($_POST);
 
+        if (!empty($larp_role)) {
+            $role->UserMayEdit = 0;
+        }
+        
         $role->update();
         $role->unapprove($current_larp, false, null);
 
@@ -71,15 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['RoleFunctionId'])) {
             $role->saveAllRoleFunctions($_POST['RoleFunctionId']);
         }
-        
-        
-        if (!empty($larp_role)) {
-            $larp_role->UserMayEdit = 0;
-            $larp_role->update();
-        }
-    }
+     }
     
-    
-    
-    header('Location: ../index.php');
+    header('Location: ../view_role.php?id='.$role->Id);
 }

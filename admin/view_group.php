@@ -50,8 +50,24 @@ function print_role($role, $group, $isRegistered) {
     echo "<td>$role->Profession</td>";
 
     $person = $role->getPerson();
-    echo "<td>" . $person->getViewLink() . "</td>";
+    if (!is_null($person)) {
+        echo "<td>" . $person->getViewLink() . "</td>";
+            
+        echo "<td>";
+        if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+            echo "Ansvarig vuxen är ";
+            $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
+            if (!empty($registration->GuardianId)) { 
+                $guardian = $registration->getGuardian();   
+                echo $guardian->getViewLink();
+            } else echo showStatusIcon(false);
+            
+        }
         
+
+        echo "</td>";
+    } else echo "<td>NPC</td>";
+
     echo "<td>";
     if ($isRegistered && ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)) {
         echo "Ansvarig vuxen är ";
@@ -64,6 +80,7 @@ function print_role($role, $group, $isRegistered) {
     }
     
     echo "</td>";
+
 
     echo "</tr>";
 }
@@ -120,13 +137,13 @@ include 'navigation.php';
 		<?php }?>
 		<div>
 		<table>
+			<tr><td valign="top" class="header">Gruppansvarig</td><td>
 		<?php 
 		$groupleader = $group->getPerson();
-		$groupleader_registration = $groupleader->getRegistration($current_larp);
 		
-		?>
-			<tr><td valign="top" class="header">Gruppansvarig</td><td>
-			<?php if ($isRegistered) {
+		if (!is_null($groupleader)) {
+		    $groupleader_registration = $groupleader->getRegistration($current_larp);
+		     if ($isRegistered) {
 			    if (isset($groupleader_registration) && !$groupleader_registration->isNotComing()) {
 					echo $groupleader->getViewLink();
 			    } elseif (!isset($groupleader_registration)) {
@@ -137,8 +154,9 @@ include 'navigation.php';
 			 } else {
 			    echo $groupleader->Name;
 			}
-			?>
-			<?php echo contactEmailIcon($groupleader) ?>
+			echo contactEmailIcon($groupleader);
+		}
+		?>
 			</td>
 					<?php 
 					if ($group->hasImage()) {

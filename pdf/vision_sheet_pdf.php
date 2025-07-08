@@ -98,7 +98,6 @@ class VisionSheet_PDF extends PDF_MemImage {
         $space = 3;
         
         $this->role = $role_in;
-        $this->person = $this->role->getPerson();
         
         $this->larp = $larp_in;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);

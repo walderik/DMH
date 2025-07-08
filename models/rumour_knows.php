@@ -58,6 +58,7 @@ class Rumour_knows extends BaseModel{
         if (!empty($this->RoleId)) {
             $role = Role::loadById($this->RoleId);
             $person = $role->getPerson();
+            if (is_null($person)) return "NPC";
             $registration=$person->getRegistration($current_larp);
             if ($registration->isNotComing()) return "<s>" . $role->getViewLink() . "</s>";
             else return $role->getViewLink();

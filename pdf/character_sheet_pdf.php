@@ -96,8 +96,8 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $persn = $this->person;        
         $this->set_header($left, 'Spelare');
         
-        if (empty($persn)) {
-            $namn = 'Okänd (?)';
+        if (empty($persn) || is_null($persn)) {
+            $namn = 'NPC';
         } else {
             $age = $persn->getAgeAtLarp($this->larp);
             $namn = "$persn->Name ($age)";

@@ -99,7 +99,6 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
         
         $this->alchemist = $alchemist_in;
         $this->role = $this->alchemist->getRole();
-        $this->person = $this->role->getPerson();
         
         $this->larp = $larp_in;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
@@ -173,8 +172,11 @@ class AlchemyAlchemistSheet_PDF extends PDF_MemImage {
                 $list .= $supplier_role->Name;
                 $group = $supplier_role->getGroup();
                 if (isset($group)) $list .= " i $group->Name";
-                $housing = $supplier_role->getPerson()->getHouseAtLarp($this->larp);
-                if (isset($housing) && ($this->larp->DisplayHousing==1)) $list .= " Bor: $housing->Name";
+                $supplier_person = $supplier_role->getPerson();
+                if (!is_null($supplier_person)) {
+                    $housing = $supplier_role->getPerson()->getHouseAtLarp($this->larp);
+                    if (isset($housing) && ($this->larp->DisplayHousing==1)) $list .= " Bor: $housing->Name";
+                }
                 $list .= "\n\n";
             }
             $y = $this->GetY() + $space*2;

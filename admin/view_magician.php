@@ -43,7 +43,10 @@ include 'magic_navigation.php';
     				<td>Spelas av 
     				</td>
     				<td>
-                		<?php echo $person->getViewLink().contactEmailIcon($person); ?>
+                		<?php 
+                		if (!is_null($person)) echo $person->getViewLink()." ".contactEmailIcon($person); 
+                		else echo "NPC";
+                		?>
                     </td>
                 </tr>
     			<tr>

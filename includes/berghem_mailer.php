@@ -96,9 +96,10 @@ class BerghemMailer {
     
     public static function send_registration_information_mail_to_group(Role $role, Group $group, Larp $larp) {
         $admin_person = $group->getPerson();
+        if (is_null($admin_person)) return;
         $player = $role->getPerson();
         $text  = "$role->Name ";
-        if ($player->hasPermissionShowName()) {
+        if (!is_null($player) && $player->hasPermissionShowName()) {
             $text .= "spelad av $player->Name ";
         }
         $text .= "är anmäld till $group->Name.<br>\n";
@@ -166,6 +167,7 @@ class BerghemMailer {
     public static function send_groupregistration_mail(LARP_Group $larp_group, Person $sender) {
         $group = $larp_group->getGroup();
         $group_leader = $group->getPerson();
+        if (is_null($group_leader)) return;
         $larp = $larp_group->getLARP();
         $campaign = $larp->getCampaign();
         
@@ -287,6 +289,7 @@ class BerghemMailer {
     
     public static function send_role_approval_mail(Role $role, LARP $larp, $senderId) {
         $person = $role->getPerson();
+        if (is_null($person)) return;
         $mail = $person->Email;
         
         $text  = "Din karaktär $role->Name är nu godkänd för att vara med i lajvet $larp->Name<br>\n";
@@ -298,6 +301,7 @@ class BerghemMailer {
     
     public static function send_role_unapproval_mail(Role $role, LARP $larp, $senderId) {
         $person = $role->getPerson();
+        if (is_null($person)) return;
         $text  = "Din karaktär $role->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din karaktär godkänd.\n";
         
         $sheets = static::getAllSheets(array($role), $larp);
@@ -307,6 +311,7 @@ class BerghemMailer {
     
     public static function send_group_approval_mail(Group $group, LARP $larp, $senderId) {
         $person = $group->getPerson();
+        if (is_null($person)) return;
         
         $text  = "Din grupp $group->Name är nu godkänd för att vara med i lajvet $larp->Name.\n";
         
@@ -315,6 +320,7 @@ class BerghemMailer {
     
     public static function send_group_unapproval_mail(Group $group, LARP $larp, $senderId) {
         $person = $group->getPerson();
+        if (is_null($person)) return;
         
         $text  = "Din grupp $group->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din grupp godkänd.\n";
         

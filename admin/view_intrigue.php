@@ -458,7 +458,8 @@ th, td {
         echo "</span>";
         
         echo "<span class='icons'>";
-        if ($role->getPerson()->getRegistration($current_larp)->isNotComing()) {
+        $person = $role->getPerson();
+        if (!is_null($person) && $person->getRegistration($current_larp)->isNotComing()) {
             echo "<i class='fa-solid fa-triangle-exclamation' title='Spelaren är avbokad' style='color:red;'></i> ";
         }
         echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut karaktär som får intrigen'></i></a> ";

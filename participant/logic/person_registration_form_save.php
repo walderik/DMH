@@ -80,6 +80,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $roleIdArr = $_POST['roleId'];
             
             foreach ($roleIdArr as $roleId) {
+                $role = Role::loadById($roleId);
+                $role->UserMayEdit = 0;
+                $role->update();
                 
                 $larp_role = Reserve_LARP_Role::newWithDefault();
                 $larp_role->RoleId = $roleId;
@@ -162,6 +165,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $roleIdArr = $_POST['roleId'];
     
             foreach ($roleIdArr as $roleId) {
+                $role = Role::loadById($roleId);
+                $role->UserMayEdit = 0;
+                $role->update();
                 
                 $larp_role = LARP_Role::newWithDefault();
                 $larp_role->RoleId = $roleId;

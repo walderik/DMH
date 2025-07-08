@@ -48,9 +48,12 @@ th {
     		        $titledeeds = Titledeed::getAllForRole($role);
     		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
     		        $person = $role->getPerson();
-    		        $registration=$person->getRegistration($current_larp);
-    		        $isComing = !empty($larp_role);
-    		        if (!empty($registration) && $registration->isNotComing()) $isComing=false;
+    		        if (is_null($person)) $isComing=false; 
+    		        else {
+        		        $registration=$person->getRegistration($current_larp);
+        		        $isComing = !empty($larp_role);
+        		        if (!empty($registration) && $registration->isNotComing()) $isComing=false;
+    		        }
     		        if (($isComing && $role->is_trading($current_larp)) || !empty($titledeeds)) {
     		            if ($isComing) echo "<tr>\n";
     		            else echo "<tr class='show_hide hidden'>\n";

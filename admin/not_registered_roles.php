@@ -31,7 +31,9 @@ if (isset($message_message) && strlen($message_message)>0) {
     		        echo "<td>";
 					echo $group->getViewLink();
     		        echo "</td>\n";
-    		        echo "<td>$person->Name</td>";
+    		        echo "<td>";
+    		        if (!is_null($person)) echo $person->Name;
+    		        echo "</td>";
     		        $larp = $group->lastLarp();
     		        echo "<td>";
     		        if (empty($larp)) {
@@ -67,7 +69,7 @@ if (isset($message_message) && strlen($message_message)>0) {
     		    echo "<tr><th>Namn</th><th>Yrke</th><th>Grupp</th><th>Spelare</th><th>Senast spelad</th><th>Lägg till</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
-    		        if (!in_array($person, $reserve_persons)) {
+    		        if (!is_null($person) && !in_array($person, $reserve_persons)) {
         		        echo "<tr>\n";
         		        echo "<td>" . $role->getViewLink();
         		        echo "</td>\n";

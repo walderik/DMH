@@ -222,7 +222,9 @@ th {
     		        echo "<td><input id ='Role$role->Id' type='$type' name='RoleId$array' value='$role->Id'></td>";
     		        echo "<td>$role->Name</td>\n";
     		        echo "<td>" . $role->Profession . "</td>\n";
-    		        echo "<td>" . $person->getAgeAtLarp($current_larp)."</td>\n";
+    		        echo "<td>";
+    		        if (!is_null($person)) echo $person->getAgeAtLarp($current_larp);
+    		        echo "</td>\n";
     		        if (IntrigueType::isInUse($current_larp)) {
     		          echo "<td>".commaStringFromArrayObject($role->getIntrigueTypes())."</td>";
     		        }
@@ -236,7 +238,10 @@ th {
     		            echo "<td>$group->Name</td>\n";
     		        }
 
-                    echo "<td>$person->Name</td>";
+                    echo "<td>";
+                    if (!is_null($person)) echo $person->Name;
+                    else echo "NPC";
+                    echo "</td>";
     		        echo "</tr>\n";
     		    }
     		    echo "</table>";
@@ -286,7 +291,10 @@ th {
     		        echo "<td>$group->Name</td>\n";
     		    }
     		    $person = $role->getPerson();
-    		    echo "<td>$person->Name</td>";
+    		    echo "<td>";
+    		    if (!is_null($person)) echo $person->Name;
+    		    else echo "NPC";
+    		    echo "</td>";
     		    
     		    echo "</tr>\n";
     		}

@@ -108,7 +108,7 @@ class BaseModel extends Dbh{
     }
     
     
-    protected static function getSeveralObjectsqQuery($sql, $var_array) {
+    public static function getSeveralObjectsqQuery($sql, $var_array) {
         $stmt = static::connectStatic()->prepare($sql);
         
         if (!$stmt->execute($var_array)) {

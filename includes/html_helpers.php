@@ -370,8 +370,52 @@ function remove_housecaretaker(Person $person, House $house) {
     return " <a href='logic/remove_caretaker.php?person_id=$person->Id&houseId=$house->Id' $confirm>$i</a>";
 }
 
+
+
+function print_participant_question_start(String $title, String $description, bool $isRequired, bool $isIntrigue, bool $mayCollapse) {
+    echo "<div class='itemcontainer ";
+    if ($isIntrigue) echo "intrigue";
+    echo "'>\n";
+    if ($isRequired || !$mayCollapse) {
+        echo "<div class='itemname'>$title&nbsp;";
+        if ($isRequired) echo "<font style='color:red'>*</font>";
+        echo "</div>\n";
+    } else echo "<details><summary class='itemname'>$title</summary>";
+    if (!empty($description)) {
+        echo $description;
+        echo "<br>\n";
+    };
+}
+
+function print_participant_question_end(bool $isRequired) {
+    if (!$isRequired) echo "</details>";
+    echo "</div>\n";
+}
+
+function print_participant_text_input(String $title, String $description, String $id, $value, String $inputParams, bool $isRequired, bool $isIntrigue) {
+    print_participant_question_start($title, $description, $isRequired, $isIntrigue, empty($value));
+    echo "<input ";
+    if ($isIntrigue && $isRequired) echo "class='requiredIntrigueField' ";
+    echo "type='text' id='$id' name='$id' value='".htmlspecialchars($value)."' $inputParams";
+    if ($isRequired) echo " required";
+    echo ">\n";
+    print_participant_question_end($isRequired);
+}
+
+function print_participant_textarea(String $title, String $description, String $id, $value, String $inputParams, bool $isRequired, $isIntrigue) {
+    print_participant_question_start($title, $description, $isRequired, $isIntrigue, empty($value));
+    echo "<textarea ";
+    if ($isIntrigue && $isRequired) echo "class='requiredIntrigueField' ";
+    echo "type='text' id='$id' name='$id' $inputParams";
+    if ($isRequired) echo " required";
+    echo ">$value</textarea>\n";
+    print_participant_question_end($isRequired);
+ }
+
+
 function linkify($str) {
     $url_pattern = '/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/';
     $str= preg_replace($url_pattern, '<a href="$0" target="_blank">$0</a>', $str);
     return $str;
 }
+

@@ -99,7 +99,6 @@ class AlchemySupplierSheet_PDF extends PDF_MemImage {
         
         $this->supplier = $supplier_in;
         $this->role = $this->supplier->getRole();
-        $this->person = $this->role->getPerson();
         
         $this->larp = $larp_in;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);

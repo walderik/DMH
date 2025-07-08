@@ -58,7 +58,8 @@ if (empty($role)) {
         $children = array();
         $roles = Role::getAllMainRoles($current_larp, false);
         foreach ($roles as $role) {
-            if ($role->getPerson()->getAgeAtLarp($current_larp) < 16) $children[] = $role;
+            $person = $role->getPerson();
+            if (!is_null($person)) if ($person->getAgeAtLarp($current_larp) < 16) $children[] = $role;
         }
         $pdf->selected_character_sheets($children, $current_larp, $bara_intrig, $all_info);
     }

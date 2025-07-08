@@ -32,7 +32,6 @@ else {
     $referer = "";
 }
 
-$person = $role->getPerson();
 
 include 'navigation.php';
 ?>

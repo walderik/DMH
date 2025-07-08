@@ -77,4 +77,7 @@ if (!Email::handleEmailQueue()) {
 //     echo "<h1>Failing sending Email</h1>"; # Vad gör vi nu? Skicka felnotering till admin?
 }
 
+$endedLarps = LARP::allLarpsThatHaveEnded();
+foreach ($endedLarps as $larp) $larp->endOfLarp();
+
 

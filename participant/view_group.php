@@ -38,14 +38,20 @@ $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
 $main_characters_in_group = Role::getAllMainRolesInGroup($group, $current_larp);
 $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($group, $current_larp);
 $allUnregisteredRoles = Role::getAllUnregisteredRolesInGroup($group, $current_larp);
+$NPCs_in_group = Role::getAllNPCsInGroup($group);
 
 function print_role(Role $role, Group $group, $isComing) {
     global $current_person, $current_larp, $type;
+    $isNPC = false;
+    if (is_null($role->PersonId)) $isNPC = true; 
     
     if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
     else echo "<li style='display:table-cell; width:49%;'>\n";
     
-    echo "<div class='name'>$role->Name";
+    echo "<div class='name'>";
+    if ($isNPC) {
+        echo $role->getViewLink();
+    } else echo $role->Name;
     if ($current_person->isGroupLeader($group)) {
         echo " <a href='logic/remove_group_member.php?groupID=".$group->Id."&roleID=".$role->Id."' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
         echo "<i class='fa-solid fa-trash-can'></i>";
@@ -56,9 +62,17 @@ function print_role(Role $role, Group $group, $isComing) {
     if ($role->isMain($current_larp)==0) {
         echo "Sidokaraktär<br>";
     }
-    echo "Spelas av ".$role->getPerson()->Name."<br>";
+
+    echo "Spelas av ";
+
+    if ($isNPC) echo "NPC";
+    else {
+        $person =  $role->getPerson();
+        $person->Name;
+    }
+    echo "<br>";
     
-    if ($isComing && $role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    if ($isComing && !$isNPC && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         $guardian = $role->getRegistration($current_larp)->getGuardian();
         if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
         else echo "Ansvarig vuxen är inte utpekad.";
@@ -301,7 +315,44 @@ include 'navigation.php';
 			echo "</div>\n";
 		}
 		?>
+		
+		<div class='itemcontainer'>
+		<div class='itemname'>NPC'er i gruppen</div>
+
+		<?php 
+		echo "<div class='container' style ='box-shadow: none; margin: 0px; padding: 0px;'>\n";
+		if (empty($NPCs_in_group)) {
+		    echo "Det finns inga NPC'er i gruppen än.";
+		}
+		else {
+		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
+		    foreach ($NPCs_in_group as $role) {
+		        print_role($role, $group, true);
+		        $temp++;
+		        if($temp==$columns) {
+		            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+		            $temp=0;
+		        }
+		    }
+		    $temp=0;
+		    echo "</ul>\n";
+
+		}
+		
+		echo "</div>\n";
+		?>
+		<div class='center'><a href='role_form.php?action=insert&type=npc&groupId=<?php echo $group->Id ?>'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-person'></i> &nbsp;Skapa ny NPC i gruppen</button></a></div>
+
+
+		
 		</div>
+		
+		
+		
+		</div>
+		    
+		    
+		    
 		    
 		<div class='itemselector'>
 		<div class="header">

@@ -37,19 +37,22 @@ function print_role($group_member) {
     global $current_larp;
     
     echo $group_member->getViewLink();
-	echo " - " .
-        $group_member->Profession . " spelas av " .
-        $group_member->getPerson()->getViewLink();
+    echo " - " . $group_member->Profession;
+    $person = $group_member->getPerson();
+    if (!is_null($person)) {
+        echo " spelas av " . $person->getViewLink();
         
-        if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+        if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+            
             echo ", ansvarig vuxen är ";
+            $registration = Registration::loadByIds($person->Id, $current_larp->Id);
             if (!empty($registration->GuardianId)) {
-                $group_member->getRegistration($current_larp)->getGuardian()->Name;
+                $registration->getGuardian()->Name;
             }
             
         }
-        echo "<br>";
-        
+    } else echo " NPC";
+    echo "<br>";
 }
 
 include 'navigation.php';
@@ -59,7 +62,12 @@ include 'navigation.php';
 			<?php echo $current_group->Name . " " . $current_group->getEditLinkPen(true) ?>
 		</h1>
 		<table>
-			<tr><td valign="top" class="header">Gruppansvarig</td><td><?php echo $current_group->getPerson()->getViewLink()?></td></tr>
+			<tr><td valign="top" class="header">Gruppansvarig</td><td>
+			<?php 
+			$groupLeader = $current_group->getPerson();
+			if (!is_null($groupLeader)) echo $groupLeader->getViewLink()
+			?>
+			</td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo $current_group->Description;?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo $current_group->DescriptionForOthers;?></td></tr>
 			<tr><td valign="top" class="header">Vänner</td><td><?php echo $current_group->Friends;?></td></tr>

@@ -118,7 +118,12 @@ include 'navigation.php';
 		<table>
  			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
  			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($role->Name); ?>" size="100" maxlength="250" required></td></tr>
-			<tr><td valign="top" class="header">Spelas av</td><td><?php echo $role->getPerson()->Name; ?></td></tr>
+			<tr><td valign="top" class="header">Spelas av</td><td>
+			<?php 
+			$person = $role->getPerson();
+			if (!is_null($person)) echo $person->Name; 
+			else echo "NPC";
+			?></td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>
 			<td><?php selectionByArray('Group', Group::getAllRegistered($current_larp), false, false, $role->GroupId); ?></td></tr>

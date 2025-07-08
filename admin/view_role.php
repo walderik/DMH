@@ -60,13 +60,18 @@ include 'navigation.php';
 		    echo "<strong>Ej godkänd</strong>";
 		    $editButton = "Godkänn";
 		}		
+		if ($role->userMayEdit()) {
+		    echo "<br>Spelaren får ändra på karaktären och därför kan den varken godkännas eller underkännas.";
+		} else { 
+		     echo "<form action='logic/toggle_approve_role.php' method='post'><input type='hidden' id='roleId' name='roleId' value='$role->Id'><input type='submit' value='$editButton'></form>";
+		} 
+		
 		?>
-        <form action="logic/toggle_approve_role.php" method="post"><input type="hidden" id="roleId" name="roleId" value="<?php echo $role->Id;?>"><input type="submit" value="<?php echo $editButton;?>"></form>
 		<br>
 		
             <?php 
             if ($isRegistered && !$isReserve) {
-                if ($larp_role->UserMayEdit  == 1) {
+                if ($role->userMayEdit()) {
                     echo "Deltagaren får ändra karaktären " . showStatusIcon(false);
                     $editButton = "Ta bort tillåtelsen att ändra";
                 }

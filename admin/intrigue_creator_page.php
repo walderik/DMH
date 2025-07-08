@@ -39,7 +39,8 @@ th {
                 $player = $character->getPerson();
                 echo "<br>";
                 echo "Spelas av: ";
-                echo $player->getViewLink();
+                if (!is_null($player)) echo $player->getViewLink();
+                else echo "NPC";
 
                 $group = $character->getGroup();
                 if (!is_null($group)){

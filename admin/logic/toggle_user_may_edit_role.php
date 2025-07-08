@@ -6,26 +6,26 @@ if (!isset( $_POST['roleId'])) {
     exit;
 }
 
-$larp_role = LARP_Role::loadByIds($_POST['roleId'], $current_larp->Id);
-if (empty($larp_role)) {
+$role = Role::loadById($_POST['roleId']);
+if (empty($role)) {
     header('Location: ../index.php');
     exit;
 }
 
 
-if ($larp_role->UserMayEdit == 0) {
-    $larp_role->UserMayEdit = 1;
+if ($role->UserMayEdit == 0) {
+    $role->UserMayEdit = 1;
 
 }
 else {
-    $larp_role->UserMayEdit = 0;
+    $role->UserMayEdit = 0;
 }
 
-$larp_role->update();
+$role->update();
 
 
-if (isset($_POST['Referer']) && $_POST['Referer']!="") {
-    header('Location: ' . $_POST['Referer']);
+if (isset($_SERVER['HTTP_REFERER'])) {
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit;
 }
 

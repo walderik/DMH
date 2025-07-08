@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
         $persons_in_group = Person::getPersonsInGroupAtLarp($group, $current_larp);
         $group_leader = $group->getPerson();
-        if (!existsInArray($group_leader, $persons_in_group)) {
+        if (!is_null($group_leader) && !existsInArray($group_leader, $persons_in_group)) {
             $persons_in_group[] = $group_leader;
         }
         
@@ -50,21 +50,24 @@ function existsInArray($entry, $array) {
 
 function print_role($group_member) {
     global $current_larp;
-
+    
     echo $group_member->getViewLink();
-    echo " - ";
-    echo $group_member->Profession;
-	echo ". Spelas av ";
-	echo $group_member->getPerson()->getViewLink();
+    echo " - " . $group_member->Profession;
+    $person = $group_member->getPerson();
+    if (!is_null($person)) {
+        echo " spelas av " . $person->getViewLink();
         
-	if ($group_member->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-		echo ", ansvarig vuxen är ";
-		if (!empty($registration->GuardianId)) {
-			$group_member->getRegistration($current_larp)->getGuardian()->Name;
-		}
-		
-	}
-     echo "<br>";       
+        if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+            
+            echo ", ansvarig vuxen är ";
+            $registration = Registration::loadByIds($person->Id, $current_larp->Id);
+            if (!empty($registration->GuardianId)) {
+                $registration->getGuardian()->Name;
+            }
+            
+        }
+    } else echo " NPC";
+    echo "<br>";   
 }
 
 include 'navigation.php';
@@ -86,7 +89,9 @@ include 'navigation.php';
 			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($group->Name); ?>" required></td></tr>
 
 			<tr><td valign="top" class="header">Gruppansvarig&nbsp;<font style="color:red">*</font></td>
-			<td><?php selectionByArray('Person', $persons_in_group, false, true, $group->PersonId);?></td></tr>
+			<td>
+			<?php selectionByArray('Person', $persons_in_group, false, false, $group->PersonId);?>
+			</td></tr>
 
 
 

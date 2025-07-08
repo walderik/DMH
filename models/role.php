@@ -39,6 +39,8 @@ class Role extends BaseModel{
     public $IsApproved = 0;
     public $ApprovedByPersonId;
     public $ApprovedDate;
+    public $CreatorPersonId;
+    public $UserMayEdit = 1;
     
 
     public static $orderListBy = 'Name';
@@ -88,7 +90,12 @@ class Role extends BaseModel{
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
         if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
+        if (isset($arr['CreatorPersonId'])) $this->CreatorPersonId = $arr['CreatorPersonId'];
+        if (isset($arr['UserMayEdit'])) $this->UserMayEdit = $arr['UserMayEdit'];
         
+        if (isset($this->PersonId) && $this->PersonId=='null') $this->PersonId = null;
+        if (isset($this->ReligionId) && $this->ReligionId=='null') $this->ReligionId = null;
+        if (isset($this->BeliefId) && $this->ReligionId=='null') $this->ReligionId = null;
         if (isset($this->LarperTypeId) && $this->LarperTypeId=='null') $this->LarperTypeId = null;
         if (isset($this->PlaceOfResidenceId) && $this->PlaceOfResidenceId=='null') $this->PlaceOfResidenceId = null;
         if (isset($this->RaceId) && $this->RaceId=='null') $this->RaceId = null;
@@ -103,7 +110,7 @@ class Role extends BaseModel{
         global $current_larp;
         
         $newOne = new self();
-        $newOne->CampaignId = $current_larp->CampaignId;
+        if (isset($current_larp)) $newOne->CampaignId = $current_larp->CampaignId;
         return $newOne;
     }
     
@@ -116,7 +123,8 @@ class Role extends BaseModel{
                               DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, RoleFunctionComment=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
-                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=?, ApprovedByPersonId=?, ApprovedDate=? WHERE Id = ?;");
+                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=?, 
+                              ApprovedByPersonId=?, ApprovedDate=?, CreatorPersonId=?, UserMayEdit=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
@@ -125,7 +133,8 @@ class Role extends BaseModel{
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,  
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
             $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
-            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->Id))) {
+            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, 
+            $this->CreatorPersonId, $this->UserMayEdit, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -142,8 +151,9 @@ class Role extends BaseModel{
                                                             IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId,  
                                                             RoleFunctionComment, Birthplace, CharactersWithRelations, CampaignId, ImageId, 
-                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, IsApproved, ApprovedByPersonId, ApprovedDate) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
+                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, 
+                                    AbilityComment, IsApproved, ApprovedByPersonId, ApprovedDate, CreatorPersonId, UserMayEdit) 
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
@@ -152,7 +162,7 @@ class Role extends BaseModel{
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
             $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
-            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate
+            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->CreatorPersonId, $this->UserMayEdit
         ))) {
                 $this->connect()->rollBack();
                 $stmt = null;
@@ -170,7 +180,14 @@ class Role extends BaseModel{
     }
     
     public function getPerson() {
-        return Person::loadById($this->PersonId);
+        if (isset($this->PersonId)) return Person::loadById($this->PersonId);
+        else return null;
+    }
+    
+    public function getCreator() {
+        if (isset($this->CreatorPersonId)) return Person::loadById($this->CreatorPersonId);
+        elseif (isset($this->PersonId)) return Person::loadById($this->PersonId);
+        else return null;
     }
     
     public function getCampaign() {
@@ -182,8 +199,9 @@ class Role extends BaseModel{
         return false;
     } 
 
-    public function userMayEdit(LARP $larp) {
-        return LARP_Role::userMayEdit($this->Id, $larp->Id);
+    public function userMayEdit() {
+        if ($this->UserMayEdit == 1) return true;
+        return false;
     }
     
     public function getReligion() {
@@ -216,6 +234,14 @@ class Role extends BaseModel{
         return false;
     }
     
+    public function isPC() {
+        return !$this->isNPC();
+    }
+    
+    public function isNPC() {
+        if (empty($this->PersonId)) return true;
+        return false;
+    }
     
     public function hasIntrigue(LARP $larp) {
         $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
@@ -433,6 +459,7 @@ class Role extends BaseModel{
         if (is_null($group) or is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -448,6 +475,7 @@ class Role extends BaseModel{
         if (is_null($group) or is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -462,6 +490,7 @@ class Role extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -476,6 +505,7 @@ class Role extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -492,6 +522,7 @@ class Role extends BaseModel{
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
             "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "regsys_larp_role.larpid = regsys_registration.larpid AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -507,6 +538,7 @@ class Role extends BaseModel{
 
             $sql = "SELECT * FROM regsys_role WHERE Id IN ".
                 "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+                "regsys_role.PersonId IS NOT NULL AND ".
                 "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
                 "regsys_larp_role.RoleId = regsys_role.Id AND ".
                 "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -528,6 +560,7 @@ class Role extends BaseModel{
         else {
             $sql = "SELECT * FROM regsys_role WHERE Id IN ".
                 "(SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE ".
+                "regsys_role.PersonId IS NOT NULL AND ".
                 "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
                 "regsys_larp_role.RoleId = regsys_role.Id AND ".
                 "regsys_role.PersonId = regsys_registration.PersonId AND ".
@@ -542,6 +575,7 @@ class Role extends BaseModel{
     public static function getAllUnregisteredRolesInGroup(Group $group, LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE GroupId=? AND ".
+            "regsys_role.PersonId IS NOT NULL AND ".
             "(Id NOT IN ".
             "(SELECT RoleId FROM regsys_larp_role WHERE ".
             "regsys_larp_role.larpid = ?) OR ID IN ".
@@ -553,6 +587,12 @@ class Role extends BaseModel{
             "regsys_larp_role.larpid=?)) ORDER BY Name;";
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id, $larp->Id));
     }
+
+    public static function getAllNPCsInGroup(Group $group) {
+        $sql = "SELECT * FROM regsys_role WHERE GroupId=? AND PersonId IS NULL  ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id));
+    }
+    
     
     public static function getTitledeedOwners(Titledeed $titledeed) {
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
@@ -883,7 +923,10 @@ class Role extends BaseModel{
             return "<a href='edit_role.php?id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";
         }
         else {
-            return "<a href='role_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
+            if ($this->userMayEdit()) {
+                return "<a href='role_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
+            }
+            return "<i class='fa-solid fa-pen' title='Får inte redigeras. Du får be arrangörerna om tillåtelse' style='text-decoration: line-through;'></i> ";
         }
     }
     

@@ -13,12 +13,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 $role = Role::loadById($RoleId);
-$person = $role->getPerson();
+if ($role->isPC()) $person = $role->getPerson();
 
-if ($person->Id != $current_person->Id) {
+if ($role->isPC() && $person->Id != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
     exit;
 }
+
+$group = $role->getGroup();
+if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
+    header('Location: ../index.php'); //NPC som inte är med i din grupp
+    exit;
+}
+
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 
@@ -51,13 +58,13 @@ include 'navigation.php';
 			<?php 
 			echo $role->Name;
     		//Karaktärsblad
-    		echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
-    		if (!$role->isRegistered($current_larp) || $role->userMayEdit($current_larp)) {
-    		    echo " " . $role->getEditLinkPen(false);
-    		}
+    		if ($role->isPC()) echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
+    		echo " " . $role->getEditLinkPen(false);
+
     		?>
 		</div>
- 
+
+
 		<?php 
 		if ($role->hasImage()) {
 		    echo "<div class='itemcontainer'>";
@@ -75,10 +82,12 @@ include 'navigation.php';
 		<?php echo ja_nej($role->isApproved());?>
 		</div>
 	
+		<?php if ($role->isPC()) {?>
    		<div class='itemcontainer'>
        	<div class='itemname'>Spelas av</div>
 		<?php echo $person->Name;?>
 		</div>
+		<?php }?>
 			
 
 		<?php if (isset($group)) {?>
@@ -94,20 +103,24 @@ include 'navigation.php';
 		<?php echo $role->Profession;?>
 		</div>
 		
+		<?php if ($role->isPC()) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning</div>
 	   <?php echo nl2br(htmlspecialchars($role->Description));?>
 	   </div>
+	   <?php } ?>
 
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning för gruppen</div>
 		<?php echo nl2br(htmlspecialchars($role->DescriptionForGroup));?>
 		</div>
 		
+		<?php if ($role->isPC() ||  !empty($role->DescriptionForOthers)) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning för andra</div>
 	   <?php echo nl2br(htmlspecialchars($role->DescriptionForOthers));?>
 	   </div>
+		<?php }?>
 
 		<?php if (Race::isInUse($current_larp)) {?>
 		   <div class='itemcontainer'>
@@ -118,10 +131,12 @@ include 'navigation.php';
 			?>			   
 			</div>
 		
+			<?php if (!empty($role->RaceComment)) {?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Kommentar till ras</div>
 		   <?php echo $role->RaceComment;?>
 		   </div>
+		   <?php } ?>
 		<?php } ?>
 
 		<?php if (!$role->isMysLajvare()) {?>
@@ -135,39 +150,55 @@ include 'navigation.php';
     			?>			   
 				</div>
 			
+				<?php if (!empty($role->TypeOfLarperComment)) {?>
 			   <div class='itemcontainer'>
                <div class='itemname'>Kommentar till typ av lajvare</div>
 			   <?php echo $role->TypeOfLarperComment;?>
 			   </div>
+			   <?php } ?>
 			<?php } ?>
 
+		  <?php if ($role->isPC() ||  !empty($role->ReasonForBeingInSlowRiver)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Varför befinner sig karaktären på platsen?</div>
 		   <?php echo nl2br($role->ReasonForBeingInSlowRiver);?>
 		   </div>
+		   <?php } ?>
 			
 			<?php if (RoleFunction:: isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
                	<div class='itemname'>Funktioner</div>
-    			<?php echo commaStringFromArrayObject($role->getRoleFunctions());?>		   
+       			<?php 
+       			$functions = $role->getRoleFunctions();
+               	if (empty($functions)) echo "Inga";
+               	else echo commaStringFromArrayObject($functions);
+               	?>	   
 				</div>
 			
+				<?php if (!empty($role->RoleFunctionComment)) {?>
 			   <div class='itemcontainer'>
                <div class='itemname'>Funktioner förklaring</div>
 			   <?php echo $role->RoleFunctionComment;?>
 			   </div>
+			   <?php } ?>
 			<?php }?>
 			
 			<?php if (Ability::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
                	<div class='itemname'>Kunskaper</div>
-    			<?php echo commaStringFromArrayObject($role->getAbilities());?>		   
+               	<?php 
+               	$abilities = $role->getAbilities();
+               	if (empty($abilities)) echo "Inga";
+               	else echo commaStringFromArrayObject($abilities);
+               	?>		   
 				</div>
 			
+				<?php if (!empty($role->AbilityComment)) {?>
 			   <div class='itemcontainer'>
                <div class='itemname'>Kunskaper förklaring</div>
 			   <?php echo $role->AbilityComment;?>
 			   </div>
+			   <?php } ?>
 			<?php }?>			
 			
 			<?php if (Religion::isInUse($current_larp)) {?>
@@ -179,45 +210,58 @@ include 'navigation.php';
     			?>			   
 				</div>
 			
+				<?php if (!empty($role->Religion)) {?>
 			   <div class='itemcontainer'>
                <div class='itemname'>Religion förklaring</div>
 			   <?php echo $role->Religion;?>
 			   </div>
+			   <?php } ?>
 			<?php }?>
 
+			<?php if ($role->isPC() ||  !empty($role->DarkSecret)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Mörk hemlighet</div>
 		   <?php echo $role->DarkSecret;?>
 		   </div>
+		   <?php } ?>
 
+			<?php if ($role->isPC() ||  !empty($role->DarkSecretIntrigueIdeas)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Mörk hemlighet - intrig idéer</div>
 		   <?php echo nl2br(htmlspecialchars($role->DarkSecretIntrigueIdeas));?>
 		   </div>
+		   <?php } ?>
 			
 			
 			
-			<?php if (IntrigueType::isInUse($current_larp)) {?>
+			<?php if ($role->isPC()) { ?>	
+				<?php if (IntrigueType::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
                	<div class='itemname'>Intrigtyper</div>
     			<?php echo commaStringFromArrayObject($role->getIntrigueTypes());?>		   
 				</div>
-			<?php }?>
+				<?php }?>
+
 
 		   <div class='itemcontainer'>
            <div class='itemname'>Intrigidéer</div>
 		   <?php echo nl2br(htmlspecialchars($role->IntrigueSuggestions));?>
 		   </div>
+		   <?php } ?>
 
+		   <?php if ($role->isPC() ||  !empty($role->NotAcceptableIntrigues)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Saker karaktären inte vill spela på</div>
 		   <?php echo nl2br(htmlspecialchars($role->NotAcceptableIntrigues));?>
 		   </div>
+		   <?php } ?>
 
+			<?php if ($role->isPC() ||  !empty($role->CharactersWithRelations)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Relationer med andra</div>
 		   <?php echo nl2br(htmlspecialchars($role->CharactersWithRelations));?>
 		   </div>
+		   <?php } ?>
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
@@ -229,10 +273,12 @@ include 'navigation.php';
 				</div>
 			<?php } ?>
 			
+		   <?php if ($role->isPC() ||  !empty($role->Birthplace)) { ?>	
 		   <div class='itemcontainer'>
            <div class='itemname'>Var är karaktären född?</div>
 		   <?php echo $role->Birthplace;?>
 		   </div>
+		   <?php } ?>
 			
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
@@ -244,10 +290,12 @@ include 'navigation.php';
 				</div>
 			<?php } ?>
 
+			<?php if (!empty($role->RoleFunctionComment)) {?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Annan information</div>
 		   <?php echo nl2br(htmlspecialchars($role->OtherInformation));?>
 		   </div>
+		   <?php } ?>
 
 		<?php }?>
 		</div>

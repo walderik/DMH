@@ -73,6 +73,7 @@ function print_role($role) {
         echo "<li style='display:table-cell; width:49%;'>\n";
     }
     
+    //Utgår från en persons huvudkaraktär, så därför finns alltid person
     echo "<div class='name'>".$role->getPerson()->Name."</div>\n";
     
     

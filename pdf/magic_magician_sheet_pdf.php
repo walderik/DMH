@@ -94,7 +94,6 @@ class MagicMagicianSheet_PDF extends PDF_MemImage {
         $this->magician = $magician_in;
         $this->magic_school = $this->magician->getMagicSchool();
         $this->role = $this->magician->getRole();
-        $this->person = $this->role->getPerson();
         
         $this->larp = $larp_in;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);

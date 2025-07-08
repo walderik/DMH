@@ -381,12 +381,14 @@ class MagicMagicianRitualSheet_PDF extends PDF_MemImage {
 	
 	protected function off_name($left) {
 	    $this->set_header($left, 'Off-namn');
+	    if (empty($this->person)) return; 
 	    $this->set_text($left, $this->person->Name);
 	    return true;
 	}
 	
 	protected function housing($left) {
 	    $this->set_header($left, 'Boende');
+	    if (empty($this->person)) return; 
 	    $housing = $this->person->getHouseAtLarp($this->larp);
 	    if (isset($housing)) $this->set_text($left, $housing->Name);
 	    return true;
