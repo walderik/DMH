@@ -27,6 +27,24 @@ class Backup extends Dbh {
         Backup::downloadBackup($backup_file_name);
     }
     
+    public static function doBackupLocal() {
+        global $root;
+        $tables = Backup::getTableNames();
+        
+        $backup_file_name = $root . '/tmp/OM_backup_' . time() . '.sql';
+        
+        //Make backup
+        $dumpSettings = array(
+            'include-tables' => $tables
+        );
+        
+        $dump = new Ifsnop\Mysqldump\Mysqldump('mysql:host='.Dbh::$dbServername.';dbname='.Dbh::$dbName, Dbh::$dbUsername, Dbh::$dbPassword, $dumpSettings);
+        $dump->start($backup_file_name);
+        
+        echo "<br>Filen heter $backup_file_name<br>";
+    }
+    
+    
     public static function doParitialBackupRest() {
         global $root;
         $tables = Backup::getTableNames();

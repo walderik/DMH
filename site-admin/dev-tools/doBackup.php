@@ -26,4 +26,4 @@ if (isset($_GET['alt'])) {
         Backup::doParitialBackupRest();
     }
 }
- Backup::doBackup();
+ Backup::doBackupLocal();
