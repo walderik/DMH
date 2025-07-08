@@ -110,7 +110,7 @@ class Role extends BaseModel{
         global $current_larp;
         
         $newOne = new self();
-        $newOne->CampaignId = $current_larp->CampaignId;
+        if (isset($current_larp)) $newOne->CampaignId = $current_larp->CampaignId;
         return $newOne;
     }
     

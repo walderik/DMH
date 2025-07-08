@@ -433,6 +433,14 @@ class LARP extends BaseModel{
         return 7;
     }
     
+    public static function comingLarps(Role $role) {
+        $sql = "SELECT regsys_larp.* FROM regsys_larp, regsys_larp_role WHERE ".
+            "regsys_larp.EndDate > NOW() AND ".
+            "regsys_larp.Id = regsys_larp_role.LarpId AND ".
+            "regsys_larp_role.RoleId = ? ORDER BY regsys_larp.StartDate";
+        return static::getSeveralObjectsqQuery($sql, array($role->Id));    
+    }
+    
     public static function allLarpsThatHaveEnded() {
         $sql = "SELECT * from regsys_larp WHERE LarpHasEnded = 0 and EndDate < NOW()";
         return static::getSeveralObjectsqQuery($sql, null);
@@ -440,8 +448,8 @@ class LARP extends BaseModel{
     
     //Här körs allt som ska ske efter att ett lajv är slut.
     public function endOfLarp() {
-        if ($this->LarpHasEnded) exit;
-        if ($this->EndDate < now()) exit;
+        if ($this->LarpHasEnded) return;
+        if ($this->EndDate > date("Y-m-d h:i:s")) return;
         $roles = Role::getAllRoles($this);
         foreach ($roles as $role) {
             $comingLarps = Larp::comingLarps($role);

@@ -14,7 +14,7 @@ if (empty($current_person) && !$admin) {
 
 $role = Role::newWithDefault();
 $role->PersonId = $current_person->Id;
-
+$role->CreatorPersonId = $current_person->Id;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "insert";
@@ -194,7 +194,9 @@ include 'navigation.php';
 		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
 		<?php if ($role->isPC()) { ?>
 		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $role->PersonId; ?>">
-		<?php } ?>
+		<?php }  ?>
+		<input type="hidden" id="CreatorPersonId" name="CreatorPersonId" value="<?php echo $role->CreatorPersonId; ?>">
+		    
 
 		<?php 
 		print_participant_text_input(

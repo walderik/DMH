@@ -242,7 +242,7 @@ function openTab(evt, tabName) {
         		echo $role->getViewLink();
  
         		if ($role->userMayEdit()) {
-        		    echo " XX " . $role->getEditLinkPen(false);
+        		    echo " " . $role->getEditLinkPen(false);
         		}
         		
         		if($role->isNeverRegistered()) {
