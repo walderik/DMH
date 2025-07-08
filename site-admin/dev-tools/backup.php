@@ -41,7 +41,7 @@ class Backup extends Dbh {
         $dump = new Ifsnop\Mysqldump\Mysqldump('mysql:host='.Dbh::$dbServername.';dbname='.Dbh::$dbName, Dbh::$dbUsername, Dbh::$dbPassword, $dumpSettings);
         $dump->start($backup_file_name);
         
-        echo "<br>Filen heter $backup_file_name<br>";
+        echo "Backupen är klar.<br>Filen heter $backup_file_name<br>Ladda ner den med ftp";
     }
     
     
