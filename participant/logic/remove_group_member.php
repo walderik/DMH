@@ -26,8 +26,12 @@ if (!$current_person->isGroupLeader($current_group)) {
 }
 
 $role = Role::loadById($RoleId);
-$role->GroupId = null;
-$role->update();
+if ($role->isPC()) {
+    $role->GroupId = null;
+    $role->update();
+} else {
+    Role::delete($RoleId);
+}
 
 header('Location: ../view_group.php?id=' . $current_group->Id);
 

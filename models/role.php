@@ -903,6 +903,16 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
 
+    public static function getAllNPCToApprove(LARP $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_role WHERE ".
+            "IsApproved = 0 AND ".
+            "UserMayEdit = 0 AND ".
+            "CampaignId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+    
+    
     public function getViewLink() {
         $vrole = "<a href='view_role.php?id={$this->Id}'>{$this->Name}</a>";
 
@@ -1051,6 +1061,11 @@ class Role extends BaseModel{
             "regsys_subdivisionmember.RoleId = ? ";
         if (static::existsQuery($sql, array($intrigue->Id, $this->Id))) return true;
         return false;
+    }
+    
+    public function mayDelete() {
+        if ($this->isPC()) return $this->isNeverRegistered();
+        else return empty(RoleApprovedCopy::getOldRole($this->Id));
     }
     
 }

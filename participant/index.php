@@ -245,7 +245,7 @@ function openTab(evt, tabName) {
         		    echo " " . $role->getEditLinkPen(false);
         		}
         		
-        		if($role->isNeverRegistered()) {
+        		if($role->mayDelete()) {
         		    echo "&nbsp;<a href='logic/delete_role.php?id=" . $role->Id . "'><i class='fa-solid fa-trash' title='Ta bort karaktär'></i></a>";
         		}
         		echo "<br>";

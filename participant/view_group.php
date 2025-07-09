@@ -42,43 +42,63 @@ $NPCs_in_group = Role::getAllNPCsInGroup($group);
 
 function print_role(Role $role, Group $group, $isComing) {
     global $current_person, $current_larp, $type;
-    $isNPC = false;
-    if (is_null($role->PersonId)) $isNPC = true; 
     
     if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
     else echo "<li style='display:table-cell; width:49%;'>\n";
     
+    
     echo "<div class='name'>";
-    if ($isNPC) {
+    if ($role->isNPC()) {
         echo $role->getViewLink();
     } else echo $role->Name;
-    if ($current_person->isGroupLeader($group)) {
+
+    if (($role->isPC() && $current_person->isGroupLeader($group)) || 
+        ($role->isNPC() && ($role->CreatorPersonId == $current_person->Id || $current_person->isGroupLeader($group)) && $role->userMayEdit() && $role->mayDelete())) {
         echo " <a href='logic/remove_group_member.php?groupID=".$group->Id."&roleID=".$role->Id."' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
         echo "<i class='fa-solid fa-trash-can'></i>";
         echo "</a>";
     }
     echo "</div>\n";
+
+    
     echo "Yrke: ".$role->Profession . "<br>";
-    if ($role->isMain($current_larp)==0) {
+    if ($role->isPC() && $role->isMain($current_larp)==0) {
         echo "Sidokaraktär<br>";
     }
 
-    echo "Spelas av ";
+    
 
-    if ($isNPC) echo "NPC";
-    else {
+    if ($role->isPC()) {
+        echo "Spelas av ";
         $person =  $role->getPerson();
         $person->Name;
+        echo "<br>";
     }
-    echo "<br>";
+
     
-    if ($isComing && !$isNPC && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    if ($isComing && $role->isPC() && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         $guardian = $role->getRegistration($current_larp)->getGuardian();
         if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
         else echo "Ansvarig vuxen är inte utpekad.";
     }
     
     echo "<div class='description'>$role->DescriptionForGroup</div>\n";
+    
+    if ($role->isNPC()) {
+        if ($role->isApproved()) echo "Karaktären är godkänd.";
+        elseif (!$role->userMayEdit()) echo "Karaktären är inskickad för godkännande.";
+        else {
+            echo "<form action='logic/role_lock.php' method='post'>";
+            echo "<input type='hidden' id='Id' name='Id' value='$role->Id'>";
+            echo "<button type='$type' name='SaveAndLockButton' value='1' class='button-18'><i class='fa-solid fa-share'></i> ";
+            echo "Skicka in för godkännande</button>";
+            echo "</form>";
+        }
+        
+        echo "<br>";
+    }
+    
+    
     if ($role->hasImage()) {
         $image = Image::loadById($role->ImageId);
         echo "<img src='../includes/display_image.php?id=$role->ImageId'/>\n";
@@ -86,10 +106,10 @@ function print_role(Role $role, Group $group, $isComing) {
             echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
         }
     }
-    else {
+    elseif ($role->isPC()) {
         echo "<img src='../images/man-shape.png' />\n";
         echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
-    }
+    } 
     echo "</li>\n\n";
     
 }
