@@ -46,7 +46,8 @@ include "navigation.php";
 		<?php 
 		$approval_count_group = count (Group::getAllToApprove($current_larp));
 		$approval_count_roles = count (Role::getAllToApprove($current_larp));
-		if ($approval_count_group>0 || $approval_count_roles>0) echo "$approval_count_group grupper och $approval_count_roles karaktärer väntar på <a href='approval.php'>godkännande</a>.<br>"; 
+		$approval_count_npc = count (Role::getAllNPCToApprove($current_larp));
+		if ($approval_count_group>0 || $approval_count_roles>0 || $approval_count_npc>0) echo "$approval_count_group grupper, $approval_count_roles karaktärer och $approval_count_npc NPC'er väntar på <a href='approval.php'>godkännande</a>.<br>"; 
 
 		$approval_t_count = count (Telegram::getAllToApprove($current_larp));
 		if ($approval_t_count>0) echo "$approval_t_count telegram väntar på <a href='telegram_admin.php'>godkännande</a>. <br>";

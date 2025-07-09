@@ -17,7 +17,7 @@ if (empty($role)) {
     exit;
 }
 
-if (!$role->isRegistered($current_larp)) {
+if ($role->isPC() && !$role->isRegistered($current_larp)) {
     header('Location: index.php'); // Karaktären är inte anmäld
     exit;
 }
@@ -128,8 +128,10 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Grupp</td>
 			<td><?php selectionByArray('Group', Group::getAllRegistered($current_larp), false, false, $role->GroupId); ?></td></tr>
 
+			<?php if ($role->isPC()) {?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
-
+			<?php } ?>
+			
 			<tr><td valign="top" class="header">Yrke&nbsp;<font style="color:red">*</font></td>
 			<td><input type="text" id="Profession" name="Profession" value="<?php echo htmlspecialchars($role->Profession); ?>"  size="100" maxlength="250" required></td></tr>
 
