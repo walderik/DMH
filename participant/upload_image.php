@@ -25,11 +25,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 switch ($type) {
     case "role":
         $object = Role::loadById($id);
-        if ($object->PersonId != $current_person->Id) {
+        if ($object->isPC() && $object->PersonId != $current_person->Id) {
             header('Location: ../index.php'); //Inte din karaktär
-
             exit;
         }
+        $group = $object->getGroup();
+        if ($object->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
+            header('Location: index.php'); //NPC som inte är med i din grupp
+            exit;
+        }
+        
         $name = $object->Name;
         break;
     case "group":

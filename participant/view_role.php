@@ -12,6 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
+
+
+
 $role = Role::loadById($RoleId);
 if ($role->isPC()) $person = $role->getPerson();
 
@@ -22,10 +25,9 @@ if ($role->isPC() && $person->Id != $current_person->Id) {
 
 $group = $role->getGroup();
 if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
-    header('Location: ../index.php'); //NPC som inte är med i din grupp
+    header('Location: index.php'); //NPC som inte är med i din grupp
     exit;
 }
-
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 
@@ -72,10 +74,14 @@ include 'navigation.php';
 		    $image = Image::loadById($role->ImageId);
 		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
+		    if ($role->userMayEdit()) echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash'></i></a></td>\n";
+		    echo "</div>";
+		} elseif ($role->isNPC() && $role->userMayEdit()) {
+		    echo "<div class='itemcontainer'>";
+		    echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
 		    echo "</div>";
 		}
 		?>
-
 
    		<div class='itemcontainer'>
        	<div class='itemname'>Godkänd</div>
