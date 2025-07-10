@@ -46,11 +46,9 @@ function print_role(Role $role, Group $group, $isRegistered) {
     echo "<td>";
     echo $role->getEditLinkPen(true);
     if ($role->isPC()) {
-    echo " <a href='logic/remove_group_member.php?groupID=$group->Id&roleID=$role->Id".
-        "onclick='return confirm(\"Är du säker på att du vill ta bort karaktären från gruppen?\");'><i class='fa-solid fa-trash-can' title='Ta bort ur gruppen'></i></a>";
+        echo " <a href='logic/remove_group_member.php?groupID=$group->Id&roleID=$role->Id' onclick='return confirm(\"Är du säker på att du vill ta bort karaktären från gruppen?\");'><i class='fa-solid fa-trash-can' title='Ta bort ur gruppen'></i></a>";
     } elseif ($role->mayDelete()) {
-        echo " <a href='logic/delete_npc.php?roleID=$role->Id".
-            "onclick='return confirm(\"Är du säker på att du vill radera NPC'n?\");'><i class='fa-solid fa-trash-can' title='Radera'></i></a>";
+        echo " <a href='logic/delete_npc.php?roleID=$role->Id' onclick='return confirm(\"Är du säker på att du vill radera NPCn?\");'><i class='fa-solid fa-trash-can' title='Radera'></i></a>";
         
     }
     
