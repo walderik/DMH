@@ -24,13 +24,14 @@ if ($isRegistered) {
     $main_characters_in_group = Role::getAllMainRolesInGroup($group, $current_larp);
     $non_main_characters_in_group = Role::getAllNonMainRolesInGroup($group, $current_larp);
     $allUnregisteredRoles = Role::getAllUnregisteredRolesInGroup($group, $current_larp);
+    $NPCs = Role::getAllNPCsInGroup($group, $current_larp);
     $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
 } else {
     $intrigues = array();
 }
 
 
-function print_role($role, $group, $isRegistered) {
+function print_role(Role $role, Group $group, $isRegistered) {
     global $current_larp;
     echo "<tr>";
     echo "<td>";
@@ -44,17 +45,24 @@ function print_role($role, $group, $isRegistered) {
     echo "</td>";
     echo "<td>";
     echo $role->getEditLinkPen(true);
+    if ($role->isPC()) {
     echo " <a href='logic/remove_group_member.php?groupID=$group->Id&roleID=$role->Id".
         "onclick='return confirm(\"Är du säker på att du vill ta bort karaktären från gruppen?\");'><i class='fa-solid fa-trash-can' title='Ta bort ur gruppen'></i></a>";
+    } elseif ($role->mayDelete()) {
+        echo " <a href='logic/delete_npc.php?roleID=$role->Id".
+            "onclick='return confirm(\"Är du säker på att du vill radera NPC'n?\");'><i class='fa-solid fa-trash-can' title='Radera'></i></a>";
+        
+    }
+    
     echo "</td>";
     echo "<td>$role->Profession</td>";
 
+    if ($role->isPC()) {
     $person = $role->getPerson();
-    if (!is_null($person)) {
         echo "<td>" . $person->getViewLink() . "</td>";
             
         echo "<td>";
-        if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+        if ($isRegistered && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
             echo "Ansvarig vuxen är ";
             $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
             if (!empty($registration->GuardianId)) { 
@@ -66,7 +74,7 @@ function print_role($role, $group, $isRegistered) {
         
 
         echo "</td>";
-    } else echo "<td>NPC</td>";
+    } 
 
     echo "<td>";
     if ($isRegistered && ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)) {
@@ -263,6 +271,19 @@ include 'navigation.php';
 			echo "</div>";
 		}
 		?>
+		<?php
+		if(!empty($NPCs)) {
+			echo "<h2>NPC'er</h2>";
+			echo "<div>";
+			echo "<table>";
+			foreach($NPCs as $role) {
+				print_role($role, $group, false);
+			}
+			echo "</table>";
+			echo "</div>";
+		}
+		?>
+		
 		<h2>Intrig <a href='edit_group_intrigue.php?id=<?php echo $group->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
 		<?php echo $larp_group->Intrigue; ?>		<?php 

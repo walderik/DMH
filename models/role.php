@@ -1065,7 +1065,7 @@ class Role extends BaseModel{
     
     public function mayDelete() {
         if ($this->isPC()) return $this->isNeverRegistered();
-        else return empty(RoleApprovedCopy::getOldRole($this->Id));
+        else return !$this->isApproved() && empty(RoleApprovedCopy::getOldRole($this->Id));
     }
     
 }
