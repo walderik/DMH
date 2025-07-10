@@ -288,25 +288,41 @@ class BerghemMailer {
     }
     
     public static function send_role_approval_mail(Role $role, LARP $larp, $senderId) {
-        $person = $role->getPerson();
-        if (is_null($person)) return;
-        $mail = $person->Email;
-        
-        $text  = "Din karaktär $role->Name är nu godkänd för att vara med i lajvet $larp->Name<br>\n";
-        
-        $sheets = static::getAllSheets(array($role), $larp);
-        
-        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Godkänd karaktär till ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);
+        if ($role->isPC()) {
+            $person = $role->getPerson();
+            if (is_null($person)) return;
+            $text  = "Din karaktär $role->Name är nu godkänd för att vara med i lajvet $larp->Name<br>\n";
+            $sheets = static::getAllSheets(array($role), $larp);
+            BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Godkänd karaktär till ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);
+        } else {
+            $campaign = $larp->getCampaign();
+            $recievers = array($role->getCreator()->Id);
+            $group = $role->getGroup();
+            if (!empty($group)) $recievers[] = $group->getPerson()->Id;
+            $text  = "NPC'n $role->Name är nu godkänd för kampanjen $campaign->Name<br>\n";
+            BerghemMailer::send($larp, $senderId, $recievers, $campaign->hej(), $text, "Godkänd NPC till ".$campaign->Name, "", BerghemMailer::DaysAutomatic);
+            
+        }
     }
     
     public static function send_role_unapproval_mail(Role $role, LARP $larp, $senderId) {
-        $person = $role->getPerson();
-        if (is_null($person)) return;
-        $text  = "Din karaktär $role->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din karaktär godkänd.\n";
-        
-        $sheets = static::getAllSheets(array($role), $larp);
-        
-        BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Icke godkänd karaktär till ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);
+        if ($role->isPC()) {
+            $person = $role->getPerson();
+            if (is_null($person)) return;
+            $text  = "Din karaktär $role->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din karaktär godkänd.\n";
+            
+            $sheets = static::getAllSheets(array($role), $larp);
+            
+            BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "Icke godkänd karaktär till ".$larp->Name, "", BerghemMailer::DaysAutomatic, $sheets);
+        } else {
+            $campaign = $larp->getCampaign();
+            $recievers = array($role->getCreator()->Id);
+            $group = $role->getGroup();
+            if (!empty($group)) $recievers[] = $group->getPerson()->Id;
+            $text  = "NPC'n $role->Name är inte längre nu godkänd för kampanjen $campaign->Name<br><br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få NPC'n godkänd.\n";
+            BerghemMailer::send($larp, $senderId, $recievers, $campaign->hej(), $text, "Icke godkänd NPC till ".$campaign->Name, "", BerghemMailer::DaysAutomatic);
+            
+        }
     }
     
     public static function send_group_approval_mail(Group $group, LARP $larp, $senderId) {
