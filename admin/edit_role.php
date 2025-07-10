@@ -143,10 +143,10 @@ include 'navigation.php';
 			<td><textarea id="DescriptionForOthers" name="DescriptionForOthers" rows="4" cols="100" maxlength="400"><?php echo htmlspecialchars($role->DescriptionForOthers); ?></textarea></td></tr>
 
 			<?php if (Race::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Ras</td><td>
-			<?php Race::selectionDropdown($current_larp, false, false, $role->RaceId); ?>
-			</td></tr>
-			<tr><td valign="top" class="header">Ras kommentar</td><td><input type="text" id="RaceComment" name="RaceComment" value="<?php echo htmlspecialchars($role->RaceComment); ?>"  size="100" maxlength="250"></td></tr>
+    			<tr><td valign="top" class="header">Ras</td><td>
+    			<?php Race::selectionDropdown($current_larp, false, false, $role->RaceId); ?>
+    			</td></tr>
+    			<tr><td valign="top" class="header">Ras kommentar</td><td><input type="text" id="RaceComment" name="RaceComment" value="<?php echo htmlspecialchars($role->RaceComment); ?>"  size="100" maxlength="250"></td></tr>
 			<?php }?>
 
 
@@ -160,60 +160,83 @@ include 'navigation.php';
 			</td></tr>
 
 			<?php if (LarperType::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Typ av lajvare&nbsp;<font style="color:red">*</font></td>
-			<td><?php LarperType::selectionDropdown($current_larp, false, false, $role->LarperTypeId); ?></td></tr>
-			<tr class="intrigue"><td valign="top" class="header">Kommentar till typ av lajvare</td>
-			<td><input type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="250"></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Typ av lajvare&nbsp;<font style="color:red">*</font></td>
+    			<td><?php LarperType::selectionDropdown($current_larp, false, false, $role->LarperTypeId); ?></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Kommentar till typ av lajvare</td>
+    			<td><input type="text" id="TypeOfLarperComment" value="<?php echo htmlspecialchars($role->TypeOfLarperComment); ?>" name="TypeOfLarperComment"  size="100" maxlength="250"></td></tr>
 			<?php }?>
-			</div>
-
 
 
 			<tr class="intrigue"><td valign="top" class="header">Tidigare lajv</td>
 			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo htmlspecialchars($role->PreviousLarps); ?></textarea></td></tr>
 
-			<tr class="intrigue"><td valign="top" class="header">Varför befinner sig<br>karaktären på platsen?&nbsp;<font style="color:red">*</font></td>
-			<td><textarea class="requiredIntrigueField" id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea></td></tr>
+			<tr class="intrigue"><td valign="top" class="header">Varför befinner sig<br>karaktären på platsen?
+			<?php if ($role->isPC()) {?>
+				&nbsp;<font style="color:red">*</font>
+			<?php }?>
+			</td>
+			<td><textarea 
+			<?php if ($role->isPC()) {?>
+			class="requiredIntrigueField" 
+			<?php }?>
+			id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea></td></tr>
 
 
 
 			<?php if (Religion::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Religion</td><td>
-			<?php Religion::selectionDropdown($current_larp, false, true, $role->ReligionId); ?>
-			</td></tr>
-			<tr class="intrigue"><td valign="top" class="header">Religion förklaring</td><td><input type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="250"></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Religion</td><td>
+    			<?php Religion::selectionDropdown($current_larp, false, $role->isPC(), $role->ReligionId); ?>
+    			</td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Religion förklaring</td><td><input type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="250"></td></tr>
 			<?php }?>
 
 			<?php if (Belief::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Hur troende</td><td>
-			<?php Belief::selectionDropdown($current_larp, false, true, $role->BeliefId); ?>
-			</td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Hur troende</td><td>
+    			<?php Belief::selectionDropdown($current_larp, false, $role->isPC(), $role->BeliefId); ?>
+    			</td></tr>
 			<?php }?>
 
 
 			<?php if (Ability::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Kunskaper</td>
-			<td><?php selectionByArray('Ability' , Ability::allActive($current_larp), true, false, $role->getSelectedAbilityIds());?></td></tr>
-			<tr class="intrigue"><td valign="top" class="header">Kunskap förklaring</td><td><input type="text" id="AbilityComment" name="AbilityComment" value="<?php echo htmlspecialchars($role->AbilityComment); ?>"  size="100" maxlength="250"></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Kunskaper</td>
+    			<td><?php selectionByArray('Ability' , Ability::allActive($current_larp), true, false, $role->getSelectedAbilityIds());?></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Kunskap förklaring</td><td><input type="text" id="AbilityComment" name="AbilityComment" value="<?php echo htmlspecialchars($role->AbilityComment); ?>"  size="100" maxlength="250"></td></tr>
 			<?php }?>
 			
 			
 			<?php if (RoleFunction::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Funktioner</td>
-			<td><?php selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedRoleFunctionIds());?></td></tr>
-			<tr class="intrigue"><td valign="top" class="header">Funktioner förklaring</td><td><input type="text" id="RoleFunctionComment" name="RoleFunctionComment" value="<?php echo htmlspecialchars($role->RoleFunctionComment); ?>"  size="100" maxlength="400"></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Funktioner</td>
+    			<td><?php selectionByArray('RoleFunction' , RoleFunction::allActive($current_larp), true, false, $role->getSelectedRoleFunctionIds());?></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Funktioner förklaring</td><td><input type="text" id="RoleFunctionComment" name="RoleFunctionComment" value="<?php echo htmlspecialchars($role->RoleFunctionComment); ?>"  size="100" maxlength="400"></td></tr>
 			<?php }?>
 
 
-			<tr class="intrigue"><td valign="top" class="header">Mörk hemlighet&nbsp;<font style="color:red">*</font></td>
-			<td><textarea class="requiredIntrigueField" id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->DarkSecret); ?> </textarea></td></tr>
+			<tr class="intrigue"><td valign="top" class="header">Mörk hemlighet
+    			<?php if ($role->isPC()) {?>
+    				&nbsp;<font style="color:red">*</font>
+    			<?php }?>
+				</td>
+			<td><textarea 
+			<?php if ($role->isPC()) {?>
+				class="requiredIntrigueField" 
+			<?php }?>
 
-			<tr class="intrigue"><td valign="top" class="header">Mörk hemlighet - intrig idéer&nbsp;<font style="color:red">*</font></td>
-			<td><input class="requiredIntrigueField" type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo htmlspecialchars($role->DarkSecretIntrigueIdeas); ?>"  size="100" maxlength="250"></td></tr>
+			id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->DarkSecret); ?> </textarea></td></tr>
+
+			<tr class="intrigue"><td valign="top" class="header">Mörk hemlighet - intrig idéer
+    			<?php if ($role->isPC()) {?>
+    				&nbsp;<font style="color:red">*</font>
+    			<?php }?>
+				</td>
+			<td><input 
+				<?php if ($role->isPC()) {?>
+				class="requiredIntrigueField" 
+			     <?php }?>
+				type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo htmlspecialchars($role->DarkSecretIntrigueIdeas); ?>"  size="100" maxlength="250"></td></tr>
 
 			<?php if (IntrigueType::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Intrigtyper</td>
-			<td><?php IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Intrigtyper</td>
+    			<td><?php IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
 			<?php }?>
 			
 			<tr class="intrigue"><td valign="top" class="header">Intrigidéer</td>
@@ -229,18 +252,34 @@ include 'navigation.php';
 			<td><textarea id="OtherInformation" name="OtherInformation" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->OtherInformation); ?></textarea></td></tr>
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Rikedom&nbsp;<font style="color:red">*</font></td>
-			<td><?php Wealth::selectionDropdown($current_larp, false,false, $role->WealthId); ?></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Rikedom
+    			<?php if ($role->isPC()) {?>
+    				&nbsp;<font style="color:red">*</font>
+    			<?php }?>
+    			</td>
+    			<td><?php Wealth::selectionDropdown($current_larp, false, $role->isPC(), $role->WealthId); ?></td></tr>
 			<?php } ?>
 			
-			<tr class="intrigue"><td valign="top" class="header">Var är karaktären född?&nbsp;<font style="color:red">*</font></td>
-			<td><input class="requiredIntrigueField" type="text" id="Birthplace" name="Birthplace" value="<?php echo htmlspecialchars($role->Birthplace); ?>"  size="100" maxlength="250"></td></tr>
+			<tr class="intrigue"><td valign="top" class="header">Var är karaktären född?
+    			<?php if ($role->isPC()) {?>
+    				&nbsp;<font style="color:red">*</font>
+    			<?php }?>
+				</td>
+			<td><input 
+    			<?php if ($role->isPC()) {?>
+    			class="requiredIntrigueField" 
+    			<?php }?>
+    			type="text" id="Birthplace" name="Birthplace" value="<?php echo htmlspecialchars($role->Birthplace); ?>"  size="100" maxlength="250"></td></tr>
 
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
-			<tr class="intrigue"><td valign="top" class="header">Var bor karaktären?&nbsp;<font style="color:red">*</font></td>
-			<td><?php
-			PlaceOfResidence::selectionDropdown($current_larp, false, false, $role->PlaceOfResidenceId);
-            ?></td></tr>
+    			<tr class="intrigue"><td valign="top" class="header">Var bor karaktären?
+    			<?php if ($role->isPC()) {?>
+    				&nbsp;<font style="color:red">*</font>
+    			<?php }?>
+    			</td>
+    			<td><?php
+    			PlaceOfResidence::selectionDropdown($current_larp, false, $role->isPC(), $role->PlaceOfResidenceId);
+                ?></td></tr>
             <?php } ?>
            
 			<tr><td valign="top" class="header">Död&nbsp;<font style="color:red">*</font></td>
