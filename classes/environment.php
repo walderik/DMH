@@ -26,24 +26,13 @@ class Environment {
     }
     
     public static function startSession() {
-        //if (!Environment::isTest()) {
-            //session_save_path('/om-sessions/');
-            //session_save_path('/om-sessions/');
-        //}
-        /*
-        session_save_path('/om-sessions');
-        echo "Save path set to ".session_save_path()."<br>";
-
-        ini_set('session.gc_maxlifetime', 86400);
-        echo "1<br>";
-        session_set_cookie_params(86400);
-        echo "2<br>";
-        session_start([
-            'cookie_lifetime' => 86400,
-        ]);
-        echo "Session startad.<br>";
-        exit;
-        */
+        if (!isset($_SESSION['CREATED'])) {
+            $_SESSION['CREATED'] = time();
+        } else if (time() - $_SESSION['CREATED'] > 1800) {
+            // session started more than 30 minutes ago
+            session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+            $_SESSION['CREATED'] = time();  // update creation time
+        }
         session_start();
     }
     
