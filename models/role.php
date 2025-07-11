@@ -95,7 +95,7 @@ class Role extends BaseModel{
         
         if (isset($this->PersonId) && $this->PersonId=='null') $this->PersonId = null;
         if (isset($this->ReligionId) && $this->ReligionId=='null') $this->ReligionId = null;
-        if (isset($this->BeliefId) && $this->ReligionId=='null') $this->ReligionId = null;
+        if (isset($this->BeliefId) && $this->BeliefId=='null') $this->BeliefId = null;
         if (isset($this->LarperTypeId) && $this->LarperTypeId=='null') $this->LarperTypeId = null;
         if (isset($this->PlaceOfResidenceId) && $this->PlaceOfResidenceId=='null') $this->PlaceOfResidenceId = null;
         if (isset($this->RaceId) && $this->RaceId=='null') $this->RaceId = null;
