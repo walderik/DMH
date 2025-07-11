@@ -1,19 +1,17 @@
 <?php
 
 
-if (session_status() === PHP_SESSION_NONE) {
-    ini_set('session.gc_maxlifetime', 86400);
-    session_set_cookie_params(86400);
-    session_start([
-        'cookie_lifetime' => 86400,
-    ]);
-}
 // All kod som skall köras först på varje sida gemensamt oavsett om det rör admin-header eller annan header
 global $current_user, $current_person, $current_larp, $root;
 
 
 include_once $root . '/includes/all_includes.php';
 $home_url = Environment::getHost();
+
+if (session_status() === PHP_SESSION_NONE) {
+    Environment::startSession();
+}
+
 
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['is_loggedin'])) {

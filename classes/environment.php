@@ -25,6 +25,28 @@ class Environment {
         return false;
     }
     
+    public static function startSession() {
+        //if (!Environment::isTest()) {
+            //session_save_path('/om-sessions/');
+            //session_save_path('/om-sessions/');
+        //}
+        /*
+        session_save_path('/om-sessions');
+        echo "Save path set to ".session_save_path()."<br>";
+
+        ini_set('session.gc_maxlifetime', 86400);
+        echo "1<br>";
+        session_set_cookie_params(86400);
+        echo "2<br>";
+        session_start([
+            'cookie_lifetime' => 86400,
+        ]);
+        echo "Session startad.<br>";
+        exit;
+        */
+        session_start();
+    }
+    
 }
 
 class DatabaseConnectionData {
@@ -33,3 +55,4 @@ class DatabaseConnectionData {
     public $Password;
     public $DBName;
 }
+

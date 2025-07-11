@@ -59,11 +59,7 @@ class LoginController {
 
         
         //Log in
-        ini_set('session.gc_maxlifetime', 86400);
-        session_set_cookie_params(86400);
-        session_start([
-            'cookie_lifetime' => 86400,
-        ]);
+        Environment::startSession();
         session_unset();
         
         $user->LastLogin = date_format(new Datetime(),"Y-m-d H:i:s");

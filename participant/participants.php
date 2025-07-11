@@ -7,7 +7,6 @@ if (!$current_person->isComing($current_larp)) {
     exit;
 }
 
-//SESSION_START();
 
 //kolla bredd på användarens skärm för att bestämma antal kolumner med karaktärer
 
