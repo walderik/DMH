@@ -217,6 +217,18 @@ class Titledeed extends BaseModel{
         }
     }
     
+    public function hasRegisteredOwners(Larp $larp) {
+        $roleOwners = $this->getRoleOwners();
+        foreach ($roleOwners as $owner) {
+            if (LARP_Role::isRegistered($owner->Id, $larp->Id)) return true;
+        }
+        $groupOwners = $this->getGroupOwners();
+        foreach ($groupOwners as $owner) {
+            if ($owner->isRegistered($larp)) return true;
+        }
+        return false;
+    }
+    
     public function getCampaign() {
         return Campaign::loadById($this->CampaignId);
     }

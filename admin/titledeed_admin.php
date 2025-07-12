@@ -62,6 +62,8 @@ th {
         <br>
         <a href="resource_titledeed_overview_normal.php">Översikt - normala resurser</a> &nbsp; 
         <a href="resource_titledeed_overview_rare.php">Översikt - ovanliga resurser</a>
+        <br><br>
+        <a href=logic/set_active_titledeeds.php>Sätt aktiva verksamheter efter vilka som är anmälda</a>
         
         </p>
         		    <?php 
