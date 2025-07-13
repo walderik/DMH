@@ -1,7 +1,7 @@
 <?php
 include_once 'header.php';
 include 'navigation.php';
-
+include 'intrigue_navigation.php';
 
 ?>
 

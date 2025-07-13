@@ -2,7 +2,7 @@
 include_once 'header.php';
 
 include 'navigation.php';
-
+include 'intrigue_navigation.php';
 
 
 function print_intrigue(Intrigue $intrigue, $responsiblePerson) {

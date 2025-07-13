@@ -53,6 +53,7 @@ else {
 }
 
 include 'navigation.php';
+include 'intrigue_navigation.php';
 ?>
     
 

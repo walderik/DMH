@@ -283,6 +283,7 @@ if (empty($intrigue)) {
 
 
 include 'navigation.php';
+include 'intrigue_navigation.php';
 ?>
 <style>
 th, td {
