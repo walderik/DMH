@@ -159,7 +159,9 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor, $sec
     if (!empty($knownIntrigueActor->GroupId)) {
         $group=$knownIntrigueActor->getGroup();
         echo "<li style='display:table-cell; width:19%;'>";
-        echo "<div class='name'>".$group->getViewLink()."</div>";
+        echo "<div class='name'>".$group->getViewLink();
+        echo " <a href='view_intrigue.php?Id=".$knownIntrigueActor->IntrigueId."#section_$knownIntrigueActor->Id'><i class='fa-solid fa-arrows-to-dot' title='Till aktören'></i></a>";
+        "</div>";
         echo "<div>Grupp</div>";
         echo "</div>";
         echo "<div align='right'>";
@@ -171,7 +173,9 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor, $sec
     } elseif (!empty($knownIntrigueActor->RoleId)) {
         $role = $knownIntrigueActor->getRole();
         echo "<li style='display:table-cell; width:19%;'>";
-        echo "<div class='name'>".$role->getViewLink()."</div>";
+        echo "<div class='name'>".$role->getViewLink();
+        echo " <a href='view_intrigue.php?Id=".$knownIntrigueActor->IntrigueId."#section_$knownIntrigueActor->Id'><i class='fa-solid fa-arrows-to-dot' title='Till aktören'></i></a>";
+        "</div>";
         $role_group = $role->getGroup();
         if (!empty($role_group)) {
             echo "<div>$role_group->Name</div>";
@@ -187,7 +191,9 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor, $sec
     } elseif (!empty($knownIntrigueActor->SubdivisionId)) {
         $subdivision = $knownIntrigueActor->getSubdivision();
         echo "<li style='display:table-cell; width:19%;'>";
-        echo "<div class='name'>".$subdivision->getViewLink()."</div>";
+        echo "<div class='name'>".$subdivision->getViewLink();
+        echo " <a href='view_intrigue.php?Id=".$knownIntrigueActor->IntrigueId."#section_$knownIntrigueActor->Id'><i class='fa-solid fa-arrows-to-dot' title='Till aktören'></i></a>";
+        "</div>";
         echo "<div align='right'>";
         echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor_knownRole&RoleId=$role->Id&IntrigueActorId=$intrigueActor->Id&Section=$section'>";
         echo "<i class='fa-solid fa-xmark' title='Ta bort'></i></a>";
