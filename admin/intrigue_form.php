@@ -3,6 +3,7 @@ include_once 'header.php';
 
 
 
+
 $intrigue = Intrigue::newWithDefault();;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

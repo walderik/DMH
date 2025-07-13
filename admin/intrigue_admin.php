@@ -4,6 +4,7 @@ include_once 'header.php';
 include 'navigation.php';
 
 
+
 function print_intrigue(Intrigue $intrigue, $responsiblePerson) {
     echo "<tr>\n";
     

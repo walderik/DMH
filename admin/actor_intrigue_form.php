@@ -1,6 +1,6 @@
 <?php
 include_once 'header.php';
-
+include 'intrigue_navigation.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $intrigueActor = IntrigueActor::loadById($_GET['IntrigueActorId']);
