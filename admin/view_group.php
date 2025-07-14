@@ -74,20 +74,6 @@ function print_role(Role $role, Group $group, $isRegistered) {
         echo "</td>";
     } 
 
-    echo "<td>";
-    if ($isRegistered && ($role->getPerson()->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian)) {
-        echo "Ansvarig vuxen är ";
-        $registration = Registration::loadByIds($role->PersonId, $current_larp->Id);
-        if (!empty($registration->GuardianId)) { 
-            $guardian = $registration->getGuardian();   
-            echo $guardian->getViewLink();
-        } else echo showStatusIcon(false);
-        
-    }
-    
-    echo "</td>";
-
-
     echo "</tr>";
 }
 
