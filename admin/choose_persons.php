@@ -96,7 +96,11 @@ $multiple=false;
     		        }
     		        echo "<tr>\n";
     		        
-    		        echo "<td><input type='$type' id='Person$person->Id' name='PersonId$array' value='$person->Id'></td>";
+    		        echo "<td>";
+    		        if ($operation == "invoice_add_concerns" && is_null($registration->AmountToPay))
+    		            echo "Avgiften är inte satt";
+    		        else echo "<input type='$type' id='Person$person->Id' name='PersonId$array' value='$person->Id'>";
+    		        echo "</td>";
     		        echo "<td>$person->Name</td>\n";
     		        echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>\n";
     		        

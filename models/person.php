@@ -178,6 +178,13 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getAllRegisteredNoFee($larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
+            "regsys_registration WHERE LarpId = ? AND AmountToPay IS NULL) ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
     public static function getAllReserves($larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".

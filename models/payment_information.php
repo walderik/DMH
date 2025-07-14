@@ -104,7 +104,7 @@ class PaymentInformation extends BaseModel{
     
     public static function getPrice($date, $age, $larp, $foodChoice) {
         $payment_information = static::get($date, $age, $larp);
-        if (empty($payment_information)) return 0;
+        if (empty($payment_information)) return null;
         $base_cost = $payment_information->Cost;
         $food_cost = 0;
         if (isset($foodChoice)) {

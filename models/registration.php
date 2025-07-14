@@ -9,7 +9,7 @@ class Registration extends BaseModel{
     public $PersonId;
     public $RegisteredAt;
     public $PaymentReference;
-    public $AmountToPay = 0;
+    public $AmountToPay;
     public $AmountPayed = 0;
     public $Payed; //Datum
     public $PaymentComment;
@@ -165,6 +165,7 @@ class Registration extends BaseModel{
     }
     
     public function hasPayed() {
+        if (is_null($this->AmountToPay)) return false;
         if ($this->AmountToPay <= $this->AmountPayed) {
             return true;
         }
@@ -350,7 +351,7 @@ class Registration extends BaseModel{
             if ($registration->isNotComing()) {
                 $income = $income + $registration->AmountPayed;
                 
-            } else {
+            } elseif (!is_null($registration->AmountToPay)) {
                 $income = $income + $registration->AmountToPay;
             }
         }
@@ -365,7 +366,7 @@ class Registration extends BaseModel{
             if ($registration->isToBeRefunded()) {
                 if (!empty($registration->RefundAmount)) {
                     $refunds = $refunds - $registration->RefundAmount;
-                } else {
+                } elseif (!is_null($registration ->AmountToPay)) {
                     $refunds = $refunds - $registration ->AmountToPay;
                     
                 }

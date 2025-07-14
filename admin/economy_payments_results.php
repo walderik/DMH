@@ -131,7 +131,10 @@ th {
 		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år ";
     		            
     		        echo "<td>".$registration->PaymentReference .  "</td>\n";
-    		        echo "<td>".$amountToPay.  "</td>\n";
+    		        echo "<td>";
+    		        if (is_null($amountToPay)) echo "<b>Betalning inte satt</b>";
+                    else echo $amountToPay;
+    		        echo "</td>\n";
     		        if (isset($paymentrow)) {
     		            if ($file_format=="swish") {
         		            $refence = $paymentrow[10];

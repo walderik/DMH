@@ -426,7 +426,7 @@ function openTab(evt, tabName) {
                     echo "<br><a href='input_guardian.php?PersonId=$person->Id'>Ange ansvarig vuxen</a>";
                 }
                 else {
-                    echo "<br>".$registration->getGuardian()->Name;
+                    echo $registration->getGuardian()->Name;
                 }
                 echo "</div>\n";                            
             }
@@ -441,6 +441,8 @@ function openTab(evt, tabName) {
                 $invoice = $registration->getInvoice();
                 if (!empty($invoice)) {
                     echo "<br>Avgiften är del av en faktura som betalas av $invoice->Recipient";
+                } elseif (is_null($registration->AmountToPay)) {
+                    echo "Din avgift är inte satt än.";
                 } else {
                     $campaign = $current_larp->getCampaign();
                     echo "<br>Betala <b>$registration->AmountToPay</b> SEK till $campaign->Bankaccount.<br>Ange referens: <b>$registration->PaymentReference</b>.<br>Betalas senast ".$registration->paymentDueDate();

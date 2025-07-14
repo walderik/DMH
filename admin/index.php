@@ -75,6 +75,9 @@ include "navigation.php";
 		    if ($approval_count>0) echo "$approval_count deltagare som inte är med hela tiden väntar på att deras avgifter ska <a href='registered_persons_parttime.php'>kontrolleras</a>.<br>";
 		}
 		
+		$approval_count = count (Person::getAllRegisteredNoFee($current_larp));
+		if ($approval_count>0) echo "$approval_count deltagare har inte fått någon <a href='registered_persons_no_fee.php'>avgift</a> automatiskt beräknad.<br>";
+		
 		?>
 		</div>
 		

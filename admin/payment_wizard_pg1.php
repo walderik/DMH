@@ -3,6 +3,14 @@ include_once 'header.php';
 include 'navigation.php';
 ?>
 
+<script>
+function checkLastDate(e) {
+	let date1 = new Date(e.target.value).getTime();
+	let date2 = new Date('<?php echo substr($current_larp->StartDate, 0, 10); ?>').getTime();
+
+	if (date1 < date2) alert('Sista datum är satt innan lajvet början. Om du plockar in någon efter detta datum, från tex reservlistan kommer de inte att få någon avgift automatiskt beräknad.');
+}
+</script>
 
     <div class="content">
         <h1>Uppsättning av deltagaravgifter - sida 1 av 3</h1>
@@ -34,7 +42,7 @@ include 'navigation.php';
 			<div class="question">
 				<label for="last_date">Sista datum</label>&nbsp;<font style="color:red">*</font><br>
 				Sätt den gärna till startdatum för lajvet så att det alltid finns en avgift även när man tar in någon från reservlistan.
-				<br> <input type="date" id="last_date" name="last_date" value="<?php echo substr($current_larp->StartDate, 0, 10); ?>" required>
+				<br> <input type="date" id="last_date" name="last_date" value="<?php echo substr($current_larp->StartDate, 0, 10); ?>" onfocusout="checkLastDate(event);" required>
 			</div>
 			<div class="question">
 				<label for="number_of_time_intervals">Antal tidsintervaller</label>&nbsp;<font style="color:red">*</font>

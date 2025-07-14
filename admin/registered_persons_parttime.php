@@ -18,6 +18,7 @@ th {
         <br>
      		<?php 
      		$persons = Person::getAllRegisteredPartTime($current_larp);
+     		$campaign = $current_larp->getCampaign();
     		if (empty($persons)) {
     		    echo "Inga anmälda deltagare";
     		} else {
@@ -45,8 +46,19 @@ th {
     		        echo " ".contactEmailIcon($person)."</td>\n";
     		        echo "</td>\n";
 
-		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>";
-		            echo "<td>" . $registration->LarpPartNotAttending . "</td>";
+    		        echo "<td>";
+    		        $age = $person->getAgeAtLarp($current_larp);
+    		        echo $age." år";
+    		        if ($age < $campaign->MinimumAgeWithoutGuardian) {
+    		            echo "<br>Ansvarig vuxen är ";
+    		            $registration = $person->getRegistration($current_larp);
+    		            if (!empty($registration->GuardianId)) {
+    		                $guardian = $registration->getGuardian();
+    		                echo $guardian->getViewLink();
+    		            } else echo showStatusIcon(false);
+    		        }
+    		        echo "</td>";
+    		        echo "<td>" . $registration->LarpPartNotAttending . "</td>";
 		            echo "<td align='center'>" . showStatusIcon($registration->LarpPartAcknowledged) . "</td>\n";
 		            echo "<td>".$registration->PaymentReference .  "</td>\n";
 		            

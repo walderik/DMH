@@ -121,7 +121,9 @@ class BerghemMailer {
         
         $text  = "Du är nu anmäld för att vara med i lajvet $larp->Name<br>\n";
         
-        if ($registration->AmountToPay == 0) {
+        if (is_null($registration->AmountToPay)) {
+            $text .= "Din avgift kunde inte beräknas automatiskt. Arrangörerna kommer att skicka ett mail senare med hur mycket du ska betala.<br>";
+        } elseif ($registration->AmountToPay == 0) {
             $text .= "Din avgift för lajvet är 0 SEK.<br>";
             
         } else {
