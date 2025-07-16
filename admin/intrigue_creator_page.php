@@ -67,14 +67,9 @@ th {
                 echo $character->DarkSecretIntrigueIdeas;
                 echo "</td>\n";
 
-                $referer = '../intrigue_creator_page.php';
                 echo "<td>";
-                echo "<form action='logic/edit_intrigue_save.php' method='post'>";
-                echo "<input type='hidden' id='Id' name='Id' value='" . $character->Id . "'>";
-                echo "<input type='hidden' id='Referer' name='Referer' value='" . htmlspecialchars($referer) . "'>";
-                echo "<textarea id='OrganizerNotes' name='OrganizerNotes' rows='5' cols='50' maxlength='60000'>" . htmlspecialchars($character->OrganizerNotes) . "</textarea><br>";
-                echo "<input type='submit' value='Spara'>";
-                echo "</form>";
+
+                echo "<textarea id='OrganizerNotes:$character->Id' name='OrganizerNotes' rows='5' cols='50' maxlength='60000' onkeyup='saveNotesForRole(this)' onchange='saveNotesForRole(this)'>" . htmlspecialchars($character->OrganizerNotes) . "</textarea><br>";
                 echo "</td>";
                 
                 echo "</tr>";
@@ -84,5 +79,6 @@ th {
             }
             ?>
         </div>
+        <script src="../javascript/saveRoleNotes_ajax.js"></script>
     </body>
 </html>
