@@ -16,6 +16,7 @@ function print_intrigue(Intrigue $intrigue, $responsiblePerson) {
     echo "<td>" . ja_nej($intrigue->MainIntrigue) . "</td>\n";
     echo "<td>" . commaStringFromArrayObject($intrigue->getIntriguetypes()) . "</td>\n";
     if (isset($responsiblePerson)) echo "<td>$responsiblePerson->Name</td>";
+    else echo "<td></td>";
     
     echo "<td>";
     if ($intrigue->mayDelete()) echo "<a href='logic/view_intrigue_logic.php?operation=delete&id=" . $intrigue->Id . "'><i class='fa-solid fa-trash' title='Ta bort'></i>";
@@ -48,11 +49,11 @@ function print_intrigue(Intrigue $intrigue, $responsiblePerson) {
            echo "<table class='data'>";
             
             
-            echo "<tr><th>Nummer</td><th>Namn</th><th>Status</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th></th></tr>\n";
+            echo "<tr><th>Nummer</td><th>Namn</th><th>Status</th><th>Aktuell</th><th>Huvud-<br>intrig</th><th>Intrigtyper</th><th></th><th></th></tr>\n";
             foreach ($intrigue_array as $intrigue) {
                 $responsiblePerson = $intrigue->getResponsiblePerson();
                 
-                if ($current_person->Id == $responsiblePerson->Id ) {
+                if (isset($responsiblePerson) && $current_person->Id == $responsiblePerson->Id ) {
                     print_intrigue($intrigue, null);
                 }
              }
@@ -66,7 +67,7 @@ function print_intrigue(Intrigue $intrigue, $responsiblePerson) {
             foreach ($intrigue_array as $intrigue) {
                 $responsiblePerson = $intrigue->getResponsiblePerson();
                 
-                if ($current_person->Id != $responsiblePerson->Id ) {
+                if (!isset($responsiblePerson) || $current_person->Id != $responsiblePerson->Id ) {
                     print_intrigue($intrigue, $responsiblePerson);
                 }
              }

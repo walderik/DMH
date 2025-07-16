@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $operation = $_GET['operation'];
     }
     if ($operation == 'new') {
+        $intrigue->ResponsiblePersonId = $current_person->Id;
     } elseif ($operation == 'update') {
         $intrigue = Intrigue::loadById($_GET['id']);
     } else {
@@ -123,11 +124,8 @@ include 'intrigue_navigation.php';
 				<td><label for="Notes">Ansvarig arrangör</label></td>
 			<td><?php 
 			
-			if (empty($intrigue->ResponsiblePersonId)) {
-			    $intrigue->ResponsiblePersonId = $current_person->Id;
-			}
 		     $organizers = Person::getAllWithAccessToLarp($current_larp);
-		     selectionDropDownByArray('ResponsiblePersonId', $organizers, true, $intrigue->ResponsiblePersonId) ?></td>
+		     selectionDropDownByArray('ResponsiblePersonId', $organizers, false, $intrigue->ResponsiblePersonId) ?></td>
 			</tr>
 		</table>
 

@@ -47,6 +47,9 @@ class Intrigue extends BaseModel{
         if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
         if (isset($arr['ResponsiblePersonId'])) $this->ResponsiblePersonId = $arr['ResponsiblePersonId'];
         if (isset($arr['PreviousInstanceId'])) $this->PreviousInstanceId = $arr['PreviousInstanceId'];
+        
+        if (isset($this->ResponsiblePersonId) && $this->ResponsiblePersonId=='null') $this->ResponsiblePersonId = null;
+        
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen

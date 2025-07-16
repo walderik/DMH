@@ -29,8 +29,11 @@ foreach ($intrigue_array as $intrigue) {
     if (!$intrigue->isActive()) continue;
     if (isset($one_intrigue_id) && $one_intrigue_id != $intrigue->Id) continue;
     $rows = array();
-    $header = array("Ansvarig", $intrigue->getResponsiblePerson()->Name);
-
+    $responsible_person = $intrigue->getResponsiblePerson();
+    $responsible_person_name = "";
+    if (isset($responsible_person)) $responsible_person_name = $responsible_person->Name;
+    $header = array("Ansvarig", $responsible_person_name);
+    
     $groupActors = $intrigue->getAllGroupActors();
     foreach($groupActors as $groupActor) {
         if (empty($groupActor->IntrigueText)) continue;

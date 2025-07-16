@@ -346,7 +346,7 @@ th, td {
 <tr><td>Ansvarig</td><td>
 	<?php                  
 	$responsiblePerson = $intrigue->getResponsiblePerson();
-      echo $responsiblePerson->Name;
+    if (isset($responsiblePerson)) echo $responsiblePerson->Name;
 ?></td></tr>
 <tr><td>Text till alla aktörer</td><td><?php  echo nl2br($intrigue->CommonText); ?></td></tr>
 <tr><td>Anteckningar</td><td><?php  echo nl2br($intrigue->Notes); ?></td></tr>
