@@ -908,6 +908,7 @@ class Role extends BaseModel{
         $sql = "SELECT * from regsys_role WHERE ".
             "IsApproved = 0 AND ".
             "UserMayEdit = 0 AND ".
+            "PersonId IS NULL AND ".
             "CampaignId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
