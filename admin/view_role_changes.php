@@ -16,6 +16,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 $role = Role::loadById($RoleId);
 $oldRoleCopy = $role->getOldApprovedRole();
 
+if (empty($oldRoleCopy)) {
+    header('Location: view_role.php?id='.$role->Id.'.php');
+    exit;
+}
+
 //$group = $role->getGroup();
 //$oldGroup = $oldRoleCopy->getGroup();
 
