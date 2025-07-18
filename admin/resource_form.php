@@ -82,7 +82,7 @@ include_once 'header.php';
 					 value="<?php echo htmlspecialchars($resource->UnitPlural); ?>" size="100" maxlength="250" required></td>
 			</tr>			<tr>
 
-				<td><label for="AmountPerWagon">Antal per vagn</label><br>Om man fyller en hel vagn med bara den här varan, hur många ryms det?</td>
+				<td><label for="AmountPerWagon">Antal per vagn</label><br>Om man fyller en hel vagn med bara den här<br>varan, hur många ryms det?</td>
 				<td><input type="number" id="AmountPerWagon" name="AmountPerWagon" 
 					 value="<?php echo htmlspecialchars($resource->AmountPerWagon); ?>" minvalue="0" required></td>
 			</tr>

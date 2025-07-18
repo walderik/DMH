@@ -6,7 +6,7 @@ class Resource extends BaseModel{
     public $Name;
     public $UnitSingular;
     public $UnitPlural;
-    public $AmountPerWagon;
+    public $AmountPerWagon = 1;
     public $Price = 0;
     public $IsRare = 0;
     public $ImageId;
