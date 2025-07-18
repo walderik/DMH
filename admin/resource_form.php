@@ -80,7 +80,13 @@ include_once 'header.php';
 				<td><label for="UnitPlural">Enhet plural</label><br>för spelare</td>
 				<td><input type="text" id="UnitPlural" name="UnitPlural"
 					 value="<?php echo htmlspecialchars($resource->UnitPlural); ?>" size="100" maxlength="250" required></td>
+			</tr>			<tr>
+
+				<td><label for="AmountPerWagon">Antal per vagn</label><br>Om man fyller en hel vagn med bara den här varan, hur många ryms det?</td>
+				<td><input type="number" id="AmountPerWagon" name="AmountPerWagon" 
+					 value="<?php echo htmlspecialchars($resource->AmountPerWagon); ?>" minvalue="0" required></td>
 			</tr>
+			
 			<tr>
 
 				<td><label for="UnitSingular">Pris</label></td>

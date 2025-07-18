@@ -30,9 +30,9 @@ $resources = Resource::allNormalByCampaign($current_larp);
 $currency = $current_larp->getCampaign()->Currency;
 
 $rows = array();
-$header = array("Namn", "Pris", "Kommentar                                                                                                                                   ");
+$header = array("Namn", "Pris", "npv", "Kommentar");
 foreach ($resources as $resource) {
-    $rows[] = array($resource->Name, $resource->Price." $currency", "");
+    $rows[] = array($resource->Name, $resource->Price." $currency", $resource->AmountPerWagon, "                         ");
 }
 
 // add a page

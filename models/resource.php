@@ -6,6 +6,7 @@ class Resource extends BaseModel{
     public $Name;
     public $UnitSingular;
     public $UnitPlural;
+    public $AmountPerWagon;
     public $Price = 0;
     public $IsRare = 0;
     public $ImageId;
@@ -26,6 +27,7 @@ class Resource extends BaseModel{
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
         if (isset($arr['UnitSingular'])) $this->UnitSingular = $arr['UnitSingular'];
         if (isset($arr['UnitPlural'])) $this->UnitPlural = $arr['UnitPlural'];
+        if (isset($arr['AmountPerWagon'])) $this->AmountPerWagon = $arr['AmountPerWagon'];
         if (isset($arr['Price'])) $this->Price = $arr['Price'];
         if (isset($arr['IsRare'])) $this->IsRare = $arr['IsRare']; 
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
@@ -49,11 +51,11 @@ class Resource extends BaseModel{
             $this->Price = 0;
         }
         $stmt = $this->connect()->prepare("UPDATE regsys_resource SET Name=?, 
-            UnitSingular=?, UnitPlural=?, Price=?, IsRare=?, ImageId=?, 
+            UnitSingular=?, UnitPlural=?, AmountPerWagon=?, Price=?, IsRare=?, ImageId=?, 
             CampaignId=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->UnitSingular, $this->UnitPlural, 
-            $this->Price, $this->IsRare, $this->ImageId, $this->CampaignId, $this->Id))) {
+            $this->AmountPerWagon, $this->Price, $this->IsRare, $this->ImageId, $this->CampaignId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -68,10 +70,10 @@ class Resource extends BaseModel{
         }
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_resource (Name, UnitSingular, 
-            UnitPlural, Price, IsRare, ImageId, CampaignId) VALUES (?,?,?,?,?,?,?);");
+            UnitPlural, AmountPerWagon, Price, IsRare, ImageId, CampaignId) VALUES (?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->UnitSingular, $this->UnitPlural, 
-            $this->Price, $this->IsRare, $this->ImageId, $this->CampaignId))) {
+            $this->AmountPerWagon, $this->Price, $this->IsRare, $this->ImageId, $this->CampaignId))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");

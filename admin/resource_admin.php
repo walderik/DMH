@@ -24,13 +24,14 @@ include 'navigation.php';
        $resource_array = Resource::allByCampaign($current_larp);
         if (!empty($resource_array)) {
             echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Enhet singular</th><th>Enhet plural</th><th>Pris</th><th>Ovanlig</th><th>Bild</th><th></th><th></th></tr>\n";
+            echo "<tr><th>Id</td><th>Namn</th><th>Enhet singular</th><th>Enhet plural</th><th>Antal per vagn</th><th>Pris</th><th>Ovanlig</th><th>Bild</th><th></th><th></th></tr>\n";
             foreach ($resource_array as $resource) {
                 echo "<tr>\n";
                 echo "<td>" . $resource->Id . "</td>\n";
                 echo "<td>" . $resource->Name . "</td>\n";
                 echo "<td>" . $resource->UnitSingular . "</td>\n";
                 echo "<td>" . $resource->UnitPlural . "</td>\n";
+                echo "<td>" . $resource->AmountPerWagon . "</td>\n";
                 echo "<td>" . $resource->Price . "</td>\n";
                 echo "<td>" . ja_nej($resource->IsRare) . "</td>\n";
 
