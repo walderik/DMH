@@ -4,14 +4,15 @@ include_once 'header.php';
 $persons=Person::getAllInterestedNPC($current_larp);
 
 
-function print_assigned_npc(NPC $npc, $npc_group) {
+function print_assigned_npc(NPC $npc) {
     global $current_larp;
+    $role = $npc->getRole();
     echo "<tr><td width='80'>";
     if ($npc->hasImage()) {
         echo "<img width='30' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-        echo " <a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+        echo " <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
     } else {
-        echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+        echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
     }
     echo "</td><td>";
     
@@ -19,12 +20,12 @@ function print_assigned_npc(NPC $npc, $npc_group) {
     
     $person=$npc->getPerson();
     
-    echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a> \n";
+    echo "<a href='npc_form.php?operation=update&id=$role->Id'>$role->Name</a> \n";
     if (!empty($npc->Time)) echo "$npc->Time";
     echo "<br>";
-    if (!empty($npc->Description)) echo nl2br(htmlspecialchars($npc->Description))."<br>\n";
+    if (!empty($role->Description)) echo nl2br(htmlspecialchars($role->Description))."<br>\n";
     
-    $intrigues = Intrigue::getAllIntriguesForNPC($npc->Id, $current_larp->Id);
+    $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
     if (!empty($intrigues)) {
         echo "Intrig: ";
         foreach ($intrigues as $intrigue) {
@@ -43,7 +44,7 @@ function print_assigned_npc(NPC $npc, $npc_group) {
     echo "<input type='hidden' name='PersonId' value='null'>\n";
     echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från deltagaren'></i></button>";
     echo "</form>\n";
-    if (empty($npc_group) || (!$npc->IsReleased())) {
+    if (!$npc->IsReleased()) {
         echo "<form action='logic/release_npc.php' method='post' style='display:inline-block'><input type='hidden' name='id' value='$npc->Id'>\n";
         echo " <button class='invisible' type ='submit'><i class='fa-solid fa-envelope' title=''Skicka NPC:n till deltagaren'></i></button>\n";
         echo "</form>\n";
@@ -55,21 +56,22 @@ function print_assigned_npc(NPC $npc, $npc_group) {
 
 function print_unassigned_npc(NPC $npc) {
     global $persons, $current_larp;
-    $intrigues = Intrigue::getAllIntriguesForNPC($npc->Id, $current_larp->Id);
+    $role = $npc->getRole();
+    $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
     echo "<tr><td width='80'>";
-    if ($npc->hasImage()) {
-        echo "<img width='30' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-        echo " <a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+    if ($role->hasImage()) {
+        echo "<img width='30' src='../includes/display_image.php?id=$role->ImageId'/>\n";
+        echo " <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
     } else {
-        echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+        echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
     }
     echo "</td><td>";
     echo "<div class='npc'>";
-    echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a> ";
+    echo "<a href='npc_form.php?operation=update&id=$npc->Id'>$role->Name</a> ";
     if (empty($intrigues)) echo "<a href='logic/delete_npc.php?id=$npc->Id'><i class='fa-solid fa-trash'></i></a> ";
     if (!empty($npc->Time)) echo "$npc->Time";
     echo "<br>";
-    if (!empty($npc->Description)) echo nl2br(htmlspecialchars($npc->Description))."<br>\n";
+    if (!empty($role->Description)) echo nl2br(htmlspecialchars($role->Description))."<br>\n";
     
     if (!empty($intrigues)) echo "Intrig: ";
     foreach ($intrigues as $intrigue) {
@@ -125,7 +127,7 @@ div.npc {
             
             
             
-            $npc_groups = NPCGroup::getAllForLARP($current_larp);
+            $npc_groups = NPC::getAllGroupsForLARP($current_larp);
             $groups_with_assigned_npcs = array();
             echo "<table>";
             
