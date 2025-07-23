@@ -102,6 +102,6 @@ if (Environment::isTest()) {
 		</div>
 		
 	  </div>
-	  <div class="link">Vid tekniska problem kontakta om@berghemsvanner.se<div>
+	  <div class="link">Vid tekniska problem kontakta om@berghemsvanner.se</div>
 	</body>
 </html>
