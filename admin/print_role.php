@@ -163,7 +163,7 @@ if ($role->isMysLajvare()) {
 			
 			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo nl2br($role->IntrigueSuggestions); ?></td></tr>
 			<tr><td valign="top" class="header">Saker karaktären inte vill spela på</td><td><?php echo $role->NotAcceptableIntrigues;?></td></tr>
-			<tr><td valign="top" class="header">Relationer med andra</td><td><?php echo $role->CharactersWithRelations;?></td></tr>
+			<tr><td valign="top" class="header">Relationer med andra</td><td><?php echo nl2br(htmlspecialchars($role->CharactersWithRelations));?></td></tr>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $role->OtherInformation;?></td></tr>
 			
 			<?php if (Wealth::isInUse($current_larp)) {?>
