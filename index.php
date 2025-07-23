@@ -100,7 +100,8 @@ if (Environment::isTest()) {
 			</div>
 			<div class="link"><a href="send_to_me_please.php?action=activation">Skicka om aktiveringsbrevet</a></div>
 		</div>
+		
 	  </div>
-
+	  <div class="link">Vid tekniska problem kontakta om@berghemsvanner.se<div>
 	</body>
 </html>
