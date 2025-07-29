@@ -24,7 +24,7 @@ $pdf = new Report_TCP_PDF();
 
 $pdf->init($current_person->Name, $name, $current_larp->Name, false);
 
-
+$pdf->SetAutoPageBreak(true);
 
 
 $intrigue_array = Intrigue::allByLARP($current_larp);
