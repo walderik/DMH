@@ -98,7 +98,7 @@ class IntrigueActor extends BaseModel{
         
         $role = $this->getRole();
         if (isset($role)) {
-            return $role->isRegistered($larp);
+            return LARP_Role::isRegistered($role->Id, $larp->Id);
         }
         
         $group = $this->getGroup();

@@ -506,7 +506,7 @@ th, td {
 	</td>
 	</tr>
 	
-<tr><td id='actorlist'>Sovande aktörer<br>(Grupper och karaktärer som inte är anmälda till lajvet)</td>
+<tr><td id='actorlist'>Sovande aktörer<br>(Grupper och karaktärer som inte är anmälda till lajvet eller står på reservlistan)</td>
 <td>
 
 <div class='container'>
