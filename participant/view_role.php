@@ -315,25 +315,104 @@ include 'navigation.php';
 			<i class="fa-solid fa-scroll"></i> Intrig
 		</div>
 			<div class='itemcontainer'>
-			<?php if ( $current_larp->isIntriguesReleased()) {
+			<?php if ($current_larp->isIntriguesReleased()) {
 			    echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
 			    
-			    $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
+			    $intrigues = array();
+			    $roleIntrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
+
+			    $intrigues = array_merge($intrigues, $roleIntrigues);
+			    $subdivisions = Subdivision::allForRole($role, $current_larp);
+			    foreach ($subdivisions as $subdivision) {
+			        $intrigues = array_merge($intrigues, Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id));
+			    }
+			    $intrigues = array_unique($intrigues, SORT_REGULAR);
+			    usort($intrigues, function ($a, $b) {
+			        $a_val =  $a->Number;
+			        $b_val =  $b->Number;
+			        
+			        if($a_val > $b_val) return 1;
+			        if($a_val < $b_val) return -1;
+			        return 0;
+			    });
+			        
+			    $first = true;
 		        foreach ($intrigues as $intrigue) {
-		            if ($intrigue->isActive()) {
-		                $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
+		            if ($intrigues[0]->isActive()) {		    
 		                $txt = "";
-		                if (!empty($intrigue->CommonText) && !$role->inSubdivisionInIntrigue($intrigue)) $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                if (!empty($intrigueActor->IntrigueText)) $txt .=  "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
-		                if (!empty($intrigueActor->OffInfo)) {
-		                    $txt .=  "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
+		                //Hitta alla intrigueActors som är aktuella, se att karaktären kommer först om den finns med
+		                $intrigueActors = array();
+		                $roleActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
+		                if (!empty($roleActor)) $intrigueActors[] = $roleActor;
+		                $invisibleSubdivisionActors = array();
+		                $visibleSubdivisionActors = array();
+		                foreach ($subdivisions as $subdivision) {
+		                    $subdivisionActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
+		                    if (!empty($subdivisionActor)) {
+		                        if ($subdivision->isVisibleToParticipants()) $visibleSubdivisionActors[] = $subdivisionActor;
+		                        else $invisibleSubdivisionActors[] = $subdivisionActor;
+		                    }
 		                }
+		                if (!empty($invisibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $invisibleSubdivisionActors);
+		                if (!empty($visibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $visibleSubdivisionActors);
+		                
+		                    
+		                
+		                //Om det bara är en intrigaktör och det är en synlig gruppering ska även För <namn> skrivas ut
+		                $singleVisibleSubdivisionActor = false;
+		                
+		                if (!empty($intrigue->CommonText)) {
+		                    if (sizeOf($intrigueActors) == 1 && $intrigueActors[0]->isSubdivisionActor()) {
+		                        $subdivision = $intrigueActors[0]->getSubdivision();
+		                        if ($subdivision->isVisibleToParticipants()) {
+		                            $txt .= "<p><strong>$subdivision->Name</strong><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                            $singleVisibleSubdivisionActor = true;
+		                        }
+		                        else $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                    } else $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                }
+		                
+		                $intrigueTextArr = array();
+		                foreach ($intrigueActors as $intrigueActor) {
+		                    if (!empty($intrigueActor->IntrigueText) && !in_array($intrigueActor->IntrigueText, $intrigueTextArr)) {
+		                        
+		                        if ($intrigueActor->isRoleActor()) $intrigueTextArr[] = $intrigueActor->IntrigueText;
+		                        else {
+		                            $subdivision = $intrigueActor->getSubdivision();
+		                            if ($subdivision->isVisibleToParticipants() && !$singleVisibleSubdivisionActor) $intrigueTextArr[] =   "<strong>$subdivision->Name</strong><br>".nl2br(htmlspecialchars($intrigueActor->IntrigueText));
+		                            else $intrigueTextArr[] = nl2br(htmlspecialchars($intrigueActor->IntrigueText));
+
+		                        }
+		                    }
+		                }
+		                if (!empty($intrigueTextArr)) {
+		                    $txt .=  "<p>".join("<br><br>",$intrigueTextArr). "</p>";
+		                }
+		                
+		                $offTextArr = array();
+		                foreach ($intrigueActors as $intrigueActor) {
+		                    if (!empty($intrigueActor->OffInfo)  && !in_array($intrigueActor->OffInfo, $offTextArr)) {
+		                        $offTextArr[] =  nl2br(htmlspecialchars($intrigueActor->OffInfo));
+		                    }
+		                }
+		                if (!empty($offTextArr)) {
+		                    $txt .= "<p><strong>Off-information:</strong><br><i>".join("<br><br>",$offTextArr)."</i></p>";
+		                }
+		                
 		                if (!empty($txt)) {
-		                    echo "Intrig $intrigue->Number:<br>".$txt."<hr>";
+		                    if ($first) $first = false;
+		                    else echo "<hr>";
+		                    echo "<h3>Intrig $intrigue->Number:</h3>".$txt;
 		                }
+		                
 		            }
 		        }
-		        
+			        
+			    
+			    
+			    
+			    
+
 		        $known_groups = $role->getAllKnownGroups($current_larp);
 		        $known_roles = $role->getAllKnownRoles($current_larp);
 		        
@@ -347,39 +426,20 @@ include 'navigation.php';
 		        $checkin_props = $role->getAllCheckinProps($current_larp);
 		        
 		        
-		        $subdivisions = Subdivision::allForRole($role, $current_larp);
+
+		        
 		        foreach ($subdivisions as $subdivision) {
-		            $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id);
-		            foreach ($subdivisionIntrigues as $intrigue) {
-		                if ($intrigue->isActive()) {
-		                    $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
-		                    $txt = "";
-		                    if ($subdivision->isVisibleToParticipants()) $txt .=   "<strong>För $subdivision->Name</strong><br>";
-		                    if (!empty($intrigue->CommonText)) $txt .=   "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                    if (!empty($intrigueActor->IntrigueText)) $txt .=   "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
-		                    if (!empty($intrigueActor->OffInfo)) {
-		                        $txt .=   "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
-		                    }
-		                    if (!empty($txt)) {
-		                        echo "Intrig $intrigue->Number:<br>".$txt."<hr>";
-		                    }
-		                }
-		            }
-		            
-		            $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp)), SORT_REGULAR);
-		            $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp)), SORT_REGULAR);
-		            
-		            $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
-		            $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
-		            $known_props = array_merge($known_props,$subdivision->getAllKnownProps($current_larp));
-		            $known_pdfs = array_merge($known_pdfs,$subdivision->getAllKnownPdfs($current_larp));
-		            
-		            $checkin_letters = array_merge($checkin_letters,$subdivision->getAllCheckinLetters($current_larp));
-		            $checkin_telegrams = array_merge($checkin_telegrams,$subdivision->getAllCheckinTelegrams($current_larp));
-		            $checkin_props = array_merge($checkin_props,$subdivision->getAllCheckinProps($current_larp));
-		            
-		            
-		            
+    		        $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp)), SORT_REGULAR);
+    		        $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp)), SORT_REGULAR);
+    		        
+    		        $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
+    		        $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
+    		        $known_props = array_merge($known_props,$subdivision->getAllKnownProps($current_larp));
+    		        $known_pdfs = array_merge($known_pdfs,$subdivision->getAllKnownPdfs($current_larp));
+    		        
+    		        $checkin_letters = array_merge($checkin_letters,$subdivision->getAllCheckinLetters($current_larp));
+    		        $checkin_telegrams = array_merge($checkin_telegrams,$subdivision->getAllCheckinTelegrams($current_larp));
+    		        $checkin_props = array_merge($checkin_props,$subdivision->getAllCheckinProps($current_larp));
 		        }
 		        
                 if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
