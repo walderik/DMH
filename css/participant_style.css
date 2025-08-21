@@ -208,3 +208,11 @@ input[type='email'] {
 }
 
 
+.itemcontainer > h3 {
+  	border-top:1px solid rgb(217, 217, 217);
+  	padding-top: 5px;
+}
+.itemcontainer > h3:first-child {
+  	border-top:none;
+  	margin-top: 0px;
+}

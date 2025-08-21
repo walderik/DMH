@@ -316,7 +316,7 @@ include 'navigation.php';
 		</div>
 			<div class='itemcontainer'>
 			<?php if ($current_larp->isIntriguesReleased()) {
-			    echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
+			    if (!empty($larp_role->Intrigue)) echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
 			    
 			    $intrigues = array();
 			    $roleIntrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
@@ -336,7 +336,6 @@ include 'navigation.php';
 			        return 0;
 			    });
 			        
-			    $first = true;
 		        foreach ($intrigues as $intrigue) {
 		            if ($intrigues[0]->isActive()) {		    
 		                $txt = "";
@@ -400,8 +399,6 @@ include 'navigation.php';
 		                }
 		                
 		                if (!empty($txt)) {
-		                    if ($first) $first = false;
-		                    else echo "<hr>";
 		                    echo "<h3>Intrig $intrigue->Number:</h3>".$txt;
 		                }
 		                
@@ -616,7 +613,7 @@ include 'navigation.php';
 		   <?php 
 		    foreach ($previous_larps as $prevoius_larp) {
 		        $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
-		        echo "<div class='border'>";
+		        //echo "<div class='border'>";
 		        echo "<h3>$prevoius_larp->Name</h3>";
 		        if (!empty($previous_larp_role->Intrigue)) {
 		            echo "<strong>Intrig</strong><br>";
@@ -651,7 +648,7 @@ include 'navigation.php';
                     echo nl2br(htmlspecialchars($previous_larp_role->WhatHappensAfterLarp));
                 else echo "Inget rapporterat";
                 echo "</p>";
-                echo "</div>";
+                //echo "</div>";
 		                
 		    }
 		    
