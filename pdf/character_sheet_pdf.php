@@ -136,33 +136,26 @@ class CharacterSheet_PDF extends PDF_MemImage {
     
     function intrigues($new_page = true, $start_line= true) {
         global $y, $left, $lovest_y;
-        
         $space = 3;
         
-        # Kolla först att det finns intriger och att någon har en intrigtext
-        $intrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $this->larp->Id);
+        $intrigues = array();
+        $roleIntrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $this->larp->Id);
         
-        if (empty($intrigues) && empty($this->subdivisions)) return true;
-        
-        $tomma_intriger = true;
-        foreach ($intrigues as $intrigue) {
-            if (!$intrigue->isActive()) continue;
-            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);  
-            $role = $intrigueActor->getRole();
-            $isInSubdivision = $role->inSubdivisionInIntrigue($intrigue);
+        $intrigues = array_merge($intrigues, $roleIntrigues);
+        $subdivisions = Subdivision::allForRole($this->role, $this->larp);
+        foreach ($subdivisions as $subdivision) {
+            $intrigues = array_merge($intrigues, Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $this->larp->Id));
+        }
+        $intrigues = array_unique($intrigues, SORT_REGULAR);
+        usort($intrigues, function ($a, $b) {
+            $a_val =  $a->Number;
+            $b_val =  $b->Number;
             
-            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || (!$isInSubdivision && !empty($intrigue->CommonText))) $tomma_intriger = false;
-        }
-        foreach ($this->subdivisions as $subdivision) {
-            $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $this->larp->Id);
-            foreach ($subdivisionIntrigues as $intrigue) {
-                if (!$intrigue->isActive()) continue;
-                $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
-                if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) $tomma_intriger = false;
-            }
-        }
-                
-        if ($tomma_intriger) return true;
+            if($a_val > $b_val) return 1;
+            if($a_val < $b_val) return -1;
+            return 0;
+        });
+            
   
         if ($new_page) $this->AddPage();
         else {
@@ -179,25 +172,78 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->SetFont('Arial','',static::$text_fontsize);
         
         
+        $first = true;
         foreach ($intrigues as $intrigue) {
-            if (!$intrigue->isActive()) continue;
-            
-            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
-            if (empty($intrigueActor)) continue;
-
-            $role = $intrigueActor->getRole();
-            $isInSubdivision = $role->inSubdivisionInIntrigue($intrigue);
-            
-            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || (!$isInSubdivision && !empty($intrigue->CommonText))) {
-                $this->printIntrigue($intrigue, $intrigueActor, true);
+            if ($intrigues[0]->isActive()) {
+                //Hitta alla intrigueActors som är aktuella, se att karaktären kommer först om den finns med
+                $intrigueActors = array();
+                $roleActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
+                if (!empty($roleActor)) $intrigueActors[] = $roleActor;
+                $invisibleSubdivisionActors = array();
+                $visibleSubdivisionActors = array();
+                foreach ($subdivisions as $subdivision) {
+                    $subdivisionActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
+                    if (!empty($subdivisionActor)) {
+                        if ($subdivision->isVisibleToParticipants()) $visibleSubdivisionActors[] = $subdivisionActor;
+                        else $invisibleSubdivisionActors[] = $subdivisionActor;
+                    }
+                }
+                if (!empty($invisibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $invisibleSubdivisionActors);
+                if (!empty($visibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $visibleSubdivisionActors);
                 
-                $this->shortbar();
-                $y += 2;
-                $this->SetXY($left, $y);
+                
+                
+                //Om det bara är en intrigaktör och det är en synlig gruppering ska även För <namn> skrivas ut
+                $singleVisibleSubdivisionActor = false;
+                $commonTextHeader = "";
+                
+                if (!empty($intrigue->CommonText)) {
+                    if (sizeOf($intrigueActors) == 1 && $intrigueActors[0]->isSubdivisionActor()) {
+                        $subdivision = $intrigueActors[0]->getSubdivision();
+                        if ($subdivision->isVisibleToParticipants()) {
+                            $commonTextHeader = $subdivision->Name;
+                            $singleVisibleSubdivisionActor = true;
+                        }
+                    } 
+                }
+                
+                $intrigueTextArr = array();
+                foreach ($intrigueActors as $intrigueActor) {
+                    if (!empty($intrigueActor->IntrigueText) && !in_array($intrigueActor->IntrigueText, $intrigueTextArr)) {
+                        
+                        if ($intrigueActor->isRoleActor()) $intrigueTextArr[] = $intrigueActor->IntrigueText;
+                        else {
+                            $subdivision = $intrigueActor->getSubdivision();
+                            if ($subdivision->isVisibleToParticipants() && !$singleVisibleSubdivisionActor) $intrigueTextArr[] =   array($subdivision->Name, $intrigueActor->IntrigueText);
+                            else $intrigueTextArr[] = array("",$intrigueActor->IntrigueText);
+                            
+                        }
+                    }
+                }
+                
+                $offTextArr = array();
+                foreach ($intrigueActors as $intrigueActor) {
+                    if (!empty($intrigueActor->OffInfo)  && !in_array($intrigueActor->OffInfo, $offTextArr)) {
+                        $offTextArr[] =  $intrigueActor->OffInfo;
+                    }
+                }
+                
+
+                if (!empty($intrigue->CommonText) || !empty($intrigueTextArr) || !empty($offTextArr)) {
+                    if ($first) $first = false;
+                    else {
+                        $this->shortbar();
+                        $y += 2;
+                        $this->SetXY($left, $y);
+                    }
+                    $this->printIntrigueNew($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr);
+                    $y += 2;
+                    $this->SetXY($left, $y);
+                }
+                
             }
-            
-            
         }
+        
         $known_groups = $this->role->getAllKnownGroups($this->larp);
         $known_roles = $this->role->getAllKnownRoles($this->larp);
         $known_npcgroups = $this->role->getAllKnownNPCGroups($this->larp);
@@ -205,34 +251,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $known_props = $this->role->getAllKnownProps($this->larp);
         
 
-        foreach ($this->subdivisions as $subdivision) {
-            $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $this->larp->Id);
-            foreach ($subdivisionIntrigues as $intrigue) {
-                if ($intrigue->isActive()) {
-                    $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
-                    if (empty($intrigueActor)) continue;
-                    
-                    if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) {
-                        $intrigue_numbers[$intrigue->Number] = $intrigue->Number;
-                    }
-                    if ($subdivision->isVisibleToParticipants()) {
-                        $this->SetXY($left, $y);
-                        $this->SetFont('Helvetica','B',static::$text_fontsize);
-                        $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso('För '.$subdivision->Name),0,0,'L');
-                        $y = $this->GetY()+$space*2;
-                        $this->SetXY($left, $y);
-                        $this->SetFont('Helvetica','',static::$text_fontsize);
-                        
-                    }
-                    $this->printIntrigue($intrigue, $intrigueActor, true);
-
-                    $this->shortbar();
-                    $y += 2;
-                    $this->SetXY($left, $y);
-                    
-                }
-            }
-            
+        foreach ($subdivisions as $subdivision) {
             $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($this->larp)), SORT_REGULAR);
             $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($this->larp)), SORT_REGULAR);
             
@@ -240,6 +259,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($this->larp));
             $known_props = array_merge($known_props,$subdivision->getAllKnownProps($this->larp));
         }
+        
         
         # Dom man känner till från intrigerna
         if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props))) {
@@ -330,6 +350,61 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         if ($showOffInfo && !empty($intrigueActor->OffInfo)) {
             $text = trim(encode_utf_to_iso("OFF_INFORMATION: " . $intrigueActor->OffInfo));
+            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+            $y = $this->GetY() + $space;
+            $this->SetXY($left, $y);
+        }
+        
+    }
+    
+    protected function printIntrigueNew($number, $commonText, $commonTextHeader, $intrigueTextArr, $offTextArr) {
+        global $left, $y;
+        $space = 3;
+        
+        $text = trim(encode_utf_to_iso("Intrig ".$number.":"));
+        $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+        $y = $this->GetY() + $space;
+        $this->SetXY($left, $y);
+        
+        if (!empty($commonTextHeader)) {
+            $this->SetXY($left, $y);
+            $this->SetFont('Helvetica','B',static::$text_fontsize);
+            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($commonTextHeader),0,0,'L');
+            $y = $this->GetY()+$space*2;
+            $this->SetXY($left, $y);
+            $this->SetFont('Helvetica','',static::$text_fontsize);
+        }
+        
+        if (!empty($commonText)) {
+            $text = trim(encode_utf_to_iso($commonText));
+            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+            $y = $this->GetY() + $space;
+            $this->SetXY($left, $y);
+        }
+        
+        if (!empty($intrigueTextArr)) {
+            foreach ($intrigueTextArr as $intrigueText) {
+                if (is_array($intrigueText)) {
+                    $this->SetXY($left, $y);
+                    $this->SetFont('Helvetica','B',static::$text_fontsize);
+                    $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($intrigueText[0]),0,0,'L');
+                    $y = $this->GetY()+$space*2;
+                    $this->SetXY($left, $y);
+                    $this->SetFont('Helvetica','',static::$text_fontsize);
+                    
+                    $text = $intrigueText[1];
+                } else $text = $intrigueText;
+                $text = trim(encode_utf_to_iso($text));
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+            }
+        }
+        
+        if (!empty($offTextArr)) {
+            $text = "";
+            foreach ($offTextArr as $offText) $text .= $offText."\n";
+            $text = trim(encode_utf_to_iso("OFF_INFORMATION: " . $text));
             $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
             $y = $this->GetY() + $space;
             $this->SetXY($left, $y);
