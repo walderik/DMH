@@ -152,11 +152,11 @@ include 'navigation.php';
     		                if (sizeOf($intrigueActors) == 1 && $intrigueActors[0]->isSubdivisionActor()) {
     		                    $subdivision = $intrigueActors[0]->getSubdivision();
     		                    if ($subdivision->isVisibleToParticipants()) {
-    		                        $txt .= "<p><strong>$subdivision->Name</strong><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+    		                        $txt .= "<p><i>Gemensam text:</i><br><strong>$subdivision->Name</strong><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
     		                        $singleVisibleSubdivisionActor = true;
     		                    }
-    		                    else $txt .= "<p>Gemensam text:<br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-    		                } else $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+    		                    else $txt .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+    		                } else $txt .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
     		            }
     		            
     		            $intrigueTextArr = array();
