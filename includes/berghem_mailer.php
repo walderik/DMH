@@ -373,14 +373,13 @@ class BerghemMailer {
         
         $text  = "Du har fått en NPC på lajvet $larp->Name<br>\n";
         $text .= "<br>\n";
-        $text .= "Namn: $npc->Name";
+        $text .= "<b>Namn:</b> ".htmlspecialchars($npc->Name);
+        $text .= "<br><br>\n";
+        $text .= "<b>Beskrivning:</b><br>".nl2br(htmlspecialchars($npc->Description));
+        $text .= "<br><br>\n";
+        $text .= "<b>Tiden när vi vill att du spelar npc'n:</b> ".htmlspecialchars($npc->Time);
         $text .= "<br>\n";
-        $text .= "Beskrivning: $npc->Description";
-        $text .= "<br>\n";
-        $text .= "Tiden när vi vill att du spelar npc'n: $npc->Time";
-        $text .= "<br>\n";
-        
-        
+   
         BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "NPC på ".$larp->Name, "", BerghemMailer::DaysAutomatic);
     }
     
