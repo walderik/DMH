@@ -138,24 +138,9 @@ class CharacterSheet_PDF extends PDF_MemImage {
         global $y, $left, $lovest_y;
         $space = 3;
         
-        $intrigues = array();
-        $roleIntrigues = Intrigue::getAllIntriguesForRole($this->role->Id, $this->larp->Id);
-        
-        $intrigues = array_merge($intrigues, $roleIntrigues);
+        $intrigues = $this->role->getAllIntriguesIncludingSubdivisionsSorted($this->larp);
         $subdivisions = Subdivision::allForRole($this->role, $this->larp);
-        foreach ($subdivisions as $subdivision) {
-            $intrigues = array_merge($intrigues, Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $this->larp->Id));
-        }
-        $intrigues = array_unique($intrigues, SORT_REGULAR);
-        usort($intrigues, function ($a, $b) {
-            $a_val =  $a->Number;
-            $b_val =  $b->Number;
-            
-            if($a_val > $b_val) return 1;
-            if($a_val < $b_val) return -1;
-            return 0;
-        });
-            
+        
   
         if ($new_page) $this->AddPage();
         else {
@@ -174,59 +159,13 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $first = true;
         foreach ($intrigues as $intrigue) {
-            if ($intrigues[0]->isActive()) {
-                //Hitta alla intrigueActors som är aktuella, se att karaktären kommer först om den finns med
-                $intrigueActors = array();
-                $roleActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this->role);
-                if (!empty($roleActor)) $intrigueActors[] = $roleActor;
-                $invisibleSubdivisionActors = array();
-                $visibleSubdivisionActors = array();
-                foreach ($subdivisions as $subdivision) {
-                    $subdivisionActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
-                    if (!empty($subdivisionActor)) {
-                        if ($subdivision->isVisibleToParticipants()) $visibleSubdivisionActors[] = $subdivisionActor;
-                        else $invisibleSubdivisionActors[] = $subdivisionActor;
-                    }
-                }
-                if (!empty($invisibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $invisibleSubdivisionActors);
-                if (!empty($visibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $visibleSubdivisionActors);
-                
-                
-                
-                //Om det bara är en intrigaktör och det är en synlig gruppering ska även För <namn> skrivas ut
-                $singleVisibleSubdivisionActor = false;
+            if ($intrigue->isActive()) {
                 $commonTextHeader = "";
-                
-                if (!empty($intrigue->CommonText)) {
-                    if (sizeOf($intrigueActors) == 1 && $intrigueActors[0]->isSubdivisionActor()) {
-                        $subdivision = $intrigueActors[0]->getSubdivision();
-                        if ($subdivision->isVisibleToParticipants()) {
-                            $commonTextHeader = $subdivision->Name;
-                            $singleVisibleSubdivisionActor = true;
-                        }
-                    } 
-                }
-                
                 $intrigueTextArr = array();
-                foreach ($intrigueActors as $intrigueActor) {
-                    if (!empty($intrigueActor->IntrigueText) && !in_array($intrigueActor->IntrigueText, $intrigueTextArr)) {
-                        
-                        if ($intrigueActor->isRoleActor()) $intrigueTextArr[] = $intrigueActor->IntrigueText;
-                        else {
-                            $subdivision = $intrigueActor->getSubdivision();
-                            if ($subdivision->isVisibleToParticipants() && !$singleVisibleSubdivisionActor) $intrigueTextArr[] =   array($subdivision->Name, $intrigueActor->IntrigueText);
-                            else $intrigueTextArr[] = array("",$intrigueActor->IntrigueText);
-                            
-                        }
-                    }
-                }
-                
                 $offTextArr = array();
-                foreach ($intrigueActors as $intrigueActor) {
-                    if (!empty($intrigueActor->OffInfo)  && !in_array($intrigueActor->OffInfo, $offTextArr)) {
-                        $offTextArr[] =  $intrigueActor->OffInfo;
-                    }
-                }
+                $whatHappenedTextArr = array();
+                
+                $intrigue->findAllInfoForRoleInIntrigue($this->role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
                 
 
                 if (!empty($intrigue->CommonText) || !empty($intrigueTextArr) || !empty($offTextArr)) {

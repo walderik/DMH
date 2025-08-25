@@ -863,6 +863,77 @@ class Intrigue extends BaseModel{
         parent::delete($id);
     }
     
-    
+    //Sätter resultatet i vissa inparametrar
+    public function findAllInfoForRoleInIntrigue($role, $subdivisions, &$commonTextHeader, &$intrigueTextArr, &$offTextArr, &$whatHappenedTextArr) {
+        $intrigueActors = array();
+        $roleActor = IntrigueActor::getRoleActorForIntrigue($this, $role);
+        if (!empty($roleActor)) $intrigueActors[] = $roleActor;
+        $invisibleSubdivisionActors = array();
+        $visibleSubdivisionActors = array();
+        foreach ($subdivisions as $subdivision) {
+            $subdivisionActor = IntrigueActor::getSubdivisionActorForIntrigue($this, $subdivision);
+            if (!empty($subdivisionActor)) {
+                if ($subdivision->isVisibleToParticipants()) $visibleSubdivisionActors[] = $subdivisionActor;
+                else $invisibleSubdivisionActors[] = $subdivisionActor;
+            }
+        }
+        if (!empty($invisibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $invisibleSubdivisionActors);
+        if (!empty($visibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $visibleSubdivisionActors);
+        
+        
+        
+        //Om det bara är en intrigaktör och det är en synlig gruppering ska även För <namn> skrivas ut
+        $singleVisibleSubdivisionActor = false;
+        
+        $commonTextHeader = "";
+        
+        if (!empty($this->CommonText)) {
+            if (sizeOf($intrigueActors) == 1 && $intrigueActors[0]->isSubdivisionActor()) {
+                $subdivision = $intrigueActors[0]->getSubdivision();
+                if ($subdivision->isVisibleToParticipants()) {
+                    $commonTextHeader = $subdivision->Name;
+                    $singleVisibleSubdivisionActor = true;
+                }
+            }
+        }
+        
+        $intrigueTextArr = array();
+        foreach ($intrigueActors as $intrigueActor) {
+            if (!empty($intrigueActor->IntrigueText) && !in_array($intrigueActor->IntrigueText, $intrigueTextArr)) {
+                
+                if ($intrigueActor->isRoleActor()) $intrigueTextArr[] = $intrigueActor->IntrigueText;
+                else {
+                    $subdivision = $intrigueActor->getSubdivision();
+                    if ($subdivision->isVisibleToParticipants() && !$singleVisibleSubdivisionActor) {
+                        $intrigueTextArr[] =  array($subdivision->Name, $intrigueActor->IntrigueText);
+                    } else {
+                        $intrigueTextArr[] = $intrigueActor->IntrigueText;
+                    }
+                    
+                }
+            }
+        }
+        
+        $offTextArr = array();
+        foreach ($intrigueActors as $intrigueActor) {
+            if (!empty($intrigueActor->OffInfo)  && !in_array($intrigueActor->OffInfo, $offTextArr)) {
+                $offTextArr[] =  $intrigueActor->OffInfo;
+            }
+        }
+        
+        $whatHappenedTextArr = array();
+        foreach ($intrigueActors as $intrigueActor) {
+            if (!empty($intrigueActor->WhatHappened)) {
+                
+                if ($intrigueActor->isRoleActor()) $whatHappenedTextArr[] = $intrigueActor->WhatHappened;
+                else {
+                    $subdivision = $intrigueActor->getSubdivision();
+                    if ($subdivision->isVisibleToParticipants() && !$singleVisibleSubdivisionActor) $whatHappenedTextArr[] =  array($subdivision->Name, $intrigueActor->WhatHappened);
+                    else $whatHappenedTextArr[] = $intrigueActor->WhatHappened;
+                    
+                }
+            }
+        }
+    }
     
 }
