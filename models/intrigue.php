@@ -864,7 +864,7 @@ class Intrigue extends BaseModel{
     }
     
     //Sätter resultatet i vissa inparametrar
-    public function findAllInfoForRoleInIntrigue($role, $subdivisions, &$commonTextHeader, &$intrigueTextArr, &$offTextArr, &$whatHappenedTextArr) {
+    public function findAllInfoForRoleInIntrigue($role, $subdivisions, &$commonTextHeader, &$intrigueTextArr, &$offTextArr, &$whatHappenedTextArr, ?bool $adminInfo=false) {
         $intrigueActors = array();
         $roleActor = IntrigueActor::getRoleActorForIntrigue($this, $role);
         if (!empty($roleActor)) $intrigueActors[] = $roleActor;
@@ -905,7 +905,10 @@ class Intrigue extends BaseModel{
                 else {
                     $subdivision = $intrigueActor->getSubdivision();
                     if ($subdivision->isVisibleToParticipants() && !$singleVisibleSubdivisionActor) {
-                        $intrigueTextArr[] =  array($subdivision->Name, $intrigueActor->IntrigueText);
+                        $intrigueTextArr[] =  array($subdivision->Name, $intrigueActor->IntrigueText, true);
+                    } elseif ($adminInfo){
+                        //Tredje parameterna anger om den ska vara synlig eller inte
+                        $intrigueTextArr[] =  array($subdivision->Name, $intrigueActor->IntrigueText, false);
                     } else {
                         $intrigueTextArr[] = $intrigueActor->IntrigueText;
                     }
@@ -928,8 +931,11 @@ class Intrigue extends BaseModel{
                 if ($intrigueActor->isRoleActor()) $whatHappenedTextArr[] = $intrigueActor->WhatHappened;
                 else {
                     $subdivision = $intrigueActor->getSubdivision();
-                    if ($subdivision->isVisibleToParticipants() && !$singleVisibleSubdivisionActor) $whatHappenedTextArr[] =  array($subdivision->Name, $intrigueActor->WhatHappened);
-                    else $whatHappenedTextArr[] = $intrigueActor->WhatHappened;
+                    if ($subdivision->isVisibleToParticipants()) $whatHappenedTextArr[] =  array($subdivision->Name, $intrigueActor->WhatHappened);
+                    elseif ($adminInfo) {
+                        //Tredje parameterna anger om den ska vara synlig eller inte
+                        $whatHappenedTextArr[] =  array($subdivision->Name, $intrigueActor->IntrigueText, false);
+                    } else $whatHappenedTextArr[] = $intrigueActor->WhatHappened;
                     
                 }
             }

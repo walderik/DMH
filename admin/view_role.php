@@ -29,6 +29,62 @@ else $isReserve = false;
 $isRegistered = $role->isRegistered($current_larp);
 $subdivisions = Subdivision::allForRole($role, $current_larp);
 
+function printIntrigue(Intrigue $intrigue, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, $alwaysPrintWhatHappened) {
+    $formattedText = "";
+
+    if (!empty($intrigue->CommonText)) {
+        if (!empty($commonTextHeader)) {
+            $formattedText .= "<p><i>Gemensam text:</i><br><strong>$commonTextHeader</strong><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+        } else $formattedText .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+    }
+    
+    if (!empty($intrigueTextArr)) {
+        $tmpIntrigueTextArr = array();
+        foreach ($intrigueTextArr as $intrigueText) {
+            if (is_array($intrigueText) && $intrigueText[2]) {
+                $tmpIntrigueTextArr[] = "<strong>".htmlspecialchars($intrigueText[0])."</strong><br>".nl2br(htmlspecialchars($intrigueText[1]));
+            } elseif (is_array($intrigueText)) {
+                $tmpIntrigueTextArr[] = "<i>".htmlspecialchars($intrigueText[0])."</i><br>".nl2br(htmlspecialchars($intrigueText[1]));
+            } else {
+                $tmpIntrigueTextArr[] = nl2br(htmlspecialchars($intrigueText));
+            }
+        }
+        $formattedText .=  "<p>".join("<br><br>",$tmpIntrigueTextArr). "</p>";
+    }
+    
+    if (!empty($offTextArr)) {
+        $tmpOffTextArr = array();
+        foreach ($offTextArr as $offText) {
+            $tmpOffTextArr[] = nl2br(htmlspecialchars($offText));
+        }
+        $formattedText .= "<p><strong>Off-information:</strong><br><i>".join("<br><br>",$tmpOffTextArr)."</i></p>";
+    }
+    
+    
+    
+    if (!empty($whatHappenedTextArr) || $alwaysPrintWhatHappened) {
+        $tmpWhatHappenedTextArr = array();
+        foreach ($whatHappenedTextArr as $whatHappenedText) {
+            if (is_array($whatHappenedText) && $whatHappenedText[2]) {
+                $tmpWhatHappenedTextArr[] = "<strong>".htmlspecialchars($whatHappenedText[0])."</strong><br>".nl2br(htmlspecialchars($whatHappenedText[1]));
+            } elseif (is_array($whatHappenedText)) {
+                $tmpWhatHappenedTextArr[] = "<i>".htmlspecialchars($whatHappenedText[0])."</i><br>".nl2br(htmlspecialchars($whatHappenedText[1]));
+            } else {
+                $tmpWhatHappenedTextArr[] = nl2br(htmlspecialchars($whatHappenedText));
+            }
+        }
+        $formattedText .= "<p><strong>Vad hände med det:</strong><br>";
+        if (!empty($tmpWhatHappenedTextArr)) $formattedText .= join("<br><br>",$tmpWhatHappenedTextArr);
+        else $formattedText .= "Inget rapporterat";
+        $formattedText .= "</p>";
+    }
+    
+    
+    if (!empty($formattedText)) {
+        echo "<tr><td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrigspår $intrigue->Number<br>$intrigue->Name</a></td><td>".$formattedText."</td><tr>";
+    }
+}
+
 include 'navigation.php';
 ?>
 
@@ -106,99 +162,20 @@ include 'navigation.php';
     		    ?>
 
     		<?php
-    		$intrigues = array();
-    		$roleIntrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
-    		
-    		$intrigues = array_merge($intrigues, $roleIntrigues);
+    		$intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($current_larp);
     		$subdivisions = Subdivision::allForRole($role, $current_larp);
-    		foreach ($subdivisions as $subdivision) {
-    		    $intrigues = array_merge($intrigues, Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id));
-    		}
-    		$intrigues = array_unique($intrigues, SORT_REGULAR);
-    		usort($intrigues, function ($a, $b) {
-    		    $a_val =  $a->Number;
-    		    $b_val =  $b->Number;
-    		    
-    		    if($a_val > $b_val) return 1;
-    		    if($a_val < $b_val) return -1;
-    		    return 0;
-    		});
-    		    
-		    echo "<table class='data'>";
-		    foreach ($intrigues as $intrigue) {
-		        if ($intrigues[0]->isActive()) {
-		            $txt = "";
-		            //Hitta alla intrigueActors som är aktuella, se att karaktären kommer först om den finns med
-		            $intrigueActors = array();
-		            $roleActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
-		            if (!empty($roleActor)) $intrigueActors[] = $roleActor;
-		            $invisibleSubdivisionActors = array();
-		            $visibleSubdivisionActors = array();
-		            foreach ($subdivisions as $subdivision) {
-		                $subdivisionActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
-		                if (!empty($subdivisionActor)) {
-		                    if ($subdivision->isVisibleToParticipants()) $visibleSubdivisionActors[] = $subdivisionActor;
-		                    else $invisibleSubdivisionActors[] = $subdivisionActor;
-		                }
-		            }
-		            if (!empty($invisibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $invisibleSubdivisionActors);
-		            if (!empty($visibleSubdivisionActors)) $intrigueActors = array_merge($intrigueActors, $visibleSubdivisionActors);
-		            
-		            
-		            
-		            //Om det bara är en intrigaktör och det är en synlig gruppering ska även För <namn> skrivas ut
-		            $singleVisibleSubdivisionActor = false;
-		            
-		            if (!empty($intrigue->CommonText)) {
-		                if (sizeOf($intrigueActors) == 1 && $intrigueActors[0]->isSubdivisionActor()) {
-		                    $subdivision = $intrigueActors[0]->getSubdivision();
-		                    if ($subdivision->isVisibleToParticipants()) {
-		                        $txt .= "<p><i>Gemensam text:</i><br><strong>$subdivision->Name</strong><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                        $singleVisibleSubdivisionActor = true;
-		                    }
-		                    else $txt .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                } else $txt .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		            }
-		            
-		            $intrigueTextArr = array();
-		            foreach ($intrigueActors as $intrigueActor) {
-		                if (!empty($intrigueActor->IntrigueText) && !in_array($intrigueActor->IntrigueText, $intrigueTextArr)) {
-		                    
-		                    $intrigueText = "";
-		                    if ($intrigueActor->isSubdivisionActor())  {
-		                        $subdivision = $intrigueActor->getSubdivision();
-		                        
-		                        if ($subdivision->isVisibleToParticipants()) $intrigueText .= "<strong>$subdivision->Name</strong>";
-		                        else $intrigueText .= "<i>$subdivision->Name</i>";
-		                        $intrigueText .= " <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$subdivision->Name'><i class='fa-solid fa-pen'></i></a>";
-		                        
-		                        
-		                    } else {
-		                        $intrigueText = "<i>Personlig intrigtext</i>";
-		                        $intrigueText .= " <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$role->Name'><i class='fa-solid fa-pen'></i></a>";
-		                    }
-		                    $intrigueText .= "<br>".nl2br(htmlspecialchars($intrigueActor->IntrigueText));
-		                    $intrigueTextArr[] =  $intrigueText;
-		                }
-		            }
-		            if (!empty($intrigueTextArr)) {
-		                $txt .=  "<p>".join("<br><br>",$intrigueTextArr). "</p>";
-		            }
-		            
-		            $offTextArr = array();
-		            foreach ($intrigueActors as $intrigueActor) {
-		                if (!empty($intrigueActor->OffInfo)  && !in_array($intrigueActor->OffInfo, $offTextArr)) {
-		                    $offTextArr[] =  nl2br(htmlspecialchars($intrigueActor->OffInfo));
-		                }
-		            }
-		            if (!empty($offTextArr)) {
-		                $txt .= "<p><strong>Off-information:</strong><br><i>".join("<br><br>",$offTextArr)."</i></p>";
-		            }
-		            
-		            if (!empty($txt)) {
-		                echo "<tr><td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrigspår $intrigue->Number<br>$intrigue->Name</a></td><td>".$txt."</td><tr>";
-		            }
-		            
+    		
+    		echo "<table class='data'>";
+    		foreach ($intrigues as $intrigue) {
+    		    if ($intrigue->isActive()) {
+
+    		        $commonTextHeader = "";
+    		        $intrigueTextArr = array();
+    		        $offTextArr = array();
+    		        $whatHappenedTextArr = array();
+    		        
+    		        $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, true);
+    		        printIntrigue($intrigue, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
 		        }
 		    }
 		    echo "</table>";
