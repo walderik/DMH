@@ -608,8 +608,8 @@ include 'navigation.php';
 		            echo "<p>".nl2br(htmlspecialchars($previous_larp_role->Intrigue))."</p>";
 		        }
 		        
-		        $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($prevoius_larp);
-		        $subdivisions = Subdivision::allForRole($role, $prevoius_larp);
+		        $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($current_larp);
+		        $subdivisions = Subdivision::allForRole($role, $current_larp);
 		        
 		        foreach ($intrigues as $intrigue) {
 		            if ($intrigue->isActive()) {
