@@ -1,9 +1,10 @@
 <?php
 $previous_larps = $role->getPreviousLarps();
 if (isset($previous_larps) && count($previous_larps) > 0) {
-    $first = true;
+
     echo "<h2>Historik</h2>";
     foreach ($previous_larps as $prevoius_larp) {
+        $first = true;
         $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
         echo "<div class='border'>";
         echo "<h3>$prevoius_larp->Name</h3>";
