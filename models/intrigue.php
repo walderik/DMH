@@ -28,7 +28,7 @@ class Intrigue extends BaseModel{
         60 => "Klar för granskning",
         100 => "Färdig"
     ];
-   
+    
     public static function newFromArray($post){
         $intrigue = static::newWithDefault();
         $intrigue->setValuesByArray($post);
@@ -105,10 +105,10 @@ class Intrigue extends BaseModel{
     
     public static function allNotContinuedInCampaign(LARP $larp) {
         $sql = "SELECT * FROM regsys_intrigue WHERE Id NOT IN (".
-        "SELECT PreviousInstanceId FROM regsys_intrigue WHERE PreviousInstanceId IS NOT NULL) AND ".
-        "LarpId IN (".
-        "SELECT Id from regsys_larp WHERE CampaignId=? AND Id != ?) ".
-        "ORDER BY ".static::$orderListBy.";";
+            "SELECT PreviousInstanceId FROM regsys_intrigue WHERE PreviousInstanceId IS NOT NULL) AND ".
+            "LarpId IN (".
+            "SELECT Id from regsys_larp WHERE CampaignId=? AND Id != ?) ".
+            "ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $larp->Id));
         
     }
@@ -118,7 +118,7 @@ class Intrigue extends BaseModel{
         return Person::loadById($this->ResponsiblePersonId);
     }
     
- 
+    
     public function getLarp() {
         return LARP::loadById($this->LarpId);
     }
@@ -137,7 +137,7 @@ class Intrigue extends BaseModel{
             $previuos = $previuos->getPreviousInstace();
         }
         return $intrigues;
-
+        
     }
     
     public static function continueIntrigues($intrigueIds, LARP $larp, Person $person) {
@@ -211,7 +211,7 @@ class Intrigue extends BaseModel{
                 foreach($intrigueLetters as $intrigueLetter) {
                     $oldLetter = $intrigueLetter->getLetter();
                     $newLetter = Letter::newWithDefault();
-
+                    
                     $newLetter->LARPid = $newIntrigue->LarpId;
                     $newLetter->WhenWhere = $oldLetter->WhenWhere;
                     $newLetter->Signature = $oldLetter->Signature;
@@ -231,7 +231,7 @@ class Intrigue extends BaseModel{
                     $newIntrigueLetter->create();
                 }
             }
- 
+            
             //Kopiera telegram
             if ($larp->hasTelegrams()) {
                 $intrigueTelegrams = $previousIntrigue->getAllTelegrams();
@@ -328,7 +328,7 @@ class Intrigue extends BaseModel{
                 $newInrigue_NPC->NPCId = $newNpc->Id;
                 $newInrigue_NPC->create();
             }
-
+            
             
             
         }
@@ -415,7 +415,7 @@ class Intrigue extends BaseModel{
             $intrigue_actor->create();
         }
     }
-   
+    
     
     public function addGroupActors($groupIds) {
         //Ta reda på vilka som inte redan är kopplade till intrigen
@@ -489,7 +489,7 @@ class Intrigue extends BaseModel{
             $intrigue_npc->create();
         }
     }
- 
+    
     public function addNPCGroups($NPCGroupIds) {
         //Ta reda på vilka som inte redan är kopplade till intrigen
         $exisitingIds = array();
@@ -526,7 +526,7 @@ class Intrigue extends BaseModel{
             $intrigue_letter->create();
         }
     }
-
+    
     public function addVisions($visionIds) {
         //Ta reda på vilka som inte redan är kopplade till intrigen
         $exisitingIds = array();
@@ -590,7 +590,7 @@ class Intrigue extends BaseModel{
             $intrigue_telegram->create();
         }
     }
-
+    
     public function addIntrigueRelations($intrigueIds) {
         //Ta reda på vilka som inte redan är kopplade till intrigen
         $exisitingIds = array();
@@ -692,11 +692,11 @@ class Intrigue extends BaseModel{
     public function getAllProps() {
         return Intrigue_Prop::getAllPropsForIntrigue($this);
     }
-
+    
     public function getAllNPCs() {
         return Intrigue_NPC::getAllNPCsForIntrigue($this);
     }
-
+    
     public function getAllNPCGroups() {
         return Intrigue_NPCGroup::getAllNPCGroupsForIntrigue($this);
     }
@@ -708,7 +708,7 @@ class Intrigue extends BaseModel{
     public function getAllTelegrams() {
         return Intrigue_Telegram::getAllTelegramsForIntrigue($this);
     }
-
+    
     public function getAllVisions() {
         return Intrigue_Vision::getAllIntrigueVisionsForIntrigue($this);
     }
@@ -721,7 +721,7 @@ class Intrigue extends BaseModel{
         $sql = "SELECT regsys_intrigue.* FROM regsys_intrigue, regsys_intrigue_relationship r1, regsys_intrigue_relationship r2 WHERE ".
             "r1.IntrigueId = ? AND ".
             "r1.RelationshipId = r2.RelationshipId AND ".
-            "r1.IntrigueId <> r2.IntrigueId AND ". 
+            "r1.IntrigueId <> r2.IntrigueId AND ".
             "r2.IntrigueId = regsys_intrigue.Id ".
             "ORDER BY regsys_intrigue.Number";
         
@@ -736,7 +736,7 @@ class Intrigue extends BaseModel{
             return static::getAllIntriguesForRole($intrigueActor->RoleId, $intrigueActor->getIntrigue()->LarpId);
         }
     }
-
+    
     
     public static function getAllIntriguesForIntrigueProp(Intrigue_Prop $intrigueProp) {
         return static::getAllIntriguesForProp($intrigueProp->PropId, $intrigueProp->getIntrigue()->LarpId);
@@ -759,9 +759,9 @@ class Intrigue extends BaseModel{
     }
     
     public static function getAllIntriguesForGroup($groupId, $larpId) {
-            $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
-                "SELECT IntrigueId FROM regsys_intrigueactor WHERE GroupId = ? AND LarpId = ?) ORDER BY Id";
-            return static::getSeveralObjectsqQuery($sql, array($groupId, $larpId));
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigueactor WHERE GroupId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($groupId, $larpId));
     }
     
     public static function getAllIntriguesForRole($roleId, $larpId) {
@@ -769,7 +769,7 @@ class Intrigue extends BaseModel{
             "SELECT IntrigueId FROM regsys_intrigueactor WHERE RoleId = ? AND LarpId = ?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($roleId, $larpId));
     }
-
+    
     public static function getAllIntriguesForSubdivision($subdivisionId, $larpId) {
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
             "SELECT IntrigueId FROM regsys_intrigueactor WHERE SubdivisionId = ? AND LarpId = ?) ORDER BY Id";
@@ -781,7 +781,7 @@ class Intrigue extends BaseModel{
             "SELECT IntrigueId FROM regsys_intrigue_prop WHERE PropId = ? AND LarpId = ?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($propId, $larpId));
     }
-
+    
     public static function getAllIntriguesForNPCGroup($npcGroupId, $larpId) {
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
             "SELECT IntrigueId FROM regsys_intrigue_npcgroup WHERE NPCGroupId = ? AND LarpId = ?) ORDER BY Id";
@@ -793,13 +793,13 @@ class Intrigue extends BaseModel{
             "SELECT IntrigueId FROM regsys_intrigue_npc WHERE NPCId = ? AND LarpId = ?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($npcId, $larpId));
     }
-
+    
     public static function getAllIntriguesForLetter($letterId, $larpId) {
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
             "SELECT IntrigueId FROM regsys_intrigue_letter WHERE LetterId = ? AND LarpId = ?) ORDER BY Id";
         return static::getSeveralObjectsqQuery($sql, array($letterId, $larpId));
     }
-
+    
     public static function getAllIntriguesForTelegram($telegramId, $larpId) {
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
             "SELECT IntrigueId FROM regsys_intrigue_telegram WHERE TelegramId = ? AND LarpId = ?) ORDER BY Id";
@@ -813,7 +813,7 @@ class Intrigue extends BaseModel{
     public function getRumours() {
         return Rumour::getAllForIntrigue($this);
     }
-
+    
     public function getVisions() {
         return Vision::getAllForIntrigue($this);
     }
@@ -843,7 +843,7 @@ class Intrigue extends BaseModel{
         
         $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigueactor WHERE IntrigueId=?";
         if (static::existsQuery($sql, array($this->Id))) return false;
-
+        
         $sql = "SELECT COUNT(*) AS Num FROM regsys_timeline WHERE IntrigueId=?";
         if (static::existsQuery($sql, array($this->Id))) return false;
         
@@ -864,7 +864,7 @@ class Intrigue extends BaseModel{
     }
     
     //Sätter resultatet i vissa inparametrar
-    public function findAllInfoForRoleInIntrigue($role, $subdivisions, &$commonTextHeader, &$intrigueTextArr, &$offTextArr, &$whatHappenedTextArr) {
+    public function findAllInfoForRoleInIntrigue($role, $subdivisions, &$commonTextHeader, &$intrigueTextArr, &$offTextArr, &$whatHappenedTextArr, ?bool $adminInfo=false) {
         $intrigueActors = array();
         $roleActor = IntrigueActor::getRoleActorForIntrigue($this, $role);
         if (!empty($roleActor)) $intrigueActors[] = $roleActor;
@@ -905,7 +905,10 @@ class Intrigue extends BaseModel{
                 else {
                     $subdivision = $intrigueActor->getSubdivision();
                     if ($subdivision->isVisibleToParticipants() && !$singleVisibleSubdivisionActor) {
-                        $intrigueTextArr[] =  array($subdivision->Name, $intrigueActor->IntrigueText);
+                        $intrigueTextArr[] =  array($subdivision->Name, $intrigueActor->IntrigueText, true);
+                    } elseif ($adminInfo){
+                        //Tredje parameterna anger om den ska vara synlig eller inte
+                        $intrigueTextArr[] =  array($subdivision->Name, $intrigueActor->IntrigueText, false);
                     } else {
                         $intrigueTextArr[] = $intrigueActor->IntrigueText;
                     }
@@ -928,8 +931,11 @@ class Intrigue extends BaseModel{
                 if ($intrigueActor->isRoleActor()) $whatHappenedTextArr[] = $intrigueActor->WhatHappened;
                 else {
                     $subdivision = $intrigueActor->getSubdivision();
-                    if ($subdivision->isVisibleToParticipants() && !$singleVisibleSubdivisionActor) $whatHappenedTextArr[] =  array($subdivision->Name, $intrigueActor->WhatHappened);
-                    else $whatHappenedTextArr[] = $intrigueActor->WhatHappened;
+                    if ($subdivision->isVisibleToParticipants()) $whatHappenedTextArr[] =  array($subdivision->Name, $intrigueActor->WhatHappened);
+                    elseif ($adminInfo) {
+                        //Tredje parameterna anger om den ska vara synlig eller inte
+                        $whatHappenedTextArr[] =  array($subdivision->Name, $intrigueActor->IntrigueText, false);
+                    } else $whatHappenedTextArr[] = $intrigueActor->WhatHappened;
                     
                 }
             }
