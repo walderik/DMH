@@ -67,12 +67,12 @@ function printIntrigue($number, $commonText, $commonTextHeader, $intrigueTextArr
                 $tmpIntrigueTextArr[] = "<strong>".htmlspecialchars($intrigueText[0])."</strong><br>".nl2br(htmlspecialchars($intrigueText[1]));
             } else {
                 $tmpIntrigueTextArr[] = nl2br(htmlspecialchars($intrigueText));
-            }
+            } 
         }
         $formattedText .= "<p>".join("<br><br>",$tmpIntrigueTextArr). "</p>";
-        
-        
-        
+
+    
+    
     }
     
     if (!empty($offTextArr)) {
@@ -82,7 +82,7 @@ function printIntrigue($number, $commonText, $commonTextHeader, $intrigueTextArr
         }
         $formattedText .= "<p><strong>Off-information:</strong><br><i>".join("<br><br>",$tmpOffTextArr)."</i></p>";
     }
-    
+
     if (!empty($whatHappenedTextArr) || $alwaysPrintWhatHappened) {
         $tmpWhatHappenedTextArr = array();
         foreach ($whatHappenedTextArr as $whatHappenedText) {
