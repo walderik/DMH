@@ -15,6 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 }
 
 $no_history = false;
+$double_sided = false;
+$bara_intrig = false;
 
 if (isset($_GET['id'])) {
     $groupId = $_GET['id'];
@@ -28,6 +30,8 @@ if (isset($_GET['id'])) {
     }
 } else {
     if (isset($_GET['no_history'])) $no_history = true;
+    if (isset($_GET['double_sided'])) $double_sided = true;
+    if (isset($_GET['bara_intrig'])) $bara_intrig = true;
 }
 
 $pdf = new Group_PDF();
@@ -41,7 +45,7 @@ $pdf->SetSubject(encode_utf_to_iso($subject));
 $all_info = (isset($_GET['all_info'])) ? true : false;
 
 if (empty($group)) {
-    $pdf->all_group_sheets($current_larp, $all_info, $no_history);
+    $pdf->all_group_sheets($current_larp, $all_info, $no_history, $bara_intrig, $double_sided);
 } else {
     $pdf->new_group_sheet($group, $current_larp, $all_info);
 }

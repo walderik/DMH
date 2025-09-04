@@ -733,7 +733,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
     	    $roles = $this->larp->getAllNotMainRoles(false);
     	    foreach($roles as $role) {
     	        if ($double_sided) {
-    	            echo "Sidnummer ".$this->PageNo()."<br>";
     	            if (!$this->even($this->PageNo())) $this->AddPage();
     	        }
     	        if ($bara_intrig) {
@@ -749,7 +748,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	function selected_character_sheets($roles, LARP $larp_in, bool $bara_intrig, ?bool $all_info=true, ?bool $double_sided = false) {
 	    foreach($roles as $role) {
 	        if ($double_sided) {
-	            echo "Sidnummer ".$this->PageNo()."<br>";
 	            if (!$this->even($this->PageNo())) $this->AddPage();
 	        }
 	        if ($bara_intrig) {
