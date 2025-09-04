@@ -506,7 +506,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 }
                 
                 
-                $intrigues = $this->role->getAllIntriguesIncludingSubdivisionsSorted($this->larp);
+                $intrigues = $this->role->getAllIntriguesIncludingSubdivisionsSorted($prevoius_larp);
 
                 foreach ($intrigues as $intrigue) {
                     if ($intrigue->isActive()) {
