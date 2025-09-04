@@ -707,12 +707,22 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
 	}
 	
+	function even($number) {
+	    if ($number % 2 == 0) {
+	        return true;
+	    }
+	    return false;
+	}
+	
 
-	function all_character_sheets(LARP $larp_in, bool $bara_intrig, ?bool $all_info=true, ?bool $only_main=false,?bool $no_history = false) {
+	function all_character_sheets(LARP $larp_in, bool $bara_intrig, ?bool $all_info=true, ?bool $only_main=false,?bool $no_history = false, ?bool $double_sided = false) {
 	    $this->larp = $larp_in;
 
 	    $roles = $this->larp->getAllMainRoles(false);
 	    foreach($roles as $role) {
+	        if ($double_sided) {
+	            if (!$this->even($this->PageNo())) $this->AddPage();
+	        }
 	        if ($bara_intrig) {
                 $this->intrigue_info($role, $larp_in);
 	        } else {
@@ -722,6 +732,10 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    if (!$only_main) {
     	    $roles = $this->larp->getAllNotMainRoles(false);
     	    foreach($roles as $role) {
+    	        if ($double_sided) {
+    	            echo "Sidnummer ".$this->PageNo()."<br>";
+    	            if (!$this->even($this->PageNo())) $this->AddPage();
+    	        }
     	        if ($bara_intrig) {
     	           $this->intrigue_info($role, $larp_in);
     	        } else {
@@ -732,8 +746,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	}
 
 	
-	function selected_character_sheets($roles, LARP $larp_in, bool $bara_intrig, ?bool $all_info=true) {
+	function selected_character_sheets($roles, LARP $larp_in, bool $bara_intrig, ?bool $all_info=true, ?bool $double_sided = false) {
 	    foreach($roles as $role) {
+	        if ($double_sided) {
+	            echo "Sidnummer ".$this->PageNo()."<br>";
+	            if (!$this->even($this->PageNo())) $this->AddPage();
+	        }
 	        if ($bara_intrig) {
 	            $this->intrigue_info($role, $larp_in);
 	        } else {
