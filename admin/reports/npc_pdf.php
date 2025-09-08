@@ -30,12 +30,12 @@ $npc_groups = NPCGroup::getAllForLARP($current_larp);
 foreach ($npc_groups as $npc_group) {
     $npcs=NPC::getAllAssignedByGroup($npc_group, $current_larp);
     foreach ($npcs as $npc) {
-        $rows[] = array($npc->Name, $npc->getPerson()->Name, $npc_group->Name, mb_strimwidth($npc->Description, 0, 100, '...'), $npc->Time);
+        $rows[] = array($npc->Name, $npc->getPerson()->Name, $npc_group->Name, mb_strimwidth($npc->Description, 0, 100, '...',"UTF-8"), $npc->Time);
     }
 }
 $npcs = NPC::getAllAssignedWithoutGroup($current_larp);
 foreach ($npcs as $npc) {
-    $rows[] = array($npc->Name, $npc->getPerson()->Name, "", mb_strimwidth($npc->Description, 0, 100, '...'), $npc->Time);
+    $rows[] = array($npc->Name, $npc->getPerson()->Name, "", mb_strimwidth($npc->Description, 0, 100, '...',"UTF-8"), $npc->Time);
 }
 
 // add a page
