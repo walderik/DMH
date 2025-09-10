@@ -36,7 +36,11 @@ class Letter_PDF extends FPDF {
 		$this->SetXY($ending_x, $this->GetY()+30);
 		$this->Cell(80,10,encode_utf_to_iso($endingPhrase),0,1);
 		$this->SetX($ending_x);
-		$this->Cell(80,10,encode_utf_to_iso($signature),0,1);
+		if (str_contains($signature,",")) {
+		    $signatureArr = explode(",", $signature);
+		    $signatureStr = join("\n", $signatureArr);
+		    $this->MultiCell(80,10,encode_utf_to_iso($signatureStr),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+		} else $this->Cell(80,10,encode_utf_to_iso($signature),0,1);
     }
     
     function nytt_brev(Letter $letter)
