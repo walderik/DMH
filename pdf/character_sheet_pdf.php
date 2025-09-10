@@ -719,6 +719,15 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    $this->larp = $larp_in;
 
 	    $roles = $this->larp->getAllMainRoles(false);
+	    if ($only_main) {
+	        usort($roles, function ($a, $b) {
+	            if ($a->Name == $b->Name) {
+	                return 0;
+	            }
+	            return ($a->Name < $b->Name) ? -1 : 1;
+	        });
+	    }
+	    
 	    foreach($roles as $role) {
 	        if ($double_sided) {
 	            if (!$this->even($this->PageNo())) $this->AddPage();
