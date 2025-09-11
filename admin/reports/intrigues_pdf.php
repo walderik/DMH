@@ -38,7 +38,7 @@ foreach ($intrigue_array as $intrigue) {
     if (isset($responsible_person)) $responsible_person_name = $responsible_person->Name;
     $header = array("Ansvarig", $responsible_person_name);
     $widths = array(100, 500);
-    $rows[] = array("Anteckningar", $intrigue->Notes);
+    $rows[] = array("Anteckningar", nl2br(htmlspecialchars($intrigue->Notes)));
 
     //Brev
     $intrigue_letters = $intrigue->getAllLetters();
@@ -49,7 +49,7 @@ foreach ($intrigue_array as $intrigue) {
             $letter_text_array[] = "Från: $letter->Signature, Till: $letter->Recipient, $letter->Message";
         }
         
-        $rows[] = array("Brev", "* ".implode("\n\n* ", $letter_text_array));
+        $rows[] = array("Brev", "* ".nl2br(htmlspecialchars(implode("\n\n* ", $letter_text_array))));
     }
     
     //Telegram
@@ -61,7 +61,7 @@ foreach ($intrigue_array as $intrigue) {
             $telegram_text_array[] = "$telegram->Deliverytime, Från: $telegram->Sender, Till: $telegram->Reciever, $telegram->Message";
         }
         
-        $rows[] = array("Telegram", "* ".implode("\n\n* ", $telegram_text_array));
+        $rows[] = array("Telegram", "* ".nl2br(htmlspecialchars(implode("\n\n* ", $telegram_text_array))));
     }
     
     //Rykten
@@ -75,7 +75,7 @@ foreach ($intrigue_array as $intrigue) {
             $rumour_text_array[] = $rumour->Text . "\nVet om: ". implode(", ", $knows_rumour_array);
         }
         
-        $rows[] = array("Rykten", "* ".implode("\n\n* ", $rumour_text_array));
+        $rows[] = array("Rykten", "* ".nl2br(htmlspecialchars(implode("\n\n* ", $rumour_text_array))));
     }
     
     //Syner
@@ -92,7 +92,7 @@ foreach ($intrigue_array as $intrigue) {
             $vision_text_array[] = $visionTxt . "\n". $has_txt;
         }
         
-        $rows[] = array("Syner", "* ".implode("\n\n* ", $vision_text_array));
+        $rows[] = array("Syner", "* ".nl2br(htmlspecialchars(implode("\n\n* ", $vision_text_array))));
     }
     
     $groupActors = $intrigue->getAllGroupActors();
@@ -100,14 +100,14 @@ foreach ($intrigue_array as $intrigue) {
         if (empty($groupActor->IntrigueText)) continue;
         $text = $groupActor->IntrigueText;
         if (!empty($groupActor->WhatHappened)) $text .= "\n\nVAD HÄNDE:\n" . $groupActor->WhatHappened;
-        $rows[] = array($groupActor->getGroup()->Name, $text);
+        $rows[] = array($groupActor->getGroup()->Name, nl2br(htmlspecialchars($text)));
     }
     $roleActors = $intrigue->getAllRoleActors();
     foreach($roleActors as $roleActor) {
         if (empty($roleActor->IntrigueText)) continue;
         $text = $roleActor->IntrigueText;
         if (!empty($roleActor->WhatHappened)) $text .= "\n\nVAD HÄNDE:\n" . $roleActor->WhatHappened;
-        $rows[] = array($roleActor->getRole()->Name, $text);
+        $rows[] = array($roleActor->getRole()->Name, nl2br(htmlspecialchars($text)));
     }
     
     // add a page
