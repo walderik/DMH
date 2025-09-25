@@ -3,12 +3,18 @@ include_once '../header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $roleId = $_POST['Id'];
-    $larp_role = LARP_Role::loadByIds($roleId, $current_larp->Id);
-
-    $role = Role::loadById($roleId);
-    $role->setValuesByArray($_POST);
-    $role->update();
-
+    
+    if (empty($roleId)) {
+        $role=Role::newFromArray($_POST);
+        $role->CreatorPersonId = $current_person->Id;
+        $role->create();
+        
+    } else {
+        $role = Role::loadById($roleId);
+        $role->setValuesByArray($_POST);
+        $role->update();
+    }
+    
     $role->deleteAllIntrigueTypes();
     if (isset($_POST['IntrigueTypeId']))
         $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);

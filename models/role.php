@@ -912,6 +912,14 @@ class Role extends BaseModel{
             "CampaignId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
+
+    public static function getAllNPC(LARP $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_role WHERE ".
+            "PersonId IS NULL AND ".
+            "CampaignId = ? ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
     
     
     public function getViewLink() {
@@ -931,7 +939,7 @@ class Role extends BaseModel{
     
     public function getEditLinkPen($isAdmin) {
         if($isAdmin) {
-            return "<a href='edit_role.php?id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";
+            return "<a href='edit_role.php?action=update&id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";
         }
         else {
             if ($this->userMayEdit()) {

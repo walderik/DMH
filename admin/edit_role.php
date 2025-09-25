@@ -1,17 +1,32 @@
 <?php
 include_once 'header.php';
 
+$role = Role::newWithDefault();
+$role->PersonId = $current_person->Id;
+$role->CreatorPersonId = $current_person->Id;
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id'])) {
-        $RoleId = $_GET['id'];
+    $operation = "insert";
+    if (isset($_GET['type'])) {
+        if ($_GET['type'] == "npc") $role->PersonId = NULL;
+        if ($role->isNPC() && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
+        
+    }
+    
+    if (isset($_GET['operation'])) {
+        $operation = $_GET['operation'];
     }
     else {
-        header('Location: index.php');
-        exit;
+        
+    }
+    if ($operation == 'insert') {
+    } elseif ($operation == 'update') {
+        $role = Role::loadById($_GET['id']);
+    } else {
     }
 }
 
-$role = Role::loadById($RoleId);
+
 if (empty($role)) {
     header('Location: index.php'); // Karaktären finns inte
     exit;
@@ -110,7 +125,15 @@ include 'navigation.php';
 
 	<div class="content">
 
-		<h1><?php echo $role->Name;?></h1>
+		<h1>
+		<?php 
+		if ($operation == 'update') {
+		    echo "Ändra $role->Name";
+		} else {
+		    echo "Skapa karaktär";
+		}    
+		 ?>	
+		</h1>
 		<form action="logic/edit_role_save.php" method="post">
     		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
@@ -126,7 +149,7 @@ include 'navigation.php';
 			?></td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>
-			<td><?php selectionByArray('Group', Group::getAllRegistered($current_larp), false, false, $role->GroupId); ?></td></tr>
+			<td><?php selectionDropDownByArray('Group', Group::getAllRegistered($current_larp), false, $role->GroupId); ?></td></tr>
 
 			<?php if ($role->isPC()) {?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
