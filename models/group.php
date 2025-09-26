@@ -56,6 +56,7 @@ class Group extends BaseModel{
         if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
         
+        if (isset($this->PersonId) && $this->PersonId=='null') $this->PersonId = null;
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
         
     }
@@ -172,6 +173,7 @@ class Group extends BaseModel{
     
      # Ansvarig för gruppen
      public function getPerson() {
+         if (empty($this->PersonId)) return null;
          return Person::loadById($this->PersonId);
      }
 
