@@ -33,7 +33,7 @@ include 'navigation.php';
 			<td><input type="text" id="Name" name="Name" value="<?php echo $group->Name; ?>" required></td></tr>
 
 			<tr><td valign="top" class="header">Gruppansvarig</td>
-			<td><?php selectionByArray('Person', $persons_in_group, false, true, $group->PersonId); ?>
+			<td><?php selectionByArray('Person', $persons_in_group, false, false, $group->PersonId); ?>
 			Byt till rätt gruppledare när du har lagt in medlemmar i gruppen.</td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning</td>
