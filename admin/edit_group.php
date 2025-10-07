@@ -2,8 +2,20 @@
 
 include_once 'header.php';
 
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id'])) {
+    $operation = "update";
+    if (isset($_GET['operation'])) {
+        $operation = $_GET['operation'];
+    }
+    if ($operation == 'insert') {
+        $group = Group::newWithDefault();
+        $larp_group = LARP_Group::newWithDefault();
+        $persons_in_group = array();
+        $persons_in_group[] = $current_person;
+        
+        
+    } elseif ($operation == 'update') {
         $GroupId = $_GET['id'];
         $group = Group::loadById($GroupId);
         if (!$group->isRegistered($current_larp)) {
@@ -17,11 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         if (!is_null($group_leader) && !existsInArray($group_leader, $persons_in_group)) {
             $persons_in_group[] = $group_leader;
         }
-        
-    }
-    else {
-        header('Location: index.php');
-        exit;
+    } else {
     }
 }
 
@@ -70,18 +78,53 @@ function print_role($group_member) {
     echo "<br>";   
 }
 
+function default_value($field) {
+    GLOBAL $group;
+    $output = "";
+    
+    switch ($field) {
+        case "operation":
+            if (is_null($group->Id)) {
+                $output = "insert";
+                break;
+            }
+            $output = "update";
+            break;
+        case "action":
+            if (is_null($group->Id)) {
+                $output = "Skapa";
+                break;
+            }
+            $output = "Ändra";
+            break;
+    }
+    
+    echo $output;
+}
+
+
+
 include 'navigation.php';
 ?>
 
 	<div class="content">
-		<h1><?php echo $group->Name;?></h1>
+		<h1>
+    		<?php 
+    		if ($operation == 'update') {
+    		    echo "Ändra $group->Name";
+    		} else {
+    		    echo "Skapa en grupp";
+    		}    
+    		 ?>
+		 </h1>
     	<?php 
-    	if (empty($main_characters_in_group) && empty($non_main_characters_in_group) && (empty($intrigues))) {
+    	if (!is_null($group->Id) && empty($main_characters_in_group) && empty($non_main_characters_in_group) && (empty($intrigues))) {
     	
     	?>
         <form action="logic/remove_group_from_larp.php" method="post"><input type="hidden" id="groupId" name="groupId" value="<?php echo $group->Id;?>"><input type="submit" value="Ta bort gruppen från lajvet"></form>
     	<?php } ?>
 		<form action="logic/edit_group_save.php" method="post">
+    		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="GroupId" name="GroupId" value="<?php echo $group->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<table>
@@ -148,6 +191,16 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Intrigidéer</td>
 			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->IntrigueIdeas); ?></textarea></td></tr>
 
+			<tr><td valign="top" class="header">Död/Ej i spel&nbsp;<font style="color:red">*</font></td>
+			<td>
+				<input type="radio" id="IsDead_yes" name="IsDead" value="1" <?php if ($group->IsDead == 1) echo 'checked="checked"'?>> 
+    			<label for="IsDead_yes">Ja</label><br> 
+    			<input type="radio" id="IsDead_no" name="IsDead" value="0" <?php if ($group->IsDead == 0) echo 'checked="checked"'?>> 
+    			<label for="IsDead_no">Nej</label>
+			</td></tr>
+
+			<tr><td colspan="2"><h2>Anmälningsinformation</h2></td></tr>
+
 			<tr><td valign="top" class="header">Kvarvarande intriger</td>
 			<td><textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($larp_group->RemainingIntrigues); ?></textarea></td></tr>
 
@@ -180,15 +233,8 @@ include 'navigation.php';
 			<td><input class="input_field" type="text" id="TentPlace" name="TentPlace"  maxlength="200" value="<?php echo htmlspecialchars($larp_group->TentPlace); ?>"></td></tr>
 
 			
-			<tr><td valign="top" class="header">Död/Ej i spel&nbsp;<font style="color:red">*</font></td>
-			<td>
-				<input type="radio" id="IsDead_yes" name="IsDead" value="1" <?php if ($group->IsDead == 1) echo 'checked="checked"'?>> 
-    			<label for="IsDead_yes">Ja</label><br> 
-    			<input type="radio" id="IsDead_no" name="IsDead" value="0" <?php if ($group->IsDead == 0) echo 'checked="checked"'?>> 
-    			<label for="IsDead_no">Nej</label>
-			</td></tr>
 		</table>		
-			<input type="submit" value="Spara">
+			<input type="submit" value="<?php default_value('action'); ?>">
 
 			</form>
 		
