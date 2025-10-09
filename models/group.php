@@ -20,6 +20,7 @@ class Group extends BaseModel{
     public $IsDead = 0;
     public $OrganizerNotes;
     public $ImageId;
+    public $IsVisibleToParticipants = 1;
     public $IsApproved = 0;
     public $ApprovedByPersonId;
     public $ApprovedDate;
@@ -52,6 +53,7 @@ class Group extends BaseModel{
         if (isset($arr['IsDead'])) $this->IsDead = $arr['IsDead'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
+        if (isset($arr['IsVisibleToParticipants'])) $this->IsVisibleToParticipants = $arr['IsVisibleToParticipants'];
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
         if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
@@ -75,12 +77,12 @@ class Group extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_group SET Name=?, Friends=?, Enemies=?,
                     Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?, WealthId=?, PlaceOfResidenceId=?, 
                     GroupTypeId=?, ShipTypeId=?, Colour=?, PersonId=?, 
-                    CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, IsApproved=?, ApprovedByPersonId=?, ApprovedDate=? WHERE Id = ?");
+                    CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, IsVisibleToParticipants=?, IsApproved=?, ApprovedByPersonId=?, ApprovedDate=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
             $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, 
             $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->PersonId, 
-            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->Id))) {
+            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsVisibleToParticipants, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -95,13 +97,13 @@ class Group extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_group (Name,  
                          Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
                          WealthId, PlaceOfResidenceId, GroupTypeId, ShipTypeId, Colour, PersonId, CampaignId, 
-                         IsDead, OrganizerNotes, ImageId, IsApproved, ApprovedByPersonId, ApprovedDate) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
+                         IsDead, OrganizerNotes, ImageId, IsVisibleToParticipants, IsApproved, ApprovedByPersonId, ApprovedDate) 
+                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
             $this->PlaceOfResidenceId, $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->PersonId, $this->CampaignId, 
-            $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate))) {
+            $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsVisibleToParticipants, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -141,6 +143,12 @@ class Group extends BaseModel{
          if ($this->IsApproved == 1) return true;
          return false;
      }
+
+     public function isVisibleToParticipants() {
+         if ($this->IsVisibleToParticipants == 1) return true;
+         return false;
+     }
+     
      public function getOldApprovedGroup() {
          return GroupApprovedCopy::getOldGroup($this->Id);
      }
@@ -248,6 +256,12 @@ class Group extends BaseModel{
          return static::getSeveralObjectsqQuery($sql, array($campaignId));
      }
           
+     public static function getAllHiddenGroups($campaignId) {
+         $sql = "SELECT * FROM regsys_group WHERE CampaignId=? AND IsVisibleToParticipants=0 ".
+             "ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($campaignId));
+     }
+     
      public static function getAllGroupsForPerson($personId) {
          $sql = "SELECT * FROM regsys_group WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($personId));

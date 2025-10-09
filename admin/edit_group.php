@@ -10,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     if ($operation == 'insert') {
         $group = Group::newWithDefault();
+        if (isset($_GET['hidden'])) $group->IsVisibleToParticipants = 0;
         $larp_group = LARP_Group::newWithDefault();
         $persons_in_group = array();
         $persons_in_group[] = $current_person;
@@ -190,6 +191,15 @@ include 'navigation.php';
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
 			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->IntrigueIdeas); ?></textarea></td></tr>
+
+
+			<tr><td valign="top" class="header">Synlig för deltagare&nbsp;<font style="color:red">*</font><br>En grupp som inte är synlig för deltagare är mest lämlig för NPC'er.</td>
+			<td>
+				<input type="radio" id="IsVisibleToParticipants_yes" name="IsVisibleToParticipants" value="1" <?php if ($group->isVisibleToParticipants()) echo 'checked="checked"'?>> 
+    			<label for="IsVisibleToParticipants_yes">Ja</label><br> 
+    			<input type="radio" id="IsVisibleToParticipants_no" name="IsVisibleToParticipants" value="0" <?php if (!$group->isVisibleToParticipants()) echo 'checked="checked"'?>> 
+    			<label for="IsVisibleToParticipants_no">Nej</label>
+			</td></tr>
 
 			<tr><td valign="top" class="header">Död/Ej i spel&nbsp;<font style="color:red">*</font></td>
 			<td>
