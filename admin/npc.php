@@ -94,6 +94,7 @@ function print_unassigned_npc(NPC $npc) {
 }
 
 include 'navigation.php';
+include 'npc_navigation.php';
 ?>
 
 
@@ -117,7 +118,14 @@ div.npc {
 <script src="../javascript/table_sort.js"></script>
 
     <div class="content">   
-        <h1>NPC</h1>
+        <h1>Alla NPC</h1>
+        
+        <p><strong>XX NPC'er är tilldelade till en deltagare som är avbokad.</strong></p>
+        <p>XX NPC'er kommer att spelas på lajvet. <br>
+        Det finns XX deltagare som vill spela NPC'er, XX av dem har inte fått någon NPC.</p>
+        
+        
+        <?php  exit; ?>
             <a href="edit_role.php?operation=insert&type=npc"><i class="fa-solid fa-file-circle-plus"></i>Skapa NPC</a>&nbsp;  
             <a href="edit_group.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Skapa NPC grupp</a>  
 
