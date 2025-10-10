@@ -202,6 +202,7 @@ class Group extends BaseModel{
     
      # Ansvarig för gruppen
      public function getPerson() {
+         if (empty($this->PersonId)) return null;
          return Person::loadById($this->PersonId);
      }
 

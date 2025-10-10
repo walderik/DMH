@@ -82,6 +82,11 @@
             
             <a href="../admin/prop_admin.php">Rekvisita</a>
             <a href="../admin/npc.php">NPC'er</a>
+
+			<?php if ($current_larp->getCampaign()->is_dmh()) {?>
+            <a href="../admin/crypto.php">Krypto</a>
+            <?php }?>
+            
             <a href="../admin/what_happened.php">Vad hände?</a>
 	    </div>
 	  </div> 

@@ -85,7 +85,7 @@ th {
                 "<th onclick='sortTable(4, \"$tableId\")'>I spel</th>".
                 "<th onclick='sortTable(5, \"$tableId\")'>Normal<br>Tillgång/Behov</th>".
                 "<th onclick='sortTable(6, \"$tableId\")'>Nu<br>Tillgång/Behov</th>".
-                "<th onclick='sortTable(7, \"$tableId\")'>Resultat</th>".
+                "<th onclick='sortTableNumbers(7, \"$tableId\")'>Resultat<br>$currency</th>".
                 "<th></th></tr>\n";
             foreach ($titledeed_array as $titledeed) {
                 if ($titledeed->isInUse()) echo "<tr>\n";
@@ -153,7 +153,7 @@ th {
                 echo $titledeed->RequiresForUpgradeString();
                 echo "</td>\n";
                 echo "</td>";
-                echo "<td>".$titledeed->calculateResult()." $currency</td>";
+                echo "<td>".$titledeed->calculateResult()."</td>";
                 
                 echo "<td>";
                 if ($titledeed->mayDelete())

@@ -50,6 +50,60 @@ if($isMob){
 $temp=0;
 
 
+function printIntrigue($number, $commonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, $alwaysPrintWhatHappened) {
+    $formattedText = "";
+    if (!empty($commonText)) {
+        $formattedText .= "<p>";
+        if (!empty($commonTextHeader)) {
+            $formattedText .= "<strong>".htmlspecialchars($commonTextHeader)."</strong><br>";
+        }
+        $formattedText .= nl2br(htmlspecialchars($commonText))."</p>";
+    }
+    
+    if (!empty($intrigueTextArr)) {
+        $tmpIntrigueTextArr = array();
+        foreach ($intrigueTextArr as $intrigueText) {
+            if (is_array($intrigueText)) {
+                $tmpIntrigueTextArr[] = "<strong>".htmlspecialchars($intrigueText[0])."</strong><br>".nl2br(htmlspecialchars($intrigueText[1]));
+            } else {
+                $tmpIntrigueTextArr[] = nl2br(htmlspecialchars($intrigueText));
+            } 
+        }
+        $formattedText .= "<p>".join("<br><br>",$tmpIntrigueTextArr). "</p>";
+
+    
+    
+    }
+    
+    if (!empty($offTextArr)) {
+        $tmpOffTextArr = array();
+        foreach ($offTextArr as $offText) {
+            $tmpOffTextArr[] = nl2br(htmlspecialchars($offText));
+        }
+        $formattedText .= "<p><strong>Off-information:</strong><br><i>".join("<br><br>",$tmpOffTextArr)."</i></p>";
+    }
+
+    if (!empty($whatHappenedTextArr) || $alwaysPrintWhatHappened) {
+        $tmpWhatHappenedTextArr = array();
+        foreach ($whatHappenedTextArr as $whatHappenedText) {
+            if (is_array($offText)) {
+                $tmpWhatHappenedTextArr[] = "<strong>".htmlspecialchars($whatHappenedText[0])."</strong><br>".nl2br(htmlspecialchars($whatHappenedText[1]))."<br><br>";
+            } else {
+                $tmpWhatHappenedTextArr[] = nl2br(htmlspecialchars($whatHappenedText));
+            }
+        }
+        $formattedText .= "<p><strong>Vad hände med det:</strong><br>";
+        if (!empty($tmpWhatHappenedTextArr)) $formattedText .= join("<br><br>",$tmpWhatHappenedTextArr);
+        else $formattedText .= "Inget rapporterat";
+        $formattedText .= "</p>";
+    }
+    
+    if (!empty($formattedText)) {
+        echo "<h3>Intrig $number:</h3>".$formattedText;
+    }
+    
+}
+
 
 include 'navigation.php';
 ?>
@@ -315,25 +369,35 @@ include 'navigation.php';
 			<i class="fa-solid fa-scroll"></i> Intrig
 		</div>
 			<div class='itemcontainer'>
-			<?php if ( $current_larp->isIntriguesReleased()) {
-			    echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
+			<?php if ($current_larp->isIntriguesReleased()) {
+			    if (!empty($larp_role->Intrigue)) echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
 			    
-			    $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
+			    $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($current_larp);
+			    $subdivisions = Subdivision::allForRole($role, $current_larp);
+			    
 		        foreach ($intrigues as $intrigue) {
-		            if ($intrigue->isActive()) {
-		                $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
-		                $txt = "";
-		                if (!empty($intrigue->CommonText) && !$role->inSubdivisionInIntrigue($intrigue)) $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                if (!empty($intrigueActor->IntrigueText)) $txt .=  "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
-		                if (!empty($intrigueActor->OffInfo)) {
-		                    $txt .=  "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
-		                }
-		                if (!empty($txt)) {
-		                    echo "Intrig $intrigue->Number:<br>".$txt."<hr>";
-		                }
+		            if ($intrigue->isActive()) {		    
+
+		                
+		                $commonTextHeader = "";
+		                $intrigueTextArr = array();
+		                $offTextArr = array();
+		                $whatHappenedTextArr = array();
+		                
+		                $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
+		                
+                       
+		                printIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
+		                
+		                
 		            }
 		        }
-		        
+			        
+			    
+			    
+			    
+			    
+
 		        $known_groups = $role->getAllKnownGroups($current_larp);
 		        $known_roles = $role->getAllKnownRoles($current_larp);
 		        
@@ -347,39 +411,20 @@ include 'navigation.php';
 		        $checkin_props = $role->getAllCheckinProps($current_larp);
 		        
 		        
-		        $subdivisions = Subdivision::allForRole($role, $current_larp);
+
+		        
 		        foreach ($subdivisions as $subdivision) {
-		            $subdivisionIntrigues = Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $current_larp->Id);
-		            foreach ($subdivisionIntrigues as $intrigue) {
-		                if ($intrigue->isActive()) {
-		                    $intrigueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
-		                    $txt = "";
-		                    if ($subdivision->isVisibleToParticipants()) $txt .=   "<strong>För $subdivision->Name</strong><br>";
-		                    if (!empty($intrigue->CommonText)) $txt .=   "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                    if (!empty($intrigueActor->IntrigueText)) $txt .=   "<p>".nl2br(htmlspecialchars($intrigueActor->IntrigueText)). "</p>";
-		                    if (!empty($intrigueActor->OffInfo)) {
-		                        $txt .=   "<p><strong>Off-information:</strong><br><i>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</i></p>";
-		                    }
-		                    if (!empty($txt)) {
-		                        echo "Intrig $intrigue->Number:<br>".$txt."<hr>";
-		                    }
-		                }
-		            }
-		            
-		            $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp)), SORT_REGULAR);
-		            $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp)), SORT_REGULAR);
-		            
-		            $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
-		            $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
-		            $known_props = array_merge($known_props,$subdivision->getAllKnownProps($current_larp));
-		            $known_pdfs = array_merge($known_pdfs,$subdivision->getAllKnownPdfs($current_larp));
-		            
-		            $checkin_letters = array_merge($checkin_letters,$subdivision->getAllCheckinLetters($current_larp));
-		            $checkin_telegrams = array_merge($checkin_telegrams,$subdivision->getAllCheckinTelegrams($current_larp));
-		            $checkin_props = array_merge($checkin_props,$subdivision->getAllCheckinProps($current_larp));
-		            
-		            
-		            
+    		        $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp)), SORT_REGULAR);
+    		        $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp)), SORT_REGULAR);
+    		        
+    		        $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
+    		        $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
+    		        $known_props = array_merge($known_props,$subdivision->getAllKnownProps($current_larp));
+    		        $known_pdfs = array_merge($known_pdfs,$subdivision->getAllKnownPdfs($current_larp));
+    		        
+    		        $checkin_letters = array_merge($checkin_letters,$subdivision->getAllCheckinLetters($current_larp));
+    		        $checkin_telegrams = array_merge($checkin_telegrams,$subdivision->getAllCheckinTelegrams($current_larp));
+    		        $checkin_props = array_merge($checkin_props,$subdivision->getAllCheckinProps($current_larp));
 		        }
 		        
                 if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
@@ -551,31 +596,37 @@ include 'navigation.php';
 		    
 		    <i class="fa-solid fa-landmark"></i> Historik
 		    </div>
-		    <div class='itemcontainer'>
+		    <div class='itemcontainer' style='padding-top:0px;'>
 		    
 		   <?php 
 		    foreach ($previous_larps as $prevoius_larp) {
 		        $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
+		        echo "<h2 style='border-top:none;'>$prevoius_larp->Name</h2>";
 		        echo "<div class='border'>";
-		        echo "<h3>$prevoius_larp->Name</h3>";
+		        
 		        if (!empty($previous_larp_role->Intrigue)) {
-		            echo "<strong>Intrig</strong><br>";
 		            echo "<p>".nl2br(htmlspecialchars($previous_larp_role->Intrigue))."</p>";
 		        }
 		        
-		        $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $prevoius_larp->Id);
-		        foreach($intrigues as $intrigue) {
-		            $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
-		            if ($intrigue->isActive() && !empty($intrigueActor->IntrigueText)) {
-		                echo "<p><strong>Intrig</strong><br>".nl2br(htmlspecialchars($intrigueActor->IntrigueText))."</p>";
+		        $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($prevoius_larp);
+		        $subdivisions = Subdivision::allForRole($role, $prevoius_larp);
+		        
+		        foreach ($intrigues as $intrigue) {
+		            if ($intrigue->isActive()) {
+		                		                
+		                $commonTextHeader = "";
+		                $intrigueTextArr = array();
+		                $offTextArr = array();
+		                $whatHappenedTextArr = array();
 		                
-		                echo "<p><strong>Vad hände med det?</strong><br>";
-		                if (!empty($intrigueActor->WhatHappened)) echo nl2br(htmlspecialchars($intrigueActor->WhatHappened));
-		                else echo "Inget rapporterat";
-		                echo "</p>";
+		                $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
+		                //Visa alltid rubriken "Vad hände"
+		                printIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, true);
+		                
+		                
 		            }
 		        }
-		        
+		        echo "<h3>Allmänna kommentarer</h3>";
 		        echo "<p><strong>Vad hände för $role->Name?</strong><br>";
 		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
 		            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappened));

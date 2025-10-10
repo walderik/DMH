@@ -520,12 +520,68 @@ class Group_PDF extends PDF_MemImage {
         
 	}
 	
-	function all_group_sheets(LARP $larp_in, $all_info, $no_history) {
+	# Skriv bara ut intriger och rykten
+	function intrigue_info(Group $group_in, LARP $larp_in){
+	    global $x, $y, $left, $left2, $mitten;
+	    $space = 3;
+	    
+	    $this->group = $group_in;
+	    $this->person = $this->group->getPerson();
+	    
+	    $this->larp = $larp_in;
+	    
+	    $this->larp_group = LARP_Group::loadByIds($this->group->Id, $this->larp->Id);
+	    
+	    $this->cell_y_space = static::$cell_y + (2*static::$Margin);
+	    $this->current_cell_height = $this->cell_y_space;
+	    
+	    $left = static::$x_min + static::$Margin;
+	    $x = $left;
+	    $this->cell_width = (static::$x_max - static::$x_min) / 2 - (2*static::$Margin);
+	    $mitten = static::$x_min + (static::$x_max - static::$x_min) / 2 ;
+	    $left2 = $mitten + static::$Margin;
+	    
+	    $this->current_left = $left;
+	    
+	    $this->AddPage();
+	    
+	    $this->title($left, $this->larp->Name);
+	    $this->names($left, $left2);
+	    
+	    $y += $this->cell_y_space;
+	    
+	    $this->bar();
+	    
+	    
+	    $y += 3;
+	    
+	    $this->intrigues();
+	    $this->rumours();
+	}
+	
+	
+	function even($number) {
+	    if ($number % 2 == 0) {
+	        return true;
+	    }
+	    return false;
+	}
+	
+	
+	function all_group_sheets(LARP $larp_in, $all_info, $no_history, $bara_intrig, $double_sided) {
 	    $this->larp = $larp_in;
 
 	    $groups = Group::getAllRegistered($this->larp);
 	    foreach($groups as $group) {
-	        $this->new_group_sheet($group, $larp_in, $all_info, $no_history);
+	        if ($double_sided) {
+	            if (!$this->even($this->PageNo())) $this->AddPage();
+	        }
+	        if ($bara_intrig) {
+	            $this->intrigue_info($group, $larp_in);
+	        } else {
+	            
+	           $this->new_group_sheet($group, $larp_in, $all_info, $no_history);
+	        }
 	    }
 	}
 

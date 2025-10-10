@@ -13,11 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
-$listname = 'Lista';
+$listname = 'Alla huvudkaraktärer, med spelare';
 
 $pdf = new Report_TCP_PDF();
 
-$pdf->init($current_person->Name, $name, $current_larp->Name, false);
+$pdf->init($current_person->Name, $listname, $current_larp->Name, false);
 
 
 

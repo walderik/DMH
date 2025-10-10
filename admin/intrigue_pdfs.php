@@ -30,9 +30,19 @@ include 'navigation.php';
        }
        echo "</td>";
        echo "<td>";
-       echo count($intrigue_pdf->getAllPersonsWhoKnowsPdf()). " personer";
+       $roles = $intrigue_pdf->getAllCharactersWhoKnowsPdf();
+       echo count($roles). " karaktärer";
+       $nameArr = Array();
+       foreach ($roles as $role) $nameArr[] =  $role->Name;
+       
        $groups = $intrigue_pdf->getAllGroupsWhoKnowsPdf();
-       if (!empty($groups)) echo " och " .count($groups)." grupper";
+       if (!empty($groups)) {
+           echo " och " .count($groups)." grupper";
+           foreach ($groups as $group) $nameArr[] = $group->Name;
+       }
+       echo "<br>".join(", ", $nameArr);
+
+       
        echo "</td>";
        echo "</tr>";
    }

@@ -242,6 +242,7 @@ class BerghemMailer {
     
     public static function send_unregistration_information_mail_to_group(Role $role, Group $group, Larp $larp) {
         $admin_person = $group->getPerson();
+        if (empty($admin_person)) return;
         $player = $role->getPerson();
         $text  = "$role->Name ";
         if ($player->hasPermissionShowName()) {
@@ -300,7 +301,7 @@ class BerghemMailer {
             $campaign = $larp->getCampaign();
             $recievers = array($role->getCreator()->Id);
             $group = $role->getGroup();
-            if (!empty($group)) $recievers[] = $group->getPerson()->Id;
+            if (!empty($group) && !empty($group->PersonId)) $recievers[] = $group->getPerson()->Id;
             $text  = "NPC'n $role->Name är nu godkänd för kampanjen $campaign->Name<br>\n";
             BerghemMailer::send($larp, $senderId, $recievers, $campaign->hej(), $text, "Godkänd NPC till ".$campaign->Name, "", BerghemMailer::DaysAutomatic);
             
@@ -320,7 +321,7 @@ class BerghemMailer {
             $campaign = $larp->getCampaign();
             $recievers = array($role->getCreator()->Id);
             $group = $role->getGroup();
-            if (!empty($group)) $recievers[] = $group->getPerson()->Id;
+            if (!empty($group) && !empty($group->PersonId)) $recievers[] = $group->getPerson()->Id;
             $text  = "NPC'n $role->Name är inte längre nu godkänd för kampanjen $campaign->Name<br><br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få NPC'n godkänd.\n";
             BerghemMailer::send($larp, $senderId, $recievers, $campaign->hej(), $text, "Icke godkänd NPC till ".$campaign->Name, "", BerghemMailer::DaysAutomatic);
             
@@ -373,14 +374,13 @@ class BerghemMailer {
         
         $text  = "Du har fått en NPC på lajvet $larp->Name<br>\n";
         $text .= "<br>\n";
-        $text .= "Namn: $npc->Name";
+        $text .= "<b>Namn:</b> ".htmlspecialchars($npc->Name);
+        $text .= "<br><br>\n";
+        $text .= "<b>Beskrivning:</b><br>".nl2br(htmlspecialchars($npc->Description));
+        $text .= "<br><br>\n";
+        $text .= "<b>Tiden när vi vill att du spelar npc'n:</b> ".htmlspecialchars($npc->Time);
         $text .= "<br>\n";
-        $text .= "Beskrivning: $npc->Description";
-        $text .= "<br>\n";
-        $text .= "Tiden när vi vill att du spelar npc'n: $npc->Time";
-        $text .= "<br>\n";
-        
-        
+   
         BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "NPC på ".$larp->Name, "", BerghemMailer::DaysAutomatic);
     }
     

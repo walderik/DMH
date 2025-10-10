@@ -1077,4 +1077,25 @@ class Role extends BaseModel{
         else return !$this->isApproved() && empty(RoleApprovedCopy::getOldRole($this->Id));
     }
     
+    public function getAllIntriguesIncludingSubdivisionsSorted(Larp $larp) {
+        $intrigues = array();
+        $roleIntrigues = Intrigue::getAllIntriguesForRole($this->Id, $larp->Id);
+        
+        $intrigues = array_merge($intrigues, $roleIntrigues);
+        $subdivisions = Subdivision::allForRole($this, $larp);
+        foreach ($subdivisions as $subdivision) {
+            $intrigues = array_merge($intrigues, Intrigue::getAllIntriguesForSubdivision($subdivision->Id, $larp->Id));
+        }
+        $intrigues = array_unique($intrigues, SORT_REGULAR);
+        usort($intrigues, function ($a, $b) {
+            $a_val =  $a->Number;
+            $b_val =  $b->Number;
+            
+            if($a_val > $b_val) return 1;
+            if($a_val < $b_val) return -1;
+            return 0;
+        });
+        return $intrigues;
+    }
+    
 }

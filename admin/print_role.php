@@ -31,11 +31,17 @@ if ($role->isMysLajvare()) {
 		<td valign="top" class="header">Spelas av</td>
 		<td>
 		<?php 
-		if (!is_null($person) && $isRegistered) { 
+		if (is_null($person)) echo "NPC";
+		elseif ($isRegistered) { 
 		     echo $person->getViewLink()." ";
 		     echo contactEmailIcon($person)." "; 
 		     echo "(".$person->getAgeAtLarp($current_larp)." år), ".$person->getExperience()->Name;
-		} elseif (is_null($person)) echo "NPC";
+		} 
+		else {
+		    echo $person->Name." ";
+		    echo contactEmailIcon($person)." ";
+		    
+		}
 		?>
 		</td>
 		<?php 

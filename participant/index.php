@@ -364,11 +364,7 @@ function openTab(evt, tabName) {
 		  else {
 		      echo "<br><a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i> Ladda upp bild</a>\n";
 		  }
-		  if ($group->isRegistered($current_larp) && $current_larp->isEnded()) {
-		      echo "<br><a href='larp_report_form.php?groupId=$group->Id'>Vad hände?</a> ".
-		  		      showParticipantStatusIcon($group->hasRegisteredWhatHappened($current_larp), "Inte noterat vad som hände");
-		  }
-		  
+	  
 		  
 		  echo "</div>";
 		}
@@ -949,6 +945,21 @@ function openTab(evt, tabName) {
     
       		    echo "</div>";
             }
+            
+            $registered_groups = Group::getAllRegisteredGroupsForPerson($current_person->Id, $current_larp);
+
+            foreach ($registered_groups as $group) {
+                echo "<div class='itemcontainer borderbottom'>";
+                echo "<div class='itemname'>";
+                echo  $group->getViewLink();
+                echo "</div>";
+
+                echo "<a href='larp_report_form.php?groupId=$group->Id'>Vad hände?</a> ";
+                if (!$group->hasRegisteredWhatHappened($current_larp))
+                    echo "<br>".showParticipantStatusIcon(false, "Inte noterat vad som hände");
+                 echo "</div>";
+            }
+            
             echo "</div>";
         		
         		?>

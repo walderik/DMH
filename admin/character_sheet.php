@@ -18,6 +18,7 @@ $bara_intrig = false;
 $role = null;
 $only_main = false;
 $no_history = false;
+$double_sided = false;
 
 
 if (isset($_GET['id'])) {
@@ -34,6 +35,7 @@ if (isset($_GET['id'])) {
     if (isset($_GET['bara_intrig'])) $bara_intrig = true;
     if (isset($_GET['main'])) $only_main = true;
     if (isset($_GET['no_history'])) $no_history = true;
+    if (isset($_GET['double_sided'])) $double_sided = true;
 }
 
 
@@ -52,7 +54,7 @@ $only_children = (isset($_GET['children'])) ? true : false;
 
 if (empty($role)) {
     if (empty($only_children)) {
-        $pdf->all_character_sheets($current_larp, $bara_intrig, $all_info, $only_main, $no_history);
+        $pdf->all_character_sheets($current_larp, $bara_intrig, $all_info, $only_main, $no_history, $double_sided);
     }
     else {
         $children = array();
@@ -61,7 +63,7 @@ if (empty($role)) {
             $person = $role->getPerson();
             if (!is_null($person)) if ($person->getAgeAtLarp($current_larp) < 16) $children[] = $role;
         }
-        $pdf->selected_character_sheets($children, $current_larp, $bara_intrig, $all_info);
+        $pdf->selected_character_sheets($children, $current_larp, $bara_intrig, $all_info, $double_sided);
     }
 } else {
     $pdf->new_character_sheet($role, $current_larp, $all_info, false);
