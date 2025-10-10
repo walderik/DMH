@@ -280,11 +280,15 @@ class Group extends BaseModel{
              "(GroupTypeId IS NULL OR GroupTypeId = regsys_grouptype.Id) AND ".
              "IsDead=0 AND ".
              "IsApproved=1 AND ".
-             "Visible=". Group::VISIBILITY_FULL." AND ".
+             "Visibility=". Group::VISIBILITY_FULL." AND ".
              "regsys_group.Id IN (SELECT GroupId from regsys_larp_group where LARPId = ?) ".
-         "ORDER BY regsys_grouptype.SortOrder,".static::$orderListBy.";";
+             "ORDER BY regsys_grouptype.SortOrder,".static::$orderListBy.";";
              else
-                 $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND IsApproved=1 AND Id IN ".
+                 $sql = "SELECT * FROM regsys_group WHERE ".
+                 "IsDead=0 AND ".
+                 "IsApproved=1 AND ".
+                 "Visibility=". Group::VISIBILITY_FULL." AND ".
+                 "Id IN ".
                  "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
                  return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
