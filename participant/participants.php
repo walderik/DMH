@@ -128,7 +128,7 @@ function print_role($role) {
 		<H1>Karaktärer i <?php  echo $current_larp->Name; ?></H1>
 
 		<?php 
-		$groups = Group::getAllRegisteredApproved($current_larp);
+		$groups = Group::getAllVisible($current_larp);
 		foreach ($groups as $group) {
 		    $roles = Role::getAllComingApprovedMainRolesInGroup($group, $current_larp);
 

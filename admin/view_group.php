@@ -203,6 +203,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Önskad placering</td><td><?php echo nl2br(htmlspecialchars($larp_group->TentPlace)); ?></td></tr>
 			<tr><td valign="top" class="header">Eldplats</td><td><?php echo ja_nej($larp_group->NeedFireplace);?></td></tr>
 			<?php }?>
+			<tr><td valign="top" class="header">Synlighet</td><td><?php echo Group::VISIBILITY_TYPES[$group->Visibility]?></td></tr>
 			<tr><td valign="top" class="header">Död/Ej i spel</td><td><?php echo ja_nej($group->IsDead);?></td></tr>
 		</table>		
 		</div>

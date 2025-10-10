@@ -34,11 +34,13 @@ include 'npc_navigation.php';
 			    echo "<tr>\n";
 			    echo "<td>";
 			    echo $group->getViewLink();
+			    if (!empty($group->PersonId)) echo "<br>Gruppen har en gruppledare " . showStatusIcon(false);
 			    if ($group->userMayEdit($current_larp)) echo "<br>Gruppledaren får ändra gruppen " . showStatusIcon(false);
-			    
 			    echo "</td>\n";
 			    echo "<td>";
 			    echo $group->getEditLinkPen(true);
+			    if ($group->mayDelete()) echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
+			    
 			    echo "\n";
 			    echo "<a href='group_sheet.php?id=" . $group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $group->Name'></i></a>\n";
 			    echo "</td>\n";

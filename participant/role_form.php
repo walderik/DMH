@@ -306,7 +306,7 @@ include 'navigation.php';
         	
         	$groupName = "";
         	if (isset($group)) $groupName = $group->Name;
-        	selectionDropDownByArray('GroupId', Group::getAllRegisteredApproved($current_larp), false, $role->GroupId, $groupName);
+        	selectionDropDownByArray('GroupId', Group::getAllChoosable($current_larp), false, $role->GroupId, $groupName);
         	print_participant_question_end(false);
 
 		}

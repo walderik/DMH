@@ -346,7 +346,7 @@ function openTab(evt, tabName) {
 		  echo "<div class='itemcontainer borderbottom'>";
 		  echo "<div class='itemname'>";
 		  echo  $group->getViewLink();
-	      if($group->isNeverRegistered()) {
+	      if($group->mayDelete()) {
 	          echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
 	      }
 	      if ($current_person->isGroupLeader($group) && (!$group->isRegistered($current_larp) || $group->userMayEdit($current_larp))) {
