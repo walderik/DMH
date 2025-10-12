@@ -9,6 +9,7 @@ class Advertisment extends BaseModel{
     public  $PersonId;
     public  $LarpId;
     public  $AdvertismentTypeId;
+    public  $CreatedAt;
 
     
 
@@ -28,7 +29,7 @@ class Advertisment extends BaseModel{
         if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
         if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
         if (isset($arr['AdvertismentTypeId'])) $this->AdvertismentTypeId = $arr['AdvertismentTypeId'];
-        
+        if (isset($arr['CreatedAt'])) $this->CreatedAt = $arr['CreatedAt'];
     }
     
     
@@ -74,9 +75,9 @@ class Advertisment extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_advertisment (ContactInformation, Text, PersonId, LARPid, AdvertismentTypeId) VALUES (?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_advertisment (ContactInformation, Text, PersonId, LARPid, AdvertismentTypeId, CreatedAt) VALUES (?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->ContactInformation, $this->Text, $this->PersonId, $this->LARPid, $this->AdvertismentTypeId))) {
+        if (!$stmt->execute(array($this->ContactInformation, $this->Text, $this->PersonId, $this->LARPid, $this->AdvertismentTypeId, date_format(new Datetime(),"Y-m-d H:i:s"),))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
