@@ -737,13 +737,15 @@ function openTab(evt, tabName) {
     	
     	
     	<?php 
-	  //Annonser	
-      $adtypes = AdvertismentType::allActive($current_larp);
+	   //Annonser	
+       $adtypes = AdvertismentType::allActive($current_larp);
        if (!empty($adtypes)) {
            echo "<div class='itemselector'>";
            echo "<div class='header'>";
            
            echo "<i class='fa-solid fa-bullhorn'></i> Annonser";
+          // echo "<font style='color:red'><i class='fa-solid fa-bullhorn'></i></font>";
+           help_icon("Annonser från deltagare till deltagare.");
            echo "</div>";
            echo "<div class='itemcontainer'>";
            

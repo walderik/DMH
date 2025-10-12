@@ -13,7 +13,7 @@ class Advertisment extends BaseModel{
 
     
 
-    public static $orderListBy = 'AdvertismentTypeId, PersonId';
+    public static $orderListBy = 'AdvertismentTypeId, CreatedAt DESC';
     
     public static function newFromArray($post) {
         $obj = static::newWithDefault();
