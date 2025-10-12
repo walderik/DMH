@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 if (!isset($assignment)) {
-    header('Location: ../npc.php');
+    header('Location: ../index.php');
     exit;
 }
 
@@ -23,5 +23,5 @@ if (!isset($assignment)) {
 $assignment->release();
 
 
-header('Location: ../npc.php');
+header('Location: ../npc_assignments.php');
 

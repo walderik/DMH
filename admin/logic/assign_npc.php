@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 if (!isset($npc) && !isset($personId)) {
-    header('Location: ../npc_played.php');
+    header('Location: ../npc_assignments.php');
     exit;
 }
 
@@ -28,5 +28,5 @@ $assignment->IsReleased = 0;
 $assignment->update();
 
 
-header('Location: ../npc_played.php');
+header('Location: ../npc_assignments.php');
 

@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     if ($operation == 'insert') {
         $group = Group::newWithDefault();
-        if (isset($_GET['hidden'])) $group->Visibility = Group::VISIBILITY_NOT_CHOOSE;
+        if (isset($_GET['hidden'])) $group->Visibility = Group::VISIBILITY_INVISIBLE;
         $group->IsApproved = 1;
         $group->ApprovedByPersonId = $current_person->Id;
         $now = new Datetime();

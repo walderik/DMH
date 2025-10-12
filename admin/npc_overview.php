@@ -44,7 +44,7 @@ include 'npc_navigation.php';
 			    echo "<td>";
 			    $assignement = NPC_assignment::getAssignment($npc, $current_larp);
 			    if (empty($assignement)) {
-			        echo "<form action='logic/npc_tobeplayed.php' method='post'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'>".showStatusIcon(false)."</form>";
+			        echo "<form action='npc_form.php' method='POST'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'><input type='hidden' id='operation' name='operation' value='insert'><button class='invisible' type='submit'>".showStatusIcon(false)."</button></form>";
 			    } elseif ($assignement->isAssigned()) {
 			        echo showStatusIcon(true)." ";
 			        $person = $assignement->getPerson();
@@ -52,7 +52,7 @@ include 'npc_navigation.php';
 			        if ($registration->isNotComing()) echo "<s>".$person->getViewLink()."</s> ".showStatusIcon(false);
 			        else echo $person->getViewLink();
 			    } else {
-			        echo showWarningIcon();
+			        echo "<form action='npc_form.php' method='POST'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'><input type='hidden' id='operation' name='operation' value='update'><button class='invisible' type='submit'>".showWarningIcon()."</button></form>";
 			    }
 			    
 			    echo "</td>";

@@ -1,25 +1,23 @@
 <?php
 include_once 'header.php';
 
-$role = Role::newWithDefault();
-$role->PersonId = $current_person->Id;
-$role->CreatorPersonId = $current_person->Id;
+
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "insert";
-    if (isset($_GET['type'])) {
-        if ($_GET['type'] == "npc") $role->PersonId = NULL;
-        if ($role->isNPC() && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
-        
+    
+    if (isset($_GET['action'])) {
+        $operation = $_GET['action'];
     }
     
-    if (isset($_GET['operation'])) {
-        $operation = $_GET['operation'];
-    }
-    else {
-        
-    }
     if ($operation == 'insert') {
+        $role = Role::newWithDefault();
+        $role->PersonId = $current_person->Id;
+        $role->CreatorPersonId = $current_person->Id;
+        if (isset($_GET['type'])) {
+            if ($_GET['type'] == "npc") $role->PersonId = NULL;
+            if ($role->isNPC() && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
+        }
     } elseif ($operation == 'update') {
         $role = Role::loadById($_GET['id']);
     } else {
@@ -149,7 +147,7 @@ include 'navigation.php';
 			?></td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>
-			<td><?php selectionDropDownByArray('Group', Group::getAllRegistered($current_larp), false, $role->GroupId); ?></td></tr>
+			<td><?php selectionDropDownByArray('GroupId', Group::getAllRegistered($current_larp), false, $role->GroupId); ?></td></tr>
 
 			<?php if ($role->isPC()) {?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>

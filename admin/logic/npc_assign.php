@@ -21,4 +21,4 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 }
 
 
-header('Location: ../npc_played.php');
+header('Location: ../npc_assignments.php');

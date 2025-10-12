@@ -16,10 +16,10 @@ function subFunction() {
         <a href="npc.php"><i class="fa-solid fa-house"></i> NPC</a>
         <a href="npc_overview.php">Alla</a>
         <a href="npc_participants.php">Deltagare som vill spela</a>
-        <a href="npc_played.php">Spelas under lajvet</a>
+        <a href="npc_assignments.php">Uppdrag</a>
         <a href="npc_hidden_groups.php">Gömda grupper</a>
-        <a href="edit_role.php?operation=insert&type=npc"><i class="fa-solid fa-file-circle-plus"></i>Skapa NPC</a>&nbsp;  
-        <a href="edit_group.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Skapa grupp</a>  
+        <a href="edit_role.php?action=insert&type=npc"><i class="fa-solid fa-file-circle-plus"></i>Skapa NPC</a>&nbsp;  
+        <a href="edit_group.php?operation=insert&hidden=1"><i class="fa-solid fa-file-circle-plus"></i>Skapa grupp</a>  
         
     </div>
     <div class="right">	  
