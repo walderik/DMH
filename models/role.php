@@ -920,6 +920,16 @@ class Role extends BaseModel{
             "CampaignId = ? ORDER BY GroupId, Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
+ 
+    public static function getAllNPCToBePlayed(LARP $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT regsys_role.* from regsys_role, regsys_npc_assignment WHERE ".
+            "regsys_role.Id =  regsys_npc_assignment.RoleId AND ".
+            "regsys_role.CampaignId = ? AND ".
+            "regsys_npc_assignment.LarpId = ? ".
+            "ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $larp->Id));
+    }
     
     
     public function getViewLink() {

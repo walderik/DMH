@@ -31,7 +31,18 @@ if ($role->isMysLajvare()) {
 		<td valign="top" class="header">Spelas av</td>
 		<td>
 		<?php 
-		if (is_null($person)) echo "NPC";
+		if (is_null($person)) {
+		    $assignment = NPC_assignment::getAssignment($role, $current_larp);
+		    if (isset($assignment)) {
+		        if ($assignment->IsAssigned()) {
+		            $person = $assignment->getPerson();
+		            echo $person->Name." ";
+		            echo contactEmailIcon($person)."<br>".$assignment->Time;
+		        } else {
+		            "Ska spelas, inte tilldelad";
+		        }
+		    } else echo "NPC";
+		}
 		elseif ($isRegistered) { 
 		     echo $person->getViewLink()." ";
 		     echo contactEmailIcon($person)." "; 
@@ -59,6 +70,10 @@ if ($role->isMysLajvare()) {
 		?>
 			
 			</tr>
+			<?php if ($role->isNPC()) {
+			    echo "<tr><td valign='top' class='header'>Skapad av</td><td>".$role->getCreator()->getViewLink()."</td></tr>";
+			    
+			}?>
 		<?php if (isset($group)) {?>
 			<tr><td valign="top" class="header">Grupp</td><td><?php echo $group->getViewLink() ?></td></tr>
 		<?php }?>

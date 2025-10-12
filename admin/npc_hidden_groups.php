@@ -14,8 +14,6 @@ include 'npc_navigation.php';
 
     <div class="content">   
         <h1>Gömda grupper</h1>
-            <a href="edit_role.php?operation=insert&type=npc"><i class="fa-solid fa-file-circle-plus"></i>Skapa NPC</a>&nbsp;  
-            <a href="edit_group.php?operation=insert&hidden=1"><i class="fa-solid fa-file-circle-plus"></i>Skapa grupp</a>  
 
 			<?php 
 			$tableId = "groups";

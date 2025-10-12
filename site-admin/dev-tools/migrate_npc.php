@@ -48,8 +48,12 @@ foreach ($npcs as $npc) {
         $role->create();
         $npc->RoleId = $role->Id;
         $npc->update();
+        
+        //TODO rätta upp intriger
     }
 }
+
+
 echo "Done";
 exit;
 

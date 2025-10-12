@@ -120,7 +120,9 @@ div.npc {
     <div class="content">   
         <h1>Alla NPC</h1>
         
-        <p><strong>XX NPC'er är tilldelade till en deltagare som är avbokad.</strong></p>
+        <p><strong>XX NPC'er är tilldelade till en deltagare som är avbokad.</strong><br>
+        <strong>XX NPC'er som ska spelas på lajvet har ingen spelare</strong>
+        <strong>XX tilldelade NPC'er har inte blivit släpta till sin spelare.</strong>></p>
         <p>XX NPC'er kommer att spelas på lajvet. <br>
         Det finns XX deltagare som vill spela NPC'er, XX av dem har inte fått någon NPC.</p>
         

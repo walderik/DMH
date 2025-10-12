@@ -13,11 +13,14 @@ function subFunction() {
 
 <div class="topnav" id="subTopnav">
     <div class="left">
-        <a href="alchemy.php"><i class="fa-solid fa-house"></i> NPC</a>
-        <a href="npc_overview.php">Alla NPC</a>
-        <a href="npc_participants.php">Deltagare som vill spela NPC</a>
-        <a href="npc_played.php">NPC som spelas under lajvet</a>
+        <a href="npc.php"><i class="fa-solid fa-house"></i> NPC</a>
+        <a href="npc_overview.php">Alla</a>
+        <a href="npc_participants.php">Deltagare som vill spela</a>
+        <a href="npc_played.php">Spelas under lajvet</a>
         <a href="npc_hidden_groups.php">Gömda grupper</a>
+        <a href="edit_role.php?operation=insert&type=npc"><i class="fa-solid fa-file-circle-plus"></i>Skapa NPC</a>&nbsp;  
+        <a href="edit_group.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Skapa grupp</a>  
+        
     </div>
     <div class="right">	  
     	<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="subFunction()">&#9776;</a>

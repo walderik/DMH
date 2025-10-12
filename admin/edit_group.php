@@ -247,9 +247,9 @@ include 'navigation.php';
 				<input type="radio" id="Visibility_Full" name="Visibility" value="<?php echo Group::VISIBILITY_FULL?>" onclick="handleVisibility()" <?php if ($group->hasFullVisibility()) echo 'checked="checked"'?>> 
     			<label for="Visibility_Full">Fullt synlig för deltagare</label><br> 
 				<input type="radio" id="Visibility_Not_Choose" name="Visibility" value="<?php echo Group::VISIBILITY_NOT_CHOOSE?>" onclick="handleVisibility()" <?php if ($group->hasNotChooseVisibility()) echo 'checked="checked"'?>> 
-    			<label for="Visibility_Not_Choose">Visas i listor över tex deltagare, men deltagare kan inte välja den för sina karaktärer</label><br> 
+    			<label for="Visibility_Not_Choose">Synlig NPC-grupp. Visas i listor över tex deltagare, men deltagare kan inte välja den för sina karaktärer</label><br> 
     			<input type="radio" id="Visibility_Invisible" name="Visibility" value="<?php echo Group::VISIBILITY_INVISIBLE?>" onclick="handleVisibility()" <?php if ($group->hasInvisibility()) echo 'checked="checked"'?>> 
-    			<label for="Visibility_Invisible">Visas inte för deltagare, mer än om de har en karaktär i gruppen</label>
+    			<label for="Visibility_Invisible">Osynligt NPC-grupp. Visas inte för deltagare, mer än om de har en karaktär i gruppen</label>
 			</td></tr>
 
 			<tr><td valign="top" class="header">Död/Ej i spel&nbsp;<font style="color:red">*</font></td>

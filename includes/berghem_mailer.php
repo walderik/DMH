@@ -365,20 +365,23 @@ class BerghemMailer {
     }
     
     
-    public static function sendNPCMail(NPC $npc, $senderId) {
+    public static function sendNPCMail(NPC_assignment $assignment, $senderId) {
  
-        $person = $npc->getPerson();
+        $role = $assignment->getRole();
+        $person = $assignment->getPerson();
         
-        $larp = $npc->getLARP();
+        $larp = $assignment->getLARP();
         
         
         $text  = "Du har fått en NPC på lajvet $larp->Name<br>\n";
         $text .= "<br>\n";
-        $text .= "<b>Namn:</b> ".htmlspecialchars($npc->Name);
+        $text .= "<b>Namn:</b> ".htmlspecialchars($role->Name);
         $text .= "<br><br>\n";
-        $text .= "<b>Beskrivning:</b><br>".nl2br(htmlspecialchars($npc->Description));
+        $text .= "<b>Beskrivning:</b><br>".nl2br(htmlspecialchars($role->Description));
         $text .= "<br><br>\n";
-        $text .= "<b>Tiden när vi vill att du spelar npc'n:</b> ".htmlspecialchars($npc->Time);
+        $text .= "<b>Tiden när vi vill att du spelar npc'n:</b> ".htmlspecialchars($assignment->Time);
+        $text .= "<br><br>\n";
+        $text .= "<b>Instruktioner:</b> ".htmlspecialchars($assignment->Instructions);
         $text .= "<br>\n";
    
         BerghemMailer::send($larp, $senderId, $person->Id, "Hej ".$person->Name, $text, "NPC på ".$larp->Name, "", BerghemMailer::DaysAutomatic);
