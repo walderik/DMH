@@ -27,7 +27,7 @@ $temp=0;
 
 $group = Group::loadById($GroupId); 
 
-if (!$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group)) {
+if (!$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group) && !$current_person->hasNPCInGroup($group, $current_larp)) {
     header('Location: index.php?error=no_member'); //Inte medlem i gruppen
     exit;
 }
@@ -143,7 +143,10 @@ include 'navigation.php';
 
 	   <div class='itemcontainer'>
        <div class='itemname'>Gruppansvarig</div>
-	   <?php echo Person::loadById($group->PersonId)->Name;?>
+	   <?php 
+	   $person = $group->getPerson();
+	   if (!empty($person)) echo $person->Name;
+	   ?>
 	   </div>
 
 	   <div class='itemcontainer'>

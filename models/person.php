@@ -911,26 +911,20 @@ class Person extends BaseModel{
         $sql = "SELECT COUNT(*) AS Num FROM regsys_role WHERE ".
             "regsys_role.GroupId=? AND ".
             "regsys_role.PersonId = ?;";
+        return static::existsQuery($sql, array($group->Id, $this->Id));
+    }
+
+    
+    public function hasNPCInGroup(Group $group, Larp $larp) {
+        //Kollar om personen har en karaktär som är med i gruppen
+        if (!isset($group)) return false;
         
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($group->Id, $this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return false;
-        }
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $stmt = null;
-        
-        
-        if ($res[0]['Num'] == 0) return false;
-        return true;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_role, regsys_npc_assignment WHERE ".
+            "regsys_role.GroupId=? AND ".
+            "regsys_npc_assignment.RoleId = regsys_role.Id AND ".
+            "regsys_npc_assignment.LarpId = ? AND ".
+            "regsys_npc_assignment.PersonId = ?;";
+        return static::existsQuery($sql, array($group->Id, $larp->Id, $this->Id));
     }
     
     public function isGroupLeader($group) {

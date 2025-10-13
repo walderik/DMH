@@ -17,13 +17,13 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = "NPC'er";
 
-$pdf = new Report_TCP_PDF();
+$pdf = new Report_TCP_PDF('L');
 
 $pdf->init($current_person->Name, $name, $current_larp->Name, false);
 
 
 $rows = array();
-$header = array("Namn", "Spelas av", "Grupp", "Beskrivning", "När");
+$header = array("Namn", "Spelas av", "Grupp", "Instruktioner", "När");
 
 $npcs = Role::getAllNPCToBePlayed($current_larp);
 

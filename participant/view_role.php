@@ -24,9 +24,17 @@ if ($role->isPC() && $person->Id != $current_person->Id) {
 }
 
 $group = $role->getGroup();
-if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
-    header('Location: index.php'); //NPC som inte är med i din grupp
-    exit;
+
+if ($role->isNPC()) {
+    $assignment = NPC_assignment::getAssignment($role, $current_larp);
+    if (!empty($assignment) && ($assignment->PersonId == $current_person->Id)) {
+        //Ok, du är tilldelad NPC'n
+    } elseif (!empty($group) && $current_person->isMemberGroup($group)) {
+        //Ok, din grupp
+    } else {
+        header('Location: index.php'); //NPC som inte ärdin och inte är med i din grupp
+        exit;
+    }
 }
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);

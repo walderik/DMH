@@ -8,8 +8,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($roleId)) {
         $role=Role::newFromArray($_POST);
         $role->CreatorPersonId = $current_person->Id;
+        $role->UserMayEdit = 0;
+        $role->IsApproved = 1;
+        $role->ApprovedByPersonId = $current_person->Id;
+        $now = new Datetime();
+        $role->ApprovedDate = date_format($now,"Y-m-d H:i:s");
         $role->create();
-        
     } else {
         $role = Role::loadById($roleId);
         $role->setValuesByArray($_POST);

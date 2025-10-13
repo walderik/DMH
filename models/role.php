@@ -611,29 +611,14 @@ class Role extends BaseModel{
     
     public function isNeverRegistered() {
         $sql = "SELECT COUNT(*) AS Num FROM regsys_larp_role WHERE RoleId=?;";
-        
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return true;
-            
-        }
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $stmt = null;
-        
-        
-        if ($res[0]['Num'] == 0) return true;
-        return false;
-        
+        return !static::existsQuery($sql, array($this->Id));
     }
+    
+    public function isNeverAssigned() {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_npc_assignment WHERE RoleId=?;";
+        return !static::existsQuery($sql, array($this->Id));
+    }
+    
     
     public function is_trading(LARP $larp) {
         $campaign = $larp->getCampaign();
@@ -1083,8 +1068,8 @@ class Role extends BaseModel{
     }
     
     public function mayDelete() {
-        if ($this->isPC()) return $this->isNeverRegistered();
-        else return !$this->isApproved() && empty(RoleApprovedCopy::getOldRole($this->Id));
+        if  ($this->isNeverRegistered() && $this->isNeverAssigned()) return true;
+        return false;
     }
     
     public function getAllIntriguesIncludingSubdivisionsSorted(Larp $larp) {

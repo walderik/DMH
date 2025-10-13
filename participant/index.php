@@ -684,8 +684,8 @@ function openTab(evt, tabName) {
     	
     	
     	//NPC'er
-    	$npcs = NPC::getReleasedNPCsForPerson($current_person, $current_larp);
-    	if (isset($npcs) && count($npcs) > 0) {
+    	$assignments = NPC_assignment::getReleasedNPCsForPerson($current_person, $current_larp);
+    	if (isset($assignments) && count($assignments) > 0) {
     	    
     	    echo "<div class='itemselector'>";
     	    echo "<div class='header'>";
@@ -693,23 +693,23 @@ function openTab(evt, tabName) {
     	    echo "</div>";
     	    
 
-    	    foreach ($npcs as $npc)  {
+    	    foreach ($assignments as $assignment)  {
+    	        $npc_role = $assignment->getRole();
     	        echo "<div class='itemcontainer'>";
-    	        echo "<div class='itemname'><a href='view_npc.php?id=$npc->Id'>$npc->Name</a></div>";
+    	        echo "<div class='itemname'>".$npc_role->getViewLink()."</div>";
     	        
     	        
-    	        if ($npc->hasImage()) {
-    	            echo "<img width='30' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-    	            echo "<a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+    	        if ($npc_role->hasImage()) {
+    	            echo "<img width='30' src='../includes/display_image.php?id=$npc_role->ImageId'/>\n";
+    	            echo "<a href='logic/delete_image.php?id=$npc_role->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
     	        }
     	        else {
-    	            echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+    	            echo "<a href='upload_image.php?id=$npc_role->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
     	        }
     	        
-    	        
-    	        if ($npc->IsInGroup()) {
-    	            $npc_group = $npc->getNPCGroup();
-    	            echo "<br><a href='view_npc_group.php?id=$npc->NPCGroupId'>$npc_group->Name</a>";
+    	        $npc_group = $npc_role->getGroup();
+    	        if (!empty($group)) {
+    	            echo "<br>".$npc_group->getViewLink();
     	        }
     	        echo "</div>";
     	        
