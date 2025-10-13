@@ -9,6 +9,8 @@ class NPC_assignment extends BaseModel{
     public $Instructions;
     public $Time;
     public $IsReleased = 0;
+    public $WhatHappened;
+    public $WhatHappendToOthers;
     
     
     public static $orderListBy = 'RoleId';
@@ -29,6 +31,8 @@ class NPC_assignment extends BaseModel{
         if (isset($arr['Instructions'])) $this->Instructions = $arr['Instructions'];
         if (isset($arr['Time'])) $this->Time = $arr['Time'];
         if (isset($arr['IsReleased'])) $this->IsReleased = $arr['IsReleased'];
+        if (isset($arr['WhatHappened'])) $this->WhatHappened = $arr['WhatHappened'];
+        if (isset($arr['WhatHappendToOthers'])) $this->WhatHappendToOthers = $arr['WhatHappendToOthers'];
         
         if (isset($this->PersonId) && $this->PersonId=='null') $this->PersonId = null;
         
@@ -47,10 +51,10 @@ class NPC_assignment extends BaseModel{
     # Update an existing object in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_npc_assignment SET RoleId=?, PersonId=?, LarpId=?, Instructions=?,
-                Time=?, IsReleased=? WHERE Id = ?;");
+                Time=?, IsReleased=?, WhatHappened=?, WhatHappendToOthers=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->RoleId, $this->PersonId, $this->LarpId, $this->Instructions,
-            $this->Time, $this->IsReleased, $this->Id))) {
+            $this->Time, $this->IsReleased, $this->WhatHappened, $this->WhatHappendToOthers, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -63,11 +67,11 @@ class NPC_assignment extends BaseModel{
         $connection = $this->connect();
         
        $stmt = $connection->prepare("INSERT INTO regsys_npc_assignment (RoleId, PersonId, LarpId, Instructions,
-                                                            Time, IsReleased) 
-                                                            VALUES (?,?,?,?,?, ?);");
+                                                            Time, IsReleased, WhatHappened, WhatHappendToOthers) 
+                                                            VALUES (?,?,?,?,?, ?,?,?);");
         
        if (!$stmt->execute(array($this->RoleId, $this->PersonId, $this->LarpId, $this->Instructions,
-            $this->Time, $this->IsReleased))) {
+           $this->Time, $this->IsReleased, $this->WhatHappened, $this->WhatHappendToOthers))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");

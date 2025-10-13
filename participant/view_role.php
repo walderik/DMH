@@ -32,7 +32,7 @@ if ($role->isNPC()) {
     } elseif (!empty($group) && $current_person->isMemberGroup($group)) {
         //Ok, din grupp
     } else {
-        header('Location: index.php'); //NPC som inte ärdin och inte är med i din grupp
+        header('Location: index.php'); //NPC som inte är din och inte är med i din grupp
         exit;
     }
 }

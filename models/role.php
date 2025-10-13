@@ -1046,14 +1046,20 @@ class Role extends BaseModel{
     
     
     public function hasRegisteredWhatHappened(LARP $larp) {
-        $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
-        if (!empty($larp_role->WhatHappened) OR !empty($larp_role->WhatHappendToOthers) || !empty($larp_role->WhatHappensAfterLarp)) return true;
+        if ($this->isPC()) {
+            $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
+            if (!empty($larp_role) && (!empty($larp_role->WhatHappened) OR !empty($larp_role->WhatHappendToOthers) || !empty($larp_role->WhatHappensAfterLarp))) return true;
+        } elseif ($this->isNPC()) {
+            $assignment = NPC_assignment::getAssignment($this, $larp);
+            if (!empty($assignment) && (!empty($assignment->WhatHappened) OR !empty($assignment->WhatHappendToOthers))) return true;
+        }
         
         $intrigues = Intrigue::getAllIntriguesForRole($this->Id, $larp->Id);
         foreach ($intrigues as $intrigue) {
             $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this);
             if (!empty($intrigueActor->WhatHappened)) return true;
         }
+        
         return false;
     }
     

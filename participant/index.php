@@ -685,6 +685,7 @@ function openTab(evt, tabName) {
     	
     	//NPC'er
     	$assignments = NPC_assignment::getReleasedNPCsForPerson($current_person, $current_larp);
+    	$assigned_roles = array();
     	if (isset($assignments) && count($assignments) > 0) {
     	    
     	    echo "<div class='itemselector'>";
@@ -695,6 +696,7 @@ function openTab(evt, tabName) {
 
     	    foreach ($assignments as $assignment)  {
     	        $npc_role = $assignment->getRole();
+    	        $assigned_roles[] = $npc_role;
     	        echo "<div class='itemcontainer'>";
     	        echo "<div class='itemname'>".$npc_role->getViewLink()."</div>";
     	        
@@ -929,11 +931,12 @@ function openTab(evt, tabName) {
                 
             }
 
+            $played_roles = array_merge($registered_roles, $assigned_roles);
             echo "<div class='itemselector'>";
             echo "<div class='header'><i class='fa-solid fa-landmark'></i> Vad hände?";
             help_icon("Skriv in vad som hände så snart som möjligt och så detaljerat som möjligt. Det är till hjälp för dig nästa gång du ska spela karaktären och för arrangörerna när de ska skriva intriger."); 
             echo "</div>";
-             foreach ($registered_roles as $role) {
+            foreach ($played_roles as $role) {
                 echo "<div class='itemcontainer borderbottom'>";
                 //Namn på karaktären
                 echo "<div class='itemname'>";
