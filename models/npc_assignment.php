@@ -9,8 +9,8 @@ class NPC_assignment extends BaseModel{
     public $Instructions;
     public $Time;
     public $IsReleased = 0;
-    public $WhatHappened;
-    public $WhatHappendToOthers;
+    public $WhatHappened = "";
+    public $WhatHappendToOthers = "";
     
     
     public static $orderListBy = 'RoleId';

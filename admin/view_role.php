@@ -364,14 +364,11 @@ include 'navigation.php';
                }
                echo "</ul>";
            }
-           
-           
-           
-    	
-		}
-	    ?>
+           ?>
 		</div>
-		<?php 
+		<?php }?>
+		
+        <?php 
 		if ($current_larp->hasRumours() && $isRegistered) {
 		
 		?>
@@ -420,15 +417,12 @@ include 'navigation.php';
 		    
 		}
 		if (isset($larp_role)) echo "Pengar vid lajvets start $larp_role->StartingMoney $currency";
-		
-		
-		
-		
-		}
-		
 		?>
 		
-		 </div>
+		</div>
+		<?php }?>
+		
+
 		
 		<h2>Anteckningar (visas inte för deltagaren) <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>

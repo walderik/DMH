@@ -94,7 +94,7 @@ function printIntrigue($number, $commonText, $commonTextHeader, $intrigueTextArr
     if (!empty($whatHappenedTextArr) || $alwaysPrintWhatHappened) {
         $tmpWhatHappenedTextArr = array();
         foreach ($whatHappenedTextArr as $whatHappenedText) {
-            if (is_array($offText)) {
+            if (is_array($whatHappenedText)) {
                 $tmpWhatHappenedTextArr[] = "<strong>".htmlspecialchars($whatHappenedText[0])."</strong><br>".nl2br(htmlspecialchars($whatHappenedText[1]))."<br><br>";
             } else {
                 $tmpWhatHappenedTextArr[] = nl2br(htmlspecialchars($whatHappenedText));
@@ -595,7 +595,7 @@ include 'navigation.php';
 		
 		
 		<?php 
-		$previous_larps = $role->getPreviousLarps();
+		$previous_larps = $role->getPreviousLarps($current_larp);
 		if (isset($previous_larps) && count($previous_larps) > 0 || !empty($role->PreviousLarps)) { 
 		    ?>
 		    
@@ -612,7 +612,7 @@ include 'navigation.php';
 		        echo "<h2 style='border-top:none;'>$prevoius_larp->Name</h2>";
 		        echo "<div class='border'>";
 		        
-		        if (!empty($previous_larp_role->Intrigue)) {
+		        if (isset($previous_larp_role) && !empty($previous_larp_role->Intrigue)) {
 		            echo "<p>".nl2br(htmlspecialchars($previous_larp_role->Intrigue))."</p>";
 		        }
 		        
@@ -635,22 +635,37 @@ include 'navigation.php';
 		            }
 		        }
 		        echo "<h3>Allmänna kommentarer</h3>";
-		        echo "<p><strong>Vad hände för $role->Name?</strong><br>";
-		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
-		            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappened));
-	            else echo "Inget rapporterat";
-	            echo "</p>";
-	            echo "<p><strong>Vad hände för andra?</strong><br>";
-	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
-	                echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
-                else echo "Inget rapporterat";
-                echo "</p>";
-                echo "<p><strong>Vad händer efter lajvet?</strong><br>";
-                if (isset($previous_larp_role->WhatHappensAfterLarp) && $previous_larp_role->WhatHappensAfterLarp != "")
-                    echo nl2br(htmlspecialchars($previous_larp_role->WhatHappensAfterLarp));
-                else echo "Inget rapporterat";
-                echo "</p>";
-                echo "</div>";
+		        
+		        $previous_assignment = NPC_assignment::getAssignment($role, $prevoius_larp);
+		        if (isset($previous_larp_role)) {
+    		        echo "<p><strong>Vad hände för $role->Name?</strong><br>";
+    		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
+    		            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappened));
+    	            else echo "Inget rapporterat";
+    	            echo "</p>";
+    	            echo "<p><strong>Vad hände för andra?</strong><br>";
+    	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
+    	                echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
+                    else echo "Inget rapporterat";
+                    echo "</p>";
+                    echo "<p><strong>Vad händer efter lajvet?</strong><br>";
+                    if (isset($previous_larp_role->WhatHappensAfterLarp) && $previous_larp_role->WhatHappensAfterLarp != "")
+                        echo nl2br(htmlspecialchars($previous_larp_role->WhatHappensAfterLarp));
+                    else echo "Inget rapporterat";
+                    echo "</p>";
+                    echo "</div>";
+		        } elseif (isset($previous_assignment)) {
+		            echo "<p><strong>Vad hände för $role->Name?</strong><br>";
+		            if (isset($previous_assignment->WhatHappened) && $previous_assignment->WhatHappened != "")
+		                echo nl2br(htmlspecialchars($previous_assignment->WhatHappened));
+		                else echo "Inget rapporterat";
+		                echo "</p>";
+		                echo "<p><strong>Vad hände för andra?</strong><br>";
+		                if (isset($previous_assignment->WhatHappendToOthers) && $previous_assignment->WhatHappendToOthers != "")
+		                    echo nl2br(htmlspecialchars($previous_assignment->WhatHappendToOthers));
+		                    else echo "Inget rapporterat";
+		                    echo "</p>";
+		        }
 		                
 		    }
 		    

@@ -388,7 +388,7 @@ class Group_PDF extends PDF_MemImage {
 
         if (!$no_history) {
         
-            $previous_larps = $this->group->getPreviousLarps();
+            $previous_larps = $this->group->getPreviousLarps($this->larp);
             if (isset($previous_larps) && count($previous_larps) > 0) {
                 
                 

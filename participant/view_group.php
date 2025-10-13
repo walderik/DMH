@@ -570,7 +570,7 @@ include 'navigation.php';
 			
 			
 		<?php 
-		$previous_larps = $group->getPreviousLarps();
+		$previous_larps = $group->getPreviousLarps($current_larp);
 		if (isset($previous_larps) && count($previous_larps) > 0) {
 		    ?>
 		    

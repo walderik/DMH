@@ -431,8 +431,8 @@ class Group extends BaseModel{
          
      }
      
-     public function getPreviousLarps() {
-         return LARP::getPreviousLarpsGroup($this->Id);
+     public function getPreviousLarps(Larp $larp) {
+         return LARP::getPreviousLarpsGroup($this->Id, $larp);
      }
      
      public function getAllKnownRoles(LARP $larp) {

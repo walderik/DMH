@@ -470,7 +470,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         global $y, $left, $left2;
         $space = 3;
         
-        $previous_larps = $this->role->getPreviousLarps();
+        $previous_larps = $this->role->getPreviousLarps($this->larp);
         if (isset($previous_larps) && count($previous_larps) > 0) {
             
             foreach ($previous_larps as $prevoius_larp) {
