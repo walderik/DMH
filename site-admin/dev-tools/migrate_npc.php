@@ -6,6 +6,8 @@ require $root . '/includes/init.php';
 
 $npcGroups = NPCGroup::all();
 
+//TODO ta hänsyn till Intriger
+
 foreach ($npcGroups as $npcGroup) {
     $npcs = $npcGroup->getNPCsInGroup();
     if (!empty($npcs)){

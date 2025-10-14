@@ -506,7 +506,7 @@ th, td {
 	</td>
 	</tr>
 	
-<tr><td id='actorlist'>Sovande aktörer<br>(Grupper och karaktärer som inte är anmälda till lajvet eller står på reservlistan)</td>
+<tr><td id='actorlist'>Sovande aktörer<br>(Grupper och karaktärer som inte är anmälda till lajvet eller står på reservlistan, samt NPC'er som inte spelas)</td>
 <td>
 
 <div class='container'>
@@ -579,7 +579,7 @@ th, td {
         echo "</span>";
         
         echo "<span class='icons'>";
-        echo "<i class='fa-solid fa-bed' title='Inte anmäld till lajvet'></i> ";
+        echo "<i class='fa-solid fa-bed' title='Spelas inte'></i> ";
         echo "<a href='choose_role.php?operation=exhange_intrigue_actor_role&Id=$roleActor->Id'><i class='fa-solid fa-rotate' title='Byt ut karaktär som får intrigen'></i></a> ";
         echo "<a href='logic/view_intrigue_logic.php?operation=remove_intrigueactor&IntrigueActorId=$roleActor->Id&Id=$intrigue->Id'";
         if (!empty($roleActor->IntrigueText)) echo ' onclick="return confirm(\'Det finns en skriven intrigtext. Vill du ta bort karaktären i alla fall?\')" ';
@@ -617,84 +617,88 @@ th, td {
 	
 	
 	
-<tr><td>NPC</td>
-<td>
-<a href="choose_npcgroup.php?operation=add_intrigue_npcgroup&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till NPC-grupp"></i></a>
-<ul class='image-gallery' style='display:table; border-spacing:5px;'>
+	
+<!-- <tr><td>NPC</td> -->
+<!-- <td> -->
+<!-- <a href="choose_npcgroup.php?operation=add_intrigue_npcgroup&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till NPC-grupp"></i></a> -->
+<!-- <ul class='image-gallery' style='display:table; border-spacing:5px;'> -->
 	<?php 
-	$intrigue_npcgroups = $intrigue->getAllNPCGroups();
-	$temp=0;
-	foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
-	    $npcgroup = $intrigue_npcgroup->getNPCGroup();
-	    echo "<li style='display:table-cell; width:19%;'>\n";
-	    echo "<div class='name'><a href='npc_group_form.php?operation=update&id=$npcgroup->Id'>$npcgroup->Name</a></div>\n";
-	    echo "<div>NPC-grupp</div>";
-	    $npcgroup_intrigues = $intrigue_npcgroup->getAllIntrigues();
-	    foreach ($npcgroup_intrigues as $npcgroup_intrigue) {
-	        if ($npcgroup_intrigue->Id != $intrigue->Id) {
-	            echo "<div><a href='view_intrigue.php?Id=$npcgroup_intrigue->Id'>Intrig: $npcgroup_intrigue->Number. $npcgroup_intrigue->Name</a></div>";
-	        }
-	    }
-	    echo "<div align='right'>";
-	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_npcgroup&IntrigueNPCGroupId=$intrigue_npcgroup->Id&Id=$intrigue->Id'>";
-	    echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
-	    echo "</div>";
-	    echo "</li>\n";
-	    $temp++;
-	    if($temp==$cols)
-	    {
-	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-	        $temp=0;
-	    }
-	}
-    ?>
-   </ul>
+// 	$intrigue_npcgroups = $intrigue->getAllNPCGroups();
+// 	$temp=0;
+// 	foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
+// 	    $npcgroup = $intrigue_npcgroup->getNPCGroup();
+// 	    echo "<li style='display:table-cell; width:19%;'>\n";
+// 	    echo "<div class='name'><a href='npc_group_form.php?operation=update&id=$npcgroup->Id'>$npcgroup->Name</a></div>\n";
+// 	    echo "<div>NPC-grupp</div>";
+// 	    $npcgroup_intrigues = $intrigue_npcgroup->getAllIntrigues();
+// 	    foreach ($npcgroup_intrigues as $npcgroup_intrigue) {
+// 	        if ($npcgroup_intrigue->Id != $intrigue->Id) {
+// 	            echo "<div><a href='view_intrigue.php?Id=$npcgroup_intrigue->Id'>Intrig: $npcgroup_intrigue->Number. $npcgroup_intrigue->Name</a></div>";
+// 	        }
+// 	    }
+// 	    echo "<div align='right'>";
+// 	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_npcgroup&IntrigueNPCGroupId=$intrigue_npcgroup->Id&Id=$intrigue->Id'>";
+// 	    echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
+// 	    echo "</div>";
+// 	    echo "</li>\n";
+// 	    $temp++;
+// 	    if($temp==$cols)
+// 	    {
+// 	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+// 	        $temp=0;
+// 	    }
+// 	}
+//     ?>
+<!--    </ul> -->
 
-<a href="choose_npc.php?operation=add_intrigue_npc&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till NPC"></i></a>
-<ul class='image-gallery' style='display:table; border-spacing:5px;'>
+<!-- <a href="choose_npc.php?operation=add_intrigue_npc&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till NPC"></i></a> -->
+<!-- <ul class='image-gallery' style='display:table; border-spacing:5px;'> -->
 	<?php 
-	$intrigue_npcs = $intrigue->getAllNPCs();
-	$temp=0;
-	foreach ($intrigue_npcs as $intrigue_npc) {
-	    $npc = $intrigue_npc->getNPC();
-	    echo "<li style='display:table-cell; width:19%;'>\n";
-	    echo "<div class='name'><a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a></div>\n";
-	    $npc_group = $npc->getNPCGroup();
-	    if (!empty($npc_group)) {
-	        echo "<div>$npc_group->Name</div>";
-	    }
-	    if ($npc->IsAssigned()) {
-	        $person = $npc->getPerson();
-	        echo "<div>Spelas av $person->Name</div>"; 
-	    } else {
-	        echo "Spelas inte";
-	    }
-	    $npc_intrigues = $intrigue_npc->getAllIntrigues();
-	    foreach ($npc_intrigues as $npc_intrigue) {
-	        if ($npc_intrigue->Id != $intrigue->Id) {
-	            echo "<div><a href='view_intrigue.php?Id=$npc_intrigue->Id'>Intrig: $npc_intrigue->Number. $npc_intrigue->Name</a></div>";
-	        }
-	    }
+// 	$intrigue_npcs = $intrigue->getAllNPCs();
+// 	$temp=0;
+// 	foreach ($intrigue_npcs as $intrigue_npc) {
+// 	    $npc = $intrigue_npc->getNPC();
+// 	    echo "<li style='display:table-cell; width:19%;'>\n";
+// 	    echo "<div class='name'><a href='npc_form.php?operation=update&id=$npc->Id'>$npc->Name</a></div>\n";
+// 	    $npc_group = $npc->getNPCGroup();
+// 	    if (!empty($npc_group)) {
+// 	        echo "<div>$npc_group->Name</div>";
+// 	    }
+// 	    if ($npc->IsAssigned()) {
+// 	        $person = $npc->getPerson();
+// 	        echo "<div>Spelas av $person->Name</div>"; 
+// 	    } else {
+// 	        echo "Spelas inte";
+// 	    }
+// 	    $npc_intrigues = $intrigue_npc->getAllIntrigues();
+// 	    foreach ($npc_intrigues as $npc_intrigue) {
+// 	        if ($npc_intrigue->Id != $intrigue->Id) {
+// 	            echo "<div><a href='view_intrigue.php?Id=$npc_intrigue->Id'>Intrig: $npc_intrigue->Number. $npc_intrigue->Name</a></div>";
+// 	        }
+// 	    }
 	    
 	    
-	    if ($npc->hasImage()) {
-	        echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-	    }
-	    echo "<div align='right'>";
-	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_npc&IntrigueNPCId=$intrigue_npc->Id&Id=$intrigue->Id'>";
-	    echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
-	    echo "</div>";
-	    echo "</li>\n";
-	    $temp++;
-	    if($temp==$cols)
-	    {
-	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-	        $temp=0;
-	    }
-	}
-    ?>
-    </ul>
-</td></tr>
+// 	    if ($npc->hasImage()) {
+// 	        echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
+// 	    }
+// 	    echo "<div align='right'>";
+// 	    echo "<a href='logic/view_intrigue_logic.php?operation=remove_npc&IntrigueNPCId=$intrigue_npc->Id&Id=$intrigue->Id'>";
+// 	    echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
+// 	    echo "</div>";
+// 	    echo "</li>\n";
+// 	    $temp++;
+// 	    if($temp==$cols)
+// 	    {
+// 	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+// 	        $temp=0;
+// 	    }
+// 	}
+//     ?>
+<!--     </ul> -->
+<!-- </td></tr> -->
+
+
+
 <tr><td>Rekvisita</td><td>
 <a href="choose_prop.php?operation=add_intrigue_prop&Id=<?php echo $intrigue->Id?>"><i class='fa-solid fa-plus' title="Lägg till rekvisita"></i></a>
 

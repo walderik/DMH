@@ -34,10 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 if (isset($_GET['notRegistered'])) {
     $mainroles = Role::getAllUnregisteredRoles($current_larp);
     $nonmainroles = array();
+    $npcs = Role::getAllNPCNotToBePlayed($current_larp);
 }
 else {
     $mainroles = Role::getAllMainRolesNoMyslajvare($current_larp);
     $nonmainroles = Role::getAllNotMainRolesNoMyslavare($current_larp);
+    $npcs = Role::getAllNPCToBePlayed($current_larp);
 }
 
 
@@ -303,9 +305,63 @@ th {
             ?>
     		<br>
 			<input type="submit" value="<?php echo $purpose;?>">
+
+        
+        <?php } ?>
+
+
+    		<?php if (!empty($npcs)) {?>
+    		<h2>NPC'er</h2>
+    		    <?php
+    		    $tableId = "npc_roles";
+    		    $colnum = 1;
+    		    echo "<table id='$tableId' class='data'>";
+    		    echo "<tr>".
+        		    "<th></th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Yrke</th>";
+//     		    if (IntrigueType::isInUse($current_larp)) {
+//     		        echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Intrigtyper</th>";
+//     		    }
+    		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Grupp</th>";
+    		    if (!isset($_GET['notRegistered'])) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Spelas av</th>";
+        		echo "</tr>";
+    		    
+    		    foreach ($npcs as $role)  {
+    		        $assignment = NPC_assignment::getAssignment($role, $current_larp);
+        		    echo "<tr>\n";
+        		    echo "<td><input id ='Role$role->Id' type='$type' name='RoleId$array' value='$role->Id'></td>";
+        		    echo "<td>$role->Name</td>\n";
+        		    echo "<td>" . $role->Profession . "</td>\n";
+//         		    if (IntrigueType::isInUse($current_larp)) { 		        
+//         		      echo "<td>".commaStringFromArrayObject($role->getIntrigueTypes())."</td>";
+//         		    }
+        		    $group = $role->getGroup();
+        		    if (is_null($group)) {
+        		        echo "<td>&nbsp;</td>\n";
+        		    } else {
+        		        echo "<td>$group->Name</td>\n";
+        		    }
+        		    if (!isset($_GET['notRegistered'])) {
+        		    echo "<td>";
+            		    if (isset($assignment)) $person = $assignment->getPerson();
+                        else $person = null;
+            		    if (!empty($person)) echo $person->Name;
+            		    else echo "Inte tilldelad";
+            		    echo "</td>";
+        		    }
+        		    
+        		    echo "</tr>\n";
+        		}
+    		    echo "</table>";
+
+            ?>
+    		<br>
+			<input type="submit" value="<?php echo $purpose;?>">
 			</form>
         
         <?php } ?>
+
         
 	</div>
 

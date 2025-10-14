@@ -78,69 +78,6 @@ include 'navigation.php';
     		<br>
 			<input type="submit" value="Lägg till">
 			
-			
-        <h2>NPC-grupper</h2>
-     		<?php 
-     		$intrigue_npcgroup_actors = $intrigue->getAllNPCGroups();
-     		if (empty($intrigue_npcgroup_actors)) {
-     		    echo "Inga registrerade NPC-grupper";
-     		} else {
-     		    ?>
-    		    <table class='data'>
-    		    <tr><th>Namn</th></tr>
-    		    <?php 
-    		    foreach ($intrigue_npcgroup_actors as $intrigue_npcgroup_actor)  {
-    		        $npcgroup=$intrigue_npcgroup_actor->getNPCGroup();
-    		        echo "<tr>\n";
-    		        echo "<td><input type='checkbox' id='Intrigue_NPCGroup$npcgroup->Id' name='Intrigue_NPCGroupId[]' value='$intrigue_npcgroup_actor->Id'>";
-
-    		        echo "<label for='Intrigue_NPCGroup$npcgroup->Id'>$npcgroup->Name</label></td>\n";
-
-    		        echo "</tr>\n";
-    		    }
-    		    echo "</table>";
-    		}
-    		?>
-    		<br>
-			<input type="submit" value="Lägg till">
-			
-        <h2>NPC</h2>
-     		<?php 
-     		$intrigue_npcs = $intrigue->getAllNPCs();
-     		if (empty($intrigue_npcs)) {
-     		    echo "Inga registrerade npc:er";
-     		} else {
-     		    ?>
-    		    <table class='data'>
-    		    <tr><th>Namn</th><th>Grupp</th><th>Spelas</th></tr>
-    		    <?php 
-    		    foreach ($intrigue_npcs as $intrigue_npc)  {
-    		        $npc=$intrigue_npc->getNPC();
-    		        echo "<tr>\n";
-    		        echo "<td><input type='checkbox' id='Intrigue_NPC$intrigue_npc->Id' name='Intrigue_NPCId[]' value='$intrigue_npc->Id'>";
-
-    		        echo "$npc->Name</td>\n";
-    		        if ($npc->IsInGroup()) {
-    		            $npcGroup = $npc->getNPCGroup();
-    		            echo "<td>$npcGroup->Name</td>";
-    		        }
-    		        else {
-    		            echo "<td>&nbsp;</td>\n";
-    		        }
-    		        echo "<td>" . showStatusIcon($npc->IsAssigned()) . "</td>\n";
-    		        
-    		        echo "</tr>\n";
-    		    }
-    		    echo "</table>";
-     		}
-     		?>
-    		<br>
-			<input type="submit" value="Lägg till">
-			
-			
-			
-			
-			
 			</form>
         
      		

@@ -437,7 +437,7 @@ class Role extends BaseModel{
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
             "regsys_larp_role.larpid=?) AND ".
-            "CampaignId = ? AND IsDead=0 ORDER BY PersonId, Name;";
+            "CampaignId = ? AND IsDead=0 AND PersonId IS NOT NULL ORDER BY PersonId, Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $larp->CampaignId));
     }
     
@@ -909,9 +909,22 @@ class Role extends BaseModel{
     public static function getAllNPCToBePlayed(LARP $larp) {
         if (is_null($larp)) return array();
         $sql = "SELECT regsys_role.* from regsys_role, regsys_npc_assignment WHERE ".
+            "regsys_role.PersonId IS NULL AND ".
             "regsys_role.Id =  regsys_npc_assignment.RoleId AND ".
             "regsys_role.CampaignId = ? AND ".
             "regsys_npc_assignment.LarpId = ? ".
+            "ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $larp->Id));
+    }
+    
+    public static function getAllNPCNotToBePlayed(LARP $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_role WHERE ".
+            "PersonId IS NULL AND ".
+            "CampaignId = ? AND ".
+            "IsDead = 0  AND ".
+            "Id NOT IN (SELECT RoleId FROM regsys_npc_assignment WHERE ".
+            "regsys_npc_assignment.LarpId = ?) ".
             "ORDER BY GroupId, Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $larp->Id));
     }

@@ -23,8 +23,11 @@ if (!$role->isRegistered($current_larp)) {
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 $reserve_larp_role = Reserve_LARP_Role::loadByIds($role->Id, $current_larp->Id);
+$assignment = NPC_assignment::getAssignment($role, $current_larp);
 if (isset($reserve_larp_role)) $isReserve = true;
 else $isReserve = false;
+if (isset($assignment)) $isPlayedNPC = true;
+else $isPlayedNPC = false;
 
 $isRegistered = $role->isRegistered($current_larp);
 $subdivisions = Subdivision::allForRole($role, $current_larp);
@@ -89,7 +92,20 @@ include 'navigation.php';
 		
 		<?php 
 
-		if ($isRegistered && !$isReserve) {?>
+		if ($isRegistered && !$isReserve || $isPlayedNPC) {?>
+		
+			<?php if ($isPlayedNPC) { ?>
+			<h2>Intrig</h2>
+    		<div>
+	    		<i>Kursiverad text visas inte för deltagaren.</i><br><br>
+    		<?php 
+        		if (!empty($assignment->WhatHappened) || !empty($assignment->WhatHappendToOthers)) {
+        		    echo "<h3>Vad hände med/för $role->Name ?</h3>";
+        		    echo  nl2br(htmlspecialchars($assignment->WhatHappened));
+        		    echo "<h3>Vad hände med/för andra?</h3>";
+        		    echo  nl2br(htmlspecialchars($assignment->WhatHappendToOthers));
+        		}
+		      } else {?>
     		<h2>Intrig <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
     		<div>
     		    		<i>Kursiverad text visas inte för deltagaren.</i><br><br>
@@ -105,6 +121,7 @@ include 'navigation.php';
     		}
     		    ?>
 
+			<?php } ?>
     		<?php
     		$intrigues = array();
     		$roleIntrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);

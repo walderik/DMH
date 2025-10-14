@@ -369,7 +369,7 @@ include 'navigation.php';
 		</div>
 		
 		<?php 
-		if (isset($larp_role)) {
+		if (isset($larp_role) || isset($assignment)) {
 		?>
 		<div class='itemselector'>
 		<div class="header">
@@ -378,7 +378,7 @@ include 'navigation.php';
 		</div>
 			<div class='itemcontainer'>
 			<?php if ($current_larp->isIntriguesReleased()) {
-			    if (!empty($larp_role->Intrigue)) echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
+			    if (!empty($larp_role) && !empty($larp_role->Intrigue)) echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
 			    
 			    $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($current_larp);
 			    $subdivisions = Subdivision::allForRole($role, $current_larp);
