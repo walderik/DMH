@@ -5,8 +5,13 @@ if (isset($previous_larps) && count($previous_larps) > 0) {
     echo "<h2>Historik</h2>";
     foreach ($previous_larps as $prevoius_larp) {
         $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
+        $previous_assignment = NPC_assignment::getAssignment($role, $prevoius_larp);
         echo "<div class='border'>";
         echo "<h3>$prevoius_larp->Name</h3>";
+        if (isset($previous_assignment)) {
+            $person = $previous_assignment->getPerson();
+            if (!empty($person)) echo "Spelad av $person->Name<br>"; 
+        }
         if (isset($previous_larp_role) && !empty($previous_larp_role->Intrigue)) {
             $first = false;
             echo "<strong>Intrig</strong><br>";
@@ -85,7 +90,7 @@ if (isset($previous_larps) && count($previous_larps) > 0) {
         if ($first) $first = false;
         else echo "<hr>";
         
-        $previous_assignment = NPC_assignment::getAssignment($role, $prevoius_larp);
+
         if (isset($previous_larp_role)) {
             echo "<br><strong>Vad hände för $role->Name?</strong><br>";
             if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")

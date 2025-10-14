@@ -133,6 +133,5 @@ class LARP_Role extends BaseModel{
         $stmt = null;
     }
     
-    
    
 }

@@ -52,6 +52,9 @@ function whatHappenedRole(Role $role) {
     $hasWhatHappened = false;
     $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
     $assignment = NPC_assignment::getAssignment($role, $current_larp);
+    $person = $role->getPerson();
+    if (isset($assignment)) $person = $assignment->getPerson();
+        
     if (!empty($larp_role) && (!empty($larp_role->WhatHappened) || !empty($larp_role->WhatHappenedToOthers))) $hasWhatHappened = true;
     elseif (!empty($assignment) && (!empty($assignment->WhatHappened) || !empty($assignment->WhatHappenedToOthers))) $hasWhatHappened = true;
     $intrigueActors = array();
@@ -69,6 +72,9 @@ function whatHappenedRole(Role $role) {
         echo $role->getViewLink();
         $group = $role->getGroup();
         if (isset($group)) echo " - " . $group->getViewLink();
+        if (!empty($person)) {
+            echo ", spelad av ".$person->getViewLink();
+        }
         echo "</h3>";
         foreach($intrigueActors as $intrigueActor) {
             $intrigue = $intrigueActor->getIntrigue();
@@ -94,10 +100,10 @@ function whatHappenedRole(Role $role) {
                 echo "<h3>Vad hände i övrigt med/för $role->Name?</h3>";
                 echo nl2br($assignment->WhatHappened);
             }
-            if (!empty($assignment->WhatHappenedToOthers)) {
+            if (!empty($assignment->WhatHappendToOthers)) {
                 echo "<h3>Vad såg $role->Name hände med andra?</h3>";
-                echo nl2br($assignment->WhatHappenedToOthers);
-            }
+                echo nl2br($assignment->WhatHappendToOthers);
+            } 
         }
         echo "</div>";
     }
