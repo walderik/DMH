@@ -276,13 +276,13 @@ class Subdivision extends BaseModel{
         return Group::getAllKnownGroupsForSubdivision($this, $larp);
     }
     
-    public function getAllKnownNPCGroups(LARP $larp) {
-        return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForSubdivision($this, $larp);
-    }
+//     public function getAllKnownNPCGroups(LARP $larp) {
+//         return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForSubdivision($this, $larp);
+//     }
     
-    public function getAllKnownNPCs(LARP $larp) {
-        return IntrigueActor_KnownNPC::getAllKnownNPCsForSubdivision($this, $larp);
-    }
+//     public function getAllKnownNPCs(LARP $larp) {
+//         return IntrigueActor_KnownNPC::getAllKnownNPCsForSubdivision($this, $larp);
+//     }
     
     public function getAllKnownProps(LARP $larp) {
         return IntrigueActor_KnownProp::getAllKnownPropsForSubdivision($this, $larp);

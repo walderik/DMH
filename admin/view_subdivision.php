@@ -229,8 +229,8 @@ include 'navigation.php';
 		    }
             $known_groups = $subdivision->getAllKnownGroups($current_larp);
             $known_roles = $subdivision->getAllKnownRoles($current_larp);
-            $known_npcgroups = $subdivision->getAllKnownNPCGroups($current_larp);
-            $known_npcs = $subdivision->getAllKnownNPCs($current_larp);
+//             $known_npcgroups = $subdivision->getAllKnownNPCGroups($current_larp);
+//             $known_npcs = $subdivision->getAllKnownNPCs($current_larp);
             $known_props = $subdivision->getAllKnownProps($current_larp);
             $known_pdfs = $subdivision->getAllKnownPdfs($current_larp);
             
@@ -238,7 +238,7 @@ include 'navigation.php';
             $checkin_telegrams = $subdivision->getAllCheckinTelegrams($current_larp);
             $checkin_props = $subdivision->getAllCheckinProps($current_larp);
             
-            if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
+            if (!empty($known_groups) || !empty($known_roles) || !empty($known_props))) {
 		        echo "<h3>Känner till</h3>";
 		        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 		        $temp=0;

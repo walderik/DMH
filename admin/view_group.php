@@ -320,8 +320,8 @@ include 'navigation.php';
 		
 		$known_groups = $group->getAllKnownGroups($current_larp);
 		$known_roles = $group->getAllKnownRoles($current_larp);
-		$known_npcgroups = $group->getAllKnownNPCGroups($current_larp);
-		$known_npcs = $group->getAllKnownNPCs($current_larp);
+// 		$known_npcgroups = $group->getAllKnownNPCGroups($current_larp);
+// 		$known_npcs = $group->getAllKnownNPCs($current_larp);
 		$known_props = $group->getAllKnownProps($current_larp);
 		$known_pdfs = $group->getAllKnownPdfs($current_larp);
 		

@@ -409,8 +409,8 @@ include 'navigation.php';
 		        $known_groups = $role->getAllKnownGroups($current_larp);
 		        $known_roles = $role->getAllKnownRoles($current_larp);
 		        
-		        $known_npcgroups = $role->getAllKnownNPCGroups($current_larp);
-		        $known_npcs = $role->getAllKnownNPCs($current_larp);
+// 		        $known_npcgroups = $role->getAllKnownNPCGroups($current_larp);
+// 		        $known_npcs = $role->getAllKnownNPCs($current_larp);
 		        $known_props = $role->getAllKnownProps($current_larp);
 		        $known_pdfs = $role->getAllKnownPdfs($current_larp);
 		        
@@ -425,8 +425,8 @@ include 'navigation.php';
     		        $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp)), SORT_REGULAR);
     		        $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp)), SORT_REGULAR);
     		        
-    		        $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
-    		        $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
+//     		        $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
+//     		        $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
     		        $known_props = array_merge($known_props,$subdivision->getAllKnownProps($current_larp));
     		        $known_pdfs = array_merge($known_pdfs,$subdivision->getAllKnownPdfs($current_larp));
     		        

@@ -804,13 +804,13 @@ class Role extends BaseModel{
     }
     
     
-    public function getAllKnownNPCGroups(LARP $larp) {
-        return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForRole($this, $larp);
-    }
+//     public function getAllKnownNPCGroups(LARP $larp) {
+//         return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForRole($this, $larp);
+//     }
 
-    public function getAllKnownNPCs(LARP $larp) {
-        return IntrigueActor_KnownNPC::getAllKnownNPCsForRole($this, $larp);
-    }
+//     public function getAllKnownNPCs(LARP $larp) {
+//         return IntrigueActor_KnownNPC::getAllKnownNPCsForRole($this, $larp);
+//     }
  
     public function getAllKnownProps(LARP $larp) {
         return IntrigueActor_KnownProp::getAllKnownPropsForRole($this, $larp);

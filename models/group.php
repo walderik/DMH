@@ -451,13 +451,13 @@ class Group extends BaseModel{
          return Group::getAllKnownGroupsForGroup($this, $larp);
      }
      
-     public function getAllKnownNPCGroups(LARP $larp) {
-         return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForGroup($this, $larp);
-     }
+//      public function getAllKnownNPCGroups(LARP $larp) {
+//          return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForGroup($this, $larp);
+//      }
      
-     public function getAllKnownNPCs(LARP $larp) {
-         return IntrigueActor_KnownNPC::getAllKnownNPCsForGroup($this, $larp);
-     }
+//      public function getAllKnownNPCs(LARP $larp) {
+//          return IntrigueActor_KnownNPC::getAllKnownNPCsForGroup($this, $larp);
+//      }
      
      public function getAllKnownProps(LARP $larp) {
          return IntrigueActor_KnownProp::getAllKnownPropsForGroup($this, $larp);
