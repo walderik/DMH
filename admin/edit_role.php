@@ -142,8 +142,13 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Spelas av</td><td>
 			<?php 
 			$person = $role->getPerson();
-			if (!is_null($person)) echo $person->Name; 
-			else echo "NPC";
+			if (!is_null($person)) {
+			    echo $person->Name;
+			}
+			else {
+			    echo "NPC";
+			    echo " <a href='make_info_pc.php'><button>Ge till spelare</button></a>";
+			}
 			?></td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>

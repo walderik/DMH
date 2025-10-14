@@ -51,7 +51,12 @@ if ($role->isMysLajvare()) {
 		else {
 		    echo $person->Name." ";
 		    echo contactEmailIcon($person)." ";
-		    
+	        echo " <form action='logic/turn_into_npc.php' method='post'";
+	        echo " onsubmit='return confirm(\"Är du säker på att du ska ta bort karaktären från $person->Name? Glöm i så fall inte att kommunicera det till $person->Name.\")'";
+	        echo ">";
+	        echo "<input type='hidden' id='RoleId' name='RoleId' value='$role->Id'>";
+	        echo "<button type='submit'>Gör om till NPC</button>";
+	        echo "</form>";
 		}
 		?>
 		</td>

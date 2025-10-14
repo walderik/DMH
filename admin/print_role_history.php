@@ -6,12 +6,15 @@ if (isset($previous_larps) && count($previous_larps) > 0) {
     foreach ($previous_larps as $prevoius_larp) {
         $previous_larp_role = LARP_Role::loadByIds($role->Id, $prevoius_larp->Id);
         $previous_assignment = NPC_assignment::getAssignment($role, $prevoius_larp);
-        echo "<div class='border'>";
-        echo "<h3>$prevoius_larp->Name</h3>";
         if (isset($previous_assignment)) {
             $person = $previous_assignment->getPerson();
-            if (!empty($person)) echo "Spelad av $person->Name<br>"; 
-        }
+        } elseif ($role->PersonId != $previous_larp_role->PersonId) {
+            $person = $previous_larp_role->getPerson();
+        } else $person=null;
+        echo "<div class='border'>";
+        echo "<h3>$prevoius_larp->Name</h3>";
+
+        if (!empty($person)) echo "Spelad av $person->Name<br>"; 
         if (isset($previous_larp_role) && !empty($previous_larp_role->Intrigue)) {
             $first = false;
             echo "<strong>Intrig</strong><br>";
