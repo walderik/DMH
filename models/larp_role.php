@@ -13,6 +13,7 @@ class LARP_Role extends BaseModel{
     public $EndingMoney;
     public $Result;
     public $IsMainRole = 0;
+    public $PersonId; //Vem som spelar rollen på det här lajvet
 
 
     public static $orderListBy = 'RoleId';
@@ -30,6 +31,7 @@ class LARP_Role extends BaseModel{
         if (isset($post['EndingMoney'])) $larp_role->EndingMoney = $post['EndingMoney']; 
         if (isset($post['Result'])) $larp_role->Result = $post['Result'];
         if (isset($post['IsMainRole'])) $larp_role->IsMainRole = $post['IsMainRole']; 
+        if (isset($post['PersonId'])) $larp_role->PersonId = $post['PersonId'];
         return $larp_role;
     }
     
@@ -74,11 +76,11 @@ class LARP_Role extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_larp_role SET Intrigue=?, WhatHappened=?,
                                                                   WhatHappendToOthers=?, WhatHappensAfterLarp=?, StartingMoney=?, EndingMoney=?, Result=?, 
-                                                                  IsMainRole=? WHERE LARPId=? AND RoleId=?;");
+                                                                  IsMainRole=?, PersonId=? WHERE LARPId=? AND RoleId=?;");
         
         if (!$stmt->execute(array($this->Intrigue, $this->WhatHappened, 
             $this->WhatHappendToOthers, $this->WhatHappensAfterLarp, $this->StartingMoney, $this->EndingMoney, $this->Result, 
-            $this->IsMainRole, $this->LARPId, $this->RoleId))) {
+            $this->IsMainRole, $this->PersonId, $this->LARPId, $this->RoleId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -91,11 +93,11 @@ class LARP_Role extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp_role (LARPId, RoleId, Intrigue, WhatHappened,
                                                                 WhatHappendToOthers, WhatHappensAfterLarp, StartingMoney, EndingMoney, Result, 
-                                                                IsMainRole) VALUES (?,?,?,?,?,?,?,?,?,?);");
+                                                                IsMainRole, PersonId) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Intrigue, $this->WhatHappened,
             $this->WhatHappendToOthers, $this->WhatHappensAfterLarp, $this->StartingMoney, $this->EndingMoney, $this->Result,
-                                    $this->IsMainRole))) {
+                                    $this->IsMainRole, $this->PersonId))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -131,6 +133,10 @@ class LARP_Role extends BaseModel{
             exit();
         }
         $stmt = null;
+    }
+    
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
     }
     
    
