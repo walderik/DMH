@@ -409,8 +409,8 @@ include 'navigation.php';
                 
                 $known_groups = $group->getAllKnownGroups($current_larp);
                 $known_roles = $group->getAllKnownRoles($current_larp);
-//                 $known_npcgroups = $group->getAllKnownNPCGroups($current_larp);
-//                 $known_npcs = $group->getAllKnownNPCs($current_larp);
+                $known_npcgroups = $group->getAllKnownNPCGroups($current_larp);
+                $known_npcs = $group->getAllKnownNPCs($current_larp);
                 $known_props = $group->getAllKnownProps($current_larp);
                 $known_pdfs = $group->getAllKnownPdfs($current_larp);
                 
@@ -418,7 +418,7 @@ include 'navigation.php';
                 $checkin_telegrams = $group->getAllCheckinTelegrams($current_larp);
                 $checkin_props = $group->getAllCheckinProps($current_larp);
                 
-                if (!empty($known_groups) || !empty($known_roles) || !empty($known_props)) {
+                if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
 			        echo "<h3>Känner till</h3>";
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
@@ -458,39 +458,39 @@ include 'navigation.php';
 			                $temp=0;
 			            }
 			        }
-// 			        foreach ($known_npcgroups as $known_npcgroup) {
-// 			            $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-// 			            echo "<li style='display:table-cell; width:19%;'>\n";
-// 			            echo "<div class='name'>$npcgroup->Name</div>\n";
-// 			            echo "<div>NPC-grupp</div>";
-// 			            echo "</li>\n";
-// 			            $temp++;
-// 			            if($temp==$cols)
-// 			            {
-// 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-// 			                $temp=0;
-// 			            }
-// 			        }
-// 			        foreach ($known_npcs as $known_npc) {
-// 			            $npc=$known_npc->getIntrigueNPC()->getNPC();
-// 			            echo "<li style='display:table-cell; width:19%;'>\n";
-// 			            echo "<div class='name'>$npc->Name</div>\n";
-// 			            $npc_group = $npc->getNPCGroup();
-// 			            if (!empty($npc_group)) {
-// 			                echo "<div>$npc_group->Name</div>";
-// 			            }
-// 			            if ($npc->hasImage()) {
-// 			                echo "<td>";
-// 			                echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-// 			            }
-// 			            echo "</li>\n";
-// 			            $temp++;
-// 			            if($temp==$cols)
-// 			            {
-// 			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-// 			                $temp=0;
-// 			            }
-// 			        }
+			        foreach ($known_npcgroups as $known_npcgroup) {
+			            $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
+			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            echo "<div class='name'>$npcgroup->Name</div>\n";
+			            echo "<div>NPC-grupp</div>";
+			            echo "</li>\n";
+			            $temp++;
+			            if($temp==$cols)
+			            {
+			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+			                $temp=0;
+			            }
+			        }
+			        foreach ($known_npcs as $known_npc) {
+			            $npc=$known_npc->getIntrigueNPC()->getNPC();
+			            echo "<li style='display:table-cell; width:19%;'>\n";
+			            echo "<div class='name'>$npc->Name</div>\n";
+			            $npc_group = $npc->getNPCGroup();
+			            if (!empty($npc_group)) {
+			                echo "<div>$npc_group->Name</div>";
+			            }
+			            if ($npc->hasImage()) {
+			                echo "<td>";
+			                echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
+			            }
+			            echo "</li>\n";
+			            $temp++;
+			            if($temp==$cols)
+			            {
+			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+			                $temp=0;
+			            }
+			        }
 			        foreach ($known_props as $known_prop) {
 			            $prop = $known_prop->getIntrigueProp()->getProp();
 			            echo "<li style='display:table-cell; width:19%;'>\n";

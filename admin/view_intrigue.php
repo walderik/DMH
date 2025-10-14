@@ -78,10 +78,10 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
     echo "<a href='choose_intrigue_knownactors.php?IntrigueActorId=$intrigueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
     $knownActors = $intrigueActor->getAllKnownActors();
     printAllKnownActors($knownActors, $intrigueActor, $section);
-//     $knownNPCGroups = $intrigueActor->getAllKnownNPCGroups();
-//     printAllKnownNPCGroups($knownNPCGroups, $intrigueActor, $section);
-//     $knownNPCs = $intrigueActor->getAllKnownNPCs();
-//     printAllKnownNPCs($knownNPCs, $intrigueActor, $section);
+    $knownNPCGroups = $intrigueActor->getAllKnownNPCGroups();
+    printAllKnownNPCGroups($knownNPCGroups, $intrigueActor, $section);
+    $knownNPCs = $intrigueActor->getAllKnownNPCs();
+    printAllKnownNPCs($knownNPCs, $intrigueActor, $section);
     echo "</td></tr>\n";
     if (!empty($intrigueActor->WhatHappened)) {
         echo "<tr><td>Vad hände</td>\n";
@@ -219,67 +219,67 @@ function printAllKnownActors($known_actors, $intrigue_actor, $section) {
 }
 
 
-// function printAllKnownNPCs($known_npcs, $intrigueActor, $section) {
-//     global $cols;
-//     echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-//     $temp=0;
-//     foreach($known_npcs as $known_npc) {
-//         $npc=$known_npc->getIntrigueNPC()->getNPC();
-//         echo "<li style='display:table-cell; width:19%;'>\n";
-//         echo "<div class='name'>$npc->Name</div>\n";
-//         $npc_group = $npc->getNPCGroup();
-//         if (!empty($npc_group)) {
-//             echo "<div>$npc_group->Name</div>";
-//         }
-//         if ($npc->IsAssigned()) {
-//             $person = $npc->getPerson();
-//             echo "<div>Spelas av $person->Name</div>";
-//         } else {
-//             echo "Spelas inte";
-//         }
+function printAllKnownNPCs($known_npcs, $intrigueActor, $section) {
+    global $cols;
+    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+    $temp=0;
+    foreach($known_npcs as $known_npc) {
+        $npc=$known_npc->getIntrigueNPC()->getNPC();
+        echo "<li style='display:table-cell; width:19%;'>\n";
+        echo "<div class='name'>$npc->Name</div>\n";
+        $npc_group = $npc->getNPCGroup();
+        if (!empty($npc_group)) {
+            echo "<div>$npc_group->Name</div>";
+        }
+        if ($npc->IsAssigned()) {
+            $person = $npc->getPerson();
+            echo "<div>Spelas av $person->Name</div>";
+        } else {
+            echo "Spelas inte";
+        }
         
         
-//         if ($npc->hasImage()) {
-//             echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-//         }
-//         echo "<div align='right'>";
-//         echo "<a href='logic/view_intrigue_logic.php?operation=remove_npc_intrigueactor&NPCId=$npc->Id&IntrigueActorId=$intrigueActor->Id&Section=$section'>";
-//         echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
-//         echo "</div>";
-//         echo "</li>\n";
-//         $temp++;
-//         if($temp==$cols)
-//         {
-//             echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-//             $temp=0;
-//         }
-//     }
-//     echo "</ul>";
-// }
+        if ($npc->hasImage()) {
+            echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
+        }
+        echo "<div align='right'>";
+        echo "<a href='logic/view_intrigue_logic.php?operation=remove_npc_intrigueactor&NPCId=$npc->Id&IntrigueActorId=$intrigueActor->Id&Section=$section'>";
+        echo "<i class='fa-solid fa-xmark' title='Ta bort NPC'></i></a>";
+        echo "</div>";
+        echo "</li>\n";
+        $temp++;
+        if($temp==$cols)
+        {
+            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+            $temp=0;
+        }
+    }
+    echo "</ul>";
+}
 
-// function printAllKnownNPCGroups($known_npcgroups, $intrigueActor, $section) {
-//     global $cols;
-//     echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-//     $temp=0;
-//     foreach($known_npcgroups as $known_npcgroup) {
-//         $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-//         echo "<li style='display:table-cell; width:19%;'>\n";
-//         echo "<div class='name'>$npcgroup->Name</div>\n";
-//         echo "<div>NPC-grupp</div>";
-//         echo "<div align='right'>";
-//         echo "<a href='logic/view_intrigue_logic.php?operation=remove_npcgroup_intrigueactor&NPCGroupId=$npcgroup->Id&IntrigueActorId=$intrigueActor->Id&Section=$section'>";
-//         echo "<i class='fa-solid fa-xmark' title='Ta bort NPC-grupp'></i></a>";
-//         echo "</div>";
-//         echo "</li>\n";
-//         $temp++;
-//         if($temp==$cols)
-//         {
-//             echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-//             $temp=0;
-//         }
-//     }
-//     echo "</ul>";
-// }
+function printAllKnownNPCGroups($known_npcgroups, $intrigueActor, $section) {
+    global $cols;
+    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+    $temp=0;
+    foreach($known_npcgroups as $known_npcgroup) {
+        $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
+        echo "<li style='display:table-cell; width:19%;'>\n";
+        echo "<div class='name'>$npcgroup->Name</div>\n";
+        echo "<div>NPC-grupp</div>";
+        echo "<div align='right'>";
+        echo "<a href='logic/view_intrigue_logic.php?operation=remove_npcgroup_intrigueactor&NPCGroupId=$npcgroup->Id&IntrigueActorId=$intrigueActor->Id&Section=$section'>";
+        echo "<i class='fa-solid fa-xmark' title='Ta bort NPC-grupp'></i></a>";
+        echo "</div>";
+        echo "</li>\n";
+        $temp++;
+        if($temp==$cols)
+        {
+            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
+            $temp=0;
+        }
+    }
+    echo "</ul>";
+}
 
 if (empty($intrigue)) {
     header('Location: intrigue_admin.php');

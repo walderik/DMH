@@ -298,36 +298,36 @@ class Intrigue extends BaseModel{
             
             
             //Kopiera npc'er
-//             $npcs = $previousIntrigue->getAllNPCs();
-//             foreach($npcs as $npc) {
-//                 $newInrigue_NPC = Intrigue_NPC::newWithDefault();
-//                 $newInrigue_NPC->IntrigueId = $newIntrigue->Id;
+            $npcs = $previousIntrigue->getAllNPCs();
+            foreach($npcs as $npc) {
+                $newInrigue_NPC = Intrigue_NPC::newWithDefault();
+                $newInrigue_NPC->IntrigueId = $newIntrigue->Id;
                 
-//                 $oldNpc = $npc->getNPC();
+                $oldNpc = $npc->getNPC();
                 
-//                 $newNpc = NPC::newWithDefault();
+                $newNpc = NPC::newWithDefault();
                 
-//                 if ($oldNpc->hasImage()) {
-//                     $oldImage = $oldNpc->getImage();
-//                     $newImage = Image::newWithDefault();
-//                     $newImage->file_data = $oldImage->file_data;
-//                     $newImage->file_mime = $oldImage->file_mime;
-//                     $newImage->file_name = $oldImage->file_name;
-//                     $newImage->Photographer = $oldImage->Photographer;
-//                     $newImage->create();
+                if ($oldNpc->hasImage()) {
+                    $oldImage = $oldNpc->getImage();
+                    $newImage = Image::newWithDefault();
+                    $newImage->file_data = $oldImage->file_data;
+                    $newImage->file_mime = $oldImage->file_mime;
+                    $newImage->file_name = $oldImage->file_name;
+                    $newImage->Photographer = $oldImage->Photographer;
+                    $newImage->create();
                     
-//                     $newNpc->ImageId = $newImage->Id;
-//                 }
-//                 $newNpc->LarpId = $newIntrigue->LarpId;
-//                 $newNpc->Name = $oldNpc->Name;
-//                 $newNpc->Description = $oldNpc->Description;
-//                 $newNpc->IsToBePlayed = $oldNpc->IsToBePlayed;
-//                 $newNpc->IsReleased = false;
-//                 $newNpc->create();
+                    $newNpc->ImageId = $newImage->Id;
+                }
+                $newNpc->LarpId = $newIntrigue->LarpId;
+                $newNpc->Name = $oldNpc->Name;
+                $newNpc->Description = $oldNpc->Description;
+                $newNpc->IsToBePlayed = $oldNpc->IsToBePlayed;
+                $newNpc->IsReleased = false;
+                $newNpc->create();
                 
-//                 $newInrigue_NPC->NPCId = $newNpc->Id;
-//                 $newInrigue_NPC->create();
-//             }
+                $newInrigue_NPC->NPCId = $newNpc->Id;
+                $newInrigue_NPC->create();
+            }
             
             
             
@@ -472,41 +472,41 @@ class Intrigue extends BaseModel{
         }
     }
     
-//     public function addNPCs($NPCIds) {
-//         //Ta reda på vilka som inte redan är kopplade till intrigen
-//         $exisitingIds = array();
-//         $intrigue_npcs = $this->getAllNPCs();
-//         foreach ($intrigue_npcs as $intrigue_npc) {
-//             $exisitingIds[] = $intrigue_npc->NPCId;
-//         }
+    public function addNPCs($NPCIds) {
+        //Ta reda på vilka som inte redan är kopplade till intrigen
+        $exisitingIds = array();
+        $intrigue_npcs = $this->getAllNPCs();
+        foreach ($intrigue_npcs as $intrigue_npc) {
+            $exisitingIds[] = $intrigue_npc->NPCId;
+        }
         
-//         $newNPCIds = array_diff($NPCIds,$exisitingIds);
-//         //Koppla rekvisitan till intrigen
-//         foreach ($newNPCIds as $NPCId) {
-//             $intrigue_npc = Intrigue_NPC::newWithDefault();
-//             $intrigue_npc->IntrigueId = $this->Id;
-//             $intrigue_npc->NPCId = $NPCId;
-//             $intrigue_npc->create();
-//         }
-//     }
+        $newNPCIds = array_diff($NPCIds,$exisitingIds);
+        //Koppla rekvisitan till intrigen
+        foreach ($newNPCIds as $NPCId) {
+            $intrigue_npc = Intrigue_NPC::newWithDefault();
+            $intrigue_npc->IntrigueId = $this->Id;
+            $intrigue_npc->NPCId = $NPCId;
+            $intrigue_npc->create();
+        }
+    }
     
-//     public function addNPCGroups($NPCGroupIds) {
-//         //Ta reda på vilka som inte redan är kopplade till intrigen
-//         $exisitingIds = array();
-//         $intrigue_npcgroups = $this->getAllNPCGroups();
-//         foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
-//             $exisitingIds[] = $intrigue_npcgroup->NPCGroupId;
-//         }
+    public function addNPCGroups($NPCGroupIds) {
+        //Ta reda på vilka som inte redan är kopplade till intrigen
+        $exisitingIds = array();
+        $intrigue_npcgroups = $this->getAllNPCGroups();
+        foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
+            $exisitingIds[] = $intrigue_npcgroup->NPCGroupId;
+        }
         
-//         $newNPCGroupIds = array_diff($NPCGroupIds,$exisitingIds);
-//         //Koppla rekvisitan till intrigen
-//         foreach ($newNPCGroupIds as $NPCGroupId) {
-//             $intrigue_npcgroup = Intrigue_NPCGroup::newWithDefault();
-//             $intrigue_npcgroup->IntrigueId = $this->Id;
-//             $intrigue_npcgroup->NPCGroupId = $NPCGroupId;
-//             $intrigue_npcgroup->create();
-//         }
-//     }
+        $newNPCGroupIds = array_diff($NPCGroupIds,$exisitingIds);
+        //Koppla rekvisitan till intrigen
+        foreach ($newNPCGroupIds as $NPCGroupId) {
+            $intrigue_npcgroup = Intrigue_NPCGroup::newWithDefault();
+            $intrigue_npcgroup->IntrigueId = $this->Id;
+            $intrigue_npcgroup->NPCGroupId = $NPCGroupId;
+            $intrigue_npcgroup->create();
+        }
+    }
     
     
     public function addLetters($letterIds) {
@@ -693,13 +693,13 @@ class Intrigue extends BaseModel{
         return Intrigue_Prop::getAllPropsForIntrigue($this);
     }
     
-//     public function getAllNPCs() {
-//         return Intrigue_NPC::getAllNPCsForIntrigue($this);
-//     }
+    public function getAllNPCs() {
+        return Intrigue_NPC::getAllNPCsForIntrigue($this);
+    }
     
-//     public function getAllNPCGroups() {
-//         return Intrigue_NPCGroup::getAllNPCGroupsForIntrigue($this);
-//     }
+    public function getAllNPCGroups() {
+        return Intrigue_NPCGroup::getAllNPCGroupsForIntrigue($this);
+    }
     
     public function getAllLetters() {
         return Intrigue_Letter::getAllLettersForIntrigue($this);
@@ -742,13 +742,13 @@ class Intrigue extends BaseModel{
         return static::getAllIntriguesForProp($intrigueProp->PropId, $intrigueProp->getIntrigue()->LarpId);
     }
     
-//     public static function getAllIntriguesForIntrigueNPCGroup(Intrigue_NPCGroup $intrigueNPCGroup) {
-//         return static::getAllIntriguesForNPCGroup($intrigueNPCGroup->NPCGroupId, $intrigueNPCGroup->getIntrigue()->LarpId);
-//     }
+    public static function getAllIntriguesForIntrigueNPCGroup(Intrigue_NPCGroup $intrigueNPCGroup) {
+        return static::getAllIntriguesForNPCGroup($intrigueNPCGroup->NPCGroupId, $intrigueNPCGroup->getIntrigue()->LarpId);
+    }
     
-//     public static function getAllIntriguesForIntrigueNPC(Intrigue_NPC $intrigueNPC) {
-//         return static::getAllIntriguesForNPC($intrigueNPC->NPCId, $intrigueNPC->getIntrigue()->LarpId);
-//     }
+    public static function getAllIntriguesForIntrigueNPC(Intrigue_NPC $intrigueNPC) {
+        return static::getAllIntriguesForNPC($intrigueNPC->NPCId, $intrigueNPC->getIntrigue()->LarpId);
+    }
     
     public static function getAllIntriguesForIntrigueLetter(Intrigue_Letter $intrigueLetter) {
         return static::getAllIntriguesForLetter($intrigueLetter->LetterId, $intrigueLetter->getIntrigue()->LarpId);
@@ -782,17 +782,17 @@ class Intrigue extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($propId, $larpId));
     }
     
-//     public static function getAllIntriguesForNPCGroup($npcGroupId, $larpId) {
-//         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
-//             "SELECT IntrigueId FROM regsys_intrigue_npcgroup WHERE NPCGroupId = ? AND LarpId = ?) ORDER BY Id";
-//         return static::getSeveralObjectsqQuery($sql, array($npcGroupId, $larpId));
-//     }
+    public static function getAllIntriguesForNPCGroup($npcGroupId, $larpId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigue_npcgroup WHERE NPCGroupId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($npcGroupId, $larpId));
+    }
     
-//     public static function getAllIntriguesForNPC($npcId, $larpId) {
-//         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
-//             "SELECT IntrigueId FROM regsys_intrigue_npc WHERE NPCId = ? AND LarpId = ?) ORDER BY Id";
-//         return static::getSeveralObjectsqQuery($sql, array($npcId, $larpId));
-//     }
+    public static function getAllIntriguesForNPC($npcId, $larpId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigue_npc WHERE NPCId = ? AND LarpId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($npcId, $larpId));
+    }
     
     public static function getAllIntriguesForLetter($letterId, $larpId) {
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
@@ -829,11 +829,11 @@ class Intrigue extends BaseModel{
         $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_pdf WHERE IntrigueId=?";
         if (static::existsQuery($sql, array($this->Id))) return false;
         
-//         $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_npc WHERE IntrigueId=?";
-//         if (static::existsQuery($sql, array($this->Id))) return false;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_npc WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
         
-//         $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_npcgroup WHERE IntrigueId=?";
-//         if (static::existsQuery($sql, array($this->Id))) return false;
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_npcgroup WHERE IntrigueId=?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
         
         $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_prop WHERE IntrigueId=?";
         if (static::existsQuery($sql, array($this->Id))) return false;

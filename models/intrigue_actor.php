@@ -165,11 +165,11 @@ class IntrigueActor extends BaseModel{
         $known_actors = $intrigueActor->getAllKnownActors();
         foreach ($known_actors as $known_actor) IntrigueActor_KnownActor::delete($known_actor->Id);
         
-//         $known_npcs = $intrigueActor->getAllKnownNPCs();
-//         foreach ($known_npcs as $known_npc) IntrigueActor_KnownNPC::delete($known_npc->Id);
+        $known_npcs = $intrigueActor->getAllKnownNPCs();
+        foreach ($known_npcs as $known_npc) IntrigueActor_KnownNPC::delete($known_npc->Id);
         
-//         $known_npcgroups = $intrigueActor->getAllKnownNPCGroups();
-//         foreach ($known_npcgroups as $known_npcgroup) IntrigueActor_KnownNPCGroup::delete($known_npcgroup->Id);
+        $known_npcgroups = $intrigueActor->getAllKnownNPCGroups();
+        foreach ($known_npcgroups as $known_npcgroup) IntrigueActor_KnownNPCGroup::delete($known_npcgroup->Id);
         
         $known_props = $intrigueActor->getAllKnownProps();
         foreach ($known_props as $known_prop) IntrigueActor_KnownProp::delete($known_prop->Id);
@@ -277,41 +277,41 @@ class IntrigueActor extends BaseModel{
          }
      }
      
-//      public function addKnownNPCGroups($intrigue_NPCGroupIds) {
-//          //Ta reda på vilka som inte redan är kopplade till aktören
-//          $exisitingIds = array();
-//          $intrigue_npcgroups = $this->getAllKnownNPCGroups();
-//          foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
-//              $exisitingIds[] = $intrigue_npcgroup->IntrigueNPCGroupId;
-//          }
+     public function addKnownNPCGroups($intrigue_NPCGroupIds) {
+         //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_npcgroups = $this->getAllKnownNPCGroups();
+         foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
+             $exisitingIds[] = $intrigue_npcgroup->IntrigueNPCGroupId;
+         }
          
-//          $newKnownNPCGroupIds = array_diff($intrigue_NPCGroupIds,$exisitingIds);
-//          //Koppla till aktören
-//          foreach ($newKnownNPCGroupIds as $newKnownNPCGroupId) {
-//              $intrigueactor_knownnpcgroup = IntrigueActor_KnownNPCGroup::newWithDefault();
-//              $intrigueactor_knownnpcgroup->IntrigueActorId = $this->Id;
-//              $intrigueactor_knownnpcgroup->IntrigueNPCGroupId = $newKnownNPCGroupId;
-//              $intrigueactor_knownnpcgroup->create();            
-//          }
-//      }
+         $newKnownNPCGroupIds = array_diff($intrigue_NPCGroupIds,$exisitingIds);
+         //Koppla till aktören
+         foreach ($newKnownNPCGroupIds as $newKnownNPCGroupId) {
+             $intrigueactor_knownnpcgroup = IntrigueActor_KnownNPCGroup::newWithDefault();
+             $intrigueactor_knownnpcgroup->IntrigueActorId = $this->Id;
+             $intrigueactor_knownnpcgroup->IntrigueNPCGroupId = $newKnownNPCGroupId;
+             $intrigueactor_knownnpcgroup->create();            
+         }
+     }
      
-//      public function addKnownNPCs($intrigue_NPCIds) {
-//          //Ta reda på vilka som inte redan är kopplade till aktören
-//          $exisitingIds = array();
-//          $intrigue_npcs = $this->getAllKnownNPCs();
-//          foreach ($intrigue_npcs as $intrigue_npc) {
-//              $exisitingIds[] = $intrigue_npc->IntrigueNPCId;
-//          }
+     public function addKnownNPCs($intrigue_NPCIds) {
+         //Ta reda på vilka som inte redan är kopplade till aktören
+         $exisitingIds = array();
+         $intrigue_npcs = $this->getAllKnownNPCs();
+         foreach ($intrigue_npcs as $intrigue_npc) {
+             $exisitingIds[] = $intrigue_npc->IntrigueNPCId;
+         }
          
-//          $newKnownNPCIds = array_diff($intrigue_NPCIds,$exisitingIds);
-//          //Koppla till aktören
-//          foreach ($newKnownNPCIds as $intrigue_NPCId) {
-//              $intrigueactor_knownnpc = IntrigueActor_KnownNPC::newWithDefault();
-//              $intrigueactor_knownnpc->IntrigueActorId = $this->Id;
-//              $intrigueactor_knownnpc->IntrigueNPCId = $intrigue_NPCId;
-//              $intrigueactor_knownnpc->create();
-//          }
-//      }
+         $newKnownNPCIds = array_diff($intrigue_NPCIds,$exisitingIds);
+         //Koppla till aktören
+         foreach ($newKnownNPCIds as $intrigue_NPCId) {
+             $intrigueactor_knownnpc = IntrigueActor_KnownNPC::newWithDefault();
+             $intrigueactor_knownnpc->IntrigueActorId = $this->Id;
+             $intrigueactor_knownnpc->IntrigueNPCId = $intrigue_NPCId;
+             $intrigueactor_knownnpc->create();
+         }
+     }
      
      public function addKnownPdf($intrigue_pdfIds) {
          //Ta reda på vilka som inte redan är kopplade till aktören
@@ -377,13 +377,13 @@ class IntrigueActor extends BaseModel{
          return IntrigueActor_KnownActor::getAllWhoKnowsIntrigueActor($this);
      }
      
-//      public function getAllKnownNPCGroups() {
-//          return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForIntrigueActor($this);
-//      }
+     public function getAllKnownNPCGroups() {
+         return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForIntrigueActor($this);
+     }
      
-//      public function getAllKnownNPCs() {
-//          return IntrigueActor_KnownNPC::getAllKnownNPCsForIntrigueActor($this);
-//      }
+     public function getAllKnownNPCs() {
+         return IntrigueActor_KnownNPC::getAllKnownNPCsForIntrigueActor($this);
+     }
      
      public function getAllKnownPdfs() {
          return IntrigueActor_KnownPdf::getAllKnowninPdfsForIntrigueActor($this);
@@ -404,15 +404,15 @@ class IntrigueActor extends BaseModel{
          IntrigueActor_KnownActor::delete($known_actor->Id);
      }
      
-//      public function removeKnownNPCGroup($npcgroupId) {
-//          $known_npcgroup=IntrigueActor_KnownNPCGroup::loadByIds($npcgroupId, $this->Id);
-//          IntrigueActor_KnownNPCGroup::delete($known_npcgroup->Id);
-//      }
+     public function removeKnownNPCGroup($npcgroupId) {
+         $known_npcgroup=IntrigueActor_KnownNPCGroup::loadByIds($npcgroupId, $this->Id);
+         IntrigueActor_KnownNPCGroup::delete($known_npcgroup->Id);
+     }
      
-//      public function removeKnownNPC($npcId) {
-//          $known_npc=IntrigueActor_KnownNPC::loadByIds($npcId, $this->Id);
-//          IntrigueActor_KnownNPC::delete($known_npc->Id);
-//      }
+     public function removeKnownNPC($npcId) {
+         $known_npc=IntrigueActor_KnownNPC::loadByIds($npcId, $this->Id);
+         IntrigueActor_KnownNPC::delete($known_npc->Id);
+     }
      
      public function removeKnownGroup($groupId) {
          $known_actor=IntrigueActor_KnownActor::loadByIds($groupId, $this->Id, false);
