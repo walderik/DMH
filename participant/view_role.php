@@ -460,6 +460,8 @@ include 'navigation.php';
 			            if (!empty($role_group)) {
 			                echo "<div>$role_group->Name</div>";
 			            }
+			            if ($role->isPC() && !$role->isRegistered($current_larp)) echo "Spelas inte";
+			            elseif ($role->isNPC() && !$role->isAssigned($current_larp)) echo "Spelas inte";
 			            
 			            if ($known_role->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";

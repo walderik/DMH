@@ -185,8 +185,6 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         $known_groups = $this->role->getAllKnownGroups($this->larp);
         $known_roles = $this->role->getAllKnownRoles($this->larp);
-        $known_npcgroups = $this->role->getAllKnownNPCGroups($this->larp);
-        $known_npcs = $this->role->getAllKnownNPCs($this->larp);
         $known_props = $this->role->getAllKnownProps($this->larp);
         
 
@@ -194,14 +192,12 @@ class CharacterSheet_PDF extends PDF_MemImage {
             $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($this->larp)), SORT_REGULAR);
             $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($this->larp)), SORT_REGULAR);
             
-            $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($this->larp));
-            $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($this->larp));
             $known_props = array_merge($known_props,$subdivision->getAllKnownProps($this->larp));
         }
         
         
         # Dom man känner till från intrigerna
-        if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcgroups || !empty($known_npcs) || !empty($known_props))) {
+        if (!empty($known_groups) || !empty($known_roles) || !empty($known_props)) {
             $this->bar();
             $y = $this->GetY()+$space*2;
             
@@ -227,23 +223,13 @@ class CharacterSheet_PDF extends PDF_MemImage {
                 $text = $role->Name; #, $y, $lovest_y, $realHeight, ".$this->GetPageHeight();
                 $role_group = $role->getGroup();
                 if (!empty($role_group)) $text .= "\n\r($role_group->Name)";
+                if ($role->isPC() && !$role->isRegistered($current_larp))  $text .= "\n\rSpelas inte";
+                elseif ($role->isNPC() && !$role->isAssigned($current_larp))  $text .= "\n\rSpelas inte";
+                
+                
                 $this->print_know_stuff($text, $image);
             }
             
-            foreach ($known_npcgroups as $known_npcgroup) {
-                $image = null;
-                $npcgroup = $known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-                $this->print_know_stuff("$npcgroup->Name - NPC-grupp", $image);
-            }
-            foreach ($known_npcs as $known_npc) {
-                $image = null;
-                $npc = $known_npc->getIntrigueNPC()->getNPC();
-                $text = "$npc->Name - NPC";
-                $npc_group = $npc->getNPCGroup();
-                if (!empty($npc_group)) $text .="\n\r($npc_group->Name)";
-                if ($npc->hasImage()) $image = Image::loadById($npc->ImageId);
-                $this->print_know_stuff($text, $image);
-            }
             foreach ($known_props as $known_prop) {
                 $image = null;
                 $prop = $known_prop->getIntrigueProp()->getProp();
