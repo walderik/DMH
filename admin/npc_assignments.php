@@ -82,8 +82,8 @@ include 'npc_navigation.php';
 			        echo showStatusIcon(false);
 			    }
 			    echo "</td>";
-			    echo "<td>$assignement->Time</td>";
-			    echo "<td>$assignement->Instructions</td>";
+			    echo "<td>".nl2br(htmlspecialchars($assignement->Time))."</td>";
+			    echo "<td>".nl2br(htmlspecialchars($assignement->Instructions))."</td>";
 			    
 			    echo "<td>";
 			    echo "<form action='npc_form.php' method='POST'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'><input type='hidden' id='operation' name='operation' value='update'><button class='invisible' type='submit'><i class='fa-solid fa-pen' title='Redigera uppdrag'></i></button></form>";
