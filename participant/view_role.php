@@ -25,10 +25,11 @@ if ($role->isPC() && $person->Id != $current_person->Id) {
 
 $group = $role->getGroup();
 
+
 if ($role->isNPC()) {
     $assignment = NPC_assignment::getAssignment($role, $current_larp);
     if (!empty($assignment) && ($assignment->PersonId == $current_person->Id)) {
-        //Ok, du är tilldelad NPC'n
+        //Ok, du är tilldelad karaktären
     } elseif (!empty($group) && $current_person->isMemberGroup($group)) {
         //Ok, din grupp
     } else {
@@ -171,7 +172,7 @@ include 'navigation.php';
 		<?php echo $role->Profession;?>
 		</div>
 		
-		<?php if ($role->isPC()) { ?>
+		<?php if ($role->isPC() || !empty($assignment)) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning</div>
 	   <?php echo nl2br(htmlspecialchars($role->Description));?>
@@ -183,7 +184,7 @@ include 'navigation.php';
 		<?php echo nl2br(htmlspecialchars($role->DescriptionForGroup));?>
 		</div>
 		
-		<?php if ($role->isPC() ||  !empty($role->DescriptionForOthers)) { ?>
+		<?php if ($role->isPC() || !empty($role->DescriptionForOthers)) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning för andra</div>
 	   <?php echo nl2br(htmlspecialchars($role->DescriptionForOthers));?>
@@ -333,7 +334,7 @@ include 'navigation.php';
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
-               	<div class='itemname'>Religion</div>
+               	<div class='itemname'>Rikedom</div>
     			<?php 
     			$wealth = $role->getWealth();
     			if (!empty($wealth)) echo $wealth->Name;

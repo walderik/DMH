@@ -479,6 +479,16 @@ class Person extends BaseModel{
         return Role::getUnregistredRolesForPerson($this, $larp);
     }
     
+    public function getNPCAssignmentsAtLarp($larp) {
+        return NPC_assignment::getAssignmentsForPerson($this, $larp);
+    }
+    
+    public function getReleasedNPCAssignmentsAtLarp($larp) {
+        return NPC_assignment::getReleasedAssignmentForPerson($this, $larp);
+    }
+    
+    
+    
     public function getUnregisteredAliveGroups(LARP $larp) {
         $unregistered_groups = Array();
         $groups = Group::getGroupsForPerson($this->Id, $larp->CampaignId);

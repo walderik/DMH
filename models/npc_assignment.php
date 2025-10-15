@@ -176,5 +176,15 @@ class NPC_assignment extends BaseModel{
         return static::countQuery($sql, array($larp->Id, $larp->Id));
     }
     
+    public static function getAssignmentsForPerson(Person $person, Larp $larp) {
+        $sql = "SELECT * FROM regsys_npc_assignment WHERE PersonId = ? and LarpId = ?";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+    }
+
+    public static function getReleasedAssignmentForPerson(Person $person, Larp $larp) {
+        $sql = "SELECT * FROM regsys_npc_assignment WHERE PersonId = ? and LarpId = ? And IsRelease=1";
+        return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
+    }
+    
     
 }

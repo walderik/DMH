@@ -684,7 +684,7 @@ function openTab(evt, tabName) {
     	
     	
     	//NPC'er
-    	$assignments = NPC_assignment::getReleasedNPCsForPerson($current_person, $current_larp);
+    	$assignments = NPC_assignment::getReleasedAssignmentForPerson($current_person, $current_larp);
     	$assigned_roles = array();
     	if (isset($assignments) && count($assignments) > 0) {
     	    
