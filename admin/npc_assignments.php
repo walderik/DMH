@@ -98,12 +98,7 @@ include 'npc_navigation.php';
 			    
 			    
 			    echo "<td>";
-			    if ($npc->hasIntrigue($current_larp)) echo showStatusIcon(true);
-			    $intrigueWords = $npc->intrigueWords($current_larp);
-			    
-			    if (!empty($intrigueWords)) echo "<br>$intrigueWords ord";
 			    $intrigues = Intrigue::getAllIntriguesForRole($npc->Id, $current_larp->Id);
-			    echo "<br>";
 			    if (!empty($intrigues)) echo "Intrig: ";
 			    foreach ($intrigues as $intrigue) {
 			        echo "<a href='view_intrigue.php?Id=$intrigue->Id'>";
