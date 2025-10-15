@@ -193,7 +193,7 @@ class Group_PDF extends PDF_MemImage {
         
         
         # Dom man känner till från intrigerna
-        if (!empty($known_groups) || !empty($known_roles) || !empty($known_props))) {
+        if (!empty($known_groups) || !empty($known_roles) || !empty($known_props)) {
             $this->bar();
             $y = $this->GetY()+$space*2;
             
