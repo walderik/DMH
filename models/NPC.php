@@ -25,7 +25,6 @@ class NPC extends BaseModel{
     }
     
     public function setValuesByArray($arr) {
-        
         if (isset($arr['Id']))   $this->Id = $arr['Id'];
         if (isset($arr['RoleId']))   $this->RoleId = $arr['RoleId'];
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
@@ -33,7 +32,7 @@ class NPC extends BaseModel{
         if (isset($arr['Time'])) $this->Time = $arr['Time'];
         if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
         if (isset($arr['NPCGroupId'])) $this->NPCGroupId = $arr['NPCGroupId'];
-        if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
+        if (isset($arr['LARPId'])) $this->LarpId = $arr['LARPId'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         if (isset($arr['IsReleased'])) $this->IsReleased = $arr['IsReleased'];
         if (isset($arr['IsToBePlayed'])) $this->IsToBePlayed = $arr['IsToBePlayed'];
@@ -55,13 +54,9 @@ class NPC extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_npc SET RoleId=?, Name=?, Description=?,
-                Time=?, PersonId=?, NPCGroupId=?, 
-                LarpId=?, ImageId=?, IsReleased=?, IsToBePlayed=? WHERE Id = ?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_npc SET RoleId=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->RoleId, $this->Name, $this->Description,
-            $this->Time, $this->PersonId,
-            $this->NPCGroupId, $this->LarpId, $this->ImageId, $this->IsReleased, $this->IsToBePlayed, $this->Id))) {
+        if (!$stmt->execute(array($this->RoleId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -219,6 +214,17 @@ class NPC extends BaseModel{
             ") ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
+    
+    public function getNPCGroup() {
+        if (empty($this->NPCGroupId)) return null;
+        return NPCGroup::loadById($this->NPCGroupId);
+    }
+    
+    public function hasImage() {
+        if (isset($this->ImageId)) return true;
+        return false;
+    }
+    
     
     
 }

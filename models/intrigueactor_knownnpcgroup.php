@@ -98,6 +98,8 @@ class IntrigueActor_KnownNPCGroup extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($intrigue_npcgroup->Id));
     }
     
+
+    
     
     public static function loadByIds($npcgroupId, $intrigueActorId) {
         $sql = "SELECT regsys_intrigueactor_knownnpcgroup.* FROM regsys_intrigueactor_knownnpcgroup, regsys_intrigue_npcgroup, regsys_intrigueactor WHERE ".

@@ -50,12 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == "add_intrigue_prop") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_POST['PropId'])) $intrigue->addProps($_POST['PropId']);
-    } elseif ($operation == "add_intrigue_npc") {
-        $intrigue=Intrigue::loadById($_POST['Id']);
-        if (isset($_POST['NPCId'])) $intrigue->addNPCs($_POST['NPCId']);
-    } elseif ($operation == "add_intrigue_npcgroup") {
-        $intrigue=Intrigue::loadById($_POST['Id']);
-        if (isset($_POST['NPCGroupId'])) $intrigue->addNPCGroups($_POST['NPCGroupId']);
     } elseif ($operation == "add_intrigue_message") {
         $intrigue=Intrigue::loadById($_POST['Id']);
         if (isset($_POST['TelegramId'])) $intrigue->addTelegrams($_POST['TelegramId']);
@@ -90,8 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
         if (isset($_POST['KnownIntrigueActorId'])) $intrigueActor->addKnownActors($_POST['KnownIntrigueActorId']);
-        if (isset($_POST['Intrigue_NPCGroupId'])) $intrigueActor->addKnownNPCGroups($_POST['Intrigue_NPCGroupId']);
-        if (isset($_POST['Intrigue_NPCId'])) $intrigueActor->addKnownNPCs($_POST['Intrigue_NPCId']);
     } elseif ($operation == "continue_intrigue") {
         if (isset($_POST['IntrigueId'])) Intrigue::continueIntrigues($_POST['IntrigueId'], $current_larp, $current_person);
         header('Location: ../intrigue_admin.php');
@@ -114,10 +106,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         IntrigueActor::delete($_GET['IntrigueActorId']);
     } elseif ($operation == "remove_prop") {
         Intrigue_Prop::delete($_GET['IntriguePropId']);
-    } elseif ($operation == "remove_npc") {
-        Intrigue_NPC::delete($_GET['IntrigueNPCId']);
-    } elseif ($operation == "remove_npcgroup") {
-        Intrigue_NPCGroup::delete($_GET['IntrigueNPCGroupId']);
     } elseif ($operation == "remove_letter") {
         Intrigue_Letter::delete($_GET['IntrigueLetterId']);
     } elseif ($operation == "remove_telegram") {
@@ -154,14 +142,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
         $intrigueActor->removeKnownGroup($_GET['GroupId']);
-    } elseif (($operation == "remove_npcgroup_intrigueactor")) {
-        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
-        $intrigue=$intrigueActor->getIntrigue();
-        $intrigueActor->removeKnownNPCGroup($_GET['NPCGroupId']);
-    } elseif (($operation == "remove_npc_intrigueactor")) {
-        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
-        $intrigue=$intrigueActor->getIntrigue();
-        $intrigueActor->removeKnownNPC($_GET['NPCId']);
     } elseif (($operation == "delete_pdf")) {
         $intriguePdf=Intrigue_Pdf::loadById($_GET['pdfId']);
         $intrigue=$intriguePdf->getIntrigue();

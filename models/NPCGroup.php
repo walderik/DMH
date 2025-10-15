@@ -8,6 +8,7 @@ class NPCGroup extends BaseModel{
     public $Time;
     public $LarpId;
     public $IsReleased = 0;
+    public $GroupId;
     
     
     
@@ -21,14 +22,13 @@ class NPCGroup extends BaseModel{
     }
     
     public function setValuesByArray($arr) {
-        
         if (isset($arr['Id']))   $this->Id = $arr['Id'];
         if (isset($arr['Name'])) $this->Name = $arr['Name'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['Time'])) $this->Time = $arr['Time'];
-        if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
+        if (isset($arr['LARPId'])) $this->LarpId = $arr['LARPId'];
         if (isset($arr['IsReleased'])) $this->IsReleased = $arr['IsReleased'];
-        
+        if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
         
     }
     
@@ -45,11 +45,9 @@ class NPCGroup extends BaseModel{
     # Update an existing object in db
     public function update() {
 
-        $stmt = $this->connect()->prepare("UPDATE regsys_npcgroup SET Name=?, Description=?,
-                                                              Time=?, LarpId=?, IsReleased=? WHERE Id = ?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_npcgroup SET GroupId=? WHERE Id = ?;");
         
-        if (!$stmt->execute(array($this->Name, $this->Description,
-            $this->Time, $this->LarpId, $this->IsReleased, $this->Id))) {
+        if (!$stmt->execute(array($this->GroupId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();

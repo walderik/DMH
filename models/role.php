@@ -198,6 +198,12 @@ class Role extends BaseModel{
         if (LARP_Role::isRegistered($this->Id, $larp->Id) || Reserve_LARP_Role::isReserve($this->Id, $larp->Id)) return true;
         return false;
     } 
+    
+    public function isAssigned(LARP $larp) {
+        if (!empty(NPC_assignment::getAssignment($role, $current_larp))) return true;
+        return false;
+    }
+    
 
     public function userMayEdit() {
         if ($this->UserMayEdit == 1) return true;
