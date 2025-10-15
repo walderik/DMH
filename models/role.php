@@ -200,7 +200,7 @@ class Role extends BaseModel{
     } 
     
     public function isAssigned(LARP $larp) {
-        if (!empty(NPC_assignment::getAssignment($role, $current_larp))) return true;
+        if (!empty(NPC_assignment::getAssignment($this, $larp))) return true;
         return false;
     }
     

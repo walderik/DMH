@@ -357,6 +357,18 @@ include 'navigation.php';
 		        echo "<div>$role_group->Name</div>";
 		    }
 		    
+		    if ($known_role->isPC() && !$known_role->isRegistered($current_larp)) echo "Inte anmäld";
+		    elseif ($known_role->isNPC()) {
+		        $assignment = NPC_assignment::getAssignment($known_role, $current_larp);
+		        if (!empty($assignment)) {
+		            $person = $assignment->getPerson();
+		            if (!empty($person)) echo "<div>NPC - Spelas av $person->Name</div>";
+		            else echo "<div>NPC - Spelare inte tilldelad ännu</div>";
+		        } else {
+		            echo "NPC - Spelas inte";
+		        }
+		    }
+		    
 		    if ($known_role->hasImage()) {
 		        echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
 		    }

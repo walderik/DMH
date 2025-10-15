@@ -273,14 +273,15 @@ include 'navigation.php';
                if (!empty($role_group)) {
                    echo "<div>$role_group->Name</div>";
                }
-               if ($role->isPC() && !$role->isRegistered($current_larp)) echo "Spelas inte";
-               elseif ($role->isNPC()) {
-                   $assignment = NPC_assignment::getAssignment($role, $larp);
+               if ($known_role->isPC() && !$known_role->isRegistered($current_larp)) echo "Inte anmäld";
+               elseif ($known_role->isNPC()) {
+                   $assignment = NPC_assignment::getAssignment($known_role, $current_larp);
                    if (!empty($assignment)) {
                        $person = $assignment->getPerson();
-                       echo "<div>Spelas av $person->Name</div>";
+                       if (!empty($person)) echo "<div>NPC - Spelas av $person->Name</div>";
+                       else echo "<div>NPC - Spelare inte tilldelad ännu</div>";
                    } else {
-                       echo "Spelas inte";
+                       echo "NPC - Spelas inte";
                    }
                }
                
