@@ -172,18 +172,21 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor, $sec
         echo "<div class='name'>".$role->getViewLink();
         echo " <a href='view_intrigue.php?Id=".$knownIntrigueActor->IntrigueId."#section_$knownIntrigueActor->Id'><i class='fa-solid fa-arrows-to-dot' title='Till aktören'></i></a>";
         "</div>";
+
         $role_group = $role->getGroup();
         if (!empty($role_group)) {
             echo "<div>$role_group->Name</div>";
         }
+        
         if ($role->isNPC()) {
+            echo "<div>";
             $assignment = NPC_assignment::getAssignment($role, $larp);
             if (!empty($assignment)) {
-                $person = $assignment->getPerson();
-                echo "<div>Spelas av $person->Name</div>";
+                echo "Spelad NPC";
             } else {
-                echo "Spelas inte";
+                echo "NPC";
             }
+            echo "</div>";
         }
         
         if ($role->hasImage()) {
@@ -207,12 +210,12 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor, $sec
 }
 
 function printAllKnownActors($known_actors, $intrigue_actor, $section) {
-    global $cols;
+    global $cols, $current_larp;
     echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
     $temp=0;
     foreach($known_actors as $known_actor) {
         $ka = $known_actor->getKnownIntrigueActor();
-        printKnownActor($ka, $intrigue_actor, $section);
+        printKnownActor($ka, $intrigue_actor, $section, $current_larp);
         $temp++;
         if($temp==$cols)
         {
@@ -409,6 +412,7 @@ th, td {
         echo " <a href='view_intrigue.php?Id=".$intrigue->Id."#section_$roleActor->Id'><i class='fa-solid fa-caret-down' title='Till aktören'></i></a>";
         echo "</span>";
         
+        
         echo "<span class='icons'>";
         $person = $role->getPerson();
         if (!is_null($person) && $person->getRegistration($current_larp)->isNotComing()) {
@@ -420,11 +424,25 @@ th, td {
         echo "><i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
         echo "</span>";
         echo "</div><br>";
-        
+
 	    $role_group = $role->getGroup();
 	    if (!empty($role_group)) {
 	        echo "<div>$role_group->Name</div>";
 	    }
+
+	    if ($role->isNPC()) {
+	        echo "<div><strong>NPC</strong>";
+	        $assignment = NPC_assignment::getAssignment($role, $current_larp);
+	        if (!empty($assignment)) {
+	            $person = $assignment->getPerson();
+	            if (!empty($person)) echo " - Spelas av ".$person->getViewLink();
+	            else echo " - Spelare inte tilldelad ännu";
+	        } else {
+	            echo " - Spelas inte";
+	        }
+	        echo "</div>";
+	    }
+	    
 	    $actor_intrigues = $roleActor->getAllIntrigues();
 	    foreach ($actor_intrigues as $actor_intrigue) {
 	        if ($actor_intrigue->Id != $intrigue->Id) {
@@ -529,11 +547,26 @@ th, td {
         echo "><i class='fa-solid fa-xmark' title='Ta bort karaktär'></i></a>";
         echo "</span>";
         echo "</div><br>";
+
         
 	    $role_group = $role->getGroup();
 	    if (!empty($role_group)) {
 	        echo "<div>$role_group->Name</div>";
 	    }
+	    
+	    if ($role->isNPC()) {
+	        echo "<div><strong>NPC</strong>";
+	        $assignment = NPC_assignment::getAssignment($role, $current_larp);
+	        if (!empty($assignment)) {
+	            $person = $assignment->getPerson();
+	            if (!empty($person)) echo " - Spelas av ".$person->getViewLink();
+	            else echo " - Spelare inte tilldelad ännu";
+	        } else {
+	            echo " - Spelas inte";
+	        }
+	        echo "</div>";
+	    }
+	    
 	    $actor_intrigues = $roleActor->getAllIntrigues();
 	    foreach ($actor_intrigues as $actor_intrigue) {
 	        if ($actor_intrigue->Id != $intrigue->Id) {
