@@ -40,7 +40,7 @@ foreach ($npcGroups as $npcGroup) {
 
 $npcs = NPC::all();
 foreach ($npcs as $npc) {
-    if (!isset($npc->RoleId)) {
+    if (!isset($npc->NPCGroupId) && !isset($npc->RoleId)) {
         $role = new Role();
         $role->CampaignId = $larp->CampaignId;
         $role->Name = $npc->Name;
@@ -48,10 +48,36 @@ foreach ($npcs as $npc) {
         $role->IsApproved = 1;
         $role->Profession = substr($npc->Description, 50);
         $role->create();
+        
+        if ($npc->IsToBePlayed) {
+            $assignment = NPC_assignment::newWithDefault();
+            $assignment->Instructions = $npc->Description;
+            $assignment->IsReleased = $npc->IsReleased;
+            $assignment->LarpId = $npc->LarpId;
+            $assignment->PersonId = $npc->PersonId;
+            $assignment->Time = $npc->Time;
+            $assignment->RoleId = $role->Id;
+            $assignment->create();
+        }
         $npc->RoleId = $role->Id;
         $npc->update();
         
-        //TODO rätta upp intriger
+        $intrigueNpcs = Intrigue_NPC::getAllForNPC($npc->Id);
+        foreach ($intrigueNpcs as $intrigueNpc) {
+            $intrigueActor = IntrigueActor::newWithDefault();
+            $intrigueActor->IntrigueId = $intrigueNpc->IntrigueId;
+            $intrigueActor->RoleId = $role->Id;
+            $intrigueActor->create();
+            
+            $knownNPCs = IntrigueActor_KnownNPC::getAllKnownNPCsForIntrigueNPC($intrigueNpc);
+            foreach ($knownNPCs as $knownNPC) {
+                $knowIntrigueActor = IntrigueActor_KnownActor::newWithDefault();
+                $knowIntrigueActor->IntrigueActorId = $knownNPCs->IntrigueActorId;
+                $knowIntrigueActor->KnownIntrigueActorId = $intrigueActor->Id;
+                $knowIntrigueActor->create();
+            }
+        }
+
     }
 }
 
