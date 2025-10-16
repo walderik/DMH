@@ -10,11 +10,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
        $larp_role  = LARP_Role::loadByIds($role->Id, $current_larp->Id);
        
        
-       if ($role->isPC() && ($role->PersonId != $current_person->Id)) {
+       if ($role->isPC($current_larp) && ($role->PersonId != $current_person->Id)) {
            header('Location: index.php?error=not_yours'); //Inte din karaktär
            exit;
        }
-       if ($role->isNPC()) {
+       if ($role->isNPC($current_larp)) {
            $assignment = NPC_assignment::getAssignment($role, $current_larp);
            if (empty($assignment) || ($assignment->PersonId != $current_person->Id)) {
                header('Location: index.php'); //NPC är inte är din
@@ -119,7 +119,7 @@ textarea{
     		 
 
 			<?php 
-			if (isset($role) && $role->isPC()) {
+			if (isset($role) && $role->isPC($current_larp)) {
 			?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappened">Vad hände med/för <?php echo $role->Name; ?>?</label></div>
@@ -135,7 +135,7 @@ textarea{
 				Skriv så mycket du kan. Det kan dessutom vara till hjälp nästa gång gruppen är med på ett lajv och när det kommer nya in i gruppen.<br>
 				<textarea id="WhatHappened" name="WhatHappened" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappened); ?></textarea>
 				</div>
-			<?php } elseif (isset($role) && $role->isNPC() && isset($assignment)) {?>
+			<?php } elseif (isset($role) && $role->isNPC($current_larp) && isset($assignment)) {?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappened">Vad hände med/för <?php echo $role->Name; ?>?</label></div>
 	       		Beskriv allt annat intressant som hände karaktären.  
@@ -147,7 +147,7 @@ textarea{
 
 
 			<?php 
-			if (isset($role) && $role->isPC()) {
+			if (isset($role) && $role->isPC($current_larp)) {
 			?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappendToOthers">Vad såg du hände med andra?</label></div>
@@ -160,7 +160,7 @@ textarea{
 				Var ni med om, eller såg något som hände en annan karkatär eller grupp. Berätta! Vi vill veta allt. :)<br>
 				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappendToOthers); ?></textarea>
 				</div>
-			<?php } elseif (isset($role) && $role->isNPC() && isset($assignment)) {?>
+			<?php } elseif (isset($role) && $role->isNPC($current_larp) && isset($assignment)) {?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappendToOthers">Vad såg du hände med andra?</label></div>
 				Var du med om, eller såg något som hände en annan karkatär. Berätta! Vi vill veta allt. :)<br>
@@ -169,7 +169,7 @@ textarea{
 			<?php } ?>
 
 			<?php 
-			if (isset($role) && $role->isPC()) {
+			if (isset($role) && $role->isPC($current_larp)) {
 			?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappensAfterLarp">Vad gör <?php echo $role->Name; ?> efter lajvet?</label></div>

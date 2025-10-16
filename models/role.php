@@ -240,13 +240,15 @@ class Role extends BaseModel{
         return false;
     }
     
-    public function isPC() {
-        return !$this->isNPC();
+    public function isPC(Larp $larp) {
+        if ($this->isRegistered($larp)) return true;
+        if ($this->isAssigned($larp)) return false;
+        if (!empty($this->PersonId)) return true;
+        return false;
     }
     
-    public function isNPC() {
-        if (empty($this->PersonId)) return true;
-        return false;
+    public function isNPC(Larp $larp) {
+        return !$this->isPC($larp);
     }
     
     public function hasIntrigue(LARP $larp) {
@@ -1065,10 +1067,10 @@ class Role extends BaseModel{
     
     
     public function hasRegisteredWhatHappened(LARP $larp) {
-        if ($this->isPC()) {
+        if ($this->isPC($larp)) {
             $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
             if (!empty($larp_role) && (!empty($larp_role->WhatHappened) OR !empty($larp_role->WhatHappendToOthers) || !empty($larp_role->WhatHappensAfterLarp))) return true;
-        } elseif ($this->isNPC()) {
+        } elseif ($this->isNPC($larp)) {
             $assignment = NPC_assignment::getAssignment($this, $larp);
             if (!empty($assignment) && (!empty($assignment->WhatHappened) OR !empty($assignment->WhatHappendToOthers))) return true;
         }

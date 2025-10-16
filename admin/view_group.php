@@ -45,7 +45,7 @@ function print_role(Role $role, Group $group, $isRegistered) {
     echo "</td>";
     echo "<td>";
     echo $role->getEditLinkPen(true);
-    if ($role->isPC()) {
+    if ($role->isPC($current_larp)) {
         echo " <a href='logic/remove_group_member.php?groupID=$group->Id&roleID=$role->Id' onclick='return confirm(\"Är du säker på att du vill ta bort karaktären från gruppen?\");'><i class='fa-solid fa-trash-can' title='Ta bort ur gruppen'></i></a>";
     } elseif ($role->mayDelete()) {
         echo " <a href='logic/delete_npc.php?roleID=$role->Id' onclick='return confirm(\"Är du säker på att du vill radera NPCn?\");'><i class='fa-solid fa-trash-can' title='Radera'></i></a>";
@@ -55,7 +55,7 @@ function print_role(Role $role, Group $group, $isRegistered) {
     echo "</td>";
     echo "<td>$role->Profession</td>";
 
-    if ($role->isPC()) {
+    if ($role->isPC($current_larp)) {
     $person = $role->getPerson();
         echo "<td>" . $person->getViewLink() . "</td>";
             
@@ -357,8 +357,8 @@ include 'navigation.php';
 		        echo "<div>$role_group->Name</div>";
 		    }
 		    
-		    if ($known_role->isPC() && !$known_role->isRegistered($current_larp)) echo "Inte anmäld";
-		    elseif ($known_role->isNPC()) {
+		    if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "Inte anmäld";
+		    elseif ($known_role->isNPC($current_larp)) {
 		        $assignment = NPC_assignment::getAssignment($known_role, $current_larp);
 		        if (!empty($assignment)) {
 		            $person = $assignment->getPerson();

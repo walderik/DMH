@@ -48,12 +48,13 @@ function print_role(Role $role, Group $group, $isComing) {
     
     
     echo "<div class='name'>";
-    if ($role->isNPC()) {
+    if ($role->isNPC($current_larp)) {
         echo $role->getViewLink();
     } else echo $role->Name;
 
-    if (($role->isPC() && $current_person->isGroupLeader($group)) || 
-        ($role->isNPC() && ($role->CreatorPersonId == $current_person->Id || $current_person->isGroupLeader($group)) && $role->userMayEdit() && $role->mayDelete())) {
+    $isPc = $role->isPC($current_larp);
+    if (($isPc && $current_person->isGroupLeader($group)) || 
+        ($role->isNPC($current_larp) && ($role->CreatorPersonId == $current_person->Id || $current_person->isGroupLeader($group)) && $role->userMayEdit() && $role->mayDelete())) {
         echo " <a href='logic/remove_group_member.php?groupID=".$group->Id."&roleID=".$role->Id."' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
         echo "<i class='fa-solid fa-trash-can'></i>";
         echo "</a>";
@@ -62,13 +63,13 @@ function print_role(Role $role, Group $group, $isComing) {
 
     
     echo "Yrke: ".$role->Profession . "<br>";
-    if ($role->isPC() && $role->isMain($current_larp)==0) {
+    if ($isPc && $role->isMain($current_larp)==0) {
         echo "Sidokaraktär<br>";
     }
 
     
 
-    if ($role->isPC()) {
+    if ($isPc) {
         echo "Spelas av ";
         $person =  $role->getPerson();
         $person->Name;
@@ -76,7 +77,7 @@ function print_role(Role $role, Group $group, $isComing) {
     }
 
     
-    if ($isComing && $role->isPC() && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    if ($isComing && $isPc && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         $guardian = $role->getRegistration($current_larp)->getGuardian();
         if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
         else echo "Ansvarig vuxen är inte utpekad.";
@@ -84,7 +85,7 @@ function print_role(Role $role, Group $group, $isComing) {
     
     echo "<div class='description'>$role->DescriptionForGroup</div>\n";
     
-    if ($role->isNPC()) {
+    if (!$isPc) {
         if ($role->isApproved()) echo "Karaktären är godkänd.";
         elseif (!$role->userMayEdit()) echo "Karaktären är inskickad för godkännande.";
         else {
@@ -106,7 +107,7 @@ function print_role(Role $role, Group $group, $isComing) {
             echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
         }
     }
-    elseif ($role->isPC()) {
+    elseif ($isPc) {
         echo "<img src='../images/man-shape.png' />\n";
         echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
     } 
@@ -444,8 +445,8 @@ include 'navigation.php';
 			            if (!empty($role_group)) {
 			                echo "<div>$role_group->Name</div>";
 			            }
-			            if ($known_role->isPC() && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";
-			            elseif ($known_role->isNPC() && !$known_role->isAssigned($current_larp)) echo "<div>Spelas inte</div>";
+			            if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";
+			            elseif ($known_role->isNPC($current_larp) && !$known_role->isAssigned($current_larp)) echo "<div>Spelas inte</div>";
 			            
 			            
 			            if ($known_role->hasImage()) {

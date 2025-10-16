@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $role->CreatorPersonId = $current_person->Id;
         if (isset($_GET['type'])) {
             if ($_GET['type'] == "npc") $role->PersonId = NULL;
-            if ($role->isNPC() && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
+            if ($role->isNPC($current_larp) && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
         }
     } elseif ($operation == 'update') {
         $role = Role::loadById($_GET['id']);
@@ -30,7 +30,7 @@ if (empty($role)) {
     exit;
 }
 
-if ($role->isPC() && !$role->isRegistered($current_larp)) {
+if ($role->isPC($current_larp) && !$role->isRegistered($current_larp)) {
     header('Location: index.php'); // Karaktären är inte anmäld
     exit;
 }
@@ -157,7 +157,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Grupp</td>
 			<td><?php selectionDropDownByArray('GroupId', Group::getAllRegistered($current_larp), false, $role->GroupId); ?></td></tr>
 
-			<?php if ($role->isPC()) {?>
+			<?php if ($role->isPC($current_larp)) {?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
 			<?php } ?>
 			
@@ -200,12 +200,12 @@ include 'navigation.php';
 			<td><textarea id="PreviousLarps" name="PreviousLarps" rows="8" cols="100" maxlength="15000"><?php echo htmlspecialchars($role->PreviousLarps); ?></textarea></td></tr>
 
 			<tr class="intrigue"><td valign="top" class="header">Varför befinner sig<br>karaktären på platsen?
-			<?php if ($role->isPC()) {?>
+			<?php if ($role->isPC($current_larp)) {?>
 				&nbsp;<font style="color:red">*</font>
 			<?php }?>
 			</td>
 			<td><textarea 
-			<?php if ($role->isPC()) {?>
+			<?php if ($role->isPC($current_larp)) {?>
 			class="requiredIntrigueField" 
 			<?php }?>
 			id="ReasonForBeingInSlowRiver" name="ReasonForBeingInSlowRiver" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->ReasonForBeingInSlowRiver); ?></textarea></td></tr>
@@ -214,14 +214,14 @@ include 'navigation.php';
 
 			<?php if (Religion::isInUse($current_larp)) {?>
     			<tr class="intrigue"><td valign="top" class="header">Religion</td><td>
-    			<?php Religion::selectionDropdown($current_larp, false, $role->isPC(), $role->ReligionId); ?>
+    			<?php Religion::selectionDropdown($current_larp, false, $role->isPC($current_larp), $role->ReligionId); ?>
     			</td></tr>
     			<tr class="intrigue"><td valign="top" class="header">Religion förklaring</td><td><input type="text" id="Religion" name="Religion" value="<?php echo htmlspecialchars($role->Religion); ?>"  size="100" maxlength="250"></td></tr>
 			<?php }?>
 
 			<?php if (Belief::isInUse($current_larp)) {?>
     			<tr class="intrigue"><td valign="top" class="header">Hur troende</td><td>
-    			<?php Belief::selectionDropdown($current_larp, false, $role->isPC(), $role->BeliefId); ?>
+    			<?php Belief::selectionDropdown($current_larp, false, $role->isPC($current_larp), $role->BeliefId); ?>
     			</td></tr>
 			<?php }?>
 
@@ -241,24 +241,24 @@ include 'navigation.php';
 
 
 			<tr class="intrigue"><td valign="top" class="header">Mörk hemlighet
-    			<?php if ($role->isPC()) {?>
+    			<?php if ($role->isPC($current_larp)) {?>
     				&nbsp;<font style="color:red">*</font>
     			<?php }?>
 				</td>
 			<td><textarea 
-			<?php if ($role->isPC()) {?>
+			<?php if ($role->isPC($current_larp)) {?>
 				class="requiredIntrigueField" 
 			<?php }?>
 
 			id="DarkSecret" name="DarkSecret" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->DarkSecret); ?> </textarea></td></tr>
 
 			<tr class="intrigue"><td valign="top" class="header">Mörk hemlighet - intrig idéer
-    			<?php if ($role->isPC()) {?>
+    			<?php if ($role->isPC($current_larp)) {?>
     				&nbsp;<font style="color:red">*</font>
     			<?php }?>
 				</td>
 			<td><input 
-				<?php if ($role->isPC()) {?>
+			<?php if ($role->isPC($current_larp)) {?>
 				class="requiredIntrigueField" 
 			     <?php }?>
 				type="text" id="DarkSecretIntrigueIdeas" name="DarkSecretIntrigueIdeas" value="<?php echo htmlspecialchars($role->DarkSecretIntrigueIdeas); ?>"  size="100" maxlength="250"></td></tr>
@@ -282,32 +282,32 @@ include 'navigation.php';
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
     			<tr class="intrigue"><td valign="top" class="header">Rikedom
-    			<?php if ($role->isPC()) {?>
+    			<?php if ($role->isPC($current_larp)) {?>
     				&nbsp;<font style="color:red">*</font>
     			<?php }?>
     			</td>
-    			<td><?php Wealth::selectionDropdown($current_larp, false, $role->isPC(), $role->WealthId); ?></td></tr>
+    			<td><?php Wealth::selectionDropdown($current_larp, false, $role->isPC($current_larp), $role->WealthId); ?></td></tr>
 			<?php } ?>
 			
 			<tr class="intrigue"><td valign="top" class="header">Var är karaktären född?
-    			<?php if ($role->isPC()) {?>
+    			<?php if ($role->isPC($current_larp)) {?>
     				&nbsp;<font style="color:red">*</font>
     			<?php }?>
 				</td>
 			<td><input 
-    			<?php if ($role->isPC()) {?>
+			<?php if ($role->isPC($current_larp)) {?>
     			class="requiredIntrigueField" 
     			<?php }?>
     			type="text" id="Birthplace" name="Birthplace" value="<?php echo htmlspecialchars($role->Birthplace); ?>"  size="100" maxlength="250"></td></tr>
 
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
     			<tr class="intrigue"><td valign="top" class="header">Var bor karaktären?
-    			<?php if ($role->isPC()) {?>
+    			<?php if ($role->isPC($current_larp)) {?>
     				&nbsp;<font style="color:red">*</font>
     			<?php }?>
     			</td>
     			<td><?php
-    			PlaceOfResidence::selectionDropdown($current_larp, false, $role->isPC(), $role->PlaceOfResidenceId);
+    			PlaceOfResidence::selectionDropdown($current_larp, false, $role->isPC($current_larp), $role->PlaceOfResidenceId);
                 ?></td></tr>
             <?php } ?>
            

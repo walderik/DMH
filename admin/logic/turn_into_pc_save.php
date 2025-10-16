@@ -20,7 +20,7 @@ if (empty($role) || empty($person)) {
     exit;
 }
 
-if ($role->isPC() || $role->CampaignId != $current_larp->CampaignId) {
+if ($role->isPC($current_larp) || $role->CampaignId != $current_larp->CampaignId) {
     header('Location: ../index.php'); //Redan spelarkaraktär eller tillhör inte kampanjen
     exit;
 }

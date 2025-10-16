@@ -7,7 +7,7 @@ require $root . '/includes/init.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['RoleId'])) {
         $role=Role::loadById($_POST['RoleId']);
-        if ($role->isPC()) {
+        if ($role->isPC($current_larp)) {
             if ($role->PersonId != $current_person->Id) {
                 header('Location: index.php'); //Inte din karaktär
                 exit;

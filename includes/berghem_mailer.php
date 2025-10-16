@@ -291,7 +291,7 @@ class BerghemMailer {
     }
     
     public static function send_role_approval_mail(Role $role, LARP $larp, $senderId) {
-        if ($role->isPC()) {
+        if ($role->isPC($larp)) {
             $person = $role->getPerson();
             if (is_null($person)) return;
             $text  = "Din karaktär $role->Name är nu godkänd för att vara med i lajvet $larp->Name<br>\n";
@@ -309,7 +309,7 @@ class BerghemMailer {
     }
     
     public static function send_role_unapproval_mail(Role $role, LARP $larp, $senderId) {
-        if ($role->isPC()) {
+        if ($role->isPC($larp)) {
             $person = $role->getPerson();
             if (is_null($person)) return;
             $text  = "Din karaktär $role->Name är inte längre godkänd för att vara med i lajvet $larp->Name.<br>Kontakta arrangörerna på ".$larp->getCampaign()->Email."för att prata med dem om vad du behöver göra för att få din karaktär godkänd.\n";

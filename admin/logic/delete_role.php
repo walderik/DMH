@@ -21,7 +21,7 @@ if (!isset($role)) {
     exit;
 }
 
-if ($role->isPC()) {
+if ($role->isPC($current_larp)) {
     header('Location: ../index.php'); //Spelarkaraktär
     exit;
 }

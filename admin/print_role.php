@@ -75,7 +75,7 @@ if ($role->isMysLajvare()) {
 		?>
 			
 			</tr>
-			<?php if ($role->isNPC()) {
+			<?php if ($role->isNPC($current_larp)) {
 			    echo "<tr><td valign='top' class='header'>Skapad av</td><td>".$role->getCreator()->getViewLink()."</td></tr>";
 			    
 			}?>

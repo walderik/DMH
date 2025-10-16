@@ -98,7 +98,7 @@ class IntrigueActor extends BaseModel{
         
         $role = $this->getRole();
         if (isset($role)) {
-            if ($role->isPC()) return LARP_Role::isRegistered($role->Id, $larp->Id);
+            if ($role->isPC($larp)) return LARP_Role::isRegistered($role->Id, $larp->Id);
             $assignment = NPC_assignment::getAssignment($role, $larp);
             return !empty($assignment);
         }

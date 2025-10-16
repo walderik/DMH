@@ -26,7 +26,7 @@ if (!$current_person->isGroupLeader($current_group)) {
 }
 
 $role = Role::loadById($RoleId);
-if ($role->isPC()) {
+if ($role->isPC($current_larp)) {
     $role->GroupId = null;
     $role->update();
 } else {

@@ -16,9 +16,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 
 $role = Role::loadById($RoleId);
-if ($role->isPC()) $person = $role->getPerson();
+$isPc = $role->isPC($current_larp);
 
-if ($role->isPC() && $person->Id != $current_person->Id) {
+if ($isPc) $person = $role->getPerson();
+
+if ($isPc && $person->Id != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
     exit;
 }
@@ -26,7 +28,7 @@ if ($role->isPC() && $person->Id != $current_person->Id) {
 $group = $role->getGroup();
 
 
-if ($role->isNPC()) {
+if ($role->isNPC($current_larp)) {
     $assignment = NPC_assignment::getAssignment($role, $current_larp);
     if (!empty($assignment) && ($assignment->PersonId == $current_person->Id)) {
         //Ok, du är tilldelad karaktären
@@ -123,7 +125,7 @@ include 'navigation.php';
 			<?php 
 			echo $role->Name;
     		//Karaktärsblad
-    		if ($role->isPC()) echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
+    		if ($isPc) echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
     		if ($role->userMayEdit()) echo " " . $role->getEditLinkPen(false);
 
     		?>
@@ -139,7 +141,7 @@ include 'navigation.php';
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
 		    if ($role->userMayEdit()) echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash'></i></a></td>\n";
 		    echo "</div>";
-		} elseif ($role->isNPC() && $role->userMayEdit()) {
+		} elseif ($role->isNPC($current_larp) && $role->userMayEdit()) {
 		    echo "<div class='itemcontainer'>";
 		    echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
 		    echo "</div>";
@@ -151,7 +153,7 @@ include 'navigation.php';
 		<?php echo ja_nej($role->isApproved());?>
 		</div>
 	
-		<?php if ($role->isPC()) {?>
+		<?php if ($isPc) {?>
    		<div class='itemcontainer'>
        	<div class='itemname'>Spelas av</div>
 		<?php echo $person->Name;?>
@@ -172,7 +174,7 @@ include 'navigation.php';
 		<?php echo $role->Profession;?>
 		</div>
 		
-		<?php if ($role->isPC() || !empty($assignment)) { ?>
+		<?php if ($isPc || !empty($assignment)) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning</div>
 	   <?php echo nl2br(htmlspecialchars($role->Description));?>
@@ -184,7 +186,7 @@ include 'navigation.php';
 		<?php echo nl2br(htmlspecialchars($role->DescriptionForGroup));?>
 		</div>
 		
-		<?php if ($role->isPC() || !empty($role->DescriptionForOthers)) { ?>
+		<?php if ($isPc || !empty($role->DescriptionForOthers)) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning för andra</div>
 	   <?php echo nl2br(htmlspecialchars($role->DescriptionForOthers));?>
@@ -227,7 +229,7 @@ include 'navigation.php';
 			   <?php } ?>
 			<?php } ?>
 
-		  <?php if ($role->isPC() ||  !empty($role->ReasonForBeingInSlowRiver)) { ?>
+		  <?php if ($isPc ||  !empty($role->ReasonForBeingInSlowRiver)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Varför befinner sig karaktären på platsen?</div>
 		   <?php echo nl2br($role->ReasonForBeingInSlowRiver);?>
@@ -287,14 +289,14 @@ include 'navigation.php';
 			   <?php } ?>
 			<?php }?>
 
-			<?php if ($role->isPC() ||  !empty($role->DarkSecret)) { ?>
+			<?php if ($isPc ||  !empty($role->DarkSecret)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Mörk hemlighet</div>
 		   <?php echo $role->DarkSecret;?>
 		   </div>
 		   <?php } ?>
 
-			<?php if ($role->isPC() ||  !empty($role->DarkSecretIntrigueIdeas)) { ?>
+			<?php if ($isPc ||  !empty($role->DarkSecretIntrigueIdeas)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Mörk hemlighet - intrig idéer</div>
 		   <?php echo nl2br(htmlspecialchars($role->DarkSecretIntrigueIdeas));?>
@@ -303,7 +305,7 @@ include 'navigation.php';
 			
 			
 			
-			<?php if ($role->isPC()) { ?>	
+			<?php if ($isPc) { ?>	
 				<?php if (IntrigueType::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
                	<div class='itemname'>Intrigtyper</div>
@@ -318,14 +320,14 @@ include 'navigation.php';
 		   </div>
 		   <?php } ?>
 
-		   <?php if ($role->isPC() ||  !empty($role->NotAcceptableIntrigues)) { ?>
+		   <?php if ($isPc ||  !empty($role->NotAcceptableIntrigues)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Saker karaktären inte vill spela på</div>
 		   <?php echo nl2br(htmlspecialchars($role->NotAcceptableIntrigues));?>
 		   </div>
 		   <?php } ?>
 
-			<?php if ($role->isPC() ||  !empty($role->CharactersWithRelations)) { ?>
+			<?php if ($isPc ||  !empty($role->CharactersWithRelations)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Relationer med andra</div>
 		   <?php echo nl2br(htmlspecialchars($role->CharactersWithRelations));?>
@@ -342,7 +344,7 @@ include 'navigation.php';
 				</div>
 			<?php } ?>
 			
-		   <?php if ($role->isPC() ||  !empty($role->Birthplace)) { ?>	
+		   <?php if ($isPc ||  !empty($role->Birthplace)) { ?>	
 		   <div class='itemcontainer'>
            <div class='itemname'>Var är karaktären född?</div>
 		   <?php echo $role->Birthplace;?>
@@ -461,8 +463,8 @@ include 'navigation.php';
 			            if (!empty($role_group)) {
 			                echo "<div>$role_group->Name</div>";
 			            }
-			            if ($known_role->isPC() && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";
-			            elseif ($known_role->isNPC() && !$known_role->isAssigned($current_larp)) echo "<div>Spelas inte</div>";
+			            if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";
+			            elseif ($known_role->isNPC($current_larp) && !$known_role->isAssigned($current_larp)) echo "<div>Spelas inte</div>";
 			            
 			            if ($known_role->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";

@@ -219,8 +219,8 @@ class Group_PDF extends PDF_MemImage {
                 $text = $role->Name; #, $y, $lovest_y, $realHeight, ".$this->GetPageHeight();
                 $role_group = $role->getGroup();
                 if (!empty($role_group)) $text .= "\n\r($role_group->Name)";
-                if ($role->isPC() && !$role->isRegistered($current_larp))  $text .= "\n\rSpelas inte";
-                elseif ($role->isNPC() && !$role->isAssigned($current_larp))  $text .= "\n\rSpelas inte";
+                if ($role->isPC($this->larp) && !$role->isRegistered($current_larp))  $text .= "\n\rSpelas inte";
+                elseif ($role->isNPC($this->larp) && !$role->isAssigned($current_larp))  $text .= "\n\rSpelas inte";
                 
                 $this->print_know_stuff($text, $image);
             }

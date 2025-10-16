@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "insert";
     if (isset($_GET['type'])) {
         if ($_GET['type'] == "npc") $role->PersonId = NULL;
-        if ($role->isNPC() && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
+        if (!$isPc && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
 
     }
     
@@ -44,16 +44,19 @@ if (!$role->userMayEdit()) {
     exit;
 }
 
-if ($role->isPC() && $operation == 'update' && $role->PersonId != $current_person->Id) {
+$isPc = $role->isPC($current_larp);
+
+if ($isPc && $operation == 'update' && $role->PersonId != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
     exit;
 }
 
 $group = $role->getGroup();
-if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group)) {
+if (!$isPc && !empty($group) && !$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group)) {
     header('Location: index.php'); //NPC som inte är med i din grupp
     exit;
 }
+
 
 
 function default_value($field) {
@@ -177,7 +180,7 @@ include 'navigation.php';
 		 ?>	
 	 </div>
 	<div class='itemcontainer'>
-	<?php if ($role->isPC()) { ?>
+	<?php if ($isPc) { ?>
 	Vi vill veta vilken karaktär du vill spela.<br />
 	Om du vill spela en av lajvets sökta karaktärer ber vi dig att kontakta arrangörerna innan du fyller i din anmälan.<br />
 	Tänk på att din karaktär också måste godkännas av arrangörerna.   <br>
@@ -192,7 +195,7 @@ include 'navigation.php';
 	<form action="logic/role_form_save.php" method="post">
 		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
 		<input type="hidden" id="Id" name="Id" value="<?php echo $role->Id; ?>">
-		<?php if ($role->isPC()) { ?>
+		<?php if ($isPc) { ?>
 		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $role->PersonId; ?>">
 		<?php }  ?>
 		<input type="hidden" id="CreatorPersonId" name="CreatorPersonId" value="<?php echo $role->CreatorPersonId; ?>">
@@ -210,7 +213,7 @@ include 'navigation.php';
 		
 		
 		$description = "Vad jobbar karaktären med för att överleva?";
-		if ($role->isPC()) {
+		if ($isPc) {
 		    $description.="<br>".
 		  		    "Vill du ha ett yrke som kan innebära en central karaktär i lajvet, 
 		          så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.<br>
@@ -226,7 +229,7 @@ include 'navigation.php';
 		    true,
 		    false);
 		
-    	if ($role->isPC()) {
+		if ($isPc) {
            $description = "Beskriv allt om karaktären som arrangörerna behöver veta.<br>
             Allt som karaktären har råkat ut för är sådan som kan påverka händelser i karaktärens framtid.
             Spelledningen försöker hitta på saker baserat på vad din karaktär har råkat ut för så 
@@ -251,7 +254,7 @@ include 'navigation.php';
 		$description = "Vad vet gruppen om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar.
 		      Gärna roliga anekdoter från förr. Och vad de i gruppen gillar med karaktären, eller inte gillar.
 		      Ju mer ni vet om varandra desto roligare spel kan ni få i gruppen.";
-		if ($role->isPC()) {
+		if ($isPc) {
 	       $description .= "<br><br>Efter att du är anmäld kan du gå in och titta på gruppen så får du se de andra som är anmälda och vad de har skrivit om sig. ";
 		}
 		print_participant_textarea(
@@ -265,7 +268,7 @@ include 'navigation.php';
 		
 	    $description = "Vad är allmänt känt om karaktären? Beskriv sådant som de flesta vet om eller kan ha hört om karaktären. 
             Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter mellan karaktärerna och då blir det roligare spel.";
-	    if ($role->isPC()) {
+	    if ($isPc) {
 	        $description .= "<br><br>
                 När du har en plats på lajvet kommer den här beskrivningen 
 	           att synas för alla andra som har plats på lajvet. <br>
@@ -282,7 +285,7 @@ include 'navigation.php';
 	        false);
 	    
   
-		if ($role->isNPC()) {  
+	    if ($role->isNPC($current_larp)) {  
 		    echo "<input type='hidden' id='GroupId' name='GroupId' value='$role->GroupId'>";
 		} else {
 		$description = "Finns inte din grupp med på anmälan ska du kontakta den som är ansvarig för din grupp och se till att den är anmäld innan du själv anmäler dig.    
@@ -331,7 +334,7 @@ include 'navigation.php';
 			    false);
 		}
 			
-		if ($role->isPC()) { 
+		if ($isPc) { 
 		    print_participant_question_start(
 		        "Vill du hålla dig i bakgrunden?",
 		        "Vill du lajva i bakgrunden, alltså inte få några skrivna intriger eller bli involverad i andras intriger? 
@@ -359,11 +362,11 @@ include 'navigation.php';
        			Är du ny på lajv? Vi rekommenderar då att du att du väljer ett alternativ som ger mycket intriger. 
        			Erfarenhetsmässigt brukar man som ny lajvare ha mer nytta av mycket intriger än en 
        			erfaren lajvare som oftast har enklare hitta på egna infall under lajvet.",
-		        $role->isPC(),
+		        $isPc,
 		        true,
 		        empty($role->LarperTypeId));
 		    LarperType::selectionDropdown($current_larp, false, true, $role->LarperTypeId);
-		    print_participant_question_end($role->isPC());
+		    print_participant_question_end($isPc);
 		    
 		    print_participant_text_input(
 		        "Kommentar till typ av lajvare",
@@ -382,7 +385,7 @@ include 'navigation.php';
         
 		if (Ability::isInUse($current_larp)) {
 		    $description = 'Specialförmågor är sådant som påverkar speltekniken. Exempelvis "tål ett extra slag", men inte "har bättre luktsinne". ';
-     		if ($role->isPC()) {
+		    if ($isPc) {
      		    $description .= "Om karaktären ska vara magi- eller alkemikunnig ska du innan din anmälan fått detta godkänt av magi-/alkemiarrangör, via e-post doh@berghemsvanner.se.
 			Nyheter i regelsystemen för alkemi och magi kommer upp på hemsidan och facebook-sidan.";
      		}
@@ -412,18 +415,18 @@ include 'navigation.php';
 		    "Birthplace",
 		    $role->Birthplace,
 		    "size ='100' maxlength='100'",
-		    $role->isPC(),
+            $isPc,
 		    true);
 
 		if (PlaceOfResidence::isInUse($current_larp)) {
 		    print_participant_question_start(
 		        "Var bor karaktären?",
 		        "Tänk typ folkbokföringsadress, dvs även om karaktären tillfälligt är på platsen så vill vi veta var karaktären har sitt hem.",
-		        $role->isPC(),
+		        $isPc,
 		        true,
 		        empty($role->PlaceOfResidenceId));
-		    PlaceOfResidence::selectionDropdown($current_larp, false, $role->isPC(), $role->PlaceOfResidenceId);
-		    print_participant_question_end($role->isPC());
+		    PlaceOfResidence::selectionDropdown($current_larp, false, $isPc, $role->PlaceOfResidenceId);
+		    print_participant_question_end($isPc);
 		}
 		
 		print_participant_textarea(
@@ -432,10 +435,10 @@ include 'navigation.php';
 		    "CharactersWithRelations",
 		    $role->CharactersWithRelations,
 		    "rows='4' maxlength='60000'",
-		    $role->isPC(),
+		    $isPc,
 		    true);
 
-		if ($role->isPC()) {
+		if ($isPc) {
 		    $headline = "Varför befinner sig karaktären på platsen?";
 		    $description = "Varför är karaktären på plats? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?";
 		}
@@ -450,18 +453,18 @@ include 'navigation.php';
 		    "ReasonForBeingInSlowRiver",
 		    $role->ReasonForBeingInSlowRiver,
 		    "rows='4' maxlength='60000'",
-		    $role->isPC(),
+		    $isPc,
 		    true);
 
 		if (Religion::isInUse($current_larp)) {
 		    print_participant_question_start(
 		        "Vilken religion har karaktären?",
 		        "Vissa religioner har bättre anseende än andra. Religionen kommer att påverka spel.",
-		        $role->isPC(),
+		        $isPc,
 		        true,
 		        empty($role->ReligionId));
-		    Religion::selectionDropdown($current_larp, false, $role->isPC(), $role->ReligionId);
-		    print_participant_question_end($role->isPC());
+		    Religion::selectionDropdown($current_larp, false, $isPc, $role->ReligionId);
+		    print_participant_question_end($isPc);
 		    
 		    print_participant_text_input(
 		        "Religion förklaring",
@@ -477,16 +480,16 @@ include 'navigation.php';
 		    print_participant_question_start(
 		        "Hur troende är karaktären?",
 		        "För vissa är religionen viktigare än andra. Hur är det för den här karaktären?",
-		        $role->isPC(),
+		        $isPc,
 		        true,
 		        empty($role->BeliefId));
-		    Belief::selectionDropdown($current_larp, false,$role->isPC(), $role->BeliefId);
-		    print_participant_question_end($role->isPC());
+		    Belief::selectionDropdown($current_larp, false,$isPc, $role->BeliefId);
+		    print_participant_question_end($isPc);
 		} 
 		
 		if (Wealth::isInUse($current_larp)) {
 		      $description = "";
-		      if ($role->isPC()) $description = "Om du är rik har du i regel ha någon form av affärer på gång. <br>
+		      if ($isPc) $description = "Om du är rik har du i regel ha någon form av affärer på gång. <br>
    			Det kommer att vara ett begränsat antal stenrika på lajvet och vi godkänner i regel inte nya. 
    			Undantag kan naturligtvis förekomma om det gynnar lajvet.   
    			Däremot är $campaign->Name en kampanj så det går att spela sig till att bli stenrik. 
@@ -495,11 +498,11 @@ include 'navigation.php';
 		      print_participant_question_start(
 		          "Hur rik är karaktären?",
 		          $description,
-		          $role->isPC(),
+		          $isPc,
 		          true,
 		          empty($role->WealthId));
-		      Wealth::selectionDropdown($current_larp, false,$role->isPC(), $role->WealthId);
-		      print_participant_question_end($role->isPC());
+		      Wealth::selectionDropdown($current_larp, false,$isPc, $role->WealthId);
+		      print_participant_question_end($isPc);
 		      
 		}
 		 
@@ -523,7 +526,7 @@ include 'navigation.php';
 		        true);
 		} 
 		
-		if ($role->isPC()) { 
+		if ($isPc) { 
 		    print_participant_textarea(
 		        "Intrigideer",
 		        "Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara 'Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar.'",
@@ -564,7 +567,7 @@ include 'navigation.php';
 		    "DarkSecret",
 		    $role->DarkSecret,
 		    "rows='4' maxlength='60000'",
-		    $role->isPC(),
+		    $isPc,
 		    true);
 
 		print_participant_text_input(
@@ -573,7 +576,7 @@ include 'navigation.php';
 		    "DarkSecretIntrigueIdeas",
 		    $role->DarkSecretIntrigueIdeas,
 		    "size='100' maxlength='200'",
-		    $role->isPC(),
+		    $isPc,
 		    true);
 
 		print_participant_textarea(
@@ -598,7 +601,7 @@ include 'navigation.php';
 			<div class='center'>
 			<input type='<?php echo $type ?>' name='SaveButton' class='button-18' value='<?php echo default_value('action') ?>'>
 			<?php 
-			if ($role->isNPC() || $role->isRegistered($current_larp)) {
+			if (!$isPc || $role->isRegistered($current_larp)) {
 			    echo "<button type='$type' name='SaveAndLockButton' value='1' class='button-18'><i class='fa-solid fa-share'></i> ";
 			    default_value('action');
 			    echo " och skicka in för godkännande</button>";

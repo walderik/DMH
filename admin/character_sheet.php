@@ -27,7 +27,7 @@ if (isset($_GET['id'])) {
     if (empty($role)) {
         header('Location: index.php'); // Karaktären finns inte
         exit;
-    } elseif ($role->isPC() && !$role->isRegistered($current_larp)) {
+    } elseif ($role->isPC($current_larp) && !$role->isRegistered($current_larp)) {
         header('Location: index.php'); // Karaktären är inte anmäld
         exit;
     }

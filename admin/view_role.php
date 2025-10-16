@@ -273,8 +273,8 @@ include 'navigation.php';
                if (!empty($role_group)) {
                    echo "<div>$role_group->Name</div>";
                }
-               if ($known_role->isPC() && !$known_role->isRegistered($current_larp)) echo "Inte anmäld";
-               elseif ($known_role->isNPC()) {
+               if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "Inte anmäld";
+               elseif ($known_role->isNPC($current_larp)) {
                    $assignment = NPC_assignment::getAssignment($known_role, $current_larp);
                    if (!empty($assignment)) {
                        $person = $assignment->getPerson();

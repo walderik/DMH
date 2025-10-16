@@ -130,7 +130,7 @@ include 'navigation.php';
     		        
 
     		        echo $role->getViewLink() . " - " . $role->Profession . " " . $role_group_name;
-    		        if ($role->isPC() && LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
+    		        if ($role->isPC($current_larp) && LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
     		            echo ", Sidokaraktär";
     		        }
 					echo " ";
