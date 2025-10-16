@@ -12,7 +12,7 @@ function subFunction() {
 </script>
 
 <div class="topnav" id="subTopnav">
-    <div class="left">
+    <div class="right">
 
         <a href="intrigue_creator_page.php">Intrigskapare</a>
         <a href="intrigue_admin.php">Intrigspår</a>

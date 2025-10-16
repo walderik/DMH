@@ -12,7 +12,7 @@ function subFunction() {
 </script>
 
 <div class="topnav" id="subTopnav">
-    <div class="left">
+    <div class="right">
         <a href="npc.php"><i class="fa-solid fa-house"></i> NPC</a>
         <a href="npc_overview.php">Alla</a>
         <a href="npc_participants.php">Deltagare som vill spela</a>

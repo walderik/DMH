@@ -12,7 +12,7 @@ function subFunction() {
 </script>
 
 <div class="topnav" id="subTopnav">
-    <div class="left">
+    <div class="right">
         <a href="alchemy.php"><i class="fa-solid fa-house"></i> Alkemi</a>
         <a href="alchemy_essence_admin.php">Essenser</a>
         <a href="alchemy_ingredient_admin.php">Ingredienser</a>
