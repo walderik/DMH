@@ -286,7 +286,7 @@ function openTab(evt, tabName) {
         		    if (!$role_group->isRegistered($current_larp)) $role_group_name .= " <a href='group_registration_form.php?id=$role_group->Id'><button class='button-18'>Anmäl gruppen</button></a>";
         		    
         		}
-        		echo $role_group_name;
+        		echo "<b>Grupp:</b> $role_group_name";
         		echo "<br>";
         		
         		//Specialkunskaper
@@ -312,11 +312,15 @@ function openTab(evt, tabName) {
         		//Grupperingar
         		$subdivisions = Subdivision::allVisibleForRole($role, $current_larp);
         		if (!empty($subdivisions)) {
+        		    
         		    $subdivisionLinks = array();
         		    foreach ($subdivisions as $subdivision) {
         		        $subdivisionLinks[] = "<a href='view_subdivision.php?id=$subdivision->Id'>$subdivision->Name</a>";
         		    }
-        		    if (!empty($subdivisionLinks)) echo implode(", ", $subdivisionLinks)."<br>";
+        		    if (!empty($subdivisionLinks)) {
+        		        echo "<b>Grupperingar:</b> ";
+        		        echo implode(", ", $subdivisionLinks)."<br>";
+        		    }
         		}
         		
         		
@@ -735,13 +739,15 @@ function openTab(evt, tabName) {
     	
     	
     	<?php 
-	  //Annonser	
-      $adtypes = AdvertismentType::allActive($current_larp);
+	   //Annonser	
+       $adtypes = AdvertismentType::allActive($current_larp);
        if (!empty($adtypes)) {
            echo "<div class='itemselector'>";
            echo "<div class='header'>";
            
            echo "<i class='fa-solid fa-bullhorn'></i> Annonser";
+          // echo "<font style='color:red'><i class='fa-solid fa-bullhorn'></i></font>";
+           help_icon("Annonser från deltagare till deltagare.");
            echo "</div>";
            echo "<div class='itemcontainer'>";
            

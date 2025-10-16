@@ -84,7 +84,7 @@ ul.list {
 
 		<?php if ($house->IsHouse() && !empty(trim($house->NotesToUsers))) {?>
      	   <div class='itemcontainer'>
-           <div class='itemname'>Information om att bo i huset</div>
+           <div class='itemname'>Brev till deltagare som bor i huset</div>
     	   <?php echo nl2br(htmlspecialchars($house->NotesToUsers)); ?>
     	   </div>
 		<?php } ?>
