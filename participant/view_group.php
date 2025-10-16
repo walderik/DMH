@@ -432,7 +432,6 @@ include 'navigation.php';
 			        $temp=0;
 			        $cols=5;
 			        foreach ($known_groups as $known_group) {
-			            if ($known_group->hasInvisibility()) continue;
 			            echo "<li style='display:table-cell; width:19%;'>";
 			            echo "<div class='name'>$known_group->Name</div>";
 			            echo "<div>Grupp</div>";

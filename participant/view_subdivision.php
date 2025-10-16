@@ -208,7 +208,6 @@ include 'navigation.php';
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
 			        foreach ($known_groups as $known_group) {
-			            if ($known_group->hasInvisibility()) continue;
 			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
 			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'>$known_group->Name</div>";

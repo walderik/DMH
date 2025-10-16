@@ -145,8 +145,45 @@ include 'navigation.php';
     		}
     		?>
     		<br>
-			<input type="submit" value="<?php echo $purpose;?>"></form>
+			<input type="submit" value="<?php echo $purpose;?>">
         
+        	<?php 
+        	$npc_groups = Group::getAllHiddenGroups($current_larp->CampaignId);
+        	if (empty($npc_groups)) {
+    		} else {
+    		    
+    		    ?>
+    		    <h2>Gömda grupper</h2>
+    		    <form action="<?php echo $url;?>" method="post">
+    		    <input type="hidden" id="operation" name="operation" value="<?php echo $operation;?>">
+    		    <?php 
+    		    if (isset($id)) {
+    		        echo "<input type='hidden' id='id' name='id' value='$id'>";
+    		        echo "<input type='hidden' id='Id' name='Id' value='$id'>";
+    		    }    
+    		    if (isset($_POST['2ndReferer'])) {
+    		        echo "<input type='hidden' id='2ndReferer' name='2ndReferer' value='".$_POST['2ndReferer']."'>";
+    		    }
+    		    
+    		    
+    		    ?> 
+    			<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
+    		    <table class='data'>
+    		    <tr><th>Namn</th>
+    		    </tr>
+    		    <?php 
+    		    foreach ($npc_groups as $group)  {
+    		        echo "<tr>\n";
+    		        echo "<td><input type='$type' id='Group$group->Id' name='GroupId$array' value='$group->Id'>";
+
+    		        echo "<label for='Group$group->Id'>$group->Name</label></td>\n";
+    		        echo "</tr>\n";
+    		    }
+    		    echo "</table>";
+    		}
+    		?>
+    		<br>
+			<input type="submit" value="<?php echo $purpose;?>"></form>
         
         
 	</div>
