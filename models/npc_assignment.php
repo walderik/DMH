@@ -182,7 +182,7 @@ class NPC_assignment extends BaseModel{
     }
 
     public static function getReleasedAssignmentForPerson(Person $person, Larp $larp) {
-        $sql = "SELECT * FROM regsys_npc_assignment WHERE PersonId = ? and LarpId = ? And IsRelease=1";
+        $sql = "SELECT * FROM regsys_npc_assignment WHERE PersonId = ? and LarpId = ? And IsReleased=1";
         return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
     }
     
