@@ -11,8 +11,10 @@ function subFunction() {
 
 </script>
 
+
+
 <div class="topnav" id="subTopnav">
-    <div class="right">
+    <div style="float: right;">	  
         <a href="npc.php"><i class="fa-solid fa-house"></i> NPC</a>
         <a href="npc_overview.php">Alla</a>
         <a href="npc_participants.php">Deltagare som vill spela</a>
@@ -20,9 +22,6 @@ function subFunction() {
         <a href="npc_hidden_groups.php">Gömda grupper</a>
         <a href="edit_role.php?action=insert&type=npc"><i class="fa-solid fa-file-circle-plus"></i>Skapa NPC</a>&nbsp;  
         <a href="edit_group.php?operation=insert&hidden=1"><i class="fa-solid fa-file-circle-plus"></i>Skapa grupp</a>  
-        
-    </div>
-    <div class="right">	  
     	<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="subFunction()">&#9776;</a>
     
 	</div>
