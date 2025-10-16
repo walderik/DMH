@@ -148,7 +148,7 @@ include 'navigation.php';
 			else {
 			    echo "NPC";
 			    $assignment = NPC_assignment::getAssignment($role, $current_larp);
-			    if (empty($assignment)) {
+			    if ($operation == 'update' && empty($assignment)) {
 			        echo "<br><a href='turn_into_pc.php?RoleId=$role->Id'>Gör om till spelarkaraktär<a><br>";
 			    }
 			}
