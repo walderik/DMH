@@ -173,14 +173,19 @@ include 'navigation.php';
 		<?php if (Wealth::isInUse($current_larp)) {?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Rikedom</div>
-    	   <?php echo $group->getWealth()->Name; ?>
+    	   <?php 
+    	   $wealth = $group->getWealth();
+    	   if (!empty($wealth)) echo $wealth->Name; 
+    	   ?>
     	   </div>
 		<?php }?>
 		
 		<?php if (PlaceOfResidence::isInUse($current_larp)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Var bor gruppen?</div>
-    	   <?php echo $group->getPlaceOfResidence()->Name; ?>
+    	   <?php 
+    	   $por = $group->getPlaceOfResidence();
+    	   if (!empty($por)) echo $group->getPlaceOfResidence()->Name; ?>
     	   </div>
 		<?php }?>
 
@@ -188,14 +193,18 @@ include 'navigation.php';
 		<?php if (GroupType::isInUse($current_larp)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Typ av grupp</div>
-    	   <?php echo $group->getGroupType()->Name; ?>
+    	   <?php 
+    	   $gt = $group->getGroupType();
+    	   if (!empty($gt)) echo $gt->Name; ?>
     	   </div>
 		<?php }?>
 
 		<?php if (ShipType::isInUse($current_larp)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Typ av skepp</div>
-    	   <?php echo $group->getShipType()->Name; ?>
+    	   <?php 
+    	   $st = $group->getShipType();
+    	   if (!empty($st)) echo $st->Name; ?>
     	   </div>
 		<?php }?>
 		
@@ -423,6 +432,7 @@ include 'navigation.php';
 			        $temp=0;
 			        $cols=5;
 			        foreach ($known_groups as $known_group) {
+			            if ($known_group->hasInvisibility()) continue;
 			            echo "<li style='display:table-cell; width:19%;'>";
 			            echo "<div class='name'>$known_group->Name</div>";
 			            echo "<div>Grupp</div>";
@@ -442,7 +452,7 @@ include 'navigation.php';
 			            echo "<li style='display:table-cell; width:19%;'>";
 			            echo "<div class='name'>$known_role->Name</div>";
 			            $role_group = $known_role->getGroup();
-			            if (!empty($role_group)) {
+			            if (!empty($role_group) && !$role_group->hasInvisibility()) {
 			                echo "<div>$role_group->Name</div>";
 			            }
 			            if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";

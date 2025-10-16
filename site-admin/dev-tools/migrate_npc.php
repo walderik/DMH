@@ -83,6 +83,7 @@ function convertNPC(NPC $npc) {
         if (empty($npc->Description)) $npc->Description = "";
         $role->Description = $npc->Description;
         $role->IsApproved = 1;
+        $role->UserMayEdit = 0;
         $role->CreatorPersonId = $current_person->Id;
         $role->Profession = substr($npc->Description, 0, 50);
         

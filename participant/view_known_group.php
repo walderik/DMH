@@ -19,9 +19,8 @@ if ($group->CampaignId != $current_larp->CampaignId) {
     exit;
 }
 
-
-if (!$group->isRegistered($current_larp)) {
-    header('Location: index.php?error=not_registered'); //Gruppen är inte anmäld
+if ($group->hasInvisibility()) {
+    header('Location: index.php?error=not_registered'); //Gruppen är osynlig för deltagare
     exit;
 }
 

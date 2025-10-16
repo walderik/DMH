@@ -710,7 +710,7 @@ function openTab(evt, tabName) {
     	        }
     	        
     	        $npc_group = $npc_role->getGroup();
-    	        if (!empty($group)) {
+    	        if (!empty($npc_group)) {
     	            echo "<br>".$npc_group->getViewLink();
     	        }
     	        echo "</div>";

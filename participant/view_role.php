@@ -27,12 +27,12 @@ if ($isPc && $person->Id != $current_person->Id) {
 
 $group = $role->getGroup();
 
-
+$isAssignedToMe = false;
 if ($role->isNPC($current_larp)) {
     $assignment = NPC_assignment::getAssignment($role, $current_larp);
     if (!empty($assignment) && ($assignment->PersonId == $current_person->Id)) {
-        //Ok, du är tilldelad karaktären
-    } elseif (!empty($group) && $current_person->isMemberGroup($group)) {
+        $isAssignedToMe = true;
+    } elseif (!empty($group) && ($current_person->isMemberGroup($group) || $current_person->hasNPCInGroup($group, $current_larp))) {
         //Ok, din grupp
     } else {
         header('Location: index.php'); //NPC som inte är din och inte är med i din grupp
@@ -135,13 +135,12 @@ include 'navigation.php';
 		<?php 
 		if ($role->hasImage()) {
 		    echo "<div class='itemcontainer'>";
-		    
 		    $image = Image::loadById($role->ImageId);
 		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-		    if ($role->userMayEdit()) echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash'></i></a></td>\n";
+		    if ($isPc || $isAssignedToMe || (!$isPc && $role->userMayEdit())) echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash'></i></a></td>\n";
 		    echo "</div>";
-		} elseif ($role->isNPC($current_larp) && $role->userMayEdit()) {
+		} elseif ($isPc || $isAssignedToMe || (!$isPc && $role->userMayEdit())) {
 		    echo "<div class='itemcontainer'>";
 		    echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
 		    echo "</div>";
@@ -158,10 +157,20 @@ include 'navigation.php';
        	<div class='itemname'>Spelas av</div>
 		<?php echo $person->Name;?>
 		</div>
-		<?php }?>
+		<?php } elseif ($isAssignedToMe) { ?>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>När ska NPC's spelas</div>
+		<?php echo $assignment->Time;?>
+		</div>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Instruktioner</div>
+		<?php echo $assignment->Instructions;?>
+		</div>
+		
+		<?php } ?>
 			
 
-		<?php if (isset($group)) {?>
+		<?php if (isset($group) && !$group->hasInvisibility()) {?>
 			   <div class='itemcontainer'>
                <div class='itemname'>Grupp</div>
 		
@@ -174,7 +183,7 @@ include 'navigation.php';
 		<?php echo $role->Profession;?>
 		</div>
 		
-		<?php if ($isPc || !empty($assignment)) { ?>
+		<?php if ($isPc || $isAssignedToMe) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning</div>
 	   <?php echo nl2br(htmlspecialchars($role->Description));?>
@@ -372,7 +381,7 @@ include 'navigation.php';
 		</div>
 		
 		<?php 
-		if (isset($larp_role) || isset($assignment)) {
+		if ($isPc || $isAssignedToMe) {
 		?>
 		<div class='itemselector'>
 		<div class="header">
@@ -439,6 +448,7 @@ include 'navigation.php';
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
 			        foreach ($known_groups as $known_group) {
+			            if ($known_group->hasInvisibility()) continue;
 			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
 			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'><a href='view_known_group.php?id=$known_group->Id'>$known_group->Name</a></div>";
@@ -460,7 +470,7 @@ include 'navigation.php';
 			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'><a href='view_known_role.php?id=$known_role->Id'>$known_role->Name</a></div>";
 			            $role_group = $known_role->getGroup();
-			            if (!empty($role_group)) {
+			            if (!empty($role_group) && !$role_group->hasInvisibility()) {
 			                echo "<div>$role_group->Name</div>";
 			            }
 			            if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";

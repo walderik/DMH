@@ -20,7 +20,7 @@ if ($role->CampaignId != $current_larp->CampaignId) {
     exit;
 }
 
-if (!$role->isRegistered($current_larp)) {
+if (!$role->isRegistered($current_larp) && $role->isPc($current_larp)) {
     header('Location: index.php'); // karaktären är inte anmäld
     exit;
 }
@@ -62,7 +62,7 @@ include 'navigation.php';
 		?>
 		</div>
 
-		<?php if (isset($group)) {?>
+		<?php if (isset($group) && !$group->hasInvisibility()) {?>
        		<div class='itemcontainer'>
            	<div class='itemname'>Grupp</div>
     		<a href ="view_known_group.php?id=<?php echo $group->Id;?>"><?php echo $group->Name; ?></a>

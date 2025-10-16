@@ -178,7 +178,7 @@ function printKnownActor(IntrigueActor $knownIntrigueActor, $intrigueActor, $sec
             echo "<div>$role_group->Name</div>";
         }
         
-        if ($role->isNPC($current_larp)) {
+        if ($role->isNPC($larp)) {
             echo "<div>";
             $assignment = NPC_assignment::getAssignment($role, $larp);
             if (!empty($assignment)) {
