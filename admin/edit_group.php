@@ -23,8 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } elseif ($operation == 'update') {
         $GroupId = $_GET['id'];
         $group = Group::loadById($GroupId);
-        if (!$group->isRegistered($current_larp)) {
-            header('Location: index.php'); //Gruppen är inte anmäld
+        if ($group->CampaignId != $current_larp->CampaignId) {
+            header('Location: index.php'); //Gruppen är inte i denna kampanjen
             exit;
         }
         
@@ -224,7 +224,7 @@ include 'navigation.php';
 			<?php } ?>
 
 
-
+			<?php if (!empty($larp_group)) {?>
 			<tr><td valign="top" class="header">Intrig&nbsp;<font style="color:red">*</font></td>
 			<td>
 				<input type="radio" id="WantIntrigue_yes" name="WantIntrigue" value="1" <?php if ($larp_group->WantIntrigue == 1) echo 'checked="checked"'?>> 
@@ -232,6 +232,7 @@ include 'navigation.php';
     			<input type="radio" id="WantIntrigue_no" name="WantIntrigue" value="0" <?php if ($larp_group->WantIntrigue == 0) echo 'checked="checked"'?>> 
     			<label for="WantIntrigue_no">Nej</label>
 			</td></tr>
+			<?php } ?>
 
 			<?php if (IntrigueType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Intrigtyper</td>
@@ -285,6 +286,7 @@ include 'navigation.php';
     			<input type="radio" id="NeedFireplace_no" name="NeedFireplace" value="0" <?php if ($larp_group->NeedFireplace == 0) echo 'checked="checked"'?>> 
     			<label for="NeedFireplace_no">Nej</label>
 			</td></tr>
+
 			
 			<tr class='registration'><td valign="top" class="header">Typ av tält</td>
 			<td><input class="input_field" type="text" id="TentType" name="TentType"  maxlength="200" value="<?php echo htmlspecialchars($larp_group->TentType); ?>"></td></tr>

@@ -167,16 +167,20 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Vänner</td><td><?php echo $group->Friends;?></td></tr>
 			<tr><td valign="top" class="header">Fiender</td><td><?php echo $group->Enemies;?></td></tr>
 			<?php if (Wealth::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Rikedom</td><td><?php echo $group->getWealth()->Name;?></td></tr>
+			<tr><td valign="top" class="header">Rikedom</td>
+			<td><?php $wealth=$group->getWealth(); if (!empty($walth)) echo $wealth->Name;?></td></tr>
 			<?php } ?>
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Var bor gruppen?</td><td><?php echo $group->getPlaceOfResidence()->Name;?></td></tr>
+			<tr><td valign="top" class="header">Var bor gruppen?</td>
+			<td><?php $por=$group->getPlaceOfResidence(); if (!empty($por)) echo $por->Name;?></td></tr>
 			<?php } ?>
 			<?php if (GroupType::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Typ av grupp</td><td><?php echo $group->getGroupType()->Name; ?></td></tr>
+			<tr><td valign="top" class="header">Typ av grupp</td>
+			<td><?php $gt=$group->getGroupType(); if (!empty($gt)) echo $gt->Name; ?></td></tr>
 			<?php }?>
 			<?php if (ShipType::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Typ av skepp</td><td><?php echo $group->getShipType()->Name; ?></td></tr>
+			<tr><td valign="top" class="header">Typ av skepp</td>
+			<td><?php $st=$group->getShipType(); if (!empty($st)) echo $st->Name; ?></td></tr>
 			<?php }?>
 			<?php if ($current_larp->getCampaign()->is_me()) { ?>
 			<tr><td valign="top" class="header">Färg</td><td><?php echo $group->Colour; ?></td></tr>

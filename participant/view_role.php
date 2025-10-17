@@ -170,7 +170,7 @@ include 'navigation.php';
 		<?php } ?>
 			
 
-		<?php if (isset($group) && !$group->hasInvisibility()) {?>
+		<?php if (isset($group) && (!$group->hasInvisibility() || !$isAssignedToMe || !$role->PersonId==$current_person->Id)) {?>
 			   <div class='itemcontainer'>
                <div class='itemname'>Grupp</div>
 		
