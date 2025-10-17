@@ -20,6 +20,33 @@ if (sizeof($current_participating_larp_array) == 1 && str_contains($referer, '/i
 }
 $current_larp = null;
 
+$section = 0;
+
+function print_past_larps($larps) {
+    global $section;
+    $section ++;
+    $campaignIds = array();
+    foreach ($larps as $larp) $campaignIds[] = $larp->CampaignId;
+    $campaignIds = array_unique($campaignIds);
+    
+    echo "<form action='../includes/set_larp.php' method='POST'>";
+    foreach ($campaignIds as $campaignId) {
+        $campaign = Campaign::loadById($campaignId);
+        echo "<div class='pastlarpheader'>$campaign->Name</div>";
+        foreach ($larps as $larp) {
+            if ($larp->CampaignId != $campaign->Id) continue;
+            echo "<input type='radio' id='pastlarp_".$larp->Id."_".$section."' name='larp' value='$larp->Id'>";
+            echo "<label for='pastlarp_".$larp->Id."_".$section."'>$larp->Name</label><br>\n";
+        }
+        
+    }
+    
+    echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
+    echo "<br><hr>";
+    echo "</form>";
+}
+
+
 include "navigation.php";
 
 ?>
@@ -40,6 +67,15 @@ div.border
     -moz-border-radius: 15px;
 }
 
+
+.pastlarpheader  {
+    display: block;
+    margin-block-start: 0.5em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    unicode-bidi: isolate;
+}
 
 </style>
 
@@ -142,15 +178,7 @@ div.border
 				</div>   
 	    		<div class='itemcontainer'>
       			<?php  
-      			echo "<form action='../includes/set_larp.php' method='POST'>";
-      			foreach (array_reverse($past_larp_array) as $larp) {
-      			    echo "<input type='radio' id='pastlarp_$larp->Id' name='larp' value='$larp->Id'>";
-      			    echo "<label for='pastlarp_$larp->Id'>$larp->Name</label><br>\n";
-     			     }
-    			     echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
-    			     echo "<br><hr>";
-    			 }
-    			 echo "</form>";
+      			print_past_larps(array_reverse($past_larp_array));
     			 
     			 ?>
     			 </div>
@@ -189,13 +217,7 @@ div.border
         			 echo "</div>";
         			 
         			 echo "<div class='itemcontainer'>";
-        			 echo "<form action='../includes/set_larp.php' method='POST'>";
-        			 foreach (array_reverse($larps_organizer) as $larp) {
-        			     echo "<input type='radio' id='orglarp_$larp->Id' name='larp' value='$larp->Id'>";
-        			     echo "<label for='orglarp_$larp->Id'>$larp->Name</label><br>\n";
-        			 }
-        			 echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
-        			 echo "</form>";
+        			 print_past_larps(array_reverse($larps_organizer));
         			 echo "</div>";
         			 echo "</div>";
     			 
@@ -216,20 +238,14 @@ div.border
     			     echo "</div>";
     			     
     			     echo "<div class='itemcontainer'>";
-    			     echo "<form action='../includes/set_larp.php' method='POST'>";
     			     $larps = LARP::all();
-    			     foreach (array_reverse($larps) as $larp) {
-    			         echo "<input type='radio' id='omlarp_$larp->Id' name='larp' value='$larp->Id'>";
-    			         echo "<label for='omlarp_$larp->Id'>$larp->Name</label><br>\n";
-    			     }
-    			     echo "<div class='center'><button class='button-18' type='submit'>Välj</button></div>";
-    			     echo "</form>";
+    			     print_past_larps(array_reverse($larps));
     			     echo "</div>";
     			     echo "</div>";
     			     
     			 }
     			 
-    			 
+    			 }
     			 ?>
 			 </div>
 			 <script>
@@ -250,3 +266,4 @@ div.border
 			</script>
 	</body>
 </html>
+
