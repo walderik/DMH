@@ -20,7 +20,11 @@ if (sizeof($current_participating_larp_array) == 1 && str_contains($referer, '/i
 }
 $current_larp = null;
 
+$section = 0;
+
 function print_past_larps($larps) {
+    global $section;
+    $section ++;
     $campaignIds = array();
     foreach ($larps as $larp) $campaignIds[] = $larp->CampaignId;
     $campaignIds = array_unique($campaignIds);
@@ -31,8 +35,8 @@ function print_past_larps($larps) {
         echo "<div class='pastlarpheader'>$campaign->Name</div>";
         foreach ($larps as $larp) {
             if ($larp->CampaignId != $campaign->Id) continue;
-            echo "<input type='radio' id='pastlarp_$larp->Id' name='larp' value='$larp->Id'>";
-            echo "<label for='pastlarp_$larp->Id'>$larp->Name</label><br>\n";
+            echo "<input type='radio' id='pastlarp_".$larp->Id."_".$section."' name='larp' value='$larp->Id'>";
+            echo "<label for='pastlarp_".$larp->Id."_".$section."'>$larp->Name</label><br>\n";
         }
         
     }
@@ -63,7 +67,8 @@ div.border
     -moz-border-radius: 15px;
 }
 
-.pastlarpheader {
+
+.pastlarpheader  {
     display: block;
     margin-block-start: 0.5em;
     margin-inline-start: 0px;
