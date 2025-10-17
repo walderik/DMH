@@ -117,6 +117,7 @@ if (isset($previous_larps) && count($previous_larps) > 0) {
             if (isset($previous_assignment->WhatHappendToOthers) && $previous_assignment->WhatHappendToOthers != "")
                 echo nl2br(htmlspecialchars($previous_assignment->WhatHappendToOthers));
             else echo "Inget rapporterat";
+            echo "</div>";
         }
         
     }

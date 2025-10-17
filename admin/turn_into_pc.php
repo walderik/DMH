@@ -60,7 +60,7 @@ include 'npc_navigation.php';
 
 
 		</table>		
-			<input type="submit" value="Gör om <?php  echo $role->Name?> til spelarkaraktär">
+			<input type="submit" value="Gör om <?php  echo $role->Name?> till spelarkaraktär">
 
 			</form>
 

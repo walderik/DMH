@@ -631,24 +631,25 @@ include 'navigation.php';
                     echo "</div>";
 		        } elseif (isset($previous_assignment)) {
 		            echo "<p><strong>Vad hände för $role->Name?</strong><br>";
-		            if (isset($previous_assignment->WhatHappened) && $previous_assignment->WhatHappened != "")
+		            if (isset($previous_assignment->WhatHappened) && $previous_assignment->WhatHappened != "") {
 		                echo nl2br(htmlspecialchars($previous_assignment->WhatHappened));
-		                else echo "Inget rapporterat";
-		                echo "</p>";
-		                echo "<p><strong>Vad hände för andra?</strong><br>";
-		                if (isset($previous_assignment->WhatHappendToOthers) && $previous_assignment->WhatHappendToOthers != "")
-		                    echo nl2br(htmlspecialchars($previous_assignment->WhatHappendToOthers));
-		                    else echo "Inget rapporterat";
-		                    echo "</p>";
+		            } else echo "Inget rapporterat";
+	                echo "</p>";
+	                echo "<p><strong>Vad hände för andra?</strong><br>";
+	                if (isset($previous_assignment->WhatHappendToOthers) && $previous_assignment->WhatHappendToOthers != "") {
+	                    echo nl2br(htmlspecialchars($previous_assignment->WhatHappendToOthers));
+	                } else echo "Inget rapporterat";
+                    echo "</p>";
+                    echo "</div>";
 		        }
 		                
+
 		    }
 		    
 		    if (!empty($role->PreviousLarps)) {
 		        echo "<div class='border'><h3>Tidigare</h3>";
 		        echo "<p>".nl2br(htmlspecialchars($role->PreviousLarps))."</p></div>";
 		    }
-		    echo "</div>";
 		    echo "</div>";
 		}
 			    
