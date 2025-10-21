@@ -15,14 +15,10 @@ if (empty($current_person) && !$admin) {
 $role = Role::newWithDefault();
 $role->PersonId = $current_person->Id;
 $role->CreatorPersonId = $current_person->Id;
+$isPc = true;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $operation = "insert";
-    if (isset($_GET['type'])) {
-        if ($_GET['type'] == "npc") $role->PersonId = NULL;
-        if (!$isPc && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
-
-    }
     
     if (isset($_GET['operation'])) {
         $operation = $_GET['operation'];
@@ -31,8 +27,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     }
     if ($operation == 'insert') {
+        if (isset($_GET['type'])) {
+            if ($_GET['type'] == "npc") {
+                $role->PersonId = NULL;
+                $isPc = false;
+            }
+            if (!$isPc && isset($_GET['groupId'])) $role->GroupId = $_GET['groupId'];
+            
+        }
     } elseif ($operation == 'update') {
         $role = Role::loadById($_GET['id']);
+        $isPc = $role->isPC($current_larp);
     } else {
     }
 }
@@ -44,7 +49,7 @@ if (!$role->userMayEdit()) {
     exit;
 }
 
-$isPc = $role->isPC($current_larp);
+
 
 if ($isPc && $operation == 'update' && $role->PersonId != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
