@@ -395,7 +395,7 @@ include 'navigation.php';
 		<div class='itemcontainer'>
 			<?php 
 			if ($current_larp->isIntriguesReleased()) {
-			    echo "<p>".nl2br($larp_group->Intrigue) ."</p>"; 
+			    if (!empty($larp_group) && !empty($larp_group->Intrigue)) echo "<p>".nl2br($larp_group->Intrigue) ."</p>"; 
 			    
 			    
 			    $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
