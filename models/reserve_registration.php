@@ -273,6 +273,7 @@ class Reserve_Registration extends BaseModel{
             $larp_role = LARP_Role::newWithDefault();
             $larp_role->LARPId = $reserve_larp_role->LARPId;
             $larp_role->RoleId = $reserve_larp_role->RoleId;
+            $larp_role->PersonId = $this->PersonId;
             $larp_role->IsMainRole = $reserve_larp_role->IsMainRole;
             $larp_role->create();
         }

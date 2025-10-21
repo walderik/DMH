@@ -83,7 +83,7 @@ include 'navigation.php';
 
 			</form>
 		<?php 
-		$previous_larps = $role->getPreviousLarps();
+		$previous_larps = $role->getPreviousLarps($current_larp);
 		if (isset($previous_larps) && count($previous_larps) > 0) {
 		    
 		    echo "<h2>Historik</h2>";

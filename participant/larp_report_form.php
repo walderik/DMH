@@ -10,9 +10,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
        $larp_role  = LARP_Role::loadByIds($role->Id, $current_larp->Id);
        
        
-       if ($role->PersonId != $current_person->Id) {
+       if ($role->isPC($current_larp) && ($role->PersonId != $current_person->Id)) {
            header('Location: index.php?error=not_yours'); //Inte din karaktär
            exit;
+       }
+       if ($role->isNPC($current_larp)) {
+           $assignment = NPC_assignment::getAssignment($role, $current_larp);
+           if (empty($assignment) || ($assignment->PersonId != $current_person->Id)) {
+               header('Location: index.php'); //NPC är inte är din
+               exit;
+           }
        }
        
        $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
@@ -51,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
      
 
-if (!isset($intrigueActors) or (!isset($larp_role) and !isset($larp_group))) {
+if (!isset($intrigueActors) or (!isset($larp_role) and !isset($larp_group) and !isset($assignment))) {
     header('Location: index.php');
     exit;
 }
@@ -89,7 +96,7 @@ textarea{
     	För att vi arrangörer ska kunna göra nya spännande intriger som bygger på 
 		det som har hänt behöver vi vet behöver vad just den här karaktären har varit med om.<br>
 		Först kommer olika delar av din intrig så att du kan skriva om vad som hände i just den delen.<br>
-		Efter det får du möjlighet att beskriva andra intressant saker som hände dig och andra.
+		Efter det får du möjlighet att beskriva andra intressanta saker som hände dig och andra.
 		</div>
     		 
     		 <?php 
@@ -112,7 +119,7 @@ textarea{
     		 
 
 			<?php 
-			if (isset($role)) {
+			if (isset($role) && $role->isPC($current_larp)) {
 			?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappened">Vad hände med/för <?php echo $role->Name; ?>?</label></div>
@@ -121,41 +128,55 @@ textarea{
 				senare tillfälle.<br>
 				<textarea id="WhatHappened" name="WhatHappened" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappened); ?></textarea>
 				</div>
-			<?php } else {?>
+			<?php } elseif (isset($group)) {?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappened">Vad hände med/för <?php echo $group->Name; ?>?</label></div>
 				Beskriv allt annat intressant som hände gruppen.  
 				Skriv så mycket du kan. Det kan dessutom vara till hjälp nästa gång gruppen är med på ett lajv och när det kommer nya in i gruppen.<br>
 				<textarea id="WhatHappened" name="WhatHappened" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappened); ?></textarea>
 				</div>
+			<?php } elseif (isset($role) && $role->isNPC($current_larp) && isset($assignment)) {?>
+				<div class='itemcontainer'>
+	       		<div class='itemname'><label for="WhatHappened">Vad hände med/för <?php echo $role->Name; ?>?</label></div>
+	       		Beskriv allt annat intressant som hände karaktären.  
+				Skriv så mycket du kan. Det kan dessutom vara till hjälp om du eller någon annan ska spela karaktären vid ett 
+				senare tillfälle.<br>
+				<textarea id="WhatHappened" name="WhatHappened" rows="10" maxlength="60000"><?php echo htmlspecialchars($assignment->WhatHappened); ?></textarea>
+				</div>
 			<?php } ?>
 
 
 			<?php 
-			if (isset($role)) {
+			if (isset($role) && $role->isPC($current_larp)) {
 			?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappendToOthers">Vad såg du hände med andra?</label></div>
 				Var du med om, eller såg något som hände en annan karkatär. Berätta! Vi vill veta allt. :)<br>
 				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappendToOthers); ?></textarea>
 				</div>
-				<?php } else {?>
+			<?php } elseif (isset($group)) {?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappendToOthers">Vad såg ni hände med andra?</label></div>
 				Var ni med om, eller såg något som hände en annan karkatär eller grupp. Berätta! Vi vill veta allt. :)<br>
 				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" maxlength="60000"><?php echo htmlspecialchars($larp_group->WhatHappendToOthers); ?></textarea>
 				</div>
+			<?php } elseif (isset($role) && $role->isNPC($current_larp) && isset($assignment)) {?>
+				<div class='itemcontainer'>
+	       		<div class='itemname'><label for="WhatHappendToOthers">Vad såg du hände med andra?</label></div>
+				Var du med om, eller såg något som hände en annan karkatär. Berätta! Vi vill veta allt. :)<br>
+				<textarea id="WhatHappendToOthers" name="WhatHappendToOthers" rows="4" maxlength="60000"><?php echo htmlspecialchars($assignment->WhatHappendToOthers); ?></textarea>
+				</div>
 			<?php } ?>
 
 			<?php 
-			if (isset($role)) {
+			if (isset($role) && $role->isPC($current_larp)) {
 			?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappensAfterLarp">Vad gör <?php echo $role->Name; ?> efter lajvet?</label></div>
 	       		Vad gör <?php echo $role->Name; ?> fram till nästa lajv? Skriv det du vill att vi ska försöka ta hänsyn till i intrigerna.<br>
 				<textarea id="WhatHappensAfterLarp" name="WhatHappensAfterLarp" rows="10" maxlength="60000"><?php echo htmlspecialchars($larp_role->WhatHappensAfterLarp); ?></textarea>
 				</div>
-			<?php } else {?>
+			<?php } elseif (isset($group)) {?>
 				<div class='itemcontainer'>
 	       		<div class='itemname'><label for="WhatHappensAfterLarp">Vad gör <?php echo $group->Name; ?> efter lajvet?</label></div>
 				Vad gör <?php echo $group->Name; ?> fram till nästa lajv? Skriv det du vill att vi ska försöka ta hänsyn till i intrigerna.<br>

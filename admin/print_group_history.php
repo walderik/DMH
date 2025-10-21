@@ -1,6 +1,6 @@
 		<?php 
 		$currency = $current_larp->getCampaign()->Currency;
-		$previous_larps = $group->getPreviousLarps();
+		$previous_larps = $group->getPreviousLarps($current_larp);
 		if (isset($previous_larps) && count($previous_larps) > 0) {
 		    
 		    echo "<h2>Historik</h2>";

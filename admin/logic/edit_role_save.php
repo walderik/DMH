@@ -1,14 +1,25 @@
 <?php
 include_once '../header.php';
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $roleId = $_POST['Id'];
-    $larp_role = LARP_Role::loadByIds($roleId, $current_larp->Id);
-
-    $role = Role::loadById($roleId);
-    $role->setValuesByArray($_POST);
-    $role->update();
-
+    
+    if (empty($roleId)) {
+        $role=Role::newFromArray($_POST);
+        $role->CreatorPersonId = $current_person->Id;
+        $role->UserMayEdit = 0;
+        $role->IsApproved = 1;
+        $role->ApprovedByPersonId = $current_person->Id;
+        $now = new Datetime();
+        $role->ApprovedDate = date_format($now,"Y-m-d H:i:s");
+        $role->create();
+    } else {
+        $role = Role::loadById($roleId);
+        $role->setValuesByArray($_POST);
+        $role->update();
+    }
+    
     $role->deleteAllIntrigueTypes();
     if (isset($_POST['IntrigueTypeId']))
         $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);

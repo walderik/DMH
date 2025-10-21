@@ -14,19 +14,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: ../index.php?error=');
         exit;
     }
-    if ($role->isPC() && $role->PersonId != $current_person->Id) {
+    if ($role->isPC($current_larp) && $role->PersonId != $current_person->Id) {
         header('Location: ../index.php'); //Inte din karaktär
         exit;
     }
     $group = $role->getGroup();
-    if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
+    if ($role->isNPC($current_larp) && !empty($group) && !$current_person->isMemberGroup($group)) {
         header('Location: ../index.php'); //NPC som inte är med i din grupp
         exit;
     }
     
     
     $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
-    if ($role->isNPC() || !empty($larp_role)) {
+    if ($role->isNPC($current_larp) || !empty($larp_role)) {
      $role->UserMayEdit = 0;
      $role->update();
     }

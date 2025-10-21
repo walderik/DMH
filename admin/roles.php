@@ -46,7 +46,8 @@ th {
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        //Sidan visar bara anmälda karaktärer, aldrig npc.
-    		        $person = $role->getPerson();
+    		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+    		        $person = $larp_role->getPerson();
     		        $registration=$person->getRegistration($current_larp);
     		        echo "<tr>\n";
     		        echo "<td>";

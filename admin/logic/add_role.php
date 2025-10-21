@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $larp_role = LARP_Role::newWithDefault();
     $larp_role->RoleId = $roleId;
     $larp_role->LARPId = $current_larp->Id;
+    $larp_role->PersonId = $role->PersonId;
     $larp_role->IsMainRole = 0;
     $larp_role->create();   
 

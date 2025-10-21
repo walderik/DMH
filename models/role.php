@@ -198,6 +198,12 @@ class Role extends BaseModel{
         if (LARP_Role::isRegistered($this->Id, $larp->Id) || Reserve_LARP_Role::isReserve($this->Id, $larp->Id)) return true;
         return false;
     } 
+    
+    public function isAssigned(LARP $larp) {
+        if (!empty(NPC_assignment::getAssignment($this, $larp))) return true;
+        return false;
+    }
+    
 
     public function userMayEdit() {
         if ($this->UserMayEdit == 1) return true;
@@ -234,13 +240,15 @@ class Role extends BaseModel{
         return false;
     }
     
-    public function isPC() {
-        return !$this->isNPC();
+    public function isPC(Larp $larp) {
+        if ($this->isRegistered($larp)) return true;
+        if ($this->isAssigned($larp)) return false;
+        if (!empty($this->PersonId)) return true;
+        return false;
     }
     
-    public function isNPC() {
-        if (empty($this->PersonId)) return true;
-        return false;
+    public function isNPC(Larp $larp) {
+        return !$this->isPC($larp);
     }
     
     public function hasIntrigue(LARP $larp) {
@@ -304,8 +312,8 @@ class Role extends BaseModel{
     }
     
     
-    public function getPreviousLarps() {
-        return LARP::getPreviousLarpsRole($this->Id);
+    public function getPreviousLarps(Larp $larp) {
+        return LARP::getPreviousLarpsRole($this->Id, $larp);
     }
   
     public function getOldApprovedRole() {
@@ -437,7 +445,7 @@ class Role extends BaseModel{
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
             "regsys_larp_role.larpid=?) AND ".
-            "CampaignId = ? AND IsDead=0 ORDER BY PersonId, Name;";
+            "CampaignId = ? AND IsDead=0 AND PersonId IS NOT NULL ORDER BY PersonId, Name;";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $larp->CampaignId));
     }
     
@@ -611,29 +619,14 @@ class Role extends BaseModel{
     
     public function isNeverRegistered() {
         $sql = "SELECT COUNT(*) AS Num FROM regsys_larp_role WHERE RoleId=?;";
-        
-        $stmt = static::connectStatic()->prepare($sql);
-        
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return true;
-            
-        }
-        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $stmt = null;
-        
-        
-        if ($res[0]['Num'] == 0) return true;
-        return false;
-        
+        return !static::existsQuery($sql, array($this->Id));
     }
+    
+    public function isNeverAssigned() {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_npc_assignment WHERE RoleId=?;";
+        return !static::existsQuery($sql, array($this->Id));
+    }
+    
     
     public function is_trading(LARP $larp) {
         $campaign = $larp->getCampaign();
@@ -912,6 +905,37 @@ class Role extends BaseModel{
             "CampaignId = ? ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
     }
+
+    public static function getAllNPC(LARP $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_role WHERE ".
+            "PersonId IS NULL AND ".
+            "CampaignId = ? ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId));
+    }
+ 
+    public static function getAllNPCToBePlayed(LARP $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT regsys_role.* from regsys_role, regsys_npc_assignment WHERE ".
+            "regsys_role.PersonId IS NULL AND ".
+            "regsys_role.Id =  regsys_npc_assignment.RoleId AND ".
+            "regsys_role.CampaignId = ? AND ".
+            "regsys_npc_assignment.LarpId = ? ".
+            "ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $larp->Id));
+    }
+    
+    public static function getAllNPCNotToBePlayed(LARP $larp) {
+        if (is_null($larp)) return array();
+        $sql = "SELECT * from regsys_role WHERE ".
+            "PersonId IS NULL AND ".
+            "CampaignId = ? AND ".
+            "IsDead = 0  AND ".
+            "Id NOT IN (SELECT RoleId FROM regsys_npc_assignment WHERE ".
+            "regsys_npc_assignment.LarpId = ?) ".
+            "ORDER BY GroupId, Name;";
+        return static::getSeveralObjectsqQuery($sql, array($larp->CampaignId, $larp->Id));
+    }
     
     
     public function getViewLink() {
@@ -931,7 +955,7 @@ class Role extends BaseModel{
     
     public function getEditLinkPen($isAdmin) {
         if($isAdmin) {
-            return "<a href='edit_role.php?id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";
+            return "<a href='edit_role.php?action=update&id=" . $this->Id . "'><i class='fa-solid fa-pen' title='Redigera karaktären'></i></a>";
         }
         else {
             if ($this->userMayEdit()) {
@@ -1043,14 +1067,20 @@ class Role extends BaseModel{
     
     
     public function hasRegisteredWhatHappened(LARP $larp) {
-        $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
-        if (!empty($larp_role->WhatHappened) OR !empty($larp_role->WhatHappendToOthers) || !empty($larp_role->WhatHappensAfterLarp)) return true;
+        if ($this->isPC($larp)) {
+            $larp_role = LARP_Role::loadByIds($this->Id, $larp->Id);
+            if (!empty($larp_role) && (!empty($larp_role->WhatHappened) OR !empty($larp_role->WhatHappendToOthers) || !empty($larp_role->WhatHappensAfterLarp))) return true;
+        } elseif ($this->isNPC($larp)) {
+            $assignment = NPC_assignment::getAssignment($this, $larp);
+            if (!empty($assignment) && (!empty($assignment->WhatHappened) OR !empty($assignment->WhatHappendToOthers))) return true;
+        }
         
         $intrigues = Intrigue::getAllIntriguesForRole($this->Id, $larp->Id);
         foreach ($intrigues as $intrigue) {
             $intrigueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $this);
             if (!empty($intrigueActor->WhatHappened)) return true;
         }
+        
         return false;
     }
     
@@ -1065,8 +1095,8 @@ class Role extends BaseModel{
     }
     
     public function mayDelete() {
-        if ($this->isPC()) return $this->isNeverRegistered();
-        else return !$this->isApproved() && empty(RoleApprovedCopy::getOldRole($this->Id));
+        if  ($this->isNeverRegistered() && $this->isNeverAssigned()) return true;
+        return false;
     }
     
     public function getAllIntriguesIncludingSubdivisionsSorted(Larp $larp) {

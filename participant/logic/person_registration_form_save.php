@@ -170,8 +170,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $role->update();
                 
                 $larp_role = LARP_Role::newWithDefault();
-                $larp_role->RoleId = $roleId;
+                $larp_role->RoleId = $role->Id;
                 $larp_role->LARPId = $current_larp->Id;
+                $larp_role->PersonId = $role->PersonId;
                 if ($mainRole == $roleId) {
                     
                     $larp_role->IsMainRole = 1;

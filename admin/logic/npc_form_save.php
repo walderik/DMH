@@ -6,15 +6,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
     if ($operation == 'insert') {
-        $npc = NPC::newFromArray($_POST);
-        $npc->create();
+        $assignment = NPC_assignment::newFromArray($_POST);
+        $assignment->create();
     } elseif ($operation == 'update') {
                
-        $npc=NPC::loadById($_POST['Id']);
-        $npc->setValuesByArray($_POST);  
-        $npc->update();
+        $role = Role::loadById($_POST['RoleId']);
+        $assignment = NPC_assignment::getAssignment($role, $current_larp);
+        $assignment->setValuesByArray($_POST);  
+        $assignment->update();
     }
     
-    $referer = (isset($_POST['Referer'])) ? $_POST['Referer'] : '../npc.php';
+    
+    $referer = (isset($_POST['Referer'])) ? $_POST['Referer'] : '../npc_assignments.php';
+    
     header('Location: ' . $referer);
+    exit;
 }
+    
+header('Location: ../npc.php');
+
+

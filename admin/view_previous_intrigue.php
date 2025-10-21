@@ -50,10 +50,6 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo "<tr><td>Karaktärer aktören känner till</td><td>\n";
     $knownActors = $intrgueActor->getAllKnownActors();
     printAllKnownActors($knownActors, $intrgueActor);
-    $knownNPCGroups = $intrgueActor->getAllKnownNPCGroups();
-    printAllKnownNPCGroups($knownNPCGroups, $intrgueActor);
-    $knownNPCs = $intrgueActor->getAllKnownNPCs();
-    printAllKnownNPCs($knownNPCs, $intrgueActor);
     echo "</td></tr>\n";
     if (!empty($intrgueActor->WhatHappened)) {
         echo "<tr><td>Vad hände</td>\n";
@@ -161,65 +157,6 @@ function printAllKnownActors($known_actors, $intrigue_actor) {
 }
 
 
-function printAllKnownNPCs($known_npcs, $intrigueActor) {
-    global $cols;
-    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-    $temp=0;
-    foreach($known_npcs as $known_npc) {
-        $npc=$known_npc->getIntrigueNPC()->getNPC();
-        echo "<li style='display:table-cell; width:19%;'>\n";
-        echo "<div class='name'>$npc->Name</div>\n";
-        $npc_group = $npc->getNPCGroup();
-        if (!empty($npc_group)) {
-            echo "<div>$npc_group->Name</div>";
-        }
-        if ($npc->IsAssigned()) {
-            $person = $npc->getPerson();
-            echo "<div>Spelas av $person->Name</div>";
-        } else {
-            echo "Spelas inte";
-        }
-        
-        
-        if ($npc->hasImage()) {
-            echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-        }
-        echo "</li>\n";
-        $temp++;
-        if($temp==$cols)
-        {
-            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-            $temp=0;
-        }
-    }
-    echo "</ul>";
-}
-
-function printAllKnownNPCGroups($known_npcgroups, $intrigueActor) {
-    global $cols;
-    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-    $temp=0;
-    foreach($known_npcgroups as $known_npcgroup) {
-        $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-        echo "<li style='display:table-cell; width:19%;'>\n";
-        echo "<div class='name'>$npcgroup->Name</div>\n";
-        echo "<div>NPC-grupp</div>";
-        echo "</li>\n";
-        $temp++;
-        if($temp==$cols)
-        {
-            echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-            $temp=0;
-        }
-    }
-    echo "</ul>";
-}
-
-if (empty($intrigue)) {
-    header('Location: intrigue_admin.php');
-    exit;
-    
-}
 
 
 include 'navigation.php';
@@ -346,74 +283,6 @@ th, td {
     ?>
 
 </ul>
-</td></tr>
-<tr><td>NPC</td>
-<td>
-<ul class='image-gallery' style='display:table; border-spacing:5px;'>
-	<?php 
-	$intrigue_npcgroups = $intrigue->getAllNPCGroups();
-	$temp=0;
-	foreach ($intrigue_npcgroups as $intrigue_npcgroup) {
-	    $npcgroup = $intrigue_npcgroup->getNPCGroup();
-	    echo "<li style='display:table-cell; width:19%;'>\n";
-	    echo "<div class='name'>$npcgroup->Name</div>\n";
-	    echo "<div>NPC-grupp</div>";
-	    $npcgroup_intrigues = $intrigue_npcgroup->getAllIntrigues();
-	    foreach ($npcgroup_intrigues as $npcgroup_intrigue) {
-	        if ($npcgroup_intrigue->Id != $intrigue->Id) {
-	            echo "<div><a href='view_previous_intrigue.php?Id=$npcgroup_intrigue->Id'>Intrig: $npcgroup_intrigue->Number. $npcgroup_intrigue->Name</a></div>";
-	        }
-	    }
-	    echo "</li>\n";
-	    $temp++;
-	    if($temp==$cols)
-	    {
-	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-	        $temp=0;
-	    }
-	}
-    ?>
-   </ul>
-
-<ul class='image-gallery' style='display:table; border-spacing:5px;'>
-	<?php 
-	$intrigue_npcs = $intrigue->getAllNPCs();
-	$temp=0;
-	foreach ($intrigue_npcs as $intrigue_npc) {
-	    $npc = $intrigue_npc->getNPC();
-	    echo "<li style='display:table-cell; width:19%;'>\n";
-	    echo "<div class='name'>$npc->Name</div>\n";
-	    $npc_group = $npc->getNPCGroup();
-	    if (!empty($npc_group)) {
-	        echo "<div>$npc_group->Name</div>";
-	    }
-	    if ($npc->IsAssigned()) {
-	        $person = $npc->getPerson();
-	        echo "<div>Spelas av $person->Name</div>"; 
-	    } else {
-	        echo "Spelas inte";
-	    }
-	    $npc_intrigues = $intrigue_npc->getAllIntrigues();
-	    foreach ($npc_intrigues as $npc_intrigue) {
-	        if ($npc_intrigue->Id != $intrigue->Id) {
-	            echo "<div><a href='view_previous_intrigue.php?Id=$npc_intrigue->Id'>Intrig: $npc_intrigue->Number. $npc_intrigue->Name</a></div>";
-	        }
-	    }
-	    
-	    
-	    if ($npc->hasImage()) {
-	        echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-	    }
-	    echo "</li>\n";
-	    $temp++;
-	    if($temp==$cols)
-	    {
-	        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-	        $temp=0;
-	    }
-	}
-    ?>
-    </ul>
 </td></tr>
 <?php if ($larp->hasTelegrams() || $larp->hasLetters()) {?>
 

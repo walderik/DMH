@@ -200,9 +200,10 @@ class Report_TCP_PDF extends Tcpdf {
         foreach($data as $row){
             $html .= '<tr nobr="true">';
             foreach ($row as $key=>$item) {
+                $text = str_replace("\n", "<br>", $item);
                 $html .= '<td ';
                 if ($setWidth && $key<$numberOfCols) $html .= 'width="'.$colWidths[$key].'" ';
-                $html .= 'style="border: 1px solid #000000;">'.$item.'</td>';
+                $html .= 'style="border: 1px solid #000000;">'.$text.'</td>';
             }
             $html .= '</tr>';
         }

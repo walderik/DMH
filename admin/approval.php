@@ -29,7 +29,7 @@ include 'navigation.php';
     		        $groupLeader = $group->getPerson();
     		        if (!is_null($groupLeader)) echo ", Gruppledare ".$groupLeader->Name;
     		        echo "<br>\n";
-    		        if (empty($group->getPreviousLarps())) echo "Helt ny grupp.<br>";
+    		        if (empty($group->getPreviousLarps($current_larp))) echo "Helt ny grupp.<br>";
     		        $oldApprovedGroup = $group->getOldApprovedGroup();
     		        if (!empty($oldApprovedGroup)) echo "Gruppen har tidigare varit godkänd. <a href='view_group_changes.php?id=$group->Id'>Visa ändringar</a><br>";
     		        
@@ -77,7 +77,7 @@ include 'navigation.php';
 
 
     		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a><br>\n";
-    		        if (empty($role->getPreviousLarps())) echo "Helt ny karaktär.<br>";
+    		        if (empty($role->getPreviousLarps($current_larp))) echo "Helt ny karaktär.<br>";
     		        $oldApprovedRole = $role->getOldApprovedRole();
     		        if (!empty($oldApprovedRole)) echo "Karaktären har tidigare varit godkänd. <a href='view_role_changes.php?id=$role->Id'>Visa ändringar</a><br>";
     		        echo "<br><br>";
@@ -130,7 +130,7 @@ include 'navigation.php';
     		        
 
     		        echo $role->getViewLink() . " - " . $role->Profession . " " . $role_group_name;
-    		        if ($role->isPC() && LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
+    		        if ($role->isPC($current_larp) && LARP_Role::loadByIds($role->Id, $current_larp->Id)->IsMainRole != 1) {
     		            echo ", Sidokaraktär";
     		        }
 					echo " ";
@@ -139,7 +139,7 @@ include 'navigation.php';
 
 
     		        echo "<a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a><br>\n";
-    		        if (empty($role->getPreviousLarps())) echo "Helt ny karaktär.<br>";
+    		        if (empty($role->getPreviousLarps($current_larp))) echo "Helt ny karaktär.<br>";
     		        $oldApprovedRole = $role->getOldApprovedRole();
     		        if (!empty($oldApprovedRole)) echo "Karaktären har tidigare varit godkänd. <a href='view_role_changes.php?id=$role->Id'>Visa ändringar</a><br>";
     		        echo "<br><br>";

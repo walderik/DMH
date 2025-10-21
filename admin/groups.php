@@ -15,7 +15,7 @@ th {
 
     <div class="content">   
         <h1>Grupper</h1>
-            <a href="create_group.php"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a> &nbsp; 
+            <a href="edit_group.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a> &nbsp; 
             <a href='group_sheet.php?all_info=true' target='_blank'><i class='fa-solid fa-file-pdf' title='Allt om alla grupper som en stor PDF (tar tid att generera)'></i> Allt om alla</a> &nbsp;
             <a href='group_sheet.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla grupper som det ser ut för deltagarna (tar tid att generera)'></i> Alla grupper som det ser ut för deltagarna</a> &nbsp;
  

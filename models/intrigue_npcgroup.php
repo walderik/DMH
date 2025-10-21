@@ -83,6 +83,10 @@ class Intrigue_NPCGroup extends BaseModel{
         return IntrigueActor_KnownNPCGroup::getAllKnownNPCGroupsForIntrigueNPCGroup($this);
     }
     
+    public static function getAllForNPCGroup(NPCGroup $npcgroup) {
+        $sql = "SELECT * FROM regsys_intrigue_npcgroup WHERE NPCGroupId = ? ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($npcgroup->Id));
+    }
     
     
 }

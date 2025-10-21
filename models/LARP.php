@@ -364,18 +364,20 @@ class LARP extends BaseModel{
         return static::getOneObjectQuery($sql, array($group->Id));
     }
     
-    public static function getPreviousLarpsRole($roleId) {
+    public static function getPreviousLarpsRole($roleId, Larp $larp) {
         if (is_null($roleId)) return Array();
-
-        $sql = "SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_larp_role WHERE RoleId = ?) AND EndDate < '".date('Y-m-d')."' ORDER BY StartDate DESC";
-        return static::getSeveralObjectsqQuery($sql, array($roleId));
+        $sql = "SELECT * FROM regsys_larp WHERE ".
+            "(Id IN (SELECT LarpId FROM regsys_larp_role WHERE RoleId = ?) OR ".
+            "Id IN (SELECT LarpId FROM regsys_npc_assignment WHERE RoleId = ?)) AND ".
+            "EndDate < ? ORDER BY StartDate DESC";
+        return static::getSeveralObjectsqQuery($sql, array($roleId, $roleId, substr($larp->EndDate,0,10)));
     }
     
-    public static function getPreviousLarpsGroup($groupId) {
+    public static function getPreviousLarpsGroup($groupId, Larp $larp) {
         if (is_null($groupId)) return Array();
         
-        $sql = "SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_larp_group WHERE GroupId = ?) AND EndDate < '".date('Y-m-d')."' ORDER BY StartDate DESC";
-        return static::getSeveralObjectsqQuery($sql, array($groupId));
+        $sql = "SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_larp_group WHERE GroupId = ?) AND EndDate < ? ORDER BY StartDate DESC";
+        return static::getSeveralObjectsqQuery($sql, array($groupId, $larp->EndDate));
     }
     
     public static function allByCampaign($campaignId) {

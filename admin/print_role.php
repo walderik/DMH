@@ -31,7 +31,18 @@ if ($role->isMysLajvare()) {
 		<td valign="top" class="header">Spelas av</td>
 		<td>
 		<?php 
-		if (is_null($person)) echo "NPC";
+		if (is_null($person)) {
+		    $assignment = NPC_assignment::getAssignment($role, $current_larp);
+		    if (isset($assignment)) {
+		        if ($assignment->IsAssigned()) {
+		            $person = $assignment->getPerson();
+		            echo $person->Name." ";
+		            echo contactEmailIcon($person)."<br>".$assignment->Time;
+		        } else {
+		            "Ska spelas, inte tilldelad";
+		        }
+		    } else echo "NPC";
+		}
 		elseif ($isRegistered) { 
 		     echo $person->getViewLink()." ";
 		     echo contactEmailIcon($person)." "; 
@@ -40,7 +51,12 @@ if ($role->isMysLajvare()) {
 		else {
 		    echo $person->Name." ";
 		    echo contactEmailIcon($person)." ";
-		    
+	        echo " <form action='logic/turn_into_npc.php' method='post'";
+	        echo " onsubmit='return confirm(\"Är du säker på att du ska ta bort karaktären från $person->Name? Glöm i så fall inte att kommunicera det till $person->Name.\")'";
+	        echo ">";
+	        echo "<input type='hidden' id='RoleId' name='RoleId' value='$role->Id'>";
+	        echo "<button type='submit'>Gör om till NPC</button>";
+	        echo "</form>";
 		}
 		?>
 		</td>
@@ -59,6 +75,10 @@ if ($role->isMysLajvare()) {
 		?>
 			
 			</tr>
+			<?php if ($role->isNPC($current_larp)) {
+			    echo "<tr><td valign='top' class='header'>Skapad av</td><td>".$role->getCreator()->getViewLink()."</td></tr>";
+			    
+			}?>
 		<?php if (isset($group)) {?>
 			<tr><td valign="top" class="header">Grupp</td><td><?php echo $group->getViewLink() ?></td></tr>
 		<?php }?>

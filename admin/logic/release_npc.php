@@ -3,8 +3,9 @@ include_once '../header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    if (isset($_POST['id'])) {
-        $npc = NPC::loadById($_POST['id']);
+    if (isset($_POST['roleId'])) {
+        $role = Role::loadById($_POST['roleId']);
+        $assignment = NPC_assignment::getAssignment($role, $current_larp);
     } else {
         
         header('Location: ../index.php');
@@ -13,14 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-if (!isset($npc)) {
-    header('Location: ../npc.php');
+if (!isset($assignment)) {
+    header('Location: ../index.php');
     exit;
 }
 
 
-$npc->release();
+$assignment->release();
 
 
-header('Location: ../npc.php');
+header('Location: ../npc_assignments.php');
 

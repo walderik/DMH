@@ -75,6 +75,7 @@ include_once $root . '/models/letter.php';
 include_once $root . '/models/magic_magician.php';
 include_once $root . '/models/magic_school.php';
 include_once $root . '/models/magic_spell.php';
+include_once $root . '/models/npc_assignment.php';
 include_once $root . '/models/NPC.php';
 include_once $root . '/models/NPCGroup.php';
 include_once $root . '/models/normal_allergy_type.php';

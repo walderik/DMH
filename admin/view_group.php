@@ -45,7 +45,7 @@ function print_role(Role $role, Group $group, $isRegistered) {
     echo "</td>";
     echo "<td>";
     echo $role->getEditLinkPen(true);
-    if ($role->isPC()) {
+    if ($role->isPC($current_larp)) {
         echo " <a href='logic/remove_group_member.php?groupID=$group->Id&roleID=$role->Id' onclick='return confirm(\"Är du säker på att du vill ta bort karaktären från gruppen?\");'><i class='fa-solid fa-trash-can' title='Ta bort ur gruppen'></i></a>";
     } elseif ($role->mayDelete()) {
         echo " <a href='logic/delete_npc.php?roleID=$role->Id' onclick='return confirm(\"Är du säker på att du vill radera NPCn?\");'><i class='fa-solid fa-trash-can' title='Radera'></i></a>";
@@ -55,7 +55,7 @@ function print_role(Role $role, Group $group, $isRegistered) {
     echo "</td>";
     echo "<td>$role->Profession</td>";
 
-    if ($role->isPC()) {
+    if ($role->isPC($current_larp)) {
     $person = $role->getPerson();
         echo "<td>" . $person->getViewLink() . "</td>";
             
@@ -167,16 +167,20 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Vänner</td><td><?php echo $group->Friends;?></td></tr>
 			<tr><td valign="top" class="header">Fiender</td><td><?php echo $group->Enemies;?></td></tr>
 			<?php if (Wealth::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Rikedom</td><td><?php echo $group->getWealth()->Name;?></td></tr>
+			<tr><td valign="top" class="header">Rikedom</td>
+			<td><?php $wealth=$group->getWealth(); if (!empty($walth)) echo $wealth->Name;?></td></tr>
 			<?php } ?>
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Var bor gruppen?</td><td><?php echo $group->getPlaceOfResidence()->Name;?></td></tr>
+			<tr><td valign="top" class="header">Var bor gruppen?</td>
+			<td><?php $por=$group->getPlaceOfResidence(); if (!empty($por)) echo $por->Name;?></td></tr>
 			<?php } ?>
 			<?php if (GroupType::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Typ av grupp</td><td><?php echo $group->getGroupType()->Name; ?></td></tr>
+			<tr><td valign="top" class="header">Typ av grupp</td>
+			<td><?php $gt=$group->getGroupType(); if (!empty($gt)) echo $gt->Name; ?></td></tr>
 			<?php }?>
 			<?php if (ShipType::isInUse($current_larp)) { ?>
-			<tr><td valign="top" class="header">Typ av skepp</td><td><?php echo $group->getShipType()->Name; ?></td></tr>
+			<tr><td valign="top" class="header">Typ av skepp</td>
+			<td><?php $st=$group->getShipType(); if (!empty($st)) echo $st->Name; ?></td></tr>
 			<?php }?>
 			<?php if ($current_larp->getCampaign()->is_me()) { ?>
 			<tr><td valign="top" class="header">Färg</td><td><?php echo $group->Colour; ?></td></tr>
@@ -203,6 +207,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Önskad placering</td><td><?php echo nl2br(htmlspecialchars($larp_group->TentPlace)); ?></td></tr>
 			<tr><td valign="top" class="header">Eldplats</td><td><?php echo ja_nej($larp_group->NeedFireplace);?></td></tr>
 			<?php }?>
+			<tr><td valign="top" class="header">Synlighet</td><td><?php echo Group::VISIBILITY_TYPES[$group->Visibility]?></td></tr>
 			<tr><td valign="top" class="header">Död/Ej i spel</td><td><?php echo ja_nej($group->IsDead);?></td></tr>
 		</table>		
 		</div>
@@ -319,8 +324,6 @@ include 'navigation.php';
 		
 		$known_groups = $group->getAllKnownGroups($current_larp);
 		$known_roles = $group->getAllKnownRoles($current_larp);
-		$known_npcgroups = $group->getAllKnownNPCGroups($current_larp);
-		$known_npcs = $group->getAllKnownNPCs($current_larp);
 		$known_props = $group->getAllKnownProps($current_larp);
 		$known_pdfs = $group->getAllKnownPdfs($current_larp);
 		
@@ -358,6 +361,18 @@ include 'navigation.php';
 		        echo "<div>$role_group->Name</div>";
 		    }
 		    
+		    if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "Inte anmäld";
+		    elseif ($known_role->isNPC($current_larp)) {
+		        $assignment = NPC_assignment::getAssignment($known_role, $current_larp);
+		        if (!empty($assignment)) {
+		            $person = $assignment->getPerson();
+		            if (!empty($person)) echo "<div>NPC - Spelas av $person->Name</div>";
+		            else echo "<div>NPC - Spelare inte tilldelad ännu</div>";
+		        } else {
+		            echo "NPC - Spelas inte";
+		        }
+		    }
+		    
 		    if ($known_role->hasImage()) {
 		        echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
 		    }
@@ -370,38 +385,6 @@ include 'navigation.php';
 		    }
 		}
 		
-		foreach ($known_npcgroups as $known_npcgroup) {
-		    $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-		    echo "<li style='display:table-cell; width:19%;'>\n";
-		    echo "<div class='name'>$npcgroup->Name</div>\n";
-		    echo "<div>NPC-grupp</div>";
-		    echo "</li>\n";
-		    $temp++;
-		    if($temp==$cols)
-		    {
-		        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-		        $temp=0;
-		    }
-		}
-		foreach ($known_npcs as $known_npc) {
-		    $npc=$known_npc->getIntrigueNPC()->getNPC();
-		    echo "<li style='display:table-cell; width:19%;'>\n";
-		    echo "<div class='name'>$npc->Name</div>\n";
-		    $npc_group = $npc->getNPCGroup();
-		    if (!empty($npc_group)) {
-		        echo "<div>$npc_group->Name</div>";
-		    }
-		    if ($npc->hasImage()) {
-		        echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-		    }
-		    echo "</li>\n";
-		    $temp++;
-		    if($temp==$cols)
-		    {
-		        echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-		        $temp=0;
-		    }
-		}
 		foreach ($known_props as $known_prop) {
 		    $prop = $known_prop->getIntrigueProp()->getProp();
 		    echo "<li style='display:table-cell; width:19%;'>\n";

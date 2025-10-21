@@ -17,25 +17,28 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
 
 $name = "NPC'er";
 
-$pdf = new Report_TCP_PDF();
+$pdf = new Report_TCP_PDF('L');
 
 $pdf->init($current_person->Name, $name, $current_larp->Name, false);
 
 
 $rows = array();
-$header = array("Namn", "Spelas av", "Grupp", "Beskrivning", "När");
+$header = array("Namn", "Spelas av", "Grupp", "Instruktioner", "När");
 
+$npcs = Role::getAllNPCToBePlayed($current_larp);
 
-$npc_groups = NPCGroup::getAllForLARP($current_larp);
-foreach ($npc_groups as $npc_group) {
-    $npcs=NPC::getAllAssignedByGroup($npc_group, $current_larp);
-    foreach ($npcs as $npc) {
-        $rows[] = array($npc->Name, $npc->getPerson()->Name, $npc_group->Name, mb_strimwidth($npc->Description, 0, 100, '...',"UTF-8"), $npc->Time);
-    }
-}
-$npcs = NPC::getAllAssignedWithoutGroup($current_larp);
 foreach ($npcs as $npc) {
-    $rows[] = array($npc->Name, $npc->getPerson()->Name, "", mb_strimwidth($npc->Description, 0, 100, '...',"UTF-8"), $npc->Time);
+    $assignment = NPC_assignment::getAssignment($npc, $current_larp);
+    $group = $npc ->getGroup();
+    if (!empty($group)) {
+        $groupName = $group->Name;
+    } else $groupName = "";
+    
+    $person = $assignment->getPerson();
+    if (!empty($person)) $personName = $person->Name;
+    else $personName = "";
+    
+    $rows[] = array($npc->Name, $personName, $groupName, mb_strimwidth($assignment->Instructions, 0, 100, '...',"UTF-8"), $assignment->Time);
 }
 
 // add a page

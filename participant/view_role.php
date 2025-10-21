@@ -16,17 +16,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 
 $role = Role::loadById($RoleId);
-if ($role->isPC()) $person = $role->getPerson();
+$isPc = $role->isPC($current_larp);
 
-if ($role->isPC() && $person->Id != $current_person->Id) {
+if ($isPc) $person = $role->getPerson();
+
+if ($isPc && $person->Id != $current_person->Id) {
     header('Location: index.php'); //Inte din karaktär
     exit;
 }
 
 $group = $role->getGroup();
-if ($role->isNPC() && !empty($group) && !$current_person->isMemberGroup($group)) {
-    header('Location: index.php'); //NPC som inte är med i din grupp
-    exit;
+
+$isAssignedToMe = false;
+if ($role->isNPC($current_larp)) {
+    $assignment = NPC_assignment::getAssignment($role, $current_larp);
+    if (!empty($assignment) && ($assignment->PersonId == $current_person->Id)) {
+        $isAssignedToMe = true;
+    } elseif (!empty($group) && ($current_person->isMemberGroup($group) || $current_person->hasNPCInGroup($group, $current_larp))) {
+        //Ok, din grupp
+    } else {
+        header('Location: index.php'); //NPC som inte är din och inte är med i din grupp
+        exit;
+    }
 }
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
@@ -86,7 +97,7 @@ function printIntrigue($number, $commonText, $commonTextHeader, $intrigueTextArr
     if (!empty($whatHappenedTextArr) || $alwaysPrintWhatHappened) {
         $tmpWhatHappenedTextArr = array();
         foreach ($whatHappenedTextArr as $whatHappenedText) {
-            if (is_array($offText)) {
+            if (is_array($whatHappenedText)) {
                 $tmpWhatHappenedTextArr[] = "<strong>".htmlspecialchars($whatHappenedText[0])."</strong><br>".nl2br(htmlspecialchars($whatHappenedText[1]))."<br><br>";
             } else {
                 $tmpWhatHappenedTextArr[] = nl2br(htmlspecialchars($whatHappenedText));
@@ -114,7 +125,7 @@ include 'navigation.php';
 			<?php 
 			echo $role->Name;
     		//Karaktärsblad
-    		if ($role->isPC()) echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
+    		if ($isPc) echo " <a href='character_sheet.php?id=" . $role->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Karaktärsblad för $role->Name'></i></a>\n";
     		if ($role->userMayEdit()) echo " " . $role->getEditLinkPen(false);
 
     		?>
@@ -124,13 +135,12 @@ include 'navigation.php';
 		<?php 
 		if ($role->hasImage()) {
 		    echo "<div class='itemcontainer'>";
-		    
 		    $image = Image::loadById($role->ImageId);
 		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-		    if ($role->userMayEdit()) echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash'></i></a></td>\n";
+		    if ($isPc || $isAssignedToMe || (!$isPc && $role->userMayEdit())) echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash'></i></a></td>\n";
 		    echo "</div>";
-		} elseif ($role->isNPC() && $role->userMayEdit()) {
+		} elseif ($isPc || $isAssignedToMe || (!$isPc && $role->userMayEdit())) {
 		    echo "<div class='itemcontainer'>";
 		    echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
 		    echo "</div>";
@@ -142,15 +152,25 @@ include 'navigation.php';
 		<?php echo ja_nej($role->isApproved());?>
 		</div>
 	
-		<?php if ($role->isPC()) {?>
+		<?php if ($isPc) {?>
    		<div class='itemcontainer'>
        	<div class='itemname'>Spelas av</div>
 		<?php echo $person->Name;?>
 		</div>
-		<?php }?>
+		<?php } elseif ($isAssignedToMe) { ?>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>När ska NPC's spelas</div>
+		<?php echo $assignment->Time;?>
+		</div>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Instruktioner</div>
+		<?php echo $assignment->Instructions;?>
+		</div>
+		
+		<?php } ?>
 			
 
-		<?php if (isset($group)) {?>
+		<?php if (isset($group) && (!$group->hasInvisibility() || !$isAssignedToMe || !$role->PersonId==$current_person->Id)) {?>
 			   <div class='itemcontainer'>
                <div class='itemname'>Grupp</div>
 		
@@ -163,7 +183,7 @@ include 'navigation.php';
 		<?php echo $role->Profession;?>
 		</div>
 		
-		<?php if ($role->isPC()) { ?>
+		<?php if ($isPc || $isAssignedToMe) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning</div>
 	   <?php echo nl2br(htmlspecialchars($role->Description));?>
@@ -175,7 +195,7 @@ include 'navigation.php';
 		<?php echo nl2br(htmlspecialchars($role->DescriptionForGroup));?>
 		</div>
 		
-		<?php if ($role->isPC() ||  !empty($role->DescriptionForOthers)) { ?>
+		<?php if ($isPc || !empty($role->DescriptionForOthers)) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning för andra</div>
 	   <?php echo nl2br(htmlspecialchars($role->DescriptionForOthers));?>
@@ -218,7 +238,7 @@ include 'navigation.php';
 			   <?php } ?>
 			<?php } ?>
 
-		  <?php if ($role->isPC() ||  !empty($role->ReasonForBeingInSlowRiver)) { ?>
+		  <?php if ($isPc ||  !empty($role->ReasonForBeingInSlowRiver)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Varför befinner sig karaktären på platsen?</div>
 		   <?php echo nl2br($role->ReasonForBeingInSlowRiver);?>
@@ -278,14 +298,14 @@ include 'navigation.php';
 			   <?php } ?>
 			<?php }?>
 
-			<?php if ($role->isPC() ||  !empty($role->DarkSecret)) { ?>
+			<?php if ($isPc ||  !empty($role->DarkSecret)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Mörk hemlighet</div>
 		   <?php echo $role->DarkSecret;?>
 		   </div>
 		   <?php } ?>
 
-			<?php if ($role->isPC() ||  !empty($role->DarkSecretIntrigueIdeas)) { ?>
+			<?php if ($isPc ||  !empty($role->DarkSecretIntrigueIdeas)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Mörk hemlighet - intrig idéer</div>
 		   <?php echo nl2br(htmlspecialchars($role->DarkSecretIntrigueIdeas));?>
@@ -294,7 +314,7 @@ include 'navigation.php';
 			
 			
 			
-			<?php if ($role->isPC()) { ?>	
+			<?php if ($isPc) { ?>	
 				<?php if (IntrigueType::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
                	<div class='itemname'>Intrigtyper</div>
@@ -309,14 +329,14 @@ include 'navigation.php';
 		   </div>
 		   <?php } ?>
 
-		   <?php if ($role->isPC() ||  !empty($role->NotAcceptableIntrigues)) { ?>
+		   <?php if ($isPc ||  !empty($role->NotAcceptableIntrigues)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Saker karaktären inte vill spela på</div>
 		   <?php echo nl2br(htmlspecialchars($role->NotAcceptableIntrigues));?>
 		   </div>
 		   <?php } ?>
 
-			<?php if ($role->isPC() ||  !empty($role->CharactersWithRelations)) { ?>
+			<?php if ($isPc ||  !empty($role->CharactersWithRelations)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Relationer med andra</div>
 		   <?php echo nl2br(htmlspecialchars($role->CharactersWithRelations));?>
@@ -325,7 +345,7 @@ include 'navigation.php';
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
-               	<div class='itemname'>Religion</div>
+               	<div class='itemname'>Rikedom</div>
     			<?php 
     			$wealth = $role->getWealth();
     			if (!empty($wealth)) echo $wealth->Name;
@@ -333,7 +353,7 @@ include 'navigation.php';
 				</div>
 			<?php } ?>
 			
-		   <?php if ($role->isPC() ||  !empty($role->Birthplace)) { ?>	
+		   <?php if ($isPc ||  !empty($role->Birthplace)) { ?>	
 		   <div class='itemcontainer'>
            <div class='itemname'>Var är karaktären född?</div>
 		   <?php echo $role->Birthplace;?>
@@ -361,7 +381,7 @@ include 'navigation.php';
 		</div>
 		
 		<?php 
-		if (isset($larp_role)) {
+		if ($isPc || $isAssignedToMe) {
 		?>
 		<div class='itemselector'>
 		<div class="header">
@@ -370,7 +390,7 @@ include 'navigation.php';
 		</div>
 			<div class='itemcontainer'>
 			<?php if ($current_larp->isIntriguesReleased()) {
-			    if (!empty($larp_role->Intrigue)) echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
+			    if (!empty($larp_role) && !empty($larp_role->Intrigue)) echo "<p>".nl2br(htmlspecialchars($larp_role->Intrigue)) ."</p>"; 
 			    
 			    $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($current_larp);
 			    $subdivisions = Subdivision::allForRole($role, $current_larp);
@@ -401,8 +421,6 @@ include 'navigation.php';
 		        $known_groups = $role->getAllKnownGroups($current_larp);
 		        $known_roles = $role->getAllKnownRoles($current_larp);
 		        
-		        $known_npcgroups = $role->getAllKnownNPCGroups($current_larp);
-		        $known_npcs = $role->getAllKnownNPCs($current_larp);
 		        $known_props = $role->getAllKnownProps($current_larp);
 		        $known_pdfs = $role->getAllKnownPdfs($current_larp);
 		        
@@ -417,8 +435,6 @@ include 'navigation.php';
     		        $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp)), SORT_REGULAR);
     		        $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp)), SORT_REGULAR);
     		        
-    		        $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
-    		        $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
     		        $known_props = array_merge($known_props,$subdivision->getAllKnownProps($current_larp));
     		        $known_pdfs = array_merge($known_pdfs,$subdivision->getAllKnownPdfs($current_larp));
     		        
@@ -427,7 +443,7 @@ include 'navigation.php';
     		        $checkin_props = array_merge($checkin_props,$subdivision->getAllCheckinProps($current_larp));
 		        }
 		        
-                if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
+                if (!empty($known_groups) || !empty($known_roles) || !empty($known_props)) {
 			        echo "<h3>Känner till</h3>";
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
@@ -453,9 +469,11 @@ include 'navigation.php';
 			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'><a href='view_known_role.php?id=$known_role->Id'>$known_role->Name</a></div>";
 			            $role_group = $known_role->getGroup();
-			            if (!empty($role_group)) {
+			            if (!empty($role_group) && !$role_group->hasInvisibility()) {
 			                echo "<div>$role_group->Name</div>";
 			            }
+			            if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";
+			            elseif ($known_role->isNPC($current_larp) && !$known_role->isAssigned($current_larp)) echo "<div>Spelas inte</div>";
 			            
 			            if ($known_role->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
@@ -469,41 +487,6 @@ include 'navigation.php';
 			            }
 			        }
 			        
-			        foreach ($known_npcgroups as $known_npcgroup) {
-			            $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
-			            else echo "<li style='display:table-cell; width:49%;'>\n";
-			            echo "<div class='name'>$npcgroup->Name</div>\n";
-			            echo "<div>NPC-grupp</div>";
-			            echo "</li>\n";
-			            $temp++;
-			            if($temp==$columns)
-			            {
-			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-			                $temp=0;
-			            }
-			        }
-			        foreach ($known_npcs as $known_npc) {
-			            $npc=$known_npc->getIntrigueNPC()->getNPC();
-			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
-			            else echo "<li style='display:table-cell; width:49%;'>\n";
-			            echo "<div class='name'>$npc->Name</div>\n";
-			            $npc_group = $npc->getNPCGroup();
-			            if (!empty($npc_group)) {
-			                echo "<div>$npc_group->Name</div>";
-			            }
-			            if ($npc->hasImage()) {
-			                echo "<td>";
-			                echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-			            }
-			            echo "</li>\n";
-			            $temp++;
-			            if($temp==$columns)
-			            {
-			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-			                $temp=0;
-			            }
-			        }
 			        foreach ($known_props as $known_prop) {
 			            $prop = $known_prop->getIntrigueProp()->getProp();
 			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
@@ -587,7 +570,7 @@ include 'navigation.php';
 		
 		
 		<?php 
-		$previous_larps = $role->getPreviousLarps();
+		$previous_larps = $role->getPreviousLarps($current_larp);
 		if (isset($previous_larps) && count($previous_larps) > 0 || !empty($role->PreviousLarps)) { 
 		    ?>
 		    
@@ -604,7 +587,7 @@ include 'navigation.php';
 		        echo "<h2 style='border-top:none;'>$prevoius_larp->Name</h2>";
 		        echo "<div class='border'>";
 		        
-		        if (!empty($previous_larp_role->Intrigue)) {
+		        if (isset($previous_larp_role) && !empty($previous_larp_role->Intrigue)) {
 		            echo "<p>".nl2br(htmlspecialchars($previous_larp_role->Intrigue))."</p>";
 		        }
 		        
@@ -627,30 +610,46 @@ include 'navigation.php';
 		            }
 		        }
 		        echo "<h3>Allmänna kommentarer</h3>";
-		        echo "<p><strong>Vad hände för $role->Name?</strong><br>";
-		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
-		            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappened));
-	            else echo "Inget rapporterat";
-	            echo "</p>";
-	            echo "<p><strong>Vad hände för andra?</strong><br>";
-	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
-	                echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
-                else echo "Inget rapporterat";
-                echo "</p>";
-                echo "<p><strong>Vad händer efter lajvet?</strong><br>";
-                if (isset($previous_larp_role->WhatHappensAfterLarp) && $previous_larp_role->WhatHappensAfterLarp != "")
-                    echo nl2br(htmlspecialchars($previous_larp_role->WhatHappensAfterLarp));
-                else echo "Inget rapporterat";
-                echo "</p>";
-                echo "</div>";
+		        
+		        $previous_assignment = NPC_assignment::getAssignment($role, $prevoius_larp);
+		        if (isset($previous_larp_role)) {
+    		        echo "<p><strong>Vad hände för $role->Name?</strong><br>";
+    		        if (isset($previous_larp_role->WhatHappened) && $previous_larp_role->WhatHappened != "")
+    		            echo nl2br(htmlspecialchars($previous_larp_role->WhatHappened));
+    	            else echo "Inget rapporterat";
+    	            echo "</p>";
+    	            echo "<p><strong>Vad hände för andra?</strong><br>";
+    	            if (isset($previous_larp_role->WhatHappendToOthers) && $previous_larp_role->WhatHappendToOthers != "")
+    	                echo nl2br(htmlspecialchars($previous_larp_role->WhatHappendToOthers));
+                    else echo "Inget rapporterat";
+                    echo "</p>";
+                    echo "<p><strong>Vad händer efter lajvet?</strong><br>";
+                    if (isset($previous_larp_role->WhatHappensAfterLarp) && $previous_larp_role->WhatHappensAfterLarp != "")
+                        echo nl2br(htmlspecialchars($previous_larp_role->WhatHappensAfterLarp));
+                    else echo "Inget rapporterat";
+                    echo "</p>";
+                    echo "</div>";
+		        } elseif (isset($previous_assignment)) {
+		            echo "<p><strong>Vad hände för $role->Name?</strong><br>";
+		            if (isset($previous_assignment->WhatHappened) && $previous_assignment->WhatHappened != "") {
+		                echo nl2br(htmlspecialchars($previous_assignment->WhatHappened));
+		            } else echo "Inget rapporterat";
+	                echo "</p>";
+	                echo "<p><strong>Vad hände för andra?</strong><br>";
+	                if (isset($previous_assignment->WhatHappendToOthers) && $previous_assignment->WhatHappendToOthers != "") {
+	                    echo nl2br(htmlspecialchars($previous_assignment->WhatHappendToOthers));
+	                } else echo "Inget rapporterat";
+                    echo "</p>";
+                    echo "</div>";
+		        }
 		                
+
 		    }
 		    
 		    if (!empty($role->PreviousLarps)) {
 		        echo "<div class='border'><h3>Tidigare</h3>";
 		        echo "<p>".nl2br(htmlspecialchars($role->PreviousLarps))."</p></div>";
 		    }
-		    echo "</div>";
 		    echo "</div>";
 		}
 			    

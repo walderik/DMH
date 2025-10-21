@@ -27,7 +27,7 @@ $temp=0;
 
 $group = Group::loadById($GroupId); 
 
-if (!$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group)) {
+if (!$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group) && !$current_person->hasNPCInGroup($group, $current_larp)) {
     header('Location: index.php?error=no_member'); //Inte medlem i gruppen
     exit;
 }
@@ -48,12 +48,13 @@ function print_role(Role $role, Group $group, $isComing) {
     
     
     echo "<div class='name'>";
-    if ($role->isNPC()) {
+    if ($role->isNPC($current_larp)) {
         echo $role->getViewLink();
     } else echo $role->Name;
 
-    if (($role->isPC() && $current_person->isGroupLeader($group)) || 
-        ($role->isNPC() && ($role->CreatorPersonId == $current_person->Id || $current_person->isGroupLeader($group)) && $role->userMayEdit() && $role->mayDelete())) {
+    $isPc = $role->isPC($current_larp);
+    if (($isPc && $current_person->isGroupLeader($group)) || 
+        ($role->isNPC($current_larp) && ($role->CreatorPersonId == $current_person->Id || $current_person->isGroupLeader($group)) && $role->userMayEdit() && $role->mayDelete())) {
         echo " <a href='logic/remove_group_member.php?groupID=".$group->Id."&roleID=".$role->Id."' onclick=\"return confirm('Är du säker på att du vill ta bort karaktären från gruppen?');\">";
         echo "<i class='fa-solid fa-trash-can'></i>";
         echo "</a>";
@@ -62,13 +63,13 @@ function print_role(Role $role, Group $group, $isComing) {
 
     
     echo "Yrke: ".$role->Profession . "<br>";
-    if ($role->isPC() && $role->isMain($current_larp)==0) {
+    if ($isPc && $role->isMain($current_larp)==0) {
         echo "Sidokaraktär<br>";
     }
 
     
 
-    if ($role->isPC()) {
+    if ($isPc) {
         echo "Spelas av ";
         $person =  $role->getPerson();
         $person->Name;
@@ -76,7 +77,7 @@ function print_role(Role $role, Group $group, $isComing) {
     }
 
     
-    if ($isComing && $role->isPC() && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
+    if ($isComing && $isPc && $person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
         $guardian = $role->getRegistration($current_larp)->getGuardian();
         if (isset($guardian)) echo "Ansvarig vuxen är " . $guardian->Name;
         else echo "Ansvarig vuxen är inte utpekad.";
@@ -84,7 +85,7 @@ function print_role(Role $role, Group $group, $isComing) {
     
     echo "<div class='description'>$role->DescriptionForGroup</div>\n";
     
-    if ($role->isNPC()) {
+    if (!$isPc) {
         if ($role->isApproved()) echo "Karaktären är godkänd.";
         elseif (!$role->userMayEdit()) echo "Karaktären är inskickad för godkännande.";
         else {
@@ -106,7 +107,7 @@ function print_role(Role $role, Group $group, $isComing) {
             echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
         }
     }
-    elseif ($role->isPC()) {
+    elseif ($isPc) {
         echo "<img src='../images/man-shape.png' />\n";
         echo "<div class='photographer'><a href='https://www.flaticon.com/free-icons/man' title='man icons'>Man icons created by Freepik - Flaticon</a></div>\n";
     } 
@@ -143,7 +144,10 @@ include 'navigation.php';
 
 	   <div class='itemcontainer'>
        <div class='itemname'>Gruppansvarig</div>
-	   <?php echo Person::loadById($group->PersonId)->Name;?>
+	   <?php 
+	   $person = $group->getPerson();
+	   if (!empty($person)) echo $person->Name;
+	   ?>
 	   </div>
 
 	   <div class='itemcontainer'>
@@ -169,14 +173,19 @@ include 'navigation.php';
 		<?php if (Wealth::isInUse($current_larp)) {?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Rikedom</div>
-    	   <?php echo $group->getWealth()->Name; ?>
+    	   <?php 
+    	   $wealth = $group->getWealth();
+    	   if (!empty($wealth)) echo $wealth->Name; 
+    	   ?>
     	   </div>
 		<?php }?>
 		
 		<?php if (PlaceOfResidence::isInUse($current_larp)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Var bor gruppen?</div>
-    	   <?php echo $group->getPlaceOfResidence()->Name; ?>
+    	   <?php 
+    	   $por = $group->getPlaceOfResidence();
+    	   if (!empty($por)) echo $group->getPlaceOfResidence()->Name; ?>
     	   </div>
 		<?php }?>
 
@@ -184,14 +193,18 @@ include 'navigation.php';
 		<?php if (GroupType::isInUse($current_larp)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Typ av grupp</div>
-    	   <?php echo $group->getGroupType()->Name; ?>
+    	   <?php 
+    	   $gt = $group->getGroupType();
+    	   if (!empty($gt)) echo $gt->Name; ?>
     	   </div>
 		<?php }?>
 
 		<?php if (ShipType::isInUse($current_larp)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Typ av skepp</div>
-    	   <?php echo $group->getShipType()->Name; ?>
+    	   <?php 
+    	   $st = $group->getShipType();
+    	   if (!empty($st)) echo $st->Name; ?>
     	   </div>
 		<?php }?>
 		
@@ -382,7 +395,7 @@ include 'navigation.php';
 		<div class='itemcontainer'>
 			<?php 
 			if ($current_larp->isIntriguesReleased()) {
-			    echo "<p>".nl2br($larp_group->Intrigue) ."</p>"; 
+			    if (!empty($larp_group) && !empty($larp_group->Intrigue)) echo "<p>".nl2br($larp_group->Intrigue) ."</p>"; 
 			    
 			    
 			    $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $current_larp->Id);
@@ -406,8 +419,6 @@ include 'navigation.php';
                 
                 $known_groups = $group->getAllKnownGroups($current_larp);
                 $known_roles = $group->getAllKnownRoles($current_larp);
-                $known_npcgroups = $group->getAllKnownNPCGroups($current_larp);
-                $known_npcs = $group->getAllKnownNPCs($current_larp);
                 $known_props = $group->getAllKnownProps($current_larp);
                 $known_pdfs = $group->getAllKnownPdfs($current_larp);
                 
@@ -415,7 +426,7 @@ include 'navigation.php';
                 $checkin_telegrams = $group->getAllCheckinTelegrams($current_larp);
                 $checkin_props = $group->getAllCheckinProps($current_larp);
                 
-                if (!empty($known_groups) || !empty($known_roles) || !empty($known_npcs) || !empty($known_props) || !empty($known_npcgroups)) {
+                if (!empty($known_groups) || !empty($known_roles) || !empty($known_props)) {
 			        echo "<h3>Känner till</h3>";
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
@@ -440,47 +451,17 @@ include 'navigation.php';
 			            echo "<li style='display:table-cell; width:19%;'>";
 			            echo "<div class='name'>$known_role->Name</div>";
 			            $role_group = $known_role->getGroup();
-			            if (!empty($role_group)) {
+			            if (!empty($role_group) && !$role_group->hasInvisibility()) {
 			                echo "<div>$role_group->Name</div>";
 			            }
+			            if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";
+			            elseif ($known_role->isNPC($current_larp) && !$known_role->isAssigned($current_larp)) echo "<div>Spelas inte</div>";
+			            
 			            
 			            if ($known_role->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
 			            }
 			            echo "</li>";
-			            $temp++;
-			            if($temp==$cols)
-			            {
-			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-			                $temp=0;
-			            }
-			        }
-			        foreach ($known_npcgroups as $known_npcgroup) {
-			            $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-			            echo "<li style='display:table-cell; width:19%;'>\n";
-			            echo "<div class='name'>$npcgroup->Name</div>\n";
-			            echo "<div>NPC-grupp</div>";
-			            echo "</li>\n";
-			            $temp++;
-			            if($temp==$cols)
-			            {
-			                echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-			                $temp=0;
-			            }
-			        }
-			        foreach ($known_npcs as $known_npc) {
-			            $npc=$known_npc->getIntrigueNPC()->getNPC();
-			            echo "<li style='display:table-cell; width:19%;'>\n";
-			            echo "<div class='name'>$npc->Name</div>\n";
-			            $npc_group = $npc->getNPCGroup();
-			            if (!empty($npc_group)) {
-			                echo "<div>$npc_group->Name</div>";
-			            }
-			            if ($npc->hasImage()) {
-			                echo "<td>";
-			                echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-			            }
-			            echo "</li>\n";
 			            $temp++;
 			            if($temp==$cols)
 			            {
@@ -567,7 +548,7 @@ include 'navigation.php';
 			
 			
 		<?php 
-		$previous_larps = $group->getPreviousLarps();
+		$previous_larps = $group->getPreviousLarps($current_larp);
 		if (isset($previous_larps) && count($previous_larps) > 0) {
 		    ?>
 		    

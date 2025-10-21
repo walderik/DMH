@@ -228,7 +228,36 @@ include 'navigation.php';
 						echo "</table>";
 					} else {
 						echo "<strong>$person->Name har inga karaktärer som inte är med på lajvet.</strong>";
-					}      
+					}  
+					
+					echo "<br><br>";
+					$npc_assignments = $person->getNPCAssignmentsAtLarp($current_larp);
+					if (!empty($npc_assignments)) {
+					    echo "<strong>NPC-uppdrag:</strong><br>\n";
+					    
+					    echo "<table>";
+					    foreach($npc_assignments as $npc_assignment) {
+					        $role = $npc_assignment->getRole();
+
+				            echo "<tr>";
+				            echo "<td>";
+				            echo $role->getViewLink();
+				            echo "</td>";
+				            echo "<td>$role->Profession</td>";
+				            echo "<td>";
+				            $role_group = $role->getGroup();
+				            if (isset($role_group)) {
+				                echo $role_group->getViewLink();
+				            }
+				            echo "</td>";
+				            echo "<td>";
+				            echo $npc_assignment->Time;
+				            echo "</td>";
+				            echo "</tr>";
+
+					    }
+					    echo "</table>";
+					} 
 					echo "</div>\n";     
     		        
     		        //Epost

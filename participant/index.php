@@ -350,7 +350,7 @@ function openTab(evt, tabName) {
 		  echo "<div class='itemcontainer borderbottom'>";
 		  echo "<div class='itemname'>";
 		  echo  $group->getViewLink();
-	      if($group->isNeverRegistered()) {
+	      if($group->mayDelete()) {
 	          echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
 	      }
 	      if ($current_person->isGroupLeader($group) && (!$group->isRegistered($current_larp) || $group->userMayEdit($current_larp))) {
@@ -688,8 +688,9 @@ function openTab(evt, tabName) {
     	
     	
     	//NPC'er
-    	$npcs = NPC::getReleasedNPCsForPerson($current_person, $current_larp);
-    	if (isset($npcs) && count($npcs) > 0) {
+    	$assignments = NPC_assignment::getReleasedAssignmentForPerson($current_person, $current_larp);
+    	$assigned_roles = array();
+    	if (isset($assignments) && count($assignments) > 0) {
     	    
     	    echo "<div class='itemselector'>";
     	    echo "<div class='header'>";
@@ -697,23 +698,24 @@ function openTab(evt, tabName) {
     	    echo "</div>";
     	    
 
-    	    foreach ($npcs as $npc)  {
+    	    foreach ($assignments as $assignment)  {
+    	        $npc_role = $assignment->getRole();
+    	        $assigned_roles[] = $npc_role;
     	        echo "<div class='itemcontainer'>";
-    	        echo "<div class='itemname'><a href='view_npc.php?id=$npc->Id'>$npc->Name</a></div>";
+    	        echo "<div class='itemname'>".$npc_role->getViewLink()."</div>";
     	        
     	        
-    	        if ($npc->hasImage()) {
-    	            echo "<img width='30' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-    	            echo "<a href='logic/delete_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+    	        if ($npc_role->hasImage()) {
+    	            echo "<img width='30' src='../includes/display_image.php?id=$npc_role->ImageId'/>\n";
+    	            echo "<a href='logic/delete_image.php?id=$npc_role->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
     	        }
     	        else {
-    	            echo "<a href='upload_image.php?id=$npc->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
+    	            echo "<a href='upload_image.php?id=$npc_role->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
     	        }
     	        
-    	        
-    	        if ($npc->IsInGroup()) {
-    	            $npc_group = $npc->getNPCGroup();
-    	            echo "<br><a href='view_npc_group.php?id=$npc->NPCGroupId'>$npc_group->Name</a>";
+    	        $npc_group = $npc_role->getGroup();
+    	        if (!empty($npc_group)) {
+    	            echo "<br>".$npc_group->getViewLink();
     	        }
     	        echo "</div>";
     	        
@@ -935,11 +937,12 @@ function openTab(evt, tabName) {
                 
             }
 
+            $played_roles = array_merge($registered_roles, $assigned_roles);
             echo "<div class='itemselector'>";
             echo "<div class='header'><i class='fa-solid fa-landmark'></i> Vad hände?";
             help_icon("Skriv in vad som hände så snart som möjligt och så detaljerat som möjligt. Det är till hjälp för dig nästa gång du ska spela karaktären och för arrangörerna när de ska skriva intriger."); 
             echo "</div>";
-             foreach ($registered_roles as $role) {
+            foreach ($played_roles as $role) {
                 echo "<div class='itemcontainer borderbottom'>";
                 //Namn på karaktären
                 echo "<div class='itemname'>";

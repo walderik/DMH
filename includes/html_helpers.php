@@ -2,6 +2,7 @@
 
 # En selector där man kan välja objekt i en array
 function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multiple=false, ?bool $required=true, $selected=null) {
+    
 //     $name = ($multiple) ? (static::class . "Id[]") : static::class."Id";
     if (str_ends_with($name_in,"]")) {
         $name = ($multiple) ? ($name_in . "[]") : $name_in;

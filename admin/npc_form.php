@@ -3,39 +3,32 @@
 require 'header.php';
 
 
-$npc = NPC::newWithDefault();
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $operation = "new";
-    if (isset($_GET['operation'])) {
-        $operation = $_GET['operation'];
-    }
-    else {
-        
-    }
-    if ($operation == 'new') {
-    } elseif ($operation == 'update') {
-        $npc = NPC::loadById($_GET['id']);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['roleId'])) {
+        $role = Role::loadById($_POST['roleId']);
     } else {
+        header('Location: ../index.php');
+        exit;
+    }
+    if (isset($_POST['operation'])) {
+        $operation = $_POST['operation'];
+        if ($operation == 'insert') $assignment = NPC_assignment::newWithDefault();
+        elseif ($operation == 'update') $assignment = NPC_assignment::getAssignment($role, $current_larp);
     }
 }
 
 
 function default_value($field) {
-    GLOBAL $npc;
+    GLOBAL $operation;
     $output = "";
     
     switch ($field) {
         case "operation":
-            if (is_null($npc->Id)) {
-                $output = "insert";
-                break;
-            }
-            $output = "update";
+            $output = $operation;
             break;
         case "action":
-            if (is_null($npc->Id)) {
-                $output = "Registrera";
+            if ($operation == 'insert') {
+                $output = "Skapa";
                 break;
             }
             $output = "Uppdatera";
@@ -54,25 +47,26 @@ else {
 
 
 include 'navigation.php';
+include 'npc_navigation.php';
 
 ?>
 
 	<div class="content">
 
-		<h1><?php default_value("action");?> NPC</h1>
+		<h1><?php default_value("action");?> NPC uppdrag</h1>
 		<form action="logic/npc_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>">
-    		<input type="hidden" id="Id" name="Id" value="<?php echo $npc->Id; ?>">
+    		<input type="hidden" id="RoleId" name="RoleId" value="<?php echo $role->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 
 		
 		<table>
- 			<tr><td valign="top" class="header">Namn&nbsp;<font style="color:red">*</font></td>
- 			<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($npc->Name); ?>" size="100" maxlength="250" required></td>
+ 			<tr><td valign="top" class="header">Namn</td>
+ 			<td><?php echo $role->Name ?></td>
  			<?php 
- 			if ($npc->hasImage()) {
+ 			if ($role->hasImage()) {
  			    echo "<td rowspan='20' valign='top'>";
- 			    echo "<img width='300' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
+ 			    echo "<img width='300' src='../includes/display_image.php?id=role->ImageId'/>\n";
  			    echo "</td>";
  			}
  			
@@ -82,27 +76,38 @@ include 'navigation.php';
  			
  			</tr>
 			<tr><td valign="top" class="header">Spelas av</td>
-			    <td><?php if ($npc->IsAssigned()) {
-			                 echo $npc->getPerson()->Name; 
-			                 echo "<input type='hidden' name='PersonId' value='$npc->PersonId'>";
-			    }?></td></tr>
+			    <td>
+			    <?php if ($assignment->IsAssigned()) {
+			        echo $assignment->getPerson()->Name; 
+	                echo "<input type='hidden' name='PersonId' value='$assignment->PersonId'>";
+			    } else {
+			        $persons=Person::getAllInterestedNPC($current_larp);
+			        echo selectionDropDownByArray("PersonId", $persons, false);
+			        
+			    }
+			    
+			    
+			    ?>
+			    </td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>
-			<td><?php selectionByArray('NPCGroup', NPCGroup::getAllForLARP($current_larp), false, false, $npc->NPCGroupId); ?></td></tr>
+			<td>
+			<?php
+			  $group = $role->getGroup();
+			  if (isset($group)) echo $group->getViewLink();
+			  ?>
+			  </td></tr>
 
 			<tr><td valign="top" class="header">Beskrivning</td>
- 			<td><textarea id="Description" name="Description" rows="3" cols="121" maxlength="60000"><?php echo htmlspecialchars($npc->Description); ?></textarea></td></tr>
+ 			<td><?php echo $role->Description?></td></tr>
 
  			<tr><td valign="top" class="header">När ska karaktären spelas?<br>Om den ska spelas vid ett särskillt tillfälle.</td>
- 			<td><input type="text" id="Time" name="Time" value="<?php echo htmlspecialchars($npc->Time); ?>" size="100" maxlength="250"></td></tr>
+ 			<td><input type="text" id="Time" name="Time" value="<?php echo htmlspecialchars($assignment->Time); ?>" size="100" maxlength="250"></td></tr>
 
-			<tr><td valign="top" class="header">Ska NPC'n spelas</td>
-			<td>
-				<input type="radio" id="IsToBePlayed_yes" name="IsToBePlayed" value="1" <?php if ($npc->IsToBePlayed()) echo 'checked="checked"'?>> 
-    			<label for="IsToBePlayed_yes">Ja</label><br> 
-    			<input type="radio" id="IsToBePlayed_no" name="IsToBePlayed" value="0" <?php if (!$npc->IsToBePlayed()) echo 'checked="checked"'?>> 
-    			<label for="IsToBePlayed_no">Nej</label>
-			</td></tr>
+ 			<tr><td valign="top" class="header">Hur ska karaktären spelas?<br>Om den behöver särskilda instruktioner.</td>
+ 			<td><textarea id="Instructions" name="Instructions" rows="3" cols="121" maxlength="60000"><?php echo htmlspecialchars($assignment->Instructions); ?></textarea></td></tr>
+
+
 
 		</table>		
 			<input type="submit" value="<?php default_value("action");?>">

@@ -12,12 +12,11 @@ function subFunction() {
 </script>
 
 <div class="topnav" id="subTopnav">
-    <div class="left">
+    <div  style="float: right;"">
 
         <a href="intrigue_creator_page.php">Intrigskapare</a>
         <a href="intrigue_admin.php">Intrigspår</a>
-    </div>
-    <div class="right">	  
+  
     	<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="subFunction()">&#9776;</a>
     
 	</div>

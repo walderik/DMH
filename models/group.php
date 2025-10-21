@@ -2,6 +2,17 @@
 
 class Group extends BaseModel{
     
+    const VISIBILITY_FULL = 1;
+    const VISIBILITY_NOT_CHOOSE = 2;
+    const VISIBILITY_INVISIBLE = 3;
+    
+    const VISIBILITY_TYPES = [
+        Group::VISIBILITY_FULL => "Synlig",
+        Group::VISIBILITY_NOT_CHOOSE => "Kan inte väljas av deltagare",
+        Group::VISIBILITY_INVISIBLE => "Osynlig"
+    ];
+    
+    
     public $Id;
     public $Name;
     public $Friends;
@@ -20,6 +31,7 @@ class Group extends BaseModel{
     public $IsDead = 0;
     public $OrganizerNotes;
     public $ImageId;
+    public $Visibility = 1;
     public $IsApproved = 0;
     public $ApprovedByPersonId;
     public $ApprovedDate;
@@ -52,6 +64,7 @@ class Group extends BaseModel{
         if (isset($arr['IsDead'])) $this->IsDead = $arr['IsDead'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
+        if (isset($arr['Visibility'])) $this->Visibility = $arr['Visibility'];
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
         if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
@@ -76,12 +89,12 @@ class Group extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_group SET Name=?, Friends=?, Enemies=?,
                     Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?, WealthId=?, PlaceOfResidenceId=?, 
                     GroupTypeId=?, ShipTypeId=?, Colour=?, PersonId=?, 
-                    CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, IsApproved=?, ApprovedByPersonId=?, ApprovedDate=? WHERE Id = ?");
+                    CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, Visibility=?, IsApproved=?, ApprovedByPersonId=?, ApprovedDate=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
             $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, 
             $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->PersonId, 
-            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->Id))) {
+            $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->Visibility, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -96,13 +109,13 @@ class Group extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_group (Name,  
                          Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
                          WealthId, PlaceOfResidenceId, GroupTypeId, ShipTypeId, Colour, PersonId, CampaignId, 
-                         IsDead, OrganizerNotes, ImageId, IsApproved, ApprovedByPersonId, ApprovedDate) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
+                         IsDead, OrganizerNotes, ImageId, Visibility, IsApproved, ApprovedByPersonId, ApprovedDate) 
+                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name,  
             $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
             $this->PlaceOfResidenceId, $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->PersonId, $this->CampaignId, 
-            $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate))) {
+            $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->Visibility, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
@@ -142,6 +155,22 @@ class Group extends BaseModel{
          if ($this->IsApproved == 1) return true;
          return false;
      }
+
+     public function hasFullVisibility() {
+         if ($this->Visibility == Group::VISIBILITY_FULL) return true;
+         return false;
+     }
+     
+     public function hasNotChooseVisibility() {
+         if ($this->Visibility == Group::VISIBILITY_NOT_CHOOSE) return true;
+         return false;
+     }
+     
+     public function hasInvisibility() {
+         if ($this->Visibility == Group::VISIBILITY_INVISIBLE) return true;
+         return false;
+     }
+     
      public function getOldApprovedGroup() {
          return GroupApprovedCopy::getOldGroup($this->Id);
      }
@@ -244,12 +273,55 @@ class Group extends BaseModel{
              return static::getSeveralObjectsqQuery($sql, array($larp->Id));
      }
      
+     public static function getAllChoosable($larp) {
+         if (is_null($larp)) return Array();
+         if (GroupType::isInUse($larp))
+             $sql = "SELECT DISTINCT regsys_group.* FROM regsys_group, regsys_grouptype WHERE ".
+             "(GroupTypeId IS NULL OR GroupTypeId = regsys_grouptype.Id) AND ".
+             "IsDead=0 AND ".
+             "IsApproved=1 AND ".
+             "Visibility=". Group::VISIBILITY_FULL." AND ".
+             "regsys_group.Id IN (SELECT GroupId from regsys_larp_group where LARPId = ?) ".
+             "ORDER BY regsys_grouptype.SortOrder,".static::$orderListBy.";";
+             else
+                 $sql = "SELECT * FROM regsys_group WHERE ".
+                 "IsDead=0 AND ".
+                 "IsApproved=1 AND ".
+                 "Visibility=". Group::VISIBILITY_FULL." AND ".
+                 "Id IN ".
+                 "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
+                 return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+     }
+     
+     public static function getAllVisible($larp) {
+         if (is_null($larp)) return Array();
+         if (GroupType::isInUse($larp))
+             $sql = "SELECT DISTINCT regsys_group.* FROM regsys_group, regsys_grouptype WHERE ".
+             "(GroupTypeId IS NULL OR GroupTypeId = regsys_grouptype.Id) AND ".
+             "IsDead=0 AND ".
+             "IsApproved=1 AND ".
+             "Visibility IN (". Group::VISIBILITY_FULL .", ". Group::VISIBILITY_NOT_CHOOSE.") AND ".
+             "regsys_group.Id IN (SELECT GroupId from regsys_larp_group where LARPId = ?) ".
+             "ORDER BY regsys_grouptype.SortOrder,".static::$orderListBy.";";
+             else
+                 $sql = "SELECT * FROM regsys_group WHERE IsDead=0 AND IsApproved=1 AND Id IN ".
+                 "(SELECT GroupId from regsys_larp_group where LARPId = ?) ORDER BY ".static::$orderListBy.";";
+                 return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+     }
+     
      public static function getAllInCampaign($campaignId) {
          $sql = "SELECT * FROM regsys_group WHERE CampaignId=? ".
              "ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($campaignId));
      }
           
+     public static function getAllHiddenGroups($campaignId) {
+         $sql = "SELECT * FROM regsys_group WHERE CampaignId=? AND ".
+             "Visibility IN (". Group::VISIBILITY_NOT_CHOOSE .", ". Group::VISIBILITY_INVISIBLE.") ".
+             "ORDER BY ".static::$orderListBy.";";
+         return static::getSeveralObjectsqQuery($sql, array($campaignId));
+     }
+     
      public static function getAllGroupsForPerson($personId) {
          $sql = "SELECT * FROM regsys_group WHERE PersonId = ? ORDER BY ".static::$orderListBy.";";
          return static::getSeveralObjectsqQuery($sql, array($personId));
@@ -271,31 +343,22 @@ class Group extends BaseModel{
      }
      
      
-     public function isNeverRegistered() {         
+     public function mayDelete() {
+         //En grupp kan raderas när den aldrig har varit anmäld och inte har några gruppmedlemmar.
          $sql = "SELECT COUNT(*) AS Num FROM regsys_larp_group WHERE GroupId=?;";
          
-         $stmt = static::connectStatic()->prepare($sql);
-         
-         if (!$stmt->execute(array($this->Id))) {
-             $stmt = null;
-             header("location: ../index.php?error=stmtfailed");
-             exit();
-         }
-         
-         if ($stmt->rowCount() == 0) {
-             $stmt = null;
-             return true;
-             
-         }
-         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-         
-         $stmt = null;
+         $res = static::existsQuery($sql, array($this->Id));
+         if ($res) return false;
          
          
-         if ($res[0]['Num'] == 0) return true;
-         return false;
+         $sql = "SELECT COUNT(*) AS Num FROM regsys_role WHERE GroupId=?;";
          
+         $res = static::existsQuery($sql, array($this->Id));
+         if ($res) return false;
+         
+         return true;
      }
+     
      
      public static function getTitledeedOwners(Titledeed $titledeed) {
          $sql = "SELECT * FROM regsys_group WHERE Id IN ".
@@ -368,8 +431,8 @@ class Group extends BaseModel{
          
      }
      
-     public function getPreviousLarps() {
-         return LARP::getPreviousLarpsGroup($this->Id);
+     public function getPreviousLarps(Larp $larp) {
+         return LARP::getPreviousLarpsGroup($this->Id, $larp);
      }
      
      public function getAllKnownRoles(LARP $larp) {

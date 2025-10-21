@@ -23,8 +23,11 @@ if (!$role->isRegistered($current_larp)) {
 
 $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
 $reserve_larp_role = Reserve_LARP_Role::loadByIds($role->Id, $current_larp->Id);
+$assignment = NPC_assignment::getAssignment($role, $current_larp);
 if (isset($reserve_larp_role)) $isReserve = true;
 else $isReserve = false;
+if (isset($assignment)) $isPlayedNPC = true;
+else $isPlayedNPC = false;
 
 $isRegistered = $role->isRegistered($current_larp);
 $subdivisions = Subdivision::allForRole($role, $current_larp);
@@ -89,7 +92,20 @@ include 'navigation.php';
 		
 		<?php 
 
-		if ($isRegistered && !$isReserve) {?>
+		if ($isRegistered && !$isReserve || $isPlayedNPC) {?>
+		
+			<?php if ($isPlayedNPC) { ?>
+			<h2>Intrig</h2>
+    		<div>
+	    		<i>Kursiverad text visas inte för deltagaren.</i><br><br>
+    		<?php 
+        		if (!empty($assignment->WhatHappened) || !empty($assignment->WhatHappendToOthers)) {
+        		    echo "<h3>Vad hände med/för $role->Name ?</h3>";
+        		    echo  nl2br(htmlspecialchars($assignment->WhatHappened));
+        		    echo "<h3>Vad hände med/för andra?</h3>";
+        		    echo  nl2br(htmlspecialchars($assignment->WhatHappendToOthers));
+        		}
+		      } else {?>
     		<h2>Intrig <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
     		<div>
     		    		<i>Kursiverad text visas inte för deltagaren.</i><br><br>
@@ -105,6 +121,7 @@ include 'navigation.php';
     		}
     		    ?>
 
+			<?php } ?>
     		<?php
     		$intrigues = array();
     		$roleIntrigues = Intrigue::getAllIntriguesForRole($role->Id, $current_larp->Id);
@@ -209,8 +226,6 @@ include 'navigation.php';
            $known_groups = $role->getAllKnownGroups($current_larp);
            $known_roles = $role->getAllKnownRoles($current_larp);
            
-           $known_npcgroups = $role->getAllKnownNPCGroups($current_larp);
-           $known_npcs = $role->getAllKnownNPCs($current_larp);
            $known_props = $role->getAllKnownProps($current_larp);
            $known_pdfs = $role->getAllKnownPdfs($current_larp);	       
            
@@ -222,8 +237,6 @@ include 'navigation.php';
                $known_groups = array_unique(array_merge($known_groups,$subdivision->getAllKnownGroups($current_larp)), SORT_REGULAR);
                $known_roles = array_unique(array_merge($known_roles,$subdivision->getAllKnownRoles($current_larp)), SORT_REGULAR);
                
-               $known_npcgroups = array_merge($known_npcgroups,$subdivision->getAllKnownNPCGroups($current_larp));
-               $known_npcs = array_merge($known_npcs,$subdivision->getAllKnownNPCs($current_larp));
                $known_props = array_merge($known_props,$subdivision->getAllKnownProps($current_larp));
                $known_pdfs = array_merge($known_pdfs,$subdivision->getAllKnownPdfs($current_larp));
                
@@ -260,6 +273,17 @@ include 'navigation.php';
                if (!empty($role_group)) {
                    echo "<div>$role_group->Name</div>";
                }
+               if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "Inte anmäld";
+               elseif ($known_role->isNPC($current_larp)) {
+                   $assignment = NPC_assignment::getAssignment($known_role, $current_larp);
+                   if (!empty($assignment)) {
+                       $person = $assignment->getPerson();
+                       if (!empty($person)) echo "<div>NPC - Spelas av $person->Name</div>";
+                       else echo "<div>NPC - Spelare inte tilldelad ännu</div>";
+                   } else {
+                       echo "NPC - Spelas inte";
+                   }
+               }
                
                if ($known_role->hasImage()) {
                    echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
@@ -273,39 +297,6 @@ include 'navigation.php';
                }
            }
            
-           foreach ($known_npcgroups as $known_npcgroup) {
-               $npcgroup=$known_npcgroup->getIntrigueNPCGroup()->getNPCGroup();
-               echo "<li style='display:table-cell; width:19%;'>\n";
-               echo "<div class='name'>$npcgroup->Name</div>\n";
-               echo "<div>NPC-grupp</div>";
-               echo "</li>\n";
-               $temp++;
-               if($temp==$cols)
-               {
-                   echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-                   $temp=0;
-               }
-           }
-           foreach ($known_npcs as $known_npc) {
-               $npc=$known_npc->getIntrigueNPC()->getNPC();
-               echo "<li style='display:table-cell; width:19%;'>\n";
-               echo "<div class='name'>$npc->Name</div>\n";
-               $npc_group = $npc->getNPCGroup();
-               if (!empty($npc_group)) {
-                   echo "<div>$npc_group->Name</div>";
-               }
-               if ($npc->hasImage()) {
-                   echo "<td>";
-                   echo "<img width='100' src='../includes/display_image.php?id=$npc->ImageId'/>\n";
-               }
-               echo "</li>\n";
-               $temp++;
-               if($temp==$cols)
-               {
-                   echo"</ul>\n<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
-                   $temp=0;
-               }
-           }
            foreach ($known_props as $known_prop) {
                $prop = $known_prop->getIntrigueProp()->getProp();
                echo "<li style='display:table-cell; width:19%;'>\n";
@@ -364,14 +355,11 @@ include 'navigation.php';
                }
                echo "</ul>";
            }
-           
-           
-           
-    	
-		}
-	    ?>
+           ?>
 		</div>
-		<?php 
+		<?php }?>
+		
+        <?php 
 		if ($current_larp->hasRumours() && $isRegistered) {
 		
 		?>
@@ -420,15 +408,12 @@ include 'navigation.php';
 		    
 		}
 		if (isset($larp_role)) echo "Pengar vid lajvets start $larp_role->StartingMoney $currency";
-		
-		
-		
-		
-		}
-		
 		?>
 		
-		 </div>
+		</div>
+		<?php }?>
+		
+
 		
 		<h2>Anteckningar (visas inte för deltagaren) <a href='edit_intrigue.php?id=<?php echo $role->Id ?>'><i class='fa-solid fa-pen'></i></a></h2>
 		<div>
