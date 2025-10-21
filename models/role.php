@@ -1095,8 +1095,13 @@ class Role extends BaseModel{
     }
     
     public function mayDelete() {
-        if  ($this->isNeverRegistered() && $this->isNeverAssigned()) return true;
+        if  ($this->isNeverRegistered() && $this->isNeverAssigned() && !$this->isInIntrigue()) return true;
         return false;
+    }
+    
+    private function isInIntrigue() {
+        $sql = "SELECT count(*) as Num FROM regsys_intrigueactor Where RoleId = ?";
+        return static::countQuery($sql, array($this->Id));
     }
     
     public function getAllIntriguesIncludingSubdivisionsSorted(Larp $larp) {

@@ -18,6 +18,7 @@ foreach ($npcGroups as $npcGroup) {
 
 $npcs = NPC::all();
 foreach ($npcs as $npc) {
+    //if ($npc->Id == 70 || $npc->Id == 109 || $npc->Id==89) continue;
     convertNPC($npc);
 }
 
@@ -73,7 +74,7 @@ function convertNPCGroup(NPCGroup $npcGroup) {
 function convertNPC(NPC $npc) {
     global $current_person;
     if (empty($npc->RoleId)) {
-        echo "Konverterar NPC $npc->Name<br>";
+        echo "Konverterar NPC $npc->Name (id $npc->Id)<br>";
         $role = new Role();
         echo "Lajv $npc->LarpId<br>";
         $larp = Larp::loadById($npc->LarpId);
@@ -85,8 +86,8 @@ function convertNPC(NPC $npc) {
         $role->IsApproved = 1;
         $role->UserMayEdit = 0;
         $role->CreatorPersonId = $current_person->Id;
-        $role->Profession = substr($npc->Description, 0, 50);
-        
+        $role->Profession = substr($npc->Description, 0, 40);
+        echo "Yrke: $role->Profession<br>";
         if (isset($npc->NPCGroupId)) {
             $npcGroup = NPCGroup::loadById($npc->NPCGroupId);
             $role->GroupId = $npcGroup->GroupId;
