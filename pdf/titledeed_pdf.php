@@ -148,7 +148,7 @@ class TITLEDEED_PDF extends FPDF {
         
     }
     
-    function SetTextDOH(Titledeed $titledeed, Campaign $campaign, bool $odd, $owners) {
+    function SetTextDOH(Titledeed $titledeed, bool $odd, $owners) {
         
         $page_height = $this->GetPageHeight();
         $y = $odd ? 0 : ($page_height/2);
@@ -395,7 +395,7 @@ class TITLEDEED_PDF extends FPDF {
 	                } else {
 	                    $odd = true;
 	                }
-	                $this->SetTextDOH($titledeed, $larp, !$odd, $owner);
+	                $this->SetTextDOH($titledeed, !$odd, $owner);
 	                
 	            }
 	        } else {
@@ -405,7 +405,7 @@ class TITLEDEED_PDF extends FPDF {
 	            } else {
 	                $odd = true;
 	            }
-	            $this->SetTextDOH($titledeed, $larp, !$odd, $owners);
+	            $this->SetTextDOH($titledeed, !$odd, $owners);
 	        }
 	    }
 	}
