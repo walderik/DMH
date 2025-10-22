@@ -84,7 +84,7 @@ ul.list {
             	            $image = $house->getImage();
             	            $photografer = (!empty($image->Photographer) && $image->Photographer!="") ? "Fotograf $image->Photographer" : "";
             	            echo "<td rowspan='6'>";
-            	            echo "<img src='../includes/display_image.php?id=$house->ImageId' title='$photografer'/>\n";
+            	            echo "<img width='300' src='../includes/display_image.php?id=$house->ImageId' title='$photografer'/>\n";
             	            echo "<br>$photografer";
             	            echo "</td>";
             	        }

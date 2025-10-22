@@ -86,7 +86,7 @@ img {
 	        if ($house->hasImage()) {
 	            $image = $house->getImage();
 	            echo "<td>";
-	            echo "<img src='../includes/display_image.php?id=$house->ImageId'/>\n";
+	            echo "<img width='300' src='../includes/display_image.php?id=$house->ImageId'/>\n";
 	            if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
 	            echo "</td>";
 	        }
