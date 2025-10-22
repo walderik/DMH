@@ -49,9 +49,8 @@ function print_role($role, $subdivision, $isAtLarp, $mayRemove) {
     echo $role->getViewLink();
     if ($isAtLarp) { 
         $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
-        if ($larp_role->IsMainRole != 1) {
-            echo " (Sidokaraktär)";
-        }
+        if (empty($larp_role)) echo " (NPC)";
+        elseif ($larp_role->IsMainRole != 1)  echo " (Sidokaraktär)";
     }
     
     echo "</td>";
@@ -72,9 +71,13 @@ function print_role($role, $subdivision, $isAtLarp, $mayRemove) {
     echo "</td>";
     echo "<td>$role->Profession</td>";
     
-    $person = $role->getPerson();
     echo "<td>";
-    if (!is_null($person)) echo $person->getViewLink();
+    $person = $role->getPerson();
+    if (empty($person)) {
+        $assignment = NPC_assignment::getAssignment($role, $current_larp);
+        if (!empty($assignment)) $person = $assignment->getPerson();
+    }
+    if (!empty($person)) echo $person->getViewLink();
     else echo "NPC";
     echo "</td>";
     
@@ -124,6 +127,7 @@ include 'navigation.php';
 		$registered_manual_characters_in_subdivision = $subdivision->getAllManualRegisteredMembers($current_larp);
 		$not_registered_characters = $subdivision->getAllManualMembersNotComing($current_larp);
 		
+		
 
 	    $personIdArr = array();
 	    foreach ($registered_automatic_characters_in_subdivision as $role) {
@@ -133,7 +137,11 @@ include 'navigation.php';
 	    }
 	    foreach ($registered_manual_characters_in_subdivision as $role) {
 	        $person = $role->getPerson();
-	        if (is_null($person)) continue;
+	        if (is_null($person)) {
+	            $assignment = NPC_assignment::getAssignment($role, $current_larp);
+	            if (!empty($assignment) && !empty($assignment->PersonId)) $person = $assignment->getPerson();
+	            else continue;
+	        }
 	        if ($person->isNotComing($current_larp)) continue;
 	        $personIdArr[] = $person->Id;
 	    }

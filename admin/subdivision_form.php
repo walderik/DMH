@@ -4,6 +4,7 @@ include_once '../includes/selection_data_control.php';
 
 
     $subdivision = Subdivision::newWithDefault();
+
     
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $operation = "new";
@@ -121,7 +122,7 @@ include_once '../includes/selection_data_control.php';
     			</tr>
     			
     			<tr>
-    				<td>Regel för automatisk tilldelning<br>Alla karaktärer som uppfyller alla de valda värdena kommer att automatiskt vara medlemmar i grupperingen.</td>
+    				<td>Regel för automatisk tilldelning<br>Alla karaktärer som uppfyller alla de valda värdena kommer att automatiskt vara medlemmar i grupperingen.<br>Det går att välja flera i varje kategori. På dator görs det med Ctrl+Click</td>
     				<td>
     				<?php 
     				$options = getAllOptionsForRoles($current_larp);

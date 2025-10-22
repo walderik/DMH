@@ -144,7 +144,7 @@ class Subdivision extends BaseModel{
         }
         
         $newRoleIds = array_diff($roleIds,$exisitingIds);
-        //Koppla magier till skolan
+        //Koppla karaktärer till grupperingen
         foreach ($newRoleIds as $roleId) {
             $this->addMember($roleId);
         }
@@ -205,32 +205,31 @@ class Subdivision extends BaseModel{
     
     
     public function getAllManualRegisteredMembers(LARP $larp) {
-        $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE Id IN (".
-            "SELECT RoleId FROM regsys_subdivisionmember, regsys_registration WHERE ".
-            " SubdivisionId=? AND ".
-            "regsys_role.PersonId = regsys_registration.PersonId AND ".
-            "regsys_registration.LARPId = ? AND ".
-            "regsys_registration.NotComing = 0) AND ".
-            "regsys_role.Id = regsys_larp_role.RoleId AND ".
-            "regsys_larp_role.LarpId = ? ".
+        $sql = "SELECT regsys_role.* FROM regsys_role, regsys_subdivisionmember WHERE ".
+            "SubdivisionId=? AND ".
+            "regsys_subdivisionmember.RoleId = regsys_role.Id AND ".
+            "(regsys_role.Id IN (".
+            "SELECT RoleId FROM regsys_larp_role, regsys_registration WHERE ".
+            "regsys_larp_role.LarpId = ? AND ".
+            "regsys_larp_role.PersonId = regsys_registration.PersonId AND ".
+            "regsys_registration.LARPId = regsys_larp_role.LarpId AND ".
+            "regsys_registration.NotComing = 0) ".
+            "OR regsys_role.Id IN (".
+            "SELECT RoleId FROM regsys_npc_assignment WHERE LarpId = ?)) ".
             "ORDER BY ".Role::$orderListBy.";";
-        
         return Role::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id, $larp->Id));
     }
 
     
     public function getAllManualMembersNotComing(LARP $larp) {
-        $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE Id IN (".
-            "SELECT RoleId FROM regsys_subdivisionmember, regsys_registration WHERE ".
-            " SubdivisionId=? AND ".
-            "regsys_role.PersonId = regsys_registration.PersonId AND ".
-            "regsys_registration.LARPId = ? AND ".
-            "regsys_registration.NotComing = 1) AND ".
-            "regsys_role.Id = regsys_larp_role.RoleId AND ".
-            "regsys_larp_role.LarpId = ? ".
-            "ORDER BY ".Role::$orderListBy.";";
+        $all_members = $this->getAllManualMembers();
+        $coming_manual_members = $this->getAllManualRegisteredMembers($larp);
         
-        return Role::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id, $larp->Id));
+        $not_coming_manual_members = array_udiff($all_members, $coming_manual_members, function ($objOne, $objTwo) {
+                return $objOne->Id - $objTwo->Id;
+            });
+        
+        return $not_coming_manual_members;
     }
     
     public static function allForRole(Role $role, Larp $larp) {
