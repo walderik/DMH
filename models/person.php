@@ -16,7 +16,7 @@ class Person extends BaseModel{
     public $HouseId; #Förvaltare av huset
     public $HousingComment;
     public $HealthComment;
-    public $HasPermissionShowName = 0;
+    public $HasPermissionShowName = 1;
     public $IsSubscribed = 1;
     public $UnsubscribeCode;
     public $MembershipCheckedAt;

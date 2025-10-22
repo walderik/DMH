@@ -3,29 +3,33 @@ include_once 'header.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    if (isset($_POST['RoleId']) && isset($_POST['RumourId'])) {
+    if (isset($_POST['RoleId'])) {
         $role = Role::loadById($_POST['RoleId']);
-        $rumourIds = $_POST['RumourId'];
-        foreach ($rumourIds as $rumourId) {
-            if (Rumour_knows::roleKnows($rumourId, $role->Id)) continue;
-            $rumour_knows = Rumour_knows::newWithDefault();
-            $rumour_knows->RoleId = $role->Id;
-            $rumour_knows->RumourId = $rumourId;
-            $rumour_knows->create();
+        if (isset($_POST['RumourId'])) {
+            $rumourIds = $_POST['RumourId'];
+            foreach ($rumourIds as $rumourId) {
+                if (Rumour_knows::roleKnows($rumourId, $role->Id)) continue;
+                $rumour_knows = Rumour_knows::newWithDefault();
+                $rumour_knows->RoleId = $role->Id;
+                $rumour_knows->RumourId = $rumourId;
+                $rumour_knows->create();
+            }
         }
         header("Location: " . $role->getLink());
         exit;
         
     }
-    if (isset($_POST['GroupId']) && isset($_POST['RumourId'])) {
+    if (isset($_POST['GroupId'])) {
         $group = Group::loadById($_POST['GroupId']);
-        $rumourIds = $_POST['RumourId'];
-        foreach ($rumourIds as $rumourId) {
-            if (Rumour_knows::groupKnows($rumourId, $group->Id)) continue;
-            $rumour_knows = Rumour_knows::newWithDefault();
-            $rumour_knows->GroupId = $group->Id;
-            $rumour_knows->RumourId = $rumourId;
-            $rumour_knows->create();
+        if (isset($_POST['RumourId'])) {
+            $rumourIds = $_POST['RumourId'];
+            foreach ($rumourIds as $rumourId) {
+                if (Rumour_knows::groupKnows($rumourId, $group->Id)) continue;
+                $rumour_knows = Rumour_knows::newWithDefault();
+                $rumour_knows->GroupId = $group->Id;
+                $rumour_knows->RumourId = $rumourId;
+                $rumour_knows->create();
+            }
         }
         header("Location: " . $group->getLink());
         exit;
@@ -69,6 +73,9 @@ include 'navigation.php';
         <?php
     
         $rumour_array = Rumour::allBySelectedLARP($current_larp);
+        if (empty($rumour_array)) {
+            echo "Det finns inga rykten att lägga till.";
+        } else {
         echo "<table id='rumours' class='data'>";
         echo "<tr><th>Text</th><th>Gäller</th><th>Antal som<br>känner till</th><th>Används<br>i intrig</th><th>Ok</th></tr>\n";
         foreach ($rumour_array as $rumour) {
@@ -100,7 +107,8 @@ include 'navigation.php';
         echo "</table>";
         
         ?>
-        <input type="submit" value="Lägg till rykten"></form>
+        <input type="submit" value="Lägg till rykten till <?php echo $name ?>"></form>
+        <?php  } ?>
     </div>
 	
 </body>

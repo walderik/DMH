@@ -22,6 +22,7 @@ include 'npc_navigation.php';
 			echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
 			 			"<th>&nbsp; &nbsp; </th>";
 			$colnum++;
+			echo "<th onclick='sortTableNumbers(". $colnum++ .", \"$tableId\")'>Synlighet</th>";
 			echo "<th onclick='sortTableNumbers(". $colnum++ .", \"$tableId\")'>Antal medlemmar</th>";
 			if ($current_larp->hasCommerce()) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Har verksamhet</th>";
 			echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")' colspan='2'>Intrig</th></tr>\n";
@@ -42,6 +43,11 @@ include 'npc_navigation.php';
 			    echo "\n";
 			    echo "<a href='group_sheet.php?id=" . $group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $group->Name'></i></a>\n";
 			    echo "</td>\n";
+			    echo "<td>";
+			    if ($group->Visibility == Group::VISIBILITY_FULL) echo "Full";
+			    elseif ($group->Visibility == Group::VISIBILITY_NOT_CHOOSE) echo "Synlig NPC-grupp";
+			    elseif ($group->Visibility == Group::VISIBILITY_INVISIBLE) echo "Osynlig NPC-grupp";
+			    echo "</td>";
 			    echo "<td>" . $group->countAllRolesInGroup($current_larp) . "</td>\n";
 			    if ($current_larp->hasCommerce())
 			    {

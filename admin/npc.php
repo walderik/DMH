@@ -19,7 +19,7 @@ include 'npc_navigation.php';
         if ($unassigned_count>0) echo "<strong>$unassigned_count NPC'er som ska spelas på lajvet har ingen spelare.</strong><br>";
         
         $unreleased_count = NPC_assignment::numberUnreleased($current_larp);
-        if ($unreleased_count>0) echo "<strong>$unreleased_count tilldelade NPC'er har inte blivit släpta till sin spelare.</strong><br>";
+        if ($unreleased_count>0) echo "<strong>$unreleased_count tilldelade NPC'er har inte blivit släppta till sin spelare.</strong><br>";
 
         $npcs = Role::getAllNPCToBePlayed($current_larp);
         $persons=Person::getAllInterestedNPC($current_larp);

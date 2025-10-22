@@ -107,10 +107,10 @@ include 'navigation.php';
 	       	<div class='itemname'><label for="GuardianInfo">Ansvarig vuxen</label> <font style="color:red">*</font></div>
 			Eftersom <?php echo $current_person->Name; ?> bara är <?php  echo $current_person->getAgeAtLarp($current_larp); ?> år behövs en ansvarig vuxen. 
     			Den ansvarige måste vara anmäld till lajvet, tillfrågad och accepera ansvaret.<br>
-    			Skriv in namn eller personnummer på den ansvarige. Personnummer anges på formen ÅÅÅÅMMDD-NNNN. Man kan bara ha en ansvarig vuxen.
+    			Skriv in namn ELLER personnummer på den ansvarige. Personnummer anges på formen ÅÅÅÅMMDD-NNNN. Den ansvarige måste redan vara anmäld. Man kan bara ha en ansvarig vuxen.
     			Om den ansvarige inte går att hitta kommer inte din anmälan att kunna godkännas förrän det är löst.
 				<br>
-			<input type="text" id="GuardianInfo" name="GuardianInfo" size="100" maxlength="200" >
+			<input type="text" id="GuardianInfo" name="GuardianInfo" size="100" maxlength="200" placeholder="Ange namn ELLER personnummer på den som är ansvarig vuxen">
             </div>
 		    
 		    <?php 

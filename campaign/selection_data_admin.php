@@ -68,7 +68,7 @@ include 'navigation.php';
                 echo "<tr>\n";
                 echo "<td><a href='selection_data_form.php?type=".$type."&operation=update&id=" . $data->Id . "'>$data->Name</a></td>\n";
                 echo "<td>" . nl2br($data->Description) . "</td>\n";
-                echo "<td>" . $data->Active . "</td>\n";
+                echo "<td>" . ja_nej($data->Active) . "</td>\n";
                 echo "<td>" . $data->SortOrder . "</td>\n";
                 if ($objectType == 'IntrigueType') {
                     echo "<td>".$data->getForString()."</td>";

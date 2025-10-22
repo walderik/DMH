@@ -26,6 +26,7 @@ include 'npc_navigation.php';
 		    echo "<table id='$tableId' class='data'>";
 		    echo "<tr>";
 		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>";
+		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Synlighet</th>";
 		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Godkänd</th>";
 		    
 		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>";
