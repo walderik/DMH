@@ -53,6 +53,7 @@ include 'navigation.php';
         </p>
 		<form action="rumour_admin.php" method="post">
             <a href="rumour_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
+            <a href="reports/all_rumours_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla rykten</a><br>
 		<?php
 		if ($short_text) {
 		    echo "<input type='hidden' id='long_text' name='long_text' value='1'>";

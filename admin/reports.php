@@ -29,6 +29,9 @@ include 'navigation.php';
         <a href='character_sheet.php?bara_intrig=japp' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla intriger (tar tid att generera)'></i> Alla intriger per karaktär</a>, <a href='character_sheet.php?bara_intrig=japp&double_sided=1' target='_blank'>dubbelsidig utskrift</a><br>
         <a href='character_sheet.php?bara_intrig=japp&main=1' target='_blank'><i class='fa-solid fa-file-pdf' title='Intriger för huvudkaraktärer (tar tid att generera)'></i> Intriger för huvudkaraktärer</a>, <a href='character_sheet.php?bara_intrig=japp&main=1&double_sided=1' target='_blank'>dubbelsidig utskrift</a><br>
         <a href='group_sheet.php?bara_intrig=japp' target='_blank'><i class='fa-solid fa-file-pdf' title='Intriger för alla grupper'></i> Intriger för alla grupper</a>, <a href='group_sheet.php?bara_intrig=japp&double_sided=1' target='_blank'>dubbelsidig utskrift</a><br>
+        <?php if ($current_larp->hasRumours()) { ?>
+            <a href="reports/all_rumours_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla godkända rykten</a><br>
+        <?php } ?>
         <?php if ($current_larp->HasLetters()) { ?>
        	 	<a href="logic/all_letters_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla godkända brev</a><br> 
         <?php } ?>
