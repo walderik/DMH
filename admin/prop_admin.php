@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 include 'navigation.php';
 ?>
+<script src="../javascript/table_sort.js"></script>
 
     <div class="content">
         <h1>Rekvisita</h1>
@@ -26,8 +27,19 @@ include 'navigation.php';
     
        $prop_array = Prop::allByCampaign($current_larp);
         if (!empty($prop_array)) {
-            echo "<table class='data'>";
-            echo "<tr><th>Id</td><th>Namn</th><th>Beskrivning</th><th>Lagerplats</th><th>Märkning</th><th>In-lajv<br>egenskaper</th><th>Innehavare</th><th>Bild</th><th>Används<br>i intrig</th><th></th></tr>\n";
+            $tableId = "props";
+            echo "<table id='$tableId' class='data'>";
+            echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Id</td>".
+                "<th onclick='sortTable(1, \"$tableId\");'>Namn</th>".
+                "<th onclick='sortTable(2, \"$tableId\");'>Beskrivning</th>".
+                "<th onclick='sortTable(3, \"$tableId\");'>Lagerplats</th>".
+                "<th onclick='sortTable(4, \"$tableId\");'>Märkning</th>".
+                "<th onclick='sortTable(5, \"$tableId\");'>In-lajv<br>egenskaper</th>".
+                "<th onclick='sortTable(6, \"$tableId\");'>Innehavare</th>".
+                "<th onclick='sortTable(7, \"$tableId\");'>Bild</th>".
+                "<th onclick='sortTable(8, \"$tableId\");'>Används<br>i intrig</th>".
+                "<th></th></tr>\n";
+
             foreach ($prop_array as $prop) {
                 $owner = "";
                 if (isset($prop->GroupId)) {
@@ -70,7 +82,7 @@ include 'navigation.php';
                 
                 
                 echo "<td>";
-                if (empty($intrigues)) echo "<a href='prop_admin.php?operation=delete&id=" . $prop->Id . "'><i class='fa-solid fa-trash'></i>";
+                if ($prop->mayDelete()) echo "<a href='prop_admin.php?operation=delete&id=" . $prop->Id . "'><i class='fa-solid fa-trash'></i>";
                 echo "</td>\n";
                 echo "</tr>\n";
             }

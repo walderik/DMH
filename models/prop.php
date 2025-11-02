@@ -160,6 +160,14 @@ class Prop extends BaseModel{
         
     }
     
+    public function mayDelete() {
+        //Kolla om den används i någon intrig
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_intrigue_prop WHERE PropId = ?";
+        if (static::existsQuery($sql, array($this->Id))) return false;
+        
+        return true;
+    }
+    
 
 }
 
