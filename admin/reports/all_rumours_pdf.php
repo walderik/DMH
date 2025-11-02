@@ -13,6 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] != "GET") {
     exit;
 }
 
+
+if (isset($_GET['only_text'])) $only_text = true;
+else $only_text = false;
+    
+
 $name = 'Alla rykten';
 
 $pdf = new Report_TCP_PDF();
@@ -31,24 +36,30 @@ function cmp($a, $b)
 $rumours = Rumour::allApprovedBySelectedLARP($current_larp);
 
 $rows = array();
-$header = array("Text", "Gäller", "Känner till");
+if ($only_text) $header = array("Text");
+else $header = array("Text", "Gäller", "Känner till");
+
 foreach ($rumours as $rumour) {
-    $concerns = $rumour->getConcerns();
-    $concerns_names = array();
-    foreach ($concerns as $concern) {
-        $concerns_names[] = $concern->getName();
-        
-    }
-    $knows = $rumour->getKnows();
-    $knows_names = array();
-    foreach ($knows as $know) {
-        $knows_names[] = $know->getName();
-        
-    }
     
-    $rows[] = array($rumour->Text, 
-        implode(", ", $concerns_names), 
-        implode(", ", $knows_names));
+    if ($only_text) $rows[] = array($rumour->Text);
+    else {
+        $concerns = $rumour->getConcerns();
+        $concerns_names = array();
+        foreach ($concerns as $concern) {
+            $concerns_names[] = $concern->getName();
+            
+        }
+        $knows = $rumour->getKnows();
+        $knows_names = array();
+        foreach ($knows as $know) {
+            $knows_names[] = $know->getName();
+            
+        }
+        
+        $rows[] = array($rumour->Text, 
+            implode(", ", $concerns_names), 
+            implode(", ", $knows_names));
+    }
 }
 // add a page
 $pdf->AddPage('L');

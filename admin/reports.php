@@ -31,6 +31,7 @@ include 'navigation.php';
         <a href='group_sheet.php?bara_intrig=japp' target='_blank'><i class='fa-solid fa-file-pdf' title='Intriger för alla grupper'></i> Intriger för alla grupper</a>, <a href='group_sheet.php?bara_intrig=japp&double_sided=1' target='_blank'>dubbelsidig utskrift</a><br>
         <?php if ($current_larp->hasRumours()) { ?>
             <a href="reports/all_rumours_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla godkända rykten</a><br>
+            <a href="reports/all_rumours_pdf.php?only_text=1" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla godkända rykten, bara text</a><br>
         <?php } ?>
         <?php if ($current_larp->HasLetters()) { ?>
        	 	<a href="logic/all_letters_pdf.php" target="_blank"><i class="fa-solid fa-file-pdf"></i>Alla godkända brev</a><br> 
