@@ -24,7 +24,7 @@ include 'alchemy_navigation.php';
         <br><br>
             <a href="choose_role.php?operation=add_alchemist"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som alkemister</a>&nbsp;&nbsp; 
        <?php
-       $alchemistsComing = Alchemy_Alchemist::allByComingToLarp($current_larp);
+       $alchemistsComing = Alchemy_Alchemist::allRegisteredToLarp($current_larp);
        $allAlchemists = Alchemy_Alchemist::allByCampaign($current_larp);;
        $alchemistsNotComing = array_udiff($allAlchemists, $alchemistsComing,
            function ($objOne, $objTwo) {
@@ -56,17 +56,26 @@ include 'alchemy_navigation.php';
            foreach ($alchemistsComing as $alchemist) {
                $role = $alchemist->getRole();
                $person = $role->getPerson();
-                echo "<tr>\n";
-                echo "<td><a href ='view_alchemist.php?id=$alchemist->Id'>$role->Name</a></td>\n";
+               $roleNotComing = $person->isNotComing($current_larp);
+               echo "<tr>\n";
+                echo "<td>";
+                if ($roleNotComing) echo "<s>";
+                echo "<a href ='view_alchemist.php?id=$alchemist->Id'>$role->Name</a>";
+                if ($roleNotComing) echo "</s>";
+                echo "</td>\n";
                 echo "<td>";
                 $group = $role->getGroup();
                 if (isset($group)) echo $group->getViewLink();
                 echo "</td>";
                 echo "<td>";
+                if ($roleNotComing) echo "<s>";
+                
                 if (!is_null($person)) {
                     echo $person->getViewLink();
                     echo "(".$person->getAgeAtLarp($current_larp)." år)".contactEmailIcon($person);
                 } else echo "NPC";
+                if ($roleNotComing) echo "</s>";
+                
                 echo "</td>";
                 echo "<td>" . $alchemist->Level . "</td>\n";
                 echo "<td>" . $alchemist->getAlchemistType() . "</td>\n";

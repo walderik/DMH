@@ -246,6 +246,18 @@ class Alchemy_Alchemist extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function allRegisteredToLarp(LARP $larp) {
+        if (is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_alchemy_alchemist WHERE RoleId In (".
+            "SELECT regsys_role.Id FROM regsys_role, regsys_larp_role, regsys_registration WHERE ".
+            "regsys_role.Id = regsys_larp_role.RoleId AND ".
+            "regsys_larp_role.LARPId = ? AND ".
+            "regsys_larp_role.LARPId = regsys_registration.LarpId AND ".
+            "regsys_registration.PersonId = regsys_role.PersonId".
+            ") ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
     public static function RoleIdsByCampaign(LARP $larp) {
         if (is_null($larp)) return Array();
         $sql = "SELECT RoleId as Id FROM regsys_alchemy_alchemist WHERE RoleId In (

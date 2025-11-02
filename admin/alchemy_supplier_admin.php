@@ -30,7 +30,7 @@ include 'alchemy_navigation.php';
             <a href="choose_role.php?operation=add_alchemy_supplier"><i class="fa-solid fa-file-circle-plus"></i>Lägg till karaktärer som lövjerister.</a>&nbsp;&nbsp;  
        <?php
  
-       $suppliersComing = Alchemy_Supplier::allByComingToLarp($current_larp);
+       $suppliersComing = Alchemy_Supplier::allRegisteredToLarp($current_larp);
        $allSuppliers = Alchemy_Supplier::allByCampaign($current_larp);;
        $suppliersNotComing = array_udiff($allSuppliers, $suppliersComing,
            function ($objOne, $objTwo) {
@@ -75,7 +75,9 @@ include 'alchemy_navigation.php';
 
                 echo "</td>";
                 echo "<td>";
+                if ($roleNotComing) echo "<s>";
                 echo $person->getViewLink().contactEmailIcon($person);
+                if ($roleNotComing) echo "</s>";
                 echo "</td>";
                 echo "<td>";
                 $hasAmount = false; 
