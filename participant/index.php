@@ -389,15 +389,14 @@ function openTab(evt, tabName) {
 	
 	<?php 
 	if (!empty($registration)) {
-	    
+	    $member_groups = array();
 	?>
 	</div>
-	
 	<div id="Registration" class="tabcontent">
 	<div class='itemselector'>
 		<div class="header">
 			<i class="fa-solid fa-file"></i>
-			Anmälan <?php help_icon("Här finns all information om anmälan för $current_person->Name till $current_larp->Name."); ?>
+			Personanmälan <?php help_icon("Här finns all information om anmälan för $current_person->Name till $current_larp->Name."); ?>
 		</div>
 		<div class='itemcontainer'>
 	  <?php 
@@ -434,7 +433,7 @@ function openTab(evt, tabName) {
             
             echo "<div class='itemcontainer'>";
             echo "<div class='itemname'>Betalat</div>";
-            if ($current_person->hasPayed($current_larp)) {
+            if ($registration->hasPayed()) {
                 echo "Betalning mottagen";
             } else {
                 echo showParticipantStatusIcon(false, "Du har inte betalat");
@@ -496,36 +495,74 @@ function openTab(evt, tabName) {
                 if ($role->isApproved()) echo "Karaktären är godkänd";
                 else echo showParticipantStatusIcon(false, "$role->Name är inte godkänd");
                 echo "<br><br>";
+                if (!empty($role->GroupId)) $member_groups[] = $role->getGroup();
             }
             
             echo "</div>";
-
-            $groups = $current_person->getAllRegisteredGroups($current_larp);
+            echo "</div>";
             
-            if (!empty($groups)) {
+            
+            $groups = $current_person->getAllRegisteredGroups($current_larp);
+            $all_groups = array_unique(array_merge($member_groups, $groups), SORT_REGULAR);
         
-                echo "<div class='itemcontainer'>";
-                echo "<div class='itemname'>Anmälda grupper</div>";
-                
-                foreach ($groups as $group) {
-                    echo $group->getViewLink();
+                ?>
+
+			<?php                
+			foreach ($all_groups as $group) {
+                ?>
+        	<div class='itemselector'>
+        	    <div class="header">
+                <i class="fa-solid fa-file"></i>
+                Gruppanmälan <?php help_icon("Här finns all information om anmälan för $group->Name till $current_larp->Name."); ?>
+				</div>
+               <div class='itemcontainer'>
+                <?php 
+                     echo $group->getViewLink();
                     echo "<br>";
                     echo "<a href = 'view_group_registration.php?id=$group->Id'>Visa anmälan</a><br>";
                     if ($group->isApproved()) echo "Gruppen är godkänd";
                     else showParticipantStatusIcon(false, "$group->Name är inte godkänd");
+                
+                echo "</div>";
+                
+                echo "<div class='itemcontainer'>";
+                echo "<div class='itemname'>Anmälda huvudkaraktärer</div>";
+                
+                $main_characters_in_group = Role::getAllMainRolesInGroup($group, $current_larp);
+                 
+                if (empty($main_characters_in_group)) echo "Inga anmälda";
+                foreach ($main_characters_in_group as $role) {
+                    echo $role->getViewLink();
+                    //echo "<br>";
+                    $member_person = $role->getPerson();
+                    if ($member_person->Id == $current_person->Id) {
+                        echo " (se ovan)";
+                    } else {
+                        if (!empty($member_person)) $member_registration = $member_person->getRegistration($current_larp); 
+                        if (!$role->isApproved()) echo "<br>".showParticipantStatusIcon(false, "$role->Name är inte godkänd");
+                        
+                        if (!empty($member_registration)) {
+                            if (!$member_registration->isMember()) echo "<br>".showParticipantStatusIcon(false, "Inte medlem");
+                             if (!$member_registration->hasPayed()) echo "<br>".showParticipantStatusIcon(false, "Inte betalat");
+                            if ($member_registration->hasSpotAtLarp()) echo " ".showStatusIcon(true);
+
+                        }
+                    }
                     echo "<br><br>";
                 }
                 
                 echo "</div>";
-            }
+                echo "</div>";
+			}
+
+            echo "</div>";
             
+
         }
 
+	}
         ?>
-		</div>
-	</div>
-	
-	<?php } ?>
+
 
 	<?php if (!empty($registration) && $registration->hasSpotAtLarp()) { ?>
 	<div id="BeforeLARP" class="tabcontent">
