@@ -532,7 +532,7 @@ function openTab(evt, tabName) {
                  
                 if (empty($main_characters_in_group)) echo "Inga anmälda";
                 foreach ($main_characters_in_group as $role) {
-                    echo $role->getViewLink();
+                    echo $role->Name;
                     //echo "<br>";
                     $member_person = $role->getPerson();
                     if ($member_person->Id == $current_person->Id) {
