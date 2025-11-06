@@ -67,7 +67,9 @@ if ($role->isMysLajvare()) {
 		    echo "<td rowspan='20' valign='top'>";
 		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-		    echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash'></i></a></td>\n";
+		    echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right' title='Rotra bild'></i></a>"; 
+		    echo " <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Tab ort bild'></i></a>\n";
+		    echo " <a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Byt bild'></i></a> \n";
 		    echo "</td>";
 		} else {
 		    echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";		    

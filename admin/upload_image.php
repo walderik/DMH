@@ -119,7 +119,7 @@ include 'navigation.php';
         	<input type="hidden" id="id" name="id" value="<?php echo $object->Id; ?>">
         	<input type="hidden" id="type" name="type" value="<?php echo $type; ?>">
         	<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-          	<input type="file" name="upload" required><br><br>
+          	<input type="file" name="upload"  required accept="image/png, image/gif, image/jpeg"><br><br>
 				<label for=Photographer>Fotograf</label>
 				
 				<input class="input_field" type="text" id="Photographer" name="Photographer" value=""  size="25" maxlength="100">
