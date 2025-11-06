@@ -472,7 +472,6 @@ class Role extends BaseModel{
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
             "regsys_registration.NotComing = 0 AND ".
-            "regsys_registration.SpotAtLARP = 1 AND ".
             "groupId =? AND ".
             "regsys_larp_role.larpid=? AND IsMainRole=1) AND ".
             "IsApproved = 1 ORDER BY Name;";
@@ -518,7 +517,6 @@ class Role extends BaseModel{
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.PersonId = regsys_registration.PersonId AND ".
             "regsys_registration.NotComing = 0 AND ".
-            "regsys_registration.SpotAtLARP = 1 AND ".
             "groupId IS NULL AND ".
             "regsys_larp_role.larpid=? AND IsMainRole=1) AND ".
             "IsApproved = 1 ORDER BY Name;";
