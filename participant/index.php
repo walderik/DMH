@@ -283,7 +283,7 @@ function openTab(evt, tabName) {
         		}
         		elseif (isset($role_group)) {
         		    $role_group_name = "$role_group->Name";
-        		    if (!$role_group->isRegistered($current_larp)) $role_group_name .= " <a href='group_registration_form.php?id=$role_group->Id'><button class='button-18'>Anmäl gruppen</button></a>";
+        		    if ($current_larp->mayRegister() && !$role_group->isRegistered($current_larp)) $role_group_name .= " <a href='group_registration_form.php?id=$role_group->Id'><button class='button-18'>Anmäl gruppen</button></a>";
         		    
         		}
         		echo "<b>Grupp:</b> $role_group_name";
