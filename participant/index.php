@@ -257,10 +257,10 @@ function openTab(evt, tabName) {
         		if ($role->hasImage()) {
         		    echo "<br>";
         		    echo "<img width='80%' style='max-width: 400px;' src='../includes/display_image.php?id=$role->ImageId'/ >\n";
-        		    echo "</a>";
         		    echo "<br>";
         		    echo "<a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right' title ='Rotera bild'></i> Rotera bild</a><br>";
-        		    echo "<a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i>  Ta bort bild</a>\n";
+        		    echo "<a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i>  Ta bort bild</a><br>\n";
+        		    echo "<a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Byt bild'></i> Byt bild</a> \n";
         		}
         		else {
         		    echo "<br>";
@@ -362,8 +362,12 @@ function openTab(evt, tabName) {
 		      echo "Gruppen är godkänd.<br>";
 		  }
 		  if ($group->hasImage()) {
-		      echo "<br><img width='30' src='../includes/display_image.php?id=$group->ImageId'/>\n";
-		      echo " <a href='../common/logic/rotate_image.php?id=$group->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$group->Id&type=group'>Ta bort bild</a></td>\n";
+		      echo "<br><img width='80%' style='max-width: 400px;' src='../includes/display_image.php?id=$group->ImageId'/><br>\n";
+		      echo "<a href='../common/logic/rotate_image.php?id=$group->ImageId'><i class='fa-solid fa-rotate-right' title ='Rotera bild'></i> Rotera bild</a><br>";
+		      echo "<a href='logic/delete_image.php?id=$group->Id&type=group'><i class='fa-solid fa-trash' title='Ta bort bild'></i>  Ta bort bild</a><br>\n";
+		      echo "<a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Byt bild'></i> Byt bild</a> \n";
+		      
+		      echo "</td>\n";
 		  }
 		  else {
 		      echo "<br><a href='upload_image.php?id=$group->Id&type=group'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i> Ladda upp bild</a>\n";
@@ -745,8 +749,11 @@ function openTab(evt, tabName) {
     	        
     	        
     	        if ($npc_role->hasImage()) {
-    	            echo "<img width='30' src='../includes/display_image.php?id=$npc_role->ImageId'/>\n";
-    	            echo "<a href='logic/delete_image.php?id=$npc_role->Id&type=npc'><i class='fa-solid fa-trash' title='Ta bort bild'></i></a>\n";
+    	            echo "<img width='80%' style='max-width: 400px;' src='../includes/display_image.php?id=$npc_role->ImageId'/><br>\n";
+     	            echo "<a href='../common/logic/rotate_image.php?id=$npc_role->ImageId'><i class='fa-solid fa-rotate-right' title ='Rotera bild'></i> Rotera bild</a><br>";
+    	            echo "<a href='logic/delete_image.php?id=$npc_role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i>  Ta bort bild</a><br>\n";
+    	            echo "<a href='upload_image.php?id=$npc_role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Byt bild'></i> Byt bild</a> \n";
+    	            dw
     	        }
     	        else {
     	            echo "<a href='upload_image.php?id=$npc_role->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";

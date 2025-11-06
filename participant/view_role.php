@@ -138,7 +138,12 @@ include 'navigation.php';
 		    $image = Image::loadById($role->ImageId);
 		    echo "<img width='300' src='../includes/display_image.php?id=$role->ImageId'/>\n";
 		    if (!empty($image->Photographer) && $image->Photographer!="") echo "<br>Fotograf $image->Photographer";
-		    if ($isPc || $isAssignedToMe || (!$isPc && $role->userMayEdit())) echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'></i></a> <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash'></i></a></td>\n";
+		    if ($isPc || $isAssignedToMe || (!$isPc && $role->userMayEdit())) {
+		        echo "<br><a href='../common/logic/rotate_image.php?id=$role->ImageId'><i class='fa-solid fa-rotate-right'  title='Rotera bild'></i></a>";
+		        echo " <a href='logic/delete_image.php?id=$role->Id&type=role'><i class='fa-solid fa-trash'  title='Ta bort bild'></i></a>";
+		        echo " <a href='upload_image.php?id=$role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Byt bild'></i></a> \n";
+		        echo "</td>\n";
+		    }
 		    echo "</div>";
 		} elseif ($isPc || $isAssignedToMe || (!$isPc && $role->userMayEdit())) {
 		    echo "<div class='itemcontainer'>";
