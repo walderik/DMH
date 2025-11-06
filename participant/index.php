@@ -753,7 +753,6 @@ function openTab(evt, tabName) {
      	            echo "<a href='../common/logic/rotate_image.php?id=$npc_role->ImageId'><i class='fa-solid fa-rotate-right' title ='Rotera bild'></i> Rotera bild</a><br>";
     	            echo "<a href='logic/delete_image.php?id=$npc_role->Id&type=role'><i class='fa-solid fa-trash' title='Ta bort bild'></i>  Ta bort bild</a><br>\n";
     	            echo "<a href='upload_image.php?id=$npc_role->Id&type=role'><i class='fa-solid fa-image-portrait' title='Byt bild'></i> Byt bild</a> \n";
-    	            dw
     	        }
     	        else {
     	            echo "<a href='upload_image.php?id=$npc_role->Id&type=npc'><i class='fa-solid fa-image-portrait' title='Ladda upp bild'></i></a> \n";
