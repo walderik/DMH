@@ -1,10 +1,10 @@
 <?php
 
-require_once 'PHPMailer/src/Exception.php';
-require_once 'PHPMailer/src/PHPMailer.php';
-require_once 'PHPMailer/src/SMTP.php';
 
 $root = $_SERVER['DOCUMENT_ROOT'];
+require_once $root . '/lib/PHPMailer/src/Exception.php';
+require_once $root . '/lib/PHPMailer/src/PHPMailer.php';
+require_once $root . '/lib/PHPMailer/src/SMTP.php';
 require_once $root . '/pdf/character_sheet_pdf.php';
 require_once $root . '/pdf/group_sheet_pdf.php';
 require_once $root . '/pdf/invoice_pdf.php';

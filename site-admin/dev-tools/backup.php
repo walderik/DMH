@@ -2,7 +2,7 @@
 
 $root = $_SERVER['DOCUMENT_ROOT'];
 
-include_once($root . '/includes/Mysqldump/Mysqldump.php');
+include_once($root . '/lib/Mysqldump/Mysqldump.php');
 
 class Backup extends Dbh {
     

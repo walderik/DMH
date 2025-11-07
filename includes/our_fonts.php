@@ -6,7 +6,7 @@ class OurFonts {
         
         global $root;
         $root = $_SERVER['DOCUMENT_ROOT'];
-        $path = $root . '/includes/fpdf185/font';
+        $path = $root . '/lib/fpdf185/font';
 
         $files = array_diff(scandir($path), array('.', '..'));
         
@@ -28,7 +28,7 @@ class OurFonts {
     public static function fontsToLoad() {
         global $root;
         $root = $_SERVER['DOCUMENT_ROOT'];
-        $path = $root . '/includes/fpdf185/font';
+        $path = $root . '/lib/fpdf185/font';
         
         $files = array_diff(scandir($path), array('.', '..'));
         

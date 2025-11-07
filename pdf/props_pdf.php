@@ -3,8 +3,8 @@
 
 global $root;
 $root = $_SERVER['DOCUMENT_ROOT'];
-require_once $root . '/includes/fpdf185/fpdf.php';
-require_once $root . '/includes/fpdf185/script/mem_image.php';
+require_once $root . '/lib/fpdf185/fpdf.php';
+require_once $root . '/lib/fpdf185/script/mem_image.php';
 require_once $root . '/includes/init.php';
 
 

@@ -3,7 +3,7 @@
 
 global $root;
 $root = $_SERVER['DOCUMENT_ROOT'];
-require $root . '/includes/fpdf185/fpdf.php';
+require $root . '/lib/fpdf185/fpdf.php';
 require $root . '/includes/init.php';
 
 

@@ -1,5 +1,9 @@
 <?php
 
+$root = $_SERVER['DOCUMENT_ROOT'];
+require_once $root . '/lib/PHPMailer/src/Exception.php';
+require_once $root . '/lib/PHPMailer/src/PHPMailer.php';
+require_once $root . '/lib/PHPMailer/src/SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Email extends BaseModel{
