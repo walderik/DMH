@@ -26,6 +26,7 @@
 	    </button>
 	    <div class="dropdown-content">
             <a href="../admin/registered_persons.php">Deltagare</a>
+            <a href="../admin/responsible_adults.php">Ansvariga vuxna</a>
             <a href="../admin/approval.php">Godkänna</a>
             <a href="../admin/kitchen.php">Köket</a>
             <a href="../admin/officials.php">Funktionärer</a>
