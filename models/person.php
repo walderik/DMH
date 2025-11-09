@@ -188,6 +188,20 @@ class Person extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function countNotComingGuardians($larp) {
+        if (is_null($larp)) return array();
+        
+        $sql = "SELECT count(regsys_person.Id) as Num from regsys_person, regsys_registration WHERE ".
+            "regsys_person.Id = regsys_registration.PersonId AND ".
+            "regsys_registration.LarpId = ? AND ".
+            "regsys_registration.NotComing = 1 AND ".
+            "regsys_person.Id IN ".
+            "(SELECT GuardianId FROM regsys_registration WHERE ".
+            "LarpId = ? AND GuardianId IS NOT NULL AND NotComing = 0) ".
+            "ORDER BY ".static::$orderListBy.";";
+        return static::countQuery($sql, array($larp->Id, $larp->Id));
+    }
+    
     
     
     public static function getAllRegisteredPartTime($larp) {

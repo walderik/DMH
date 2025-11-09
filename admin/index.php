@@ -77,6 +77,10 @@ include "navigation.php";
 		
 		$approval_count = count (Person::getAllRegisteredNoFee($current_larp));
 		if ($approval_count>0) echo "$approval_count deltagare har inte fått någon <a href='registered_persons_no_fee.php'>avgift</a> automatiskt beräknad.<br>";
+
+		$notComing_count = Person::countNotComingGuardians($current_larp);
+		if ($notComing_count>0) echo "$notComing_count avbokade deltagare är <a href='responsible_adults.php'>ansvarig för barn</a>.<br>";
+		
 		
 		?>
 		</div>
