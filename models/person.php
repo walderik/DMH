@@ -184,7 +184,7 @@ class Person extends BaseModel{
         if (is_null($larp)) return array();
         
         $sql = "SELECT * from regsys_person WHERE Id IN (SELECT GuardianId FROM ".
-            "regsys_registration WHERE LarpId = ? AND GuardianId IS NOT NULL) ORDER BY ".static::$orderListBy.";";
+            "regsys_registration WHERE LarpId = ? AND GuardianId IS NOT NULL AND NotComing = 0) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
@@ -274,7 +274,7 @@ class Person extends BaseModel{
     
     public function getGuardianFor(LARP $larp) {
         $sql = "SELECT * from regsys_person WHERE Id in (SELECT PersonId FROM ".
-            "regsys_registration WHERE LarpId = ? AND GuardianId = ?) ORDER BY ".static::$orderListBy.";";
+            "regsys_registration WHERE LarpId = ? AND GuardianId = ? AND NotComing = 0) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $this->Id));
     }
     
