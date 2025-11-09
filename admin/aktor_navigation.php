@@ -13,7 +13,7 @@ function subFunction() {
 
 <div class="topnav" id="subTopnav">
     <div  style="float: right;">
-<a href="magic.php"><i class="fa-solid fa-house"></i> Aktörer</a>
+<a href="aktor.php"><i class="fa-solid fa-house"></i> Aktörer</a>
             <a href="../admin/roles.php">Karaktärer</a>
             <a href="../admin/groups.php">Grupper</a>
             <a href="../admin/subdivision_admin.php">Grupperingar</a>
