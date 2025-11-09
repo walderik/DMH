@@ -78,6 +78,7 @@ function print_role(Role $role, Group $group, $isRegistered) {
 }
 
 include 'navigation.php';
+include 'aktor_navigation.php';
 ?>
 	<div class="content">
 		<h1>

@@ -2,6 +2,7 @@
 include_once 'header.php';
 
 include 'navigation.php';
+include 'aktor_navigation.php';
 
 
 if (isset($error_message) && strlen($error_message)>0) {

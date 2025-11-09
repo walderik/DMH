@@ -7,6 +7,7 @@ include_once '../includes/selection_data_control.php';
 $options = getAllOptionsForRoles($current_larp);
 
 include 'navigation.php';
+include 'aktor_navigation.php';
 ?>
 
 

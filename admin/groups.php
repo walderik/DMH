@@ -2,6 +2,7 @@
  include_once 'header.php';
  
  include 'navigation.php';
+ include 'aktor_navigation.php';
 ?>
 
 <style>

@@ -48,10 +48,8 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-            <a href="../admin/roles.php">Karaktärer</a>
-            <a href="../admin/groups.php">Grupper</a>
-            <a href="../admin/subdivision_admin.php">Grupperingar</a>
-            <a href="../admin/search_role_selectiondata.php">Sökning på karaktärer</a>
+            <a href="../admin/aktor.php">Aktörer</a>
+
             <a href="../admin/intrigue_creator_page.php">Intrigskapare</a>
             <a href="../admin/intrigue_admin.php">Intrigspår</a>
             <a href="../admin/timeline_admin.php">Körschema</a>
@@ -82,7 +80,7 @@
             <?php }?>
             
             <a href="../admin/prop_admin.php">Rekvisita</a>
-            <a href="../admin/npc.php">NPC'er</a>
+
 
 			<?php if ($current_larp->getCampaign()->is_dmh()) {?>
             <a href="../admin/crypto.php">Krypto</a>

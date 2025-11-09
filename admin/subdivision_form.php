@@ -85,6 +85,7 @@ include_once '../includes/selection_data_control.php';
     }
     
     include 'navigation.php';
+    include 'aktor_navigation.php';
     
     ?>
     <div class="content"> 

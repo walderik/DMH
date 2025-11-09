@@ -164,6 +164,10 @@ class LARP extends BaseModel{
         return Role::getAllNotMainRoles($this, $includeNotComing);
     }
     
+    public function getNotComingRoles($includeNotComing) {
+        return Role::getNotComingRoles($this, $includeNotComing);
+    }
+    
     public function isVisibleToParticipants() {
         if ($this->VisibleToParticipants == 1) return true;
         return false;

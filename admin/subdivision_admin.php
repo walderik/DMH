@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 include 'navigation.php';
+include 'aktor_navigation.php';
 ?>
 
     <div class="content">   

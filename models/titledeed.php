@@ -488,7 +488,12 @@ class Titledeed extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($role->Id));
     }
     
-
+    public static function getAllActiveForRole(Role $role) {
+        $sql = "SELECT * FROM regsys_titledeed WHERE Id IN (".
+            "SELECT TitledeedId FROM regsys_titledeed_role WHERE RoleId=?) AND IsInUse=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($role->Id));
+    }
+    
     public static function getAllForGroup(Group $group) {
         $sql = "SELECT * FROM regsys_titledeed WHERE Id IN (".
             "SELECT TitledeedId FROM regsys_titledeed_group WHERE GroupId=?) ORDER BY ".static::$orderListBy.";";

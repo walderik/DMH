@@ -2,6 +2,7 @@
  include_once 'header.php';
  
  include 'navigation.php';
+ include 'aktor_navigation.php';
 ?>
 
 
@@ -53,16 +54,16 @@ th {
     		        echo "<td>";
     		        if ($registration->isNotComing()) {
     		            echo "<s>";
-    		            echo $role->Name;
+    		            echo $role->getViewLink();
     		            echo "</s>";
     		            echo "</td>";
 
     		        
     		            if ($role->hasIntrigue($current_larp)) {
     		                $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
-    		                echo "<td nowrap>" . $role->getViewLink() . "\n";
-    		                echo "</td>";
-    		                echo "<td colspan='7'><strong>Karaktären har en intrig som behöver hanteras.</td>";
+    		                //echo "<td nowrap>" . $role->getViewLink() . "\n";
+    		                //cho "</td>";
+    		                echo "<td colspan='9'><strong>Karaktären har en intrig som behöver hanteras.</td>";
     		                echo "<td><a href='edit_intrigue.php?id=" . $role->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		            }
     		            else {
@@ -73,6 +74,7 @@ th {
     		                if (LarperType::isInUse($current_larp)) echo "<td></td>";
     		                if (IntrigueType::isInUse($current_larp)) echo "<td></td>";
     		                if (Wealth::isInUse($current_larp)) echo "<td></td>";
+    		                echo "<td></td>";
     		                echo "<td></td>";
     		                echo "<td></td>";
     		            }

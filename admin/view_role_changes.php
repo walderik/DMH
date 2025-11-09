@@ -46,6 +46,7 @@ function echoNameDiff($oldthing, $newthing) {
 
 
 include 'navigation.php';
+include 'aktor_navigation.php';
 ?>
 
 <style>

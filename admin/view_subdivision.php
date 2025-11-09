@@ -100,6 +100,7 @@ function print_role($role, $subdivision, $isAtLarp, $mayRemove) {
 
 $ruletextarray = $subdivision->getRuleTextArray();
 include 'navigation.php';
+include 'aktor_navigation.php';
 ?>
 
 

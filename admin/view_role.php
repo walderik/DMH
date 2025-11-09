@@ -33,6 +33,7 @@ $isRegistered = $role->isRegistered($current_larp);
 $subdivisions = Subdivision::allForRole($role, $current_larp);
 
 include 'navigation.php';
+include 'aktor_navigation.php';
 ?>
 
 	<div class="content">
