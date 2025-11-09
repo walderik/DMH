@@ -34,8 +34,8 @@ th {
     		    echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
     		        "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupp</th>".
         		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Gruppering</th>".
-        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Intriger</th>".
-        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rykten</th>";
+        		    "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Intriger</th>";
+        		if ($current_larp->hasRumours()) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Rykten</th>";
     		    if ($current_larp->hasCommerce()) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Verksamheter</th>";
     		    if ($hasFunctions) echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Funktion</th>";
     		    echo "</tr>\n";
@@ -105,19 +105,20 @@ th {
 		            
 		            echo "</td>\n";
 		            
-		            echo "<td>";
-		            
-		            $knows_count = count(Rumour::allKnownByRole($current_larp, $role));
-		            if ($knows_count > 0) echo "Känner till $knows_count rykten.<br>";
-		            
-		            $rumours_about = Rumour::allConcernedByRole($current_larp, $role);
-		            if (!empty($rumours_about)) {
-		                echo "Följande rykten handlar om $role->Name<br>";
-		                foreach($rumours_about as $rumour) {
-		                    echo mb_strimwidth(str_replace("\n", "<br>", $rumour->Text), 0, 20, "...") . " <a href='rumour_form.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></a><br>";
-		                }
+		            if ($current_larp->hasRumours()) {
+    		            echo "<td>";
+    		            $knows_count = count(Rumour::allKnownByRole($current_larp, $role));
+    		            if ($knows_count > 0) echo "Känner till $knows_count rykten.<br>";
+    		            
+    		            $rumours_about = Rumour::allConcernedByRole($current_larp, $role);
+    		            if (!empty($rumours_about)) {
+    		                echo "Följande rykten handlar om $role->Name<br>";
+    		                foreach($rumours_about as $rumour) {
+    		                    echo mb_strimwidth(str_replace("\n", "<br>", $rumour->Text), 0, 20, "...") . " <a href='rumour_form.php?operation=update&id=" . $rumour->Id . "'><i class='fa-solid fa-pen' title='Ändra rykte'></i></a><br>";
+    		                }
+    		            }
+    		            echo "</td>\n";
 		            }
-		            echo "</td>\n";
 		            
 		            if ($current_larp->hasCommerce()) {
     		            echo "<td>";
