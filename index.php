@@ -72,6 +72,10 @@ if (Environment::isTest()) {
 			</form>
 			</div>
 			<div class="link"><a href="send_to_me_please.php?action=password">Glömt lösenord</a></div>
+			<br><br>
+			Våra lajv och evenemang arrangeras i samarbete med Sensus<br>
+			<img width="100px" src="images/Sensus.png">
+
 			
 			
 		</div>
