@@ -14,6 +14,7 @@
 	    <div class="dropdown-content">
 	      	<a href="../board/campaigns.php">Kampanjer</a>
 	      	<a href="../board/economy_overview.php">Ekonomisk översikt</a>
+	      	<a href="../board/sensus.php">Sensus</a>
 	      	<a href="../board/permissions.php">Behörigheter</a>
 	      	<a href="../board/classic.php">Berghemsklassikern</a>
 		    <a href="../board/membership.php">Medlemsskap</a> 
