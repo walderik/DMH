@@ -240,7 +240,7 @@ include 'navigation.php';
 			<?php } ?>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
-			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->IntrigueIdeas); ?></textarea></td></tr>
+			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($larp_group->IntrigueIdeas); ?></textarea></td></tr>
 
 
 			<tr><td valign="top" class="header">Synlighete&nbsp;<font style="color:red">*</font></td>

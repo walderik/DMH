@@ -83,6 +83,22 @@ include 'navigation.php';
 		<label for="WantIntrigue_no">Nej</label>
 		</div>
 
+		<?php if (IntrigueType::isInUseForGroup($current_larp)) { ?>
+			<div class='itemcontainer'>
+	       	<div class='itemname'><label for="IntrigueTypeId">Intrigtyper</label></div>
+	       	Vilken typ av intriger vill gruppen helst ha?<br>
+            <?php
+            IntrigueType::selectionDropdownGroup($current_larp, true, false, $group->getSelectedIntrigueTypeIds());
+            ?> 
+			</div>
+		<?php } ?>
+		
+
+		<div class='itemcontainer'>
+       	<div class='itemname'><label for="IntrigueIdeas">Intrigidéer</label></div>
+       	Har ni några idé för intriger som skulle passa gruppen? <br>Denna del är inte synlig för medlemmarna i gruppen.<br>
+		<textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"></textarea>
+		</div>
 				
 		<div class='itemcontainer'>
        	<div class='itemname'><label for="RemainingIntrigues">Kvarvarande intriger</label></div>

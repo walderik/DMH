@@ -92,7 +92,7 @@ include 'navigation.php';
 			<?php if (IntrigueType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($current_group->getIntrigueTypes());?></td></tr>
 			<?php }?>
-			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $current_group->IntrigueIdeas;?></td></tr>
+			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $larp_group->IntrigueIdeas;?></td></tr>
 			<tr><td valign="top" class="header">Kvarvarande intriger</td><td><?php echo $larp_group->RemainingIntrigues; ?></td></tr>
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo $current_group->OtherInformation;?></td></tr>
 			<tr><td valign="top" class="header">Antal medlemmar</td><td><?php echo $larp_group->ApproximateNumberOfMembers;?></td></tr>

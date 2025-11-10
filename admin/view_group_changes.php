@@ -152,12 +152,6 @@ del {
 			</tr>
 			<?php } ?>
 
-			<tr>
-				<td valign="top" class="header">Intrigidéer</td>
-				<?php echoDiff($oldGroupCopy->IntrigueIdeas, $group->IntrigueIdeas); ?>
-			</tr>
-
-
 		</table>		
 		</div>
 		

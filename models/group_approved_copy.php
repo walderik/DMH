@@ -94,52 +94,17 @@ class GroupApprovedCopy extends BaseModel{
          return ShipType::loadById($this->ShipTypeId);
      }
          
-     public function getIntrigueTypes(){
-         return IntrigueType::getIntrigeTypesForApprovedGroupCopy($this->Id);
-     }
-     
-     
-     public function getPlaceOfResidence() {
+      public function getPlaceOfResidence() {
         if (is_null($this->PlaceOfResidenceId)) return null;
         return PlaceOfResidence::loadById($this->PlaceOfResidenceId);
      }
     
      
-     public function saveAllIntrigueTypes($idArr) {
-         if (!isset($idArr)) {
-             return;
-         }
-         foreach($idArr as $Id) {
-             $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_groupapprovedcopy (IntrigueTypeId, GroupId) VALUES (?,?);");
-             if (!$stmt->execute(array($Id, $this->Id))) {
-                 $stmt = null;
-                 header("location: ../participant/index.php?error=stmtfailed");
-                 exit();
-             }
-         }
-         $stmt = null;
-     }
-     
-     public function deleteAllIntrigueTypes() {
-         $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_groupapprovedcopy WHERE GroupId = ?;");
-         if (!$stmt->execute(array($this->Id))) {
-             $stmt = null;
-             header("location: ../participant/index.php?error=stmtfailed");
-             exit();
-         }
-         $stmt = null;
-     }
-     
-
-      
      public static function makeCopyOfApprovedGroup(Group $group) {
          $sql = "SELECT * FROM regsys_group WHERE Id = ?";
          $groupCopy =  GroupApprovedCopy::getOneObjectQuery($sql, array($group->Id));
          $groupCopy->GroupId = $group->Id;
          $groupCopy->create();
-         
-
-         $groupCopy->saveAllIntrigueTypes($group->getSelectedIntrigueTypeIds());
      }
      
      public static function getOldGroup($groupId) {
@@ -149,7 +114,6 @@ class GroupApprovedCopy extends BaseModel{
      
      public static function delete($id) {
          $groupCopy = GroupApprovedCopy::loadById($id);
-         $groupCopy->deleteAllIntrigueTypes();
          parent::delete($id);
      }
      

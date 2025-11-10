@@ -221,13 +221,6 @@ include 'navigation.php';
     	   </div>
 		<?php } ?>
 
-		<?php if ($current_person->isGroupLeader($group)) { ?>
-		   <div class='itemcontainer'>
-           <div class='itemname'>Intrigidéer</div>
-    	   <?php echo nl2br(htmlspecialchars($group->IntrigueIdeas));?>
-    	   </div>
-		<?php } ?>
-
 	   <div class='itemcontainer'>
        <div class='itemname'>Annan information</div>
 	   <?php echo nl2br(htmlspecialchars($group->OtherInformation)); ?>
@@ -239,6 +232,13 @@ include 'navigation.php';
     	   <?php echo ja_nej($larp_group->WantIntrigue); ?>
     	   </div>
     
+    		<?php if ($current_person->isGroupLeader($group)) { ?>
+    		   <div class='itemcontainer'>
+               <div class='itemname'>Intrigidéer</div>
+        	   <?php echo nl2br(htmlspecialchars($larp_group->IntrigueIdeas));?>
+        	   </div>
+    		<?php } ?>
+
     	   <div class='itemcontainer'>
            <div class='itemname'>Kvarvarande intriger</div>
     	   <?php echo nl2br(htmlspecialchars($larp_group->RemainingIntrigues)); ?>

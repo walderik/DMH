@@ -25,6 +25,6 @@ if (!empty($non_main_characters_in_group)) exit;
 $intrigue = Intrigue::getAllIntriguesForGroup($groupId, $current_larp->Id);
 if (!empty($intrigue)) exit;
 
-LARP_Group::delete_larp_group($groupId, $current_larp->Id);
+LARP_Group::delete($larp_group->Id);
 
 header('Location: ../groups.php');

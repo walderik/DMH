@@ -186,14 +186,9 @@ class Group extends BaseModel{
          $titledeeds = Titledeed::getAllForGroup($this);
          if (!empty($titledeeds)) return true;
          
-         $intrigtyper = commaStringFromArrayObject($this->getIntrigueTypes());
+         $intrigtyper = commaStringFromArrayObject($larp_group->getIntrigueTypes());
          return (str_contains($intrigtyper, 'Handel'));
      }
-     
-     public function getIntrigueTypes(){
-         return IntrigueType::getIntrigeTypesForGroup($this->Id);
-     }
-     
      
      public function getPlaceOfResidence() {
         if (is_null($this->PlaceOfResidenceId)) return null;
@@ -368,55 +363,6 @@ class Group extends BaseModel{
          
      }
      
-     public function saveAllIntrigueTypes($idArr) {
-         if (!isset($idArr)) {
-             return;
-         }
-         foreach($idArr as $Id) {
-             $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_group (IntrigueTypeId, GroupId) VALUES (?,?);");
-             if (!$stmt->execute(array($Id, $this->Id))) {
-                 $stmt = null;
-                 header("location: ../participant/index.php?error=stmtfailed");
-                 exit();
-             }
-         }
-         $stmt = null;
-     }
-     
-     public function deleteAllIntrigueTypes() {
-         $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_group WHERE GroupId = ?;");
-         if (!$stmt->execute(array($this->Id))) {
-             $stmt = null;
-             header("location: ../participant/index.php?error=stmtfailed");
-             exit();
-         }
-         $stmt = null;
-     }
-     
-     public function getSelectedIntrigueTypeIds() {
-         $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM regsys_intriguetype_group WHERE GroupId = ? ORDER BY IntrigueTypeId;");
-         
-         if (!$stmt->execute(array($this->Id))) {
-             $stmt = null;
-             header("location: ../index.php?error=stmtfailed");
-             exit();
-         }
-         
-         if ($stmt->rowCount() == 0) {
-             $stmt = null;
-             return array();
-         }
-         
-         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-         $resultArray = array();
-         foreach ($rows as $row) {
-             $resultArray[] = $row['IntrigueTypeId'];
-         }
-         $stmt = null;
-         
-         return $resultArray;
-     }
-     
      public static function getGroupsInHouse(House $house, LARP $larp) {
          $sql = "SELECT * FROM regsys_group WHERE Id IN ".
              "(SELECT regsys_role.GroupId FROM regsys_housing, regsys_role, regsys_larp_role WHERE ". 
@@ -586,4 +532,38 @@ class Group extends BaseModel{
             return "<a href='group_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
         }
     }
+    
+    
+    /*********** Ta bort ************/
+    public function getSelectedIntrigueTypeIds() {
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM regsys_intriguetype_group WHERE GroupId = ? ORDER BY IntrigueTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['IntrigueTypeId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function getIntrigueTypes(){
+        return IntrigueType::getIntrigeTypesForGroup($this->Id);
+    }
+    
+    
+    
+    
 }
