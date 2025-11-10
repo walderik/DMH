@@ -33,13 +33,16 @@ foreach ($years as $year) {
 <?php 
 foreach ($larps as $larp) {
     $persons = Person::getAllRegistered($larp, false);
+    if (!$larp->LarpHasEnded) continue;
     $participant_count = count($persons);
-    
+    if ($participant_count == 0) {
+        echo "$larp->Name har inga deltagare.<br>";
+        continue;
+    }
     $count_women = 0;
     foreach ($persons as $person) {
         if ((strlen($person->SocialSecurityNumber) > 12) && (substr($person->SocialSecurityNumber, 11,1) % 2 == 0)) $count_women++;
     }
-    
     $percent_women = round(100*$count_women / $participant_count,0);
     
     $formatter = new IntlDateFormatter(
@@ -51,8 +54,8 @@ foreach ($larps as $larp) {
         'EEEE d MMMM'
         );
     
-    $begin = new DateTime(substr($current_larp->StartDate,0,10));
-    $end   = new DateTime(substr($current_larp->EndDate,0,10));
+    $begin = new DateTime(substr($larp->StartDate,0,10));
+    $end   = new DateTime(substr($larp->EndDate,0,10));
     $dateArray = array();
     for($i = $begin; $i <= $end; $i->modify('+1 day')){
         $dateArray[] = $i->format("Y-m-d");
@@ -60,6 +63,7 @@ foreach ($larps as $larp) {
     $dates = implode(", ", $dateArray);
     
     echo "<h2>$larp->Name</h2>";
+
     echo "Datum: $dates<br>";
     echo "Antal deltagare: $participant_count<br>";
     echo "$percent_women % kvinnor"; 
