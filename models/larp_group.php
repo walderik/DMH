@@ -148,7 +148,7 @@ class LARP_Group extends BaseModel{
             return;
         }
         foreach($idArr as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_group (IntrigueTypeId, GroupId) VALUES (?,?);");
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_group (IntrigueTypeId, LarpGroupId) VALUES (?,?);");
             if (!$stmt->execute(array($Id, $this->Id))) {
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -159,7 +159,7 @@ class LARP_Group extends BaseModel{
     }
     
     public function deleteAllIntrigueTypes() {
-        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_group WHERE GroupId = ?;");
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_group WHERE LarpGroupId = ?;");
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -169,11 +169,11 @@ class LARP_Group extends BaseModel{
     }
     
     public function getIntrigueTypes(){
-        return IntrigueType::getIntrigeTypesForGroup($this->Id);
+        return IntrigueType::getIntrigeTypesForGroup($this->Id, $this->LARPId);
     }
     
     public function getSelectedIntrigueTypeIds() {
-        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM regsys_intriguetype_group WHERE GroupId = ? ORDER BY IntrigueTypeId;");
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM regsys_intriguetype_group WHERE LarpGroupId = ? ORDER BY IntrigueTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;

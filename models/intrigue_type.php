@@ -84,23 +84,13 @@ class IntrigueType extends SelectionData{
         return static::getSeveralObjectsqQuery($sql, array($intrigueId));
     }
     
-    public static function getIntrigeTypesForGroup($groupId) {
-        if (is_null($groupId)) return array();
+    public static function getIntrigeTypesForGroup($larpgroupId) {
+        if (is_null($larpgroupId)) return array();
         
         $sql = "SELECT * from regsys_intriguetype WHERE Id IN ".
             "(SELECT IntrigueTypeId FROM regsys_intriguetype_group ".
-            "WHERE GroupId = ?) ORDER BY SortOrder;";
-        return static::getSeveralObjectsqQuery($sql, array($groupId));
-    }
-    
-    
-    public static function getIntrigeTypesForApprovedGroupCopy($groupId) {
-        if (is_null($groupId)) return array();
-        
-        $sql = "SELECT * from regsys_intriguetype WHERE Id IN ".
-            "(SELECT IntrigueTypeId FROM regsys_intriguetype_groupapprovedcopy ".
-            "WHERE GroupId = ?) ORDER BY SortOrder;";
-        return static::getSeveralObjectsqQuery($sql, array($groupId));
+            "WHERE LarpGroupId = ?) ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($larpgroupId));
     }
     
     
@@ -157,7 +147,7 @@ class IntrigueType extends SelectionData{
         $sql = "select count(regsys_larp_group.GroupId) AS Num, regsys_intriguetype.Name AS Name FROM ".
             "regsys_larp_group, regsys_intriguetype_group, regsys_intriguetype WHERE ".
             "regsys_larp_group.larpId=? AND ".
-            "regsys_larp_group.GroupId = regsys_intriguetype_group.GroupId AND ".
+            "regsys_larp_group.Id = regsys_intriguetype_group.LarpGroupId AND ".
             "regsys_intriguetype.Id=regsys_intriguetype_group.IntrigueTypeId GROUP BY IntrigueTypeId";
         
         $stmt = static::connectStatic()->prepare($sql);
@@ -182,7 +172,7 @@ class IntrigueType extends SelectionData{
     }
     
     public function mayDelete() {
-        $sql = "select count(GroupId) AS Num FROM regsys_intriguetype_group WHERE IntrigueTypeId=?";
+        $sql = "select count(LarpGroupId) AS Num FROM regsys_intriguetype_group WHERE IntrigueTypeId=?";
         $exists = static::existsQuery($sql, array($this->Id));
         if ($exists) return false;
         $sql = "select count(RoleId) AS Num FROM regsys_intriguetype_role WHERE IntrigueTypeId=?";

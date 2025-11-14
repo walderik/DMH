@@ -87,12 +87,12 @@ class Group extends BaseModel{
     public function update() {
        
         $stmt = $this->connect()->prepare("UPDATE regsys_group SET Name=?, Friends=?, Enemies=?,
-                    Description=?, DescriptionForOthers=?, IntrigueIdeas=?, OtherInformation=?, WealthId=?, PlaceOfResidenceId=?, 
+                    Description=?, DescriptionForOthers=?, OtherInformation=?, WealthId=?, PlaceOfResidenceId=?, 
                     GroupTypeId=?, ShipTypeId=?, Colour=?, PersonId=?, 
                     CampaignId=?, IsDead=?, OrganizerNotes=?, ImageId=?, Visibility=?, IsApproved=?, ApprovedByPersonId=?, ApprovedDate=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Friends, $this->Enemies,
-            $this->Description, $this->DescriptionForOthers, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, 
+            $this->Description, $this->DescriptionForOthers, $this->OtherInformation, $this->WealthId, $this->PlaceOfResidenceId, 
             $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->PersonId, 
             $this->CampaignId, $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->Visibility, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->Id))) {
             $stmt = null;
@@ -107,13 +107,13 @@ class Group extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_group (Name,  
-                         Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
+                         Friends, Description, DescriptionForOthers, Enemies, OtherInformation, 
                          WealthId, PlaceOfResidenceId, GroupTypeId, ShipTypeId, Colour, PersonId, CampaignId, 
                          IsDead, OrganizerNotes, ImageId, Visibility, IsApproved, ApprovedByPersonId, ApprovedDate) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?);");
+                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name,  
-            $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
+            $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->OtherInformation, $this->WealthId, 
             $this->PlaceOfResidenceId, $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->PersonId, $this->CampaignId, 
             $this->IsDead, $this->OrganizerNotes, $this->ImageId, $this->Visibility, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate))) {
             $this->connect()->rollBack();
@@ -560,7 +560,18 @@ class Group extends BaseModel{
     }
     
     public function getIntrigueTypes(){
+        echo "Error";
         return IntrigueType::getIntrigeTypesForGroup($this->Id);
+    }
+    
+    public function deleteAllIntrigueTypes() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_group WHERE GroupId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
     }
     
     

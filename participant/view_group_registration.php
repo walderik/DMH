@@ -45,7 +45,7 @@ include 'navigation.php';
     		<?php if (IntrigueType::isInUse($current_larp)) { ?>
     		   <div class='itemcontainer'>
                <div class='itemname'>Intrigtyper</div>
-        	   <?php echo commaStringFromArrayObject($group->getIntrigueTypes()); ?>
+        	   <?php echo commaStringFromArrayObject($larp_group->getIntrigueTypes()); ?>
         	   </div>
     		<?php } ?>
 

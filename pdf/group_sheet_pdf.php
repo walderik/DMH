@@ -640,7 +640,7 @@ class Group_PDF extends PDF_MemImage {
 
 	    $this->set_header($left, 'Intrigtyper');
 
-	    $text = commaStringFromArrayObject($this->group->getIntrigueTypes());
+	    $text = commaStringFromArrayObject($this->larp_group->getIntrigueTypes());
 	    $this->set_text($left, $text);
 	    return true;
 	}

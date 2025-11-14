@@ -88,7 +88,7 @@ include 'navigation.php';
 	       	<div class='itemname'><label for="IntrigueTypeId">Intrigtyper</label></div>
 	       	Vilken typ av intriger vill gruppen helst ha?<br>
             <?php
-            IntrigueType::selectionDropdownGroup($current_larp, true, false, $group->getSelectedIntrigueTypeIds());
+            IntrigueType::selectionDropdownGroup($current_larp, true, false);
             ?> 
 			</div>
 		<?php } ?>
