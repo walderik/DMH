@@ -49,7 +49,8 @@ foreach ($rumourIdArr as $rumourId) {
                 if (!in_array($group->PlaceOfResidenceId, $placeofresidenceArr)) continue;
             }
             if (isset($intriguetypeArr)) {
-                $group_intrigueTypeIds = $group->getSelectedIntrigueTypeIds();
+                $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
+                $group_intrigueTypeIds = $larp_group->getSelectedIntrigueTypeIds();
                 if (empty(array_intersect($intriguetypeArr, $group_intrigueTypeIds))) continue;
                 
             }

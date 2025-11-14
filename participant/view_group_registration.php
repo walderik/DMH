@@ -42,6 +42,18 @@ include 'navigation.php';
            	<div class='itemname'>Vill gruppen ha intriger?</div>
 			<?php echo ja_nej($larp_group->WantIntrigue);?>
 			</div>
+    		<?php if (IntrigueType::isInUse($current_larp)) { ?>
+    		   <div class='itemcontainer'>
+               <div class='itemname'>Intrigtyper</div>
+        	   <?php echo commaStringFromArrayObject($group->getIntrigueTypes()); ?>
+        	   </div>
+    		<?php } ?>
+
+
+	   		<div class='itemcontainer'>
+           	<div class='itemname'>Intrigidéer</div>
+			<?php echo nl2br(htmlspecialchars($larp_group->IntrigueIdeas));?>
+			</div>
 
 	   		<div class='itemcontainer'>
            	<div class='itemname'>Kvarvarande intriger</div>

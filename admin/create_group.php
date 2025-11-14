@@ -64,7 +64,7 @@ include 'navigation.php';
 
 			<?php if (IntrigueType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Intrigtyper</td>
-			<td><?php IntrigueType::selectionDropdown($current_larp, true, false, $group->getSelectedIntrigueTypeIds());?></td></tr>
+			<td><?php IntrigueType::selectionDropdown($current_larp, true, false, $larp_group->getSelectedIntrigueTypeIds());?></td></tr>
 			<?php } ?>
 			
 			<tr><td valign="top" class="header">Intrigidéer</td>

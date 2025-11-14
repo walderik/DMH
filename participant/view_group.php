@@ -214,13 +214,6 @@ include 'navigation.php';
     	   <?php echo $group->Colour; ?>
     	   </div>
 		<?php }?>
-		<?php if (IntrigueType::isInUse($current_larp)) { ?>
-		   <div class='itemcontainer'>
-           <div class='itemname'>Intrigtyper</div>
-    	   <?php echo commaStringFromArrayObject($group->getIntrigueTypes()); ?>
-    	   </div>
-		<?php } ?>
-
 	   <div class='itemcontainer'>
        <div class='itemname'>Annan information</div>
 	   <?php echo nl2br(htmlspecialchars($group->OtherInformation)); ?>

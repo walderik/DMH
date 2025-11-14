@@ -168,6 +168,10 @@ class LARP_Group extends BaseModel{
         $stmt = null;
     }
     
+    public function getIntrigueTypes(){
+        return IntrigueType::getIntrigeTypesForGroup($this->Id);
+    }
+    
     public function getSelectedIntrigueTypeIds() {
         $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM regsys_intriguetype_group WHERE GroupId = ? ORDER BY IntrigueTypeId;");
         

@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         
-        if (isset($_POST['IntrigueTypeId'])) $group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+        if (isset($_POST['IntrigueTypeId'])) $larp_group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         
         if (isset($_POST['Referer']) && $_POST['Referer']!="") {
             header('Location: ' . $_POST['Referer']);
@@ -52,8 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $larp_group->setValuesByArray($_POST);
         $larp_group->update();
         
-        $group->deleteAllIntrigueTypes();
-        if (isset($_POST['IntrigueTypeId'])) $group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+        $larp_group->deleteAllIntrigueTypes();
+        if (isset($_POST['IntrigueTypeId'])) $larp_group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
     }
     if (isset($_POST['Referer']) && $_POST['Referer']!="") {
         header('Location: ' . $_POST['Referer']);

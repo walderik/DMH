@@ -124,7 +124,7 @@ include 'navigation.php';
     		        $show = true;
     		        $larp_group=LARP_Group::loadByIds($group->Id, $current_larp->Id);
     		        if (!empty($intrigueTypes)) {
-    		            $group_intrigueTypeIds = $group->getSelectedIntrigueTypeIds();
+    		            $group_intrigueTypeIds = $larp_group->getSelectedIntrigueTypeIds();
     		            if (empty(array_intersect($intrigueTypes, $group_intrigueTypeIds))) {
     		                $show = false;
     		            }
@@ -137,7 +137,7 @@ include 'navigation.php';
     		        echo "<td>";
     		        if (isset($larp_group)) echo ja_nej($larp_group->WantIntrigue);
     		        echo "</td>\n";
-    		        if (IntrigueType::isInUse($current_larp)) echo "<td>".commaStringFromArrayObject($group->getIntrigueTypes())."</td>";
+    		        if (IntrigueType::isInUse($current_larp)) echo "<td>".commaStringFromArrayObject($larp_group->getIntrigueTypes())."</td>";
     		        
     		        echo "</tr>\n";
     		    }
