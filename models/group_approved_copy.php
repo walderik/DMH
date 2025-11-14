@@ -9,7 +9,6 @@ class GroupApprovedCopy extends BaseModel{
     public $Enemies;
     public $Description;
     public $DescriptionForOthers;
-    public $IntrigueIdeas;
     public $OtherInformation;
     public $WealthId;
     public $PlaceOfResidenceId;
@@ -36,7 +35,6 @@ class GroupApprovedCopy extends BaseModel{
         if (isset($arr['Enemies'])) $this->Enemies = $arr['Enemies'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['DescriptionForOthers'])) $this->DescriptionForOthers = $arr['DescriptionForOthers'];
-        if (isset($arr['IntrigueIdeas'])) $this->IntrigueIdeas = $arr['IntrigueIdeas'];
         if (isset($arr['OtherInformation'])) $this->OtherInformation = $arr['OtherInformation'];
         if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
         if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
@@ -62,12 +60,12 @@ class GroupApprovedCopy extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_groupapprovedcopy (GroupId, Name,  
-                         Friends, Description, DescriptionForOthers, Enemies, IntrigueIdeas, OtherInformation, 
+                         Friends, Description, DescriptionForOthers, Enemies, OtherInformation, 
                          WealthId, PlaceOfResidenceId, GroupTypeId, ShipTypeId, Colour, ApprovedByPersonId, ApprovedDate) 
-                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
+                         VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
         
         if (!$stmt->execute(array($this->GroupId, $this->Name,  
-            $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->IntrigueIdeas, $this->OtherInformation, $this->WealthId, 
+            $this->Friends, $this->Description, $this->DescriptionForOthers, $this->Enemies, $this->OtherInformation, $this->WealthId, 
             $this->PlaceOfResidenceId, $this->GroupTypeId, $this->ShipTypeId, $this->Colour, $this->ApprovedByPersonId, $this->ApprovedDate))) {
             $this->connect()->rollBack();
             $stmt = null;

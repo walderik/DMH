@@ -19,7 +19,6 @@ class Group extends BaseModel{
     public $Enemies;
     public $Description;
     public $DescriptionForOthers;
-    public $IntrigueIdeas;
     public $OtherInformation;
     public $WealthId;
     public $PlaceOfResidenceId;
@@ -52,7 +51,6 @@ class Group extends BaseModel{
         if (isset($arr['Enemies'])) $this->Enemies = $arr['Enemies'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['DescriptionForOthers'])) $this->DescriptionForOthers = $arr['DescriptionForOthers'];
-        if (isset($arr['IntrigueIdeas'])) $this->IntrigueIdeas = $arr['IntrigueIdeas'];
         if (isset($arr['OtherInformation'])) $this->OtherInformation = $arr['OtherInformation'];
         if (isset($arr['WealthId'])) $this->WealthId = $arr['WealthId'];
         if (isset($arr['PlaceOfResidenceId'])) $this->PlaceOfResidenceId = $arr['PlaceOfResidenceId'];
@@ -532,48 +530,6 @@ class Group extends BaseModel{
             return "<a href='group_form.php?operation=update&id=$this->Id'><i class='fa-solid fa-pen'></i></a>";
         }
     }
-    
-    
-    /*********** Ta bort ************/
-    public function getSelectedIntrigueTypeIds() {
-        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM regsys_intriguetype_group WHERE GroupId = ? ORDER BY IntrigueTypeId;");
-        
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = $row['IntrigueTypeId'];
-        }
-        $stmt = null;
-        
-        return $resultArray;
-    }
-    
-    public function getIntrigueTypes(){
-        echo "Error";
-        return IntrigueType::getIntrigeTypesForGroup($this->Id);
-    }
-    
-    public function deleteAllIntrigueTypes() {
-        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_group WHERE GroupId = ?;");
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        $stmt = null;
-    }
-    
     
     
     
