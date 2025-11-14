@@ -640,7 +640,7 @@ class Group_PDF extends PDF_MemImage {
 
 	    $this->set_header($left, 'Intrigtyper');
 
-	    $text = commaStringFromArrayObject($this->group->getIntrigueTypes());
+	    $text = commaStringFromArrayObject($this->larp_group->getIntrigueTypes());
 	    $this->set_text($left, $text);
 	    return true;
 	}
@@ -648,7 +648,10 @@ class Group_PDF extends PDF_MemImage {
 	protected function intrigue_ideas($left) {
 	    $this->set_header($left, 'Intrigéer');
 	    
-	    $this->set_text($left, $this->group->IntrigueIdeas);
+	    if (isset($this->larp_group)) $text = $this->larp_group->IntrigueIdeas;
+	    else $text = "OBS! Inte anmäld";
+	    
+	    $this->set_text($left, $text);
 	    return true;
 	}
 	

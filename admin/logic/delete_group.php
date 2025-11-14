@@ -24,7 +24,6 @@ if ($group->CampaignId != $current_larp->CampaignId) {
 }
 
 if ($group->mayDelete()) {
-    $group->deleteAllIntrigueTypes();
     Group::delete($group->Id);
     
     if (isset($_SERVER['HTTP_REFERER'])) {

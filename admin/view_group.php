@@ -190,9 +190,9 @@ include 'aktor_navigation.php';
 			<?php }?>
 
 			<?php if (IntrigueType::isInUse($current_larp)) {?>
-			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($group->getIntrigueTypes());?></td></tr>
+			<tr><td valign="top" class="header">Intrigtyper</td><td><?php echo commaStringFromArrayObject($larp_group->getIntrigueTypes());?></td></tr>
 			<?php } ?>
-			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo $group->IntrigueIdeas;?></td></tr>
+			<tr><td valign="top" class="header">Intrigidéer</td><td><?php echo nl2br(htmlspecialchars($larp_group->IntrigueIdeas));?></td></tr>
 
 			<?php if ($isRegistered) {?>
 			<tr><td valign="top" class="header">Intrig</td><td><?php echo ja_nej($larp_group->WantIntrigue);?></td></tr>

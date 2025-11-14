@@ -236,11 +236,11 @@ include 'navigation.php';
 
 			<?php if (IntrigueType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Intrigtyper</td>
-			<td><?php IntrigueType::selectionDropdownGroup($current_larp, true, false, $group->getSelectedIntrigueTypeIds()); ?></td></tr>
+			<td><?php IntrigueType::selectionDropdownGroup($current_larp, true, false, $larp_group->getSelectedIntrigueTypeIds()); ?></td></tr>
 			<?php } ?>
 
 			<tr><td valign="top" class="header">Intrigidéer</td>
-			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($group->IntrigueIdeas); ?></textarea></td></tr>
+			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo htmlspecialchars($larp_group->IntrigueIdeas); ?></textarea></td></tr>
 
 
 			<tr><td valign="top" class="header">Synlighete&nbsp;<font style="color:red">*</font></td>

@@ -64,11 +64,11 @@ include 'navigation.php';
 
 			<?php if (IntrigueType::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Intrigtyper</td>
-			<td><?php IntrigueType::selectionDropdown($current_larp, true, false, $group->getSelectedIntrigueTypeIds());?></td></tr>
+			<td><?php IntrigueType::selectionDropdown($current_larp, true, false, $larp_group->getSelectedIntrigueTypeIds());?></td></tr>
 			<?php } ?>
 			
 			<tr><td valign="top" class="header">Intrigidéer</td>
-			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo $group->IntrigueIdeas; ?></textarea></td></tr>
+			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="50" maxlength="60000"><?php echo $larp_group->IntrigueIdeas; ?></textarea></td></tr>
 
 			<tr><td valign="top" class="header">Kvarvarande intriger</td>
 			<td><textarea id="RemainingIntrigues" name="RemainingIntrigues" rows="4" cols="50" maxlength="60000"><?php echo $larp_group->RemainingIntrigues; ?></textarea></td></tr>

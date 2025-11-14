@@ -28,7 +28,6 @@ if (!$current_person->isGroupLeader($group)) {
 }
 
 if ($group->mayDelete()) {
-    $group->deleteAllIntrigueTypes();
     Group::delete($group->Id);
     header('Location: ../index.php?message=group_deleted');
 } else {

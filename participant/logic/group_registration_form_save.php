@@ -16,6 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($operation == 'insert') {
         $larp_group = LARP_Group::newFromArray($_POST);
         $larp_group->create();
+        if (isset($_POST['IntrigueTypeId'])) $larp_group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+        
         BerghemMailer::send_groupregistration_mail($larp_group, $current_person);
     } 
     header('Location: ../index.php');

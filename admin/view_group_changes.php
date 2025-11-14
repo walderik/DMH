@@ -141,23 +141,6 @@ del {
 			</tr>
 			<?php }?>
 
-
-			<?php if (IntrigueType::isInUse($current_larp)) {
-			    $newIntrigues = commaStringFromArrayObject($group->getIntrigueTypes());
-			    $oldIntrigues = commaStringFromArrayObject($oldGroupCopy->getIntrigueTypes());
-			    ?>
-			<tr>
-				<td valign="top" class="header">Intrigtyper</td>
-				<?php echoDiff($oldIntrigues, $newIntrigues); ?>
-			</tr>
-			<?php } ?>
-
-			<tr>
-				<td valign="top" class="header">Intrigidéer</td>
-				<?php echoDiff($oldGroupCopy->IntrigueIdeas, $group->IntrigueIdeas); ?>
-			</tr>
-
-
 		</table>		
 		</div>
 		

@@ -2,10 +2,12 @@
 
 class LARP_Group extends BaseModel{
     
+    public $Id;
     public $GroupId;
     public $LARPId;
     public $WantIntrigue = true;
     public $Intrigue;
+    public $IntrigueIdeas;
     public $ApproximateNumberOfMembers;
     public $HousingRequestId;
     public $TentType;
@@ -33,11 +35,13 @@ class LARP_Group extends BaseModel{
     
     
     public function setValuesByArray($arr) {
+        if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
         if (isset($arr['LARPId'])) $this->LARPId = $arr['LARPId'];
         if (isset($arr['NeedFireplace'])) $this->NeedFireplace = $arr['NeedFireplace'];
         if (isset($arr['WantIntrigue'])) $this->WantIntrigue = $arr['WantIntrigue'];
         if (isset($arr['Intrigue'])) $this->Intrigue = $arr['Intrigue'];
+        if (isset($arr['IntrigueIdeas'])) $this->IntrigueIdeas = $arr['IntrigueIdeas'];
         if (isset($arr['HousingRequestId'])) $this->HousingRequestId = $arr['HousingRequestId'];
         if (isset($arr['TentType'])) $this->TentType = $arr['TentType'];
         if (isset($arr['TentSize'])) $this->TentSize = $arr['TentSize'];
@@ -79,17 +83,17 @@ class LARP_Group extends BaseModel{
         
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_larp_group SET WantIntrigue=?, Intrigue=?, HousingRequestId=?, 
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp_group SET WantIntrigue=?, Intrigue=?, IntrigueIdeas=?, HousingRequestId=?, 
             TentType=?, TentSize=?, TentHousing=?, TentPlace=?, RemainingIntrigues=? , 
             ApproximateNumberOfMembers=?, NeedFireplace=?, UserMayEdit=?, StartingMoney=?, EndingMoney=?, Result=?,
             WhatHappenedSinceLastLarp=?, WhatHappened=?, WhatHappendToOthers=?, WhatHappensAfterLarp=?
-            WHERE GroupId=? AND LARPId=?;");
+            WHERE Id=?;");
         
-        if (!$stmt->execute(array($this->WantIntrigue, $this->Intrigue, $this->HousingRequestId, 
+        if (!$stmt->execute(array($this->WantIntrigue, $this->Intrigue, $this->IntrigueIdeas, $this->HousingRequestId, 
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, $this->RemainingIntrigues, 
             $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, $this->StartingMoney, $this->EndingMoney, $this->Result,
             $this->WhatHappenedSinceLastLarp, $this->WhatHappened, $this->WhatHappendToOthers, $this->WhatHappensAfterLarp,
-            $this->GroupId, $this->LARPId))) {
+            $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -100,11 +104,11 @@ class LARP_Group extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_larp_group (GroupId, LARPId, WantIntrigue, Intrigue, 
+        $stmt = $connection->prepare("INSERT INTO regsys_larp_group (GroupId, LARPId, WantIntrigue, Intrigue, IntrigueIdeas,
             HousingRequestId, TentType, TentSize, TentHousing, TentPlace, RemainingIntrigues, ApproximateNumberOfMembers, NeedFireplace, UserMayEdit, 
-            StartingMoney, EndingMoney, Result, WhatHappenedSinceLastLarp, WhatHappened, WhatHappendToOthers, WhatHappensAfterLarp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
+            StartingMoney, EndingMoney, Result, WhatHappenedSinceLastLarp, WhatHappened, WhatHappendToOthers, WhatHappensAfterLarp) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, 
+        if (!$stmt->execute(array($this->GroupId, $this->LARPId, $this->WantIntrigue, $this->Intrigue, $this->IntrigueIdeas,
             $this->HousingRequestId, $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->RemainingIntrigues, $this->ApproximateNumberOfMembers, $this->NeedFireplace, $this->UserMayEdit, 
             $this->StartingMoney, $this->EndingMoney, $this->Result, $this->WhatHappenedSinceLastLarp, $this->WhatHappened, $this->WhatHappendToOthers, $this->WhatHappensAfterLarp))) {
@@ -113,8 +117,8 @@ class LARP_Group extends BaseModel{
                 header("location: ../participant/index.php?error=stmtfailed");
                 exit();
             }
-            
-            $stmt = null;
+        $this->Id = $connection->lastInsertId();
+        $stmt = null;
     }
     
 
@@ -124,18 +128,6 @@ class LARP_Group extends BaseModel{
         if (empty($larp_group)) return false;
         if ($larp_group->UserMayEdit == 1) return true;
         return false;
-    }
-    
-    public static function delete_larp_group($groupId, $larpId) {
-        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_larp_group WHERE GroupId = ? AND LarpId = ?");
-        
-        if (!$stmt->execute(array($groupId, $larpId))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        $stmt = null;
-        
     }
     
     public function getGroup() {
@@ -150,6 +142,60 @@ class LARP_Group extends BaseModel{
         if (is_null($this->HousingRequestId)) return null;
         return HousingRequest::loadById($this->HousingRequestId);
     }
+    
+    public function saveAllIntrigueTypes($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_group (IntrigueTypeId, LarpGroupId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllIntrigueTypes() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_group WHERE LarpGroupId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function getIntrigueTypes(){
+        return IntrigueType::getIntrigeTypesForGroup($this->Id, $this->LARPId);
+    }
+    
+    public function getSelectedIntrigueTypeIds() {
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM regsys_intriguetype_group WHERE LarpGroupId = ? ORDER BY IntrigueTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['IntrigueTypeId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
     
     
 }
