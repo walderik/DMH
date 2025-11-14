@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      
     if ($operation == 'insert') {
         $account = Bookkeeping_Account::newFromArray($_POST);
+        $account->CampaignId = $current_larp->CampaignId;
         $account->create();
     } elseif ($operation == 'update') {
         $account=Bookkeeping_Account::loadById($_POST['Id']);
