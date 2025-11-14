@@ -18,7 +18,7 @@ include 'navigation.php';
 
 
     <div class="content">   
-        <h1>Välj grupper/karaktärer/NPC som aktören ska känna till</h1>
+        <h1>Välj grupper/karaktärer som aktören ska känna till</h1>
 	    <form action="logic/view_intrigue_logic.php" method="post">
 	    <input type="hidden" id="operation" name="operation" value="choose_intrigue_knownactors">
 	    <input type='hidden' id='IntrigueActorId' name='IntrigueActorId' value='<?php echo $intrigueActor->Id?>'>

@@ -21,9 +21,6 @@ switch ($type) {
     case "prop":
         $object = Prop::loadById($id);
         break;
-    case "npc":
-        $object = NPC::loadById($id);
-        break;
     case "resource":
         $object = Resource::loadById($id);
         break;
