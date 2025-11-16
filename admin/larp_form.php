@@ -100,6 +100,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     				<td><input type="date" id="LatestRegistrationDate"
     					name="LatestRegistrationDate" value="<?php echo $larp->LatestRegistrationDate; ?>" size="50" required></td>
     			</tr>
+    			
+				<tr>
+    				<td><label for="NoRoles">Antal karaktärer som deltagarna får anmäla till lajvet</label><br>Arrangörer kan lägga till fler karaktärer efteråt.</td>
+    				<td>
+    					<select id="NoRoles" name="NoRoles">
+    					<?php 
+    					for ($i=0; $i<=(count(LARP::NO_ROLES)-1); $i++) {
+    					    echo "<option value='$i' ";
+    					    if ($larp->NoRoles==$i) echo "selected";
+    					    echo ">";
+    					    echo LARP::NO_ROLES[$i];
+    					    echo "</option>";
+    					}
+    					?>
+    					</select>
+    				</td>
+    			</tr>
+    			
+    			
     			<tr>
     				<td><label for="StartTimeLARPTime">Start lajvtid</label><br>Om lajvet har ett datum och tid inlajv så fyller man i det här.</td>
     				<td><input type="datetime-local" id="StartTimeLARPTime"

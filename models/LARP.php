@@ -2,6 +2,15 @@
 
 class LARP extends BaseModel{
 
+    const NO_ROLES = [    
+        0=>"Ingen karaktär",
+        1=>"1 karaktär",
+        2=>"1-2 karaktärer",
+        3=>"1-3 karaktärer",
+        4=>"Obegränsat antal karaktärer",
+    ];
+    
+    
     public  $Id; 
     public  $Name;
     public  $TagLine; 
@@ -9,6 +18,7 @@ class LARP extends BaseModel{
     public  $EndDate;
     public  $MaxParticipants; 
     public  $LatestRegistrationDate;
+    public  $NoRoles = 1;
     public  $StartTimeLARPTime;
     public  $EndTimeLARPTime;
     public  $DisplayIntrigues = 0;
@@ -53,6 +63,7 @@ class LARP extends BaseModel{
         if (isset($arr['EndDate'])) $this->EndDate = $arr['EndDate'];
         if (isset($arr['MaxParticipants'])) $this->MaxParticipants = $arr['MaxParticipants'];
         if (isset($arr['LatestRegistrationDate'])) $this->LatestRegistrationDate = $arr['LatestRegistrationDate'];
+        if (isset($arr['NoRoles'])) $this->NoRoles = $arr['NoRoles'];
         if (isset($arr['StartTimeLARPTime'])) $this->StartTimeLARPTime = $arr['StartTimeLARPTime'];
         if (isset($arr['EndTimeLARPTime'])) $this->EndTimeLARPTime = $arr['EndTimeLARPTime'];
         if (isset($arr['DisplayIntrigues'])) $this->DisplayIntrigues = $arr['DisplayIntrigues'];
@@ -99,14 +110,14 @@ class LARP extends BaseModel{
     # Update an existing larp in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_larp SET Name=?, TagLine=?, StartDate=?, EndDate=?, ".
-                 "MaxParticipants=?, LatestRegistrationDate=?, StartTimeLARPTime=?, EndTimeLARPTime=?, ".
+                 "MaxParticipants=?, LatestRegistrationDate=?, NoRoles=?, StartTimeLARPTime=?, EndTimeLARPTime=?, ".
                  "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, VisibleToParticipants=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=?, ".
                  "LastPaymentDate=?, HasTelegrams=?, HasLetters=?, HasRumours=?, 
                     HasAlchemy=?, LastDayAlchemy=?, LastDayAlchemySupplier=?, HasMagic=?, HasVisions=?, HasCommerce=?,
                     ChooseParticipationDates=?, Description=?, ContentDescription=?, EvaluationOpenDate=?, EvaluationLink=?, LarpHasEnded=?  WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
-            $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, 
+            $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, $this->NoRoles,
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
             $this->VisibleToParticipants, $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, 
             $this->LastPaymentDate, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, 
@@ -125,15 +136,15 @@ class LARP extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_larp (Name, TagLine, StartDate, EndDate, MaxParticipants, 
-            LatestRegistrationDate, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, DisplayHousing, CampaignId, 
+            LatestRegistrationDate, NoRoles, StartTimeLARPTime, EndTimeLARPTime, DisplayIntrigues, DisplayHousing, CampaignId, 
             VisibleToParticipants, RegistrationOpen, PaymentReferencePrefix, NetDays, LastPaymentDate, HasTelegrams, 
             HasLetters, HasRumours, 
             HasAlchemy, LastDayAlchemy, LastDayAlchemySupplier, HasMagic, HasVisions, HasCommerce, 
             ChooseParticipationDates, Description, ContentDescription,EvaluationOpenDate,EvaluationLink, LarpHasEnded) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?)");
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
-            $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate,
+            $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, $this->NoRoles,
             $this->StartTimeLARPTime, $this->EndTimeLARPTime, $this->DisplayIntrigues, $this->DisplayHousing, $this->CampaignId, 
             $this->VisibleToParticipants, $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->LastPaymentDate, $this->HasTelegrams, 
             $this->HasLetters, $this->HasRumours, 
