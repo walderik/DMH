@@ -24,10 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role->IsApproved = 0;
         $role->create();
         
-        if (isset($_POST['IntrigueTypeId'])) {
-            $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
-        }
-        
         if (isset($_POST['AbilityId'])) {
             $role->saveAllAbilities($_POST['AbilityId']);
         }
@@ -61,11 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role->update();
         $role->unapprove($current_larp, false, null);
 
-        $role->deleteAllIntrigueTypes();
-        if (isset($_POST['IntrigueTypeId'])) {
-            $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
-        }
-        
         $role->deleteAllAbilities();
         if (isset($_POST['AbilityId'])) {
             $role->saveAllAbilities($_POST['AbilityId']);

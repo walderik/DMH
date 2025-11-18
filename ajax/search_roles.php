@@ -49,7 +49,7 @@ if ($operation == "search") {
         
         if ($type == "Religion") $resTable .="<td>$role->Religion</td>";
         if ($type == "LarperType") $resTable .="<td>$role->TypeOfLarperComment</td>";
-        if ($type == "IntrigueType") $resTable .="<td>$role->IntrigueSuggestions</td>";
+        if ($type == "IntrigueType") $resTable .="<td>$larp_role->IntrigueIdeas</td>";
         if ($type == "Race") $resTable .="<td>$role->RaceComment</td>";
         if ($type == "Ability") $resTable .="<td>$role->AbilityComment</td>";
         if ($type == "RoleFunction") $resTable .="<td>$role->RoleFunctionComment</td>";

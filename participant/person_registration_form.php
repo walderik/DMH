@@ -150,6 +150,31 @@ include 'navigation.php';
 
         			?>
         		</table>
+        		
+        		/*
+        				if ($isPc) { 
+		    print_participant_textarea(
+		        "Intrigideer",
+		        "Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara 'Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar.'",
+		        "IntrigueSuggestions",
+		        $role->IntrigueSuggestions,
+		        "rows='4' maxlength='60000'",
+		        false,
+		        true);
+
+		    if (IntrigueType::isInUseForRole($current_larp)) {
+		        print_participant_question_start(
+		            "Intrigtyper",
+		            "Vilken typ av intriger vill du ha?",
+		            false,
+		            true,
+		            empty($role->getSelectedIntrigueTypeIds()));
+		        IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds());
+		        print_participant_question_end(false);
+		    }
+		} 
+        		*/
+        		
         	</div>
 			<hr>
 			<?php if (TypeOfFood::isInUse($current_larp)) { ?>

@@ -6,6 +6,7 @@ class LARP_Role extends BaseModel{
     public $LARPId;
     public $RoleId;
     public $Intrigue;
+    public $IntrigueIdeas;
     public $WhatHappened;
     public $WhatHappendToOthers;
     public $WhatHappensAfterLarp;
@@ -24,6 +25,7 @@ class LARP_Role extends BaseModel{
         if (isset($post['LARPId'])) $larp_role->LARPId = $post['LARPId'];
         if (isset($post['RoleId'])) $larp_role->RoleId = $post['RoleId'];
         if (isset($post['Intrigue'])) $larp_role->Intrigue = $post['Intrigue']; 
+        if (isset($post['IntrigueIdeas'])) $larp_role->IntrigueIdeas = $post['IntrigueIdeas'];
         if (isset($post['WhatHappened'])) $larp_role->WhatHappened = $post['WhatHappened']; 
         if (isset($post['WhatHappendToOthers'])) $larp_role->WhatHappendToOthers = $post['WhatHappendToOthers']; 
         if (isset($post['WhatHappensAfterLarp'])) $larp_role->WhatHappensAfterLarp = $post['WhatHappensAfterLarp'];
@@ -74,7 +76,7 @@ class LARP_Role extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_larp_role SET Intrigue=?, WhatHappened=?,
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp_role SET Intrigue=?, IntrigueIdeas=?, WhatHappened=?,
                                                                   WhatHappendToOthers=?, WhatHappensAfterLarp=?, StartingMoney=?, EndingMoney=?, Result=?, 
                                                                   IsMainRole=?, PersonId=? WHERE LARPId=? AND RoleId=?;");
         
@@ -91,11 +93,11 @@ class LARP_Role extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_larp_role (LARPId, RoleId, Intrigue, WhatHappened,
+        $stmt = $connection->prepare("INSERT INTO regsys_larp_role (LARPId, RoleId, Intrigue, IntrigueIdeas, WhatHappened,
                                                                 WhatHappendToOthers, WhatHappensAfterLarp, StartingMoney, EndingMoney, Result, 
-                                                                IsMainRole, PersonId) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
+                                                                IsMainRole, PersonId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Intrigue, $this->WhatHappened,
+        if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->Intrigue, $this->IntrigueIdeas, $this->WhatHappened,
             $this->WhatHappendToOthers, $this->WhatHappensAfterLarp, $this->StartingMoney, $this->EndingMoney, $this->Result,
                                     $this->IsMainRole, $this->PersonId))) {
                 $this->connect()->rollBack();
@@ -123,11 +125,61 @@ class LARP_Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larpId, $personId));
     }
     
-    public static function deleteByIds($larpId, $roleId) {
-        $connection = static::connectStatic();
-        $stmt = $connection->prepare("DELETE FROM ".
-            "regsys_larp_role WHERE LARPId = ? AND RoleId = ?;");
-        if (!$stmt->execute(array($larpId, $roleId))) {
+    public function getPerson() {
+        return Person::loadById($this->PersonId);
+    }
+    
+    
+    # Hämta intrigtyperna
+    public function getIntrigueTypes(){
+        return IntrigueType::getIntrigeTypesForRole($this->Id);
+    }
+    
+    
+    
+    
+    public function getSelectedIntrigueTypeIds() {
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  regsys_intriguetype_role WHERE LarpRoleId = ? ORDER BY IntrigueTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['IntrigueTypeId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function saveAllIntrigueTypes($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_role (IntrigueTypeId, LarpRoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllIntrigueTypes() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_role WHERE LarpRoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
@@ -135,9 +187,16 @@ class LARP_Role extends BaseModel{
         $stmt = null;
     }
     
-    public function getPerson() {
-        return Person::loadById($this->PersonId);
+    
+    public static function delete($id)
+    {
+        $larp_role = static::loadById($id);
+        
+        $larp_role->deleteAllIntrigueTypes();
+         
+        parent::delete($id);
     }
+    
     
    
 }

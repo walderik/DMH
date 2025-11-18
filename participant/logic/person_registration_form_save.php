@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             
             
-            
+            /* TODO spara anmälan av karaktärer */
             if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
             
             $roleIdArr = $_POST['roleId'];
@@ -92,6 +92,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $larp_role->IsMainRole = 1;
                 }
                 $larp_role->create();
+                
+                if (isset($_POST['IntrigueTypeId'])) {
+                    $larp_role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+                }
+                
+                
             }
             
             
@@ -169,6 +175,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $role->UserMayEdit = 0;
                 $role->update();
                 
+                
+                /* TODO spara anmälan av karaktärer */
                 $larp_role = LARP_Role::newWithDefault();
                 $larp_role->RoleId = $role->Id;
                 $larp_role->LARPId = $current_larp->Id;
@@ -177,7 +185,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                     $larp_role->IsMainRole = 1;
                 }
-                $larp_role->create();            
+                $larp_role->create();  
+                
+                if (isset($_POST['IntrigueTypeId'])) {
+                    $larp_role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+                }
+                
             }
             
             

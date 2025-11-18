@@ -95,7 +95,8 @@ foreach ($rumourIdArr as $rumourId) {
                 if (!in_array($role->PlaceOfResidenceId, $placeofresidenceArr)) continue;
             }
             if (isset($intriguetypeArr)) {
-                if (empty(array_intersect($intriguetypeArr, $role->getSelectedIntrigueTypeIds()))) continue;
+                $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+                if (empty(array_intersect($intriguetypeArr, $larp_role->getSelectedIntrigueTypeIds()))) continue;
                 
             }
             $person = $role->getPerson();
