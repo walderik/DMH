@@ -179,6 +179,9 @@ function getErrorText($code) {
         case "user_missing":
             $output = "Det finns inget konto med den epostadressen.";
             break;
+        case "already_registered":
+            $output = "Du är redan anmäld.";
+            break;
         default:
             $output = "Okänt fel: ". $code;
     }

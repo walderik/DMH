@@ -78,11 +78,11 @@ class LARP_Role extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_larp_role SET Intrigue=?, IntrigueIdeas=?, WhatHappened=?,
                                                                   WhatHappendToOthers=?, WhatHappensAfterLarp=?, StartingMoney=?, EndingMoney=?, Result=?, 
-                                                                  IsMainRole=?, PersonId=? WHERE LARPId=? AND RoleId=?;");
+                                                                  IsMainRole=?, PersonId=? WHERE Id=?;");
         
-        if (!$stmt->execute(array($this->Intrigue, $this->WhatHappened, 
+        if (!$stmt->execute(array($this->Intrigue, $this->IntrigueIdeas, $this->WhatHappened, 
             $this->WhatHappendToOthers, $this->WhatHappensAfterLarp, $this->StartingMoney, $this->EndingMoney, $this->Result, 
-            $this->IsMainRole, $this->PersonId, $this->LARPId, $this->RoleId))) {
+            $this->IsMainRole, $this->PersonId, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -166,6 +166,7 @@ class LARP_Role extends BaseModel{
         if (!isset($idArr)) {
             return;
         }
+
         foreach($idArr as $Id) {
             $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_role (IntrigueTypeId, LarpRoleId) VALUES (?,?);");
             if (!$stmt->execute(array($Id, $this->Id))) {

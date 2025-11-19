@@ -68,6 +68,14 @@ class IntrigueType extends SelectionData{
         return static::getSeveralObjectsqQuery($sql, array($larproleId));
     }
 
+    public static function getIntrigeTypesForReserveRole($reservelarproleId) {
+        if (is_null($reservelarproleId)) return array();
+        $sql = "SELECT * from regsys_intriguetype WHERE Id IN ".
+            "(SELECT IntrigueTypeId FROM regsys_intriguetype_reserve_role WHERE ".
+            "ReserveLarpRoleId = ?) ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($reservelarproleId));
+    }
+    
     public static function getIntrigueTypesForIntrigue($intrigueId) {
         if (is_null($intrigueId)) return array();
         $sql = "SELECT * from regsys_intriguetype WHERE Id IN ".

@@ -15,7 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     
     if ($operation == 'insert') {
-        if (empty($_POST['roleId']) or count($_POST['roleId']) ==0) {
+
+        if (empty($_POST['roleId'])) {
             header('Location: ../index.php?error=no_role_chosen');
             exit;
         }
@@ -73,24 +74,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             
             
-            
-            /* TODO spara anmälan av karaktärer */
-            if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
-            
-            $roleIdArr = $_POST['roleId'];
-            
-            foreach ($roleIdArr as $roleId) {
+            if ($current_larp->NoRoles == 0) {
+                
+            } elseif ($current_larp->NoRoles == 1) {
+                $roleId = $_POST['roleId'];
                 $role = Role::loadById($roleId);
                 $role->UserMayEdit = 0;
                 $role->update();
                 
                 $larp_role = Reserve_LARP_Role::newWithDefault();
-                $larp_role->RoleId = $roleId;
+                $larp_role->RoleId = $role->Id;
                 $larp_role->LARPId = $current_larp->Id;
-                if ($mainRole == $roleId) {
-                    
-                    $larp_role->IsMainRole = 1;
-                }
+                $larp_role->PersonId = $role->PersonId;
+                if (isset($_POST['IntrigueIdeas'])) $larp_role->IntrigueIdeas = $_POST['IntrigueIdeas'];
+                $larp_role->IsMainRole = 1;
+                
                 $larp_role->create();
                 
                 if (isset($_POST['IntrigueTypeId'])) {
@@ -98,8 +96,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 
                 
+            } else {
+                
+                /* TODO spara anmälan av karaktärer */
+                /*
+                if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
+                
+                $roleIdArr = $_POST['roleId'];
+                
+                foreach ($roleIdArr as $roleId) {
+                    $role = Role::loadById($roleId);
+                    $role->UserMayEdit = 0;
+                    $role->update();
+                    
+                    $larp_role = Reserve_LARP_Role::newWithDefault();
+                    $larp_role->RoleId = $roleId;
+                    $larp_role->LARPId = $current_larp->Id;
+                    if ($mainRole == $roleId) {
+                        
+                        $larp_role->IsMainRole = 1;
+                    }
+                    $larp_role->create();
+                    
+                    if (isset($_POST['IntrigueTypeId'])) {
+                        $larp_role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+                    }
+                    
+                    
+                }
+                */
             }
-            
             
             BerghemMailer::send_reserve_registration_mail($reserve_registration);
             
@@ -165,34 +191,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
     
     
-            
-            if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
-    
-            $roleIdArr = $_POST['roleId'];
-    
-            foreach ($roleIdArr as $roleId) {
+            if ($current_larp->NoRoles == 0) {
+                
+            } elseif ($current_larp->NoRoles == 1) {
+                $roleId = $_POST['roleId'];
                 $role = Role::loadById($roleId);
                 $role->UserMayEdit = 0;
                 $role->update();
                 
-                
-                /* TODO spara anmälan av karaktärer */
                 $larp_role = LARP_Role::newWithDefault();
                 $larp_role->RoleId = $role->Id;
                 $larp_role->LARPId = $current_larp->Id;
                 $larp_role->PersonId = $role->PersonId;
-                if ($mainRole == $roleId) {
-                    
-                    $larp_role->IsMainRole = 1;
-                }
-                $larp_role->create();  
+                if (isset($_POST['IntrigueIdeas'])) $larp_role->IntrigueIdeas = $_POST['IntrigueIdeas'];
+                $larp_role->IsMainRole = 1;
+
+                $larp_role->create();
                 
                 if (isset($_POST['IntrigueTypeId'])) {
                     $larp_role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
                 }
                 
-            }
+                
+            } else {
             
+                /* TODO spara anmälan av flera karaktärer */
+                /*
+                if (!isset($mainRole) || is_null($mainRole)) $mainRole = array_key_first($roleIdArr);
+        
+
+        
+                foreach ($roleIdArr as $roleId) {
+                    $role = Role::loadById($roleId);
+                    $role->UserMayEdit = 0;
+                    $role->update();
+
+                    $larp_role = LARP_Role::newWithDefault();
+                    $larp_role->RoleId = $role->Id;
+                    $larp_role->LARPId = $current_larp->Id;
+                    $larp_role->PersonId = $role->PersonId;
+                    if ($mainRole == $roleId) {
+                        
+                        $larp_role->IsMainRole = 1;
+                    }
+                    $larp_role->create();  
+                    
+                    if (isset($_POST['IntrigueTypeId'])) {
+                        $larp_role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+                    }
+                    
+                }
+                */
+            }
             
             BerghemMailer::send_registration_mail($registration);
             

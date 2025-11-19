@@ -24,18 +24,20 @@ function migrateRoleIntrigueTypes(Role $role) {
     $larp_roles = getAllRegistrations($role);
     
     $intrigueTypeIds = $role->getSelectedIntrigueTypeIds();
-    $intrigueTypeIds = array();
-    
-
-    
     print_r($intrigueTypeIds);
     echo "<br><br>";
     $role->deleteAllIntrigueTypes();
+    echo "Radera gamla intrigtyper<br>";
     foreach ($larp_roles as $larp_role) {
         echo "Lajv: $larp_role->LARPId<br>";
-        $larp_role->IntrigueIdeas = $role->IntrigueIdeas;
+        $larp_role->IntrigueIdeas = $role->IntrigueSuggestions;
         $larp_role->update();
-        $larp_role->saveAllIntrigueTypes($intrigueTypeIds);
+        if (!empty($intrigueTypeIds)) {
+            $larp_role->saveAllIntrigueTypes($intrigueTypeIds);
+            print_r($larp_role->getSelectedIntrigueTypeIds());
+        }
+        echo "<br>";
+
     }
     echo "<br><br>";
 }

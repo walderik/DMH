@@ -299,7 +299,7 @@ class Reserve_Registration extends BaseModel{
 
         $reserve_larp_roles = Reserve_LARP_Role::getReserveRolesForPerson($this->LARPId, $this->PersonId);
         foreach($reserve_larp_roles as $reserve_larp_role) {
-            Reserve_LARP_Role::deleteByIds($reserve_larp_role->LARPId, $reserve_larp_role->RoleId);
+            Reserve_LARP_Role::delete($reserve_larp_role->Id);
         }
 
         $person = Person::loadById($this->PersonId);

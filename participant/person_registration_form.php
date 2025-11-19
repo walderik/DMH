@@ -16,25 +16,14 @@ else {
         header('Location: index.php');
         exit;
     }
-    
-    
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST['PersonId'])) {
-            $PersonId = $_POST['PersonId'];
-        }
-    }
-    
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        
-        if (isset($_GET['PersonId'])) {
-            $PersonId = $_GET['PersonId'];
-        }
-    }
-    
-    if ($current_person->UserId != $current_user->Id) {
-        header('Location: index.php');
+
+    if ($current_person->isRegistered($current_larp)) {
+        header('Location: index.php?error=already_registered');
         exit;
+        
     }
+
+    
     
     $roles = $current_person->getAliveRoles($current_larp);
     
@@ -45,11 +34,11 @@ else {
     }
     
     //Kolla att minst en karaktär går att anmäla
-    $mayRegister = false;
+    $registerable_roles = array();
     foreach ($roles as $role) {
-        if ($role->groupIsRegisteredApproved($current_larp)) $mayRegister = true;
+        if ($role->groupIsRegisteredApproved($current_larp)) $registerable_roles[] = $role;
     }
-    if ($mayRegister == false) {
+    if (empty($registerable_roles)) {
         header('Location: index.php?error=no_role_may_register');
         exit;
     }
@@ -116,66 +105,43 @@ include 'navigation.php';
 		    <?php 
 		    }
 		    ?>
-			<hr>
+			
+			<?php if ($current_larp->NoRoles == 1) {
+			    
+			    echo "<hr>";
 				
-			<div class='itemcontainer'>
-	       	<div class='itemname'><label for="RoleId">Karaktärer</label> <font style="color:red">*</font></div>
-			Vilken/vilka karaktärer vill du spela på lajvet? Avmarkera checkboxen för de karaktärer som inte ska vara med.<br>
-				     En av dina karaktärer är din huvudkaraktär. Vi behöver veta vilken.<br>
-				     Andra karaktärer är roller du spelar en liten kort tid under lajvet eller har som reserv om din huvudkaraktär blir ospelbar.<br>
-				     Om du vill spela flera karaktärer så behöver de vara skapade, så att de finns med i den här listan, innan du gör din anmälan.
-				<br>
-				<table class="list">
-        			<?php 
-        			foreach($roles as $key => $role) {
-        			    if ($role->groupIsRegisteredApproved($current_larp)) {
-            			    echo "<tr><td>\n";
-            			    echo "<input type='checkbox' id='roleId$role->Id' name='roleId[]' value='$role->Id' checked='checked'>";
-            			    echo "\n";
-            			    echo "<label for='roleId$role->Id'>".htmlspecialchars($role->Name)."</label>\n";
-            			    echo "</td><td>";
-            			    echo "<input type='radio' id='mainRole$role->Id' name='IsMainRole' value='$role->Id' required";
-            			    if ($key == 0) echo " checked='checked'";
-            			    echo ">\n";
-            			    echo "<label for='mainRole$role->Id'>Huvudkaraktär</label><br><br>\n";   			    
-            			    echo '</td></tr>';
-        			    }
-        			    else {
-        			        echo "<div class='role'>\n";
-        			        echo "<h3>".htmlspecialchars($role->Name)."</h3>";
-        			        echo "Karaktären kan inte anmälas eftersom gruppen " . htmlspecialchars($role->getGroup()->Name) . " inte är anmäld och godkänd.";
-        			        echo "</div>";
-        			    }
-        			}		
-
-        			?>
-        		</table>
-        		
-        		/*
-        				if ($isPc) { 
-		    print_participant_textarea(
-		        "Intrigideer",
-		        "Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara 'Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar.'",
-		        "IntrigueSuggestions",
-		        $role->IntrigueSuggestions,
-		        "rows='4' maxlength='60000'",
-		        false,
-		        true);
-
-		    if (IntrigueType::isInUseForRole($current_larp)) {
-		        print_participant_question_start(
-		            "Intrigtyper",
-		            "Vilken typ av intriger vill du ha?",
-		            false,
-		            true,
-		            empty($role->getSelectedIntrigueTypeIds()));
-		        IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds());
+    	        print_participant_question_start(
+    		            "Karaktär",
+    		            "Vilken karaktär vill du spela på lajvet?",
+    		            true,
+    		            false,
+    		            false);
+    	        selectionDropDownByArray('roleId' , $registerable_roles, true);
 		        print_participant_question_end(false);
-		    }
-		} 
-        		*/
-        		
-        	</div>
+    		    
+    				
+    		    print_participant_textarea(
+    		        "Intrigideer",
+    		        "Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara 'Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar.'",
+    		        "IntrigueIdeas",
+    		        "",
+    		        "rows='4' maxlength='60000'",
+    		        false,
+    		        false);
+    
+    		    if (IntrigueType::isInUseForRole($current_larp)) {
+    		        print_participant_question_start(
+    		            "Intrigtyper",
+    		            "Vilken typ av intriger vill du ha?",
+    		            false,
+    		            false,
+    		            false);
+    		        IntrigueType::selectionDropdownRole($current_larp, true, false);
+    		        print_participant_question_end(false);
+    		    }
+			}
+		?>
+
 			<hr>
 			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
     			<div class='itemcontainer'>

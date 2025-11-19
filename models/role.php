@@ -146,23 +146,31 @@ class Role extends BaseModel{
     public function create() { 
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_role (Name, Profession, Description, 
-                                                            DescriptionForGroup, DescriptionForOthers, PreviousLarps,
-                                                            ReasonForBeingInSlowRiver, ReligionId, Religion, BeliefId, DarkSecret, DarkSecretIntrigueIdeas,
-                                                            NotAcceptableIntrigues, OtherInformation, PersonId,
-                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId,  
-                                                            RoleFunctionComment, Birthplace, CharactersWithRelations, CampaignId, ImageId, 
-                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, 
-                                    AbilityComment, IsApproved, ApprovedByPersonId, ApprovedDate, CreatorPersonId, UserMayEdit) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?);");
+                                    DescriptionForGroup, DescriptionForOthers, PreviousLarps,
+                                    ReasonForBeingInSlowRiver, ReligionId, Religion, 
+                                    BeliefId, DarkSecret, DarkSecretIntrigueIdeas,
+                                    NotAcceptableIntrigues, OtherInformation, PersonId,
+                                    GroupId, WealthId, PlaceOfResidenceId, 
+                                    RaceId, RoleFunctionComment, Birthplace, 
+                                    CharactersWithRelations, CampaignId, ImageId, 
+                                    IsDead, OrganizerNotes, NoIntrigue, 
+                                    LarperTypeId, TypeOfLarperComment, RaceComment, 
+                                    AbilityComment, IsApproved, ApprovedByPersonId, 
+                                    ApprovedDate, CreatorPersonId, UserMayEdit) 
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
-            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
+            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, 
+            $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
             $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
-            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
-            $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
-            $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
-            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->CreatorPersonId, $this->UserMayEdit
+            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, 
+            $this->RaceId, $this->RoleFunctionComment, $this->Birthplace, 
+            $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
+            $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, 
+            $this->LarperTypeId, $this->TypeOfLarperComment, $this->RaceComment, 
+            $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, 
+            $this->ApprovedDate, $this->CreatorPersonId, $this->UserMayEdit
         ))) {
                 $this->connect()->rollBack();
                 $stmt = null;
@@ -1084,6 +1092,7 @@ class Role extends BaseModel{
     /************ Ta bort *************/
     # Hämta intrigtyperna
     public function getIntrigueTypes(){
+        echo "Gammal funktion";
         return IntrigueType::getIntrigeTypesForRole($this->Id);
     }
     
@@ -1091,6 +1100,7 @@ class Role extends BaseModel{
     
     
     public function getSelectedIntrigueTypeIds() {
+        echo "Gammal funktion";
         $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  regsys_intriguetype_role WHERE RoleId = ? ORDER BY IntrigueTypeId;");
         
         if (!$stmt->execute(array($this->Id))) {
@@ -1115,6 +1125,7 @@ class Role extends BaseModel{
     }
     
     public function saveAllIntrigueTypes($idArr) {
+        echo "Gammal funktion";
         if (!isset($idArr)) {
             return;
         }
@@ -1130,6 +1141,7 @@ class Role extends BaseModel{
     }
     
     public function deleteAllIntrigueTypes() {
+        echo "Gammal funktion";
         $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_role WHERE RoleId = ?;");
         if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
