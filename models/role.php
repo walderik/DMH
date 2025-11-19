@@ -343,7 +343,7 @@ class Role extends BaseModel{
     # Hämta de karaktärer en person har anmält till ett lajv
     public static function getRegistredRolesForPerson(Person $person, LARP $larp) {
         if (is_null($person) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
+        $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE ".
         "regsys_role.PersonId = ? AND ".
         "regsys_role.Id=regsys_larp_role.RoleId AND ".
         "regsys_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
@@ -976,11 +976,10 @@ class Role extends BaseModel{
     public static function getAllWithTypeValues($larpId, $typeName, $valueIds) {
         $larp = LARP::loadById($larpId);
         
-        $roles_at_larp_SQL = "SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE regsys_larp_role.LarpId=? AND ".
+        $roles_at_larp_SQL = "SELECT regsys_larp_role.RoleId FROM regsys_larp_role, regsys_registration WHERE regsys_larp_role.LarpId=? AND ".
             "regsys_registration.NotComing = 0 AND ".
             "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
-            "regsys_larp_role.RoleId = regsys_role.Id AND ".
-            "regsys_role.PersonId = regsys_registration.PersonId";
+            "regsys_larp_role.PersonId = regsys_registration.PersonId";
         
         
         $placeholders = rtrim(str_repeat('?,', count($valueIds)), ',');
@@ -996,7 +995,9 @@ class Role extends BaseModel{
                 $sql = "SELECT * FROM regsys_role WHERE LarperTypeId IN ($placeholders) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "IntrigueType":
-                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_intriguetype_role, regsys_larp_role WHERE IntrigueTypeId IN ($placeholders)) AND regsys_intriguetype_role.LarpRoleId = regsys_larp_role.Id AND regsys_larp_role.RoleId IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+                    "(SELECT regsys_larp_role.RoleId FROM regsys_intriguetype_role, regsys_larp_role WHERE IntrigueTypeId IN ($placeholders) AND regsys_intriguetype_role.LarpRoleId = regsys_larp_role.Id) AND ".
+                    "Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Race":
                 $sql = "SELECT * FROM regsys_role WHERE RaceId IN ($placeholders) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
