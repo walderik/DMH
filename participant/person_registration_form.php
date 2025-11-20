@@ -106,41 +106,6 @@ include 'navigation.php';
 		    }
 		    ?>
 			
-			<?php if ($current_larp->NoRoles == 1) {
-			    
-			    echo "<hr>";
-				
-    	        print_participant_question_start(
-    		            "Karaktär",
-    		            "Vilken karaktär vill du spela på lajvet?",
-    		            true,
-    		            false,
-    		            false);
-    	        selectionDropDownByArray('roleId' , $registerable_roles, true);
-		        print_participant_question_end(false);
-    		    
-    				
-    		    print_participant_textarea(
-    		        "Intrigideer",
-    		        "Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara 'Min karaktär har: en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar.'",
-    		        "IntrigueIdeas",
-    		        "",
-    		        "rows='4' maxlength='60000'",
-    		        false,
-    		        false);
-    
-    		    if (IntrigueType::isInUseForRole($current_larp)) {
-    		        print_participant_question_start(
-    		            "Intrigtyper",
-    		            "Vilken typ av intriger vill du ha?",
-    		            false,
-    		            false,
-    		            false);
-    		        IntrigueType::selectionDropdownRole($current_larp, true, false);
-    		        print_participant_question_end(false);
-    		    }
-			}
-		?>
 
 			<hr>
 			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
@@ -261,6 +226,43 @@ include 'navigation.php';
                 <?php OfficialType::selectionDropdown($current_larp, true,false); ?>
             	</div>
 			<?php } ?>
+			
+			<?php if ($current_larp->NoRoles == 1) {
+			    
+			    echo "<hr>";
+				
+    	        print_participant_question_start(
+    		            "Karaktär",
+    		            "Vilken karaktär vill du spela på lajvet?",
+    		            true,
+    		            false,
+    		            false);
+    	        selectionDropDownByArray('roleId' , $registerable_roles, true);
+		        print_participant_question_end(false);
+    		    
+    				
+    		    print_participant_textarea(
+    		        "Intrigideer",
+    		        "Är det någon typ av spel du särskilt önskar eller något som du inte önskar spel på?  Exempel kan vara 'Min karaktär har en skuld till en icke namngiven karaktär/mördat någon/svikit sin familj/ett oäkta barn/lurat flera personer på pengar.'",
+    		        "IntrigueIdeas",
+    		        "",
+    		        "rows='4' maxlength='60000'",
+    		        false,
+    		        false,
+    		        false);
+    
+    		    if (IntrigueType::isInUseForRole($current_larp)) {
+    		        print_participant_question_start(
+    		            "Intrigtyper",
+    		            "Vilken typ av intriger vill du ha?",
+    		            false,
+    		            false,
+    		            false);
+    		        IntrigueType::selectionDropdownRole($current_larp, true, false);
+    		        print_participant_question_end(false);
+    		    }
+			}
+		?>
 			
 			
 		

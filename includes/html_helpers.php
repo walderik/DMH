@@ -403,8 +403,8 @@ function print_participant_text_input(String $title, String $description, String
     print_participant_question_end($isRequired);
 }
 
-function print_participant_textarea(String $title, String $description, String $id, $value, String $inputParams, bool $isRequired, $isIntrigue) {
-    print_participant_question_start($title, $description, $isRequired, $isIntrigue, empty($value));
+function print_participant_textarea(String $title, String $description, String $id, $value, String $inputParams, bool $isRequired, $isIntrigue, ?bool $may_collapse=true) {
+    print_participant_question_start($title, $description, $isRequired, $isIntrigue, ($may_collapse && empty($value)));
     echo "<textarea ";
     if ($isIntrigue && $isRequired) echo "class='requiredIntrigueField' ";
     echo "type='text' id='$id' name='$id' $inputParams";
