@@ -800,7 +800,9 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Intrigtyper');
 
-	    $text = commaStringFromArrayObject($this->role->getIntrigueTypes());
+	    $larp_role = LARP_Role::loadByIds($this->role->Id, $this->larp->Id);
+	    if (!empty($larp_role)) $text = commaStringFromArrayObject($larp_role->getIntrigueTypes());
+	    else $text = "Inte anmäld";
 	    $this->set_text($left, $text);
 	    return true;
 	}
@@ -809,7 +811,11 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Intrigförslag');
 
-	    $this->set_text($left, $this->role->IntrigueSuggestions);
+	    
+	    $larp_role = LARP_Role::loadByIds($this->role->Id, $this->larp->Id);
+	    if (!empty($larp_role)) $text = $larp_role->IntrigueIdeas;
+	    else $text = "Inte anmäld";
+	    $this->set_text($left, $text);
 	    return true;
 	}
 	

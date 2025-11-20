@@ -113,16 +113,16 @@ class RoleApprovedCopy extends BaseModel {
         $stmt = $connection->prepare("INSERT INTO regsys_roleapprovedcopy (RoleId, Name, Profession, Description,
                                                             DescriptionForGroup, DescriptionForOthers, PreviousLarps,
                                                             ReasonForBeingInSlowRiver, ReligionId, Religion, BeliefId, DarkSecret, DarkSecretIntrigueIdeas,
-                                                            IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation,
+                                                            NotAcceptableIntrigues, OtherInformation,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId, 
                                                             RoleFunctionComment, Birthplace, CharactersWithRelations,
                                     NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, ApprovedByPersonId, ApprovedDate)
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
         
         if (!$stmt->execute(array($this->RoleId, $this->Name, $this->Profession, $this->Description,
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
             $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
-            $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, 
+            $this->NotAcceptableIntrigues, $this->OtherInformation, 
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations,
             $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
@@ -138,38 +138,7 @@ class RoleApprovedCopy extends BaseModel {
         $stmt = null;
     }
     
-    # Hämta intrigtyperna
-    public function getIntrigueTypes(){
-        return IntrigueType::getIntrigeTypesForApprovedRoleCopy($this->Id);
-    }
-    
-    
-    public function saveAllIntrigueTypes($idArr) {
-        if (!isset($idArr)) {
-            return;
-        }
-        foreach($idArr as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_role_approved_copy (IntrigueTypeId, RoleId) VALUES (?,?);");
-            if (!$stmt->execute(array($Id, $this->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-        }
-        $stmt = null;
-    }
-    
-    public function deleteAllIntrigueTypes() {
-        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_role_approved_copy WHERE RoleId = ?;");
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        $stmt = null;
-    }
-    
-    # Hämta intrigtyperna
+
     public function getAbilities(){
         return Ability::getAbilitiesForApprovedRoleCopy($this->Id);
     }
@@ -278,7 +247,6 @@ class RoleApprovedCopy extends BaseModel {
         $roleCopy->create();
         
         $roleCopy->saveAllAbilities($role->getSelectedAbilityIds());
-        $roleCopy->saveAllIntrigueTypes($role->getSelectedIntrigueTypeIds());
         $roleCopy->saveAllRoleFunctions($role->getSelectedRoleFunctionIds());
         
     }
@@ -291,7 +259,6 @@ class RoleApprovedCopy extends BaseModel {
     public static function delete($id) {
         $roleCopy = RoleApprovedCopy::loadById($id);
         $roleCopy->deleteAllAbilities();
-        $roleCopy->deleteAllIntrigueTypes();
         $roleCopy->deleteAllRoleFunctions();
         parent::delete($id);
     }

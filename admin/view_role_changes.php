@@ -218,20 +218,6 @@ del {
 				<?php echoDiff($oldRoleCopy->DarkSecretIntrigueIdeas, $role->DarkSecretIntrigueIdeas); ?>
 			</tr>
 			
-			<?php if (IntrigueType::isInUse($current_larp)) {
-			    $newIntrigues = commaStringFromArrayObject($role->getIntrigueTypes());
-			    $oldIntrigues = commaStringFromArrayObject($oldRoleCopy->getIntrigueTypes());
-			    ?>
-			<tr>
-				<td valign="top" class="header">Intrigtyper</td>
-				<?php echoDiff($oldIntrigues, $newIntrigues); ?>
-			</tr>
-			<?php } ?>
-			
-			<tr>
-				<td valign="top" class="header">Intrigidéer</td>
-				<?php echoDiff($oldRoleCopy->IntrigueSuggestions, $role->IntrigueSuggestions); ?>
-			</tr>
 			<tr>
 				<td valign="top" class="header">Saker karaktären inte vill spela på</td>
 				<?php echoDiff($oldRoleCopy->NotAcceptableIntrigues, $role->NotAcceptableIntrigues); ?>

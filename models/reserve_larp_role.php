@@ -6,6 +6,7 @@ class Reserve_LARP_Role extends BaseModel{
     public $LARPId;
     public $RoleId;
     public $IsMainRole = 0;
+    public $IntrigueIdeas;
     
     public static $orderListBy = 'RoleId';
     
@@ -15,6 +16,7 @@ class Reserve_LARP_Role extends BaseModel{
         if (isset($post['LARPId'])) $larp_role->LARPId = $post['LARPId'];
         if (isset($post['RoleId'])) $larp_role->RoleId = $post['RoleId'];
         if (isset($post['IsMainRole'])) $larp_role->IsMainRole = $post['IsMainRole'];
+        if (isset($post['IntrigueIdeas'])) $larp_role->IntrigueIdeas = $post['IntrigueIdeas'];
         return $larp_role;
     }
     
@@ -56,9 +58,9 @@ class Reserve_LARP_Role extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_reserve_larp_role SET IsMainRole=? WHERE LARPId=? AND RoleId=?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_reserve_larp_role SET IsMainRole=?, IntrigueIdeas=?  WHERE LARPId=? AND RoleId=?;");
         
-        if (!$stmt->execute(array($this->IsMainRole, $this->LARPId, $this->RoleId))) {
+        if (!$stmt->execute(array($this->IsMainRole, $this->IntrigueIdeas, $this->LARPId, $this->RoleId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -69,9 +71,9 @@ class Reserve_LARP_Role extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_reserve_larp_role (LARPId, RoleId, IsMainRole) VALUES (?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_reserve_larp_role (LARPId, RoleId, IsMainRole, IntrigueIdeas) VALUES (?,?,?,?);");
         
-        if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->IsMainRole))) {
+        if (!$stmt->execute(array($this->LARPId, $this->RoleId, $this->IsMainRole, $this->IntrigueIdeas))) {
                 $this->connect()->rollBack();
                 $stmt = null;
                 header("location: ../participant/index.php?error=stmtfailed");
@@ -91,17 +93,74 @@ class Reserve_LARP_Role extends BaseModel{
     }
     
     
-    public static function deleteByIds($larpId, $roleId) {
-        $connection = static::connectStatic();
-        $stmt = $connection->prepare("DELETE FROM ".
-            "regsys_reserve_larp_role WHERE LARPId = ? AND RoleId = ?;");
-        if (!$stmt->execute(array($larpId, $roleId))) {
+    
+    # Hämta intrigtyperna
+    public function getIntrigueTypes(){
+        return IntrigueType::getIntrigeTypesForReserveRole($this->Id);
+    }
+    
+    public function getSelectedIntrigueTypeIds() {
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  regsys_intriguetype_reserve_role WHERE ReserveLarpRoleId = ? ORDER BY IntrigueTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['IntrigueTypeId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    
+    
+    public function saveAllIntrigueTypes($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_reserve_role (IntrigueTypeId, ReserveLarpRoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    
+    public function deleteAllIntrigueTypes() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_reserve_role WHERE ReserveLarpRoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
         }
         $stmt = null;
     }
+    
+    
+    public static function delete($id)
+    {
+        $larp_role = static::loadById($id);
+        
+        $larp_role->deleteAllIntrigueTypes();
+        
+        parent::delete($id);
+    }
+    
     
     
 }

@@ -103,7 +103,7 @@ th {
         		            }
         		            if (IntrigueType::isInUse($current_larp)) {
                 		        echo "<td>";
-                		        echo commaStringFromArrayObject($role->getIntrigueTypes());
+                		        echo commaStringFromArrayObject($larp_role->getIntrigueTypes());
                 		        echo "</td>\n";
         		            }
         		            if (Wealth::isInUse($current_larp)) {
@@ -276,7 +276,7 @@ th {
         		            }
         		            if (IntrigueType::isInUse($current_larp)) {
         		                echo "<td>";
-        		                echo commaStringFromArrayObject($role->getIntrigueTypes());
+        		                echo commaStringFromArrayObject($larp_role->getIntrigueTypes());
         		                echo "</td>\n";
         		            }
         		            if (Wealth::isInUse($current_larp)) {

@@ -72,7 +72,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $role->DescriptionForOthers = LoremIpsum::getText(strlen($role->DescriptionForOthers));
         $role->Name = RandomName::getName();
         $role->OrganizerNotes = "";
-        $role->IntrigueSuggestions = LoremIpsum::getText(strlen($role->IntrigueSuggestions));
         $role->OtherInformation = "";
         $role->PreviousLarps = LoremIpsum::getText(strlen($role->PreviousLarps));
         $role->update();
@@ -149,15 +148,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         if (!empty($prop->ImageId)) {
             $prop->ImageId = $firstImageId;
             $prop->update();
-        }
-    }
-    
-    echo "NPC (bara ta bort bilder)<br>";
-    $npcs = NPC::all();
-    foreach($npcs as $npc) {
-        if (!empty($npc->ImageId)) {
-            $npc->ImageId = $firstImageId;
-            $npc->update();
         }
     }
     
