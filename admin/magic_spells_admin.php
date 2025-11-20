@@ -38,7 +38,7 @@ include 'magic_navigation.php';
                 echo "<td>" . Magic_Spell::TYPES[$spell->Type] . "</td>\n";
                 
                 echo "<td>" . "<a href='magic_spell_form.php?operation=update&Id=" . $spell->Id . "'><i class='fa-solid fa-pen'></i></td>\n";
-                echo "<td>" . "<a href='magic_spell_form.php?operation=delete&Id=" . $spell->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
+                echo "<td>" . "<a href='magic_spells_admin.php?operation=delete&Id=" . $spell->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
             }
             echo "</table>";
