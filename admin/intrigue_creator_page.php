@@ -58,7 +58,8 @@ th {
                 echo "</td>\n";
 
                 echo "<td>";
-                echo $character->IntrigueSuggestions;
+                $larp_role = LARP_Role::loadByIds($character->Id, $current_larp->Id);
+                echo $larp_role->IntrigueIdeas;
                 echo "</td>\n";
 
                 echo "<td>";

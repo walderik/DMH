@@ -10,8 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $roles = $person->getRolesAtLarp($current_larp);
         foreach ($roles as $role)  {
             if (in_array($role->Id, $RoleIds)) {
-                if ($role->isMain($current_larp)) continue; //Ta aldrig bort huvudkaraktärens anmälan
-                LARP_Role::deleteByIds($current_larp->Id, $role->Id);
+                $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+                if ($larp_role->IsMainRole) continue; //Ta aldrig bort huvudkaraktärens anmälan
+                LARP_Role::delete($larp_role->Id);
              }
         }
         header("Location: ../view_person.php?id=$PersonId");

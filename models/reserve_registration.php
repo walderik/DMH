@@ -275,7 +275,11 @@ class Reserve_Registration extends BaseModel{
             $larp_role->RoleId = $reserve_larp_role->RoleId;
             $larp_role->PersonId = $this->PersonId;
             $larp_role->IsMainRole = $reserve_larp_role->IsMainRole;
+            $larp_role->IntrigueIdeas = $reserve_larp_role->IntrigueIdeas;
             $larp_role->create();
+            
+            $intriguetypes = $reserve_larp_role->getSelectedIntrigueTypeIds();
+            $larp_role->saveAllIntrigueTypes($intriguetypes);
         }
 
         //Skicka anmälan mail
@@ -285,7 +289,7 @@ class Reserve_Registration extends BaseModel{
         $this->deleteAllOfficialTypes();
         Reserve_Registration::delete($this->Id);
         foreach($reserve_larp_roles as $reserve_larp_role) {
-            Reserve_LARP_Role::deleteByIds($reserve_larp_role->LARPId, $reserve_larp_role->RoleId);
+            Reserve_LARP_Role::delete($reserve_larp_role->Id);
         }
     }
 
@@ -295,7 +299,7 @@ class Reserve_Registration extends BaseModel{
 
         $reserve_larp_roles = Reserve_LARP_Role::getReserveRolesForPerson($this->LARPId, $this->PersonId);
         foreach($reserve_larp_roles as $reserve_larp_role) {
-            Reserve_LARP_Role::deleteByIds($reserve_larp_role->LARPId, $reserve_larp_role->RoleId);
+            Reserve_LARP_Role::delete($reserve_larp_role->Id);
         }
 
         $person = Person::loadById($this->PersonId);

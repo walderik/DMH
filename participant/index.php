@@ -496,6 +496,7 @@ function openTab(evt, tabName) {
                 echo $role->getViewLink();
                 if (sizeof($roles) > 1 && $role->isMain($current_larp)) echo " (Huvudkaraktär)";
                 echo "<br>";
+                //echo "<a href='view_role_registration.php?id=$role->Id'>Visa anmälan</a><br>";
                 if ($role->isApproved()) echo "Karaktären är godkänd";
                 else echo showParticipantStatusIcon(false, "$role->Name är inte godkänd");
                 echo "<br><br>";

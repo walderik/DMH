@@ -265,11 +265,11 @@ include 'navigation.php';
 
 			<?php if (IntrigueType::isInUse($current_larp)) {?>
     			<tr class="intrigue"><td valign="top" class="header">Intrigtyper</td>
-    			<td><?php IntrigueType::selectionDropdownRole($current_larp, true, false, $role->getSelectedIntrigueTypeIds());?></td></tr>
+    			<td><?php IntrigueType::selectionDropdownRole($current_larp, true, false, $larp_role->getSelectedIntrigueTypeIds());?></td></tr>
 			<?php }?>
 			
 			<tr class="intrigue"><td valign="top" class="header">Intrigidéer</td>
-			<td><textarea id="IntrigueSuggestions" name="IntrigueSuggestions" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($role->IntrigueSuggestions); ?></textarea></td></tr>
+			<td><textarea id="IntrigueIdeas" name="IntrigueIdeas" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($larp_role->IntrigueIdeas); ?></textarea></td></tr>
 
 			<tr class="intrigue"><td valign="top" class="header">Saker karaktären inte vill spela på</td>
 			<td><input type="text" id="NotAcceptableIntrigues" name="NotAcceptableIntrigues" value="<?php echo htmlspecialchars($role->NotAcceptableIntrigues); ?>"  size="100" maxlength="250"></td></tr>

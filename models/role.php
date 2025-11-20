@@ -120,7 +120,7 @@ class Role extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_role SET Name=?, Profession=?, Description=?,
                               DescriptionForGroup=?, DescriptionForOthers=?,
                               PreviousLarps=?, ReasonForBeingInSlowRiver=?, ReligionId=?, Religion=?, BeliefId=?, DarkSecret=?,
-                              DarkSecretIntrigueIdeas=?, IntrigueSuggestions=?, NotAcceptableIntrigues=?, OtherInformation=?,
+                              DarkSecretIntrigueIdeas=?, NotAcceptableIntrigues=?, OtherInformation=?,
                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, RoleFunctionComment=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
                               NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=?, 
@@ -129,7 +129,7 @@ class Role extends BaseModel{
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers, $this->PreviousLarps, 
             $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
-            $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
+            $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId, 
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,  
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
             $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
@@ -146,23 +146,31 @@ class Role extends BaseModel{
     public function create() { 
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_role (Name, Profession, Description, 
-                                                            DescriptionForGroup, DescriptionForOthers, PreviousLarps,
-                                                            ReasonForBeingInSlowRiver, ReligionId, Religion, BeliefId, DarkSecret, DarkSecretIntrigueIdeas,
-                                                            IntrigueSuggestions, NotAcceptableIntrigues, OtherInformation, PersonId,
-                                                            GroupId, WealthId, PlaceOfResidenceId, RaceId,  
-                                                            RoleFunctionComment, Birthplace, CharactersWithRelations, CampaignId, ImageId, 
-                                    IsDead, OrganizerNotes, NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, 
-                                    AbilityComment, IsApproved, ApprovedByPersonId, ApprovedDate, CreatorPersonId, UserMayEdit) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?);");
+                                    DescriptionForGroup, DescriptionForOthers, PreviousLarps,
+                                    ReasonForBeingInSlowRiver, ReligionId, Religion, 
+                                    BeliefId, DarkSecret, DarkSecretIntrigueIdeas,
+                                    NotAcceptableIntrigues, OtherInformation, PersonId,
+                                    GroupId, WealthId, PlaceOfResidenceId, 
+                                    RaceId, RoleFunctionComment, Birthplace, 
+                                    CharactersWithRelations, CampaignId, ImageId, 
+                                    IsDead, OrganizerNotes, NoIntrigue, 
+                                    LarperTypeId, TypeOfLarperComment, RaceComment, 
+                                    AbilityComment, IsApproved, ApprovedByPersonId, 
+                                    ApprovedDate, CreatorPersonId, UserMayEdit) 
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
-            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
-            $this->IntrigueSuggestions, $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
-            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId, 
-            $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
-            $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
-            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, $this->CreatorPersonId, $this->UserMayEdit
+            $this->ReasonForBeingInSlowRiver, $this->ReligionId, $this->Religion, 
+            $this->BeliefId, $this->DarkSecret, $this->DarkSecretIntrigueIdeas,
+            $this->NotAcceptableIntrigues, $this->OtherInformation, $this->PersonId,
+            $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, 
+            $this->RaceId, $this->RoleFunctionComment, $this->Birthplace, 
+            $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
+            $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, 
+            $this->LarperTypeId, $this->TypeOfLarperComment, $this->RaceComment, 
+            $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, 
+            $this->ApprovedDate, $this->CreatorPersonId, $this->UserMayEdit
         ))) {
                 $this->connect()->rollBack();
                 $stmt = null;
@@ -343,7 +351,7 @@ class Role extends BaseModel{
     # Hämta de karaktärer en person har anmält till ett lajv
     public static function getRegistredRolesForPerson(Person $person, LARP $larp) {
         if (is_null($person) || is_null($larp)) return Array();
-        $sql = "SELECT * FROM regsys_role, regsys_larp_role WHERE ".
+        $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE ".
         "regsys_role.PersonId = ? AND ".
         "regsys_role.Id=regsys_larp_role.RoleId AND ".
         "regsys_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
@@ -653,70 +661,18 @@ class Role extends BaseModel{
         $titledeeds = Titledeed::getAllForRole($this);
         if (!empty($titledeeds)) return true;
         
-        $intrigtyper = commaStringFromArrayObject($this->getIntrigueTypes());
-        return (str_contains($intrigtyper, 'Handel'));
+        $larp_role=LARP_Role::loadByIds($this->Id, $larp->Id);
+        if (!empty($larp_role)) {
+            $intrigtyper = commaStringFromArrayObject($larp_role->getIntrigueTypes());
+            return (str_contains($intrigtyper, 'Handel'));
+        }
+        return false;
     }
     
     public function lastLarp() {
         return LARP::lastLarpRole($this);
     }
     
-    # Hämta intrigtyperna
-    public function getIntrigueTypes(){
-        return IntrigueType::getIntrigeTypesForRole($this->Id);
-    }
-    
-    
-    
-    
-    public function getSelectedIntrigueTypeIds() {
-        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  regsys_intriguetype_role WHERE RoleId = ? ORDER BY IntrigueTypeId;");
-        
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = $row['IntrigueTypeId'];
-        }
-        $stmt = null;
-        
-        return $resultArray;
-    }
-    
-    public function saveAllIntrigueTypes($idArr) {
-        if (!isset($idArr)) {
-            return;
-        }
-        foreach($idArr as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_role (IntrigueTypeId, RoleId) VALUES (?,?);");
-            if (!$stmt->execute(array($Id, $this->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-        }
-        $stmt = null;
-    }
-    
-    public function deleteAllIntrigueTypes() {
-        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_role WHERE RoleId = ?;");
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        $stmt = null;
-    }
     
     # Hämta intrigtyperna
     public function getAbilities(){
@@ -1014,7 +970,6 @@ class Role extends BaseModel{
         $role = static::loadById($id);
         
         $role->deleteAllAbilities();
-        $role->deleteAllIntrigueTypes();
         $role->deleteAllRoleFunctions();
         $role->deleteAllSubdivisionMembership();
         
@@ -1029,11 +984,10 @@ class Role extends BaseModel{
     public static function getAllWithTypeValues($larpId, $typeName, $valueIds) {
         $larp = LARP::loadById($larpId);
         
-        $roles_at_larp_SQL = "SELECT RoleId FROM regsys_larp_role, regsys_registration, regsys_role WHERE regsys_larp_role.LarpId=? AND ".
+        $roles_at_larp_SQL = "SELECT regsys_larp_role.RoleId FROM regsys_larp_role, regsys_registration WHERE regsys_larp_role.LarpId=? AND ".
             "regsys_registration.NotComing = 0 AND ".
             "regsys_larp_role.LarpId = regsys_registration.LarpId AND ".
-            "regsys_larp_role.RoleId = regsys_role.Id AND ".
-            "regsys_role.PersonId = regsys_registration.PersonId";
+            "regsys_larp_role.PersonId = regsys_registration.PersonId";
         
         
         $placeholders = rtrim(str_repeat('?,', count($valueIds)), ',');
@@ -1049,7 +1003,9 @@ class Role extends BaseModel{
                 $sql = "SELECT * FROM regsys_role WHERE LarperTypeId IN ($placeholders) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "IntrigueType":
-                $sql = "SELECT * FROM regsys_role WHERE Id IN (SELECT RoleId FROM regsys_intriguetype_role WHERE IntrigueTypeId IN ($placeholders)) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
+                $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+                    "(SELECT regsys_larp_role.RoleId FROM regsys_intriguetype_role, regsys_larp_role WHERE IntrigueTypeId IN ($placeholders) AND regsys_intriguetype_role.LarpRoleId = regsys_larp_role.Id) AND ".
+                    "Id IN ($roles_at_larp_SQL) ORDER BY Name";
                 break;
             case "Race":
                 $sql = "SELECT * FROM regsys_role WHERE RaceId IN ($placeholders) AND Id IN ($roles_at_larp_SQL) ORDER BY Name";
@@ -1131,5 +1087,70 @@ class Role extends BaseModel{
         });
         return $intrigues;
     }
+    
+    
+    /************ Ta bort *************/
+    # Hämta intrigtyperna
+    public function getIntrigueTypes(){
+        echo "Gammal funktion";
+        return IntrigueType::getIntrigeTypesForRole($this->Id);
+    }
+    
+    
+    
+    
+    public function getSelectedIntrigueTypeIds() {
+        echo "Gammal funktion";
+        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  regsys_intriguetype_role WHERE RoleId = ? ORDER BY IntrigueTypeId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['IntrigueTypeId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function saveAllIntrigueTypes($idArr) {
+        echo "Gammal funktion";
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_role (IntrigueTypeId, RoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllIntrigueTypes() {
+        echo "Gammal funktion";
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_role WHERE RoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    
     
 }

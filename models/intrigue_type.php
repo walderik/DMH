@@ -60,20 +60,20 @@ class IntrigueType extends SelectionData{
     
     
 
-    public static function getIntrigeTypesForRole($roleId) {
-        if (is_null($roleId)) return array();
+    public static function getIntrigeTypesForRole($larproleId) {
+        if (is_null($larproleId)) return array();
         $sql = "SELECT * from regsys_intriguetype WHERE Id IN ".
             "(SELECT IntrigueTypeId FROM regsys_intriguetype_role WHERE ".
-            "RoleId = ?) ORDER BY SortOrder;";
-        return static::getSeveralObjectsqQuery($sql, array($roleId));
+            "LarpRoleId = ?) ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($larproleId));
     }
 
-    public static function getIntrigeTypesForApprovedRoleCopy($roleCopyId) {
-        if (is_null($roleCopyId)) return array();
+    public static function getIntrigeTypesForReserveRole($reservelarproleId) {
+        if (is_null($reservelarproleId)) return array();
         $sql = "SELECT * from regsys_intriguetype WHERE Id IN ".
-            "(SELECT IntrigueTypeId FROM regsys_intriguetype_role_approved_copy WHERE ".
-            "RoleId = ?) ORDER BY SortOrder;";
-        return static::getSeveralObjectsqQuery($sql, array($roleCopyId));
+            "(SELECT IntrigueTypeId FROM regsys_intriguetype_reserve_role WHERE ".
+            "ReserveLarpRoleId = ?) ORDER BY SortOrder;";
+        return static::getSeveralObjectsqQuery($sql, array($reservelarproleId));
     }
     
     public static function getIntrigueTypesForIntrigue($intrigueId) {

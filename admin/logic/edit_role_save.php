@@ -20,10 +20,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role->update();
     }
     
-    $role->deleteAllIntrigueTypes();
-    if (isset($_POST['IntrigueTypeId']))
-        $role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
-
+    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+    if (isset($larp_role)) {
+        $larp_role->deleteAllIntrigueTypes();
+        if (isset($_POST['IntrigueTypeId'])) {
+            $larp_role->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
+        }
+        $larp_role->IntrigueIdeas = $_POST['IntrigueIdeas'];
+        $larp_role->update();
+    }
+    
         
     $role->deleteAllAbilities();
     if (isset($_POST['AbilityId'])) {

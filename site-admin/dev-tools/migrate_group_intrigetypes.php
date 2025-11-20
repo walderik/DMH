@@ -24,10 +24,6 @@ function migrateGruopIntrigueTypes(Group $group) {
     $larp_groups = getAllRegistrations($group);
     
     $intrigueTypeIds = $group->getSelectedIntrigueTypeIds();
-    $intrigueTypeIds = array();
-    
-
-    
     print_r($intrigueTypeIds);
     echo "<br><br>";
     $group->deleteAllIntrigueTypes();

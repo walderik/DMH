@@ -318,21 +318,22 @@ include 'navigation.php';
 		   <?php } ?>
 			
 			
-			
-			<?php if ($isPc) { ?>	
-				<?php if (IntrigueType::isInUse($current_larp)) {?>
-				<div class='itemcontainer'>
-               	<div class='itemname'>Intrigtyper</div>
-    			<?php echo commaStringFromArrayObject($role->getIntrigueTypes());?>		   
-				</div>
-				<?php }?>
-
-
-		   <div class='itemcontainer'>
-           <div class='itemname'>Intrigidéer</div>
-		   <?php echo nl2br(htmlspecialchars($role->IntrigueSuggestions));?>
-		   </div>
-		   <?php } ?>
+			<?php if (!empty($larp_role)) {?>
+    			<?php if ($isPc) { ?>	
+    				<?php if (IntrigueType::isInUse($current_larp)) {?>
+    				<div class='itemcontainer'>
+                   	<div class='itemname'>Intrigtyper</div>
+        			<?php echo commaStringFromArrayObject($larp_role->getIntrigueTypes());?>		   
+    				</div>
+    				<?php }?>
+    
+    
+    		   <div class='itemcontainer'>
+               <div class='itemname'>Intrigidéer</div>
+    		   <?php echo nl2br(htmlspecialchars($larp_role->IntrigueIdeas));?>
+    		   </div>
+    		   <?php } ?>
+		   <?php }?>
 
 		   <?php if ($isPc ||  !empty($role->NotAcceptableIntrigues)) { ?>
 		   <div class='itemcontainer'>
