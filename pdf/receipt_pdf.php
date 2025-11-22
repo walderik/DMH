@@ -15,7 +15,7 @@ class Receipt_PDF extends FPDF {
     function Header()
     {
         global $root, $current_larp;
-        $omlogo = $root . '/images/'.$current_larp->getCampaign()->Abbreviation.'_logo_vit.jpg';
+        $omlogo = $root . 'images/'.$this->remove_swedish_chars($current_larp->getCampaign()->Abbreviation).'_logo_vit.jpg';
         $this->Image($omlogo, 10, 10, -200);
     }
     
@@ -43,6 +43,21 @@ class Receipt_PDF extends FPDF {
         // Print centered page number
         //$this->Cell(0, 10, encode_utf_to_iso('Genererad av Omnes Mundi för Berghems Vänner'), 0, 0, 'C');
     }
+    
+    function remove_swedish_chars($text) {
+        $tmp = str_replace("Ö","O",$text);
+        $tmp = str_replace("ö","o",$tmp);
+        $tmp = str_replace("Ä","A",$tmp);
+        $tmp = str_replace("ä","a",$tmp);
+        $tmp = str_replace("Å","A",$tmp);
+        $tmp = str_replace("å","a",$tmp);
+        
+        
+        
+        
+        return $tmp;
+    }
+    
     
     function SetText(string $headline, $matter, $who, $specification, $amount, $date, $larp) {
         $left = 11;
