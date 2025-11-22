@@ -1089,68 +1089,6 @@ class Role extends BaseModel{
     }
     
     
-    /************ Ta bort *************/
-    # Hämta intrigtyperna
-    public function getIntrigueTypes(){
-        echo "Gammal funktion";
-        return IntrigueType::getIntrigeTypesForRole($this->Id);
-    }
-    
-    
-    
-    
-    public function getSelectedIntrigueTypeIds() {
-        echo "Gammal funktion";
-        $stmt = $this->connect()->prepare("SELECT IntrigueTypeId FROM  regsys_intriguetype_role WHERE RoleId = ? ORDER BY IntrigueTypeId;");
-        
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../index.php?error=stmtfailed");
-            exit();
-        }
-        
-        if ($stmt->rowCount() == 0) {
-            $stmt = null;
-            return array();
-        }
-        
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $resultArray = array();
-        foreach ($rows as $row) {
-            $resultArray[] = $row['IntrigueTypeId'];
-        }
-        $stmt = null;
-        
-        return $resultArray;
-    }
-    
-    public function saveAllIntrigueTypes($idArr) {
-        echo "Gammal funktion";
-        if (!isset($idArr)) {
-            return;
-        }
-        foreach($idArr as $Id) {
-            $stmt = $this->connect()->prepare("INSERT INTO regsys_intriguetype_role (IntrigueTypeId, RoleId) VALUES (?,?);");
-            if (!$stmt->execute(array($Id, $this->Id))) {
-                $stmt = null;
-                header("location: ../participant/index.php?error=stmtfailed");
-                exit();
-            }
-        }
-        $stmt = null;
-    }
-    
-    public function deleteAllIntrigueTypes() {
-        echo "Gammal funktion";
-        $stmt = $this->connect()->prepare("DELETE FROM regsys_intriguetype_role WHERE RoleId = ?;");
-        if (!$stmt->execute(array($this->Id))) {
-            $stmt = null;
-            header("location: ../participant/index.php?error=stmtfailed");
-            exit();
-        }
-        $stmt = null;
-    }
-    
     
     
 }
