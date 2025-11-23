@@ -791,6 +791,9 @@ function openTab(evt, tabName) {
            echo "<div class='itemselector'>";
            echo "<div class='header'>";
            
+         #  i style='color:red' class='fa-solid fa-bullhorn'></i>
+           echo "DATE $current_person->AdvertismentsCheckedAt WAS<br/>";
+           print_r(Advertisment::larpsLatest($current_larp));
            echo "<i class='fa-solid fa-bullhorn'></i> Annonser";
           // echo "<font style='color:red'><i class='fa-solid fa-bullhorn'></i></font>";
            help_icon("Annonser från deltagare till deltagare.");
@@ -819,8 +822,8 @@ function openTab(evt, tabName) {
                echo "</table></div>\n";
                
            }
-           echo "<div class='center'><a href='advertisment_form.php'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-bullhorn'></i> &nbsp;Skapa en annons</button></a></div>";
            
+           echo "<div class='center'><a href='advertisment_form.php'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-bullhorn'></i> &nbsp;Skapa en annons</button></a></div>";
            
            echo "</div>";
            echo "</div>";

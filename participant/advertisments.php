@@ -1,16 +1,17 @@
 <?php
 include_once 'header.php';
-
-
-
 include 'navigation.php';
 
 $advetismentTypes = AdvertismentType::allActive($current_larp);
+$now = new Datetime();
+$current_person->AdvertismentsCheckedAt = date_format($now,"Y-m-d H:i:s");
+$current_person->AdvertismentsCheckedAt = NULL;
+$current_person->update();
 ?>
 	<div class='itemselector'>
 	<div class="header">
 		<i class="fa-solid fa-bullhorn"></i> Annonser
-	</div>
+	</div><br />
     <div class='itemcontainer'>Deltagarnas annonser inför lajvet.</br>Kontakta arrangörerna om du saknar en typ av annons som du vill lägga in.</div>
     <div class='itemcontainer'><a href='advertisment_form.php'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-bullhorn'></i> &nbsp;Skapa en annons</button></a></div>
     
