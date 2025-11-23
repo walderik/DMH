@@ -5,7 +5,6 @@ include 'navigation.php';
 $advetismentTypes = AdvertismentType::allActive($current_larp);
 $now = new Datetime();
 $current_person->AdvertismentsCheckedAt = date_format($now,"Y-m-d H:i:s");
-$current_person->AdvertismentsCheckedAt = NULL;
 $current_person->update();
 ?>
 	<div class='itemselector'>
@@ -45,9 +44,6 @@ $current_person->update();
         
         
     }
-    
-    
-    
     
     ?>
     

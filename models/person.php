@@ -1038,4 +1038,5 @@ class Person extends BaseModel{
         $this->update();
         BerghemMailer::send_user_changed($this, $user);
     }
+    
 }
