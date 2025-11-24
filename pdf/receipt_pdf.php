@@ -51,10 +51,6 @@ class Receipt_PDF extends FPDF {
         $tmp = str_replace("ä","a",$tmp);
         $tmp = str_replace("Å","A",$tmp);
         $tmp = str_replace("å","a",$tmp);
-        
-        
-        
-        
         return $tmp;
     }
     
