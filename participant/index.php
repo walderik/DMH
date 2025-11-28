@@ -790,9 +790,9 @@ function openTab(evt, tabName) {
        if (!empty($adtypes)) {
            echo "<div class='itemselector'>";
            echo "<div class='header'>";
-           
-           echo "<i class='fa-solid fa-bullhorn'></i> Annonser";
-          // echo "<font style='color:red'><i class='fa-solid fa-bullhorn'></i></font>";
+           echo "DATE $current_person->AdvertismentsCheckedAt WAS<br/>";
+           advertismentIcon();
+           echo " Annonser";
            help_icon("Annonser från deltagare till deltagare.");
            echo "</div>";
            echo "<div class='itemcontainer'>";
@@ -819,8 +819,8 @@ function openTab(evt, tabName) {
                echo "</table></div>\n";
                
            }
-           echo "<div class='center'><a href='advertisment_form.php'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-bullhorn'></i> &nbsp;Skapa en annons</button></a></div>";
            
+           echo "<div class='center'><a href='advertisment_form.php'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-bullhorn'></i> &nbsp;Skapa en annons</button></a></div>";
            
            echo "</div>";
            echo "</div>";
