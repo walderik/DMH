@@ -27,7 +27,7 @@ class Advertisment extends BaseModel{
 
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         if (isset($arr['PersonId'])) $this->PersonId = $arr['PersonId'];
-        if (isset($arr['LARPid'])) $this->LARPid = $arr['LARPid'];
+        if (isset($arr['LarpId'])) $this->LarpId = $arr['LarpId'];
         if (isset($arr['AdvertismentTypeId'])) $this->AdvertismentTypeId = $arr['AdvertismentTypeId'];
         if (isset($arr['CreatedAt'])) $this->CreatedAt = $arr['CreatedAt'];
     }
@@ -38,7 +38,7 @@ class Advertisment extends BaseModel{
         global $current_larp, $current_person;
         
         $obj = new self();
-        $obj->LARPid = $current_larp->Id;
+        $obj->LarpId = $current_larp->Id;
         $obj->PersonId = $current_person->Id;
         return $obj;
     }
@@ -58,12 +58,16 @@ class Advertisment extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $person_id));
     }
     
+    public static function larpsLatest(Larp $larp) {
+        $sql = "SELECT * FROM regsys_advertisment WHERE LARPid = ? ORDER BY CreatedAt DESC";
+        return static::getOneObjectQuery($sql, array($larp->Id));
+    }
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_advertisment SET ContactInformation=?, Text=? WHERE Id = ?");
+        $stmt = $this->connect()->prepare("UPDATE regsys_advertisment SET ContactInformation=?, Text=?, AdvertismentTypeId=? WHERE Id = ?");
         
-        if (!$stmt->execute(array($this->ContactInformation, $this->Text, $this->Id))) {
+        if (!$stmt->execute(array($this->ContactInformation, $this->Text, $this->AdvertismentTypeId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -75,9 +79,9 @@ class Advertisment extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt =  $connection->prepare("INSERT INTO regsys_advertisment (ContactInformation, Text, PersonId, LARPid, AdvertismentTypeId, CreatedAt) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt =  $connection->prepare("INSERT INTO regsys_advertisment (ContactInformation, Text, PersonId, LarpId, AdvertismentTypeId, CreatedAt) VALUES (?, ?, ?, ?, ?, ?)");
         
-        if (!$stmt->execute(array($this->ContactInformation, $this->Text, $this->PersonId, $this->LARPid, $this->AdvertismentTypeId, date_format(new Datetime(),"Y-m-d H:i:s"),))) {
+        if (!$stmt->execute(array($this->ContactInformation, $this->Text, $this->PersonId, $this->LarpId, $this->AdvertismentTypeId, date_format(new Datetime(),"Y-m-d H:i:s"),))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
