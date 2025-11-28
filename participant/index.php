@@ -790,7 +790,6 @@ function openTab(evt, tabName) {
        if (!empty($adtypes)) {
            echo "<div class='itemselector'>";
            echo "<div class='header'>";
-           echo "DATE $current_person->AdvertismentsCheckedAt WAS<br/>";
            advertismentIcon();
            echo " Annonser";
            help_icon("Annonser från deltagare till deltagare.");
