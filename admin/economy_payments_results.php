@@ -15,7 +15,7 @@
          $tmpName = $_FILES['csv']['tmp_name'];
          
          // check the file is a csv
-         if($type === 'text/csv'){
+         if($type === 'text/csv' || $type=="application/vnd.ms-excel"){
              if(($handle = fopen($tmpName, 'r')) !== FALSE) {
                  // necessary if a large csv file
                  set_time_limit(0);
@@ -62,7 +62,7 @@
              }
          }
          $match = false;
-         
+
          if ($paymentReference == $message) $match = true;
          if (str_contains($message, $paymentReference." ")) $match = true;
          if (str_contains($message, $paymentReference.",")) $match = true;
@@ -73,7 +73,6 @@
              unset($csv[$key]);
              return $row;
          }
-         
      }
  }
  
@@ -114,8 +113,8 @@ th {
     		      "</tr>\n";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
-    		        if ($registration->hasPayed() || $registration->isNotComing()) continue;
     		        $paymentrow = findPayment($registration->PaymentReference);
+    		        if ($registration->hasPayed() || $registration->isNotComing()) continue;
     		        $amountToPay = $registration->AmountToPay;
     		        echo "<tr>\n";
     		        echo "<td>";
