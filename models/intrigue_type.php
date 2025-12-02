@@ -111,7 +111,7 @@ class IntrigueType extends SelectionData{
         $sql = "select count(regsys_larp_role.RoleId) AS Num, regsys_intriguetype.Name AS Name FROM ".
             "regsys_larp_role, regsys_role, regsys_intriguetype_role, regsys_intriguetype WHERE ".
             "regsys_larp_role.larpId=? AND ".
-            "regsys_larp_role.RoleId = regsys_intriguetype_role.RoleId AND ".
+            "regsys_larp_role.Id = regsys_intriguetype_role.LarpRoleId AND ".
             "regsys_larp_role.RoleId = regsys_role.Id AND ".
             "regsys_role.NoIntrigue = 0 AND ".
             $mainStr .
