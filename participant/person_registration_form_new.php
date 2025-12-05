@@ -23,7 +23,31 @@ else {
         
     }
 
+    $registration = Registration::newWithDefault();
+    $guardianInfo = "";
+    $content = 0;
+    $chooseParticipationDates = array();
+    $officialType = array();
+    $approval = 0;
+    $rules = 0;
     
+    $selectedRoleId = null;
+    $intrigueIdeas = "";
+    $chosenIntrigueTypes = null;
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $registration = Registration::newFromArray($_POST);
+        if (isset($_POST['GuardianInfo'])) $guardianInfo = $_POST['GuardianInfo'];
+        if (isset($_POST['Content'])) $content = 1;
+        if (isset($_POST['ChooseParticipationDates'])) $chooseParticipationDates = $_POST['ChooseParticipationDates'];
+        if (isset($_POST['OfficialTypeId'])) $officialType = $_POST['OfficialTypeId'];
+        if (isset($_POST['approval'])) $approval = 1;
+        if (isset($_POST['Rules'])) $rules = 1;
+        
+        if (isset($_POST['roleId'])) $selectedRoleId = $_POST['roleId'];
+        if (isset($_POST['Intrigideer'])) $intrigueIdeas = $_POST['Intrigideer'];
+        if (isset($_POST['IntrigueType[]'])) $chosenIntrigueTypes = $_POST['IntrigueType[]'];
+    }
     
     $roles = $current_person->getAliveRoles($current_larp);
     
@@ -59,7 +83,7 @@ function printEditableCharacter($selectionArr, $selectedRoleId, $intrigueIdeas, 
         $headline1 = "Huvudkaraktär";
         $description1 = "Vilken karaktär vill du spela mest på lajvet?";
     } else {
-        $headline1 = "Karaktär";
+        $headline1 = "Extra karaktär";
         $description1 = "Vilken karaktär vill du spela på lajvet?";
         
     }
@@ -164,6 +188,23 @@ include 'navigation.php';
 
 </style>
 
+<script language="javascript">
+    function Roles(theButton) {
+        var theForm = theButton.form;
+        if (theButton.name=="Button1") {
+			var requiredFields = document.getElementsByClassName("requiredField");
+    		for (var i = 0; i < requiredFields.length; i++) {
+        		requiredFields[i].required = false; 
+    		}
+        	theForm.onsubmit = "";
+            theForm.action = ""
+        }
+        
+    }
+</script>
+
+
+
 	<div class='itemselector'>
 	<div class="header">
 
@@ -190,7 +231,7 @@ include 'navigation.php';
 	       	<div class='itemname'>Lajvets innehåll <font style="color:red">*</font></div>
 			<?php echo nl2br(linkify(htmlspecialchars($current_larp->ContentDescription))) ?><br>
 
-			<input type="checkbox" id="Content" name="Content" value="Ja" required>
+			<input type="checkbox" id="Content" name="Content" value="Ja" class='requiredField' required <?php if ($content) echo "checked"?>>
   			<label for="Content">Jag är införstådd med vad det är för typ av lajv</label> 
 			</div>
 			
@@ -209,7 +250,7 @@ include 'navigation.php';
     			Skriv in namn ELLER personnummer på den ansvarige. Personnummer anges på formen ÅÅÅÅMMDD-NNNN. Den ansvarige måste redan vara anmäld. Man kan bara ha en ansvarig vuxen.
     			Om den ansvarige inte går att hitta kommer inte din anmälan att kunna godkännas förrän det är löst.
 				<br>
-			<input type="text" id="GuardianInfo" name="GuardianInfo" size="100" maxlength="200" placeholder="Ange namn ELLER personnummer på den som är ansvarig vuxen">
+			<input type="text" id="GuardianInfo" name="GuardianInfo" size="100" maxlength="200" required  class='requiredField' placeholder="Ange namn ELLER personnummer på den som är ansvarig vuxen" value="<?php if (isset($_POST['GuardianInfo'])) echo $_POST['GuardianInfo']; ?>">
             </div>
 		    
 		    <?php 
@@ -221,7 +262,7 @@ include 'navigation.php';
 			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
     			<div class='itemcontainer'>
     	       	<div class='itemname'><label for="TypesOfFoodId">Viken typ av mat vill du äta?</label> <font style="color:red">*</font></div>
-    			<?php TypeOfFood::selectionDropdown($current_larp, false, true); ?>
+    			<?php TypeOfFood::selectionDropdown($current_larp, false, true, $registration->TypeOfFoodId); ?>
     			</div>
 			<?php } ?>
 			
@@ -232,7 +273,9 @@ include 'navigation.php';
 			    echo "<div class='itemcontainer'>";
 			    echo "<div class='itemname'><label for='FoodChoice'>Vilket matalternativ väljer du?</label>&nbsp;<font style='color:red'>*</font></div>";
 			    foreach ($paymentInformation->FoodDescription as $i => $description) {
-			        echo "<input type='radio' id='FoodChoice_$description' name='FoodChoice' value='$description' required>";
+			        echo "<input type='radio' id='FoodChoice_$description' name='FoodChoice' value='$description' required class='requiredField'";
+			        if ($registration->FoodChoice == $description) echo " checked ";
+			        echo ">";
 			        echo "<label for='FoodChoice_$description'>$description, ".$paymentInformation->FoodCost[$i]." SEK</label><br>";
 			    }
 			    echo "</div>";
@@ -272,7 +315,7 @@ include 'navigation.php';
     			<div class='itemcontainer'>
     	       	<div class='itemname'><label for="HousingRequest">Boende</label> <font style="color:red">*</font></div>
 				Hur vill du helst bo? Vi kan inte garantera plats i hus.<br>
-                <?php HousingRequest::selectionDropdown($current_larp, false,true); ?>
+                <?php HousingRequest::selectionDropdown($current_larp, false,true, $registration->HousingRequestId); ?>
             	</div>
 			<?php } ?>
 			
@@ -284,32 +327,32 @@ include 'navigation.php';
 				Fyller du inte i något blir du placerad där vi tror det blir bra.
 				<br>
 				Om du inte har något, lämna fältet tomt. Du behöver inte heller skriva om du vill bo med din grupp.<br>
-				<input type="text" id="LarpHousingComment" name="LarpHousingComment" value="" size="100" maxlength="200" >
+				<input type="text" id="LarpHousingComment" name="LarpHousingComment" size="100" maxlength="200" value="<?php echo $registration->LarpHousingComment; ?>">
 			</div>
 			
 			
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="TentType">Typ av tält</label></div>
 			Om du har med in-lajv tält. Vilken typ av tält är det och vilken färg har det?<br>
-			<input type="text" id="TentType" name="TentType"  maxlength="200">
+			<input type="text" id="TentType" name="TentType"  maxlength="200" value = "<?php echo $registration->TentType?>">
 			</div>
 
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="TentSize">Storlek på tält</label></div>
 			Om du har med tält. Hur stort är tältet?<br>
-			<input type="text" id="TentSize" name="TentSize"  maxlength="200">
+			<input type="text" id="TentSize" name="TentSize"  maxlength="200" value = "<?php echo $registration->TentSize?>">
 			</div>
 			
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="TentHousing">Vilka ska bo i tältet</label></div>
 			Om du har med tält. Vilka ska bo i det?<br>
-			<textarea id="TentHousing" name="TentHousing" rows="4" cols="100" maxlength="60000"></textarea>
+			<textarea id="TentHousing" name="TentHousing" rows="4" cols="100" maxlength="60000"><?php echo nl2br(htmlspecialchars($registration->TentHousing)) ?></textarea>
 			</div>
 
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="TentPlace">Önskad placering</label></div>
 			Om du har med tält. Var skulle du vilja få slå upp det? Detta är ett önskemål och vi ska försöka ta hänsyn till det, men vi lovar inget.<br>
-			<input type="text" id="TentPlace" name="TentPlace"  maxlength="200">
+			<input type="text" id="TentPlace" name="TentPlace"  maxlength="200" value = "<?php echo $registration->TentPlace?>">
 			</div>
 
 			<hr>
@@ -322,7 +365,7 @@ include 'navigation.php';
 					Om du inte är intresserad kan du lämna fältet tomt.
 	    
 				<br>
-                <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="200">
+                <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="200" value = "<?php echo $registration->NPCDesire?>">
             </div>
 
 			<?php if (OfficialType::isInUse($current_larp)) { ?>
@@ -333,28 +376,21 @@ include 'navigation.php';
                     Säkert finns det också något som du gärna kan hjälpa till med och som vi inte har tänkt på.<br> 
                     Beroende på arbetsbörda återbetalas delar eller hela anmälningsavgifter efter lajvet.
 				<br>
-                <?php OfficialType::selectionDropdown($current_larp, true,false); ?>
+                <?php OfficialType::selectionDropdown($current_larp, true,false, $officialType); ?>
             	</div>
 			<?php } ?>
 			
 			<?php if ($current_larp->NoRoles == 1) {
 			    
 			    echo "<hr>";
-			    printEditableCharacter($registerable_roles, null, "", null, false, false);
+			    printEditableCharacter($registerable_roles, null, "", null, true, false);
 
 			} elseif ($current_larp->NoRoles >= 2) {
 			    echo "<hr>";
-			    $selectedRoleId = null;
-			    $intrigueIdeas = "";
-			    $chosenIntrigueTypes = null;
+
 			    printEditableCharacter($registerable_roles, $selectedRoleId, $intrigueIdeas, $chosenIntrigueTypes, true, true);
 
-			    $selectedName = "Namn Namn";
-			    $intrigueIdeas = "Vill spela.....";
-			    $chosenIntrigueTypes = null;
-			    printNonEditableCharacter($selectedName, $intrigueIdeas, $chosenIntrigueTypes, false);
-			    
-			    echo "<div class='center'><button class='button-18'><i class='fa-solid fa-plus'></i> Lägg till karaktär</button></div>";
+			    echo "<div class='center'><button class='button-18' onclick='Roles(this)' name='Button1'><i class='fa-solid fa-plus' ></i> Lägg till karaktär</button></div>";
 			}
 		?>
 			
@@ -370,7 +406,7 @@ include 'navigation.php';
 			  	att ändra karaktären i samarbete med arrangörerna.
 			  
 			<br>
-			<input type="checkbox" id="approval" name="approval" value="" required>
+			<input type="checkbox" id="approval" name="approval" value="" required  class='requiredField' <?php if ($approval) echo "checked"?>>
   			<label for="approval">Jag förstår</label> 
 			</div>
 			<?php } ?>
@@ -381,7 +417,7 @@ include 'navigation.php';
 			<a href="<?php  echo $current_larp->getCampaign()->Homepage?>" target="_blank">hemsidans regler</a>, har godkänt dem och är införstådd med vad som förväntas av mig som deltagare 
 			på lajvet. Om jag inte har läst reglerna så kryssar jag inte i denna ruta.<br>
 
-			<input type="checkbox" id="Rules" name="Rules" value="Ja" required>
+			<input type="checkbox" id="Rules" name="Rules" value="Ja" required  class='requiredField' <?php if ($rules) echo "checked"?>>
   			<label for="Rules">Jag lovar</label> 
 			</div>
 			
