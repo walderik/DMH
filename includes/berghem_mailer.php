@@ -226,8 +226,8 @@ class BerghemMailer {
         $roles = $person->getRolesAtLarp($larp);
         
        
-        $text  = "Du har nu blivit avanmäld från lajvet $larp->Name<br>\n".
-            "För ev återbetalning av lajvavgiften (om det är aktuellt) behöver vi dina kontouppgifter. Skicka dem till $campaign->Email.<br>\n";
+        $text  = "Du har nu blivit avanmäld från lajvet $larp->Name<br>\n";
+        if ($registration->hasPayed())  $text .= "För ev återbetalning av lajvavgiften (om det är aktuellt) behöver vi dina kontouppgifter. Skicka dem till $campaign->Email.<br>\n";
 
         
         foreach ($roles as $role) {
@@ -238,6 +238,39 @@ class BerghemMailer {
         }
         
         BerghemMailer::send($larp, null, $person->Id, "Hej ".$person->Name, $text, "Avanmälan från $larp->Name", "", BerghemMailer::DaysAutomatic);
+    }
+    
+    public static function send_ununregistration_mail(Registration $registration) {
+        $person = $registration->getPerson();
+        
+        $larp = $registration->getLARP();
+        $campaign = $larp->getCampaign();
+        $roles = $person->getRolesAtLarp($larp);
+        
+        
+        $text  = "Din anmälan till lajvet $larp->Name har öppnats igen.<br>\n";
+        
+        if (!$registration->hasPayed() && $registration->AmountToPay > 0) {
+            $text .= "<br>\n";
+            $text .= "Du ska nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. <br>\n";
+            $text .= "Betalas senast ".$registration->paymentDueDate()."<br>\n";
+            $host = Environment::getHost();
+            if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
+        }
+        if (!$registration->isMember()) {
+            $text .= "<br>\n";
+            
+            $currentYear = date("Y");
+            $larpYear = substr($larp->StartDate, 0, 4);
+            if ($currentYear == $larpYear) {
+                $text .= "Du måste också vara medlem i Berghems vänner. Om du inte redan är medlem kan du bli medlem <b><a href='https://ebas.sverok.se/signups/index/5915' target='_blank'>här</a></b><br>\n";
+            } else {
+                $text .= "Du måste också vara medlem i Berghems vänner $larpYear.</b><br>\n";
+            }
+        }
+       
+        
+        BerghemMailer::send($larp, null, $person->Id, "Hej ".$person->Name, $text, "Öppnad anmälan till $larp->Name", "", BerghemMailer::DaysAutomatic);
     }
     
     public static function send_unregistration_information_mail_to_group(Role $role, Group $group, Larp $larp) {
