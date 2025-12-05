@@ -532,20 +532,21 @@ class BerghemMailer {
         
         $sheets = static::getAllSheets($roles, $larp);
         
-        $npcs = NPC::getReleasedNPCsForPerson($person, $larp);
+        $assignments = NPC_assignment::getReleasedAssignmentForPerson($person, $larp);
         $npcText = "";
         
-        if (!empty($npcs)) {
+        if (!empty($assignments)) {
             $npcText  = "<br>De NPC'er du ska spela är:<br>\n";
             $npcText .= "<br>\n";
-            foreach($npcs as $npc) {
+            foreach($assignments as $assignment) {
+                $npc = $assignment->getRole();
                 $npcText .= "Namn: $npc->Name";
                 $npcText .= "<br>\n";
-                $npcText .= "Beskrivning: $npc->Description";
+                $npcText .= "Beskrivning: ".nl2br(htmlspecialchars($npc->Description));
                 $npcText .= "<br>\n";
-                $npcText .= "Tiden när vi vill att du spelar npc'n: $npc->Time";
+                $npcText .= "Tiden när vi vill att du spelar npc'n: $assignment->Time";
                 $npcText .= "<br>\n";
-                
+                $npcText .= "<br>\n";
             }
         }
         
