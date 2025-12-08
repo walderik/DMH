@@ -75,7 +75,7 @@
          }
      }
  }
- 
+ $already_matched_payment_rows = array();
  
  include 'navigation.php';
 ?>
@@ -114,7 +114,10 @@ th {
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        $paymentrow = findPayment($registration->PaymentReference);
-    		        if ($registration->hasPayed() || $registration->isNotComing()) continue;
+    		        if ($registration->hasPayed() || $registration->isNotComing()) {
+    		            if (!empty($paymentrow)) $already_matched_payment_rows[] = array_merge($paymentrow, array($person->Name, $registration->AmountToPay, $registration->PaymentReference));
+    		            continue;
+    		        }
     		        $amountToPay = $registration->AmountToPay;
     		        echo "<tr>\n";
     		        echo "<td>";
@@ -210,6 +213,41 @@ th {
         
         ?>
         </table>
+        
+        <hr>
+        <details><summary>Betalningar som matchar deltagare som är markerade som betalda</summary>
+        
+
+        <table class="small_data">
+        <?php 
+        if ($file_format == "swish") {
+        
+            foreach($already_matched_payment_rows as $rownum => $row) {
+                echo "<tr>";
+                
+                foreach ($row as $key => $item) {
+                    if (in_array($key, [1,2,3,5,6,7,13])) continue;
+                    echo "<td>".trim($item)."</td>";
+                }
+                
+                echo "</tr>";
+                
+            }
+        } elseif ($file_format == "transaction") {
+            foreach($already_matched_payment_rows as $rownum => $row) {
+                //if (isset($row) && is_array($row) && (count($row) > 9) && str_starts_with($row[9], "Swish")) continue;
+                echo "<tr>";
+                foreach ($row as $key => $item) {
+                    //if (in_array($key, [1,2,3,4,5,7,11])) continue;
+                    echo "<td>".trim($item)."</td>";
+                }
+                echo "</tr>";
+            }
+            
+        }
+        ?>
+        </table>
+        </details>
 	</div>
 </body>
 
