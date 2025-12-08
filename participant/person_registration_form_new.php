@@ -31,9 +31,9 @@ else {
     $approval = 0;
     $rules = 0;
     
-    $selectedRoleId = null;
-    $intrigueIdeas = "";
-    $chosenIntrigueTypes = null;
+    $roleToEdit = 1;
+    $roles = array();
+    
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $registration = Registration::newFromArray($_POST);
@@ -44,9 +44,19 @@ else {
         if (isset($_POST['approval'])) $approval = 1;
         if (isset($_POST['Rules'])) $rules = 1;
         
-        if (isset($_POST['roleId'])) $selectedRoleId = $_POST['roleId'];
-        if (isset($_POST['Intrigideer'])) $intrigueIdeas = $_POST['Intrigideer'];
-        if (isset($_POST['IntrigueType[]'])) $chosenIntrigueTypes = $_POST['IntrigueType[]'];
+        //Läs in rollerna
+        if (isset($_POST['roleToEdit'])) $roleToEdit = $_POST['roleToEdit'];
+        $num = 1;
+        while (isset($_POST['roleId'.$num])) {
+            $roleId = $_POST['roleId'.$num];
+            $intrigueIdeas = "";
+            $chosenIntrigueTypes = array();
+            if (isset($_POST['Intrigideer'.$num])) $intrigueIdeas = $_POST['Intrigideer'.$num];
+            if (isset($_POST['IntrigueType'.$num.'[]'])) $chosenIntrigueTypes = $_POST['IntrigueType'.$num.'[]'];
+            $roles[$num] = array($roleId, $intrigueIdeas, $chosenIntrigueTypes);
+            
+            $num++;
+        }
     }
     
     $roles = $current_person->getAliveRoles($current_larp);
@@ -387,8 +397,12 @@ include 'navigation.php';
 
 			} elseif ($current_larp->NoRoles >= 2) {
 			    echo "<hr>";
-
-			    printEditableCharacter($registerable_roles, $selectedRoleId, $intrigueIdeas, $chosenIntrigueTypes, true, true);
+			    foreach ($roles as $key => $roledata) {
+			        $role = Role::loadById($roledata[0]);
+			        if ($roleToEdit == $key) printEditableCharacter($registerable_roles, $role->Name, $roledata[1], $roledata[2], $key == 0, true);
+			        else printNonEditableCharacter($role->Name, $roledata[1], $roledata[2], $key == 0);
+			    }
+			    //printEditableCharacter($registerable_roles, $selectedRoleId, $intrigueIdeas, $chosenIntrigueTypes, true, true);
 
 			    echo "<div class='center'><button class='button-18' onclick='Roles(this)' name='Button1'><i class='fa-solid fa-plus' ></i> Lägg till karaktär</button></div>";
 			}
