@@ -196,6 +196,11 @@ class LARP_Group extends BaseModel{
         return $resultArray;
     }
     
+    public static function delete($id) {
+        $larp_group = LARP_Group::loadById($id);
+        $larp_group->deleteAllIntrigueTypes();
+        parent::delete($id);
+    }
     
     
 }
