@@ -20,67 +20,12 @@ else {
     if ($current_person->isRegistered($current_larp)) {
         header('Location: index.php?error=already_registered');
         exit;
-        
     }
-    
-    $registration = Registration::newWithDefault();
-    $guardianInfo = "";
-    $content = 0;
-    $chooseParticipationDates = array();
-    $officialType = array();
-    $approval = 0;
-    $rules = 0;
-    
-    $roleToEdit = 1;
-    $roledatas = array();
-    
-    $numberOfRoles = 1;
-    
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $registration = Registration::newFromArray($_POST);
-        if (isset($_POST['GuardianInfo'])) $guardianInfo = $_POST['GuardianInfo'];
-        if (isset($_POST['Content'])) $content = 1;
-        if (isset($_POST['ChooseParticipationDates'])) $chooseParticipationDates = $_POST['ChooseParticipationDates'];
-        if (isset($_POST['OfficialTypeId'])) $officialType = $_POST['OfficialTypeId'];
-        if (isset($_POST['approval'])) $approval = 1;
-        if (isset($_POST['Rules'])) $rules = 1;
-        
-        //Läs in rollerna
-        if (isset($_POST['roleToEdit'])) $roleToEdit = $_POST['roleToEdit'];
-        $num = 1;
-        while (isset($_POST['roleId'.$num])) {
-            $roleId = $_POST['roleId'.$num];
-            $intrigueIdeas = "";
-            $chosenIntrigueTypes = array();
-            if (isset($_POST['IntrigueIdeas'.$num])) $intrigueIdeas = $_POST['IntrigueIdeas'.$num];
-            if (isset($_POST['IntrigueType'.$num.'[]'])) $chosenIntrigueTypes = $_POST['IntrigueType'.$num.'[]'];
-            $roledatas[$num] = array($roleId, $intrigueIdeas, $chosenIntrigueTypes);
-            
-            $num++;
-        }
-        if (!empty($roledatas)) $numberOfRoles=sizeof($roledatas);
-        
-        if (isset($_POST['operation'])) {
-            $operation = $_POST['operation'];
-            if ($operation == "add") {
-                $numberOfRoles++;
-                $roleToEdit = $numberOfRoles;
-                $roledatas[$roleToEdit] = array(null, "", null);
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
     $roles = $current_person->getAliveRoles($current_larp);
     
     if (empty($roles)) {
         header('Location: index.php?error=no_role');
         exit;
-        
     }
     
     //Kolla att minst en karaktär går att anmäla
@@ -97,6 +42,111 @@ else {
         header('Location: index.php?error=too_young_for_larp');
         exit;
     }
+    
+    
+    
+    
+    
+    
+    $registration = Registration::newWithDefault();
+    $guardianInfo = "";
+    $content = 0;
+    $chooseParticipationDates = array();
+    $officialType = array();
+    $approval = 0;
+    $rules = 0;
+    
+    $roleToEdit = 1;
+    $roledatas = array();
+    
+    $numberOfRoles = 1;
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        print_r($_POST);
+        $registration = Registration::newFromArray($_POST);
+        if (isset($_POST['GuardianInfo'])) $guardianInfo = $_POST['GuardianInfo'];
+        if (isset($_POST['Content'])) $content = 1;
+        if (isset($_POST['ChooseParticipationDates'])) $chooseParticipationDates = $_POST['ChooseParticipationDates'];
+        if (isset($_POST['OfficialTypeId'])) $officialType = $_POST['OfficialTypeId'];
+        if (isset($_POST['approval'])) $approval = 1;
+        if (isset($_POST['Rules'])) $rules = 1;
+        
+        //Läs in rollerna
+        if (isset($_POST['roleToEdit'])) $roleToEdit = $_POST['roleToEdit'];
+        $num = 1;
+        while (isset($_POST['roleId'.$num])) {
+            $roleId = $_POST['roleId'.$num];
+            $intrigueIdeas = "";
+            $chosenIntrigueTypes = null;
+            if (isset($_POST['IntrigueIdeas'.$num])) $intrigueIdeas = $_POST['IntrigueIdeas'.$num];
+            if (isset($_POST['IntrigueType'.$num])) $chosenIntrigueTypes = $_POST['IntrigueType'.$num];
+            $roledatas[$num] = array($roleId, $intrigueIdeas, $chosenIntrigueTypes);
+            
+            $num++;
+        }
+        if (isset($_POST['editedRole'])) {
+            $roleId = $_POST['roleId'];
+            if (isset($_POST['IntrigueIdeas'])) $intrigueIdeas = $_POST['IntrigueIdeas'];
+            else $intrigueIdeas = "";
+            if (isset($_POST['IntrigueTypeId'])) $chosenIntrigueTypes = $_POST['IntrigueTypeId'];
+            else $chosenIntrigueTypes  = null;
+            
+            $roledatas[$_POST['editedRole']] = array($roleId, $intrigueIdeas, $chosenIntrigueTypes);
+        }
+        
+        if (!empty($roledatas)) {
+            $numberOfRoles=sizeof($roledatas);
+            $selectableRoles = array();
+            foreach ($registerable_roles as $registerable_role) {
+                $used = false;
+                foreach ($roledatas as $roledata) if ($roledata[0] == $registerable_role->Id) {
+                    echo "skipping $registerable_role->Name<br>";
+                    $used = true;
+                    break;
+                }
+                if (!$used) $selectableRoles[] = $registerable_role;
+            }
+            
+        } else {
+            $selectableRoles = $registerable_roles;
+        }
+        
+        echo "Selecteable roles: <br>";
+        foreach ($selectableRoles as $selrole) {
+            echo "$selrole->Id $selrole->Name<br>";
+        }
+        
+        
+        if (isset($_POST['operation'])) {
+            $operation = $_POST['operation'];
+            echo "operation: $operation<br>";
+            if ($operation == "add") {
+                $numberOfRoles++;
+                $roleToEdit = $numberOfRoles;
+                $roledatas[$roleToEdit] = array(null, "", null);
+            } elseif ($operation == "edit") {
+                $roleToEdit = $_POST['operationParam'];
+            } elseif ($operation == "delete") {
+                $toDelete = $_POST['operationParam'];
+                $newData = array();
+                foreach ($roledatas as $key => $roleData) {
+                    if ($toDelete < $key) $newData[$key] = $roleData;
+                    elseif ($toDelete > $key) $newData[$key-1] = $roleData;
+                }
+                $roledatas = $newData;
+                $roleToEdit = 0;
+           }
+        }
+    }
+    
+    echo "<br>Antal $numberOfRoles<br>";
+    print_r($roledatas);
+    echo "<br>";
+    
+    
+    
+    
+    
 }
 
 $age = $current_person->getAgeAtLarp($current_larp);
@@ -105,6 +155,7 @@ $age = $current_person->getAgeAtLarp($current_larp);
 function printEditableCharacter($selectionArr, $selectedRoleId, $intrigueIdeas, $chosenIntrigueTypes, $number, $moreThanOne) {
     global $current_larp;
     if ($moreThanOne) echo "<div class='character'>";
+    echo "<a name='role".$number."'></a>";
     if ($number == 1 ) {
         if ($moreThanOne) {
             $headline1 = "Huvudkaraktär";
@@ -118,8 +169,10 @@ function printEditableCharacter($selectionArr, $selectedRoleId, $intrigueIdeas, 
         $description1 = "Vilken karaktär vill du spela lite på lajvet alternativt ha som reserv ifall din huvudkaraktär dör?";
         
     }
+    echo "<input type = 'hidden' id='editedRole' name='editedRole' value='$number'>";
+    
     print_participant_question_start(
-        $headline1,
+        $number." ". $headline1,
         $description1,
         true,
         false,
@@ -156,8 +209,9 @@ function printEditableCharacter($selectionArr, $selectedRoleId, $intrigueIdeas, 
 function printNonEditableCharacter($selectedRoleName, $selectedRoleId, $intrigueIdeas, $chosenIntrigueTypes, $number) {
     global $current_larp;
     echo "<div class='character'>";
-    echo "<div class='icons'><i class='fa-solid fa-pen'></i>";
-    if ($number != 1) echo "<i class='fa-solid fa-trash'></i>";
+    echo "<a name='role".$number."'></a>";
+    echo "<div class='icons'><button class='button-18' onclick='Buttons(this)' name='Edit' value='$number'><i class='fa-solid fa-pen'></i></button>";
+    if ($number != 1) echo "<button class='button-18' onclick='Buttons(this)' name='Delete' value='$number'><i class='fa-solid fa-trash'></i></button>";
     echo "</div>";
     if ($number == 1) {
         $headline1 = "Huvudkaraktär";
@@ -166,17 +220,20 @@ function printNonEditableCharacter($selectedRoleName, $selectedRoleId, $intrigue
     }
     
     print_participant_question_start(
-        $headline1,
+        $number." ". $headline1,
         "",
         false,
         false,
         false);
     echo $selectedRoleName;
     print_participant_question_end(false);
-    echo "<input type = 'hidden' id='roleId$number' name=r'roleId$number' value='$selectedRoleId'>";
+    echo "<input type = 'hidden' id='roleId$number' name='roleId$number' value='$selectedRoleId'>";
     
     $selectedIntrigtypeNames = array();
     if (!empty($chosenIntrigueTypes)) {
+        foreach ($chosenIntrigueTypes as $chosenIntrigueType) {
+            echo "<input type = 'hidden' id='IntrigueType".$number."[]' name='IntrigueType".$number."[]' value='$chosenIntrigueType'>";
+        }
         foreach ($chosenIntrigueTypes as $chosenIntrigueType) {
             $selectedIntrigtypeNames[] = IntrigueType::loadById($chosenIntrigueType)->Name;
         }
@@ -191,7 +248,7 @@ function printNonEditableCharacter($selectedRoleName, $selectedRoleId, $intrigue
         echo implode(", ", $selectedIntrigtypeNames);
         print_participant_question_end(false);
     }
-    echo "<input type = 'hidden' id='IntrigueType".$number."[]' name='IntrigueType".$number."[]' value='$chosenIntrigueTypes'>";
+
     
     print_participant_question_start(
         "Intrigideer",
@@ -230,6 +287,7 @@ include 'navigation.php';
 
 <script language="javascript">
     function Buttons(theButton) {
+    alert('buttons '+theButton.name);
         var theForm = theButton.form;
 		var requiredFields = document.getElementsByClassName("requiredField");
 		for (var i = 0; i < requiredFields.length; i++) {
@@ -238,12 +296,44 @@ include 'navigation.php';
     	theForm.onsubmit = "";
         theForm.action = "";
         if (theButton.name=="Add") {
-		    alert('add');
-    		
     		var add = document.createElement("input");
 			add.setAttribute("type", "hidden");
-			add.setAttribute("operation", "add");
-			add.setAttribute("value", "1");
+			add.setAttribute("name", "operation");
+			add.setAttribute("value", "add");
+			document.getElementById("regform").appendChild(add);
+			alert("#role"+theButton.value);
+	        theForm.action = "#role"+theButton.value;
+        } 
+        if (theButton.name=="Edit") {
+        	alert('edit');
+        	alert(theButton.value);
+        	
+    		var add = document.createElement("input");
+			add.setAttribute("type", "hidden");
+			add.setAttribute("name", "operation");
+			add.setAttribute("value", "edit");
+			document.getElementById("regform").appendChild(add);
+    		var param = document.createElement("input");
+			param.setAttribute("type", "hidden");
+			param.setAttribute("name", "operationParam");
+			param.setAttribute("value", theButton.value);
+			document.getElementById("regform").appendChild(param);
+	        theForm.action = "#role"+theButton.value;
+        } 
+        if (theButton.name=="Delete") {
+        	alert('delete ');
+    		var add = document.createElement("input");
+			add.setAttribute("type", "hidden");
+			add.setAttribute("name", "operation");
+			add.setAttribute("value", "delete");
+			document.getElementById("regform").appendChild(add);
+			
+    		var param = document.createElement("input");
+			param.setAttribute("type", "hidden");
+			param.setAttribute("name", "operationParam");
+			param.setAttribute("value", theButton.value);
+			document.getElementById("regform").appendChild(param);
+	        theForm.action = "#role";
         }
         
     }
@@ -258,7 +348,7 @@ include 'navigation.php';
 		Anmälan av <?php echo $current_person->Name;?><br>till <?php echo $current_larp->Name;?>
 	</div>
 
-	<form action="logic/person_registration_form_save.php" method="post"  
+	<form action="logic/person_registration_form_save.php" method="post"  id="regform"
 	   onsubmit="return confirm('Är allt rätt inmatat? Om du fortsätter kommer du inte längre att kunna redigera någon av de anmälda karaktärerna.')">
 		<input type="hidden" id="LARPId" name="LARPId" value="<?php echo $current_larp->Id ?>">
 		<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $current_person->Id ?>">
@@ -357,7 +447,7 @@ include 'navigation.php';
 			<div class='subheader'>Boende</div>			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
     			<div class='itemcontainer'>
-    	       	<div class='itemname'><label for="HousingRequest">Boende</label> <font style="color:red">*</font></div>
+    	       	<div class='itemname'><label for="HousingRequest">Önskat boende</label> <font style="color:red">*</font></div>
 				Hur vill du helst bo? Vi kan inte garantera plats i hus.<br>
                 <?php HousingRequest::selectionDropdown($current_larp, false,true, $registration->HousingRequestId); ?>
             	</div>
@@ -425,23 +515,35 @@ include 'navigation.php';
 			<?php } ?>
 			
 			<?php if ($current_larp->NoRoles == 1) {
-			    echo "<div class='subheader'>Karaktär</div>";
+			    echo "<div class='subheader'>Karaktär</div><a href='role'></a>";
+			    
 
 			    printEditableCharacter($registerable_roles, null, "", null, true, false);
 
 			} elseif ($current_larp->NoRoles >= 2) {
 			    echo "<div class='subheader'>Karaktärer</div>";
 			    if (empty($roledatas)) {
-			        printEditableCharacter($registerable_roles, null, "", null, true, true);
+			        printEditableCharacter($registerable_roles, null, "", null, 1, true);
 			    } else {
 			        foreach ($roledatas as $key => $roledata) {
-    			        $role = Role::loadById($roledata[0]);
-    			        if ($roleToEdit == $key) printEditableCharacter($registerable_roles, $role->Name, $roledata[1], $roledata[2], $key == 1, true);
-    			        else printNonEditableCharacter($role->Name, $role->Id, $roledata[1], $roledata[2], $key == 1);
+			            echo "Key: $key<br>";
+			            print_r($roledata);
+			            echo "<br>";
+			            if (!empty($roledata[0])) {
+    			             $role = Role::loadById($roledata[0]);
+    			             if ($roleToEdit == $key) printEditableCharacter(array_merge(array($role), $selectableRoles), $role->Id, $roledata[1], $roledata[2], $key, true);
+    			             else printNonEditableCharacter($role->Name, $role->Id, $roledata[1], $roledata[2], $key);
+    			             
+			            } else {
+			                if ($roleToEdit == $key) printEditableCharacter($selectableRoles, null, "", null, $key, true);
+			                else printNonEditableCharacter("", null, null, null, $key);
+			                
+			            }
+			            
     			    }
 			    }
 			    if (($numberOfRoles < $current_larp->NoRoles) || ($current_larp->NoRoles == 4)) {
-			        echo "<div class='center'><button class='button-18' onclick='Buttons(this)' name='Add'><i class='fa-solid fa-plus' ></i> Lägg till karaktär</button></div>";
+			        echo "<div class='center'><button class='button-18' onclick='Buttons(this)' name='Add' value=".($numberOfRoles+1)."><i class='fa-solid fa-plus' ></i> Lägg till karaktär</button></div>";
 			    }
 			}
 		?>
