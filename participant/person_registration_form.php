@@ -43,7 +43,7 @@ else {
         exit;
     }
     
-    
+    $selectableRoles = $registerable_roles;
     
     
     
@@ -62,7 +62,6 @@ else {
     $numberOfRoles = 1;
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        print_r($_POST);
         $registration = Registration::newFromArray($_POST);
         if (isset($_POST['GuardianInfo'])) $guardianInfo = $_POST['GuardianInfo'];
         if (isset($_POST['Content'])) $content = 1;
@@ -100,7 +99,6 @@ else {
             foreach ($registerable_roles as $registerable_role) {
                 $used = false;
                 foreach ($roledatas as $roledata) if ($roledata[0] == $registerable_role->Id) {
-                    echo "skipping $registerable_role->Name<br>";
                     $used = true;
                     break;
                 }
@@ -111,15 +109,8 @@ else {
             $selectableRoles = $registerable_roles;
         }
         
-        echo "Selecteable roles: <br>";
-        foreach ($selectableRoles as $selrole) {
-            echo "$selrole->Id $selrole->Name<br>";
-        }
-        
-        
         if (isset($_POST['operation'])) {
             $operation = $_POST['operation'];
-            echo "operation: $operation<br>";
             if ($operation == "add") {
                 $numberOfRoles++;
                 $roleToEdit = $numberOfRoles;
@@ -128,25 +119,14 @@ else {
                 $roleToEdit = $_POST['operationParam'];
             } elseif ($operation == "delete") {
                 $toDelete = $_POST['operationParam'];
-                $newData = array();
-                foreach ($roledatas as $key => $roleData) {
-                    if ($toDelete < $key) $newData[$key] = $roleData;
-                    elseif ($toDelete > $key) $newData[$key-1] = $roleData;
-                }
-                $roledatas = $newData;
+                unset($roledatas[$toDelete]);
+                $roledatas = array_values($roledatas);
+                array_unshift($roledatas, "phoney");
+                unset($roledatas[0]);
                 $roleToEdit = 0;
            }
         }
     }
-    
-    echo "<br>Antal $numberOfRoles<br>";
-    print_r($roledatas);
-    echo "<br>";
-    
-    
-    
-    
-    
 }
 
 $age = $current_person->getAgeAtLarp($current_larp);
@@ -287,7 +267,6 @@ include 'navigation.php';
 
 <script language="javascript">
     function Buttons(theButton) {
-    alert('buttons '+theButton.name);
         var theForm = theButton.form;
 		var requiredFields = document.getElementsByClassName("requiredField");
 		for (var i = 0; i < requiredFields.length; i++) {
@@ -301,13 +280,9 @@ include 'navigation.php';
 			add.setAttribute("name", "operation");
 			add.setAttribute("value", "add");
 			document.getElementById("regform").appendChild(add);
-			alert("#role"+theButton.value);
 	        theForm.action = "#role"+theButton.value;
         } 
         if (theButton.name=="Edit") {
-        	alert('edit');
-        	alert(theButton.value);
-        	
     		var add = document.createElement("input");
 			add.setAttribute("type", "hidden");
 			add.setAttribute("name", "operation");
@@ -321,7 +296,6 @@ include 'navigation.php';
 	        theForm.action = "#role"+theButton.value;
         } 
         if (theButton.name=="Delete") {
-        	alert('delete ');
     		var add = document.createElement("input");
 			add.setAttribute("type", "hidden");
 			add.setAttribute("name", "operation");
@@ -333,7 +307,7 @@ include 'navigation.php';
 			param.setAttribute("name", "operationParam");
 			param.setAttribute("value", theButton.value);
 			document.getElementById("regform").appendChild(param);
-	        theForm.action = "#role";
+	        theForm.action = "#role1";
         }
         
     }
@@ -515,20 +489,15 @@ include 'navigation.php';
 			<?php } ?>
 			
 			<?php if ($current_larp->NoRoles == 1) {
-			    echo "<div class='subheader'>Karaktär</div><a href='role'></a>";
-			    
+			    echo "<div class='subheader'>Karaktär</div>";
+			    printEditableCharacter($selectableRoles, null, "", null, true, false);
 
-			    printEditableCharacter($registerable_roles, null, "", null, true, false);
-
-			} elseif ($current_larp->NoRoles >= 2) {
-			    echo "<div class='subheader'>Karaktärer</div>";
+			} elseif ($current_larp->NoRoles > 1) {
+			    echo "<div class='subheader'>Karaktärer</div><a name='roles'></a>";
 			    if (empty($roledatas)) {
-			        printEditableCharacter($registerable_roles, null, "", null, 1, true);
+			        printEditableCharacter($selectableRoles, null, "", null, 1, true);
 			    } else {
 			        foreach ($roledatas as $key => $roledata) {
-			            echo "Key: $key<br>";
-			            print_r($roledata);
-			            echo "<br>";
 			            if (!empty($roledata[0])) {
     			             $role = Role::loadById($roledata[0]);
     			             if ($roleToEdit == $key) printEditableCharacter(array_merge(array($role), $selectableRoles), $role->Id, $roledata[1], $roledata[2], $key, true);
@@ -542,7 +511,10 @@ include 'navigation.php';
 			            
     			    }
 			    }
-			    if (($numberOfRoles < $current_larp->NoRoles) || ($current_larp->NoRoles == 4)) {
+			    $moreRoles = true;
+			    if (empty($selectableRoles)) $moreRoles = false;
+			    if (isset($operation) && ($operation="add") &&  (sizeof($selectableRoles) == 1)) $moreRoles = false;
+			    if ($moreRoles && (($numberOfRoles < $current_larp->NoRoles) || ($current_larp->NoRoles == 4))) {
 			        echo "<div class='center'><button class='button-18' onclick='Buttons(this)' name='Add' value=".($numberOfRoles+1)."><i class='fa-solid fa-plus' ></i> Lägg till karaktär</button></div>";
 			    }
 			}
