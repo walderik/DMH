@@ -18,7 +18,7 @@ class LARP extends BaseModel{
     public  $EndDate;
     public  $MaxParticipants; 
     public  $LatestRegistrationDate;
-    public  $NoRoles = 1;
+    public  $NoRoles = 4;
     public  $StartTimeLARPTime;
     public  $EndTimeLARPTime;
     public  $DisplayIntrigues = 0;
