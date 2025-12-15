@@ -121,8 +121,11 @@ else {
                 $toDelete = $_POST['operationParam'];
                 unset($roledatas[$toDelete]);
                 $roledatas = array_values($roledatas);
+                
+                //Vi ska räkna index från 1, inte 0.
                 array_unshift($roledatas, "phoney");
                 unset($roledatas[0]);
+                
                 $roleToEdit = 0;
            }
         }
