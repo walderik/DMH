@@ -131,11 +131,18 @@ class Alchemy_Ingredient extends BaseModel{
     
     
     public function mayDelete() {
-        //$sql = "SELECT * FROM regsys_alchemy_essence WHERE OppositeEssenceId=?";
-        //$res = static::getSeveralObjectsqQuery($sql, array($this->Id));
-        //if (!empty($res)) return false;
+        $sql = "SELECT * FROM regsys_alchemy_supplier_ingredient WHERE IngredientId=?";
+        $res = static::getSeveralObjectsqQuery($sql, array($this->Id));
+        if (!empty($res)) return false;
         
-        //TODO lägg på fler kontroller här när det blir fler kopplingar
+        $sql = "SELECT * FROM regsys_alchemy_recipe_ingredient WHERE IngredientId=?";
+        $res = static::getSeveralObjectsqQuery($sql, array($this->Id));
+        if (!empty($res)) return false;
+        
+        $sql = "SELECT * FROM regsys_alchemy_ingredient_essence WHERE IngredientId=?";
+        $res = static::getSeveralObjectsqQuery($sql, array($this->Id));
+        if (!empty($res)) return false;
+        
         return true;
     }
     

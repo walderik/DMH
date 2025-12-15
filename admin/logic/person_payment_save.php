@@ -53,8 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $letter->update();
             }
             BerghemMailer::send_unregistration_mail($registration);
+        }  elseif ($oldNotComing && !$registration->isNotComing()) {  //Av-avbokning
+            $person = $registration->getPerson();
+            BerghemMailer::send_ununregistration_mail($registration);
         }
-
+        
 
         if ($oldAmount != $registration->AmountToPay) BerghemMailer::send_updatedpayment_mail($registration, $current_person->Id);
         

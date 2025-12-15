@@ -420,3 +420,21 @@ function linkify($str) {
     return $str;
 }
 
+# Ikonen som visar annonser
+function advertismentIcon() {
+    global $current_person, $current_larp;
+    
+    # Visas inte alls om det inte finsn annonstyper för lajet
+    if (empty(AdvertismentType::isInUse($current_larp))) return;
+    
+    $latest_ad = Advertisment::larpsLatest($current_larp);
+    if (!empty($latest_ad)) {
+        $created = new DateTime($latest_ad->CreatedAt);
+        $checked = new DateTime($current_person->AdvertismentsCheckedAt);
+        if (is_null($current_person->AdvertismentsCheckedAt) || $created > $checked) {
+            echo  "<a href='advertisments.php'><font style='color:red'><i class='fa-solid fa-bullhorn'></i></font></a>";
+            return;
+        }
+    }
+    echo  "<a href='advertisments.php'><i class='fa-solid fa-bullhorn'></i></a>";
+}

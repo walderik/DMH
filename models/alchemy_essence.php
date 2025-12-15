@@ -97,7 +97,14 @@ class Alchemy_Essence extends BaseModel{
         $res = static::getSeveralObjectsqQuery($sql, array($this->Id));
         if (!empty($res)) return false;
         
-        //TODO lägg på fler kontroller här när det blir fler kopplingar
+        $sql = "SELECT * FROM regsys_alchemy_recipe_essence WHERE EssenceId=?";
+        $res = static::getSeveralObjectsqQuery($sql, array($this->Id));
+        if (!empty($res)) return false;
+
+        $sql = "SELECT * FROM regsys_alchemy_ingredient_essence WHERE EssenceId=?";
+        $res = static::getSeveralObjectsqQuery($sql, array($this->Id));
+        if (!empty($res)) return false;
+        
         return true;
     }
    

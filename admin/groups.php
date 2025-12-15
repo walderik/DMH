@@ -22,6 +22,8 @@ th {
  
      		<?php 
     		$groups = Group::getAllRegistered($current_larp);
+    		$personIdArr = array();
+    		
     		if (empty($groups)) {
     		    echo "Inga anmälda grupper";
     		} else {
@@ -31,7 +33,7 @@ th {
     		        if (!is_null($person)) $personIdArr[] = $person->Id;
     		    }
     		    
-    		    echo contactSeveralEmailIcon('Skicka till gruppledarna', $personIdArr, 'Gruppledare', "Meddelande till alla gruppledarna i $current_larp->Name");
+    		    if (!empty($personIdArr)) echo contactSeveralEmailIcon('Skicka till gruppledarna', $personIdArr, 'Gruppledare', "Meddelande till alla gruppledarna i $current_larp->Name");
     		    
     		    $tableId = "groups";
     		    $colnum=0;
