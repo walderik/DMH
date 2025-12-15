@@ -175,7 +175,7 @@ class IntrigueType extends SelectionData{
         $sql = "select count(LarpGroupId) AS Num FROM regsys_intriguetype_group WHERE IntrigueTypeId=?";
         $exists = static::existsQuery($sql, array($this->Id));
         if ($exists) return false;
-        $sql = "select count(RoleId) AS Num FROM regsys_intriguetype_role WHERE IntrigueTypeId=?";
+        $sql = "select count(LarpRoleId) AS Num FROM regsys_intriguetype_role WHERE IntrigueTypeId=?";
         $exists = static::existsQuery($sql, array($this->Id));
         if ($exists) return false;
         return true;
