@@ -127,7 +127,9 @@ class BerghemMailer {
             $text .= "Din avgift för lajvet är 0 SEK.<br>";
             
         } else {
-            $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. ";
+            $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ";
+            if (!empty($campaign->SwishNumber)) $text .= " eller Swisha till $campaign->SwishNumber ";
+            $text .="ange referens: <b>$registration->PaymentReference</b>. ";
             $text .= "Betalas senast ".$registration->paymentDueDate()."<br>\n";
             $host = Environment::getHost();
             if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
@@ -199,7 +201,9 @@ class BerghemMailer {
             $text .= "Din avgift för lajvet är 0 SEK.<br>";
             
         } else {
-            $text .= "Du ska nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. ";
+            $text .= "För att vara helt anmäld måste du nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ";
+            if (!empty($campaign->SwishNumber)) $text .= " eller Swisha till $campaign->SwishNumber ";
+            $text .="ange referens: <b>$registration->PaymentReference</b>. ";
             $text .= "Betalas senast ".$registration->paymentDueDate()."<br>\n";
             $host = Environment::getHost();
             if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
@@ -252,7 +256,9 @@ class BerghemMailer {
         
         if (!$registration->hasPayed() && $registration->AmountToPay > 0) {
             $text .= "<br>\n";
-            $text .= "Du ska nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ange referens: <b>$registration->PaymentReference</b>. <br>\n";
+            $text .= "Du ska nu betala $registration->AmountToPay SEK till $campaign->Bankaccount ";
+            if (!empty($campaign->SwishNumber)) $text .= " eller Swisha till $campaign->SwishNumber ";
+            $text .="ange referens: <b>$registration->PaymentReference</b>. ";
             $text .= "Betalas senast ".$registration->paymentDueDate()."<br>\n";
             $host = Environment::getHost();
             if (!empty($campaign->SwishNumber)) $text .= "<br><img width='200' src='$host/includes/display_image.php?Swish=1&RegistrationId=$registration->Id&CampaignId=$campaign->Id'/><br>\n";
