@@ -49,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     
+    
     if ($current_larp->isFull() || Reserve_Registration::isInUse($current_larp) || $current_larp->isPastLatestRegistrationDate()) {
         //Sätt på reservlistan
         $reserve_registration = Reserve_Registration::newFromArray($_POST);
@@ -188,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $larp_role->LARPId = $current_larp->Id;
                 $larp_role->PersonId = $role->PersonId;
                 $larp_role->IntrigueIdeas = $roledata[1];
-                if ($key == 0)  $larp_role->IsMainRole = 1;
+                if ($key == 1)  $larp_role->IsMainRole = 1;
                 else $larp_role->IsMainRole = 0;
                 
                 $larp_role->create();
