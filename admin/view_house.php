@@ -10,6 +10,8 @@ include_once 'header.php';
     
     include "navigation.php";
     
+    
+    $larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
     ?>
     
      
@@ -55,8 +57,22 @@ img {
     			</tr>
     			<?php }?>
     			<tr><td></td></tr>
+     			<tr>
+    				<td colspan = '2'><b>Kommentarer för <?php echo $current_larp->Name ?></b> <a href="edit_larp_house.php?id=<?php if (isset($larp_house)) echo $larp_house->Id?>"><i class='fa-solid fa-pen'></i></a>
+    				</td>
+				</tr>
     			<tr>
-    				<td colspan = '2'><b>De som bor i huset under <?php echo $current_larp->Name ?> är:</b><br>
+    				<td>Arrangörens anteckningar<br>(Visas inte för deltagare)</td>
+    				<td><?php if (isset($larp_house)) echo nl2br(htmlspecialchars($larp_house->OrganizerComment)); ?></td>
+    			</tr>
+    			<tr>
+    				<td>Kommentar till deltagare</td>
+    				<td><?php if (isset($larp_house)) echo nl2br(htmlspecialchars($larp_house->PublicComment)); ?></td>
+    			</tr>
+    			
+    			<tr><td></td></tr>
+    			<tr>
+    				<td colspan = '2'><b>Boende under <?php echo $current_larp->Name ?></b><br>
     				<p>
     				<?php 
     				$personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
