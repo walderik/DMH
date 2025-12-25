@@ -16,7 +16,7 @@ function selectionByArray(String $name_in, Array $selectionDatas, ?bool $multipl
     //     https://tutorialdeep.com/knowhow/make-checkbox-field-required-form-html/
     //     https://stackoverflow.com/questions/11787665/making-sure-at-least-one-checkbox-is-checked
     //     Men enklast är nog att göra en kontroll när man sparar formuläret och ger ett felmeddelande om värdet saknas.
-    $option = ($required) ? 'required' : '';
+    $option = ($required) ? "required class='requiredField'" : '';
     $type = ($multiple) ? "checkbox" : "radio";
     
     if (empty($selectionDatas)) {
