@@ -268,7 +268,7 @@ include 'navigation.php';
 		    "DescriptionForGroup",
 		    $role->DescriptionForGroup,
 		    "rows='4' maxlength='15000'",
-		    true,
+		    !$isPc,
 		    false);
 		
 	    $description = "Vad är allmänt känt om karaktären? Beskriv sådant som de flesta vet om eller kan ha hört om karaktären. 

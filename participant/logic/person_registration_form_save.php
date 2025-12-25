@@ -34,18 +34,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $chosenIntrigueTypes = null;
         if (isset($_POST['IntrigueIdeas'.$num])) $intrigueIdeas = $_POST['IntrigueIdeas'.$num];
         if (isset($_POST['IntrigueType'.$num])) $chosenIntrigueTypes = $_POST['IntrigueType'.$num];
-        $roledatas[$num] = array($roleId, $intrigueIdeas, $chosenIntrigueTypes);
+        if ($num == 1) $isMain = 1;
+        else $isMain = 0;
+        $roledatas[$num] = array($roleId, $intrigueIdeas, $chosenIntrigueTypes, $isMain);
         
         $num++;
     }
     if (isset($_POST['editedRole'])) {
+        $num = $_POST['editedRole'];
         $roleId = $_POST['roleId'];
         if (isset($_POST['IntrigueIdeas'])) $intrigueIdeas = $_POST['IntrigueIdeas'];
         else $intrigueIdeas = "";
         if (isset($_POST['IntrigueTypeId'])) $chosenIntrigueTypes = $_POST['IntrigueTypeId'];
         else $chosenIntrigueTypes  = null;
+        if ($num == 1) $isMain = 1;
+        else $isMain = 0;
         
-        $roledatas[$_POST['editedRole']] = array($roleId, $intrigueIdeas, $chosenIntrigueTypes);
+        $roledatas[$_POST['editedRole']] = array($roleId, $intrigueIdeas, $chosenIntrigueTypes, $isMain);
     }
     
     
@@ -101,8 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $larp_role->LARPId = $current_larp->Id;
                 $larp_role->PersonId = $role->PersonId;
                 $larp_role->IntrigueIdeas = $roledata[1];
-                if ($key == 1)  $larp_role->IsMainRole = 1;
-                else $larp_role->IsMainRole = 0;
+                $larp_role->IsMainRole = $roledata[3];
                 
                 $larp_role->create();
                 
@@ -189,9 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $larp_role->LARPId = $current_larp->Id;
                 $larp_role->PersonId = $role->PersonId;
                 $larp_role->IntrigueIdeas = $roledata[1];
-                if ($key == 1)  $larp_role->IsMainRole = 1;
-                else $larp_role->IsMainRole = 0;
-                
+                $larp_role->IsMainRole = $roledata[3];
                 $larp_role->create();
                 
                 $larp_role->saveAllIntrigueTypes($roledata[2]);
