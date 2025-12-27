@@ -64,7 +64,7 @@ include 'navigation.php';
 			<?php } ?>
 
 	   		<div class='itemcontainer'>
-           	<div class='itemname'>NPC önskemål</div>
+           	<div class='itemname'>NPC åtagande</div>
 			<?php echo $registration->NPCDesire;?>
 			</div>
 
