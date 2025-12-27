@@ -75,11 +75,13 @@ th {
     		            }
     		            if (isset($group)) {
     		                echo "<br>  ".$group->getViewLink(); 
-    		                $roles = Role::getAllMainRolesInGroup($group, $current_larp);
-    		                echo "<br>". count($roles) . " deltagare, ";
-    		                $reserves = Role::getAllMainReservesInGroup($group, $current_larp);
-    		                echo count($reserves);
-    		                echo " reserver<br>";
+    		                if ($reserve_role->IsMainRole == 1) {
+        		                $roles = Role::getAllMainRolesInGroup($group, $current_larp);
+        		                echo "<br>". count($roles) . " deltagare, ";
+        		                $reserves = Role::getAllMainReservesInGroup($group, $current_larp);
+        		                echo count($reserves);
+        		                echo " reserver<br>";
+    		                }
     		            }
     		            echo "<br>\n";
     		        }
