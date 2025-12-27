@@ -54,6 +54,10 @@ include 'npc_navigation.php';
 	<div class="content">
 
 		<h1><?php default_value("action");?> NPC uppdrag</h1>
+		
+		Här tilldelar du en NPC till en deltagare på lajvet. Ange vem som skall spela NPC:n, när den skall spelar och vad den skall göra.<br>
+		När deltagaren blir tilldelad ett uppdrag blir den inte automatiskt meddelad om uppdraget. Du kan lugnt redigera och ändra uppdraget tills du är nöjd med texten.<br><br>
+		
 		<form action="logic/npc_form_save.php" method="post">
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>">
     		<input type="hidden" id="RoleId" name="RoleId" value="<?php echo $role->Id; ?>">

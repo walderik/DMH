@@ -17,6 +17,7 @@ include 'npc_navigation.php';
 
           
             <h1>Deltagare som vill spela NPC</h1>
+            De som vid anmälan fyllt i något angående att de kan tänka sig spela NPC på lajvet.<br><br>
             <?php 
             $tableId = "npc_participants";
             $colnum = 0;
@@ -24,8 +25,8 @@ include 'npc_navigation.php';
             echo "<tr>";
             echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>";
             
-            echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Karaktär(er)</th>";
-            echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Önskemål</th>";
+            echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Anmälda karaktärer och ev grupp</th>";
+            echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>NPC Önskemål</th>";
             echo "</tr>";
             
             foreach($persons as $person) {
@@ -33,7 +34,9 @@ include 'npc_navigation.php';
                 $registration = $person->getRegistration($current_larp);
             
                 echo "<td>".$person->getViewLink();
-                if (LarperType::isInUse($current_larp)) echo $person->getMainRole($current_larp)->getLarperType()->Name."<br>";
+                if (LarperType::isInUse($current_larp)) { # Om lavar-typ används
+                    echo " " . $person->getMainRole($current_larp)->getLarperType()->Name . "<br>";
+                }
                 echo "</td>";
 
                 echo "<td>";
@@ -43,8 +46,9 @@ include 'npc_navigation.php';
                     if ($first) $first = false;
                     else echo "<br>";
                     echo $role->getViewLink();
+                    if (sizeof($roles) > 1 &&  $role->isMain($current_larp)) echo " Huvudkaraktär";
                     $group = $role->getGroup();
-                    if (!empty($group)) echo " (".$group->getViewLink().")";
+                    if (!empty($group)) echo "  ( ".$group->getViewLink().", ".$group->getVisibilityText()." )";
                 }
                 echo "</td>";
                 

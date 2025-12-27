@@ -81,7 +81,7 @@ include 'navigation.php';
     		<input type="hidden" id="operation" name="operation" value="<?php default_value('operation'); ?>"> 
     		<input type="hidden" id="Id" name="Id" value="<?php echo $group->Id; ?>">
    			<input type="hidden" id="PersonId" name="PersonId" value="<?php echo $group->PersonId; ?>">
-   			<input type="hidden" id="Visibility" name=""Visibility"" value="<?php echo Group::VISIBILITY_FULL ?>">
+   			<input type="hidden" id="Visibility" name="Visibility" value="<?php echo Group::VISIBILITY_FULL ?>">
 
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="Name">Gruppens namn</label> <font style="color:red">*</font></div>

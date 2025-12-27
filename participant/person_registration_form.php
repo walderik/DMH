@@ -473,7 +473,7 @@ include 'navigation.php';
 					NPC = Non Player Character, en karaktär som styrs helt/delvis av arrangörsgruppen och spelas en kortare stund under lajvet för att skapa scener/händelser.<br>
 					Vi kommer återkomma till de som är intresserade, men skriv gärna en rad om du redan nu har några idéer.<br>
 					<br>
-					Om du inte är intresserad kan du lämna fältet tomt.
+					Om du <i>inte</i> vill spela NPC ska du lämna fältet tomt.
 	    
 				<br>
                 <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="200" value = "<?php echo $registration->NPCDesire?>">

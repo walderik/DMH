@@ -84,7 +84,7 @@ include 'navigation.php';
 
 			<tr><td valign="top" class="header">Andra allergier</td><td><?php echo $person->FoodAllergiesOther;?></td></tr>
 
-			<tr><td valign="top" class="header">NPC önskemål</td><td><?php echo $activeRegistration->NPCDesire;?></td></tr>
+			<tr><td valign="top" class="header">NPC åtagande</td><td><?php echo $activeRegistration->NPCDesire;?></td></tr>
 			<tr>
 				<td valign="top" class="header">Husförvaltare</td>
 				<td><?php 
