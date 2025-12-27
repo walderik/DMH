@@ -112,12 +112,30 @@ function print_house($house) {
         }
     }
     $groupsInHouse = Group::getGroupsInHouse($house, $current_larp);
+    $larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
     
     echo "<div class='house' id='house_$house->Id' ondrop='drop_in_house(event, this)' ondragover='allowDrop(event)'>\n";
     echo "<div class='name'><a href='view_house.php?id=$house->Id'>$house->Name</a> ";
+    
+    echo "<a href='edit_larp_house.php?id=";
+    if (!empty($larp_house)) echo $larp_house->Id;
+    echo "&houseId=$house->Id'><i class='fa-solid fa-pen'></i></a>";
+    
     if ($notComingWarning) echo showStatusIcon(false);
     
     echo "<button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>\n";
+
+
+    if (!empty($larp_house) && !empty($larp_house->OrganizerNotes)) {
+        echo "<div>";
+        //Visa bara första raden
+        $notesArr = explode("\n", $larp_house->OrganizerNotes);
+        echo $notesArr[0];
+
+        
+        echo "</div>";
+    }
+    
     if ($house->isHouse()) {
         echo "<div>Platser: $house->ComfortNumber (komfort), $house->MaxNumber (max)";
         $numInHouse = count($personsInHouse);

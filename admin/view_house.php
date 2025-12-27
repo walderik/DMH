@@ -10,6 +10,8 @@ include_once 'header.php';
     
     include "navigation.php";
     
+    
+    $larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
     ?>
     
      
@@ -55,8 +57,22 @@ img {
     			</tr>
     			<?php }?>
     			<tr><td></td></tr>
+     			<tr>
+    				<td colspan = '2'><b>Kommentarer för <?php echo $current_larp->Name ?></b> <a href="edit_larp_house.php?id=<?php if (isset($larp_house)) echo $larp_house->Id?>&houseId=<?php echo $house->Id?>"><i class='fa-solid fa-pen'></i></a>
+    				</td>
+				</tr>
     			<tr>
-    				<td colspan = '2'><b>De som bor i huset under <?php echo $current_larp->Name ?> är:</b><br>
+    				<td>Arrangörens anteckningar<br>(Visas inte för deltagare)<br>Det som skrivs på första raden kommer visas vid husfördelningen. Håll det gärna kort, 1-2 ord.</td>
+    				<td><?php if (isset($larp_house)) echo nl2br(htmlspecialchars($larp_house->OrganizerNotes)); ?></td>
+    			</tr>
+    			<tr>
+    				<td>Kommentar till deltagare<br>Visas för deltagare som bor i huset, både vid utskick av boendet och inne i Omnes Mundi.</td>
+    				<td><?php if (isset($larp_house)) echo nl2br(htmlspecialchars($larp_house->PublicNotes)); ?></td>
+    			</tr>
+    			
+    			<tr><td></td></tr>
+    			<tr>
+    				<td colspan = '2'><b>Boende under <?php echo $current_larp->Name ?></b><br>
     				<p>
     				<?php 
     				$personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
