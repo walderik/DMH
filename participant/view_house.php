@@ -81,7 +81,19 @@ ul.list {
        <div class='itemname'>Beskrivning</div>
 	   <?php echo nl2br(htmlspecialchars($house->Description)); ?>
 	   </div>
-
+	   
+	   <?php 
+	   $larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
+	   if (!empty($larp_house) && !empty($larp_house->PublicNotes)) {
+	   
+	   
+	   ?>
+	   <div class='itemcontainer'>
+       <div class='itemname'>Särskild kommentar för <?php echo $current_larp->Name?></div>
+	   <?php echo nl2br(htmlspecialchars($larp_house->PublicNotes)); ?>
+	   </div>
+	   <?php } ?>
+		
 		<?php if ($house->IsHouse() && !empty(trim($house->NotesToUsers))) {?>
      	   <div class='itemcontainer'>
            <div class='itemname'>Brev till deltagare som bor i huset</div>

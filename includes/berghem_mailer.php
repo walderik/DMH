@@ -616,6 +616,10 @@ class BerghemMailer {
 		      "Om du vill veta mer om ditt hus kan du titta på <a href='http://www.berghemsvanner.se/husen-i-byn/'>http://www.berghemsvanner.se/husen-i-byn/</a> ".
 		      "eller logga in i Omnes Mundi <a href='$host'>$host</a>.";
 
+            $larp_house = Larp_House::loadByIds($house->Id, $larp->Id);
+            if (!empty($larp_house) && !empty($larp_house->PublicNotes)) {
+                $housetext .= "<br><br><b>Särskild kommentar för $larp->Name</b><br>". $larp_house->PublicNotes;
+            }
             
             $receivers = array();
             $names_in_house = array();
