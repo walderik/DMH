@@ -119,7 +119,7 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Andra allergier</td>
 			<td><textarea id="FoodAllergiesOther" name="FoodAllergiesOther" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->FoodAllergiesOther); ?></textarea></td></tr>
 
-			<tr><td valign="top" class="header">NPC önskemål</td>
+			<tr><td valign="top" class="header">NPC åtagande</td>
 			<td><input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="250" value="<?php echo htmlspecialchars($registration->NPCDesire);?>"></td></tr>
 			
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>

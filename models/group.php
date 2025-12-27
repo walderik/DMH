@@ -508,6 +508,12 @@ class Group extends BaseModel{
 
         return $vgroup;
     }
+    
+    public function getVisibilityText() {
+        if ($this->hasFullVisibility()) return "Fullt synlig grupp";
+        if ($this->hasNotChooseVisibility()) return "Synlig NPC-grupp";
+        if ($this->hasInvisibility()) return "Osynlig NPC-grupp";
+    }
 
     public function getLink() {
         return "view_group.php?id=$this->Id";

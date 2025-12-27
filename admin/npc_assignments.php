@@ -12,6 +12,9 @@ include 'npc_navigation.php';
 
     <div class="content">   
         <h1>NPC uppdrag</h1>
+        Ett uppdrag är när en deltagare skall spela en NPC på lajvet. <br>
+        För att skapa ett Uppdrag, väljer du <a href="npc_overview.php">Alla</a> och sedan vilken NPC som skall ha ett Uppdrag.<br><br>
+        När deltagaren blir tilldelad ett uppdrag blir den inte automatiskt meddelad om uppdraget. Du måste klicka på mail-ikonen bredvid spelarens namn. Då skickas automatiskt ett mail om uppdraget till vald deltagare.<br><br>
 			<?php 
 			
 		    $tableId = "npc_roles";
@@ -42,7 +45,8 @@ include 'npc_navigation.php';
 			    
 			    echo "<td>";
 			    if (empty($assignement)) {
-			        echo "<form action='logic/npc_tobeplayed.php' method='post'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'><input type='submit' value='Sätt att karaktären ska spelas på lajvet'></form>";
+			        echo "<form action='logic/npc_tobeplayed.php' method='post'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'>";
+			        echo "<input type='submit' value='Sätt att karaktären ska spelas på lajvet'></form>";
 			    } elseif ($assignement->isAssigned()) {
 			        $registration = $person->getRegistration($current_larp);
 			        if ($registration->isNotComing()) {
