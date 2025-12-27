@@ -49,7 +49,7 @@ include 'npc_navigation.php';
 			    else {
 			        echo "<form action='logic/approve.php' method='post'>";
 			        echo "<input type='hidden' id='RoleId' name='RoleId' value='$npc->Id'>";
-			        echo "<button class='invisible' type='submit'>".showStatusIcon(false)."</button>";
+			        echo "<button class='invisible' type='submit'>".showStatusIcon(false,NULL,NULL,'Klick')."</button>";
 			        echo "</form>";
 			    }
 			    $group = $npc ->getGroup();
