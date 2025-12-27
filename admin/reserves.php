@@ -28,7 +28,8 @@ th {
 			?>
 		</h1>
         Detta är listan med deltagare som har gjort en anmälan efter att lajvet är fullt. De har fått meddelande om att de står på reservplats. Listan tar inte hänsyn till i vilken ordning de har komit in på den.<br><br>
-        Genom att klicka på "Gör till en anmälan" omvandlas deltagare på reservlistan till en vanlig anmälan. Den får sedan hanteras i vanlig ordning med eventuella godkännanden.
+        Genom att klicka på "Gör till en anmälan" omvandlas deltagare på reservlistan till en vanlig anmälan. Den får sedan hanteras i vanlig ordning med eventuella godkännanden.<br><br>
+        Efter ett gruppnamn visas hur många i gruppen som redan är anmälda till lajet och hur många som står på reservlistan. Antalet i grupper inkluderar bara huvudkaraktärer.
      		<?php 
     		$persons = Person::getAllReserves($current_larp);
     		if (empty($persons)) {
@@ -41,7 +42,8 @@ th {
     		      "<th onclick='sortTable(2, \"$tableId\")'>Ålder<br>på lajvet</th>".
     		      "<th onclick='sortTable(3, \"$tableId\")'>Roller</th>".
     		      "<th onclick='sortTable(4, \"$tableId\")'>Funktionärsönskemål</th>".
-    		      "<th onclick='sortTable(5, \"$tableId\")'>Boendeönskemål</th>";
+    		      "<th onclick='sortTable(5, \"$tableId\")'>NPC-önskemål</th>".
+    		      "<th onclick='sortTable(6, \"$tableId\")'>Boendeönskemål</th>";
     		    echo "<th></th></tr>\n";
     		    foreach ($persons as $person)  {
     		        $reserve_registration = $person->getReserveRegistration($current_larp);
@@ -72,13 +74,20 @@ th {
     		                echo " (Sidokaraktär)";
     		            }
     		            if (isset($group)) {
-    		                echo " - $group->Name";
+    		                echo "<br>  ".$group->getViewLink(); 
+    		                $roles = Role::getAllMainRolesInGroup($group, $current_larp);
+    		                echo "<br>". count($roles) . " deltagare, ";
+    		                $reserves = Role::getAllMainReservesInGroup($group, $current_larp);
+    		                echo count($reserves);
+    		                echo " reserver<br>";
     		            }
     		            echo "<br>\n";
     		        }
     		        echo "</td>\n";
     		        
     		        echo "<td>" .  commaStringFromArrayObject($reserve_registration->getOfficialTypes()) . "</td>\n";
+    		        echo "<td>" .  $reserve_registration->NPCDesire . "</td>\n";
+    		        
     		        echo "<td>" .  $reserve_registration->getHousingRequest()->Name . "</td>\n";
     		        
     		        

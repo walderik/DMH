@@ -470,7 +470,20 @@ class Role extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
     }
     
- 
+    public static function getAllMainReservesInGroup(Group $group, LARP $larp) {
+        if (is_null($group) or is_null($larp)) return Array();
+        $sql = "SELECT * FROM regsys_role WHERE Id IN ".
+            "(SELECT RoleId FROM regsys_reserve_larp_role, regsys_role WHERE ".
+            "regsys_reserve_larp_role.RoleId = regsys_role.Id AND ".
+            "groupId =? AND ".
+            "regsys_reserve_larp_role.larpid = ? AND ".
+            "regsys_reserve_larp_role.IsMainRole=1) ORDER BY Name;";
+        return static::getSeveralObjectsqQuery($sql, array($group->Id, $larp->Id));
+    }
+    
+    
+    
+    
     public static function getAllComingApprovedMainRolesInGroup(Group $group, LARP $larp) {
         if (is_null($group) or is_null($larp)) return Array();
         $sql = "SELECT * FROM regsys_role WHERE Id IN ".
