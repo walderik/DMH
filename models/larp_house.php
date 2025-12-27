@@ -5,8 +5,8 @@ class Larp_House extends BaseModel{
     public $Id;
     public $LARPId;
     public $HouseId;
-    public $OrganizerComment;
-    public $PublicComment;
+    public $OrganizerNotes;
+    public $PublicNotes;
     
     public static $orderListBy = 'HouseId';
     
@@ -15,8 +15,8 @@ class Larp_House extends BaseModel{
         if (isset($post['Id'])) $object->Id = $post['Id'];
         if (isset($post['LARPId'])) $object->LARPId = $post['LARPId'];
         if (isset($post['HouseId'])) $object->HouseId = $post['HouseId'];
-        if (isset($post['OrganizerComment'])) $object->OrganizerComment = $post['OrganizerComment'];
-        if (isset($post['PublicComment'])) $object->PublicComment = $post['PublicComment'];
+        if (isset($post['OrganizerNotes'])) $object->OrganizerNotes = $post['OrganizerNotes'];
+        if (isset($post['PublicNotes'])) $object->PublicNotes = $post['PublicNotes'];
         return $object;
     }
     
@@ -28,9 +28,9 @@ class Larp_House extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_larp_house (LARPId, HouseId, OrganizerComment, PublicComment) VALUES (?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_larp_house (LARPId, HouseId, OrganizerNotes, PublicNotes) VALUES (?,?,?,?);");
         
-        if (!$stmt->execute(array($this->LARPId, $this->HouseId, $this->OrganizerComment, $this->PublicComment))) {
+        if (!$stmt->execute(array($this->LARPId, $this->HouseId, $this->OrganizerNotes, $this->PublicNotes))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -42,9 +42,9 @@ class Larp_House extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_larp_house SET OrganizerComment=?, PublicComment=? WHERE Id=?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp_house SET OrganizerNotes=?, PublicNotes=? WHERE Id=?;");
         
-        if (!$stmt->execute(array($this->OrganizerComment, $this->PublicComment, $this->Id))) {
+        if (!$stmt->execute(array($this->OrganizerNotes, $this->PublicNotes, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
