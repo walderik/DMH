@@ -1027,9 +1027,20 @@ class Person extends BaseModel{
         }
     }
     
-    public function getViewLink() {
-        $vperson = "<a href='view_person.php?id={$this->Id}'>{$this->Name}</a>";
+    public function getViewLink($print_age = true) {
+        Global $current_larp;
         
+        $print_age = (bool)$print_age;
+        
+        $roleNotComing = $this->isNotComing($current_larp);
+        
+        $title = $roleNotComing ? 'Kommer inte på lajvet' : 'Kommer';
+        $vperson = "<a href='view_person.php?id={$this->Id}' title='$title'>{$this->Name}</a>";
+        if ($print_age) {
+            $vperson .= " (".$this->getAgeAtLarp($current_larp)." år)"; 
+        }
+        
+        if ($roleNotComing) return "<s>$vperson</s>  ".showStatusIcon(false, NULL, NULL, $title);
         return $vperson;
     }
     

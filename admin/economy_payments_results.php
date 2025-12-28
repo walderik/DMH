@@ -121,7 +121,7 @@ th {
     		        $amountToPay = $registration->AmountToPay;
     		        echo "<tr>\n";
     		        echo "<td>";
-    		        echo $person->getViewLink();
+    		        echo $person->getViewLink(false);
     		        echo "</td>\n";
     		        echo "<td>";
     		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";

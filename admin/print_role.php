@@ -21,8 +21,7 @@ else $isReserve = false;
 if (!is_null($person) && $person->isNotComing($current_larp)) {
     echo "<tr><td></td><td><strong>Karaktären kommer inte på lajvet</strong></td></tr>";
 }
-?>
-<?php
+
 if ($role->isMysLajvare()) {
     echo "<tr><td></td><td><strong>Bakgrundslajvare</strong></td></tr>";
 }?>
@@ -45,8 +44,7 @@ if ($role->isMysLajvare()) {
 		}
 		elseif ($isRegistered) { 
 		     echo $person->getViewLink()." ";
-		     echo contactEmailIcon($person)." "; 
-		     echo "(".$person->getAgeAtLarp($current_larp)." år), ".$person->getExperience()->Name;
+		     echo contactEmailIcon($person).", ".$person->getExperience()->Name;
 		} 
 		else {
 		    echo $person->Name." ";
