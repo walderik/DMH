@@ -177,24 +177,73 @@ function ja_nej($val) {
 }
 
 
-function showStatusIcon($value, ?string $fix_url = NULL, ?string $unfix_url = NULL, ?string $fix_text = '', ?string $unfix_text = '') {
+function showStatusIcon($value, ?string $fix_url = NULL, ?string $unfix_url = NULL, ?string $fel_text = '', ?string $ok_text = '') {
     if ($value == true or $value == 1) {
         if (isset($unfix_url) && !is_null($unfix_url)) {
-            return "<a href='$unfix_url'><img src='../images/ok-icon.png' alt='OK' title='$unfix_text' width='20' height='20'></a>";
+            return "<a href='$unfix_url'><img src='../images/ok-icon.png' alt='OK' title='$ok_text' width='20' height='20'></a>";
         }
-        else return "<img src='../images/ok-icon.png' alt='OK' title='$unfix_text' width='20' height='20'>";
+        else return "<img src='../images/ok-icon.png' alt='OK' title='$ok_text' width='20' height='20'>";
     }
     elseif ($value == false or $value == 0) {
         if (isset($fix_url) && !is_null($fix_url)) {
-            if (empty($fix_text) || $fix_text === '') $fix_text = 'Klicka för att åtgärda';
-            return "<a href='$fix_url'><img src='../images/alert-icon.png' alt='Varning' title='$fix_text width='20' height='20'></a>";
+            if (empty($fel_text) || $fel_text === '') $fel_text = 'Klicka för att åtgärda';
+            return "<a href='$fix_url'><img src='../images/alert-icon.png' alt='Varning' title='$fel_text' width='20' height='20'></a>";
         }
-        else return "<img src='../images/alert-icon.png' alt='Varning' title='$fix_text' width='20' height='20'>";
+        else return "<img src='../images/alert-icon.png' alt='Varning' title='$fel_text' width='20' height='20'>";
     }
 }
 
-function showWarningIcon() {
-    return '<img src="../images/warning.png" alt="Varning" width="20" height="20">';
+/* Variant av showStatusIcon som använder Post-anrop istället
+ Användning - echo showPostStatusIcon( false, '/fix.php', '/unfix.php', 'Klicka för att åtgärda', 'Ta bort ok',
+     // POST vid FIX
+    [ 'id'     => 123, 'param2' => 'fix' ],
+    // POST vid UNFIX
+    ['id' => 123, 'param2' => 'unfix' ]
+);
+ */
+function showPostStatusIcon($value, ?string $fix_url = null, ?string $unfix_url = null, ?string $fel_text = '', ?string $ok_text = '', ?array $fix_post_data = [], ?array $unfix_post_data = [] ): string {      
+    $value = (bool)$value;
+    
+    // Intern hjälpfunktion
+    $postIcon = function (string $action, string $img, string $alt, string $title, array $post_data): string {
+            $html = '<form action="'.$action.'" method="post" style="display:inline;">';
+            if ($post_data != null) {
+                foreach ($post_data as $name => $value) {
+                    $html .= '<input type="hidden" name="'.$name.'" value="'.htmlspecialchars($value).'">';
+                }
+            }
+            
+            $html .= '
+        <button type="submit" style="background:none;border:none;padding:0;cursor:pointer;">
+            <img src="'.$img.'" alt="'.$alt.'" title="'.htmlspecialchars($title ?? '').'" width="20" height="20">
+        </button>
+    </form>';
+            
+            return $html;
+    };
+    
+    /* ===== OK ===== */
+    if ($value === true) {
+        if (!empty($unfix_url)) {
+            return $postIcon($unfix_url, '../images/ok-icon.png', 'OK', $ok_text ?? '', $unfix_post_data );
+        }
+        
+        return "<img src='../images/ok-icon.png' alt='OK' title='" . htmlspecialchars($ok_text ?? '') . "'  width='20' height='20'>";
+    }
+    
+    /* ===== FEL ===== */
+    if (empty($fel_text)) $fel_text = 'Klicka för att åtgärda';
+    
+    if (!empty($fix_url)) {
+        return $postIcon($fix_url, '../images/alert-icon.png', 'Varning', $fel_text, $fix_post_data );
+    }
+    
+    return "<img src='../images/alert-icon.png' alt='Varning' title='" . htmlspecialchars($fel_text) . "' width='20'  height='20'>";
+}
+
+
+function showWarningIcon(?string $fel_text = '') {
+    return "<img src='../images/warning.png' alt='Varning' title='$fel_text' width='20' height='20'>";
 }
 
 function showQuestionmarkIcon() {
