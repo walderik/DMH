@@ -206,39 +206,29 @@ function showPostStatusIcon($value, ?string $fix_url = null, ?string $unfix_url 
     
     // Intern hjälpfunktion
     $postIcon = function (string $action, string $img, string $alt, string $title, array $post_data): string {
-            $html = '<form action="'.$action.'" method="post" style="display:inline;">';
-            if ($post_data != null) {
-                foreach ($post_data as $name => $value) {
-                    $html .= '<input type="hidden" name="'.$name.'" value="'.htmlspecialchars($value).'">';
-                }
+        $html = "\n<form action='$action' method='post' style='display:inline;'>\n";
+        if ($post_data != null) {
+            foreach ($post_data as $name => $value) {
+                $html .= "<input type='hidden' name='$name' value='".htmlspecialchars($value)."'>\n";
             }
-            
-            $html .= '
-        <button type="submit" style="background:none;border:none;padding:0;cursor:pointer;">
-            <img src="'.$img.'" alt="'.$alt.'" title="'.htmlspecialchars($title ?? '').'" width="20" height="20">
+        }
+        
+        $html .= "<button type='submit' style='background:none;border:none;padding:0;cursor:pointer;'>
+            <img src='$img' alt='$alt' title='".htmlspecialchars($title ?? '')."' width='20' height='20'>
         </button>
-    </form>';
-            
-            return $html;
+    </form>\n";
+        return $html;
     };
     
     /* ===== OK ===== */
-    if ($value === true) {
-        if (!empty($unfix_url)) {
-            return $postIcon($unfix_url, '../images/ok-icon.png', 'OK', $ok_text ?? '', $unfix_post_data );
-        }
-        
-        return "<img src='../images/ok-icon.png' alt='OK' title='" . htmlspecialchars($ok_text ?? '') . "'  width='20' height='20'>";
+    if ($value) {
+        if (!empty($unfix_url)) return $postIcon($unfix_url, '../images/ok-icon.png', 'OK', $ok_text ?? '', $unfix_post_data );
+        return "<img src='../images/ok-icon.png' alt='OK' title='" . htmlspecialchars($ok_text ?? '') . "'  width='20' height='20'>\n";
     }
-    
-    /* ===== FEL ===== */
+
     if (empty($fel_text)) $fel_text = 'Klicka för att åtgärda';
-    
-    if (!empty($fix_url)) {
-        return $postIcon($fix_url, '../images/alert-icon.png', 'Varning', $fel_text, $fix_post_data );
-    }
-    
-    return "<img src='../images/alert-icon.png' alt='Varning' title='" . htmlspecialchars($fel_text) . "' width='20'  height='20'>";
+    if (!empty($fix_url)) return $postIcon($fix_url, '../images/alert-icon.png', 'Varning', $fel_text, $fix_post_data );
+    return "<img src='../images/alert-icon.png' alt='Varning' title='" . htmlspecialchars($fel_text) . "' width='20'  height='20'>\n";
 }
 
 
