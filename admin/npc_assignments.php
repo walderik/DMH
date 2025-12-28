@@ -15,7 +15,8 @@ include 'npc_navigation.php';
         Ett Uppdrag är när en deltagare skall spela en NPC på lajvet. <br>
         För att skapa ett Uppdrag, väljer du <a href="npc_overview.php">Alla</a> och sedan vilken NPC som skall ha ett Uppdrag.<br><br>
         När deltagaren blir tilldelad ett Uppdrag blir den inte automatiskt meddelad om uppdraget. Du måste klicka på mail-ikonen bredvid spelarens namn.<br>
-        Då skickas automatiskt ett mail om Uppdraget till vald deltagare och Uppdraget blir markerat som Släppt.<br><br>
+        Då skickas automatiskt ett mail om Uppdraget till vald deltagare och Uppdraget blir markerat som Släppt.<br>
+        Det innebär också att NPC:n är synlig för deltagaren och deltagaren kommer kunna fylla i "Vad hände" för NPC:n<br>
 			<?php 
 			
 		    $tableId = "npc_roles";
