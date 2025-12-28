@@ -11,10 +11,12 @@ include 'npc_navigation.php';
 <script src="../javascript/table_sort.js"></script>
 
     <div class="content">   
-        <h1>NPC uppdrag</h1>
-        Ett uppdrag är när en deltagare skall spela en NPC på lajvet. <br>
+        <h1>NPC Uppdrag</h1>
+        Ett Uppdrag är när en deltagare skall spela en NPC på lajvet. <br>
         För att skapa ett Uppdrag, väljer du <a href="npc_overview.php">Alla</a> och sedan vilken NPC som skall ha ett Uppdrag.<br><br>
-        När deltagaren blir tilldelad ett uppdrag blir den inte automatiskt meddelad om uppdraget. Du måste klicka på mail-ikonen bredvid spelarens namn. Då skickas automatiskt ett mail om uppdraget till vald deltagare.<br><br>
+        När deltagaren blir tilldelad ett Uppdrag blir den inte automatiskt meddelad om uppdraget. Du måste klicka på mail-ikonen bredvid spelarens namn.<br>
+        Då skickas automatiskt ett mail om Uppdraget till vald deltagare och Uppdraget blir markerat som Släppt.<br>
+        Det innebär också att NPC:n är synlig för deltagaren och deltagaren kommer kunna fylla i "Vad hände" för NPC:n<br>
 			<?php 
 			
 		    $tableId = "npc_roles";
@@ -40,7 +42,7 @@ include 'npc_navigation.php';
 			    echo "<td>".$npc->getViewLink()." ".$npc->getEditLinkPen(true)."</td>";
 			    $group = $npc ->getGroup();
 			    if (!empty($group)) {
-			        echo "<td>".$group->getViewLink()."</td>";
+			        echo "<td>".$group->getViewLink().' '.$group->getVisibilityText()."</td>";
 			    } else echo "<td></td>";
 			    
 			    echo "<td>";
@@ -78,7 +80,7 @@ include 'npc_navigation.php';
 			    
 			    echo "<td>";
 			    if ($assignement->isReleased()) echo showStatusIcon(true);
-			    elseif ($assignement->isAssigned() && !$registration->isNotComing()) {
+			    elseif ($assignement->isAssigned() && !$registration->isNotComing()) { # Släpper också karaktären och skickar mail
     			    echo " <form action='logic/release_npc.php' method='post' style='display:inline-block'><input type='hidden' name='roleId' value='$npc->Id'>\n";
     			    echo " <button class='invisible' type ='submit'>".showStatusIcon(false)."</button>\n";
     			    echo "</form>\n";

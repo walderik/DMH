@@ -7,7 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $group = Group::loadById($groupId);
         if (isset($group)) {
             $group->approve($current_larp, $current_person);
-            header('Location: ../approval.php');
+            $redirect = $_SERVER['HTTP_REFERER'] ?? '../approval.php';  
+            header('Location: ' . $redirect);
             exit;
         }
     } elseif($_POST['RoleId']) {
@@ -15,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = Role::loadById($roleId);
         if (isset($role)) {
             $role->approve($current_larp, $current_person);
-            header('Location: ../approval.php');
+            $redirect = $_SERVER['HTTP_REFERER'] ?? '../approval.php';
+            header('Location: ' . $redirect);
             exit;
             
         }
