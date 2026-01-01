@@ -75,7 +75,7 @@ include 'alchemy_navigation.php';
                 echo "</td>\n";
                 
                 echo "<td>";
-                echo $person->getViewLink()."(".$person->getAgeAtLarp($current_larp)." år)".contactEmailIcon($person);
+                echo $person->getViewLink().contactEmailIcon($person);
                 echo "</td>\n";
                 
                 echo "<td>";
