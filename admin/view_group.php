@@ -66,7 +66,7 @@ function print_role(Role $role, Group $group, $isRegistered) {
             if (!empty($registration->GuardianId)) { 
                 $guardian = $registration->getGuardian();   
                 echo $guardian->getViewLink();
-            } else echo showStatusIcon(false);
+            } else echo showStatusIcon(false, null, null, "Saknar ansvarig vuxen");
             
         }
         
@@ -103,12 +103,12 @@ include 'aktor_navigation.php';
 		  echo "<strong>Godkänd</strong>";
 		  if (!empty($group->ApprovedByPersonId) && !empty($group->ApprovedDate)) {
 		      $approver = Person::loadById($group->ApprovedByPersonId);
-		      echo " av $approver->Name, ".substr($group->ApprovedDate,0, 10); 
+		      echo " av $approver->Name, ".substr($group->ApprovedDate,0, 10)."<br><br>\n"; 
 		  }
 		  $editButton = "Ta bort godkännandet";
 		}
 		else {
-		    echo "<strong>Ej godkänd</strong>";
+		    echo "<strong>Ej godkänd</strong><br>";
 		    $editButton = "Godkänn";
 		}		
 ?>
@@ -135,18 +135,7 @@ include 'aktor_navigation.php';
 		$groupleader = $group->getPerson();
 		
 		if (!is_null($groupleader)) {
-		    $groupleader_registration = $groupleader->getRegistration($current_larp);
-		     if ($isRegistered) {
-			    if (isset($groupleader_registration) && !$groupleader_registration->isNotComing()) {
-					echo $groupleader->getViewLink();
-			    } elseif (!isset($groupleader_registration)) {
-			        $reserveregistration = Reserve_Registration::loadByIds($groupleader->Id, $current_larp->Id);
-    			    if (isset($reserveregistration)) echo "<s>$groupleader->Name</s> (på reservlistan)";
-    			    else echo "<s>$groupleader->Name</s> (inte anmäld)";
-			    } else echo "<s>$groupleader->Name</s> (avbokad)";
-			 } else {
-			    echo $groupleader->Name;
-			}
+		    echo $groupleader->getViewLink();
 			echo contactEmailIcon($groupleader);
 		}
 		?>

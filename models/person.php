@@ -1031,21 +1031,21 @@ class Person extends BaseModel{
         Global $current_larp;
         
         $print_age = (bool)$print_age;
-        
-        $roleNotComing = $this->isNotComing($current_larp);
-        
-        if ($roleNotComing) {
+
+        $registration = Registration::loadByIds($this->Id, $current_larp->Id);
+        if (isset($registration)) {
+            $title =  $registration->isNotComing() ? 'Avbokad' : 'Kommer'; 
+        } 
+        else {
             $reserveregistration = Reserve_Registration::loadByIds($this->Id, $current_larp->Id);
-            $title = (isset($reserveregistration)) ? "På reservlistan" : "Kommer inte på lajvet";
-        } else $title = 'Kommer';
+            $title = (isset($reserveregistration)) ? "På reservlistan" : "Inte anmäld till lajvet";
+        }
 
         $vperson = "<a href='view_person.php?id={$this->Id}' title='$title'>{$this->Name}</a>";
         
-        if ($print_age) {
-            $vperson .= " (".$this->getAgeAtLarp($current_larp)." år)"; 
-        }
+        if ($print_age) $vperson .= " (".$this->getAgeAtLarp($current_larp)." år)"; 
         
-        if ($roleNotComing) return "<s>$vperson</s>  ".showStatusIcon(false, NULL, NULL, $title);
+        if ($title != 'Kommer') return "<s>$vperson</s>  ".showStatusIcon(false, NULL, NULL, $title);
         return $vperson;
     }
     

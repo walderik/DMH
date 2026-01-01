@@ -61,14 +61,7 @@ th {
     		        echo "<td>";
     		        $person = $group->getPerson();
     		        if (!is_null($person)) {
-        		        $registration = $person->getRegistration($current_larp);
-        		        if (isset($registration) && !$registration->isNotComing()) echo $person->getViewLink();
-        		        elseif (!isset($registration)) {
-        		            $reserveregistration = Reserve_Registration::loadByIds($person->Id, $current_larp->Id);
-        		            if (isset($reserveregistration)) echo "<s>$person->Name</s> (på reservlistan)";
-        		            else echo "<s>$person->Name</s> (inte anmäld)";
-        		        }
-        		        else echo "<s>$person->Name</s> (avbokad)";
+        		        echo $person->getViewLink();
         		        echo " " . contactEmailIcon($person);
     		        }
     		        echo "</td>\n";
