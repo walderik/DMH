@@ -143,7 +143,7 @@ include 'navigation.php';
 			<?php 
 			$person = $role->getPerson();
 			if (!is_null($person)) {
-			    echo $person->Name;
+			    echo $person->getViewLink();
 			}
 			else {
 			    echo "NPC";

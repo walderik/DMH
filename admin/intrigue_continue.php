@@ -28,7 +28,7 @@ include 'navigation.php';
 		        
 		        echo "<td>";
 		        $responsiblePerson = $intrigue->getResponsiblePerson();
-		        if (isset($responsiblePerson)) echo $responsiblePerson->Name;
+		        if (isset($responsiblePerson)) echo $responsiblePerson->getViewLink();
 		        echo "</td>";
 		        echo "</tr>\n";
 		    }

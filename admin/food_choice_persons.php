@@ -55,12 +55,12 @@ th {
     		        if (isset($housing)) $housingStr=$housing->Name;
     		        
     		        echo "<tr>\n";
-    		        echo "<td>$person->Name</td>";
-    		        echo "<td>".$person->getAgeAtLarp($current_larp)."</td>";
-                    echo "<td>$housingStr</td>";
-    		        echo "<td>".$registration->getTypeOfFood()->Name."</td>";
-    		        if ($hasFoodChoices) echo "<td>".$registration->FoodChoice."</td>";
-    		        echo "<td>".$allergyStr."</td>";
+    		        echo "<td>".$person->getViewLink(false)."</td>\n";
+    		        echo "<td>".$person->getAgeAtLarp($current_larp)."</td>\n";
+                    echo "<td>$housingStr</td>\n";
+    		        echo "<td>".$registration->getTypeOfFood()->Name."</td>\n";
+    		        if ($hasFoodChoices) echo "<td>".$registration->FoodChoice."</td>\n";
+    		        echo "<td>".$allergyStr."</td>\n";
     		        
  		         echo "</tr>\n";
 		      }

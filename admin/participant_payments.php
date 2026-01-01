@@ -33,13 +33,7 @@ th {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<tr>\n";
     		        echo "<td>";
-    		        if ($registration->isNotComing()) {
-    		            echo "<s>$person->Name</s>";
-    		        } else {
-    		            echo $person->getViewLink();
-    		            echo " ".contactEmailIcon($person);
-    		        }
-    		        
+   		            echo $person->getViewLink(). " ".contactEmailIcon($person);
     		        echo "</td>\n";
     		        
     		        echo "<td>".$registration->PaymentReference .  "</td>\n";

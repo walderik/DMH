@@ -38,61 +38,57 @@ include 'npc_navigation.php';
 			foreach ($npcs as $npc) {
 			    $assignement = NPC_assignment::getAssignment($npc, $current_larp);
 			    $person = $assignement->getPerson();
-			    echo "<tr>";
-			    echo "<td>".$npc->getViewLink()." ".$npc->getEditLinkPen(true)."</td>";
+			    echo "<tr>\n";
+			    echo "<td>".$npc->getViewLink()." ".$npc->getEditLinkPen(true)."</td>\n";
 			    $group = $npc ->getGroup();
 			    if (!empty($group)) {
-			        echo "<td>".$group->getViewLink().' '.$group->getVisibilityText()."</td>";
-			    } else echo "<td></td>";
+			        echo "<td>".$group->getViewLink().' '.$group->getVisibilityText()."</td>\n";
+			    } else echo "<td></td>\n";
 			    
 			    echo "<td>";
 			    if (empty($assignement)) {
-			        echo "<form action='logic/npc_tobeplayed.php' method='post'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'>";
-			        echo "<input type='submit' value='Sätt att karaktären ska spelas på lajvet'></form>";
+			        echo "<form action='logic/npc_tobeplayed.php' method='post'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'>\n";
+			        echo "<input type='submit' value='Sätt att karaktären ska spelas på lajvet'></form>\n";
 			    } elseif ($assignement->isAssigned()) {
 			        $registration = $person->getRegistration($current_larp);
-			        if ($registration->isNotComing()) {
-			            echo "<s>$person->Name</s> ".showStatusIcon(false);
-			        } else echo $person->getViewLink();
-			
+			        echo $person->getViewLink();
 			        echo " <form action='logic/assign_npc.php' method='post' style='display:inline-block'";
 			        if ($assignement->isAssigned() && $assignement->isReleased() && !$registration->isNotComing()) {
  			            echo " onsubmit='return confirm(\"Karaktären är redan skickad till $person->Name. Är du säker på att du ska ta bort uppdraget från hen? Glöm i så fall inte att kommunicera det till $person->Name.\")'";
  			        }
  			        echo "><input type='hidden' name='roleId' value='$npc->Id'>\n";
 			        echo "<input type='hidden' name='PersonId' value='null'>\n";
-			        echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från deltagaren'></i></button>";
+			        echo "<button class='invisible' type='submit'><i class='fa-solid fa-xmark' title='Ta bort från deltagaren'></i></button>\n";
 			        echo "</form>\n";
 			        if (!$registration->isNotComing()) {
     			        echo " <form action='logic/release_npc.php' method='post' style='display:inline-block'><input type='hidden' name='roleId' value='$npc->Id'>\n";
-    			        echo " <button class='invisible' type ='submit'><i class='fa-solid fa-envelope' title=''Skicka NPC:n till deltagaren'></i></button>\n";
+    			        echo " <button class='invisible' type ='submit'><i class='fa-solid fa-envelope' title='Skicka NPC till deltagaren och släpp Uppdraget'></i></button>\n";
     			        echo "</form>\n";
 			        }
 			        
 			    } else {
-			        echo "<form action='logic/assign_npc.php' method='post'><input type='hidden' name='roleId' value=$npc->Id>";
+			        echo "<form action='logic/assign_npc.php' method='post'><input type='hidden' name='roleId' value=$npc->Id>\n";
 			        echo selectionDropDownByArray("PersonId", $persons);
-			        echo "<input type ='submit' value='Tilldela'>";
-			        echo "</form>";
+			        echo "<input type ='submit' value='Tilldela'>\n";
+			        echo "</form>\n";
 			    }
 			    
-			    echo "</td>";
+			    echo "</td>\n";
 			    
-			    echo "<td>";
+			    echo "<td>\n";
 			    if ($assignement->isReleased()) echo showStatusIcon(true);
 			    elseif ($assignement->isAssigned() && !$registration->isNotComing()) { # Släpper också karaktären och skickar mail
-    			    echo " <form action='logic/release_npc.php' method='post' style='display:inline-block'><input type='hidden' name='roleId' value='$npc->Id'>\n";
-    			    echo " <button class='invisible' type ='submit'>".showStatusIcon(false)."</button>\n";
-    			    echo "</form>\n";
+    			    echo showPostStatusIcon(false, 'logic/release_npc.php', null, 'Släpp Upppdraget och skicka NPC som mail till detagaren', null, ['roleId'=>$npc->Id]);   
 			    } else {
 			        echo showStatusIcon(false);
 			    }
 			    echo "</td>";
-			    echo "<td>".nl2br(htmlspecialchars($assignement->Time))."</td>";
-			    echo "<td>".nl2br(htmlspecialchars($assignement->Instructions))."</td>";
+			    echo "<td>".nl2br(htmlspecialchars($assignement->Time))."</td>\n";
+			    echo "<td>".nl2br(htmlspecialchars($assignement->Instructions))."</td>\n";
 			    
 			    echo "<td>";
-			    echo "<form action='npc_form.php' method='POST'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'><input type='hidden' id='operation' name='operation' value='update'><button class='invisible' type='submit'><i class='fa-solid fa-pen' title='Redigera uppdrag'></i></button></form>";
+			    echo "<form action='npc_form.php' method='POST'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'>";
+			    echo "<input type='hidden' id='operation' name='operation' value='update'><button class='invisible' type='submit'><i class='fa-solid fa-pen' title='Redigera uppdrag'></i></button></form>";
 			    
 			    echo "<form action='logic/npc_not_to_be_played.php' method='POST'";
 			    if ($assignement->isAssigned() && $assignement->isReleased() && !$registration->isNotComing()) {

@@ -84,8 +84,7 @@ $multiple=false;
                echo "<table id='$tableId' class='data'>";
                echo "<tr>".
                    "<th></th>".
-                   "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
-                   "<th onclick='sortTableNumbers(". $colnum++ .", \"$tableId\");'>Ålder på lajvet</th>";
+                   "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>";
                echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Grupp</th>".
                    "</tr>";
                
@@ -101,13 +100,13 @@ $multiple=false;
     		            echo "Avgiften är inte satt";
     		        else echo "<input type='$type' id='Person$person->Id' name='PersonId$array' value='$person->Id'>";
     		        echo "</td>";
-    		        echo "<td>$person->Name</td>\n";
-    		        echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>\n";
+    		        echo "<td>". $person->getViewLink() ."</td>\n";
     		        
     		        $role = $person->getMainRole($current_larp);
-    		        $group = $role->getGroup();
+    		        if (!empty(($role))) $group = $role->getGroup();
     		        if (isset($group)) $groupName = $group->Name;
     		        else $groupName = "";
+    		        
     		        echo "<td>" . $groupName . "</td>\n";
     		        
     		        echo "</tr>\n";

@@ -33,8 +33,8 @@ if (isset($message_message) && strlen($message_message)>0) {
 					echo $group->getViewLink();
     		        echo "</td>\n";
     		        echo "<td>";
-    		        if (!is_null($person)) echo $person->Name;
-    		        echo "</td>";
+    		        if (!is_null($person)) echo $person->getViewLink();
+    		        echo "</td>\n";
     		        $larp = $group->lastLarp();
     		        echo "<td>";
     		        if (empty($larp)) {
@@ -44,7 +44,7 @@ if (isset($message_message) && strlen($message_message)>0) {
     		            echo $larp->Name;
     		        }
     		        echo "</td>";
-    		        echo "<td>";
+    		        echo "<td>\n";
     		        echo "<a href='logic/register_group.php?id=$group->Id'>Anmäl</a>";
     		        echo "</td>";
                     echo "</tr>\n";

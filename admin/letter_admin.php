@@ -98,12 +98,7 @@ include 'navigation.php';
                 echo "<td>" . $letter->Font . "</td>\n";
                 echo "<td>";
                 $person = $letter->getPerson();
-                if ($person->isComing($current_larp)) {
-                    echo $person->Name;
-                }
-                else {
-                    echo "<s>$person->Name</s>";
-                }
+                echo $person->getViewLink();
                 echo "</td>\n";
                 echo "<td>" . showStatusIcon($letter->Approved) . "</td>\n";
                 echo "<td>" . nl2br(htmlspecialchars($letter->OrganizerNotes)) . "</td>\n";

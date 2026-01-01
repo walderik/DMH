@@ -24,7 +24,7 @@ include 'navigation.php';
     foreach($foodChoises as $foodChoise) {
         echo "<tr>";
         if ($hasFoodChoices) echo "<td>".$foodChoise[0] . "</td>";
-        echo "<td>" . $foodChoise[1] . "</td><td>" . $foodChoise[2] . " st</td></tr>"; 
+        echo "<td>" . $foodChoise[1] . "</td><td>" . $foodChoise[2] . " st</td></tr>\n"; 
     }
     echo "</table>";
 
@@ -44,15 +44,15 @@ include 'navigation.php';
                 echo "<h3>Enbart $allergy->Name</h3><table class='data'>";
                 echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Övrigt</th><th>Vald mat</th>";
                 if ($hasFoodChoices) echo "<th>Matalternativ</th>";
-                echo "</tr>";
+                echo "</tr>\n";
                 foreach($persons as $person) {
                     $registration=$person->getRegistration($current_larp);
-                    echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person)."</td>";
-                    echo "<td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>".$registration->getTypeOfFood()->Name."</td>";
-                    if ($hasFoodChoices) echo "<td>$registration->FoodChoice</td>";
-                    echo "</tr>";
+                    echo "<tr><td>".$person->getViewLink() ."</td><td>$person->Email ".contactEmailIcon($person)."</td>\n";
+                    echo "<td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>".$registration->getTypeOfFood()->Name."</td>\n";
+                    if ($hasFoodChoices) echo "<td>$registration->FoodChoice</td>\n";
+                    echo "</tr>\n";
                 }
-                echo "</table>";
+                echo "</table>\n";
             }
         }
          
@@ -60,20 +60,20 @@ include 'navigation.php';
         //Multipla allergier
         $persons = Person::getAllWithMultipleAllergies($current_larp);
         if (!empty($persons) && count($persons) > 0) {
-            echo "<h3>Multipla vanliga allergier</h3>";
+            echo "<h3>Multipla vanliga allergier</h3>\n";
             echo "<table class='data'>";
             echo "<tr><th>Namn</th><th>Epost</th><th>Telefon</th><th>Allergier</th><th>Övrigt</th><th>Vald mat</th>";
             if ($hasFoodChoices) echo "<th>Matalternativ</th>";
             echo "</tr>";
             foreach($persons as $person) {
                 $registration=$person->getRegistration($current_larp);
-                echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person)."</td>";
-                echo "<td>$person->PhoneNumber</td><td>" . commaStringFromArrayObject($person->getNormalAllergyTypes()) . "</td>";
-                echo "<td>$person->FoodAllergiesOther</td><td>" . $registration->getTypeOfFood()->Name . "</td>";
-                if ($hasFoodChoices) echo "<td>$registration->FoodChoice</td>";
-                echo "</tr>";
+                echo "<tr><td>".$person->getViewLink() ."</td><td>$person->Email ".contactEmailIcon($person)."</td>\n";
+                echo "<td>$person->PhoneNumber</td><td>" . commaStringFromArrayObject($person->getNormalAllergyTypes()) . "</td>\n";
+                echo "<td>$person->FoodAllergiesOther</td><td>" . $registration->getTypeOfFood()->Name . "</td>\n";
+                if ($hasFoodChoices) echo "<td>$registration->FoodChoice</td>\n";
+                echo "</tr>\n";
             }
-            echo "</table>";
+            echo "</table>\n";
         }
     }
     
@@ -88,12 +88,12 @@ include 'navigation.php';
         echo "</tr>";
         foreach($persons as $person) {
             $registration=$person->getRegistration($current_larp);
-            echo "<tr><td>$person->Name</td><td>$person->Email ".contactEmailIcon($person)."</td>";
-            echo "<td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>" . $registration->getTypeOfFood()->Name . "</td>";
-            if ($hasFoodChoices) echo "<td>$registration->FoodChoice</td>";
-            echo "</tr>";
+            echo "<tr><td>".$person->getViewLink() ."</td><td>$person->Email ".contactEmailIcon($person)."</td>\n";
+            echo "<td>$person->PhoneNumber</td><td>$person->FoodAllergiesOther</td><td>" . $registration->getTypeOfFood()->Name . "</td>\n";
+            if ($hasFoodChoices) echo "<td>$registration->FoodChoice</td>\n";
+            echo "</tr>\n";
         }
-        echo "</table>";
+        echo "</table>\n";
     }
     
     ?>

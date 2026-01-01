@@ -279,7 +279,7 @@ include 'aktor_navigation.php';
 		                $assignment = NPC_assignment::getAssignment($known_role, $current_larp);
 		                if (!empty($assignment)) {
 		                    $person = $assignment->getPerson();
-		                    if (!empty($person)) echo "<div>NPC - Spelas av $person->Name</div>";
+		                    if (!empty($person)) echo "<div>NPC - Spelas av ".$person->getViewLink()."</div>";
 		                    else echo "<div>NPC - Spelare inte tilldelad ännu</div>";
 		                } else {
 		                    echo "NPC - Spelas inte";

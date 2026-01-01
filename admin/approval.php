@@ -83,7 +83,7 @@ include 'aktor_navigation.php';
     		        if (!empty($oldApprovedRole)) echo "Karaktären har tidigare varit godkänd. <a href='view_role_changes.php?id=$role->Id'>Visa ändringar</a><br>";
     		        echo "<br><br>";
     		        if (!is_null($person)) {
-        		        echo "Spelas av ", $person->getViewLink(), ", ".$person->getAgeAtLarp($current_larp)." år ";
+        		        echo "Spelas av ", $person->getViewLink();
         		        echo "<br>\n";
         		        echo "Epost: $person->Email, Telefon: $person->PhoneNumber <br>\n";
     		        } else {

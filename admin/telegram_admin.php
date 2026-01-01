@@ -68,12 +68,7 @@ include 'navigation.php';
                 echo "<td>" . nl2br(htmlspecialchars($telegram->Message)) . "</td>\n";
                 echo "<td>";
                 $person = $telegram->getPerson();
-                if ($person->isComing($current_larp)) {
-                    echo $person->Name;
-                }
-                else {
-                    echo "<s>$person->Name</s>";
-                }
+                echo $person->getViewLink();
                 echo "</td>\n";
                 echo "<td>" . showStatusIcon($telegram->Approved,  "logic/approve_telegram.php?id=$telegram->Id") . "</td>\n";
                 echo "<td>" . nl2br(htmlspecialchars($telegram->OrganizerNotes)) . "</td>\n";

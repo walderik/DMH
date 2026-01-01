@@ -67,14 +67,11 @@ include 'alchemy_navigation.php';
                 $group = $role->getGroup();
                 if (isset($group)) echo $group->getViewLink();
                 echo "</td>";
-                echo "<td>";
-                if ($roleNotComing) echo "<s>";
-                
+                echo "<td>"; 
                 if (!is_null($person)) {
-                    echo $person->getViewLink();
-                    echo "(".$person->getAgeAtLarp($current_larp)." år)".contactEmailIcon($person);
+                    echo $person->getViewLink().contactEmailIcon($person);
                 } else echo "NPC";
-                if ($roleNotComing) echo "</s>";
+              
                 
                 echo "</td>";
                 echo "<td>" . $alchemist->Level . "</td>\n";
@@ -118,8 +115,7 @@ include 'alchemy_navigation.php';
                 if (isset($group)) echo $group->getViewLink();
                 echo "</td>";
                 echo "<td>";
-                echo $person->getViewLink();
-                echo " (".$person->getAgeAtLarp($current_larp)." år)".contactEmailIcon($person);
+                echo $person->getViewLink().contactEmailIcon($person);
                 echo "</td>";
                 echo "<td>" . $alchemist->Level . "</td>\n";
                 echo "<td>" . $alchemist->getAlchemistType() . "</td>\n";

@@ -19,7 +19,6 @@ th {
             <a href="edit_group.php?operation=insert"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a> &nbsp; 
             <a href='group_sheet.php?all_info=true' target='_blank'><i class='fa-solid fa-file-pdf' title='Allt om alla grupper som en stor PDF (tar tid att generera)'></i> Allt om alla</a> &nbsp;
             <a href='group_sheet.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla grupper som det ser ut för deltagarna (tar tid att generera)'></i> Alla grupper som det ser ut för deltagarna</a> &nbsp;
- 
      		<?php 
     		$groups = Group::getAllRegistered($current_larp);
     		$personIdArr = array();
@@ -34,6 +33,7 @@ th {
     		    }
     		    
     		    if (!empty($personIdArr)) echo contactSeveralEmailIcon('Skicka till gruppledarna', $personIdArr, 'Gruppledare', "Meddelande till alla gruppledarna i $current_larp->Name");
+    		    echo "<br><br>";
     		    
     		    $tableId = "groups";
     		    $colnum=0;
@@ -61,14 +61,7 @@ th {
     		        echo "<td>";
     		        $person = $group->getPerson();
     		        if (!is_null($person)) {
-        		        $registration = $person->getRegistration($current_larp);
-        		        if (isset($registration) && !$registration->isNotComing()) echo $person->Name;
-        		        elseif (!isset($registration)) {
-        		            $reserveregistration = Reserve_Registration::loadByIds($person->Id, $current_larp->Id);
-        		            if (isset($reserveregistration)) echo "<s>$person->Name</s> (på reservlistan)";
-        		            else echo "<s>$person->Name</s> (inte anmäld)";
-        		        }
-        		        else echo "<s>$person->Name</s> (avbokad)";
+        		        echo $person->getViewLink();
         		        echo " " . contactEmailIcon($person);
     		        }
     		        echo "</td>\n";

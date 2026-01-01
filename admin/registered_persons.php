@@ -45,12 +45,12 @@ th {
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<tr>\n";
-    		        echo "<td>";
-    		        if ($registration->isNotComing()) {
-    		            echo "<s>$person->Name</s>";
-    		        } else echo $person->getViewLink();
     		        
+    		        echo "<td>";
+                    echo $person->getViewLink(false);
     		        echo "</td>\n";
+    		        
+    		        
     		        if ($registration->isNotComing()) {
     		            echo "<td></td>";
     		        }
@@ -58,11 +58,11 @@ th {
         		        echo "<td>";
         		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
     		        }
+    		        
     		        echo "<td>";
     		        if ($registration->isNotComing()) {
     		            echo "<s>";
     		        }
-    		        
     		        echo $person->Email;
     		        if ($registration->isNotComing()) {
     		            echo "</s>";

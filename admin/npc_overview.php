@@ -14,7 +14,7 @@ include 'npc_navigation.php';
 
 			<?php 
 			echo "NPC'er filtrerade på levande<br><br>\n";
-			echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>\n';
+			echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
 			echo "<br><br>\n";
 			
 		    $tableId = "npc_roles";
@@ -56,10 +56,8 @@ include 'npc_navigation.php';
 			        echo showPostStatusIcon(false, 'npc_form.php', null, 'Skapa NPC-Uppdrag', 'Har uppdrag', ['roleId'=>$npc->Id, 'operation'=>'insert'], null);
 			    } elseif ($assignement->isAssigned()) {
 			        echo showStatusIcon(true)." ";
-			        $person = $assignement->getPerson();
-			        $registration = $person->getRegistration($current_larp);
-			        if ($registration->isNotComing()) echo "<s>".$person->getViewLink()."</s>  ".showStatusIcon(false, NULL, NULL, 'Kommer inte på lajvet');
-			        else echo $person->getViewLink();
+			        $person = $assignement->getPerson();        
+			        echo $person->getViewLink();
 			    } else {
 			        echo "<form action='npc_form.php' method='POST'><input type='hidden' id='roleId' name='roleId' value='$npc->Id'>\n";
 			        echo "<input type='hidden' id='operation' name='operation' value='update'><button class='invisible' type='submit'>".showWarningIcon('Saknar spelare')."</button></form>\n";

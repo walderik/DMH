@@ -75,9 +75,7 @@ function print_individual(Person $person, $group, $house) {
     
     echo "<div class='person' id='$id' draggable='true' ondragstart='drag(event)'>\n";
     echo "  <div class='name' draggable='false'>";
-    echo $registration->isNotComing() ? 
-        "<s>" . $person->getViewLink() . "</s>" 
-        : $person->getViewLink();
+    echo $person->getViewLink();
     echo "\n";
     
     $comment = $person->getFullHousingComment($current_larp);

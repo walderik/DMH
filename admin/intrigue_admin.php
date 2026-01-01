@@ -15,7 +15,7 @@ function print_intrigue(Intrigue $intrigue, $responsiblePerson) {
     echo "<td>" . ja_nej($intrigue->isActive()) . "</td>\n";
     echo "<td>" . ja_nej($intrigue->MainIntrigue) . "</td>\n";
     echo "<td>" . commaStringFromArrayObject($intrigue->getIntriguetypes()) . "</td>\n";
-    if (isset($responsiblePerson)) echo "<td>$responsiblePerson->Name</td>";
+    if (isset($responsiblePerson)) echo "<td>".$responsiblePerson->getViewLink()."</td>";
     else echo "<td></td>";
     
     echo "<td>";
@@ -45,7 +45,7 @@ function print_intrigue(Intrigue $intrigue, $responsiblePerson) {
         }
        $intrigue_array = Intrigue::allByLARP($current_larp);
        if (!empty($intrigue_array)) {
-           echo "<h2>Intrigspår skapade av $current_person->Name</h2>";
+           echo "<h2>Intrigspår skapade av ".$current_person->getViewLink()."</h2>";
            echo "<table class='data'>";
             
             

@@ -35,7 +35,7 @@ include 'navigation.php';
 
 
 	<div class="content">
-		<h1>Hantera betalning för <?php echo $person->Name;?></h1>
+		<h1>Hantera betalning för <?php echo $person->getViewLink();?></h1>
 		<form action="logic/person_payment_save.php" method="post">
     		<input type="hidden" id="RegistrationId" name="RegistrationId" value="<?php echo $registration->Id; ?>">
     		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
@@ -48,7 +48,7 @@ include 'navigation.php';
 		    if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
 		    ?>
 			<tr><td valign="top" class="header">Ansvarig vuxen</td><td>
-			<?php if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name; else echo showStatusIcon(false);?></td></tr>
+			<?php if (!empty($registration->GuardianId)) echo $registration->getGuardian()->getViewLink(); else echo showStatusIcon(false);?></td></tr>
 
 		    
 		    <?php 
