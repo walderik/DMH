@@ -105,7 +105,6 @@ th {
     		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
     		      "<th></th>".
     		      "<th onclick='sortTable(2, \"$tableId\")'>Epost</th>".
-    		      "<th onclick='sortTableNumbers(3, \"$tableId\")'>Ålder<br>på lajvet</th>".
     		      "<th onclick='sortTable(4, \"$tableId\")'>Betalnings-<br>referens</th>".
     		      "<th onclick='sortTable(5, \"$tableId\")'>Belopp</th>".
     		      "<th onclick='sortTable(6, \"$tableId\")' colspan='4'>Från banken</th>".
@@ -121,7 +120,7 @@ th {
     		        $amountToPay = $registration->AmountToPay;
     		        echo "<tr>\n";
     		        echo "<td>";
-    		        echo $person->getViewLink(false);
+    		        echo $person->getViewLink();
     		        echo "</td>\n";
     		        echo "<td>";
     		        echo "<a href='edit_person.php?id=" . $person->Id . "'><i class='fa-solid fa-pen'></i></a></td>\n";
@@ -129,8 +128,6 @@ th {
     		        echo $person->Email;
     		        echo " ".contactEmailIcon($person)."</td>\n";
     		        echo "</td>\n";
-
-		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år ";
     		            
     		        echo "<td>".$registration->PaymentReference .  "</td>\n";
     		        echo "<td>";
