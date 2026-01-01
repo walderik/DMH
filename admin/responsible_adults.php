@@ -50,7 +50,7 @@ th {
 		            
 		            $mainRole = $person->getMainRole($current_larp);
 		            if (!empty($mainRole)) {
-		              echo "<td>". $person->getMainRole($current_larp)->getViewLink() . "</td>\n";
+		                echo "<td>". $mainRole->getViewLink() . "</td>\n";
 		            } else {
 		                echo "<td>Har ingen roll på lajvet</td>\n";
 		            }
