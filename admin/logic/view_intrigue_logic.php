@@ -146,6 +146,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $intriguePdf=Intrigue_Pdf::loadById($_GET['pdfId']);
         $intrigue=$intriguePdf->getIntrigue();
         Intrigue_Pdf::delete($intriguePdf->Id);
+    } elseif (($operation == "delete_rumour")) {
+        Rumour::delete($_GET['rumourId']);
+    } elseif (($operation == "disconnect_rumour")) {
+        $rumour = Rumour::loadById($_GET['rumourId']);
+        $rumour->IntrigueId = null;
+        $rumour->update();
     } elseif (($operation == "delete")) {
         if (isset($intrigue)) Intrigue::delete($intrigue->Id);
         header('Location: ../intrigue_admin.php');

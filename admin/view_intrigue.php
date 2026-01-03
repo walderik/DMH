@@ -739,7 +739,8 @@ foreach ($rumour_array as $rumour) {
     
     echo $rumour->Text;
     echo " <a href='rumour_form.php?operation=update&id=$rumour->Id'><i class='fa-solid fa-pen'></i></a>";
-    echo " <a href='rumour_admin.php?operation=delete&id=$rumour->Id&gotoreferer='true'><i class='fa-solid fa-trash'></i></a>";
+    ///echo " <a href='rumour_admin.php?operation=delete&id=$rumour->Id&gotoreferer='true'><i class='fa-solid fa-trash'></i></a>";
+    echo "<button class='invisible' onclick='showQuestion($rumour->Id)'><i class='fa-solid fa-xmark' title='Ta bort rykte'></i></button>";
     echo "<br>";
     echo $knows_txt."<br><br>";
 }
@@ -797,4 +798,96 @@ foreach ($roleActors as $roleActor) {
 ?>
 
 <script src="../javascript/saveIntrigueText_ajax.js"></script>
+
+
+<div id="dialog" class="overlay" style="display:none;">
+    <div id="rumourId"></div>
+  <div class="dialog">
+    <p>Vill radera ryket eller bara koppla bort det från intrigspåret?</p>
+    <div class="buttons">
+        <button onclick="choose('delete')">Radera</button>
+        <button onclick="choose('så')">Koppla bort</button>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+    function showQuestion(rumourId) {
+        document.getElementById("dialog").style.display = "flex";
+        document.getElementById("rumourId").value = rumourId;
+    }
+
+    function choose(choice) {
+        if (choice === "delete") {
+            let val = document.getElementById("rumourId").value;
+            console.log("Användaren valde SI" + val);
+            window.location.href = "logic/view_intrigue_logic.php?operation=delete_rumoure&id=<?php echo $intrigue->Id;?>&rumourId"+val;
+        } else {
+            let val = document.getElementById("rumourId").value;
+            console.log("Användaren valde SÅ" + val);
+            window.location.href = "logic/view_intrigue_logic.php?operation=disconnect_rumoure&id=<?php echo $intrigue->Id;?>&rumourId"+val;
+        }
+
+        document.getElementById("dialog").style.display = "none";
+    }
+</script>
+
+
+
+<style>
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, sans-serif;
+}
+
+.dialog {
+  background: #f0f0f0;
+  border: 1px solid #888;
+  border-radius: 6px;
+  padding: 18px 20px;
+  width: 300px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.4);
+}
+
+.dialog p {
+  margin: 0 0 20px 0;
+  font-size: 15px;
+  color: #000;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+button {
+  padding: 4px 14px;
+  font-size: 14px;
+  border: 1px solid #777;
+  border-radius: 4px;
+  background: #e0e0e0;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #d5d5d5;
+}
+
+button.default {
+  background: #cfe3ff;
+  border-color: #5a8edc;
+}
+
+button.default:hover {
+  background: #bcd7ff;
+}
+</style>
        
