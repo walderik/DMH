@@ -1011,19 +1011,27 @@ class Person extends BaseModel{
     
     public function getViewLink($print_age = true) {
         Global $current_larp;
-        
+
+        if (!isset($current_larp)) return "<a href='view_person.php?id={$this->Id}'>{$this->Name}</a>";
+         
         $print_age = (bool)$print_age;
 
+        $isRegistered = true;
         $registration = Registration::loadByIds($this->Id, $current_larp->Id);
         if (isset($registration)) {
             $title =  $registration->isNotComing() ? 'Avbokad' : 'Kommer'; 
         } 
         else {
             $reserveregistration = Reserve_Registration::loadByIds($this->Id, $current_larp->Id);
-            $title = (isset($reserveregistration)) ? "På reservlistan" : "Inte anmäld till lajvet";
+            if (isset($reserveregistration)) $title = "På reservlistan";
+            else {
+                $isRegistered = false;
+                $title = "Inte anmäld till lajvet";
+            }
         }
 
-        $vperson = "<a href='view_person.php?id={$this->Id}' title='$title'>{$this->Name}</a>";
+        if ($isRegistered) $vperson = "<a href='view_person.php?id={$this->Id}' title='$title'>{$this->Name}</a>";
+        else $vperson = $this->Name;
         
         if ($print_age) $vperson .= " (".$this->getAgeAtLarp($current_larp)." år)"; 
         
