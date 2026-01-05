@@ -464,7 +464,7 @@ function linkify($str) {
 function advertismentIcon() {
     global $current_person, $current_larp;
     
-    # Visas inte alls om det inte finsn annonstyper för lajet
+    # Visas inte alls om det inte finns annonstyper för lajet
     if (empty(AdvertismentType::isInUse($current_larp))) return;
     
     $latest_ad = Advertisment::larpsLatest($current_larp);
@@ -477,4 +477,10 @@ function advertismentIcon() {
         }
     }
     echo  "<a href='advertisments.php'><i class='fa-solid fa-bullhorn'></i></a>";
+}
+
+function emailIcon() {
+    global $current_person, $current_larp;
+    
+    $lastes_email;
 }

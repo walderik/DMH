@@ -114,7 +114,7 @@ th {
         		            }
         		        }
         		        $hasOtherIntrigues = false;
-       		           $group = $role->getGroup();
+       		            $group = $role->getGroup();
         		        if (is_null($group)) {
         		            echo "<td>&nbsp;</td>\n";
         		        } else {
@@ -159,7 +159,7 @@ th {
         		                    echo "</a>";
         		                    echo " ";
         		                }
-        		                echo "<br><br>";
+//         		                echo "<br><br>";
           		            }
         		            
         		            

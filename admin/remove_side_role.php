@@ -27,7 +27,7 @@ include 'navigation.php';
 
 
 	<div class="content">
-		<h1>Ta bort sidokaratärer från anmälan för <?php echo $person->Name;?></h1>
+		<h1>Ta bort sidokaratärer från anmälan för <?php echo $person->getViewLink();?></h1>
 		<div>
 
     		    <form action="logic/remove_side_role_save.php" method="post">

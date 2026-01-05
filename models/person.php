@@ -22,6 +22,7 @@ class Person extends BaseModel{
     public $MembershipCheckedAt;
     public $IsMember;
     public $AdvertismentsCheckedAt;
+    public $MailCheckedAt;
 
     public static $orderListBy = 'Name';
     
@@ -61,9 +62,9 @@ class Person extends BaseModel{
         if (isset($arr['MembershipCheckedAt'])) $this->MembershipCheckedAt = $arr['MembershipCheckedAt'];
         if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
         if (isset($arr['AdvertismentsCheckedAt'])) $this->AdvertismentsCheckedAt = $arr['AdvertismentsCheckedAt'];
+        if (isset($arr['MailCheckedAt'])) $this->MailCheckedAt = $arr['MailCheckedAt'];
 
         if (isset($this->HouseId) && $this->HouseId=='null') $this->HouseId = null;
-        
     }
     
     
@@ -105,21 +106,18 @@ class Person extends BaseModel{
         
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            return false;
-            
+            return false;  
         }
        
         $stmt = null;
         return true;
-        
     }
     
     
     public static function personsAssignedToHouse(House $house, LARP $larp) {
         $sql = "SELECT * FROM regsys_person WHERE Id IN ".
         "(SELECT PersonId FROM regsys_housing WHERE HouseId=? AND LarpId=?) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($house->Id, $larp->Id));
-        
+        return static::getSeveralObjectsqQuery($sql, array($house->Id, $larp->Id)); 
     }
     
     public static function getGroupMembersInHouse(Group $group, House $house, LARP $larp) {
@@ -134,7 +132,6 @@ class Person extends BaseModel{
             "regsys_role.GroupId = ?".
             ") ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($house->Id, $larp->Id, $group->Id));
-        
     }
  
     
@@ -146,7 +143,6 @@ class Person extends BaseModel{
             "regsys_role.GroupId = ?".
             ") ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id, $group->Id));
-        
     }
 
     
@@ -171,16 +167,6 @@ class Person extends BaseModel{
             "regsys_registration WHERE LarpId = ? AND GuardianId IS NOT NULL) ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
-    
-    public static function getGuardsinFor($larp) {
-        if (is_null($larp)) return array();
-        
-        $sql = "SELECT * from regsys_person WHERE Id IN (SELECT PersonId FROM ".
-            "regsys_registration WHERE LarpId = ? AND GuardianId = ?) ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $this->Id));
-    }
-    
-    
 
     public static function getAllGuardians($larp) {
         if (is_null($larp)) return array();
@@ -351,14 +337,15 @@ class Person extends BaseModel{
             FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
             UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, 
             HasPermissionShowName=?, IsSubscribed=?, UnsubscribeCode=?,
-            MembershipCheckedAt=?, IsMember=?, AdvertismentsCheckedAt=? WHERE Id = ?;");
+            MembershipCheckedAt=?, IsMember=?, AdvertismentsCheckedAt=?, MailCheckedAt=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, 
             $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId,
             $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
             $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode, 
-            $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt, $this->Id))) {
+            $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt, 
+            $this->MailCheckedAt, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -374,14 +361,14 @@ class Person extends BaseModel{
                 FoodAllergiesOther, OtherInformation, ExperienceId,
                 UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, 
                 HasPermissionShowName, IsSubscribed, UnsubscribeCode,
-                MembershipCheckedAt, IsMember, AdvertismentsCheckedAt) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?);");
+                MembershipCheckedAt, IsMember, AdvertismentsCheckedAt, MailCheckedAt) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId, 
-            $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
-            $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode,
-            $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt
+                $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
+                $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode,
+                $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt, $this->MailCheckedAt
         ))) {
             $this->connect()->rollBack();
             $stmt = null;
@@ -837,8 +824,7 @@ class Person extends BaseModel{
         
         if ($stmt->rowCount() == 0) {
             $stmt = null;
-            return false;
-            
+            return false;   
         }
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt = null;
@@ -846,14 +832,11 @@ class Person extends BaseModel{
         $resPermissions = array();
         foreach ($res as $item)  $resPermissions[] = $item['Permission'];
         return $resPermissions;
-        
-        
-        
+
         if ($res[0]['Num'] == 0) return false;
         return true;
-        
-        
     }
+    
     
     public function isMemberAtLarp(Larp $larp) {
         $year = substr($larp->StartDate, 0, 4);
@@ -893,7 +876,6 @@ class Person extends BaseModel{
         $this->update();
         if ($this->IsMember == 1) return true;
         return false;
-        
     }
     
     public static function allParticipants($larpIds) {
@@ -1027,9 +1009,33 @@ class Person extends BaseModel{
         }
     }
     
-    public function getViewLink() {
-        $vperson = "<a href='view_person.php?id={$this->Id}'>{$this->Name}</a>";
+    public function getViewLink($print_age = true) {
+        Global $current_larp;
+
+        if (!isset($current_larp)) return "<a href='view_person.php?id={$this->Id}'>{$this->Name}</a>";
+         
+        $print_age = (bool)$print_age;
+
+        $isRegistered = true;
+        $registration = Registration::loadByIds($this->Id, $current_larp->Id);
+        if (isset($registration)) {
+            $title =  $registration->isNotComing() ? 'Avbokad' : 'Kommer'; 
+        } 
+        else {
+            $reserveregistration = Reserve_Registration::loadByIds($this->Id, $current_larp->Id);
+            if (isset($reserveregistration)) $title = "På reservlistan";
+            else {
+                $isRegistered = false;
+                $title = "Inte anmäld till lajvet";
+            }
+        }
+
+        if ($isRegistered) $vperson = "<a href='view_person.php?id={$this->Id}' title='$title'>{$this->Name}</a>";
+        else $vperson = $this->Name;
         
+        if ($print_age) $vperson .= " (".$this->getAgeAtLarp($current_larp)." år)"; 
+        
+        if ($title != 'Kommer') return "<s>$vperson</s>  ".showStatusIcon(false, NULL, NULL, $title);
         return $vperson;
     }
     

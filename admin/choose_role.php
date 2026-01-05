@@ -160,7 +160,7 @@ th {
 
     <div class="content"> 
       
-        <h1><?php echo $purpose;?></h1>
+        <h1><?= $purpose;?></h1>
         
      		<?php 
 
@@ -198,8 +198,7 @@ th {
     		    echo "<tr>".
     		          "<th></th>".
     		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
-    		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Yrke</th>".
-    		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Ålder</th>";
+    		          "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Yrke</th>";
     		    if (IntrigueType::isInUse($current_larp)) {   		    
     		          echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Intrigtyper</th>";
     		    }
@@ -225,9 +224,6 @@ th {
     		        echo "<td><input id ='Role$role->Id' type='$type' name='RoleId$array' value='$role->Id'></td>";
     		        echo "<td>$role->Name</td>\n";
     		        echo "<td>" . $role->Profession . "</td>\n";
-    		        echo "<td>";
-    		        if (!is_null($person)) echo $person->getAgeAtLarp($current_larp);
-    		        echo "</td>\n";
     		        if (IntrigueType::isInUse($current_larp)) {
     		            echo "<td>".commaStringFromArrayObject($larp_role->getIntrigueTypes())."</td>";
     		        }
@@ -242,7 +238,7 @@ th {
     		        }
 
                     echo "<td>";
-                    if (!is_null($person)) echo $person->Name;
+                    if (!is_null($person)) echo $person->getViewLink();
                     else echo "NPC";
                     echo "</td>";
     		        echo "</tr>\n";
@@ -296,7 +292,7 @@ th {
     		    }
     		    $person = $role->getPerson();
     		    echo "<td>";
-    		    if (!is_null($person)) echo $person->Name;
+    		    if (!is_null($person)) echo $person->getViewLink();
     		    else echo "NPC";
     		    echo "</td>";
     		    
@@ -342,7 +338,7 @@ th {
         		    echo "<td>";
             		    if (isset($assignment)) $person = $assignment->getPerson();
                         else $person = null;
-            		    if (!empty($person)) echo $person->Name;
+                        if (!empty($person)) echo $person->getViewLink();
             		    else echo "Inte tilldelad";
             		    echo "</td>";
         		    }

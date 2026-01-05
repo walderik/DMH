@@ -34,16 +34,14 @@ th {
     		        echo "<td>";
     		        echo "<div class='person' id='$person->Id' draggable='true' ondragstart='drag(event)'>\n";
 					echo "  <div class='name'>";
-					echo $registration->isNotComing() 
-						? "<s>$person->Name</s>" 
-						: $person->getViewLink();
+					echo $person->getViewLink();
 					echo "</div>\n";
     		        echo "</td>\n";
+    		        
     		        echo "<td>";
     		        if ($registration->isNotComing()) {
     		            echo "<s>";
     		        }
-    		        
     		        echo $person->Email;
     		        if ($registration->isNotComing()) {
     		            echo "</s>";
@@ -85,15 +83,13 @@ th {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<tr>\n";
     		        echo "<td>";
-    		        echo $registration->isNotComing() 
-						? "<s>$person->Name</s>" 
-						: $person->getViewLink();
+    		        echo $person->getViewLink();
     		        echo "</td>\n";
+    		        
     		        echo "<td>";
     		        if ($registration->isNotComing()) {
     		            echo "<s>";
     		        }
-    		        
     		        echo $person->Email;
     		        if ($registration->isNotComing()) {
     		            echo "</s>";

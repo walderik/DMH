@@ -68,17 +68,16 @@ include 'alchemy_navigation.php';
                 if ($roleNotComing) echo "<s>";
                 echo "<a href ='view_alchemy_supplier.php?id=$supplier->Id'>$role->Name</a>\n";
                 if ($roleNotComing) echo "</s>";
-                echo "</td>";
+                echo "</td>\n";
                 echo "<td>";
                 $group = $role->getGroup();
                 if (isset($group)) echo $group->getViewLink();
-
-                echo "</td>";
+                echo "</td>\n";
+                
                 echo "<td>";
-                if ($roleNotComing) echo "<s>";
                 echo $person->getViewLink().contactEmailIcon($person);
-                if ($roleNotComing) echo "</s>";
-                echo "</td>";
+                echo "</td>\n";
+                
                 echo "<td>";
                 $hasAmount = false; 
                 $amount_per_level = $supplier->numberOfIngredientsPerLevel($current_larp);
@@ -93,12 +92,15 @@ include 'alchemy_navigation.php';
                     echo "</form>\n";
                 }
                 echo "</td>\n";
+                
                 echo "<td>";
                 if ($hasAmount) echo $supplier->appoximateValue($current_larp)." $currency";
                 echo "</td>\n";
+                
                 echo "<td>";
                 if ($hasAmount) echo showStatusIcon($supplier->allAmountOfIngredientsApproved($current_larp));
                 echo "</td>\n";
+                
                 echo "<td>" . showStatusIcon($supplier->hasDoneWorkshop()) . "</td>\n";
                 echo "<td>" . "<a href='alchemy_supplier_admin.php?operation=delete&Id=" . $supplier->Id . "' onclick='return confirm(\"Är du säker på att du vill ta bort $role->Name som lövjerist?\");'><i  class='fa-solid fa-trash'></i></td>\n";
                 echo "</tr>\n";
@@ -134,8 +136,7 @@ include 'alchemy_navigation.php';
                 echo "</td>";
                 echo "<td>";
                 if (!is_null($person)) {
-                    echo $person->getViewLink();
-                    echo "(".$person->getAgeAtLarp($current_larp)." år)".contactEmailIcon($person);
+                    echo $person->getViewLink().contactEmailIcon($person);
                 } else echo "NPC";
                 echo "</td>";
                 echo "<td>" . showStatusIcon($supplier->hasDoneWorkshop()) . "</td>\n";
