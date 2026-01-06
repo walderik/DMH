@@ -773,6 +773,7 @@ foreach ($intrigue_visions as $intrigue_vision) {
 
 
 </table>
+</div>
 
 <?php 
 
