@@ -43,7 +43,6 @@ function print_role($group_member) {
         echo " spelas av " . $person->getViewLink();
         
         if ($person->getAgeAtLarp($current_larp) < $current_larp->getCampaign()->MinimumAgeWithoutGuardian) {
-            
             echo ", ansvarig vuxen är ";
             $registration = Registration::loadByIds($person->Id, $current_larp->Id);
             if (!empty($registration->GuardianId)) {

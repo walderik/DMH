@@ -40,21 +40,27 @@ th {
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        echo "<tr>\n";
-    		        echo "<td>";
-    		        if ($registration->isNotComing()) {
-    		            echo "<s>$person->Name</s>" . " ".contactEmailIcon($person). " " .showStatusIcon(false);
-    		        } else echo $person->getViewLink() . " ".contactEmailIcon($person);
     		        
-
-		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>";
+    		        echo "<td>";
+    		        echo $person->getViewLink(false) . " ".contactEmailIcon($person);
+    		        if ($registration->isNotComing()) showStatusIcon(false);
+    		        echo "</td>\n";
+    		        
+		            echo "<td>" . $person->getAgeAtLarp($current_larp) . " år</td>\n";
 		            
-		            echo "<td>". $person->getMainRole($current_larp)->getViewLink() . "</td>";
+		            $mainRole = $person->getMainRole($current_larp);
+		            if (!empty($mainRole)) {
+		                echo "<td>". $mainRole->getViewLink() . "</td>\n";
+		            } else {
+		                echo "<td>Har ingen roll på lajvet</td>\n";
+		            }
 		            
 		            echo "<td>";
 		            $minors = $person->getGuardianFor($current_larp);
 		            foreach ($minors as $minor) {
-		                echo $minor->getViewLink() . " " . $minor->getAgeAtLarp($current_larp) . " år<br>";
+		                echo $minor->getViewLink()."<br>";
 		            }
+		            
 		            echo "</td>";
 		            
                     echo "</tr>\n";

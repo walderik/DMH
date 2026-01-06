@@ -105,7 +105,7 @@ if (empty($booking_accounts)) $error_message = "Bokföringskonton saknas. Be nå
 				<?php $value = abs($bookkeeping->Amount);
 				if ($value == 0) $value = "";
 				?>
-				<td><input style="width: 100px;" type="number" id="Amount" name="Amount" step='0.01' value='<?php echo $value;?>' min="0" size="100" maxlength="250" style="text-align:right"> kr</td>
+				<td><input style="width: 100px;" type="number" id="Amount" name="Amount" step='0.01' value='<?php echo $value;?>' min="0" size="100" maxlength="250" style="text-align:right" required> kr</td>
 
 			</tr>
 			<tr>

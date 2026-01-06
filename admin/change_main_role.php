@@ -27,7 +27,7 @@ include 'navigation.php';
 
 
 	<div class="content">
-		<h1>Byt huvudkaraktär för <?php echo $person->Name;?></h1>
+		<h1>Byt huvudkaraktär för <?php echo $person->getViewLink(); ?></h1>
 		<div>
 
     		    <form action="logic/change_main_role_save.php" method="post">

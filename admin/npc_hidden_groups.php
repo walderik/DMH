@@ -19,8 +19,7 @@ include 'npc_navigation.php';
 			$tableId = "groups";
 			$colnum=0;
 			echo "<table id='$tableId' class='data'>";
-			echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>".
-			 			"<th>&nbsp; &nbsp; </th>";
+			echo "<tr><th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th><th>&nbsp; &nbsp; </th>\n";
 			$colnum++;
 			echo "<th onclick='sortTableNumbers(". $colnum++ .", \"$tableId\")'>Synlighet</th>";
 			echo "<th onclick='sortTableNumbers(". $colnum++ .", \"$tableId\")'>Antal medlemmar</th>";
@@ -38,14 +37,14 @@ include 'npc_navigation.php';
 			    echo "</td>\n";
 			    echo "<td>";
 			    echo $group->getEditLinkPen(true);
-			    if ($group->mayDelete()) echo "&nbsp;<a href='logic/delete_group.php?id=" . $group->Id . "'><i class='fa-solid fa-trash' title='Ta bort grupp'></i></a>";
+			    if ($group->mayDelete()) echo "&nbsp;<a href='logic/delete_group.php?id=$group->Id'><i class='fa-solid fa-trash' title='Ta bort gruppen'></i></a>";
 			    
 			    echo "\n";
 			    echo "<a href='group_sheet.php?id=" . $group->Id . "' target='_blank'><i class='fa-solid fa-file-pdf' title='Gruppblad för $group->Name'></i></a>\n";
 			    echo "</td>\n";
 			    echo "<td>";
 			    echo $group->getVisibilityText();
-			    echo "</td>";
+			    echo "</td>\n";
 			    echo "<td>" . $group->countAllRolesInGroup($current_larp) . "</td>\n";
 			    if ($current_larp->hasCommerce())
 			    {

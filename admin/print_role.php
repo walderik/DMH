@@ -21,8 +21,7 @@ else $isReserve = false;
 if (!is_null($person) && $person->isNotComing($current_larp)) {
     echo "<tr><td></td><td><strong>Karaktären kommer inte på lajvet</strong></td></tr>";
 }
-?>
-<?php
+
 if ($role->isMysLajvare()) {
     echo "<tr><td></td><td><strong>Bakgrundslajvare</strong></td></tr>";
 }?>
@@ -36,7 +35,7 @@ if ($role->isMysLajvare()) {
 		    if (isset($assignment)) {
 		        if ($assignment->IsAssigned()) {
 		            $person = $assignment->getPerson();
-		            echo $person->Name." ";
+		            echo $person->getViewLink()." ";
 		            echo contactEmailIcon($person)."<br>".$assignment->Time;
 		        } else {
 		            "Ska spelas, inte tilldelad";
@@ -45,11 +44,10 @@ if ($role->isMysLajvare()) {
 		}
 		elseif ($isRegistered) { 
 		     echo $person->getViewLink()." ";
-		     echo contactEmailIcon($person)." "; 
-		     echo "(".$person->getAgeAtLarp($current_larp)." år), ".$person->getExperience()->Name;
+		     echo contactEmailIcon($person).", ".$person->getExperience()->Name;
 		} 
 		else {
-		    echo $person->Name." ";
+		    echo $person->getViewLink()." ";
 		    echo contactEmailIcon($person)." ";
 	        echo " <form action='logic/turn_into_npc.php' method='post'";
 	        echo " onsubmit='return confirm(\"Är du säker på att du ska ta bort karaktären från $person->Name? Glöm i så fall inte att kommunicera det till $person->Name.\")'";
