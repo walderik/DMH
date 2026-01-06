@@ -822,12 +822,10 @@ foreach ($roleActors as $roleActor) {
     function choose(choice) {
         if (choice === "delete") {
             let val = document.getElementById("rumourId").value;
-            console.log("Användaren valde SI" + val);
-            window.location.href = "logic/view_intrigue_logic.php?operation=delete_rumoure&id=<?php echo $intrigue->Id;?>&rumourId"+val;
+            window.location.href = "logic/view_intrigue_logic.php?operation=delete_rumour&id=<?php echo $intrigue->Id;?>&rumourId="+val;
         } else {
             let val = document.getElementById("rumourId").value;
-            console.log("Användaren valde SÅ" + val);
-            window.location.href = "logic/view_intrigue_logic.php?operation=disconnect_rumoure&id=<?php echo $intrigue->Id;?>&rumourId"+val;
+            window.location.href = "logic/view_intrigue_logic.php?operation=disconnect_rumour&id=<?php echo $intrigue->Id;?>&rumourId="+val;
         }
 
         document.getElementById("dialog").style.display = "none";

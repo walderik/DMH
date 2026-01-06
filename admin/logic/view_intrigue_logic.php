@@ -1,7 +1,7 @@
 <?php
 include_once '../header.php';
 
-//print_r($_POST);
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -101,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     elseif (isset($_GET['id'])) $intrigue=Intrigue::loadById($_GET['id']);
     $operation = "";
     if (isset($_GET['operation'])) $operation = $_GET['operation'];
+    
         
     if ($operation == "remove_intrigueactor") {
         IntrigueActor::delete($_GET['IntrigueActorId']);
