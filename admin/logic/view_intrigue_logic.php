@@ -1,7 +1,7 @@
 <?php
 include_once '../header.php';
 
-//print_r($_POST);
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -101,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     elseif (isset($_GET['id'])) $intrigue=Intrigue::loadById($_GET['id']);
     $operation = "";
     if (isset($_GET['operation'])) $operation = $_GET['operation'];
+    
         
     if ($operation == "remove_intrigueactor") {
         IntrigueActor::delete($_GET['IntrigueActorId']);
@@ -146,6 +147,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $intriguePdf=Intrigue_Pdf::loadById($_GET['pdfId']);
         $intrigue=$intriguePdf->getIntrigue();
         Intrigue_Pdf::delete($intriguePdf->Id);
+    } elseif (($operation == "delete_rumour")) {
+        Rumour::delete($_GET['rumourId']);
+    } elseif (($operation == "disconnect_rumour")) {
+        $rumour = Rumour::loadById($_GET['rumourId']);
+        $rumour->IntrigueId = null;
+        $rumour->update();
     } elseif (($operation == "delete")) {
         if (isset($intrigue)) Intrigue::delete($intrigue->Id);
         header('Location: ../intrigue_admin.php');
