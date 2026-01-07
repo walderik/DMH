@@ -17,12 +17,15 @@ class Person extends BaseModel{
     public $HousingComment;
     public $HealthComment;
     public $HasPermissionShowName = 1;
+    public $WantIntriguesInPlainText = 0;
     public $IsSubscribed = 1;
     public $UnsubscribeCode;
     public $MembershipCheckedAt;
     public $IsMember;
     public $AdvertismentsCheckedAt;
     public $MailCheckedAt;
+    public $LastMailSentAt;
+    
 
     public static $orderListBy = 'Name';
     
@@ -57,13 +60,15 @@ class Person extends BaseModel{
         if (isset($arr['HousingComment'])) $this->HousingComment = $arr['HousingComment'];
         if (isset($arr['HealthComment'])) $this->HealthComment = $arr['HealthComment'];
         if (isset($arr['HasPermissionShowName'])) $this->HasPermissionShowName = $arr['HasPermissionShowName'];
+        if (isset($arr['WantIntriguesInPlainText'])) $this->WantIntriguesInPlainText = $arr['WantIntriguesInPlainText'];
         if (isset($arr['IsSubscribed'])) $this->IsSubscribed = $arr['IsSubscribed'];
         if (isset($arr['UnsubscribeCode'])) $this->UnsubscribeCode = $arr['UnsubscribeCode'];
         if (isset($arr['MembershipCheckedAt'])) $this->MembershipCheckedAt = $arr['MembershipCheckedAt'];
         if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
         if (isset($arr['AdvertismentsCheckedAt'])) $this->AdvertismentsCheckedAt = $arr['AdvertismentsCheckedAt'];
         if (isset($arr['MailCheckedAt'])) $this->MailCheckedAt = $arr['MailCheckedAt'];
-
+        if (isset($arr['LastMailSentAt'])) $this->LastMailSentAt = $arr['LastMailSentAt'];
+        
         if (isset($this->HouseId) && $this->HouseId=='null') $this->HouseId = null;
     }
     
@@ -336,16 +341,16 @@ class Person extends BaseModel{
             EmergencyContact=?, Email=?,
             FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
             UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, 
-            HasPermissionShowName=?, IsSubscribed=?, UnsubscribeCode=?,
-            MembershipCheckedAt=?, IsMember=?, AdvertismentsCheckedAt=?, MailCheckedAt=? WHERE Id = ?;");
+            HasPermissionShowName=?, WantIntriguesInPlainText=?, IsSubscribed=?, UnsubscribeCode=?,
+            MembershipCheckedAt=?, IsMember=?, AdvertismentsCheckedAt=?, MailCheckedAt=?, LastMailSentAt=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, 
             $this->EmergencyContact, $this->Email,
             $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId,
             $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
-            $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode, 
+            $this->HasPermissionShowName, $this->WantIntriguesInPlainText, $this->IsSubscribed, $this->UnsubscribeCode, 
             $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt, 
-            $this->MailCheckedAt, $this->Id))) {
+            $this->MailCheckedAt, $this->LastMailSentAt, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -360,15 +365,15 @@ class Person extends BaseModel{
         $stmt = $connection->prepare("INSERT INTO regsys_person (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                 FoodAllergiesOther, OtherInformation, ExperienceId,
                 UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, 
-                HasPermissionShowName, IsSubscribed, UnsubscribeCode,
-                MembershipCheckedAt, IsMember, AdvertismentsCheckedAt, MailCheckedAt) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?);");
+                HasPermissionShowName, WantIntriguesInPlainText, IsSubscribed, UnsubscribeCode,
+                MembershipCheckedAt, IsMember, AdvertismentsCheckedAt, MailCheckedAt, LastMailSentAt) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId, 
                 $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
-                $this->HasPermissionShowName, $this->IsSubscribed, $this->UnsubscribeCode,
-                $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt, $this->MailCheckedAt
+                $this->HasPermissionShowName, $this->WantIntriguesInPlainText, $this->IsSubscribed, $this->UnsubscribeCode,
+            $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt, $this->MailCheckedAt, $this->LastMailSentAt
         ))) {
             $this->connect()->rollBack();
             $stmt = null;
@@ -580,6 +585,11 @@ class Person extends BaseModel{
     
     public function hasPermissionShowName() {
         if ($this->HasPermissionShowName == 1) return true;
+        return false;
+    }
+    
+    public function wantIntriguesInPlainText() {
+        if ($this->WantIntriguesInPlainText == 1) return true;
         return false;
     }
     
