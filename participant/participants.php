@@ -128,6 +128,7 @@ function print_role($role) {
 		<H1>Karaktärer i <?php  echo $current_larp->Name; ?></H1>
 
 		<?php 
+		$isMareld = $current_larp->getCampaign()->is_me();
 		$groups = Group::getAllVisible($current_larp);
 		foreach ($groups as $group) {
 		    $roles = Role::getAllComingApprovedMainRolesInGroup($group, $current_larp);
@@ -137,7 +138,9 @@ function print_role($role) {
 
                 echo "<h2>$group->Name</h2>\n";
                 if ($group->DescriptionForOthers !="") {
-                    echo "<p>".nl2br(htmlspecialchars($group->DescriptionForOthers))."</p>\n";
+                    echo "<p>".nl2br(htmlspecialchars($group->DescriptionForOthers));
+                    if ($isMareld) echo "<br>Färg: $group->Colour";
+                    echo "</p>\n";
                 }
                 
                 
@@ -157,8 +160,9 @@ function print_role($role) {
                 $temp=0;
 
                 echo "</ul>\n";
+                echo "</DIV>\n";
             }
-            echo "</DIV>\n";
+
             
             
 		}
