@@ -514,7 +514,7 @@ class BerghemMailer {
     }
     
     
-    # Skicka ut intrigerna/karaktärsbladen till alla deltagare
+    # Skicka ut intrigerna/karaktärsbladen till en deltagare
     public static function sendIntrigue($greeting, $subject, $text, $senderText, LARP $larp, $senderId, $registrationId) {
         $registration = Registration::loadById($registrationId);
         $person = $registration->getPerson();
@@ -536,7 +536,6 @@ class BerghemMailer {
             
         }
         
-        $sheets = static::getAllSheets($roles, $larp);
         
         $assignments = NPC_assignment::getReleasedAssignmentForPerson($person, $larp);
         $npcText = "";
@@ -546,6 +545,7 @@ class BerghemMailer {
             $npcText .= "<br>\n";
             foreach($assignments as $assignment) {
                 $npc = $assignment->getRole();
+                $roles[] = $npc;
                 $npcText .= "Namn: $npc->Name";
                 $npcText .= "<br>\n";
                 $npcText .= "Beskrivning: ".nl2br(htmlspecialchars($npc->Description));
@@ -555,15 +555,53 @@ class BerghemMailer {
                 $npcText .= "<br>\n";
             }
         }
+
+        $sheets = static::getAllSheets($roles, $larp);
         
         $printText = "<br>Skriv ut de bifogade filerna och ta med till lajvet.<br>";
         
         $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
         
+        if ($person->wantIntriguesInPlainText()) {
+            $intrigueTexts = "";
+            
+            foreach($roles as $role) $intrigueTexts .= static::getIntrigueText($role);
+            
+            $sendtext.= "<br><br>". $intrigueTexts;
+        }
+        
         BerghemMailer::send($larp, $senderId, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic, $sheets);
 
     }
     
+    private static function getIntrigueText(Role $role) {
+        $text = "";
+        
+        $text .= "<h2>Intriger för $role->Name</h2>";
+        
+        $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($current_larp);
+        $subdivisions = Subdivision::allForRole($role, $current_larp);
+        
+        foreach ($intrigues as $intrigue) {
+            if ($intrigue->isActive()) {
+                
+                
+                $commonTextHeader = "";
+                $intrigueTextArr = array();
+                $offTextArr = array();
+                $whatHappenedTextArr = array();
+                
+                $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
+                
+                
+                $text .= participantPrintedIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
+            }
+        }
+        
+        
+        
+        return $text;
+    }
     
     
     public static function sendInvoice(Invoice $invoice, $senderId) {

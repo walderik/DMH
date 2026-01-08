@@ -63,6 +63,11 @@ include 'navigation.php';
 		</div>
 		
    		<div class='itemcontainer'>
+       	<div class='itemname'>Intriger i text</div>
+		<?php echo ja_nej($current_person->wantIntriguesInPlainText());?>
+		</div>
+		
+   		<div class='itemcontainer'>
        	<div class='itemname'>Övrig information</div>
 		<?php echo nl2br(htmlspecialchars($current_person->OtherInformation));?>
 		</div>

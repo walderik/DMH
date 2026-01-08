@@ -43,6 +43,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $type="intrigues";
         $name = '';
         $subject = "Intrigutskick för $current_larp->Name";
+    } elseif (isset($_POST['ne_intrigue'])) {
+        $type="one_intrigue";
+        $personId = $_POST['personId'];
+        $person = Person::loadById($personId);
+        $name = $person->Name;
+        $email = $person->Email;
+        $subject = "Intrigutskick för $current_larp->Name";
     } elseif (isset($_POST['send_housing'])) {
         $type="housing";
         $name = '';
@@ -104,6 +111,10 @@ include $navigation;
 		        if ($campaign->is_kir()) echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund.<br>\n";
 		        else echo "Eftersom karaktärsbladen är komplicerade att generera kommer de att skickas ut i omgångar för att inte belasta servern för mycket.<br>\n";
 		        echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br><br>\n";
+		        break;
+		    case "one_intrigue":
+		        echo "<h1>Skicka ut intrigerna till $name ($email).</h1>\n";
+		        echo "I mailet kommer karaktärsbladen till alla deras karaktärer och grupper som de är med i bifogas.<br>\n";
 		        break;
 		    case "housing":
 		        echo "<h1>Skicka ut boendet till alla deltagarna.</h1>\n";

@@ -33,6 +33,25 @@ include 'navigation.php';
 	<div class="content">
 		<h1><?php echo $person->Name;?>&nbsp;<a href='edit_person.php?id=<?php echo $person->Id;?>'><i class='fa-solid fa-pen'></i></a></h1>
 		<div>
+		<?php 
+		if ($current_larp->isIntriguesReleased()) {
+
+		        $param = date_format(new Datetime(),"suv");
+		        $res = "<form action='../common/contact_email.php'  method='post'>\n";
+		        $res .= "<input type=hidden name='sender' value='$sender'>";
+		        $res .= "<input type=hidden name='one_intrigue' value=$param>\n".
+		  		        "<input type=hidden name='personId' value=$person->Id>\n".
+		  		        "<button type='submit'>".
+		  		        "Skicka intrigerna igen till $person->Name".
+		  		        "</button>\n".
+		  		        "</form>\n";
+		        echo $res;
+		    
+		}
+		
+		
+		?>
+		
 		<table>
 			<tr><td valign="top" class="header">Personnummer</td><td><?php echo $person->SocialSecurityNumber;?>, <?php echo $person->getAgeAtLarp($current_larp) ?> år</td></tr>
 			<tr><td valign="top" class="header">Email</td><td><?php echo $person->Email." ".contactEmailIcon($person);?></td></tr>
@@ -128,6 +147,7 @@ include 'navigation.php';
 			
 			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo $person->getFullHousingComment($current_larp);?></td></tr>
 			<tr><td valign="top" class="header">Hälsa</td><td><?php echo $person->HealthComment;?></td></tr>
+			<tr><td valign="top" class="header">Intriger i text</td><td><?php echo ja_nej($person->wantIntriguesInPlainText());?></td></tr>
 
 
 			<tr><td valign="top" class="header">Annan information</td><td><?php echo nl2br($person->OtherInformation);?></td></tr>
