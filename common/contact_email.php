@@ -37,13 +37,14 @@ global $current_larp;
 $name = '';
 $type = "one";
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST['send_intrigues'])) {
         $type="intrigues";
         $name = '';
         $subject = "Intrigutskick för $current_larp->Name";
-    } elseif (isset($_POST['ne_intrigue'])) {
+    } elseif (isset($_POST['one_intrigue'])) {
         $type="one_intrigue";
         $personId = $_POST['personId'];
         $person = Person::loadById($personId);

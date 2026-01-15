@@ -38,7 +38,6 @@ include 'navigation.php';
 
 		        $param = date_format(new Datetime(),"suv");
 		        $res = "<form action='../common/contact_email.php'  method='post'>\n";
-		        $res .= "<input type=hidden name='sender' value='$sender'>";
 		        $res .= "<input type=hidden name='one_intrigue' value=$param>\n".
 		  		        "<input type=hidden name='personId' value=$person->Id>\n".
 		  		        "<button type='submit'>".
