@@ -47,6 +47,11 @@ switch ($type) {
         }
         BerghemMailer::sendIntrigues($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id);
         break;
+    case "one_intrigue":
+        $person = Person::loadById($_POST['personId']);
+        $registration = $person->getRegistration($current_larp);
+        BerghemMailer::sendIntrigue($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id, $registration->Id);
+        break;
     case "housing":
         if (!$current_larp->isHousingReleased()) {
             $current_larp->DisplayHousing = 1;

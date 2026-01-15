@@ -61,59 +61,6 @@ if($isMob){
 $temp=0;
 
 
-function printIntrigue($number, $commonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, $alwaysPrintWhatHappened) {
-    $formattedText = "";
-    if (!empty($commonText)) {
-        $formattedText .= "<p>";
-        if (!empty($commonTextHeader)) {
-            $formattedText .= "<strong>".htmlspecialchars($commonTextHeader)."</strong><br>";
-        }
-        $formattedText .= nl2br(htmlspecialchars($commonText))."</p>";
-    }
-    
-    if (!empty($intrigueTextArr)) {
-        $tmpIntrigueTextArr = array();
-        foreach ($intrigueTextArr as $intrigueText) {
-            if (is_array($intrigueText)) {
-                $tmpIntrigueTextArr[] = "<strong>".htmlspecialchars($intrigueText[0])."</strong><br>".nl2br(htmlspecialchars($intrigueText[1]));
-            } else {
-                $tmpIntrigueTextArr[] = nl2br(htmlspecialchars($intrigueText));
-            } 
-        }
-        $formattedText .= "<p>".join("<br><br>",$tmpIntrigueTextArr). "</p>";
-
-    
-    
-    }
-    
-    if (!empty($offTextArr)) {
-        $tmpOffTextArr = array();
-        foreach ($offTextArr as $offText) {
-            $tmpOffTextArr[] = nl2br(htmlspecialchars($offText));
-        }
-        $formattedText .= "<p><strong>Off-information:</strong><br><i>".join("<br><br>",$tmpOffTextArr)."</i></p>";
-    }
-
-    if (!empty($whatHappenedTextArr) || $alwaysPrintWhatHappened) {
-        $tmpWhatHappenedTextArr = array();
-        foreach ($whatHappenedTextArr as $whatHappenedText) {
-            if (is_array($whatHappenedText)) {
-                $tmpWhatHappenedTextArr[] = "<strong>".htmlspecialchars($whatHappenedText[0])."</strong><br>".nl2br(htmlspecialchars($whatHappenedText[1]))."<br><br>";
-            } else {
-                $tmpWhatHappenedTextArr[] = nl2br(htmlspecialchars($whatHappenedText));
-            }
-        }
-        $formattedText .= "<p><strong>Vad hände med det:</strong><br>";
-        if (!empty($tmpWhatHappenedTextArr)) $formattedText .= join("<br><br>",$tmpWhatHappenedTextArr);
-        else $formattedText .= "Inget rapporterat";
-        $formattedText .= "</p>";
-    }
-    
-    if (!empty($formattedText)) {
-        echo "<h3>Intrig $number:</h3>".$formattedText;
-    }
-    
-}
 
 
 include 'navigation.php';
@@ -413,7 +360,7 @@ include 'navigation.php';
 		                $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
 		                
                        
-		                printIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
+		                echo participantPrintedIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
 		                
 		                
 		            }
