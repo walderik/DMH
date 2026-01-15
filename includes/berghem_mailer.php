@@ -565,7 +565,14 @@ class BerghemMailer {
         if ($person->wantIntriguesInPlainText()) {
             $intrigueTexts = "";
             
-            foreach($roles as $role) $intrigueTexts .= static::getIntrigueText($role);
+            $groups = array();
+            foreach($roles as $role) {
+                $intrigueTexts .= static::getRoleIntrigueText($role, $larp);
+                $group = $role->getGroup();
+                if (!empty($group)) $groups[$group->Id] = $group;
+            }
+            
+            foreach ($groups as $group) $intrigueTexts .= static::getGroupIntrigueText($group, $larp);
             
             $sendtext.= "<br><br>". $intrigueTexts;
         }
@@ -574,13 +581,13 @@ class BerghemMailer {
 
     }
     
-    private static function getIntrigueText(Role $role) {
+    private static function getRoleIntrigueText(Role $role, Larp $larp) {
         $text = "";
         
         $text .= "<h2>Intriger för $role->Name</h2>";
         
-        $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($current_larp);
-        $subdivisions = Subdivision::allForRole($role, $current_larp);
+        $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($larp);
+        $subdivisions = Subdivision::allForRole($role, $larp);
         
         foreach ($intrigues as $intrigue) {
             if ($intrigue->isActive()) {
@@ -601,6 +608,33 @@ class BerghemMailer {
         
         
         return $text;
+    }
+    
+    private static function getGroupIntrigueText(Group $group, Larp $larp) {
+        $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $larp->Id);
+        
+        $totaltext = "";
+        
+        $totaltext .= "<h2>Intriger för $group->Name</h2>";
+        
+        foreach ($intrigues as $intrigue) {
+            if ($intrigue->isActive()) {
+                $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $group);
+                $txt = "";
+                if (!empty($intrigue->CommonText)) $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+                if (!empty($intrigueActor->IntrigueText)) $txt .=  "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+                if (!empty($intrigueActor->OffInfo)) {
+                    $txt .=  "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
+                }
+                
+                if (!empty($txt)) {
+                    $totaltext .= "Intrig $intrigue->Number:<br>".$txt."<hr>";
+                    
+                }
+            }
+        }
+        return $totaltext;
+        
     }
     
     
