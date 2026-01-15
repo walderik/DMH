@@ -929,7 +929,9 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Religion');
 	    $mertext = (empty(trim($this->role->Religion))) ? '' : " (".trim($this->role->Religion).")";
-	    $text = $this->role->getReligion()->Name.$mertext;
+	    $religion = $this->role->getReligion();
+	    if (!empty($religion)) $text = $religion->Name.$mertext;
+	    else $text ="";
 	    $this->set_text($left, $text );
 	    return true;
 	}

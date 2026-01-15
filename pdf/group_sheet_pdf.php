@@ -219,8 +219,8 @@ class Group_PDF extends PDF_MemImage {
                 $text = $role->Name; #, $y, $lovest_y, $realHeight, ".$this->GetPageHeight();
                 $role_group = $role->getGroup();
                 if (!empty($role_group)) $text .= "\n\r($role_group->Name)";
-                if ($role->isPC($this->larp) && !$role->isRegistered($current_larp))  $text .= "\n\rSpelas inte";
-                elseif ($role->isNPC($this->larp) && !$role->isAssigned($current_larp))  $text .= "\n\rSpelas inte";
+                if ($role->isPC($this->larp) && !$role->isRegistered($this->larp))  $text .= "\n\rSpelas inte";
+                elseif ($role->isNPC($this->larp) && !$role->isAssigned($this->larp))  $text .= "\n\rSpelas inte";
                 
                 $this->print_know_stuff($text, $image);
             }
@@ -620,9 +620,12 @@ class Group_PDF extends PDF_MemImage {
 	
 	protected function rikedom($left) {
 	    if (!Wealth::isInUse($this->larp)) return false;
+	    $wealth = $this->group->getWealth();
+	    if (empty($wealth)) return false;
 	    
 	    $this->set_header($left, 'Rikedom');
-	    $this->set_text($left, $this->group->getWealth()->Name);
+
+	    $this->set_text($left, $wealth->Name);
 	    return true;
 	}
 	
@@ -637,16 +640,19 @@ class Group_PDF extends PDF_MemImage {
 	
 	protected function intrigtyper($left) {
 	    if (!IntrigueType::isInUse($this->larp)) return false;
-
+	    
 	    $this->set_header($left, 'Intrigtyper');
 
-	    $text = commaStringFromArrayObject($this->larp_group->getIntrigueTypes());
+	    if (isset($this->larp_group)) $text = $text = commaStringFromArrayObject($this->larp_group->getIntrigueTypes());
+	    else $text = "OBS! Inte anmäld";
+	    
 	    $this->set_text($left, $text);
 	    return true;
 	}
 	
 	protected function intrigue_ideas($left) {
 	    $this->set_header($left, 'Intrigéer');
+	    
 	    
 	    if (isset($this->larp_group)) $text = $this->larp_group->IntrigueIdeas;
 	    else $text = "OBS! Inte anmäld";
@@ -675,9 +681,13 @@ class Group_PDF extends PDF_MemImage {
 	
 	protected function bor($left) {
 	    if (!PlaceOfResidence::isInUse($this->larp)) return false;
+	    $por = $this->group->getPlaceOfResidence();
+	    if (empty($por)) return false;
 	    
 	    $this->set_header($left, 'Bor');
-	    $this->set_text($left, $this->group->getPlaceOfResidence()->Name);
+
+	    $this->set_text($left, $por->Name);
+	    
 	    return true;
 	}
 
