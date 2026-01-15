@@ -144,6 +144,13 @@ include 'navigation.php';
 			<textarea id="HealthComment" name="HealthComment" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->HealthComment); ?></textarea>
 			</td></tr>
 
+			<tr><td valign="top" class="header">Intriger i text<br>Behövs för att säkert få uppläsning av intriger för de som har svårare att läsa själva</td>
+			<td>
+    			<input type="radio" id="WantIntriguesInPlainText_yes" name="WantIntriguesInPlainText" value="1" <?php if ($person->wantIntriguesInPlainText()) echo 'checked="checked"'?> required> 
+    			<label for="WantIntriguesInPlainText_yes">Ja</label><br> 
+    			<input type="radio" id="WantIntriguesInPlainText_no" name="WantIntriguesInPlainText" value="0" <?php if (!$person->wantIntriguesInPlainText()) echo 'checked="checked"'?>> 
+    			<label for="WantIntriguesInPlainText_no">Nej</label>
+			</td></tr>
 
 
 			<tr><td valign="top" class="header">Annan information</td>

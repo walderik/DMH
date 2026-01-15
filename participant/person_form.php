@@ -140,6 +140,15 @@
 			<textarea id="HealthComment" name="HealthComment" rows="4" cols="100" maxlength="60000"><?php echo htmlspecialchars($person->HealthComment); ?></textarea>
 			</div>
 
+			<div class='itemcontainer'>
+	       	<div class='itemname'><label for="WantIntriguesInPlainText">Intriger i text</label></div>
+			Intriger kommer att skickas i text, förrutom som pdf. Är bra om man behöver uppläsning av intrigerna.<br>
+			<input type="radio" id="WantIntriguesInPlainText_yes" name="WantIntriguesInPlainText" value="1" <?php if ($person->wantIntriguesInPlainText()) echo 'checked="checked"'?> required> 
+			<label for="WantIntriguesInPlainText_yes">Ja</label><br> 
+			<input type="radio" id="WantIntriguesInPlainText_no" name="WantIntriguesInPlainText" value="0" <?php if (!$person->wantIntriguesInPlainText()) echo 'checked="checked"'?>> 
+			<label for="WantIntriguesInPlainText_no">Nej</label>
+			</div>
+
 
 			<div class='subheader'>Lajvrelaterat</div>
 			

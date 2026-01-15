@@ -514,7 +514,7 @@ class BerghemMailer {
     }
     
     
-    # Skicka ut intrigerna/karaktärsbladen till alla deltagare
+    # Skicka ut intrigerna/karaktärsbladen till en deltagare
     public static function sendIntrigue($greeting, $subject, $text, $senderText, LARP $larp, $senderId, $registrationId) {
         $registration = Registration::loadById($registrationId);
         $person = $registration->getPerson();
@@ -536,7 +536,6 @@ class BerghemMailer {
             
         }
         
-        $sheets = static::getAllSheets($roles, $larp);
         
         $assignments = NPC_assignment::getReleasedAssignmentForPerson($person, $larp);
         $npcText = "";
@@ -546,7 +545,12 @@ class BerghemMailer {
             $npcText .= "<br>\n";
             foreach($assignments as $assignment) {
                 $npc = $assignment->getRole();
+                $roles[] = $npc;
                 $npcText .= "Namn: $npc->Name";
+                if (!empty($npc->GroupId)) {
+                    $npc_group = $npc->getGroup();
+                    $npcText .= " i gruppen $npc_group->Name";
+                }
                 $npcText .= "<br>\n";
                 $npcText .= "Beskrivning: ".nl2br(htmlspecialchars($npc->Description));
                 $npcText .= "<br>\n";
@@ -555,14 +559,128 @@ class BerghemMailer {
                 $npcText .= "<br>\n";
             }
         }
+
+        $sheets = static::getAllSheets($roles, $larp);
         
         $printText = "<br>Skriv ut de bifogade filerna och ta med till lajvet.<br>";
         
         $sendtext = $text . "<br><br>". $rolesText . $npcText . $printText;
         
+        if ($person->wantIntriguesInPlainText()) {
+            $intrigueTexts = "";
+            
+            $groups = array();
+            foreach($roles as $role) {
+                $intrigueTexts .= static::getRoleIntrigueText($role, $larp);
+                $intrigueTexts .= static::getRoleRumours($role, $larp);
+                $group = $role->getGroup();
+                if (!empty($group)) $groups[$group->Id] = $group;
+            }
+            
+            foreach ($groups as $group) {
+                $intrigueTexts .= static::getGroupIntrigueText($group, $larp);
+                $intrigueTexts .= static::getGroupRumours($group, $larp);
+            }
+            
+            $sendtext.= "<br><br>". $intrigueTexts."<hr>";
+        }
+        
         BerghemMailer::send($larp, $senderId, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic, $sheets);
 
     }
+    
+    private static function getRoleIntrigueText(Role $role, Larp $larp) {
+        $text = "";
+        
+        $text .= "<h2>Intriger för $role->Name";
+        if ($role->isNPC($larp)) $text .= " (NPC)";
+        $text .= "</h2>";
+        
+        $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($larp);
+        $subdivisions = Subdivision::allForRole($role, $larp);
+        
+        foreach ($intrigues as $intrigue) {
+            if ($intrigue->isActive()) {
+                
+                
+                $commonTextHeader = "";
+                $intrigueTextArr = array();
+                $offTextArr = array();
+                $whatHappenedTextArr = array();
+                
+                $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
+                
+                
+                $text .= participantPrintedIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
+            }
+        }
+        
+        
+        
+        return $text;
+    }
+    
+    private static function getRoleRumours(Role $role, Larp $larp) {
+        $rumours = Rumour::allKnownByRole($larp, $role);
+        $text = "";
+        if (!empty($rumours)) {
+            $text .= "<h3>Rykten</h3>";
+            $text .= "<ul style='list-style-type: disc;'>";
+            foreach($rumours as $rumour) {
+                $text .= "<li style='margin-bottom:7px;margin-left:20px'>$rumour->Text\n";
+                
+            }
+            $text .= "</ul>";
+        }
+        return $text;
+
+    }
+    
+    private static function getGroupIntrigueText(Group $group, Larp $larp) {
+        $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $larp->Id);
+        
+        $totaltext = "";
+        
+        $totaltext .= "<h2>Intriger för $group->Name (Grupp)</h2>";
+        
+        $intrigueTexts = array();
+        
+        foreach ($intrigues as $intrigue) {
+            if ($intrigue->isActive()) {
+                $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $group);
+                $txt = "";
+                if (!empty($intrigue->CommonText)) $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+                if (!empty($intrigueActor->IntrigueText)) $txt .=  "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
+                if (!empty($intrigueActor->OffInfo)) {
+                    $txt .=  "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";
+                }
+                
+                if (!empty($txt)) {
+                    $intrigueTexts[] = "Intrig $intrigue->Number:<br>".$txt;
+                    
+                }
+            }
+        }
+        return $totaltext.implode("<hr>", $intrigueTexts);
+        
+    }
+    
+    private static function getGroupRumours(Group $group, Larp $larp) {
+        $rumours = Rumour::allKnownByGroup($larp, $group);
+        $text = "";
+        if (!empty($rumours)) {
+            $text .= "<h3>Rykten</h3>";
+            $text .= "<ul style='list-style-type: disc;'>";
+            foreach($rumours as $rumour) {
+                $text .= "<li style='margin-bottom:7px;margin-left:20px'>$rumour->Text\n";
+                
+            }
+            $text .= "</ul>";
+        }
+        return $text;
+        
+    }
+    
     
     
     
