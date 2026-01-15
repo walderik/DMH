@@ -547,6 +547,10 @@ class BerghemMailer {
                 $npc = $assignment->getRole();
                 $roles[] = $npc;
                 $npcText .= "Namn: $npc->Name";
+                if (!empty($npc->GroupId)) {
+                    $npc_group = $npc->getGroup();
+                    $npcText .= " i gruppen $npc_group->Name";
+                }
                 $npcText .= "<br>\n";
                 $npcText .= "Beskrivning: ".nl2br(htmlspecialchars($npc->Description));
                 $npcText .= "<br>\n";
@@ -568,13 +572,17 @@ class BerghemMailer {
             $groups = array();
             foreach($roles as $role) {
                 $intrigueTexts .= static::getRoleIntrigueText($role, $larp);
+                $intrigueTexts .= static::getRoleRumours($role, $larp);
                 $group = $role->getGroup();
                 if (!empty($group)) $groups[$group->Id] = $group;
             }
             
-            foreach ($groups as $group) $intrigueTexts .= static::getGroupIntrigueText($group, $larp);
+            foreach ($groups as $group) {
+                $intrigueTexts .= static::getGroupIntrigueText($group, $larp);
+                $intrigueTexts .= static::getGroupRumours($group, $larp);
+            }
             
-            $sendtext.= "<br><br>". $intrigueTexts;
+            $sendtext.= "<br><br>". $intrigueTexts."<hr>";
         }
         
         BerghemMailer::send($larp, $senderId, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic, $sheets);
@@ -584,7 +592,9 @@ class BerghemMailer {
     private static function getRoleIntrigueText(Role $role, Larp $larp) {
         $text = "";
         
-        $text .= "<h2>Intriger för $role->Name</h2>";
+        $text .= "<h2>Intriger för $role->Name";
+        if ($role->isNPC($larp)) $text .= " (NPC)";
+        $text .= "</h2>";
         
         $intrigues = $role->getAllIntriguesIncludingSubdivisionsSorted($larp);
         $subdivisions = Subdivision::allForRole($role, $larp);
@@ -610,12 +620,30 @@ class BerghemMailer {
         return $text;
     }
     
+    private static function getRoleRumours(Role $role, Larp $larp) {
+        $rumours = Rumour::allKnownByRole($larp, $role);
+        $text = "";
+        if (!empty($rumours)) {
+            $text .= "<h3>Rykten</h3>";
+            $text .= "<ul style='list-style-type: disc;'>";
+            foreach($rumours as $rumour) {
+                $text .= "<li style='margin-bottom:7px;margin-left:20px'>$rumour->Text\n";
+                
+            }
+            $text .= "</ul>";
+        }
+        return $text;
+
+    }
+    
     private static function getGroupIntrigueText(Group $group, Larp $larp) {
         $intrigues = Intrigue::getAllIntriguesForGroup($group->Id, $larp->Id);
         
         $totaltext = "";
         
-        $totaltext .= "<h2>Intriger för $group->Name</h2>";
+        $totaltext .= "<h2>Intriger för $group->Name (Grupp)</h2>";
+        
+        $intrigueTexts = array();
         
         foreach ($intrigues as $intrigue) {
             if ($intrigue->isActive()) {
@@ -628,14 +656,32 @@ class BerghemMailer {
                 }
                 
                 if (!empty($txt)) {
-                    $totaltext .= "Intrig $intrigue->Number:<br>".$txt."<hr>";
+                    $intrigueTexts[] = "Intrig $intrigue->Number:<br>".$txt;
                     
                 }
             }
         }
-        return $totaltext;
+        return $totaltext.implode("<hr>", $intrigueTexts);
         
     }
+    
+    private static function getGroupRumours(Group $group, Larp $larp) {
+        $rumours = Rumour::allKnownByGroup($larp, $group);
+        $text = "";
+        if (!empty($rumours)) {
+            $text .= "<h3>Rykten</h3>";
+            $text .= "<ul style='list-style-type: disc;'>";
+            foreach($rumours as $rumour) {
+                $text .= "<li style='margin-bottom:7px;margin-left:20px'>$rumour->Text\n";
+                
+            }
+            $text .= "</ul>";
+        }
+        return $text;
+        
+    }
+    
+    
     
     
     public static function sendInvoice(Invoice $invoice, $senderId) {
