@@ -249,9 +249,10 @@ include 'navigation.php';
 						echo "<strong>$person->Name har inga karaktärer som inte är med på lajvet.</strong>";
 					}  
 					
-					echo "<br><br>";
+
 					$npc_assignments = $person->getNPCAssignmentsAtLarp($current_larp);
 					if (!empty($npc_assignments)) {
+					    echo "<br><br>";
 					    echo "<strong>NPC-uppdrag:</strong><br>\n";
 					    
 					    echo "<table>";
