@@ -43,7 +43,7 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 
 
 <?php 
-$houses = House::getAllHouses();
+$houses = House::getAllHouses(true);
 foreach ($houses as $house) {
     if (isset($house->Lat) && isset($house->Lon)) {
         //echo "var popup = L.popup()".

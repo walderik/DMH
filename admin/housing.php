@@ -119,7 +119,8 @@ function print_house($house) {
     if (!empty($larp_house)) echo $larp_house->Id;
     echo "&houseId=$house->Id'><i class='fa-solid fa-pen'></i></a>";
     
-    if ($notComingWarning) echo showStatusIcon(false);
+    if (!$house->IsActive()) echo " ".showStatusIcon(false, null, null, "Boendet är inte tillåtet att använda.");
+    if ($notComingWarning) echo " ".showStatusIcon(false, null, null, "Någon i boendet är avbokad");
     
     echo "<button class='invisible' onclick='show_hide(\"house_$house->Id\")><i class='fa-solid fa-caret-left'></i></button></div>\n";
 
@@ -294,14 +295,14 @@ div.housing-group {
 	?>
 	</td><td width='45%'>
 	<h2>Tilldelat boende</h2>
-	Om det är ett <?php echo showStatusIcon(false)?> efter namnet på huset/lägerplatsen betyder det att minst en person i huset har blivit avbokad.<br>
+	Om det är ett <?php echo showStatusIcon(false)?> efter namnet på huset/lägerplatsen betyder det att minst en person i huset har blivit avbokad eller att huset inte får användas. Håll musen över ikonen så ser du vilket.<br>
 	Ikonen efter antalet platser i huset anger hur fullt huset är. Om det är <?php echo showStatusIcon(false)?> är det över max-antal i huset.
 	<div class='housing-group clearfix'>
 	
 	<h3>Hus <?php echo " <span onclick='show_hide_area(\"houses\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>";?></h3>
 	
 	<?php 
-	$houses=House::getAllHouses();
+	$houses=House::getAllActiveOrUsedHouses($current_larp);
 	echo "<div id='houses'>\n";
 	
 	foreach($houses as $house) {
@@ -313,7 +314,7 @@ div.housing-group {
 	<div class='housing-group clearfix'>
 	<h3>Lägerplatser <?php echo " <span onclick='show_hide_area(\"camps\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>"; ?></h3>
 	<?php 
-	$camps=House::getAllCamps();
+	$camps=House::getAllActiveOrUsedCamps($current_larp);
 	echo "<div id='camps'>\n";
 	foreach($camps as $camp) {
 	    print_house($camp);

@@ -57,10 +57,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 include "navigation.php";
 if ($type == "house") {
-    $house_array = House::getAllHouses();
+    $house_array = House::getAllHouses(true);
     $header = "Hus";
 } else {
-    $house_array = House::getAllCamps();
+    $house_array = House::getAllCamps(true);
     $header = "Lägerplatser";
 }
 
@@ -77,6 +77,7 @@ if ($type == "house") {
         if ($resultCheck > 0) {
             echo "<table id='houses' class='data'>";
             echo "<tr><th>Namn</th>";
+            echo "<th>Aktiv</th>";
             if ($type == "house") echo "<th>Komfortantal</th><th>Maxantal</th>";
             else echo "<th>Tältplatser</th>";
             echo "<th>Plats</th><th>Beskrivning</th><th>Kartpunkt</th>";
@@ -86,6 +87,9 @@ if ($type == "house") {
                 
                 echo "<tr>\n";
                 echo "<td><a href='view_house.php?id=" . $house->Id . "'>" . $house->Name . "</a></td>\n";
+                echo "<td>";
+                echo showStatusIcon($house->IsActive(),  "logic/toggle_house_active.php?houseId=$house->Id", "logic/toggle_house_active.php?houseId=$house->Id") . "\n";
+                echo "</td>";
 
                 if ($type == "house") echo "<td>$house->ComfortNumber</td><td>$house->MaxNumber</td>\n";
                 else echo "<td width='8%'>" . $house->NumberOfBeds . "</td>\n";

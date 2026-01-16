@@ -17,8 +17,8 @@ $zip = new ZipArchive;
 $zip->open($file, ZipArchive::OVERWRITE);
 
 
-//Skapa pdf med alla vanliga verifikationer
-$houses = House::getAllHouses();
+//Skapa pdf med allahusbrev
+$houses = House::getAllHouses(false);
 
 foreach ($houses as $house) {
     if (!empty(trim($house->NotesToUsers))) {

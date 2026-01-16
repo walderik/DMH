@@ -13,7 +13,7 @@ class House extends BaseModel{
     public $IsHouse = 0; //1= hus, 0=lägerplats
     public $NotesToUsers;
     public $History;
-    public $DeletedAt;
+    public $Active;
     public $InspectionNotes;
     public $Lat;
     public $Lon;
@@ -40,13 +40,13 @@ class House extends BaseModel{
         if (isset($arr['IsHouse'])) $this->IsHouse = $arr['IsHouse'];
         if (isset($arr['NotesToUsers'])) $this->NotesToUsers = $arr['NotesToUsers'];
         if (isset($arr['History'])) $this->History = $arr['History'];
-        if (isset($arr['DeletedAt'])) $this->DeletedAt = $arr['DeletedAt'];
+        if (isset($arr['Active'])) $this->Active = $arr['Active'];
         if (isset($arr['InspectionNotes'])) $this->InspectionNotes = $arr['InspectionNotes'];
         if (isset($arr['Lat'])) $this->Lat = $arr['Lat'];
         if (isset($arr['Lon'])) $this->Lon = $arr['Lon'];
         
         if (isset($this->ImageId) && $this->ImageId=='null') $this->ImageId = null;
-        if (isset($this->DeletedAt) && $this->DeletedAt=='null') $this->DeletedAt = null;
+        if (isset($this->Active) && $this->Active=='null') $this->Active = null;
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
@@ -57,10 +57,10 @@ class House extends BaseModel{
     # Update an existing house in db
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_house SET Name=?, NumberOfBeds=?, ComfortNumber=?, MaxNumber=?, PositionInVillage=?, Description=?, 
-                ImageId=?, IsHouse=?, NotesToUsers=?, History=?, DeletedAt=?, InspectionNotes=?, Lat=?, Lon=? WHERE Id = ?");
+                ImageId=?, IsHouse=?, NotesToUsers=?, History=?, Active=?, InspectionNotes=?, Lat=?, Lon=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->ComfortNumber, $this->MaxNumber, $this->PositionInVillage, $this->Description, 
-            $this->ImageId, $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Lat, $this->Lon, $this->Id))) {
+            $this->ImageId, $this->IsHouse, $this->NotesToUsers, $this->History, $this->Active, $this->InspectionNotes, $this->Lat, $this->Lon, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -73,10 +73,10 @@ class House extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_house (Name, NumberOfBeds, ComfortNumber, MaxNumber, PositionInVillage, Description, 
-            IsHouse, NotesToUsers, History, DeletedAt, InspectionNotes, Lat, Lon) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            IsHouse, NotesToUsers, History, Active, InspectionNotes, Lat, Lon) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->NumberOfBeds, $this->ComfortNumber, $this->MaxNumber, $this->PositionInVillage, $this->Description, 
-            $this->IsHouse, $this->NotesToUsers, $this->History, $this->DeletedAt, $this->InspectionNotes, $this->Lat, $this->Lon))) {
+            $this->IsHouse, $this->NotesToUsers, $this->History, $this->Active, $this->InspectionNotes, $this->Lat, $this->Lon))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -103,18 +103,35 @@ class House extends BaseModel{
     public function IsCamp() {
         return !$this->IsHouse();
     }
-  
+
+    public function IsActive() {
+        if ($this->Active==1) return true;
+        return false;
+    }
     
-    public static function getAllHouses() {
-        $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 AND DeletedAt IS NULL ORDER BY ".static::$orderListBy.";";
+    
+    public static function getAllHouses(bool $includeNotActive) {
+        if ($includeNotActive) $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 ORDER BY ".static::$orderListBy.";";
+        else $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 AND Active=1 ORDER BY ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array());
     }
     
-    public static function getAllCamps() {
-        $sql = "SELECT * FROM regsys_house WHERE IsHouse=0 AND DeletedAt IS NULL ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array());
-        
+    public static function getAllActiveOrUsedHouses(Larp $larp) {
+        $sql = "SELECT * FROM regsys_house WHERE IsHouse=1 AND (Active=1 OR Id IN (Select HouseId FROM regsys_housing WHERE LARPId=?))  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
+    
+    public static function getAllCamps(bool $includeNotActive) {
+        if ($includeNotActive) $sql = "SELECT * FROM regsys_house WHERE IsHouse=0 ORDER BY ".static::$orderListBy.";";
+        else $sql = "SELECT * FROM regsys_house WHERE IsHouse=0 AND Active=1 ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array());
+    }
+
+    public static function getAllActiveOrUsedCamps(Larp $larp) {
+        $sql = "SELECT * FROM regsys_house WHERE IsHouse=0 AND (Active=1 OR Id IN (Select HouseId FROM regsys_housing WHERE LARPId=?))  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
     
     public static function countHousesWithoutMapPoint() {
         $sql = "SELECT Count(1) as Num FROM regsys_house WHERE IsHouse=1 AND Lat IS NULL ORDER BY ".static::$orderListBy.";";
