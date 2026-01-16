@@ -58,7 +58,14 @@ ul.list {
         }
         ?>
 
+		<?php if ($house->getHousecaretakerForPerson($current_person) && !$house->IsActive())  { ?>
+		   	<div class='itemcontainer'>
+       			<div class='itemname'>Aktiv</div>
+				Huset får inte användas nu.
+			</div>
+			
 		
+		<?php } ?>
 	   <div class='itemcontainer'>
 		<?php 
 		if ($house->IsHouse()) {
