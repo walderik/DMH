@@ -1020,7 +1020,7 @@ class Person extends BaseModel{
     }
     
     public function getViewLink($print_age = true) {
-        Global $current_larp;
+        Global $current_larp, $current_person;
 
         if (!isset($current_larp)) return "<a href='view_person.php?id={$this->Id}'>{$this->Name}</a>";
          
@@ -1045,7 +1045,14 @@ class Person extends BaseModel{
         
         if ($print_age) $vperson .= " (".$this->getAgeAtLarp($current_larp)." år)"; 
         
-        if ($title != 'Kommer') return "<s>$vperson</s>  ".showStatusIcon(false, NULL, NULL, $title);
+        # Visa namnet genomstruket om personen i fråga inte kommer på aktuellt lajv
+        if ($title != 'Kommer') {
+            if ($_SESSION['navigation'] == Navigation::PARTICIPANT) {
+                return "$vperson  ".showStatusIcon(false, NULL, NULL, $title);
+            }
+            return "<s>$vperson</s>  ".showStatusIcon(false, NULL, NULL, $title);
+        }
+        
         return $vperson;
     }
     
