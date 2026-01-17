@@ -1045,7 +1045,14 @@ class Person extends BaseModel{
         
         if ($print_age) $vperson .= " (".$this->getAgeAtLarp($current_larp)." år)"; 
         
-        if ($title != 'Kommer') return "<s>$vperson</s>  ".showStatusIcon(false, NULL, NULL, $title);
+        # Visa namnet genomstruket om personen i fråga inte kommer på aktuellt lajv
+        if ($title != 'Kommer') {
+            if ($_SESSION['navigation'] == Navigation::PARTICIPANT) {
+                return "$vperson  ".showStatusIcon(false, NULL, NULL, $title);
+            }
+            return "<s>$vperson</s>  ".showStatusIcon(false, NULL, NULL, $title);
+        }
+        
         return $vperson;
     }
     
