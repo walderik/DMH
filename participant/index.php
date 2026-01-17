@@ -62,7 +62,6 @@ function openTab(evt, tabName) {
 		</div>
 	
 	<?php 
-	$items = array();
 	
 	//lägg till person
 	$addperson = "<div class='itemcontainer'>";
@@ -108,9 +107,6 @@ function openTab(evt, tabName) {
 	    $item .=  "</div>";
 	    $items[] = $item;
 
-	    //Sen lägg till person
-	    $items[] = $addperson;
-	    
     	//Sen alla andra
     	foreach ($persons as $person) {
     	    if ($person->Id == $current_person->Id) continue;
@@ -118,32 +114,24 @@ function openTab(evt, tabName) {
      	    $item .= "<form method='post' action='logic/select_person.php'>";
      	    $item .= "<input type='radio' onclick='submit()' id='PersonId_$person->Id' name='PersonId' value='$person->Id> ";
      	    $item .= "<label for='PersonId_$person->Id'>$person->Name</label>";
+     	    if (isset($current_larp)) {
+     	        if ($person->isRegistered($current_larp)) $item .= " (Anmäld)";
+     	        elseif ($person->isReserve($current_larp)) $item .= " (Står på reservlistan)";
+     	        else $item .= " (Inte anmäld)";
+     	    }
      	    $item .= "</form>";
      	    $item .=  "</div>";
      	    $items[] = $item;
     	}
-	} else {
-	    //Sen lägg till person
-	    $items[] = $addperson;
 	}
+	$items[] = $addperson;
 	
-	
- 
-    
-    if (sizeof($items) == 1) {
-        echo array_values($items)[0];
-    } else {
-        $counter = 0;
-        foreach ($items as $item) {
-            echo $item;
-            if ($counter++ == 1) {
-                
-                echo "<span id='more'>";
-            }
-        }
-        echo "</span>";
-        echo "<div class='showmorecontainer'><button id='morelesstxt' class='showmore unstyledbutton' type='button' onclick='morelessFunction()'>Visa fler &nbsp;<i class='fa-solid fa-chevron-down'></i></div></div></button></div>	</div>";
+
+    foreach ($items as $item) {
+        echo $item;
     }
+    echo "</div>";
+
 	?>
 
 	<?php 
