@@ -1020,7 +1020,7 @@ class Person extends BaseModel{
     }
     
     public function getViewLink($print_age = true) {
-        Global $current_larp, $current_person;
+        Global $current_larp;
 
         if (!isset($current_larp)) return "<a href='view_person.php?id={$this->Id}'>{$this->Name}</a>";
          
