@@ -518,7 +518,7 @@ include 'navigation.php';
 			    if (empty($selectableRoles)) $moreRoles = false;
 			    if (isset($operation) && ($operation="add") &&  (sizeof($selectableRoles) == 1)) $moreRoles = false;
 			    if ($moreRoles && (($numberOfRoles < $current_larp->NoRoles) || ($current_larp->NoRoles == 4))) {
-			        echo "<div class='center'><button class='button-18' onclick='Buttons(this)' name='Add' value=".($numberOfRoles+1)."><i class='fa-solid fa-plus' ></i> Lägg till karaktär</button></div>";
+			        echo "<div class='center'><button class='button-18' onclick='Buttons(this)' name='Add' value=".($numberOfRoles+1)."><i class='fa-solid fa-plus' ></i> Lägg till en till karaktär i anmälan</button></div>";
 			    }
 			}
 		?>

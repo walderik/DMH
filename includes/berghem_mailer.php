@@ -173,7 +173,7 @@ class BerghemMailer {
         $group_leader = $group->getPerson();
         if (is_null($group_leader)) return;
         $larp = $larp_group->getLARP();
-        $campaign = $larp->getCampaign();
+//         $campaign = $larp->getCampaign();
         
         $text  = "Gruppen $group->Name är nu anmäld för att vara med i lajvet $larp->Name<br>\n";
         if ($group_leader->Id != $sender->Id) {
@@ -249,7 +249,7 @@ class BerghemMailer {
         
         $larp = $registration->getLARP();
         $campaign = $larp->getCampaign();
-        $roles = $person->getRolesAtLarp($larp);
+//         $roles = $person->getRolesAtLarp($larp);
         
         
         $text  = "Din anmälan till lajvet $larp->Name har öppnats igen.<br>\n";

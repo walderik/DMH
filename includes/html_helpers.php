@@ -464,6 +464,10 @@ function linkify($str) {
 function advertismentIcon() {
     global $current_person, $current_larp;
     
+    if (!isset($current_person) || !isset($current_larp)) {
+        return;
+    }
+    
     # Visas inte alls om det inte finns annonstyper för lajet
     if (empty(AdvertismentType::isInUse($current_larp))) return;
     
@@ -479,10 +483,37 @@ function advertismentIcon() {
     echo  "<a href='advertisments.php'><i class='fa-solid fa-bullhorn'></i></a>";
 }
 
+# Visar "Du har fått email"-ikonen som röd om man som deltgare har nya email att läsa
 function emailIcon() {
     global $current_person, $current_larp;
     
-    $lastes_email;
+    if (!isset($current_person) || !isset($current_larp)) {
+        return;
+    }
+    
+    if ($_SESSION['navigation'] != Navigation::PARTICIPANT) { # Om man inte jobbar som "Vanlig deltagare"
+        echo "<a href='../common/mail_admin.php' class='expand_hide always_show'><i class='fa-solid fa-envelope'></i></a>";
+        return;
+    }
+    
+    if (is_null($current_person->LastMailSentAt)) {
+        echo "<a href='../common/mail_admin.php' class='expand_hide always_show'><i class='fa-solid fa-envelope'></i></a>";
+        return;
+    }
+    
+    if (is_null($current_person->MailCheckedAt)) {
+        echo "<a href='../common/mail_admin.php' class='expand_hide always_show'><font style='color:red'><i class='fa-solid fa-envelope'></i></font></a>";
+        return;
+    }
+    
+    $email_sent_at = new DateTime($current_person->LastMailSentAt);  
+    $email_checked_at = new DateTime($current_person->MailCheckedAt);
+
+    if ($email_sent_at > $email_checked_at) {
+        echo "<a href='../common/mail_admin.php' class='expand_hide always_show'><font style='color:red'><i class='fa-solid fa-envelope'></i></font></a>";
+    } else {
+        echo "<a href='../common/mail_admin.php' class='expand_hide always_show'><i class='fa-solid fa-envelope'></i></a>";
+    }
 }
 
 

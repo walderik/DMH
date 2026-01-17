@@ -18,7 +18,7 @@ class Person extends BaseModel{
     public $HealthComment;
     public $HasPermissionShowName = 1;
     public $WantIntriguesInPlainText = 0;
-    public $IsSubscribed = 1;
+    public $IsSubscribed = 1; # Anger om man skall skicka mail till personen eller inte
     public $UnsubscribeCode;
     public $MembershipCheckedAt;
     public $IsMember;
