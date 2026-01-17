@@ -62,18 +62,23 @@ class Email extends BaseModel{
     # Attachments skall vara en array med namnen på filerna som nyckel.
     # Just nu tillåter vi bara pdf:er som bilagor.
     public static function normalCreate($ToPersonId, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId) {
-        
-
         $person = Person::loadById($ToPersonId);
         $ToEmail = $person->Email;
         $name = $person->Name;
         
-        if ($person->isSubscribed()) $email = Email::createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
-        else $email = Email::createMessage($name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
+        if ($person->isSubscribed()) { # Om en Person valt att få email
+            $email = Email::createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
+        }
+        else { # Eller om man valt att bara se meddelanden i systemet och hålla koll på när de kommer själv
+            $email = Email::createMessage($name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
+        }
         
-        $email->connectToPerson($ToPersonId);
+        $email->connectToPerson($person); # Koppla användaren och mailet
      }
 
+     
+     # Används för kommunikation med User, alltså inloggningen, inte mail till en Person
+     # Eller direkt till en epostadress utan koppling till Person
      public static function normalCreateSimple($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId) {
          Email::createMail($ToEmail, $name, $greeting, $Subject, $Text, $senderText, $attachments, $noOfDaysKept, $larp, $senderId);
       }
@@ -512,14 +517,19 @@ class Email extends BaseModel{
         
     }
     
-    public function connectToPerson($personId) {
-        $stmt = $this->connect()->prepare("INSERT INTO ".
-            "regsys_email_person (EmailId, PersonId) VALUES (?,?);");
-        if (!$stmt->execute(array($this->Id, $personId))) {
+    # Kopplar mailet eller meddelandet till en person så att det faktiskt går till en i vår databas.
+    public function connectToPerson(Person $person) {
+        $stmt = $this->connect()->prepare("INSERT INTO regsys_email_person (EmailId, PersonId) VALUES (?,?);");
+        if (!$stmt->execute(array($this->Id, $person->Id))) {
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
             exit();
         }
         $stmt = null;
+        
+        # Markera för Person att den fått nytt email
+        $now = new Datetime();
+        $person->LastMailSentAt = date_format($now,"Y-m-d H:i:s");
+        $person->update();
     }
 }

@@ -9,9 +9,7 @@
 	
 	include '../common/navigation_beginning.php';
 	
-	if (isset($current_person) && isset($current_larp)) {
-	    advertismentIcon();
-	}
+	advertismentIcon();
 	
 	if (isset($current_person)) {
 	    $houses = $current_person->housesOf();

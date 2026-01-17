@@ -59,5 +59,7 @@
 	  
 	  <?php 
       echo "<a href='".$location."index.php' class='expand_hide always_show'><i class='fa-solid fa-house'></i></a>";
-      echo "<a href='../common/mail_admin.php' class='expand_hide always_show'><i class='fa-solid fa-envelope'></i></a>";
+      
+      emailIcon();
+      
       ?>
