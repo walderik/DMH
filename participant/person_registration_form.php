@@ -134,6 +134,41 @@ else {
 
 $age = $current_person->getAgeAtLarp($current_larp);
 
+?>
+<script>
+    function myslajvarecheck() {
+		const select = document.getElementById("roleId");
+    	const option = select.options[select.selectedIndex];
+
+    	const isMyslajvare = option.dataset.info;
+
+ 		var myslajvareFields = document.getElementsByClassName("myslajvare");
+		for (var i = 0; i < myslajvareFields.length; i++) {
+			if (isMyslajvare == 1) {
+    			myslajvareFields[i].classList.remove('hidden');
+    			myslajvareFields[i].classList.add('shown');
+			} else {
+    			myslajvareFields[i].classList.remove('shown');
+    			myslajvareFields[i].classList.add('hidden');
+			}
+		}
+		var ejmyslajvareFields = document.getElementsByClassName("ejmyslajvare");
+		for (var i = 0; i < ejmyslajvareFields.length; i++) {
+			if (isMyslajvare == 1) {
+    			ejmyslajvareFields[i].classList.remove('shown');
+    			ejmyslajvareFields[i].classList.add('hidden');
+			} else {
+    			ejmyslajvareFields[i].classList.remove('hidden');
+    			ejmyslajvareFields[i].classList.add('shown');
+			}
+		}
+    }
+
+</script>
+
+
+
+<?php 
 
 function printEditableCharacter($selectionArr, $selectedRoleId, $intrigueIdeas, $chosenIntrigueTypes, $number, $moreThanOne) {
     global $current_larp;
@@ -160,8 +195,39 @@ function printEditableCharacter($selectionArr, $selectedRoleId, $intrigueIdeas, 
         true,
         false,
         false);
-    selectionDropDownByArray('roleId' , $selectionArr, true, $selectedRoleId);
+    
+    echo "<select name='roleId' id='roleId' onchange='myslajvarecheck()'>";
+    foreach ($selectionArr as $role) {
+        echo "<option value='$role->Id' ";
+        if ($role->isMysLajvare()) echo "data-info='1'";
+        else  echo "data-info='0'";
+        echo ">$role->Name</option>";
+    }
+    echo "</select>";
+    
     print_participant_question_end(false);
+    
+    
+    $firstRole = $selectionArr[0];
+    echo "<div class='myslajvare ";
+    if ($firstRole->isMysLajvare()) echo "shown";
+    else echo "hidden";
+    echo "'>";
+    print_participant_question_start(
+        "Intrigideer",
+        "",
+        false,
+        false,
+        false);
+    echo "Vill vara i bakgrunden";
+    print_participant_question_end(false);
+    echo "</div>";
+    
+    
+    echo "<div class='ejmyslajvare ";
+    if ($firstRole->isMysLajvare()) echo "hidden";
+    else echo "shown";
+    echo "'>";
     
     if (IntrigueType::isInUseForRole($current_larp)) {
         print_participant_question_start(
@@ -184,12 +250,13 @@ function printEditableCharacter($selectionArr, $selectedRoleId, $intrigueIdeas, 
         false,
         false,
         false);
+    echo "</div>";
     
     if ($moreThanOne) echo "</div>";
 }
 
 
-function printNonEditableCharacter($selectedRoleName, $selectedRoleId, $intrigueIdeas, $chosenIntrigueTypes, $number) {
+function printNonEditableCharacter($selectedRoleName, $selectedRoleId, $isMyslajvare, $intrigueIdeas, $chosenIntrigueTypes, $number) {
     global $current_larp;
     echo "<div class='character'>";
     echo "<a name='role".$number."'></a>";
@@ -212,37 +279,48 @@ function printNonEditableCharacter($selectedRoleName, $selectedRoleId, $intrigue
     print_participant_question_end(false);
     echo "<input type = 'hidden' id='roleId$number' name='roleId$number' value='$selectedRoleId'>";
     
-    $selectedIntrigtypeNames = array();
-    if (!empty($chosenIntrigueTypes)) {
-        foreach ($chosenIntrigueTypes as $chosenIntrigueType) {
-            echo "<input type = 'hidden' id='IntrigueType".$number."[]' name='IntrigueType".$number."[]' value='$chosenIntrigueType'>";
-        }
-        foreach ($chosenIntrigueTypes as $chosenIntrigueType) {
-            $selectedIntrigtypeNames[] = IntrigueType::loadById($chosenIntrigueType)->Name;
-        }
-    }
-    if (IntrigueType::isInUseForRole($current_larp)) {
+    if ($isMyslajvare) {
         print_participant_question_start(
-            "Intrigtyper",
+            "Intrigideer",
             "",
             false,
             false,
             false);
-        echo implode(", ", $selectedIntrigtypeNames);
+        echo "Vill vara i bakgrunden";
         print_participant_question_end(false);
+        
+    } else {
+            $selectedIntrigtypeNames = array();
+        if (!empty($chosenIntrigueTypes)) {
+            foreach ($chosenIntrigueTypes as $chosenIntrigueType) {
+                echo "<input type = 'hidden' id='IntrigueType".$number."[]' name='IntrigueType".$number."[]' value='$chosenIntrigueType'>";
+            }
+            foreach ($chosenIntrigueTypes as $chosenIntrigueType) {
+                $selectedIntrigtypeNames[] = IntrigueType::loadById($chosenIntrigueType)->Name;
+            }
+        }
+        if (IntrigueType::isInUseForRole($current_larp)) {
+            print_participant_question_start(
+                "Intrigtyper",
+                "",
+                false,
+                false,
+                false);
+            echo implode(", ", $selectedIntrigtypeNames);
+            print_participant_question_end(false);
+        }
+    
+        
+        print_participant_question_start(
+            "Intrigideer",
+            "",
+            false,
+            false,
+            false);
+        echo nl2br(htmlspecialchars($intrigueIdeas));
+        print_participant_question_end(false);
+        echo "<input type = 'hidden' id='IntrigueIdeas".$number."' name='IntrigueIdeas".$number."' value='$intrigueIdeas'>";
     }
-
-    
-    print_participant_question_start(
-        "Intrigideer",
-        "",
-        false,
-        false,
-        false);
-    echo nl2br(htmlspecialchars($intrigueIdeas));
-    print_participant_question_end(false);
-    echo "<input type = 'hidden' id='IntrigueIdeas".$number."' name='IntrigueIdeas".$number."' value='$intrigueIdeas'>";
-    
     
     
     echo "</div>";
@@ -314,6 +392,7 @@ include 'navigation.php';
         }
         
     }
+    
 </script>
 
 
@@ -504,7 +583,7 @@ include 'navigation.php';
 			            if (!empty($roledata[0])) {
     			             $role = Role::loadById($roledata[0]);
     			             if ($roleToEdit == $key) printEditableCharacter(array_merge(array($role), $selectableRoles), $role->Id, $roledata[1], $roledata[2], $key, true);
-    			             else printNonEditableCharacter($role->Name, $role->Id, $roledata[1], $roledata[2], $key);
+    			             else printNonEditableCharacter($role->Name, $role->Id, $role->isMysLajvare(), $roledata[1], $roledata[2], $key);
     			             
 			            } else {
 			                if ($roleToEdit == $key) printEditableCharacter($selectableRoles, null, "", null, $key, true);
