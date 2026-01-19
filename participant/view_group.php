@@ -62,18 +62,18 @@ function print_role(Role $role, Group $group, $isComing) {
     echo "</div>\n";
 
     
-    echo "Yrke: ".$role->Profession . "<br>";
-    if ($isPc && $role->isMain($current_larp)==0) {
-        echo "Sidokaraktär<br>";
+    echo "<b>Yrke:</b> ".$role->Profession . "<br>";
+    if ($isComing && $isPc && $role->isMain($current_larp)==0) {
+        echo "<b>Sidokaraktär</b><br>";
     }
 
     
 
     if ($isPc) {
-        echo "Spelas av ";
         $person =  $role->getPerson();
-        $person->Name;
-        echo "<br>";
+        if ($person->hasPermissionShowName()) {
+            echo "<b>Spelas av:</b> $person->Name<bar>";
+        }
     }
 
     
