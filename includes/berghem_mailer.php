@@ -150,7 +150,6 @@ class BerghemMailer {
         $text .= "Vi kommer att gå igenom karaktärerna du har anmält och godkänna dom för spel.<br>\n";
         $text .= "<br>\n";
         $text .= "De karaktärer du har anmält är:<br>\n";
-        $text .= "<br>\n";
         foreach ($roles as $role) {
             $text .= '* '.$role->Name;
             if ($role->isMain($larp)) {
@@ -303,7 +302,6 @@ class BerghemMailer {
         $text  = "Lajvet $larp->Name är fullt, men du står nu på reservlistan.<br>".
                  "Betala inte in något nu. Om du får en plats på lajvet kommer du att få ett mail med information om hur mycket och vart du ska betala.<br><br>\n";
         $text .= "De karaktärer du har anmält är:<br>\n";
-        $text .= "<br>\n";
         foreach ($roles as $role) {
             $text .= '* '.$role->Name;
             if ($role->isMain($larp)) {
