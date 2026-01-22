@@ -252,6 +252,27 @@ del {
 			</tr>
 			
 			
+			<?php if (SuperPowerActive::isInUse($current_larp)) {
+		    $newPowers = commaStringFromArrayObject($role->getSuperPowerActives());
+		    $oldPowers = commaStringFromArrayObject($oldRoleCopy->getSuperPowerActives());
+		    ?>
+			<tr>
+				<td valign="top" class="header">Superkraft, aktiv</td>
+				<?php echoDiff($oldPowers, $newPowers); ?>
+			</tr>
+			<?php }?>
+
+			<?php if (SuperPowerPassive::isInUse($current_larp)) {
+		    $newPowers = commaStringFromArrayObject($role->getSuperPowerPassives());
+		    $oldPowers = commaStringFromArrayObject($oldRoleCopy->getSuperPowerPassives());
+		    ?>
+			<tr>
+				<td valign="top" class="header">Superkraft, passiv</td>
+				<?php echoDiff($oldPowers, $newPowers); ?>
+			</tr>
+			<?php }?>
+			
+			
 		<?php }?>
 
 		</table>		
