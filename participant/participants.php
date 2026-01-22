@@ -131,7 +131,7 @@ function print_role($role) {
 		$isMareld = $current_larp->getCampaign()->is_me();
 		$groups = Group::getAllVisible($current_larp);
 		foreach ($groups as $group) {
-		    $roles = Role::getAllComingApprovedMainRolesInGroup($group, $current_larp);
+		    $roles = Role::getAllSpotAtLarpApprovedMainRolesInGroup($group, $current_larp);
 
 		    
             if (!empty($roles)) {
@@ -170,7 +170,7 @@ function print_role($role) {
 		
 		
 		/* Karaktärer utan grupp */	
-		$roles = Role::getAllComingApprovedMainRolesWithoutGroup($current_larp);
+		$roles = Role::getAllSpotAtLarpApprovedMainRolesWithoutGroup($current_larp);
 		
 
 		if ((!empty($roles) && count($roles)!=0)) {
