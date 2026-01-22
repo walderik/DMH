@@ -5,11 +5,28 @@ require 'header.php';
 $admin = false;
 if (isset($_GET['admin'])) $admin = true;
 
+
+$registration = Registration::newWithDefault();
+$guardianInfo = "";
+$content = 0;
+$chooseParticipationDates = array();
+$officialType = array();
+$approval = 0;
+$rules = 0;
+
+$roleToEdit = 1;
+$roledatas = array();
+
+$numberOfRoles = 1;
+
+
+
+
 if ($admin) {
-    $roles = array();
+    $selectableRoles = array();
     $role = Role::newWithDefault();
     $role->Name = "Karaktärens namn";
-    $roles[] = $role;
+    $selectableRoles[] = $role;
 }
 else {
     if (!$current_larp->mayRegister()) {
@@ -48,18 +65,6 @@ else {
     
     
     
-    $registration = Registration::newWithDefault();
-    $guardianInfo = "";
-    $content = 0;
-    $chooseParticipationDates = array();
-    $officialType = array();
-    $approval = 0;
-    $rules = 0;
-    
-    $roleToEdit = 1;
-    $roledatas = array();
-    
-    $numberOfRoles = 1;
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $registration = Registration::newFromArray($_POST);
