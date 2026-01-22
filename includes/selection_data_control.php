@@ -21,6 +21,8 @@ function getObjectName($name) {
         case "shiptype" : return "Typ av skepp";
         case "belief" : return "Hur troende";
         case "rolefunction" : return "Karaktärens funktion";
+        case "superpoweractive" : return "Superkraft, aktiv";
+        case "superpowerpassive" : return "Superkraft, passiv";
     }
 }
 
@@ -45,6 +47,8 @@ function getObjectType($name) {
         case "shiptype" : return "ShipType";
         case "belief" : return "Belief";
         case "rolefunction" : return "RoleFunction";
+        case "superpoweractive" : return "SuperPowerActive";
+        case "superpowerpassive" : return "SuperPowerPassive";
     }
 }
 
@@ -59,6 +63,8 @@ function getAllTypesForRoles(Larp $larp) {
     if (Religion::isInUse($larp)) $types["Religion"] = "Religion";
     if (Belief::isInUse($larp)) $types["Belief"] = "Hur troende";
     if (RoleFunction::isInUse($larp)) $types["RoleFunction"] = "Karaktärens funktion";
+    if (SuperPowerActive::isInUse($larp)) $types["SuperPowerActive"] = "Superkraft, aktiv";
+    if (SuperPowerPassive::isInUse($larp)) $types["SuperPowerPassive"] = "Superkraft, passiv";
     
     return $types;
 }

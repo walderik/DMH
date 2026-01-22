@@ -198,6 +198,59 @@ class RoleApprovedCopy extends BaseModel {
         $stmt = null;
     }
     
+    public function saveAllSuperPowerActives($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_superpoweractive_role (SuperPowerActiveId, RoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllSuperPowerActives() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_superpoweractive_role WHERE RoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function saveAllSuperPowerPassives($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_superpowerpassive_role (SuperPowerPassiveId, RoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllSuperPowerPassives() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_superpowerpassive_role WHERE RoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    
+    
+    
     public function isMysLajvare() {
         if ($this->NoIntrigue == 1) return true;
         return false;
@@ -248,7 +301,9 @@ class RoleApprovedCopy extends BaseModel {
         
         $roleCopy->saveAllAbilities($role->getSelectedAbilityIds());
         $roleCopy->saveAllRoleFunctions($role->getSelectedRoleFunctionIds());
-        
+
+        $roleCopy->saveAllSuperPowerActives($role->getSelectedActiveSuperPowerIds());
+        $roleCopy->saveAllSuperPowerPassives($role->getSelectedPassiveSuperPowerIds());
     }
     
     public static function getOldRole($roleId) {
@@ -260,6 +315,8 @@ class RoleApprovedCopy extends BaseModel {
         $roleCopy = RoleApprovedCopy::loadById($id);
         $roleCopy->deleteAllAbilities();
         $roleCopy->deleteAllRoleFunctions();
+        $roleCopy->deleteAllSuperPowerActives();
+        $roleCopy->deleteAllSuperPowerPassives();
         parent::delete($id);
     }
     

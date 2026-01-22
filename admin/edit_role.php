@@ -240,6 +240,18 @@ include 'navigation.php';
 			<?php }?>
 
 
+			<?php if (SuperPowerActive::isInUse($current_larp)) {?>
+    			<tr class="intrigue"><td valign="top" class="header">Superkraft, aktiv</td>
+    			<td><?php selectionByArray('ActiveSuperPowers' , SuperPowerActive::allActive($current_larp), false, true, $role->getSelectedActiveSuperPowerIds());?></td></tr>
+ 			<?php }?>
+
+			<?php if (SuperPowerPassive::isInUse($current_larp)) {?>
+    			<tr class="intrigue"><td valign="top" class="header">Superkraft, passiv</td>
+    			<td><?php selectionByArray('ActiveSuperPowers' , SuperPowerPassive::allActive($current_larp), true, false, $role->getSelectedPassiveSuperPowerIds());?></td></tr>
+ 			<?php }?>
+
+
+
 			<tr class="intrigue"><td valign="top" class="header">Mörk hemlighet
     			<?php if ($role->isPC($current_larp)) {?>
     				&nbsp;<font style="color:red">*</font>

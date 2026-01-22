@@ -138,6 +138,14 @@ if ($role->isMysLajvare()) {
 			<tr><td valign="top" class="header">Funktioner förklaring</td><td><?php echo $role->RoleFunctionComment;?></td></tr>
 			<?php }?>
 
+			<?php if (SuperPowerActive::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Superkraft, aktiv</td><td><?php echo commaStringFromArrayObject($role->getSuperPowerActives());?></td></tr>
+			<?php }?>
+
+			<?php if (SuperPowerPassive::isInUse($current_larp)) {?>
+			<tr><td valign="top" class="header">Superkraft, passiv</td><td><?php echo commaStringFromArrayObject($role->getSuperPowerPassives());?></td></tr>
+			<?php }?>
+
 
 			<?php 
 			$magician = Magic_Magician::getForRole($role);

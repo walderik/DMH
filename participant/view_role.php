@@ -60,7 +60,7 @@ if($isMob){
 }
 $temp=0;
 
-
+$campaign = $current_larp->getCampaign();
 
 
 include 'navigation.php';
@@ -130,10 +130,12 @@ include 'navigation.php';
 				</div>
 		<?php }?>
 
+	   <?php if (!$campaign->is_hfs()) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Yrke</div>
 		<?php echo $role->Profession;?>
 		</div>
+		<?php } ?>
 		
 		<?php if ($isPc || $isAssignedToMe) { ?>
 	   <div class='itemcontainer'>
@@ -142,10 +144,12 @@ include 'navigation.php';
 	   </div>
 	   <?php } ?>
 
+		<?php if ($campaign->hasGroups()) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Beskrivning för gruppen</div>
 		<?php echo nl2br(htmlspecialchars($role->DescriptionForGroup));?>
 		</div>
+		<?php  } ?>
 		
 		<?php if ($isPc || !empty($role->DescriptionForOthers)) { ?>
 	   <div class='itemcontainer'>
@@ -190,11 +194,13 @@ include 'navigation.php';
 			   <?php } ?>
 			<?php } ?>
 
+	   	  <?php if (!$campaign->is_hfs()) { ?>
 		  <?php if ($isPc ||  !empty($role->ReasonForBeingInSlowRiver)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Varför befinner sig karaktären på platsen?</div>
 		   <?php echo nl2br($role->ReasonForBeingInSlowRiver);?>
 		   </div>
+		   <?php } ?>
 		   <?php } ?>
 			
 			<?php if (RoleFunction:: isInUse($current_larp)) {?>
@@ -250,6 +256,7 @@ include 'navigation.php';
 			   <?php } ?>
 			<?php }?>
 
+	   		<?php if (!$campaign->is_hfs()) { ?>
 			<?php if ($isPc ||  !empty($role->DarkSecret)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Mörk hemlighet</div>
@@ -263,7 +270,7 @@ include 'navigation.php';
 		   <?php echo nl2br(htmlspecialchars($role->DarkSecretIntrigueIdeas));?>
 		   </div>
 		   <?php } ?>
-			
+			<?php } ?>
 			
 			<?php if (!empty($larp_role)) {?>
     			<?php if ($isPc) { ?>	
@@ -282,6 +289,7 @@ include 'navigation.php';
     		   <?php } ?>
 		   <?php }?>
 
+	   	   <?php if (!$campaign->is_hfs()) { ?>
 		   <?php if ($isPc ||  !empty($role->NotAcceptableIntrigues)) { ?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Saker karaktären inte vill spela på</div>
@@ -295,6 +303,7 @@ include 'navigation.php';
 		   <?php echo nl2br(htmlspecialchars($role->CharactersWithRelations));?>
 		   </div>
 		   <?php } ?>
+		   <?php } ?>
 
 			<?php if (Wealth::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
@@ -306,13 +315,15 @@ include 'navigation.php';
 				</div>
 			<?php } ?>
 			
+			<?php if (!$campaign->is_hfs()) { ?>
 		   <?php if ($isPc ||  !empty($role->Birthplace)) { ?>	
 		   <div class='itemcontainer'>
            <div class='itemname'>Var är karaktären född?</div>
 		   <?php echo $role->Birthplace;?>
 		   </div>
 		   <?php } ?>
-			
+		   <?php } ?>
+		   
 			<?php if (PlaceOfResidence::isInUse($current_larp)) {?>
 				<div class='itemcontainer'>
                	<div class='itemname'>Var bor karaktären?</div>
@@ -323,7 +334,7 @@ include 'navigation.php';
 				</div>
 			<?php } ?>
 
-			<?php if (!empty($role->RoleFunctionComment)) {?>
+			<?php if (!empty($role->OtherInformation)) {?>
 		   <div class='itemcontainer'>
            <div class='itemname'>Annan information</div>
 		   <?php echo nl2br(htmlspecialchars($role->OtherInformation));?>
@@ -331,6 +342,37 @@ include 'navigation.php';
 		   <?php } ?>
 
 		<?php }?>
+		
+	   	<?php if ($campaign->is_hfs() && !empty($role->SuperHeroName)) { ?>
+	   	
+	   	   		<div class='itemcontainer'>
+               	<div class='itemname'>Superhjältenamn</div>
+        		<?php echo $role->SuperHeroName;?>
+        		</div>
+	   	
+   				<?php if (SuperPowerActive::isInUse($current_larp)) {?>
+				<div class='itemcontainer'>
+               	<div class='itemname'>Superkraft, aktiv</div>
+               	<?php 
+               	$powers = $role->getSuperPowerActives();
+               	if (empty($powers)) echo "Ingen";
+               	else echo commaStringFromArrayObject($powers);
+               	?>		   
+				</div>
+			<?php }?>			
+   				<?php if (SuperPowerPassive::isInUse($current_larp)) {?>
+				<div class='itemcontainer'>
+               	<div class='itemname'>Superkraft, passiv</div>
+               	<?php 
+               	$powers = $role->getSuperPowerPassives();
+               	if (empty($powers)) echo "Ingen";
+               	else echo commaStringFromArrayObject($powers);
+               	?>		   
+				</div>
+			<?php }?>			
+	   	
+	   	<?php }?>
+		
 		</div>
 		
 		<?php 

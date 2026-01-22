@@ -39,6 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['RoleFunctionId'])) {
         $role->saveAllRoleFunctions($_POST['RoleFunctionId']);
     }
+    $role->deleteAllSuperPowerActives();
+    if (isset($_POST['SuperPowerActiveId'])) {
+        $role->saveAllSuperPowerActives($_POST['SuperPowerActiveId']);
+    }
+    $role->deleteAllSuperPowerPassives();
+    if (isset($_POST['SuperPowerPassiveId'])) {
+        $role->saveAllSuperPowerActives($_POST['SuperPowerPassiveId']);
+    }
     
         
     if (isset($_POST['Referer']) && $_POST['Referer'] != "") {

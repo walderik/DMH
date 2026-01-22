@@ -216,23 +216,24 @@ include 'navigation.php';
 		    true,
 		    false);
 		
-		
-		$description = "Vad jobbar karaktären med för att överleva?";
-		if ($isPc) {
-		    $description.="<br>".
-		  		    "Vill du ha ett yrke som kan innebära en central karaktär i lajvet, 
-		          så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.<br>
-		          Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta 
-		          spela att din karaktär har det yrket. ";
+		if (!$campaign->is_hfs()) {
+    		$description = "Vad jobbar karaktären med för att överleva?";
+    		if ($isPc) {
+    		    $description.="<br>".
+    		  		    "Vill du ha ett yrke som kan innebära en central karaktär i lajvet, 
+    		          så vill vi helst att du först kontaktar arrangörerna innan du anmäler den.<br>
+    		          Har din karaktär tidigare haft en viktigare post har du naturligtvis oftast förtur till att få fortsätta 
+    		          spela att din karaktär har det yrket. ";
+    		}
+    		print_participant_text_input(
+    		    "Yrke",
+    		    $description,
+    		    "Profession",
+    		    $role->Profession,
+    		    "maxlength='50'",
+    		    true,
+    		    false);
 		}
-		print_participant_text_input(
-		    "Yrke",
-		    $description,
-		    "Profession",
-		    $role->Profession,
-		    "maxlength='50'",
-		    true,
-		    false);
 		
 		if ($isPc) {
            $description = "Beskriv allt om karaktären som arrangörerna behöver veta.<br>
@@ -256,20 +257,22 @@ include 'navigation.php';
 	      false);
 
 
-		$description = "Vad vet gruppen om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar.
-		      Gärna roliga anekdoter från förr. Och vad de i gruppen gillar med karaktären, eller inte gillar.
-		      Ju mer ni vet om varandra desto roligare spel kan ni få i gruppen.";
-		if ($isPc) {
-	       $description .= "<br><br>Efter att du är anmäld kan du gå in och titta på gruppen så får du se de andra som är anmälda och vad de har skrivit om sig. ";
-		}
-		print_participant_textarea(
-		    "Beskrivning för gruppen",
-		    $description,
-		    "DescriptionForGroup",
-		    $role->DescriptionForGroup,
-		    "rows='4' maxlength='15000'",
-		    !$isPc,
-		    false);
+	  if ($campaign->hasGroups()) {
+    		$description = "Vad vet gruppen om karaktären? Skriv så mycket du kan så att ni kan lära känna varandra i gruppen innan lajvet börjar.
+    		      Gärna roliga anekdoter från förr. Och vad de i gruppen gillar med karaktären, eller inte gillar.
+    		      Ju mer ni vet om varandra desto roligare spel kan ni få i gruppen.";
+    		if ($isPc) {
+    	       $description .= "<br><br>Efter att du är anmäld kan du gå in och titta på gruppen så får du se de andra som är anmälda och vad de har skrivit om sig. ";
+    		}
+    		print_participant_textarea(
+    		    "Beskrivning för gruppen",
+    		    $description,
+    		    "DescriptionForGroup",
+    		    $role->DescriptionForGroup,
+    		    "rows='4' maxlength='15000'",
+    		    !$isPc,
+    		    false);
+	  }
 		
 	    $description = "Vad är allmänt känt om karaktären? Beskriv sådant som de flesta vet om eller kan ha hört om karaktären. 
             Ju mer du skriver deso troligare är det att andra kan hitta beröringspunkter mellan karaktärerna och då blir det roligare spel.";
@@ -290,34 +293,36 @@ include 'navigation.php';
 	        false);
 	    
   
-	    if ($role->isNPC($current_larp)) {  
-		    echo "<input type='hidden' id='GroupId' name='GroupId' value='$role->GroupId'>";
-		} else {
-		$description = "Finns inte din grupp med på anmälan ska du kontakta den som är ansvarig för din grupp och se till att den är anmäld innan du själv anmäler dig.    
-                Efter att gruppen är anmäld måste den godkännas av arrangörerna innan den syns här. Om det är ett tag sedan gruppen anmäldes och den 
-                fortfarande inte syns får gruppledaren kontakta arrangörerna.<br>
-                Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i 
-                det <a href='group_form.php'>här formuläret</a>.
-                <br><br>
-                Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste</strong> då ändra den efter att gruppen är anmäld och 
-                innan du anmäler dig så att karaktären kommer med i gruppen. Ändra den gör du genom att du klickar på 
-                namnet på karaktären från huvudsidan.";
-		    
-		$group = $role->getGroup();
-		    print_participant_question_start(
-		    	"Vilken grupp är karaktären med i?", 
-		    	$description, 
-		    	false, 
-		        false,
-		        empty($group));
-
-        	
-        	$groupName = "";
-        	if (isset($group)) $groupName = $group->Name;
-        	selectionDropDownByArray('GroupId', Group::getAllChoosable($current_larp), false, $role->GroupId, $groupName);
-        	print_participant_question_end(false);
-
-		}
+	    if ($campaign->hasGroups()) {
+    	    if ($role->isNPC($current_larp)) {  
+    		    echo "<input type='hidden' id='GroupId' name='GroupId' value='$role->GroupId'>";
+    		} else {
+    		$description = "Finns inte din grupp med på anmälan ska du kontakta den som är ansvarig för din grupp och se till att den är anmäld innan du själv anmäler dig.    
+                    Efter att gruppen är anmäld måste den godkännas av arrangörerna innan den syns här. Om det är ett tag sedan gruppen anmäldes och den 
+                    fortfarande inte syns får gruppledaren kontakta arrangörerna.<br>
+                    Anmäl dig bara till en grupp om du har fått ok på det från gruppansvarig. Om du vill skapa en egen grupp gör du det i 
+                    det <a href='group_form.php'>här formuläret</a>.
+                    <br><br>
+                    Om gruppen saknas kan du fortfarande spara din karaktär. Men du <strong>måste</strong> då ändra den efter att gruppen är anmäld och 
+                    innan du anmäler dig så att karaktären kommer med i gruppen. Ändra den gör du genom att du klickar på 
+                    namnet på karaktären från huvudsidan.";
+    		    
+    		$group = $role->getGroup();
+    		    print_participant_question_start(
+    		    	"Vilken grupp är karaktären med i?", 
+    		    	$description, 
+    		    	false, 
+    		        false,
+    		        empty($group));
+    
+            	
+            	$groupName = "";
+            	if (isset($group)) $groupName = $group->Name;
+            	selectionDropDownByArray('GroupId', Group::getAllChoosable($current_larp), false, $role->GroupId, $groupName);
+            	print_participant_question_end(false);
+    
+    		}
+	    }
   
 		if (Race::isInUse($current_larp)) {
 		    print_participant_question_start(
@@ -338,8 +343,8 @@ include 'navigation.php';
 			    false,
 			    false);
 		}
-			
-		if ($isPc) { 
+
+		if (!$campaign->is_hfs() && $isPc) { 
 		    print_participant_question_start(
 		        "Vill du hålla dig i bakgrunden?",
 		        "Vill du lajva i bakgrunden, alltså inte få några skrivna intriger eller bli involverad i andras intriger? 
@@ -349,15 +354,16 @@ include 'navigation.php';
 		        false);
 		    
 		    ?>	
-
-    	<input type="radio" id="myslajvare_yes" name="NoIntrigue" value="1" onclick="handleRadioClick()" <?php if ($role->isMysLajvare()) echo 'checked="checked"'?>>
-    	<label for="myslajvare_yes">Ja</label><br>
-    	<input type="radio" id="myslajvare_no" name="NoIntrigue" value="0" onclick="handleRadioClick()"<?php if (!$role->isMysLajvare()) echo 'checked="checked"'?>>
-    	<label for="myslajvare_no">Nej</label>
-    	
-		<?php 
+        	<input type="radio" id="myslajvare_yes" name="NoIntrigue" value="1" onclick="handleRadioClick()" <?php if ($role->isMysLajvare()) echo 'checked="checked"'?>>
+        	<label for="myslajvare_yes">Ja</label><br>
+        	<input type="radio" id="myslajvare_no" name="NoIntrigue" value="0" onclick="handleRadioClick()"<?php if (!$role->isMysLajvare()) echo 'checked="checked"'?>>
+        	<label for="myslajvare_no">Nej</label>
+        	
+    		<?php 
 		  print_participant_question_end(true);
 		}   
+		
+		
 		
 		if (LarperType::isInUse($current_larp)) {
 		    print_participant_question_start(
@@ -414,14 +420,16 @@ include 'navigation.php';
 		        true);
         } 
         
-        print_participant_text_input(
-		    "Var är karaktären född?",
-		    "Beskriv platsen om den inte är känd eller om den är relevant för rollen.",
-		    "Birthplace",
-		    $role->Birthplace,
-		    "size ='100' maxlength='100'",
-            $isPc,
-		    true);
+        if (!$campaign->is_hfs()) {
+            print_participant_text_input(
+    		    "Var är karaktären född?",
+    		    "Beskriv platsen om den inte är känd eller om den är relevant för rollen.",
+    		    "Birthplace",
+    		    $role->Birthplace,
+    		    "size ='100' maxlength='100'",
+                $isPc,
+    		    true);
+        }
 
 		if (PlaceOfResidence::isInUse($current_larp)) {
 		    print_participant_question_start(
@@ -434,32 +442,34 @@ include 'navigation.php';
 		    print_participant_question_end($isPc);
 		}
 		
-		print_participant_textarea(
-		    "Relationer med andra",
-		    "Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för karaktären och mycket kort hur vi kan ge spel på dessa karaktärer.",
-		    "CharactersWithRelations",
-		    $role->CharactersWithRelations,
-		    "rows='4' maxlength='60000'",
-		    $isPc,
-		    true);
-
-		if ($isPc) {
-		    $headline = "Varför befinner sig karaktären på platsen?";
-		    $description = "Varför är karaktären på plats? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?";
+		if (!$campaign->is_hfs()) {
+    		print_participant_textarea(
+    		    "Relationer med andra",
+    		    "Tre karaktärer (på lajvet eller som bakgrundskaraktärer) som är viktiga för karaktären och mycket kort hur vi kan ge spel på dessa karaktärer.",
+    		    "CharactersWithRelations",
+    		    $role->CharactersWithRelations,
+    		    "rows='4' maxlength='60000'",
+    		    $isPc,
+    		    true);
+    
+    		if ($isPc) {
+    		    $headline = "Varför befinner sig karaktären på platsen?";
+    		    $description = "Varför är karaktären på plats? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?";
+    		}
+    		else {
+    		    $headline = "Om karaktären finns på plats, varför?";
+    		    $description = "Om karaktären är på plats varför är karaktären det? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?<br>".
+    		                     "Om karaktären inte är på plats, var är den då?";
+    		}
+    		print_participant_textarea(
+    		    $headline,
+    		    $description,
+    		    "ReasonForBeingInSlowRiver",
+    		    $role->ReasonForBeingInSlowRiver,
+    		    "rows='4' maxlength='60000'",
+    		    $isPc,
+    		    true);
 		}
-		else {
-		    $headline = "Om karaktären finns på plats, varför?";
-		    $description = "Om karaktären är på plats varför är karaktären det? Är hen bosatt och i så fall sedan hur länge? Har hen en anledning att besöka just nu? Brukar hen besöka platsen?<br>".
-		                     "Om karaktären inte är på plats, var är den då?";
-		}
-		print_participant_textarea(
-		    $headline,
-		    $description,
-		    "ReasonForBeingInSlowRiver",
-		    $role->ReasonForBeingInSlowRiver,
-		    "rows='4' maxlength='60000'",
-		    $isPc,
-		    true);
 
 		if (Religion::isInUse($current_larp)) {
 		    print_participant_question_start(
@@ -531,47 +541,86 @@ include 'navigation.php';
 		        true);
 		} 
 		
-		
-		print_participant_text_input(
-		    "Saker karaktären absolut inte vill spela på",
-		    "Är det något karaktären aldrig skulle göra?",
-		    "NotAcceptableIntrigues",
-		    $role->NotAcceptableIntrigues,
-		    "size='100' maxlength='200'",
-		    false,
-		    true);
+		if (!$campaign->is_hfs()) {
+    		print_participant_text_input(
+    		    "Saker karaktären absolut inte vill spela på",
+    		    "Är det något karaktären aldrig skulle göra?",
+    		    "NotAcceptableIntrigues",
+    		    $role->NotAcceptableIntrigues,
+    		    "size='100' maxlength='200'",
+    		    false,
+    		    true);
+    
+    		
+    		print_participant_textarea(
+    		    "Karaktärens (mörka) baksida",
+    		    "Har karaktären någon mörk hemlighet eller något personlighetsdrag som är till dennes nackdel? 
+           	Har hen en hemlig skuld, ett hetsigt humör som sätter den i problem eller har hen kanske begått något brott? 
+           	Det kan kännas svårt att göra karaktären sårbar på det här sättet, men försök. 
+           	En mer nyanserad karaktär är ofta roligare och mer spännande att spela.",
+    		    "DarkSecret",
+    		    $role->DarkSecret,
+    		    "rows='4' maxlength='60000'",
+    		    $isPc,
+    		    true);
+    
+    		print_participant_text_input(
+    		    "Karaktärens (mörka) baksida - intrigidéer",
+    		    "Hur kan vi spela på karaktärens mörka baksida?",
+    		    "DarkSecretIntrigueIdeas",
+    		    $role->DarkSecretIntrigueIdeas,
+    		    "size='100' maxlength='200'",
+    		    $isPc,
+    		    true);
+    
+		  }
+		  if ($campaign->is_hfs() && $current_person->getAgeAtLarp($current_larp) < 15) {
+		      print_participant_text_input(
+		          "Superhjältenamn",
+		          "Tex: <i>Eldstorm</i> eller <i>Nattfalken</i><br> 
+                    Du kan INTE ta superhjältenamn som redan finns, tex <i>Spindel-mannen</i> eller <i>Röda masken</i>",
+		          "SuperHeroName",
+		          $role->SuperHeroName,
+		          "size='100' maxlength='200'",
+		          $isPc,
+		          true);
+		      
+		      if (SuperPowerActive::isInUse($current_larp)) {
+		          print_participant_question_start(
+		              "Superkraft Aktiv",
+		              "Välj 1 superkraft. Din karaktär kommer bara kunna använda den en gång under lajvet, så tänk efter när den kan komma till nytta. ",
+		              false,
+		              true,
+		              false);
+		          selectionByArray('SuperPowerActive' , SuperPowerActive::allActive($current_larp), false, true, $role->getSelectedActiveSuperPowerIds());
+		          print_participant_question_end(false);
+		          
+		      }
+		      
+		      if (SuperPowerPassive::isInUse($current_larp)) {
+		          print_participant_question_start(
+		              "Superkraft Passiv",
+		              "Välj upp till tre passiva superkrafter. En passiv kraft är en kraft du inte kan använda. Den är stoppad av maskinen.",
+		              false,
+		              true,
+		              false);
+		          selectionByArray('SuperPowerPassive' , SuperPowerPassive::allActive($current_larp), true, false, $role->getSelectedPassiveSuperPowerIds());
+		          print_participant_question_end(false);
+		          
+		      }
+		      
+		  }
 
-		
-		print_participant_textarea(
-		    "Karaktärens (mörka) baksida",
-		    "Har karaktären någon mörk hemlighet eller något personlighetsdrag som är till dennes nackdel? 
-       	Har hen en hemlig skuld, ett hetsigt humör som sätter den i problem eller har hen kanske begått något brott? 
-       	Det kan kännas svårt att göra karaktären sårbar på det här sättet, men försök. 
-       	En mer nyanserad karaktär är ofta roligare och mer spännande att spela.",
-		    "DarkSecret",
-		    $role->DarkSecret,
-		    "rows='4' maxlength='60000'",
-		    $isPc,
-		    true);
-
-		print_participant_text_input(
-		    "Karaktärens (mörka) baksida - intrigidéer",
-		    "Hur kan vi spela på karaktärens mörka baksida?",
-		    "DarkSecretIntrigueIdeas",
-		    $role->DarkSecretIntrigueIdeas,
-		    "size='100' maxlength='200'",
-		    $isPc,
-		    true);
-
-		print_participant_textarea(
-		    "Övrig information",
-		    "Är det något annat kring karaktären arrangörerna bör veta om karaktären?",
-		    "OtherInformation",
-		    $role->OtherInformation,
-		    "rows='4' maxlength='60000'",
-		    false,
-		    true);
-
+		  print_participant_textarea(
+		      "Övrig information",
+		      "Är det något annat kring karaktären arrangörerna bör veta om karaktären?",
+		      "OtherInformation",
+		      $role->OtherInformation,
+		      "rows='4' maxlength='60000'",
+		      false,
+		      true);
+		  
+		  
 			if ($admin) {
 			    //Om bara tittar på formuläret som arrangör får man inte lyckas skicka in
 			    $type = "button";
