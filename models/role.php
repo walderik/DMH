@@ -36,6 +36,7 @@ class Role extends BaseModel{
     public $TypeOfLarperComment;
     public $RaceComment;
     public $AbilityComment;
+    public $SuperHeroName;
     public $IsApproved = 0;
     public $ApprovedByPersonId;
     public $ApprovedDate;
@@ -87,7 +88,8 @@ class Role extends BaseModel{
         if (isset($arr['TypeOfLarperComment'])) $this->TypeOfLarperComment = $arr['TypeOfLarperComment'];
         if (isset($arr['RaceComment'])) $this->RaceComment = $arr['RaceComment'];
         if (isset($arr['AbilityComment'])) $this->AbilityComment = $arr['AbilityComment'];
-        if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
+        if (isset($arr['AbilityComment'])) $this->AbilityComment = $arr['AbilityComment'];
+        if (isset($arr['SuperHeroName'])) $this->SuperHeroName = $arr['SuperHeroName'];
         if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
         if (isset($arr['CreatorPersonId'])) $this->CreatorPersonId = $arr['CreatorPersonId'];
@@ -123,7 +125,7 @@ class Role extends BaseModel{
                               DarkSecretIntrigueIdeas=?, NotAcceptableIntrigues=?, OtherInformation=?,
                               PersonId=?, GroupId=?, WealthId=?, PlaceOfResidenceId=?, RaceId=?, RoleFunctionComment=?, Birthplace=?, 
                               CharactersWithRelations=?, CampaignId=?, ImageId=?, IsDead=?, OrganizerNotes=?, 
-                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, IsApproved=?, 
+                              NoIntrigue=?, LarperTypeId=?, TypeOfLarperComment=?, RaceComment=?, AbilityComment=?, SuperHeroName=?, IsApproved=?, 
                               ApprovedByPersonId=?, ApprovedDate=?, CreatorPersonId=?, UserMayEdit=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
@@ -133,7 +135,7 @@ class Role extends BaseModel{
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,  
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, $this->IsDead, 
             $this->OrganizerNotes, $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment, 
-            $this->RaceComment, $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, 
+            $this->RaceComment, $this->AbilityComment, $this->SuperHeroName, $this->IsApproved, $this->ApprovedByPersonId, $this->ApprovedDate, 
             $this->CreatorPersonId, $this->UserMayEdit, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -155,9 +157,9 @@ class Role extends BaseModel{
                                     CharactersWithRelations, CampaignId, ImageId, 
                                     IsDead, OrganizerNotes, NoIntrigue, 
                                     LarperTypeId, TypeOfLarperComment, RaceComment, 
-                                    AbilityComment, IsApproved, ApprovedByPersonId, 
+                                    AbilityComment, SuperHeroName, IsApproved, ApprovedByPersonId, 
                                     ApprovedDate, CreatorPersonId, UserMayEdit) 
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?);");
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?);");
 
         if (!$stmt->execute(array($this->Name, $this->Profession, $this->Description, 
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
@@ -169,7 +171,7 @@ class Role extends BaseModel{
             $this->CharactersWithRelations, $this->CampaignId, $this->ImageId, 
             $this->IsDead, $this->OrganizerNotes, $this->NoIntrigue, 
             $this->LarperTypeId, $this->TypeOfLarperComment, $this->RaceComment, 
-            $this->AbilityComment, $this->IsApproved, $this->ApprovedByPersonId, 
+            $this->AbilityComment, $this->SuperHeroName, $this->IsApproved, $this->ApprovedByPersonId, 
             $this->ApprovedDate, $this->CreatorPersonId, $this->UserMayEdit
         ))) {
                 $this->connect()->rollBack();
@@ -796,6 +798,120 @@ class Role extends BaseModel{
         }
         $stmt = null;
     }
+    
+    
+    public function getSuperPowerActives(){
+        return SuperPowerActive::getSuperPowersForRole($this->Id);
+    }
+    
+    public function getSelectedActiveSuperPowerIds() {
+        $stmt = $this->connect()->prepare("SELECT SuperPowerActiveId FROM  regsys_superpoweractive_role WHERE RoleId = ? ORDER BY SuperPowerActiveId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['SuperPowerActiveId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function saveAllSuperPowerActives($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        if (!is_array($idArr)) $idArr = array($idArr);
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_superpoweractive_role (SuperPowerActiveId, RoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllSuperPowerActives() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_superpoweractive_role WHERE RoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    public function getSuperPowerPassives(){
+        return SuperPowerPassive::getSuperPowersForRole($this->Id);
+    }
+    
+    
+    public function getSelectedPassiveSuperPowerIds() {
+        $stmt = $this->connect()->prepare("SELECT SuperPowerPassiveId FROM  regsys_superpowerpassive_role WHERE RoleId = ? ORDER BY SuperPowerPassiveId;");
+        
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        
+        if ($stmt->rowCount() == 0) {
+            $stmt = null;
+            return array();
+        }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArray = array();
+        foreach ($rows as $row) {
+            $resultArray[] = $row['SuperPowerPassiveId'];
+        }
+        $stmt = null;
+        
+        return $resultArray;
+    }
+    
+    public function saveAllSuperPowerPassives($idArr) {
+        if (!isset($idArr)) {
+            return;
+        }
+        foreach($idArr as $Id) {
+            $stmt = $this->connect()->prepare("INSERT INTO regsys_superpowerpassive_role (SuperPowerPassiveId, RoleId) VALUES (?,?);");
+            if (!$stmt->execute(array($Id, $this->Id))) {
+                $stmt = null;
+                header("location: ../participant/index.php?error=stmtfailed");
+                exit();
+            }
+        }
+        $stmt = null;
+    }
+    
+    public function deleteAllSuperPowerPassives() {
+        $stmt = $this->connect()->prepare("DELETE FROM regsys_superpowerpassive_role WHERE RoleId = ?;");
+        if (!$stmt->execute(array($this->Id))) {
+            $stmt = null;
+            header("location: ../participant/index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+    }
+    
+    
+    
+    
+    
     
     
     public function getAllKnownProps(LARP $larp) {

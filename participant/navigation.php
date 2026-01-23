@@ -6,7 +6,7 @@
 	<link href='../css/participant_style.css' rel='stylesheet' type='text/css'>
 	
 	<?php
-	
+
 	include '../common/navigation_beginning.php';
 	
 	advertismentIcon();
@@ -20,7 +20,11 @@
 	}
 	?>
 
-  <?php if (isset($current_larp)) {?>	
+  <?php if (isset($current_larp)) {
+      $campaign = $current_larp->getCampaign();
+      
+      ?>	
+
 
 	  <div class="dropdown">
 	    <button class="dropbtn">Skapa 
@@ -29,7 +33,9 @@
 	    <div class="dropdown-content">
 	      <a href="../participant/person_form.php">Deltagare</a>
 	      <a href="../participant/role_form.php">Karaktär</a>
+	      <?php if ($campaign->hasGroups() && $campaign->participantsMayCreateGroups()) {?>
 	      <a href="../participant/group_form.php">Grupp</a>
+	      <?php }?>
 	    </div>
 	  </div> 
     <?php }?>
@@ -41,7 +47,9 @@
 	    </button>
 	    <div class="dropdown-content">
 	      <a href="../participant/person_registration_form.php">Deltagare</a>
+	      <?php if ($campaign->hasGroups() && $campaign->participantsMayCreateGroups()) {?>
 	      <a href="../participant/group_registration_form.php">Grupp</a>
+	      <?php }?>
 	    </div>
 	  </div> 
     <?php }?>

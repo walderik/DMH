@@ -101,12 +101,30 @@ include_once 'header.php';
     					name="Currency" value="<?php echo $campaign->Currency; ?>" size="50"></td>
     			</tr>
     			<tr>
-    				<td><label for=ShowGroupMemberHousingInormation>Fråga om boende för gruppmedlemmar</label><br>I anmälningsformuläret för deltagare finns frågor om bodent. Man kan välja att inte visa dem för de som har en huvudkaraktär som är med i en grupp.</td>
+    				<td><label for=ShowGroupMemberHousingInormation>Fråga om boende för gruppmedlemmar</label><br>I anmälningsformuläret för deltagare finns frågor om bodent. Man kan välja att inte visa dem för de som har en huvudkaraktär som är med i en grupp.<br>OBS!! Inte implementerat</td>
     				<td>
 						<input type="radio" id="ShowGroupMemberHousingInormation_yes" name="ShowGroupMemberHousingInormation" value="1" <?php if ($campaign->showGroupMemberHousingInormation()) echo 'checked="checked"'?>> 
             			<label for="ShowGroupMemberHousingInormation_yes">Ja</label><br> 
             			<input type="radio" id="ShowGroupMemberHousingInormation_no" name="ShowGroupMemberHousingInormation" value="0" <?php if (!$campaign->showGroupMemberHousingInormation()) echo 'checked="checked"'?>> 
             			<label for="ShowGroupMemberHousingInormation_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=ShowGroupMemberHousingInormation>Använder kampanjen grupper?</label></td>
+    				<td>
+						<input type="radio" id="HasGroups_yes" name="HasGroups" value="1" <?php if ($campaign->hasGroups()) echo 'checked="checked"'?>> 
+            			<label for="HasGroups_yes">Ja</label><br> 
+            			<input type="radio" id="HasGroups_no" name="HasGroups" value="0" <?php if (!$campaign->hasGroups()) echo 'checked="checked"'?>> 
+            			<label for="HasGroups_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=ShowGroupMemberHousingInormation>Får deltagare skapa och anmäla grupper</label><br>I kampanjen inte använder grupper spelar den här frågan ingen roll.</td>
+    				<td>
+						<input type="radio" id="ParticipantsMayCreateGroups_yes" name="ParticipantsMayCreateGroups" value="1" <?php if ($campaign->participantsMayCreateGroups()) echo 'checked="checked"'?>> 
+            			<label for="ParticipantsMayCreateGroups_yes">Ja</label><br> 
+            			<input type="radio" id="ParticipantsMayCreateGroups_no" name="ParticipantsMayCreateGroups" value="0" <?php if (!$campaign->participantsMayCreateGroups()) echo 'checked="checked"'?>> 
+            			<label for="ParticipantsMayCreateGroupsn_no">Nej</label>
 					</td>
     			</tr>
     		</table>

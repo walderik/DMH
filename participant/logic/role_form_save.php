@@ -30,6 +30,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['RoleFunctionId'])) {
             $role->saveAllRoleFunctions($_POST['RoleFunctionId']);
         }
+        if (isset($_POST['SuperPowerActiveId'])) {
+            $role->saveAllSuperPowerActives($_POST['SuperPowerActiveId']);
+        }
+        if (isset($_POST['SuperPowerPassiveId'])) {
+            $role->saveAllSuperPowerActives($_POST['SuperPowerPassiveId']);
+        }
+        
         
     } elseif ($operation == 'update') {
         $role = Role::loadById($_POST['Id']);
@@ -65,7 +72,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['RoleFunctionId'])) {
             $role->saveAllRoleFunctions($_POST['RoleFunctionId']);
         }
-     }
+        $role->deleteAllSuperPowerActives();
+        if (isset($_POST['SuperPowerActiveId'])) {
+            $role->saveAllSuperPowerActives($_POST['SuperPowerActiveId']);
+        }
+        $role->deleteAllSuperPowerPassives();
+        if (isset($_POST['SuperPowerPassiveId'])) {
+            $role->saveAllSuperPowerPassives($_POST['SuperPowerPassiveId']);
+        }
+    }
      
      if (isset($_POST['SaveAndLockButton'])) {
          $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);

@@ -111,6 +111,24 @@ include_once 'header.php';
             			<label for="CShowGroupMemberHousingInormation_no">Nej</label>
 					</td>
     			</tr>
+    			<tr>
+    				<td><label for=ShowGroupMemberHousingInormation>Använder kampanjen grupper?</label></td>
+    				<td>
+						<input type="radio" id="HasGroups_yes" name="HasGroups" value="1" <?php if ($campaign->hasGroups()) echo 'checked="checked"'?>> 
+            			<label for="HasGroups_yes">Ja</label><br> 
+            			<input type="radio" id="HasGroups_no" name="HasGroups" value="0" <?php if (!$campaign->hasGroups()) echo 'checked="checked"'?>> 
+            			<label for="HasGroups_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=ShowGroupMemberHousingInormation>Får deltagare skapa och anmäla grupper</label><br>I kampanjen inte använder grupper spelar den här frågan ingen roll.</td>
+    				<td>
+						<input type="radio" id="ParticipantsMayCreateGroups_yes" name="ParticipantsMayCreateGroups" value="1" <?php if ($campaign->participantsMayCreateGroups()) echo 'checked="checked"'?>> 
+            			<label for="ParticipantsMayCreateGroups_yes">Ja</label><br> 
+            			<input type="radio" id="ParticipantsMayCreateGroups_no" name="ParticipantsMayCreateGroups" value="0" <?php if (!$campaign->participantsMayCreateGroups()) echo 'checked="checked"'?>> 
+            			<label for="ParticipantsMayCreateGroupsn_no">Nej</label>
+					</td>
+    			</tr>
     		</table>
     
     		<input id="submit_button" type="submit" value="<?php default_value('action'); ?>">

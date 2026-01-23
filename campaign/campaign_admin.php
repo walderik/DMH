@@ -32,6 +32,10 @@ include 'navigation.php';
                <tr><td valign="top" class="header">Minsta ålder</td><td><?php echo $campaign->MinimumAge ?></td></tr>
                <tr><td valign="top" class="header">Minsta ålder utan ansvarig vuxen</td><td><?php echo $campaign->MinimumAgeWithoutGuardian ?></td></tr>
                <tr><td valign="top" class="header">Lajv-valuta</td><td><?php echo $campaign->Currency ?></td></tr> 
+               <tr><td valign="top" class="header">Har grupper</td><td><?php echo ja_nej($campaign->hasGroups()) ?></td></tr> 
+               <?php if ($campaign->hasGroups()) {?>
+               <tr><td valign="top" class="header">Deltagare får skapa grupper</td><td><?php echo ja_nej($campaign->participantsMayCreateGroups()) ?></td></tr> 
+			   <?php } ?>
             </table>
 			<br>
 

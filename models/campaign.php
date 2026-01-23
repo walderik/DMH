@@ -18,6 +18,8 @@ class Campaign extends BaseModel{
     public  $Currency;
     public  $MainOrganizerPersonId;
     public  $ShowGroupMemberHousingInormation;
+    public  $HasGroups = 1;
+    public  $ParticipantsMayCreateGroups = 1;
 
     
     
@@ -44,6 +46,8 @@ class Campaign extends BaseModel{
         if (isset($arr['Currency'])) $this->Currency = $arr['Currency'];
         if (isset($arr['MainOrganizerPersonId'])) $this->MainOrganizerPersonId = $arr['MainOrganizerPersonId'];
         if (isset($arr['ShowGroupMemberHousingInormation'])) $this->ShowGroupMemberHousingInormation = $arr['ShowGroupMemberHousingInormation'];
+        if (isset($arr['HasGroups'])) $this->HasGroups = $arr['HasGroups'];
+        if (isset($arr['ParticipantsMayCreateGroups'])) $this->ParticipantsMayCreateGroups = $arr['ParticipantsMayCreateGroups'];
         
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
         
@@ -61,11 +65,11 @@ class Campaign extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_campaign SET Name=?, Abbreviation=?, Description=?, Icon=?, 
             Homepage=?, Email=?, Bankaccount=?, SwishNumber=?, MinimumAge=?, MinimumAgeWithoutGuardian=?, 
-            Currency=?, MainOrganizerPersonId=?, ShowGroupMemberHousingInormation=? WHERE Id = ?");
+            Currency=?, MainOrganizerPersonId=?, ShowGroupMemberHousingInormation=?, HasGroups=?, ParticipantsMayCreateGroups=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
             $this->Homepage, $this->Email, $this->Bankaccount, $this->SwishNumber, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, 
-            $this->Currency, $this->MainOrganizerPersonId, $this->ShowGroupMemberHousingInormation, $this->Id))) {
+            $this->Currency, $this->MainOrganizerPersonId, $this->ShowGroupMemberHousingInormation, $this->HasGroups, $this->ParticipantsMayCreateGroups, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -78,10 +82,12 @@ class Campaign extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_campaign (Name, Abbreviation, Description, Icon, Homepage, Email, Bankaccount, SwishNumber, 
-            MinimumAge, MinimumAgeWithoutGuardian, Currency, ShowGroupMemberHousingInormation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+            MinimumAge, MinimumAgeWithoutGuardian, Currency, ShowGroupMemberHousingInormation, HasGroups, ParticipantsMayCreateGroups) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->Abbreviation, $this->Description, $this->Icon,
-            $this->Homepage, $this->Email, $this->Bankaccount, $this->SwishNumber, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Currency, $this->ShowGroupMemberHousingInormation))) {
+            $this->Homepage, $this->Email, $this->Bankaccount, $this->SwishNumber, $this->MinimumAge, $this->MinimumAgeWithoutGuardian, $this->Currency, $this->ShowGroupMemberHousingInormation,
+            $this->HasGroups, $this->ParticipantsMayCreateGroups  
+        ))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -124,6 +130,11 @@ class Campaign extends BaseModel{
         return ($this->Abbreviation=='ME');
     }
     
+    # Är det här Handbok för superhjältar
+    public function is_hfs() {
+        return (strtoupper($this->Abbreviation)=='HFS');
+    }
+    
     public function getMainOrganizer() {
         if (empty($this->MainOrganizerPersonId)) return NULL;
         return Person::loadById($this->MainOrganizerPersonId);
@@ -132,7 +143,14 @@ class Campaign extends BaseModel{
     public function showGroupMemberHousingInormation() {
         return $this->ShowGroupMemberHousingInormation == 1;
     }
+
+    public function hasGroups() {
+        return $this->HasGroups == 1;
+    }
     
+    public function participantsMayCreateGroups() {
+        return $this->ParticipantsMayCreateGroups == 1;
+    }
     
     
     public function hasLarps() {
