@@ -63,10 +63,12 @@ include 'navigation.php';
     			</div>
 			<?php } ?>
 
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>NPC åtagande</div>
-			<?php echo $registration->NPCDesire;?>
-			</div>
+			<?php if ($current_person->getAgeAtLarp($current_larp) >= $current_larp->MinimumAgeNPC) {?>
+    	   		<div class='itemcontainer'>
+               	<div class='itemname'>NPC åtagande</div>
+    			<?php echo $registration->NPCDesire;?>
+    			</div>
+			<?php } ?>
 
 			<?php if (HousingRequest::isInUse($current_larp)) { ?>
 	   	   		<div class='itemcontainer'>
@@ -83,32 +85,44 @@ include 'navigation.php';
 			<?php echo nl2br(htmlspecialchars($registration->LarpHousingComment)); ?>
 			</div>
 
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Typ av tält</div>
-			<?php echo nl2br(htmlspecialchars($registration->TentType)); ?>
-			</div>
-
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Storlek på tält</div>
-			<?php echo nl2br(htmlspecialchars($registration->TentSize)); ?>
-			</div>
-
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Vilka ska bo i tältet</div>
-			<?php echo nl2br(htmlspecialchars($registration->TentHousing)); ?>
-			</div>
-
-	   		<div class='itemcontainer'>
-           	<div class='itemname'>Önskad placering</div>
-			<?php echo nl2br(htmlspecialchars($registration->TentPlace)); ?>
-			</div>
-
-			<?php if (OfficialType::isInUse($current_larp)) { ?>
-	   	   		<div class='itemcontainer'>
-               	<div class='itemname'>Funktionärsönskemål</div>
-				<?php echo commaStringFromArrayObject($registration->getOfficialTypes());?>
+			<?php if ($current_larp->hasTentQuestions()) {?>
+    	   		<div class='itemcontainer'>
+               	<div class='itemname'>Typ av tält</div>
+    			<?php echo nl2br(htmlspecialchars($registration->TentType)); ?>
+    			</div>
+    
+    	   		<div class='itemcontainer'>
+               	<div class='itemname'>Storlek på tält</div>
+    			<?php echo nl2br(htmlspecialchars($registration->TentSize)); ?>
+    			</div>
+    
+    	   		<div class='itemcontainer'>
+               	<div class='itemname'>Vilka ska bo i tältet</div>
+    			<?php echo nl2br(htmlspecialchars($registration->TentHousing)); ?>
+    			</div>
+    
+    	   		<div class='itemcontainer'>
+               	<div class='itemname'>Önskad placering</div>
+    			<?php echo nl2br(htmlspecialchars($registration->TentPlace)); ?>
     			</div>
 			<?php } ?>
+	
+			<?php if ($current_person->getAgeAtLarp($current_larp) >= $current_larp->MinimumAgeOfficial) {?>
+    			<?php if (OfficialType::isInUse($current_larp)) { ?>
+    	   	   		<div class='itemcontainer'>
+                   	<div class='itemname'>Funktionärsönskemål</div>
+    				<?php echo commaStringFromArrayObject($registration->getOfficialTypes());?>
+        			</div>
+    			<?php } ?>
+			<?php } ?>
+			
+			<?php if ($current_larp->hasPhotograph()) { ?>
+			<div class='itemcontainer'>
+	       	<div class='itemname'>Tillåter fotografering</div>
+    			<?php echo ja_nej($registration->approvesPhotography()); ?>
+    			</div>
+			<?php } ?>
+			
 
 	   		<div class='itemcontainer'>
            	<div class='itemname'>Anmälda karaktärer</div>

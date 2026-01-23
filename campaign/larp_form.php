@@ -148,9 +148,47 @@ include_once 'header.php';
             			<label for="VisibleToParticipants_no">Nej</label>
 					</td>
     			</tr>
+    			<h2>Anmälan</h2>Inställningar för anmälningsformulär
+ 	   			<tr>
+    				<td><label for=HasPhotograph>Har fotograf</label><br>Deltagarna kommer att få frågan vid anmälan om de godkänner att vara med på bild.</td>
+    				<td>
+						<input type="radio" id="HasPhotograph_yes" name="HasPhotograph" value="1" <?php if ($larp->hasPhotograph()) echo 'checked="checked"'?>> 
+            			<label for="HasPhotograph_yes">Ja</label><br> 
+            			<input type="radio" id="HasPhotograph_no" name="HasPhotograph" value="0" <?php if (!$larp->hasPhotograph()) echo 'checked="checked"'?>> 
+            			<label for="HasPhotograph_no">Nej</label>
+					</td>
+    			</tr>
+	   			<tr>
+    				<td><label for=HasTentQuestions>Tältfrågor</label><br>Ska det finns frågor kring tält i anmälan för deltagare?</td>
+    				<td>
+						<input type="radio" id="HasTentQuestions_yes" name="HasTentQuestions" value="1" <?php if ($larp->hasTentQuestions()) echo 'checked="checked"'?>> 
+            			<label for="HasTentQuestions_yes">Ja</label><br> 
+            			<input type="radio" id="HasTentQuestions_no" name="HasTentQuestions" value="0" <?php if (!$larp->hasTentQuestions()) echo 'checked="checked"'?>> 
+            			<label for="HasTentQuestions_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=MinimumAgeNPC>Minsta ålder för att vara NPC</label><br>Om man är tillräckligt gammal kommer frågna om NPC att synas vid anmälan.<br>Oavsett kan en arrangör sätta någon till NPC senare.</td>
+    				<td><input type="number" id="MinimumAgeNPC"
+    					name="MinimumAgeNPC" value="<?php echo $larp->MinimumAgeNPC; ?>" size="15" maxlength="10" required></td>
+    			</tr>
+    			<tr>
+    				<td><label for=MinimumAgeOfficial>Minsta ålder för att vara funktionär</label><br>Om man är tillräckligt gammal kommer frågna om funktionär att synas vid anmälan.<br>Oavsett kan en arrangör sätta någon till funktionär senare.</td>
+    				<td><input type="number" id="MinimumAgeOfficial"
+    					name="MinimumAgeOfficial" value="<?php echo $larp->MinimumAgeOfficial; ?>" size="15" maxlength="10" required></td>
+    			</tr>
+	   			<tr>
+    				<td><label for=OfficialsMustShowCriminalRecord>Krav på belastningsregisterutdrag för funktionärer</label><br>Deltagarna kommer vid anmälan få informaiton om att funktionrer måste ha med sig belastningsregisterutdrag till lajvet.</td>
+    				<td>
+						<input type="radio" id="OfficialsMustShowCriminalRecord_yes" name="OfficialsMustShowCriminalRecord" value="1" <?php if ($larp->hasOfficialsMustShowCriminalRecord()) echo 'checked="checked"'?>> 
+            			<label for=OfficialsMustShowCriminalRecord_yes">Ja</label><br> 
+            			<input type="radio" id="OfficialsMustShowCriminalRecord_no" name="OfficialsMustShowCriminalRecord" value="0" <?php if (!$larp->hasOfficialsMustShowCriminalRecord()) echo 'checked="checked"'?>> 
+            			<label for="OfficialsMustShowCriminalRecord_no">Nej</label>
+					</td>
+    			</tr>
     			
     		</table>
-			<h2>Speltekniker</h2><br>Vilka speltekniker ska det finnas stöd för i systemet för detta lajv?
+			<h2>Speltekniker</h2>Vilka speltekniker ska det finnas stöd för i systemet för detta lajv?
 			<table class="smalldata">
     			<tr>
     				<td><label for=HasTelegrams>Telegram</label></td>

@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 $role = Role::loadById($RoleId);
 $oldRoleCopy = $role->getOldApprovedRole();
+$campaign = $current_larp->getCampaign();
 
 if (empty($oldRoleCopy)) {
     header('Location: view_role.php?id='.$role->Id.'.php');
@@ -111,10 +112,14 @@ del {
 			<td><?php if ($oldRoleCopy->isMysLajvare()) { ?><strong>Bakgrundslajvare</strong> <?php } ?></td>
 			</tr>
 		<?php } ?>
+		
+		<?php if ($campaign()->hasGroups()) {?>
 			<tr>
 				<td valign="top" class="header">Grupp</td>
 				<?php echoNameDiff($oldRoleCopy->getGroup(), $role->getGroup()); ?>
 			</tr>
+		<?php } ?>
+		
 			<tr>
 				<td valign="top" class="header">Yrke</td>
 				<?php echoDiff($oldRoleCopy->Profession, $role->Profession); ?>
@@ -123,10 +128,14 @@ del {
 				<td valign="top" class="header">Beskrivning</td>
 				<?php echoDiff($oldRoleCopy->Description, $role->Description); ?>
 			</tr>
+			
+		<?php if ($campaign()->hasGroups()) {?>
 			<tr>
 				<td valign="top" class="header">Beskrivning för gruppen</td>
 				<?php echoDiff($oldRoleCopy->DescriptionForGroup, $role->DescriptionForGroup); ?>
 			</tr>
+			<?php } ?>
+			
 			<tr>
 				<td valign="top" class="header">Beskrivning för andra</td>
 				<?php echoDiff($oldRoleCopy->DescriptionForOthers, $role->DescriptionForOthers); ?>
@@ -251,6 +260,11 @@ del {
 				<?php echoDiff($oldRoleCopy->OtherInformation, $role->OtherInformation); ?>
 			</tr>
 			
+			<?php if ($campaign->is_hfs()) {?>
+				<td valign="top" class="header">Superhjältenamn</td>
+				<?php echoDiff($oldRoleCopy->SuperHeroName, $role->SuperHeroName); ?>
+			
+			<?php }?>
 			
 			<?php if (SuperPowerActive::isInUse($current_larp)) {
 		    $newPowers = commaStringFromArrayObject($role->getSuperPowerActives());

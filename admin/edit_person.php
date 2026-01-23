@@ -164,6 +164,15 @@ include 'navigation.php';
     			<label for="HasPermissionShowName_no">Nej</label>
 			</td></tr>
 
+			<?php if ($current_larp->hasPhotograph()) { ?>
+			<tr><td valign="top" class="header">Tillåter fotografering</td>
+			<td>
+				<input type="radio" id="PhotographyApproval_ja" name="PhotographyApproval" value="1" checked> 
+    			<label for="PhotographyApproval_ja">Ja</label><br> 
+    			<input type="radio" id="PhotographyApproval_nej" name="PhotographyApproval" value="0" > 
+    			<label for="PhotographyApproval_nej">Nej</label>
+			</td></tr>
+			<?php } ?>
 
 			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($registration->isMember())?></td></tr>
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>

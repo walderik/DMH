@@ -41,6 +41,11 @@ class LARP extends BaseModel{
     public  $ChooseParticipationDates = 0;
     public  $Description;
     public  $ContentDescription;
+    public  $MinimumAgeOfficial = 0;
+    public  $MinimumAgeNPC = 0;
+    public  $OfficialsMustShowCriminalRecord = 0;
+    public  $HasPhotograph = 0;
+    public  $HasTentQuestions = 1;
     public  $EvaluationOpenDate;
     public  $EvaluationLink;
     public  $LarpHasEnded = 0;
@@ -87,6 +92,13 @@ class LARP extends BaseModel{
         if (isset($arr['ChooseParticipationDates'])) $this->ChooseParticipationDates = $arr['ChooseParticipationDates'];
         if (isset($arr['Description'])) $this->Description = $arr['Description'];
         if (isset($arr['ContentDescription'])) $this->ContentDescription = $arr['ContentDescription'];
+
+        if (isset($arr['MinimumAgeNPC'])) $this->MinimumAgeNPC = $arr['MinimumAgeNPC'];
+        if (isset($arr['MinimumAgeOfficial'])) $this->MinimumAgeOfficial = $arr['MinimumAgeOfficial'];
+        if (isset($arr['OfficialsMustShowCriminalRecord'])) $this->OfficialsMustShowCriminalRecord = $arr['OfficialsMustShowCriminalRecord'];
+        if (isset($arr['HasPhotograph'])) $this->HasPhotograph = $arr['HasPhotograph'];
+        if (isset($arr['HasTentQuestions'])) $this->HasTentQuestions = $arr['HasTentQuestions'];
+        
         if (isset($arr['EvaluationOpenDate'])) $this->EvaluationOpenDate = $arr['EvaluationOpenDate'];
         if (isset($arr['EvaluationLink'])) $this->EvaluationLink = $arr['EvaluationLink'];
         if (isset($arr['LarpHasEnded'])) $this->LarpHasEnded = $arr['LarpHasEnded'];
@@ -114,7 +126,9 @@ class LARP extends BaseModel{
                  "DisplayIntrigues=?, DisplayHousing=?, CampaignId=?, VisibleToParticipants=?, RegistrationOpen=?, PaymentReferencePrefix=?, NetDays=?, ".
                  "LastPaymentDate=?, HasTelegrams=?, HasLetters=?, HasRumours=?, 
                     HasAlchemy=?, LastDayAlchemy=?, LastDayAlchemySupplier=?, HasMagic=?, HasVisions=?, HasCommerce=?,
-                    ChooseParticipationDates=?, Description=?, ContentDescription=?, EvaluationOpenDate=?, EvaluationLink=?, LarpHasEnded=?  WHERE Id = ?");
+                    ChooseParticipationDates=?, Description=?, ContentDescription=?, 
+                    MinimumAgeOfficial=?, MinimumAgeNPC=?, OfficialsMustShowCriminalRecord=?, HasPhotograph=?, HasTentQuestions=?,
+                    EvaluationOpenDate=?, EvaluationLink=?, LarpHasEnded=?  WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, $this->NoRoles,
@@ -123,12 +137,13 @@ class LARP extends BaseModel{
             $this->LastPaymentDate, $this->HasTelegrams, $this->HasLetters, $this->HasRumours, 
             $this->HasAlchemy, $this->LastDayAlchemy, $this->LastDayAlchemySupplier, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
             $this->ChooseParticipationDates,
-            $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink, $this->LarpHasEnded, $this->Id))) {
+            $this->Description, $this->ContentDescription, 
+            $this->MinimumAgeNPC, $this->MinimumAgeOfficial, $this->OfficialsMustShowCriminalRecord, $this->HasPhotograph, $this->HasTentQuestions,
+            $this->EvaluationOpenDate, $this->EvaluationLink, $this->LarpHasEnded, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
             }
-            
             $stmt = null;
     }
     
@@ -140,8 +155,10 @@ class LARP extends BaseModel{
             VisibleToParticipants, RegistrationOpen, PaymentReferencePrefix, NetDays, LastPaymentDate, HasTelegrams, 
             HasLetters, HasRumours, 
             HasAlchemy, LastDayAlchemy, LastDayAlchemySupplier, HasMagic, HasVisions, HasCommerce, 
-            ChooseParticipationDates, Description, ContentDescription,EvaluationOpenDate,EvaluationLink, LarpHasEnded) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?)");
+            ChooseParticipationDates, Description, ContentDescription,
+            MinimumAgeNPC, MinimumAgeOfficial, OfficialsMustShowCriminalRecord, HasPhotograph, HasTentQuestions
+            EvaluationOpenDate,EvaluationLink, LarpHasEnded) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, $this->NoRoles,
@@ -149,7 +166,9 @@ class LARP extends BaseModel{
             $this->VisibleToParticipants, $this->RegistrationOpen, $this->PaymentReferencePrefix, $this->NetDays, $this->LastPaymentDate, $this->HasTelegrams, 
             $this->HasLetters, $this->HasRumours, 
             $this->HasAlchemy, $this->LastDayAlchemy, $this->LastDayAlchemySupplier, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
-            $this->ChooseParticipationDates, $this->Description, $this->ContentDescription, $this->EvaluationOpenDate, $this->EvaluationLink, $this->LarpHasEnded))) {
+            $this->ChooseParticipationDates, $this->Description, $this->ContentDescription, 
+            $this->MinimumAgeNPC, $this->MinimumAgeOfficial, $this->OfficialsMustShowCriminalRecord, $this->HasPhotograph, $this->HasTentQuestions,
+            $this->EvaluationOpenDate, $this->EvaluationLink, $this->LarpHasEnded))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -280,6 +299,18 @@ class LARP extends BaseModel{
     
     public function hasCommerce() {
         return $this->HasCommerce == 1;
+    }
+    
+    public function hasPhotograph() {
+        return $this->HasPhotograph == 1;
+    }
+    
+    public function hasTentQuestions() {
+        return $this->HasTentQuestions == 1;
+    }
+    
+    public function hasOfficialsMustShowCriminalRecord() {
+        return $this->OfficialsMustShowCriminalRecord == 1;
     }
     
     public function chooseParticipationDates() {

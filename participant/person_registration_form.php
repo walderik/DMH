@@ -420,7 +420,7 @@ include 'navigation.php';
 		</div>
 				
 			<?php 
-			if (!empty($current_larp->ContentDescription)) {
+			if (!empty(trim($current_larp->ContentDescription))) {
 
 			?>
 			<div class='itemcontainer'>
@@ -521,11 +521,11 @@ include 'navigation.php';
 				Skriv det här så gör vi vad vi kan för att uppfylla önskemålen. 
 				Fyller du inte i något blir du placerad där vi tror det blir bra.
 				<br>
-				Om du inte har något, lämna fältet tomt. Du behöver inte heller skriva om du vill bo med din grupp.<br>
+				Om du inte har något önskemål, lämna fältet tomt. <?php if ($current_larp->getCampaign()->hasGroups()) { ?>Du behöver inte heller skriva om du vill bo med din grupp.<?php }?><br>
 				<input type="text" id="LarpHousingComment" name="LarpHousingComment" size="100" maxlength="200" value="<?php echo $registration->LarpHousingComment; ?>">
 			</div>
 			
-			
+			<?php if ($current_larp->hasTentQuestions()) {?>
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="TentType">Typ av tält</label></div>
 			Om du har med in-lajv tält. Vilken typ av tält är det och vilken färg har det?<br>
@@ -549,8 +549,16 @@ include 'navigation.php';
 			Om du har med tält. Var skulle du vilja få slå upp det? Detta är ett önskemål och vi ska försöka ta hänsyn till det, men vi lovar inget.<br>
 			<input type="text" id="TentPlace" name="TentPlace"  maxlength="200" value = "<?php echo $registration->TentPlace?>">
 			</div>
+			<?php  }?>
 
+			<?php 
+			$age = $current_person->getAgeAtLarp($current_larp);
+			if (($age >= $current_larp->MinimumAgeNPC) || ($age >= $current_larp->MinimumAgeOfficial)) {
+			
+			?>
 			<div class='subheader'>Extra åtaganden</div>
+			
+			<?php  if ($age >= $current_larp->MinimumAgeNPC) {?>
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="NPCDesire">NPC</label></div>
 			Kan du tänka dig att ställa upp som NPC? Vad vill du i så fall göra?<br>
@@ -562,18 +570,32 @@ include 'navigation.php';
 				<br>
                 <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="200" value = "<?php echo $registration->NPCDesire?>">
             </div>
+            <?php } ?>
 
-			<?php if (OfficialType::isInUse($current_larp)) { ?>
+			<?php if (OfficialType::isInUse($current_larp) && ($age >= $current_larp->MinimumAgeOfficial)) { ?>
     			<div class='itemcontainer'>
     	       	<div class='itemname'><label for="OfficialType">Intresseranmälan för funktionär</label></div>
 				Det är mycket som behövs för att ett lajv ska fungera på plats. <br>   
                     Allt ifrån att någon måste laga mat till att någon måste se till att det finns toapapper på dassen.<br> 
                     Säkert finns det också något som du gärna kan hjälpa till med och som vi inte har tänkt på.<br> 
                     Beroende på arbetsbörda återbetalas delar eller hela anmälningsavgifter efter lajvet.
+                    
+                    <?php if ($current_larp->hasOfficialsMustShowCriminalRecord()) {?>
+                    	<div style='padding-left:15px'>
+                    	<b>Krav på belastningsregisterutdrag</b><br>
+                    	Alla funktionärer på vårat lajv skall ha med sig ett utdrag från belastningsregistret, detta skall vara oöppnat och lämnas till arrangörerna. Det är enbart arrangörerna som läser och efter lajvet kommer dessa utdrag förstöras.<br> 	
+                        För att beställa belastningsregister:<br>
+                        <a href='https://polisen.se/tjanster-tillstand/belastningsregistret/barn-annan-verksamhet/'>https://polisen.se/tjanster-tillstand/belastningsregistret/barn-annan-verksamhet/</a><br>
+                        Obs. gör detta i tid så du garanterat har det till lajvstart. 
+                        </div>
+                    
+                    <?php  }?>
 				<br>
                 <?php OfficialType::selectionDropdown($current_larp, true,false, $officialType); ?>
             	</div>
 			<?php } ?>
+			
+			<?php  }?>
 			
 			<?php if ($current_larp->NoRoles == 1) {
 			    echo "<div class='subheader'>Karaktär</div>";
@@ -612,6 +634,22 @@ include 'navigation.php';
 			
 		
 			<div class='subheader'>Godkännande</div>
+			<?php if ($current_larp->hasPhotograph()) { ?>
+			<div class='itemcontainer'>
+	       	<div class='itemname'>Fotografering&nbsp;<font style="color:red">*</font></div>
+			Under lajvet kommer vi ha en dedikerad fotograf som fotografera. Bilderna kan komma att användas för dokumentation, 
+			sociala medier och marknadsföring. Genom denna fråga godkänner jag att jag får vara med på bild och att Berghems vänner 
+			får använda sig av bilderna för marknadsföring?
+			  
+			<br>
+				<input type="radio" id="PhotographyApproval_ja" name="PhotographyApproval" value="1" checked> 
+    			<label for="PhotographyApproval_ja">Ja</label><br> 
+    			<input type="radio" id="PhotographyApproval_nej" name="PhotographyApproval" value="0" > 
+    			<label for="PhotographyApproval_nej">Nej</label>
+			</div>
+			<?php } ?>
+			
+			
 			
 			<?php if ($current_larp->NoRoles != 0) { ?>
 			<div class='itemcontainer'>
