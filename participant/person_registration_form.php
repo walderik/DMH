@@ -19,6 +19,8 @@ $roledatas = array();
 
 $numberOfRoles = 1;
 
+$campaign = $current_larp->getCampaign();
+
 
 
 
@@ -661,6 +663,17 @@ include 'navigation.php';
 			<br>
 			<input type="checkbox" id="approval" name="approval" value="" required  class='requiredField' <?php if ($approval) echo "checked"?>>
   			<label for="approval">Jag förstår</label> 
+			</div>
+			<?php } ?>
+
+			<?php if ($campaign->is_hfs() && ($current_person->getAgeAtLarp($current_larp) > 15)) { ?>
+			<div class='itemcontainer'>
+	       	<div class='itemname'>Vuxen på lajvet&nbsp;<font style="color:red">*</font></div>
+			Jag har läst texten om <a href='https://hfs.berghemsvanner.se/?page_id=43'></a>vuxna på lajvet</a>. , har godkänt dem och är införstådd med vad som förväntas av mig som vuxen på lajvet. 
+			Om jag inte har läst reglerna så kryssar jag inte i denna ruta.<br>
+
+			<input type="checkbox" id="AdultRules" name="AdultRules" value="Ja" required  class='requiredField' <?php if ($rules) echo "checked"?>>
+  			<label for="AdultRules">Jag har läst</label> 
 			</div>
 			<?php } ?>
 
