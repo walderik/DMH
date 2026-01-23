@@ -574,7 +574,8 @@ include 'navigation.php';
     		    true);
     
 		  }
-		  if ($campaign->is_hfs() && $current_person->getAgeAtLarp($current_larp) < 15) {
+		  if ($campaign->is_hfs() && ($current_person->getAgeAtLarp($current_larp) < 15 || $admin)) {
+		      if ($admin) echo "<div class='itemcontainer' style='color:blue'><b>Kommentar om formuläret:</b><br><i>OBS! Frågorna om suprhjätenamn och superkrafter visas bara om man är under 15 år</i></div>";
 		      print_participant_text_input(
 		          "Superhjältenamn",
 		          "Tex: <i>Eldstorm</i> eller <i>Nattfalken</i><br> 
