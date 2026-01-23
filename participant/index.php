@@ -325,7 +325,7 @@ function openTab(evt, tabName) {
 		
 
 	
-	<?php if ($campaign->hasGroups()) { ?>
+	<?php if ($campaign->hasGroups() && $campaign->participantsMayCreateGroups()) { ?>
 	<div class='itemselector'>
 		<div class="header">
 			<i class="fa-solid fa-people-group"></i>
@@ -369,9 +369,9 @@ function openTab(evt, tabName) {
 	
 	<?php 
 	}
-	if ($campaign->participantsMayCreateGroups()) {
-        echo "<div class='center'><a href='group_form.php?action=insert'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-people-group'></i> &nbsp;Skapa grupp</button></a><div class='center'>";
-	}
+
+    echo "<div class='center'><a href='group_form.php?action=insert'><button class='button-18'><i class='fa-solid fa-plus'></i><i class='fa-solid fa-people-group'></i> &nbsp;Skapa grupp</button></a><div class='center'>";
+
 	?>
 
 	</div>
