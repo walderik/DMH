@@ -667,7 +667,7 @@ include 'navigation.php';
 			<?php } ?>
 
 			<?php if (($campaign->is_hfs() && ($current_person->getAgeAtLarp($current_larp) >= 15)) || $admin) { ?>
-		      if ($admin) echo "<div class='itemcontainer' style='color:blue'><b>Kommentar om formuläret:</b><br><i>OBS! Denna fråga visas bara om man är 15 år eller äldre.</i></div>";
+		    <?php  if ($admin) echo "<div class='itemcontainer' style='color:blue'><b>Kommentar om formuläret:</b><br><i>OBS! Frågan Vuxen på lajvet visas bara om man är 15 år eller äldre.</i></div>"; ?>
 			<div class='itemcontainer'>
 	       	<div class='itemname'>Vuxen på lajvet&nbsp;<font style="color:red">*</font></div>
 			Jag har läst texten om <a href='https://hfs.berghemsvanner.se/?page_id=43'>vuxna på lajvet</a>, har godkänt dem och är införstådd med vad som förväntas av mig som vuxen på lajvet. 

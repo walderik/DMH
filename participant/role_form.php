@@ -593,7 +593,7 @@ include 'navigation.php';
 		              false,
 		              true,
 		              false);
-		          selectionByArray('SuperPowerActive' , SuperPowerActive::allActive($current_larp), false, true, $role->getSelectedActiveSuperPowerIds());
+		          selectionByArray('SuperPowerActive' , SuperPowerActive::allActive($current_larp), false, true, $role->getSelectedActiveSuperPowerId());
 		          print_participant_question_end(false);
 		          
 		      }
