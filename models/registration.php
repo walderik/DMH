@@ -36,6 +36,7 @@ class Registration extends BaseModel{
     public $LarpPartAcknowledged = 1;
     public $EvaluationDone = 0;
     public $PhotographyApproval;
+    public $ArrivalDate;
     
     public static $orderListBy = 'RegisteredAt';
     
@@ -79,6 +80,7 @@ class Registration extends BaseModel{
         if (isset($arr['LarpPartAcknowledged'])) $this->LarpPartAcknowledged = $arr['LarpPartAcknowledged'];
         if (isset($arr['EvaluationDone'])) $this->EvaluationDone = $arr['EvaluationDone'];
         if (isset($arr['PhotographyApproval'])) $this->PhotographyApproval = $arr['PhotographyApproval'];
+        if (isset($arr['ArrivalDate'])) $this->ArrivalDate = $arr['ArrivalDate'];
         
         if (empty($this->FoodChoice)) $this->FoodChoice = null;
         if (empty($this->LarpPartNotAttending)) $this->LarpPartNotAttending = null;
@@ -123,7 +125,8 @@ class Registration extends BaseModel{
                 Payed=?, PaymentComment=?, IsMember=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
                 RefundDate=?, IsOfficial=?, OfficialDetails=?, NPCDesire=?, HousingRequestId=?, LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?, 
                 GuardianId=?, NotComingReason=?,
-                SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, LarpPartNotAttending=?, LarpPartAcknowledged=?, EvaluationDone=?, PhotographyApproval=? WHERE Id = ?");
+                SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, LarpPartNotAttending=?, LarpPartAcknowledged=?, EvaluationDone=?, 
+                PhotographyApproval=?, ArrivalDate=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId,  
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
@@ -131,7 +134,8 @@ class Registration extends BaseModel{
             $this->RefundDate, $this->IsOfficial, $this->OfficialDetails, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment, 
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, 
-            $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, $this->PhotographyApproval, $this->Id))) {
+            $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, 
+            $this->PhotographyApproval, $this->ArrivalDate, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -149,15 +153,15 @@ class Registration extends BaseModel{
             PaymentReference, AmountToPay, AmountPayed, Payed, PaymentComment, IsMember,
             NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, OfficialDetails, 
             NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, NotComingReason, 
-            SpotAtLARP, TypeOfFoodId, FoodChoice, LarpPartNotAttending, LarpPartAcknowledged, EvaluationDone, PhotographyApproval) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?)");
+            SpotAtLARP, TypeOfFoodId, FoodChoice, LarpPartNotAttending, LarpPartAcknowledged, EvaluationDone, PhotographyApproval, ArrivalDate) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
             $this->RefundDate, $this->IsOfficial, $this->OfficialDetails, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment,
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason,
-            $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, $this->PhotographyApproval))) {
+            $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, $this->PhotographyApproval, $this->ArrivalDate))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();

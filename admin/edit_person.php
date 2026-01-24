@@ -126,6 +126,13 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown($current_larp, false,false,$registration->HousingRequestId);?></td></tr>
 			<?php } ?>
+			
+			<?php if ($current_larp->hasArrivalDateQuestion()) { ?>
+				<tr><td valign="top" class="header">Ankomstdatum</td>
+				<td><input type="date" id="ArrivalDate" name="ArrivalDate" value="<?php echo $registration->ArrivalDate; ?>"  size="15" maxlength="250"></td></tr>
+			<?php } ?>
+			
+			
 			<tr><td valign="top" class="header">Typ av tält</td>
 			<td><input class="input_field" type="text" id="TentType" name="TentType"  maxlength="200" value="<?php echo htmlspecialchars($registration->TentType); ?>"></td></tr>
 			<tr><td valign="top" class="header">Storlek på tält</td>

@@ -147,6 +147,7 @@ include 'navigation.php';
 			
 			
 			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo $person->getFullHousingComment($current_larp);?></td></tr>
+			
 			<tr><td valign="top" class="header">Hälsa</td><td><?php echo $person->HealthComment;?></td></tr>
 			<tr><td valign="top" class="header">Intriger i text</td><td><?php echo ja_nej($person->wantIntriguesInPlainText());?></td></tr>
 
@@ -161,6 +162,9 @@ include 'navigation.php';
 			
 			<?php if ($current_larp->hasPhotograph()) { ?>
 				<tr><td valign="top" class="header">Tillåter fotografering</td><td><?php echo ja_nej($registration->approvesPhotography())?></td></tr>
+			<?php } ?>
+			<?php if ($current_larp->hasArrivalDateQuestion()) { ?>
+				<tr><td valign="top" class="header">Ankomstdatum</td><td><?php echo $registration->ArrivalDate;?></td></tr>
 			<?php } ?>
 
 

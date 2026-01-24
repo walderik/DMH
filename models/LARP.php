@@ -46,6 +46,10 @@ class LARP extends BaseModel{
     public  $OfficialsMustShowCriminalRecord = 0;
     public  $HasPhotograph = 0;
     public  $HasTentQuestions = 1;
+    public  $ArrivalDateChoice;
+    public  $ArrivalDateText;
+    public  $ArrivalDateLatestChange;
+    
     public  $EvaluationOpenDate;
     public  $EvaluationLink;
     public  $LarpHasEnded = 0;
@@ -98,6 +102,9 @@ class LARP extends BaseModel{
         if (isset($arr['OfficialsMustShowCriminalRecord'])) $this->OfficialsMustShowCriminalRecord = $arr['OfficialsMustShowCriminalRecord'];
         if (isset($arr['HasPhotograph'])) $this->HasPhotograph = $arr['HasPhotograph'];
         if (isset($arr['HasTentQuestions'])) $this->HasTentQuestions = $arr['HasTentQuestions'];
+        if (isset($arr['ArrivalDateChoice'])) $this->ArrivalDateChoice = $arr['ArrivalDateChoice'];
+        if (isset($arr['ArrivalDateText'])) $this->ArrivalDateText = $arr['ArrivalDateText'];
+        if (isset($arr['ArrivalDateLatestChange'])) $this->ArrivalDateLatestChange = $arr['ArrivalDateLatestChange'];
         
         if (isset($arr['EvaluationOpenDate'])) $this->EvaluationOpenDate = $arr['EvaluationOpenDate'];
         if (isset($arr['EvaluationLink'])) $this->EvaluationLink = $arr['EvaluationLink'];
@@ -128,6 +135,7 @@ class LARP extends BaseModel{
                     HasAlchemy=?, LastDayAlchemy=?, LastDayAlchemySupplier=?, HasMagic=?, HasVisions=?, HasCommerce=?,
                     ChooseParticipationDates=?, Description=?, ContentDescription=?, 
                     MinimumAgeOfficial=?, MinimumAgeNPC=?, OfficialsMustShowCriminalRecord=?, HasPhotograph=?, HasTentQuestions=?,
+                    ArrivalDateChoice=?, ArrivalDateText=?, ArrivalDateLatestChange=?,
                     EvaluationOpenDate=?, EvaluationLink=?, LarpHasEnded=?  WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
@@ -139,6 +147,7 @@ class LARP extends BaseModel{
             $this->ChooseParticipationDates,
             $this->Description, $this->ContentDescription, 
             $this->MinimumAgeNPC, $this->MinimumAgeOfficial, $this->OfficialsMustShowCriminalRecord, $this->HasPhotograph, $this->HasTentQuestions,
+            $this->ArrivalDateChoice, $this->ArrivalDateText, $this->ArrivalDateLatestChange, 
             $this->EvaluationOpenDate, $this->EvaluationLink, $this->LarpHasEnded, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -156,9 +165,10 @@ class LARP extends BaseModel{
             HasLetters, HasRumours, 
             HasAlchemy, LastDayAlchemy, LastDayAlchemySupplier, HasMagic, HasVisions, HasCommerce, 
             ChooseParticipationDates, Description, ContentDescription,
-            MinimumAgeNPC, MinimumAgeOfficial, OfficialsMustShowCriminalRecord, HasPhotograph, HasTentQuestions
+            MinimumAgeNPC, MinimumAgeOfficial, OfficialsMustShowCriminalRecord, HasPhotograph, HasTentQuestions,
+            ArrivalDateChoice, ArrivalDateText, ArrivalDateLatestChange, 
             EvaluationOpenDate,EvaluationLink, LarpHasEnded) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->Name, $this->TagLine,
             $this->StartDate, $this->EndDate, $this->MaxParticipants, $this->LatestRegistrationDate, $this->NoRoles,
@@ -168,6 +178,7 @@ class LARP extends BaseModel{
             $this->HasAlchemy, $this->LastDayAlchemy, $this->LastDayAlchemySupplier, $this->HasMagic, $this->HasVisions, $this->HasCommerce,
             $this->ChooseParticipationDates, $this->Description, $this->ContentDescription, 
             $this->MinimumAgeNPC, $this->MinimumAgeOfficial, $this->OfficialsMustShowCriminalRecord, $this->HasPhotograph, $this->HasTentQuestions,
+            $this->ArrivalDateChoice, $this->ArrivalDateText, $this->ArrivalDateLatestChange,
             $this->EvaluationOpenDate, $this->EvaluationLink, $this->LarpHasEnded))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
@@ -304,6 +315,12 @@ class LARP extends BaseModel{
     public function hasPhotograph() {
         return $this->HasPhotograph == 1;
     }
+    
+    public function hasArrivalDateQuestion() {
+        return $this->ArrivalDateChoice > 0;
+    }
+    
+    
     
     public function hasTentQuestions() {
         return $this->HasTentQuestions == 1;

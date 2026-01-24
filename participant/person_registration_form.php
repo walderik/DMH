@@ -527,6 +527,41 @@ include 'navigation.php';
 				<input type="text" id="LarpHousingComment" name="LarpHousingComment" size="100" maxlength="200" value="<?php echo $registration->LarpHousingComment; ?>">
 			</div>
 			
+			<?php if ($current_larp->hasArrivalDateQuestion()) { ?>
+    			<div class='itemcontainer'>
+    	       	<div class='itemname'><label for="ArrivalDate">När anländer du till lajvområdet?</label> <font style="color:red">*</font></div>
+				<?php if (!empty(trim($current_larp->ArrivalDateText))) echo nl2br(htmlspecialchars($current_larp->ArrivalDateText))."<br>"?>
+				<?php if (isset($current_larp->ArrivalDateLatestChange)) echo "Du har möjlighet att ändra på det här fram till $current_larp->ArrivalDateLatestChange genom att gå in på din anmälan.<br>";?>
+
+                <?php 
+                $formatter = new IntlDateFormatter(
+                    'sv-SE',
+                    IntlDateFormatter::FULL,
+                    IntlDateFormatter::FULL,
+                    'Europe/Stockholm',
+                    IntlDateFormatter::GREGORIAN,
+                    'EEEE d MMMM'
+                    );
+                
+                $arrivalEnd = new DateTime(substr($current_larp->StartDate,0,10));
+                $arrivalStart = new DateTime(substr($current_larp->StartDate,0,10));
+                $arrivalStart   = date_modify($arrivalStart,"-".$current_larp->ArrivalDateChoice." days");
+                
+                for($i = $arrivalStart; $i <= $arrivalEnd; $i->modify('+1 day')){
+                    $datestr = $i->format("Y-m-d");
+
+                    echo "<input type='radio' id='ArrivalDate$datestr' name='ArrivalDate' value='$datestr'";
+                    if ($registration->ArrivalDate == $datestr) echo "checked='checked'";
+                    echo ">";
+                    echo "<label for='day$datestr'> ".$formatter->format($i)."</label><br>";
+                }
+                ?>
+            	</div>
+		
+			
+			
+			<?php }?>
+			
 			<?php if ($current_larp->hasTentQuestions()) {?>
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="TentType">Typ av tält</label></div>

@@ -61,6 +61,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     ?>
     
+    <style>
+        td{
+            width:50%;
+        }
+        table{
+            width:100%;
+        }    
+    
+    </style>
     
     <div class="content"> 
     	<h1><?php echo default_value('action');?> lajv</h1>
@@ -71,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     		<table>
     			<tr>
     				<td><label for="Name">Namn</label></td>
-    				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($larp->Name); ?>" size="100" maxlength="250" required></td>
+    				<td><input type="text" id="Name" name="Name" value="<?php echo htmlspecialchars($larp->Name); ?>" maxlength="250" required></td>
     			</tr>
     			<tr>
     				<td><label for="Name">Beskrivning</label><br>Om det står något i det här fältet visas det när man väljer bland kommande lajv. Beskriv gärna kortfattat miljö (tex medeltid, vilda västern) och stämning (tex familjevänligt, tungt förtrycksspel).</td>
@@ -206,6 +215,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             			<label for="OfficialsMustShowCriminalRecord_no">Nej</label>
 					</td>
     			</tr>
+     			<tr>
+    				<td><label for=ArrivalDateChoice>Ange ankomstdagar</label><br>Deltagarna får en fråga om när de kommer till lajvet. Ange vlket som är första möjliga dag att välja.</td>
+    				<td>
+						<?php  $adc = $current_larp->ArrivalDateChoice; ?>
+    					<select name="ArrivalDateChoice" id="ArrivalDateChoice">
+
+                          <option value="0" <?php if ($adc == 0) echo "selected"; ?>>Visa inte frågan</option>
+                          <option value="1" <?php if ($adc == 1) echo "selected"; ?>>Dagen före</option>
+                          <option value="2" <?php if ($adc == 2) echo "selected"; ?>>2 dagar före</option>
+                          <option value="3" <?php if ($adc == 3) echo "selected"; ?>>3 dagar före</option>
+                          <option value="4" <?php if ($adc == 4) echo "selected"; ?>>4 dagar före</option>
+                          <option value="5" <?php if ($adc == 5) echo "selected"; ?>>5 dagar före</option>
+                          <option value="6" <?php if ($adc == 6) echo "selected"; ?>>6 dagar före</option>
+                        </select>
+					</td>
+    			</tr>
+
+
+    			<tr>
+    				<td><label for="ArrivalDateText">Föklarande text till ankomstdagar</label><br>Den hör texten visas i frågan ankomstdagar. Här kan man skriva saker som  "Om du kommer på lördag behöver du prata med arrangörerna i förväg" eller "Alla som är funktionärer måste komma senast fredag".</td>
+    				<td><textarea id="ArrivalDateText" name="ArrivalDateText" rows="4" style='width:80%;' maxlength="60000" ><?php echo htmlspecialchars($larp->ArrivalDateText); ?></textarea></td>
+    			</tr>
+    			<tr>
+    				<td><label for="ArrivalDateLatestChange">Sista dag för att ändra ankomstdag</label><br>Ankomstdag är möjligt för deltagarna att ändra efter att anmälan har skickats in. Har anges vilket som är sista datum som deltagarna får ändra på den. Om datum inte är satt får deltagarna inte ändra efter att anmälan har gjorts.</td>
+    				<td><input type="date" id="ArrivalDateLatestChange"
+    					name="ArrivalDateLatestChange" value="<?php echo $larp->ArrivalDateLatestChange; ?>" size="50" required></td>
+    			</tr>
     			
     			
     		</table>
@@ -314,7 +350,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     			</tr>
     			<tr>
     				<td><label for="EvaluationLink">Länk till extern utvärdering</label></td>
-    				<td><input type="url" id="EvaluationLink" name="EvaluationLink" value="<?php echo htmlspecialchars($larp->EvaluationLink); ?>" size="100" maxlength="250" required <?php if ($isEvaluationStarted) echo "disabled=disabled";?> ></td>
+    				<td><input type="url" id="EvaluationLink" name="EvaluationLink" value="<?php echo htmlspecialchars($larp->EvaluationLink); ?>" size="50" maxlength="250" required <?php if ($isEvaluationStarted) echo "disabled=disabled";?> ></td>
     			</tr>
     		
     		</table>
