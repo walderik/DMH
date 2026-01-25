@@ -45,6 +45,15 @@ include_once 'header.php';
     include 'navigation.php';
     
     ?>
+        <style>
+        td{
+            width:50%;
+        }
+        table{
+            width:100%;
+        }    
+    
+    </style>
     
     
     <div class="content"> 
@@ -148,9 +157,77 @@ include_once 'header.php';
             			<label for="VisibleToParticipants_no">Nej</label>
 					</td>
     			</tr>
+ 	    		</table>
+    			<h2>Anmälan</h2>Inställningar för anmälningsformulär
+	    		<table>
+	   			<tr>
+    				<td><label for=HasPhotograph>Har fotograf</label><br>Deltagarna kommer att få frågan vid anmälan om de godkänner att vara med på bild.</td>
+    				<td>
+						<input type="radio" id="HasPhotograph_yes" name="HasPhotograph" value="1" <?php if ($larp->hasPhotograph()) echo 'checked="checked"'?>> 
+            			<label for="HasPhotograph_yes">Ja</label><br> 
+            			<input type="radio" id="HasPhotograph_no" name="HasPhotograph" value="0" <?php if (!$larp->hasPhotograph()) echo 'checked="checked"'?>> 
+            			<label for="HasPhotograph_no">Nej</label>
+					</td>
+    			</tr>
+	   			<tr>
+    				<td><label for=HasTentQuestions>Tältfrågor</label><br>Ska det finns frågor kring tält i anmälan för deltagare?</td>
+    				<td>
+						<input type="radio" id="HasTentQuestions_yes" name="HasTentQuestions" value="1" <?php if ($larp->hasTentQuestions()) echo 'checked="checked"'?>> 
+            			<label for="HasTentQuestions_yes">Ja</label><br> 
+            			<input type="radio" id="HasTentQuestions_no" name="HasTentQuestions" value="0" <?php if (!$larp->hasTentQuestions()) echo 'checked="checked"'?>> 
+            			<label for="HasTentQuestions_no">Nej</label>
+					</td>
+    			</tr>
+    			<tr>
+    				<td><label for=MinimumAgeNPC>Minsta ålder för att vara NPC</label><br>Om man är tillräckligt gammal kommer frågna om NPC att synas vid anmälan.<br>Oavsett kan en arrangör sätta någon till NPC senare.</td>
+    				<td><input type="number" id="MinimumAgeNPC"
+    					name="MinimumAgeNPC" value="<?php echo $larp->MinimumAgeNPC; ?>" size="15" maxlength="10" required></td>
+    			</tr>
+    			<tr>
+    				<td><label for=MinimumAgeOfficial>Minsta ålder för att vara funktionär</label><br>Om man är tillräckligt gammal kommer frågna om funktionär att synas vid anmälan.<br>Oavsett kan en arrangör sätta någon till funktionär senare.</td>
+    				<td><input type="number" id="MinimumAgeOfficial"
+    					name="MinimumAgeOfficial" value="<?php echo $larp->MinimumAgeOfficial; ?>" size="15" maxlength="10" required></td>
+    			</tr>
+	   			<tr>
+    				<td><label for=OfficialsMustShowCriminalRecord>Krav på belastningsregisterutdrag för funktionärer</label><br>Deltagarna kommer vid anmälan få informaiton om att funktionrer måste ha med sig belastningsregisterutdrag till lajvet.</td>
+    				<td>
+						<input type="radio" id="OfficialsMustShowCriminalRecord_yes" name="OfficialsMustShowCriminalRecord" value="1" <?php if ($larp->hasOfficialsMustShowCriminalRecord()) echo 'checked="checked"'?>> 
+            			<label for=OfficialsMustShowCriminalRecord_yes">Ja</label><br> 
+            			<input type="radio" id="OfficialsMustShowCriminalRecord_no" name="OfficialsMustShowCriminalRecord" value="0" <?php if (!$larp->hasOfficialsMustShowCriminalRecord()) echo 'checked="checked"'?>> 
+            			<label for="OfficialsMustShowCriminalRecord_no">Nej</label>
+					</td>
+    			</tr>
+     			<tr>
+    				<td><label for=ArrivalDateChoice>Ange ankomstdagar</label><br>Deltagarna får en fråga om när de kommer till lajvet. Ange vlket som är första möjliga dag att välja.</td>
+    				<td>
+						<?php  $adc = $current_larp->ArrivalDateChoice; ?>
+    					<select name="ArrivalDateChoice" id="ArrivalDateChoice">
+
+                          <option value="0" <?php if ($adc == 0) echo "selected"; ?>>Visa inte frågan</option>
+                          <option value="1" <?php if ($adc == 1) echo "selected"; ?>>Dagen före</option>
+                          <option value="2" <?php if ($adc == 2) echo "selected"; ?>>2 dagar före</option>
+                          <option value="3" <?php if ($adc == 3) echo "selected"; ?>>3 dagar före</option>
+                          <option value="4" <?php if ($adc == 4) echo "selected"; ?>>4 dagar före</option>
+                          <option value="5" <?php if ($adc == 5) echo "selected"; ?>>5 dagar före</option>
+                          <option value="6" <?php if ($adc == 6) echo "selected"; ?>>6 dagar före</option>
+                        </select>
+					</td>
+    			</tr>
+
+
+    			<tr>
+    				<td><label for="ArrivalDateText">Föklarande text till ankomstdagar</label><br>Den hör texten visas i frågan ankomstdagar. Här kan man skriva saker som  "Om du kommer på lördag behöver du prata med arrangörerna i förväg" eller "Alla som är funktionärer måste komma senast fredag".</td>
+    				<td><textarea id="ArrivalDateText" name="ArrivalDateText" rows="4" style='width:80%;' maxlength="60000" ><?php echo htmlspecialchars($larp->ArrivalDateText); ?></textarea></td>
+    			</tr>
+    			<tr>
+    				<td><label for="ArrivalDateLatestChange">Sista dag för att ändra ankomstdag</label><br>Ankomstdag är möjligt för deltagarna att ändra efter att anmälan har skickats in. Har anges vilket som är sista datum som deltagarna får ändra på den. Om datum inte är satt får deltagarna inte ändra efter att anmälan har gjorts.</td>
+    				<td><input type="date" id="ArrivalDateLatestChange"
+    					name="ArrivalDateLatestChange" value="<?php echo $larp->ArrivalDateLatestChange; ?>" size="50"></td>
+    			</tr>
+    			
     			
     		</table>
-			<h2>Speltekniker</h2><br>Vilka speltekniker ska det finnas stöd för i systemet för detta lajv?
+			<h2>Speltekniker</h2>Vilka speltekniker ska det finnas stöd för i systemet för detta lajv?
 			<table class="smalldata">
     			<tr>
     				<td><label for=HasTelegrams>Telegram</label></td>

@@ -37,6 +37,7 @@ class RoleApprovedCopy extends BaseModel {
     public $TypeOfLarperComment;
     public $RaceComment;
     public $AbilityComment;
+    public $SuperHeroName;
     public $IsApproved = 0;
     public $ApprovedByPersonId;
     public $ApprovedDate;
@@ -87,6 +88,7 @@ class RoleApprovedCopy extends BaseModel {
         if (isset($arr['TypeOfLarperComment'])) $this->TypeOfLarperComment = $arr['TypeOfLarperComment'];
         if (isset($arr['RaceComment'])) $this->RaceComment = $arr['RaceComment'];
         if (isset($arr['AbilityComment'])) $this->AbilityComment = $arr['AbilityComment'];
+        if (isset($arr['SuperHeroName'])) $this->SuperHeroName = $arr['SuperHeroName'];
         if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
         if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
@@ -116,8 +118,8 @@ class RoleApprovedCopy extends BaseModel {
                                                             NotAcceptableIntrigues, OtherInformation,
                                                             GroupId, WealthId, PlaceOfResidenceId, RaceId, 
                                                             RoleFunctionComment, Birthplace, CharactersWithRelations,
-                                    NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, ApprovedByPersonId, ApprovedDate)
-                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?);");
+                                    NoIntrigue, LarperTypeId, TypeOfLarperComment, RaceComment, AbilityComment, SuperHeroName, ApprovedByPersonId, ApprovedDate)
+                                    VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->RoleId, $this->Name, $this->Profession, $this->Description,
             $this->DescriptionForGroup, $this->DescriptionForOthers,$this->PreviousLarps,
@@ -126,7 +128,7 @@ class RoleApprovedCopy extends BaseModel {
             $this->GroupId, $this->WealthId, $this->PlaceOfResidenceId, $this->RaceId,
             $this->RoleFunctionComment, $this->Birthplace, $this->CharactersWithRelations,
             $this->NoIntrigue, $this->LarperTypeId, $this->TypeOfLarperComment,
-            $this->RaceComment, $this->AbilityComment, $this->ApprovedByPersonId, $this->ApprovedDate
+            $this->RaceComment, $this->AbilityComment, $this->SuperHeroName, $this->ApprovedByPersonId, $this->ApprovedDate
         ))) {
             $this->connect()->rollBack();
             $stmt = null;

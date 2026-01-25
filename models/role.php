@@ -829,6 +829,14 @@ class Role extends BaseModel{
         return $resultArray;
     }
     
+    public function getSelectedActiveSuperPowerId() {
+        $ids = $this->getSelectedActiveSuperPowerIds();
+        if (empty($ids)) return null;
+        else return $ids[0];
+    }
+    
+    
+    
     public function saveAllSuperPowerActives($idArr) {
         if (!isset($idArr)) {
             return;

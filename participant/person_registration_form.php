@@ -19,6 +19,8 @@ $roledatas = array();
 
 $numberOfRoles = 1;
 
+$campaign = $current_larp->getCampaign();
+
 
 
 
@@ -422,7 +424,7 @@ include 'navigation.php';
 		</div>
 				
 			<?php 
-			if (!empty($current_larp->ContentDescription)) {
+			if (!empty(trim($current_larp->ContentDescription))) {
 
 			?>
 			<div class='itemcontainer'>
@@ -523,11 +525,46 @@ include 'navigation.php';
 				Skriv det här så gör vi vad vi kan för att uppfylla önskemålen. 
 				Fyller du inte i något blir du placerad där vi tror det blir bra.
 				<br>
-				Om du inte har något, lämna fältet tomt. Du behöver inte heller skriva om du vill bo med din grupp.<br>
+				Om du inte har något önskemål, lämna fältet tomt. <?php if ($current_larp->getCampaign()->hasGroups()) { ?>Du behöver inte heller skriva om du vill bo med din grupp.<?php }?><br>
 				<input type="text" id="LarpHousingComment" name="LarpHousingComment" size="100" maxlength="200" value="<?php echo $registration->LarpHousingComment; ?>">
 			</div>
 			
+			<?php if ($current_larp->hasArrivalDateQuestion()) { ?>
+    			<div class='itemcontainer'>
+    	       	<div class='itemname'><label for="ArrivalDate">När anländer du till lajvområdet?</label> <font style="color:red">*</font></div>
+				<?php if (!empty(trim($current_larp->ArrivalDateText))) echo nl2br(htmlspecialchars($current_larp->ArrivalDateText))."<br>"?>
+				<?php if (isset($current_larp->ArrivalDateLatestChange)) echo "Du har möjlighet att ändra på det här fram till $current_larp->ArrivalDateLatestChange genom att gå in på din anmälan.<br>";?>
+
+                <?php 
+                $formatter = new IntlDateFormatter(
+                    'sv-SE',
+                    IntlDateFormatter::FULL,
+                    IntlDateFormatter::FULL,
+                    'Europe/Stockholm',
+                    IntlDateFormatter::GREGORIAN,
+                    'EEEE d MMMM'
+                    );
+                
+                $arrivalEnd = new DateTime(substr($current_larp->StartDate,0,10));
+                $arrivalStart = new DateTime(substr($current_larp->StartDate,0,10));
+                $arrivalStart   = date_modify($arrivalStart,"-".$current_larp->ArrivalDateChoice." days");
+                
+                for($i = $arrivalStart; $i <= $arrivalEnd; $i->modify('+1 day')){
+                    $datestr = $i->format("Y-m-d");
+
+                    echo "<input type='radio' id='ArrivalDate$datestr' name='ArrivalDate' value='$datestr'";
+                    if ($registration->ArrivalDate == $datestr) echo "checked='checked'";
+                    echo ">";
+                    echo "<label for='day$datestr'> ".$formatter->format($i)."</label><br>";
+                }
+                ?>
+            	</div>
+		
 			
+			
+			<?php }?>
+			
+			<?php if ($current_larp->hasTentQuestions()) {?>
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="TentType">Typ av tält</label></div>
 			Om du har med in-lajv tält. Vilken typ av tält är det och vilken färg har det?<br>
@@ -551,8 +588,16 @@ include 'navigation.php';
 			Om du har med tält. Var skulle du vilja få slå upp det? Detta är ett önskemål och vi ska försöka ta hänsyn till det, men vi lovar inget.<br>
 			<input type="text" id="TentPlace" name="TentPlace"  maxlength="200" value = "<?php echo $registration->TentPlace?>">
 			</div>
+			<?php  }?>
 
+			<?php 
+			$age = $current_person->getAgeAtLarp($current_larp);
+			if (($age >= $current_larp->MinimumAgeNPC) || ($age >= $current_larp->MinimumAgeOfficial)) {
+			
+			?>
 			<div class='subheader'>Extra åtaganden</div>
+			
+			<?php  if ($age >= $current_larp->MinimumAgeNPC) {?>
 			<div class='itemcontainer'>
 	       	<div class='itemname'><label for="NPCDesire">NPC</label></div>
 			Kan du tänka dig att ställa upp som NPC? Vad vill du i så fall göra?<br>
@@ -564,18 +609,32 @@ include 'navigation.php';
 				<br>
                 <input type="text" id="NPCDesire" name="NPCDesire" size="100" maxlength="200" value = "<?php echo $registration->NPCDesire?>">
             </div>
+            <?php } ?>
 
-			<?php if (OfficialType::isInUse($current_larp)) { ?>
+			<?php if (OfficialType::isInUse($current_larp) && ($age >= $current_larp->MinimumAgeOfficial)) { ?>
     			<div class='itemcontainer'>
     	       	<div class='itemname'><label for="OfficialType">Intresseranmälan för funktionär</label></div>
 				Det är mycket som behövs för att ett lajv ska fungera på plats. <br>   
                     Allt ifrån att någon måste laga mat till att någon måste se till att det finns toapapper på dassen.<br> 
                     Säkert finns det också något som du gärna kan hjälpa till med och som vi inte har tänkt på.<br> 
                     Beroende på arbetsbörda återbetalas delar eller hela anmälningsavgifter efter lajvet.
+                    
+                    <?php if ($current_larp->hasOfficialsMustShowCriminalRecord()) {?>
+                    	<div style='padding-left:15px'>
+                    	<b>Krav på belastningsregisterutdrag</b><br>
+                    	Alla funktionärer på vårat lajv skall ha med sig ett utdrag från belastningsregistret, detta skall vara oöppnat och lämnas till arrangörerna. Det är enbart arrangörerna som läser och efter lajvet kommer dessa utdrag förstöras.<br> 	
+                        För att beställa belastningsregister:<br>
+                        <a href='https://polisen.se/tjanster-tillstand/belastningsregistret/barn-annan-verksamhet/'>https://polisen.se/tjanster-tillstand/belastningsregistret/barn-annan-verksamhet/</a><br>
+                        Obs. gör detta i tid så du garanterat har det till lajvstart. 
+                        </div>
+                    
+                    <?php  }?>
 				<br>
                 <?php OfficialType::selectionDropdown($current_larp, true,false, $officialType); ?>
             	</div>
 			<?php } ?>
+			
+			<?php  }?>
 			
 			<?php if ($current_larp->NoRoles == 1) {
 			    echo "<div class='subheader'>Karaktär</div>";
@@ -629,6 +688,22 @@ include 'navigation.php';
 			
 		
 			<div class='subheader'>Godkännande</div>
+			<?php if ($current_larp->hasPhotograph()) { ?>
+			<div class='itemcontainer'>
+	       	<div class='itemname'>Fotografering&nbsp;<font style="color:red">*</font></div>
+			Under lajvet kommer vi ha en dedikerad fotograf som fotografera. Bilderna kan komma att användas för dokumentation, 
+			sociala medier och marknadsföring. Genom denna fråga godkänner jag att jag får vara med på bild och att Berghems vänner 
+			får använda sig av bilderna för marknadsföring.
+			  
+			<br>
+				<input type="radio" id="PhotographyApproval_ja" name="PhotographyApproval" value="1" checked> 
+    			<label for="PhotographyApproval_ja">Ja</label><br> 
+    			<input type="radio" id="PhotographyApproval_nej" name="PhotographyApproval" value="0" > 
+    			<label for="PhotographyApproval_nej">Nej</label>
+			</div>
+			<?php } ?>
+			
+			
 			
 			<?php if ($current_larp->NoRoles != 0) { ?>
 			<div class='itemcontainer'>
@@ -643,6 +718,20 @@ include 'navigation.php';
 			</div>
 			<?php } ?>
 
+			<?php if ($campaign->is_hfs()) { ?>
+		    <?php  if ($admin) echo "<div class='itemcontainer' style='color:blue'><b>Kommentar om formuläret:</b><br><i>OBS! Frågan Vuxen på lajvet visas bara om man är 15 år eller äldre.</i></div>"; ?>
+			<?php if ($current_person->getAgeAtLarp($current_larp) >= 15) {?>
+			<div class='itemcontainer'>
+	       	<div class='itemname'>Vuxen på lajvet&nbsp;<font style="color:red">*</font></div>
+			Jag har läst texten om <a href='https://hfs.berghemsvanner.se/?page_id=43'>vuxna på lajvet</a>, har godkänt dem och är införstådd med vad som förväntas av mig som vuxen på lajvet. 
+			Om jag inte har läst reglerna så kryssar jag inte i denna ruta.<br>
+
+			<input type="checkbox" id="AdultRules" name="AdultRules" value="Ja" required  class='requiredField' <?php if ($rules) echo "checked"?>>
+  			<label for="AdultRules">Jag har läst</label> 
+			</div>
+			<?php } ?>
+			<?php } ?>
+
 			<div class='itemcontainer'>
 	       	<div class='itemname'>Regler&nbsp;<font style="color:red">*</font></div>
 			Genom att kryssa i denna ruta så lovar jag med heder och samvete att jag har läst igenom alla 
@@ -653,6 +742,14 @@ include 'navigation.php';
   			<label for="Rules">Jag lovar</label> 
 			</div>
 			
+			<?php if (!is_null($paymentInformation)) { ?>
+			<div class='itemcontainer'>
+	       	<div class='itemname'>Avgift</div>
+			Din avgift för lajvet blir <?php echo $paymentInformation->Cost ?>
+			<?php if (!empty($paymentInformation->FoodDescription)) echo " plus eventuell kostnad för mat, se val ovan" ?> kr.
+			</div>
+			    
+			<?php } ?>
 			
 			<?php 
 			if ($admin) {

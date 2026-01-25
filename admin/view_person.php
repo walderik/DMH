@@ -82,7 +82,6 @@ include 'navigation.php';
 		    }
 		    ?>
 
-
 			<tr><td valign="top" class="header">Erfarenhet</td><td><?php echo Experience::loadById($person->ExperienceId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td><td><?php echo $person->NotAcceptableIntrigues;?></td></tr>
 
@@ -124,10 +123,13 @@ include 'navigation.php';
 					$housingrequest = $activeRegistration->getHousingRequest();
 					if (!empty($housingrequest)) echo $housingrequest->Name;?></td></tr>
 			<?php } ?>
-			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentType)); ?></td></tr>
-			<tr><td valign="top" class="header">Storlek på tält</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentSize)); ?></td></tr>
-			<tr><td valign="top" class="header">Vilka ska bo i tältet</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentHousing)); ?></td></tr>
-			<tr><td valign="top" class="header">Önskad placering</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentPlace)); ?></td></tr>
+			
+			<?php if ($current_larp->hasTentQuestions()) {?>
+    			<tr><td valign="top" class="header">Typ av tält</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentType)); ?></td></tr>
+    			<tr><td valign="top" class="header">Storlek på tält</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentSize)); ?></td></tr>
+    			<tr><td valign="top" class="header">Vilka ska bo i tältet</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentHousing)); ?></td></tr>
+    			<tr><td valign="top" class="header">Önskad placering</td><td><?php echo nl2br(htmlspecialchars($activeRegistration->TentPlace)); ?></td></tr>
+			<?php  }?>
 			<?php 
                 echo "<tr><td>Boende</td>";
                 if ($current_larp->isHousingReleased()) {
@@ -145,6 +147,7 @@ include 'navigation.php';
 			
 			
 			<tr><td valign="top" class="header">Boendehänsyn</td><td><?php echo $person->getFullHousingComment($current_larp);?></td></tr>
+			
 			<tr><td valign="top" class="header">Hälsa</td><td><?php echo $person->HealthComment;?></td></tr>
 			<tr><td valign="top" class="header">Intriger i text</td><td><?php echo ja_nej($person->wantIntriguesInPlainText());?></td></tr>
 
@@ -156,6 +159,16 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Typ av funktionär</td><td><?php echo commaStringFromArrayObject($activeRegistration->getOfficialTypes());?></td></tr>
 			<?php } ?>
 			<?php if (isset($registration)) {?>
+			
+			<?php if ($current_larp->hasPhotograph()) { ?>
+				<tr><td valign="top" class="header">Tillåter fotografering</td><td><?php echo ja_nej($registration->approvesPhotography())?></td></tr>
+			<?php } ?>
+			<?php if ($current_larp->hasArrivalDateQuestion()) { ?>
+				<tr><td valign="top" class="header">Ankomstdatum</td><td><?php echo $registration->ArrivalDate;?></td></tr>
+			<?php } ?>
+
+
+			
 			<tr><td valign="top" class="header">Funktionär</td><td><?php echo ja_nej($registration->IsOfficial)?></td></tr>
 			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($registration->isMember())?></td></tr>
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>

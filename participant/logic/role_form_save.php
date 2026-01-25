@@ -4,6 +4,7 @@ global $root, $current_person, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'];
 require $root . '/includes/init.php';
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $operation = $_POST['operation'];
@@ -34,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $role->saveAllSuperPowerActives($_POST['SuperPowerActiveId']);
         }
         if (isset($_POST['SuperPowerPassiveId'])) {
-            $role->saveAllSuperPowerActives($_POST['SuperPowerPassiveId']);
+            $role->saveAllSuperPowerPassives($_POST['SuperPowerPassiveId']);
         }
         
         

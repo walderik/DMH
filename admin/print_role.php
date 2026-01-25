@@ -15,6 +15,7 @@ $isRegistered = $role->isRegistered($current_larp);
 $reserve_larp_role = Reserve_LARP_Role::loadByIds($role->Id, $current_larp->Id);
 if (isset($reserve_larp_role)) $isReserve = true;
 else $isReserve = false;
+$campaign = $current_larp->getCampaign();
 ?>
 <table>
 <?php 
@@ -100,7 +101,11 @@ if ($role->isMysLajvare()) {
 
 			<tr><td valign="top" class="header">Yrke</td><td><?php echo $role->Profession;?></td></tr>
 			<tr><td valign="top" class="header">Beskrivning</td><td><?php echo nl2br($role->Description);?></td></tr>
+			
+			<?php if ($campaign->hasGroups()) {?>
 			<tr><td valign="top" class="header">Beskrivning för gruppen</td><td><?php echo nl2br($role->DescriptionForGroup);?></td></tr>
+			<?php } ?>
+			
 			<tr><td valign="top" class="header">Beskrivning för andra</td><td><?php echo nl2br($role->DescriptionForOthers);?></td></tr>
 
 			<?php if (Race::isInUse($current_larp)) {?>
@@ -137,6 +142,12 @@ if ($role->isMysLajvare()) {
 			<tr><td valign="top" class="header">Funktioner</td><td><?php echo commaStringFromArrayObject($role->getRoleFunctions());?></td></tr>
 			<tr><td valign="top" class="header">Funktioner förklaring</td><td><?php echo $role->RoleFunctionComment;?></td></tr>
 			<?php }?>
+			
+			<?php if ($campaign->is_hfs()) {?>
+			<tr><td valign="top" class="header">Superhjältenamn</td><td><?php echo $role->SuperHeroName;?></td></tr>
+			
+			<?php }?>
+			
 
 			<?php if (SuperPowerActive::isInUse($current_larp)) {?>
 			<tr><td valign="top" class="header">Superkraft, aktiv</td><td><?php echo commaStringFromArrayObject($role->getSuperPowerActives());?></td></tr>

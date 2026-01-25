@@ -126,6 +126,13 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Önskat boende&nbsp;<font style="color:red">*</font></td>
 			<td><?php HousingRequest::selectionDropdown($current_larp, false,false,$registration->HousingRequestId);?></td></tr>
 			<?php } ?>
+			
+			<?php if ($current_larp->hasArrivalDateQuestion()) { ?>
+				<tr><td valign="top" class="header">Ankomstdatum</td>
+				<td><input type="date" id="ArrivalDate" name="ArrivalDate" value="<?php echo $registration->ArrivalDate; ?>"  size="15" maxlength="250"></td></tr>
+			<?php } ?>
+			
+			
 			<tr><td valign="top" class="header">Typ av tält</td>
 			<td><input class="input_field" type="text" id="TentType" name="TentType"  maxlength="200" value="<?php echo htmlspecialchars($registration->TentType); ?>"></td></tr>
 			<tr><td valign="top" class="header">Storlek på tält</td>
@@ -164,6 +171,15 @@ include 'navigation.php';
     			<label for="HasPermissionShowName_no">Nej</label>
 			</td></tr>
 
+			<?php if ($current_larp->hasPhotograph()) { ?>
+			<tr><td valign="top" class="header">Tillåter fotografering</td>
+			<td>
+				<input type="radio" id="PhotographyApproval_ja" name="PhotographyApproval" value="1" checked> 
+    			<label for="PhotographyApproval_ja">Ja</label><br> 
+    			<input type="radio" id="PhotographyApproval_nej" name="PhotographyApproval" value="0" > 
+    			<label for="PhotographyApproval_nej">Nej</label>
+			</td></tr>
+			<?php } ?>
 
 			<tr><td valign="top" class="header">Medlem</td><td><?php echo ja_nej($registration->isMember())?></td></tr>
 			<tr><td valign="top" class="header">Anmäld</td><td><?php echo $registration->RegisteredAt;?></td></tr>

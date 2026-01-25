@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 
 class Reserve_Registration extends BaseModel{
@@ -19,7 +19,8 @@ class Reserve_Registration extends BaseModel{
     public $TypeOfFoodId;
     public $FoodChoice;
     public $LarpPartNotAttending;
-    
+    public $PhotographyApproval;
+    public $ArrivalDate;
     
     public static $orderListBy = 'RegisteredAt';
     
@@ -46,6 +47,8 @@ class Reserve_Registration extends BaseModel{
         if (isset($arr['TypeOfFoodId'])) $this->TypeOfFoodId = $arr['TypeOfFoodId'];
         if (isset($arr['FoodChoice'])) $this->FoodChoice = $arr['FoodChoice'];
         if (isset($arr['LarpPartNotAttending'])) $this->LarpPartNotAttending = $arr['LarpPartNotAttending'];
+        if (isset($arr['PhotographyApproval'])) $this->PhotographyApproval = $arr['PhotographyApproval'];
+        if (isset($arr['ArrivalDate'])) $this->ArrivalDate = $arr['ArrivalDate'];
         
     }
     
@@ -81,12 +84,12 @@ class Reserve_Registration extends BaseModel{
         $stmt = $this->connect()->prepare("UPDATE regsys_reserve_registration SET LARPId=?, PersonId=?, 
                 RegisteredAt=?, NPCDesire=?, HousingRequestId=?, 
                 LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?,
-                GuardianId=?, TypeOfFoodId=?, FoodChoice=?, LarpPartNotAttending=? WHERE Id = ?");
+                GuardianId=?, TypeOfFoodId=?, FoodChoice=?, LarpPartNotAttending=?, PhotographyApproval=?, ArrivalDate=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, 
             $this->RegisteredAt,$this->NPCDesire, $this->HousingRequestId,
             $this->LarpHousingComment, $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace,
-            $this->GuardianId, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->Id))) {
+            $this->GuardianId, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->PhotographyApproval, $this->ArrivalDate, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -102,12 +105,12 @@ class Reserve_Registration extends BaseModel{
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_reserve_registration (LARPId, PersonId, RegisteredAt,
             NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, 
-            GuardianId, TypeOfFoodId, FoodChoice, LarpPartNotAttending) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            GuardianId, TypeOfFoodId, FoodChoice, LarpPartNotAttending, PhotographyApproval, ArrivalDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, 
             $this->NPCDesire, $this->HousingRequestId, 
             $this->LarpHousingComment, $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace,
-            $this->GuardianId, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending))) {
+            $this->GuardianId, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->PhotographyApproval, $this->ArrivalDate))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();

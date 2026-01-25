@@ -593,7 +593,7 @@ include 'navigation.php';
 		              false,
 		              true,
 		              false);
-		          selectionByArray('SuperPowerActive' , SuperPowerActive::allActive($current_larp), false, true, $role->getSelectedActiveSuperPowerIds());
+		          selectionByArray('SuperPowerActive' , SuperPowerActive::allActive($current_larp), false, true, $role->getSelectedActiveSuperPowerId());
 		          print_participant_question_end(false);
 		          
 		      }
@@ -601,7 +601,7 @@ include 'navigation.php';
 		      if (SuperPowerPassive::isInUse($current_larp)) {
 		          print_participant_question_start(
 		              "Superkraft Passiv",
-		              "Välj upp till tre passiva superkrafter. En passiv kraft är en kraft du inte kan använda. Den är stoppad av maskinen.",
+		              "Välj upp till två passiva superkrafter. En passiv kraft är en kraft du inte kan använda. Den är stoppad av maskinen.",
 		              false,
 		              true,
 		              false);
