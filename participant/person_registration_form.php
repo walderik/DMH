@@ -745,8 +745,8 @@ include 'navigation.php';
 			<?php if (!is_null($paymentInformation)) { ?>
 			<div class='itemcontainer'>
 	       	<div class='itemname'>Avgift</div>
-			Din avgift för lajvet blir <?php echo $paymentInformation->Cost ?>
-			<?php if (!empty($paymentInformation->FoodDescription)) echo " plus eventuell kostnad för mat, se val ovan" ?> kr.
+			Din avgift för lajvet blir <?php echo $paymentInformation->Cost ?> kr
+			<?php if (!empty($paymentInformation->FoodDescription)) echo " plus eventuell kostnad för mat, se val ovan" ?>.
 			</div>
 			    
 			<?php } ?>
