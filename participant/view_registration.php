@@ -50,7 +50,7 @@ include 'navigation.php';
 		        echo "<div class='itemname'>Ansvarig vuxen för</div>";
 		        $minor_str_arr = array();
 		        foreach ($minors as $minor) {
-		            $minor_str_arr[] = "<a href='view_registration.php?id=".$minor->Id."'>".$minor->Name."</a>";
+		            $minor_str_arr[] = $minor->Name;
 		        }
 		        echo implode(", ", $minor_str_arr);
 		        echo "</div>";

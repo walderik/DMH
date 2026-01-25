@@ -240,7 +240,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     			<tr>
     				<td><label for="ArrivalDateLatestChange">Sista dag för att ändra ankomstdag</label><br>Ankomstdag är möjligt för deltagarna att ändra efter att anmälan har skickats in. Har anges vilket som är sista datum som deltagarna får ändra på den. Om datum inte är satt får deltagarna inte ändra efter att anmälan har gjorts.</td>
     				<td><input type="date" id="ArrivalDateLatestChange"
-    					name="ArrivalDateLatestChange" value="<?php echo $larp->ArrivalDateLatestChange; ?>" size="50" required></td>
+    					name="ArrivalDateLatestChange" value="<?php echo $larp->ArrivalDateLatestChange; ?>" size="50"></td>
     			</tr>
     			
     			

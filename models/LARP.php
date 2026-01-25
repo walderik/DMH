@@ -116,6 +116,7 @@ class LARP extends BaseModel{
         if ($this->EndTimeLARPTime == '') $this->EndTimeLARPTime = null;
         if ($this->LastDayAlchemy == '') $this->LastDayAlchemy = null;
         if ($this->LastDayAlchemySupplier == '') $this->LastDayAlchemySupplier = null;
+        if ($this->ArrivalDateLatestChange == '') $this->ArrivalDateLatestChange = null;
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen

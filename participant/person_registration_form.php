@@ -693,7 +693,7 @@ include 'navigation.php';
 	       	<div class='itemname'>Fotografering&nbsp;<font style="color:red">*</font></div>
 			Under lajvet kommer vi ha en dedikerad fotograf som fotografera. Bilderna kan komma att användas för dokumentation, 
 			sociala medier och marknadsföring. Genom denna fråga godkänner jag att jag får vara med på bild och att Berghems vänner 
-			får använda sig av bilderna för marknadsföring?
+			får använda sig av bilderna för marknadsföring.
 			  
 			<br>
 				<input type="radio" id="PhotographyApproval_ja" name="PhotographyApproval" value="1" checked> 
@@ -718,8 +718,9 @@ include 'navigation.php';
 			</div>
 			<?php } ?>
 
-			<?php if (($campaign->is_hfs() && ($current_person->getAgeAtLarp($current_larp) >= 15)) || $admin) { ?>
+			<?php if ($campaign->is_hfs()) { ?>
 		    <?php  if ($admin) echo "<div class='itemcontainer' style='color:blue'><b>Kommentar om formuläret:</b><br><i>OBS! Frågan Vuxen på lajvet visas bara om man är 15 år eller äldre.</i></div>"; ?>
+			<?php if ($current_person->getAgeAtLarp($current_larp) >= 15) {?>
 			<div class='itemcontainer'>
 	       	<div class='itemname'>Vuxen på lajvet&nbsp;<font style="color:red">*</font></div>
 			Jag har läst texten om <a href='https://hfs.berghemsvanner.se/?page_id=43'>vuxna på lajvet</a>, har godkänt dem och är införstådd med vad som förväntas av mig som vuxen på lajvet. 
@@ -728,6 +729,7 @@ include 'navigation.php';
 			<input type="checkbox" id="AdultRules" name="AdultRules" value="Ja" required  class='requiredField' <?php if ($rules) echo "checked"?>>
   			<label for="AdultRules">Jag har läst</label> 
 			</div>
+			<?php } ?>
 			<?php } ?>
 
 			<div class='itemcontainer'>
@@ -740,6 +742,14 @@ include 'navigation.php';
   			<label for="Rules">Jag lovar</label> 
 			</div>
 			
+			<?php if (!is_null($paymentInformation)) { ?>
+			<div class='itemcontainer'>
+	       	<div class='itemname'>Avgift</div>
+			Din avgift för lajvet blir <?php echo $paymentInformation->Cost ?>
+			<?php if (!empty($paymentInformation->FoodDescription)) echo " plus eventuell kostnad för mat, se val ovan" ?> kr.
+			</div>
+			    
+			<?php } ?>
 			
 			<?php 
 			if ($admin) {
