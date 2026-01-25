@@ -103,6 +103,10 @@ $param = date_format(new Datetime(),"suv");
 				
 				?>
 			   		    			
+        <h2>Inställningar för lajvet, bland annat innehåll</h2>
+        <a href ="larp_form.php?operation=update&id=<?php echo $current_larp->Id?>">Inställningar för lajvet</a>
+        
+        
         </div>
         
 </body>
