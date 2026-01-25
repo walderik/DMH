@@ -49,8 +49,10 @@ else {
     
     //Kolla att minst en karaktär går att anmäla
     $registerable_roles = array();
+    $non_registrable_roles = array();
     foreach ($roles as $role) {
         if ($role->groupIsRegisteredApproved($current_larp)) $registerable_roles[] = $role;
+        else $non_registrable_roles[] = $role;
     }
     if (empty($registerable_roles)) {
         header('Location: index.php?error=no_role_may_register');
@@ -636,6 +638,21 @@ include 'navigation.php';
 			
 			<?php if ($current_larp->NoRoles == 1) {
 			    echo "<div class='subheader'>Karaktär</div>";
+			    if (!empty($non_registrable_roles)) {
+			        echo  "<div class='itemcontainer'>Följande karaktärer är med i en grupp som inte är anmäld och kan därför inte anmälas.<br>";
+			        echo "Om du vill spela karaktären får du antingen se till att gruppen blir anmäld eller ändra karaktären så att den inte är med i gruppen.";
+			        echo "<ul>";
+			        
+			        foreach ($non_registrable_roles as $role) {
+			            $group = $role->getGroup();
+
+			            echo "<li>$role->Name";
+			            if (!empty($group)) echo " - $group->Name";
+			            echo "</li>";
+			            
+			        }
+			        echo "</ul</div>";
+			    }
 			    printEditableCharacter($selectableRoles, null, "", null, true, false);
 
 			} elseif ($current_larp->NoRoles > 1) {

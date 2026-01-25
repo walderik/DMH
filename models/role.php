@@ -90,6 +90,7 @@ class Role extends BaseModel{
         if (isset($arr['AbilityComment'])) $this->AbilityComment = $arr['AbilityComment'];
         if (isset($arr['AbilityComment'])) $this->AbilityComment = $arr['AbilityComment'];
         if (isset($arr['SuperHeroName'])) $this->SuperHeroName = $arr['SuperHeroName'];
+        if (isset($arr['IsApproved'])) $this->IsApproved = $arr['IsApproved'];
         if (isset($arr['ApprovedByPersonId'])) $this->ApprovedByPersonId = $arr['ApprovedByPersonId'];
         if (isset($arr['ApprovedDate'])) $this->ApprovedDate = $arr['ApprovedDate'];
         if (isset($arr['CreatorPersonId'])) $this->CreatorPersonId = $arr['CreatorPersonId'];
