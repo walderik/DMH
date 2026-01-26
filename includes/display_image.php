@@ -6,7 +6,6 @@ $root = $_SERVER['DOCUMENT_ROOT'];
 
 
 
-
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
         require_once $root . '/includes/init.php';
@@ -20,14 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $imageId = $_GET['id'];
         $image = Image::loadById($imageId);
         
-        //header("Content-type: $image->file_mime");
-        // give the browser an indication of the size of the image
-        header('Content-Length: ' . strlen($image->file_data));
+        ob_clean(); // rensa buffert
         
-        header("Content-type: ".$image->file_mime);
-        
+        header("Content-Type: ".$image->file_mime);
         echo $image->file_data;
-        
         
     } elseif (isset($_GET['Swish'])) {
         include_once $root . '/includes/all_includes.php';
