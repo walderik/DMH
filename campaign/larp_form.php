@@ -198,7 +198,7 @@ include_once 'header.php';
 					</td>
     			</tr>
      			<tr>
-    				<td><label for=ArrivalDateChoice>Ange ankomstdagar</label><br>Deltagarna får en fråga om när de kommer till lajvet. Ange vlket som är första möjliga dag att välja.</td>
+    				<td><label for=ArrivalDateChoice>Ange ankomstdagar</label><br>Deltagarna får en fråga om när de kommer till lajvet. Ange vilket som är första möjliga dag att välja.</td>
     				<td>
 						<?php  $adc = $current_larp->ArrivalDateChoice; ?>
     					<select name="ArrivalDateChoice" id="ArrivalDateChoice">
