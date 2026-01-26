@@ -672,7 +672,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->draw_field('ability');
         $this->draw_field('religion');
         $this->draw_field('superpower_active');
-        if ($this->campaign->is_hfs()) $this->draw_field("empty");
+        if ($this->campaign->is_hfs() && !empty($this->role->SuperHeroName)) $this->draw_field("empty");
         $this->draw_field('superpower_passive');
         
         if ($this->all) $this->draw_field('darkSecret');
@@ -785,13 +785,15 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	
 	protected function superpower_active($left) {
 	    if (!SuperPowerActive::isInUse($this->larp)) return false;
+	    if (empty($this->role->SuperHeroName)) return false;
 	    $this->set_header($left, 'Superkraft, activ');
 	    $this->set_text($left, commaStringFromArrayObject($this->role->getSuperPowerActives()));
 	    return true;
 	}
 	
 	protected function superpower_passive($left) {
-	    if (!SuperPowerActive::isInUse($this->larp)) return false;
+	    if (!SuperPowerPassive::isInUse($this->larp)) return false;
+	    if (empty($this->role->SuperHeroName)) return false;
 	    $this->set_header($left, 'Superkraft, passiv');
 	    $this->set_text($left, commaStringFromArrayObject($this->role->getSuperPowerPassives()));
 	    return true;
