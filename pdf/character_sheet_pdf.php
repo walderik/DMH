@@ -32,6 +32,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
     public $person;
     public $isMyslajvare;
     public $larp;
+    public $campaign;
     public $subdivisions;
     public $all;
     public $current_left;
@@ -579,6 +580,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->person = $this->role->getPerson();
         $this->isMyslajvare = $this->role->isMysLajvare();
         $this->larp = $larp_in;
+        $this->campaign = $larp_in->getCampaign();
         $this->subdivisions = Subdivision::allForRole($this->role, $this->larp);
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
         $this->current_cell_height = $this->cell_y_space;
@@ -623,6 +625,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->person = $this->role->getPerson();
         $this->isMyslajvare = $this->role->isMysLajvare();
         $this->larp = $larp_in;
+        $this->campaign = $larp_in->getCampaign();
         $this->subdivisions = Subdivision::allForRole($this->role, $this->larp);
         $this->all = $all_information;
         $this->cell_y_space = static::$cell_y + (2*static::$Margin);
@@ -652,6 +655,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
         
         # Uppräkning av ett antal fält som kan finnas eller inte
         $this->draw_field('epost');
+        $this->draw_field("superheroname");
         $this->draw_field('group');
         $this->draw_field('erfarenhet');
         $this->draw_field('yrke');
@@ -667,6 +671,9 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $this->draw_field('race');
         $this->draw_field('ability');
         $this->draw_field('religion');
+        $this->draw_field('superpower_active');
+        if ($this->campaign->is_hfs()) $this->draw_field("empty");
+        $this->draw_field('superpower_passive');
         
         if ($this->all) $this->draw_field('darkSecret');
         if ($this->all) $this->draw_field('darkSecretSuggestion');
@@ -763,10 +770,33 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	}
 	
 	protected function yrke($left) {
+	    if ($this->campaign->is_hfs()) return false;
 	    $this->set_header($left, 'Yrke');
 	    $this->set_text($left, $this->role->Profession);
 	    return true;
 	}
+	
+	protected function superheroname($left) {
+	    if (empty($this->role->SuperHeroName)) return false;
+	    $this->set_header($left, 'Superhjältenamn');
+	    $this->set_text($left, $this->role->SuperHeroName);
+	    return true;
+	}
+	
+	protected function superpower_active($left) {
+	    if (!SuperPowerActive::isInUse($this->larp)) return false;
+	    $this->set_header($left, 'Superkraft, activ');
+	    $this->set_text($left, commaStringFromArrayObject($this->role->getSuperPowerActives()));
+	    return true;
+	}
+	
+	protected function superpower_passive($left) {
+	    if (!SuperPowerActive::isInUse($this->larp)) return false;
+	    $this->set_header($left, 'Superkraft, passiv');
+	    $this->set_text($left, commaStringFromArrayObject($this->role->getSuperPowerPassives()));
+	    return true;
+	}
+	
 	
 	protected function epost($left) {
 	    $this->set_header($left, 'Epost');
@@ -874,6 +904,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	}
 	
 	protected function group($left) {
+	    if (!$this->campaign->hasGroups()) return false;
 	    $this->set_header($left, 'Grupp');
 	    $group = $this->role->getGroup();
 	    if (empty($group)) return true;
@@ -882,6 +913,8 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	}
 	
 	protected function birth_place($left) {
+	    if ($this->campaign->is_hfs()) return false;
+	    
 	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Född');
 	    $this->set_text($left, $this->role->Birthplace);
@@ -938,6 +971,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	
 
 	protected function reason_for_being_in_here($left) {
+	    if ($this->campaign->is_hfs()) return false;
 	    if ($this->isMyslajvare) return false;
 	    $this->set_header($left, 'Orsak för att vistas här');
 	    $this->set_text($left, $this->role->ReasonForBeingInSlowRiver);
