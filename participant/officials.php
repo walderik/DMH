@@ -80,12 +80,9 @@ function print_role($role) {
     echo "<div>Spelar ".$role->Name."</div>";
     if (isset($role->ImageId) && !is_null($role->ImageId)) {
         $image = Image::loadById($role->ImageId);
-        if (!is_null($image)) {
-            
-            echo "<img src='data:image/jpeg;base64,".base64_encode($image->file_data)."'/>\n";
-            if (!empty($image->Photographer) && $image->Photographer!="") {
-                echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
-            }
+        echo "<img src='../includes/display_image.php?id=$image->Id'/>\n";
+        if (!empty($image->Photographer) && $image->Photographer!="") {
+            echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
         }
     }
     else {
