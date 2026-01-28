@@ -1,0 +1,8 @@
+{
+    "require": {
+        "filp/whoops": "^2.18",
+        "phpmailer/phpmailer": "^7.0",
+        "tecnickcom/tcpdf": "^6.10",
+        "ifsnop/mysqldump-php": "^2.12"
+    }
+}

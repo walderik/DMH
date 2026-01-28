@@ -168,4 +168,5 @@ foreach ($larps as $larp) {
 }
 
 // close and output PDF document
+ob_end_clean(); 
 $pdf->Output(encode_utf_to_iso($name.'.pdf'), 'I');

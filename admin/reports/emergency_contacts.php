@@ -44,4 +44,5 @@ $pdf->Table($name, $header, $rows, $widths);
 
 
 // close and output PDF document
+ob_end_clean(); 
 $pdf->Output($name.'.pdf', 'I');

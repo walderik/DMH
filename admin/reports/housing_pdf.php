@@ -77,4 +77,5 @@ $pdf->AddPage();
 $pdf->Table("Vilka bor i husen/på lägerplatserna?", $header, $rows);
 
 // close and output PDF document
+ob_end_clean(); 
 $pdf->Output($name.'.pdf', 'I');

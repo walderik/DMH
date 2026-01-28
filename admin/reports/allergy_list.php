@@ -175,4 +175,5 @@ if (!empty($persons) && count($persons) > 0) {
     //$pdf->new_report($current_larp, "Special", $rows, true);
 }
 
+ob_end_clean(); 
 $pdf->Output();

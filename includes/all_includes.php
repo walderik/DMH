@@ -2,6 +2,8 @@
 
 global $root;
 
+require_once $root . '/vendor/autoload.php';
+
 include_once $root . '/classes/environment.php';
 include_once $root . '/includes/navigation_control.php';
 
