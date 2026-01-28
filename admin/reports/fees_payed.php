@@ -73,4 +73,5 @@ if (!empty($rows) && sizeof($rows) > 1) {
 
 
 // close and output PDF document
+ob_end_clean(); 
 $pdf->Output($name.'.pdf', 'I');

@@ -41,4 +41,5 @@ $pdf->Table($listname, $header, $rows);
 
 
 // close and output PDF document
+ob_end_clean(); 
 $pdf->Output($listname.'.pdf', 'I');

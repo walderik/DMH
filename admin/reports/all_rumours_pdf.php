@@ -69,4 +69,5 @@ $pdf->Table($name, $header, $rows);
 
 
 // close and output PDF document
+ob_end_clean(); 
 $pdf->Output($name.'.pdf', 'I');

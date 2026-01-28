@@ -84,6 +84,7 @@ foreach ($period as $dt) {
 
 
 // close and output PDF document
+ob_end_clean(); 
 $pdf->Output($name.'.pdf', 'I');
 
 
