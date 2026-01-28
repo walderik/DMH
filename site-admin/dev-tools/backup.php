@@ -2,7 +2,7 @@
 
 $root = $_SERVER['DOCUMENT_ROOT'];
 
-include_once($root . '/lib/Mysqldump/Mysqldump.php');
+include_once $root . '/includes/all_includes.php';
 
 class Backup extends Dbh {
     
@@ -13,7 +13,7 @@ class Backup extends Dbh {
         global $root;
         $tables = Backup::getTableNames();
         
-        $backup_file_name = $root . '/tmp/OM_backup_' . time() . '.sql';
+        $backup_file_name = $root . 'tmp/OM_backup_' . time() . '.sql';
         
         //Make backup
         $dumpSettings = array(
