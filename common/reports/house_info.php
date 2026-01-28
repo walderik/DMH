@@ -29,4 +29,5 @@ if (!empty(trim($house->NotesToUsers))) {
 }
 
 // close and output PDF document
+ob_end_clean(); 
 $pdf->Output($house->Name.'.pdf', 'I');

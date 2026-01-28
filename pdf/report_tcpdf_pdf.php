@@ -6,7 +6,7 @@
 global $root, $current_user, $current_larp;
 $root = $_SERVER['DOCUMENT_ROOT'];
 
-require_once $root . '/lib/tcpdf/tcpdf.php';
+include_once $root . '/includes/all_includes.php';
 
 // extend TCPF with custom functions
 class Report_TCP_PDF extends Tcpdf {
