@@ -30,6 +30,10 @@ class AccessControl extends Dbh {
         
     }
 
+    public function accessaccessControlCheckin() {
+        return static::accessControlLarp();
+    }
+    
     public static function accessControlLarp() {
         global $current_person, $current_larp;
         if (empty($current_larp) or (empty($current_person))) {
@@ -88,6 +92,10 @@ class AccessControl extends Dbh {
             "LarpId=?;";
         return static::existsQuery($sql, array($person->Id, $larp->Id));
         
+    }
+    
+    public static function hasAccessCheckin(Person $person, LARP $larp) {
+        return static::hasAccessLarp($person, $larp);
     }
     
     public static function hasAccessOther(Person $person, int $access) {
