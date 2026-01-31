@@ -4,6 +4,18 @@
     <link href="../css/navigation_admin.css" rel="stylesheet" type="text/css">
 	<link href='../css/participant_style.css' rel='stylesheet' type='text/css'>	
 
+	<?php
+
+	include '../common/navigation_beginning.php';
+	
+	?>
+
+  <?php 
+      $campaign = $current_larp->getCampaign();
+      
+      ?>	
+	
+
 
 	  <div class="dropdown">
 	    <button class="dropbtn">Incheckning 
