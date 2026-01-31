@@ -37,6 +37,9 @@ class Registration extends BaseModel{
     public $EvaluationDone = 0;
     public $PhotographyApproval;
     public $ArrivalDate;
+    public $VehicleLicencePlate;
+    public $CheckinTime;
+    public $CheckoutTime;
     
     public static $orderListBy = 'RegisteredAt';
     
@@ -81,6 +84,11 @@ class Registration extends BaseModel{
         if (isset($arr['EvaluationDone'])) $this->EvaluationDone = $arr['EvaluationDone'];
         if (isset($arr['PhotographyApproval'])) $this->PhotographyApproval = $arr['PhotographyApproval'];
         if (isset($arr['ArrivalDate'])) $this->ArrivalDate = $arr['ArrivalDate'];
+
+        if (isset($arr['VehicleLicencePlate'])) $this->VehicleLicencePlate = $arr['VehicleLicencePlate'];
+        if (isset($arr['CheckinTime'])) $this->CheckinTime = $arr['CheckinTime'];
+        if (isset($arr['CheckoutTime'])) $this->CheckoutTime = $arr['CheckoutTime'];
+        
         
         if (empty($this->FoodChoice)) $this->FoodChoice = null;
         if (empty($this->LarpPartNotAttending)) $this->LarpPartNotAttending = null;
@@ -126,7 +134,7 @@ class Registration extends BaseModel{
                 RefundDate=?, IsOfficial=?, OfficialDetails=?, NPCDesire=?, HousingRequestId=?, LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?, 
                 GuardianId=?, NotComingReason=?,
                 SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, LarpPartNotAttending=?, LarpPartAcknowledged=?, EvaluationDone=?, 
-                PhotographyApproval=?, ArrivalDate=? WHERE Id = ?");
+                PhotographyApproval=?, ArrivalDate=?, VehicleLicencePlate=?, CheckinTime=?, CheckoutTime=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId,  
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
@@ -135,7 +143,7 @@ class Registration extends BaseModel{
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, 
             $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, 
-            $this->PhotographyApproval, $this->ArrivalDate, $this->Id))) {
+            $this->PhotographyApproval, $this->ArrivalDate, $this->VehicleLicencePlate, $this->CheckinTime, $this->CheckoutTime, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -153,15 +161,16 @@ class Registration extends BaseModel{
             PaymentReference, AmountToPay, AmountPayed, Payed, PaymentComment, IsMember,
             NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, OfficialDetails, 
             NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, NotComingReason, 
-            SpotAtLARP, TypeOfFoodId, FoodChoice, LarpPartNotAttending, LarpPartAcknowledged, EvaluationDone, PhotographyApproval, ArrivalDate) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?)");
+            SpotAtLARP, TypeOfFoodId, FoodChoice, LarpPartNotAttending, LarpPartAcknowledged, EvaluationDone, PhotographyApproval, ArrivalDate, VehicleLicencePlate, CheckinTime, CheckoutTime) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
             $this->AmountPayed, $this->Payed, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
             $this->RefundDate, $this->IsOfficial, $this->OfficialDetails, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment,
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason,
-            $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, $this->PhotographyApproval, $this->ArrivalDate))) {
+            $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, $this->PhotographyApproval, 
+            $this->ArrivalDate, $this->VehicleLicencePlate, $this->CheckinTime, $this->CheckoutTime))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -213,6 +222,22 @@ class Registration extends BaseModel{
 
     public function approvesPhotography() {
         if ($this->PhotographyApproval == 1) {
+            return true;
+        }
+        return false;
+        
+    }
+    
+    public function isCheckedIn() {
+        if (isset($this->CheckinTime)) {
+            return true;
+        }
+        return false;
+        
+    }
+
+    public function isCheckedOut() {
+        if (isset($this->CheckoutTime)) {
             return true;
         }
         return false;
