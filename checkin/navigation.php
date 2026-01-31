@@ -22,9 +22,8 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-            <a href=__DIR__."search_person.php">Sök person</a>
-            <a href=__DIR__."search_role.php">Sök roll</a>
-            <a href=__DIR_."not__checked_in.php">Inte incheckade</a>
+            <a href= "../checkin/search_person.php">Sök person</a>
+            <a href="../checkin/not_checked_in.php">Inte incheckade</a>
 	    </div>
 	  </div> 
 	  <div class="dropdown">
@@ -32,10 +31,9 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-            <a href=__DIR__."search_person.php">Sök person</a>
-            <a href=__DIR__."search_role.php">Sök roll</a>
-            <a href=__DIR__."search_vehicle.php">Sök fordon</a>
-            <a href=__DIR_."not__checked_out.php">Inte utcheckade</a>
+            <a href="../checkin/search_person.php">Sök person</a>
+            <a href="../checkin/search_vehicle.php">Sök fordon</a>
+            <a href="../checkin/not_checked_out.php">Inte utcheckade</a>
 	    </div>
 	  </div> 
 	  

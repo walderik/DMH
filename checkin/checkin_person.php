@@ -10,12 +10,29 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             exit;
         }
         $registration = Registration::loadByIds($person->Id, $current_larp->Id);
+    }
+    else {
+        header('Location: index.php');
+        exit;
+    }
+}
+
+    
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['person_id'])) {
+        $person = Person::loadById($_POST['person_id']);
+        if (!$person->isRegistered($current_larp)) {
+            header('Location: index.php'); // personen är inte anmäld
+            exit;
+        }
+        $registration = Registration::loadByIds($person->Id, $current_larp->Id);
         $changed = false;
-        if (isset($_GET['VehicleLicencePlate'])) {
-            $registration->VehicleLicencePlate = strtoupper($_GET['VehicleLicencePlate']);
+        if (isset($_POST['VehicleLicencePlate'])) {
+            $registration->VehicleLicencePlate = strtoupper($_POST['VehicleLicencePlate']);
             $changed = true;
         }
-        if (isset($_GET['doCheckin']) && !$registration->isCheckedIn()) {
+        if (isset($_POST['doCheckin']) && !$registration->isCheckedIn()) {
             $now = new Datetime();
             $registration->CheckinTime =  date_format($now,"Y-m-d H:i:s");
             $changed = true;
@@ -53,7 +70,11 @@ include 'navigation.php';
 		    ?>
     	   		<div class='itemcontainer'>
                	<div class='itemname'>Ansvarig vuxen</div>
-				<?php if (!empty($registration->GuardianId)) echo $registration->getGuardian()->Name; else echo showStatusIcon(false); ?>
+				<?php 
+				if (!empty($registration->GuardianId)) {
+				    $guardian = $registration->getGuardian();
+				    echo "<a href='checkin_person.php?id=$guardian->Id'>$guardian->Name</a>"; 
+				} else echo showStatusIcon(false); ?>
     			</div>
 		    <?php 
 		    }
@@ -335,8 +356,8 @@ include 'navigation.php';
 	    	<?php if ($registration->isCheckedIn()) {?>
     	   		<div class='itemcontainer'>
                	<div class='itemname'>Fordon</div>
-               	<form method='GET'>
-		    	<input type='hidden' id='id' name='id' value='<?php echo $person->Id ?>'>   
+               	<form method='POST'>
+		    	<input type='hidden' id='person_id' name='person_id' value='<?php echo $person->Id ?>'>   
 		    	<input type="text" id="VehicleLicencePlate" name="VehicleLicencePlate" value="<?php echo $registration->VehicleLicencePlate; ?>" size="10" maxlength="250"> 
 				<input type="submit" value="Spara">
     			</form>
@@ -352,8 +373,8 @@ include 'navigation.php';
 	    	<?php } else { ?>
     	   		<div class='itemcontainer'>
                	<div class='itemname'>Bil registreringsnummer</div>
-               	<form method='GET'>
-		    	<input type='hidden' id='id' name='id' value='<?php echo $person->Id ?>'>   
+               	<form method='POST'>
+		    	<input type='hidden' id='person_id' name='person_id' value='<?php echo $person->Id ?>'>   
 		    	<input type='hidden' id='doCheckin' name='doCheckin' value='doCheckin'>   
 		    	<input type="text" id="VehicleLicencePlate" name="VehicleLicencePlate" value="<?php echo $registration->VehicleLicencePlate; ?>" size="10" maxlength="250">
 		    	<br><br> 
@@ -370,7 +391,7 @@ include 'navigation.php';
 		    <!-- 
 
 		    
-		    regnummer - fält
+
 		    
 		    boende - länk till hus med alla andra boende, namn och karta
 

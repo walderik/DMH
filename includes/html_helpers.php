@@ -328,7 +328,7 @@ function fontDropDown(String $name, ?String $selected=null) {
 
 # Inamtning för hitta personer enkelt
 # Man kan ange bredden på inmatningsfältet som argument
-function autocomplete_person_id($width="100%", $render_sumbit_button=false) {
+function autocomplete_person_id($width="100%", $render_sumbit_button=false, $larpid = null) {
     global $autocomplete_count;
     
     if (isset($autocomplete_count)) $autocomplete_count++;
@@ -347,7 +347,7 @@ function autocomplete_person_id($width="100%", $render_sumbit_button=false) {
         </style>
        <script src='../javascript/autocomplete_person.js'></script>";
 
-    echo "<input type='text' id='autocomplete_person$autocomplete_count' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' oninput='autocomplete_person(event, this, $autocomplete_count)'>";
+    echo "<input type='text' id='autocomplete_person$autocomplete_count' placeholder='Ange ett namn eller personnummer' title='Ange ett namn eller personnummer' style='width:$width;display:inline;' oninput='autocomplete_person_larp(event, this, $autocomplete_count, $larpid)'>";
     if ($render_sumbit_button) echo " &nbsp; <input id='autocomplete_person_submit_button$autocomplete_count' type='submit' value='Välj en person' style='display:inline;'>	";
 	echo "<input type='hidden' id='person_id$autocomplete_count'  name='person_id' value='0'>
 	<div id='suggestions$autocomplete_count' class='suggestions'></div>";
