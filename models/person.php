@@ -118,6 +118,11 @@ class Person extends BaseModel{
         return true;
     }
     
+    public static function findPersonBySSN($ssn) {
+        $sql = "SELECT Id FROM regsys_person WHERE SocialSecurityNumber=?;";
+        return static::getOneObjectQuery($sql, array($ssn));
+    }
+    
     
     public static function personsAssignedToHouse(House $house, LARP $larp) {
         $sql = "SELECT * FROM regsys_person WHERE Id IN ".
