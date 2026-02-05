@@ -32,10 +32,11 @@ foreach ($years as $year) {
 
 <?php 
 foreach ($larps as $larp) {
-    $persons = Person::getAllRegistered($larp, false);
     if (!$larp->LarpHasEnded) continue;
+    $persons = Person::getAllRegistered($larp, false);
     $participant_count = count($persons);
     if ($participant_count == 0) {
+        echo "<h2>$larp->Name</h2>";
         echo "$larp->Name har inga deltagare.<br>";
         continue;
     }
