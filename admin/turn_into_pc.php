@@ -53,7 +53,7 @@ include 'npc_navigation.php';
 			    <td>
 			    <?php 
 			        $persons=Person::getAllRegistered($current_larp, false);
-			        echo selectionDropDownByArray("PersonId", $persons, false);
+			        echo selectionDropDownByArray("PersonId", $persons, true);
 			    ?>
 			    </td></tr>
 

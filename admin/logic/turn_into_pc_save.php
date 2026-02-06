@@ -35,5 +35,15 @@ if (!empty($assignment)) {
 $role->PersonId = $person->Id;
 $role->update();
 
+$larp_role = LARP_Role::newWithDefault();
+$larp_role->RoleId = $role->Id;
+$larp_role->LARPId = $current_larp->Id;
+$larp_role->PersonId = $person->Id;
+if (empty($person->getMainRole($current_larp))) $larp_role->IsMainRole = 1;
+else $larp_role->IsMainRole = 0;
+
+$larp_role->create();
+
+
 header('Location: ../view_role.php?id='.$role->Id); 
 
