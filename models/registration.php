@@ -84,7 +84,7 @@ class Registration extends BaseModel{
         
         if (empty($this->FoodChoice)) $this->FoodChoice = null;
         if (empty($this->LarpPartNotAttending)) $this->LarpPartNotAttending = null;
-        
+        if (empty($this->ArrivalDate)) $this->ArrivalDate = null;
     }
     
     # För komplicerade defaultvärden som inte kan sättas i class-defenitionen
