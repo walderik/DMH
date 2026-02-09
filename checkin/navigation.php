@@ -22,7 +22,7 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-            <a href= "../checkin/search_person.php">Sök person</a>
+            <a href= "../checkin/search_person.php?type=checkin">Sök person</a>
             <a href="../checkin/not_checked_in.php">Inte incheckade</a>
 	    </div>
 	  </div> 
@@ -31,7 +31,7 @@
 	      <i class="fa fa-caret-down"></i>
 	    </button>
 	    <div class="dropdown-content">
-            <a href="../checkin/search_person.php">Sök person</a>
+            <a href="../checkin/search_person.php?type=checkout">Sök person</a>
             <a href="../checkin/search_vehicle.php">Sök fordon</a>
             <a href="../checkin/not_checked_out.php">Inte utcheckade</a>
 	    </div>
