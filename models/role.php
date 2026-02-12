@@ -357,7 +357,7 @@ class Role extends BaseModel{
         $sql = "SELECT regsys_role.* FROM regsys_role, regsys_larp_role WHERE ".
         "regsys_role.PersonId = ? AND ".
         "regsys_role.Id=regsys_larp_role.RoleId AND ".
-        "regsys_larp_role.LarpId=? ORDER BY ".static::$orderListBy.";";
+        "regsys_larp_role.LarpId=? ORDER BY regsys_larp_role.IsMainRole DESC, ".static::$orderListBy.";";
         return static::getSeveralObjectsqQuery($sql, array($person->Id, $larp->Id));
     }
 

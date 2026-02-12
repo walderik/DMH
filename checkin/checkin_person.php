@@ -55,11 +55,35 @@ $currency = $campaign->Currency;
 
 include 'navigation.php';
 ?>
+<style>
+.roleContainer {
+    margin-bottom: 5x;
+    padding-bottom: 5px;
+    border-width: 0 0 1px 0 ;
+    border-style: solid;
+}
+.roleContainer:last-child {
+    border:none;
+}
+
+
+
+</style>
 
 		<div class="header">
 			<i class="fa-solid fa-user"></i>
-			<?php echo $person->Name;?>
+			Incheckning av <?php echo $person->Name;?>
 		</div>
+		<?php 
+		$mainRole = $person->getMainRole($current_larp);
+		if (!empty($mainRole) && $mainRole->hasImage()) {
+		    echo "<div class='itemcontainer'>";
+		    echo "<img width='200' src='../includes/display_image.php?id=$mainRole->ImageId'/>\n";
+		    echo "</div>";
+		}
+		
+		?>
+		
    		<div class='itemcontainer'>
        	<div class='itemname'>Ålder</div>
 			<?php echo $person->getAgeAtLarp($current_larp);?>
@@ -103,7 +127,7 @@ include 'navigation.php';
 	        ?>
     	   		<div class='itemcontainer'>
                	<div class='itemname'>Boende</div>
-				<?php echo "<a href='view_house.php?$house->Id'>$house->Name</a>";  ?>
+				<?php echo "<a href='view_house.php?id=$house->Id&action=checkout'>$house->Name</a>";  ?>
     			</div>
 		     
 		    <?php     
@@ -127,16 +151,17 @@ include 'navigation.php';
            	<div class='itemname'>
            	<?php 
            	if ($one) echo "Karaktär";
-            else "Karaktärer";
+            else echo "Karaktärer";
             ?>
            	
            	</div>
 			<?php 
 
 			foreach($roles as $role) {
-			    echo "<div>";
+			    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+			    echo "<div class='roleContainer'>";
 			    echo "$role->Name";
-			    if ($role->isMain($current_larp) && !$one) echo " (Huvudkaraktär)";
+		        if ($larp_role->IsMainRole==0) echo " (Sidokaraktär)";
 	
 			    $group=$role->getGroup();
 			    if (!empty($group)) echo " - $group->Name";
@@ -148,7 +173,7 @@ include 'navigation.php';
 			    $package = "";
 			    
 			    //Pengar
-			    if (isset($larp_role->StartingMoney)) $package .= "$larp_role->StartingMoney $currency\n";
+			    if (isset($larp_role->StartingMoney)) $package .= "Pengar: $larp_role->StartingMoney $currency<br>\n";
 			    
 			    
 			    //Verksamheter
@@ -355,7 +380,7 @@ include 'navigation.php';
 	    
 	    	<?php if ($registration->isCheckedIn()) {?>
     	   		<div class='itemcontainer'>
-               	<div class='itemname'>Fordon</div>
+               	<div class='itemname'>Registreringsnummer för fordon som <?php echo $person->Name ?> är ansvarig för</div>
                	<form method='POST'>
 		    	<input type='hidden' id='person_id' name='person_id' value='<?php echo $person->Id ?>'>   
 		    	<input type="text" id="VehicleLicencePlate" name="VehicleLicencePlate" value="<?php echo $registration->VehicleLicencePlate; ?>" size="10" maxlength="250"> 
@@ -372,7 +397,7 @@ include 'navigation.php';
 	    	
 	    	<?php } else { ?>
     	   		<div class='itemcontainer'>
-               	<div class='itemname'>Bil registreringsnummer</div>
+               	<div class='itemname'>Registreringsnummer för fordon som <?php echo $person->Name ?> är ansvarig för</div>
                	<form method='POST'>
 		    	<input type='hidden' id='person_id' name='person_id' value='<?php echo $person->Id ?>'>   
 		    	<input type='hidden' id='doCheckin' name='doCheckin' value='doCheckin'>   

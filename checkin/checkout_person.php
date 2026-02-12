@@ -2,6 +2,7 @@
 include_once 'header.php';
 
 
+
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
         $person = Person::loadById($_GET['id']);
@@ -28,6 +29,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $registration = Registration::loadByIds($person->Id, $current_larp->Id);
 
+        
+        if (isset($_POST['saveMoneyRole'])) {
+            $larp_role = LARP_Role::loadByIds($_POST['roleId'], $current_larp->Id);
+            $larp_role->EndingMoney = $_POST['EndingMoney'];
+            $larp_role->update();
+        }
+        if (isset($_POST['saveMoneyGroup'])) {
+            $larp_group = LARP_Group::loadByIds($_POST['groupId'], $current_larp->Id);
+            $larp_group->EndingMoney = $_POST['EndingMoney'];
+            $larp_group->update();
+        }
+        
         if (isset($_POST['doCheckout']) && !$registration->isCheckedOut()) {
             $now = new Datetime();
             $registration->CheckoutTime =  date_format($now,"Y-m-d H:i:s");
@@ -51,11 +64,38 @@ $currency = $campaign->Currency;
 include 'navigation.php';
 ?>
 
+<style>
+.roleContainer {
+    margin-bottom: 5x;
+    padding-bottom: 5px;
+    border-width: 0 0 1px 0 ;
+    border-style: solid;
+}
+.roleContainer:last-child {
+    border:none;
+}
+
+</style>
+
 		<div class="header">
 			<i class="fa-solid fa-user"></i>
-			<?php echo $person->Name;?>
+			Utcheckning av <?php echo $person->Name;?>
 		</div>
 		
+		<?php 
+		$mainRole = $person->getMainRole($current_larp);
+		if (!empty($mainRole) && $mainRole->hasImage()) {
+		    echo "<div class='itemcontainer'>";
+		    echo "<img width='200' src='../includes/display_image.php?id=$mainRole->ImageId'/>\n";
+		    echo "</div>";
+		}
+		
+		?>
+   		<div class='itemcontainer'>
+       	<div class='itemname'>Ålder</div>
+			<?php echo $person->getAgeAtLarp($current_larp);?>
+		</div>
+				
 		    <?php 
 		    if ($person->getAgeAtLarp($current_larp) < $campaign->MinimumAgeWithoutGuardian) {
 		    ?>
@@ -64,7 +104,7 @@ include 'navigation.php';
 				<?php 
 				if (!empty($registration->GuardianId)) {
 				    $guardian = $registration->getGuardian();
-				    echo "<a href='checkin_person.php?id=$guardian->Id'>$guardian->Name</a>"; 
+				    echo "<a href='checkout_person.php?id=$guardian->Id'>$guardian->Name</a>"; 
 				} else echo showStatusIcon(false); ?>
     			</div>
 		    <?php 
@@ -78,7 +118,7 @@ include 'navigation.php';
 		        echo "<div class='itemname'>Ansvarig vuxen för</div>";
 		        $minor_str_arr = array();
 		        foreach ($minors as $minor) {
-		            $minor_str_arr[] = "<a href='checkin_person.php?id=$minor->Id'>$minor->Name</a>";
+		            $minor_str_arr[] = "<a href='checkout_person.php?id=$minor->Id'>$minor->Name</a>";
 		        }
 		        echo implode(", ", $minor_str_arr);
 		        echo "</div>";
@@ -94,7 +134,7 @@ include 'navigation.php';
 	        ?>
     	   		<div class='itemcontainer'>
                	<div class='itemname'>Boende</div>
-				<?php echo "<a href='view_house.php?$house->Id'>$house->Name</a>";  ?>
+				<?php echo "<a href='view_house.php?id=$house->Id&action=checkout'>$house->Name</a>";  ?>
     			</div>
 		     
 		    <?php     
@@ -110,11 +150,7 @@ include 'navigation.php';
 			
    	   		<div class='itemcontainer'>
            	<div class='itemname'>Fordon</div>
-           	<form method='POST'>
-	    	<input type='hidden' id='person_id' name='person_id' value='<?php echo $person->Id ?>'>   
-	    	<input type="text" id="VehicleLicencePlate" name="VehicleLicencePlate" value="<?php echo $registration->VehicleLicencePlate; ?>" size="10" maxlength="250"> 
-			<input type="submit" value="Spara">
-			</form>
+           	<?php echo $registration->VehicleLicencePlate; ?>
 			</div>
 	    		
 			    
@@ -129,16 +165,17 @@ include 'navigation.php';
            	<div class='itemname'>
            	<?php 
            	if ($one) echo "Karaktär";
-            else "Karaktärer";
+            else echo "Karaktärer";
             ?>
            	
            	</div>
 			<?php 
 
 			foreach($roles as $role) {
-			    echo "<div>";
+			    $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
+			    echo "<div class='roleContainer'>";
 			    echo "$role->Name";
-			    if ($role->isMain($current_larp) && !$one) echo " (Huvudkaraktär)";
+			    if ($larp_role->IsMainRole==0) echo " (Sidokaraktär)";
 	
 			    $group=$role->getGroup();
 			    if (!empty($group)) echo " - $group->Name";
@@ -147,7 +184,16 @@ include 'navigation.php';
 			    //Pengar
 			    if (isset($larp_role->StartingMoney)) {
 			        echo "Började med $larp_role->StartingMoney $currency<br>\n";
+			        
+			        echo "<form method='POST'>";
 			        echo "Slutade med ";
+			        echo "<input type='hidden' name='person_id' value='$person->Id'>";
+			        echo "<input type='hidden' name='roleId' value='$role->Id'>";
+			        echo "<input type='hidden' name='saveMoneyRole' value='saveMoneyRole'>";
+			        echo "<input type='number' name='EndingMoney' value='$larp_role->EndingMoney' size='5' maxlength='20'> $currency ";
+			        echo "<input type='submit' value='Spara'>";
+                    echo "</form>";
+
 			    }
 			    
 			    //Props
@@ -187,7 +233,16 @@ include 'navigation.php';
 			    //Pengar
 			    if (isset($larp_group->StartingMoney)) {
 			        echo "Började med $larp_group->StartingMoney $currency<br>\n";
+			        
+			        
+			        echo "<form method='POST'>";
 			        echo "Slutade med ";
+			        echo "<input type='hidden' name='person_id' value='$person->Id'>";
+			        echo "<input type='hidden' name='groupId' value='$group->Id'>";
+			        echo "<input type='hidden' name='saveMoneyGroup' value='saveMoneyRole'>";
+			        echo "<input type='number' name='EndingMoney' value='$larp_group->EndingMoney' size='5' maxlength='20'> $currency ";
+			        echo "<input type='submit' value='Spara'>";
+			        echo "</form>";
 			    }
 			    
 			    //Verksamheter

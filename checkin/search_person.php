@@ -25,7 +25,7 @@ include 'navigation.php';
 ?>
 	<div class="header">
 		<i class="fa-solid fa-user"></i>
-		Sök person att <?php echo $actionText ?>>
+		Sök person att <?php echo $actionText ?>
 	</div>
 	<div class='itemcontainer'>
     	<form autocomplete="off" action="<?php echo $action ?>" method="post">
