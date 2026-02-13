@@ -87,7 +87,7 @@ function print_role($role) {
     echo "<div class='description'>$role->DescriptionForOthers</div>\n";
     if (isset($role->ImageId) && !is_null($role->ImageId)) {
         $image = Image::loadById($role->ImageId);
-         echo "<img src='../includes/display_image.php?id=$image->Id'/>\n";
+         echo "<img class='roleImage' src='../includes/display_image.php?id=$image->Id'/>\n";
 
         if (!empty($image->Photographer) && $image->Photographer!="") {
             echo "<div class='photographer'>Fotograf $image->Photographer</div>\n";
@@ -121,6 +121,7 @@ function print_role($role) {
 <BODY>
 
 
+
 	<DIV class="participants">
 
 		<H1>Karaktärer i <?php  echo $current_larp->Name; ?></H1>
@@ -138,7 +139,7 @@ function print_role($role) {
                 if ($group->hasImage() || $group->DescriptionForOthers !="") echo "<p>";
                 if ($group->hasImage()) {
                     $image = $group->getImage();
-                    echo "<img width='300px' src='../includes/display_image.php?id=$image->Id'/><br>\n";
+                    echo "<img class='groupImage' width='300px' src='../includes/display_image.php?id=$image->Id'/><br>\n";
                     
                     if (!empty($image->Photographer) && $image->Photographer!="") {
                         echo "Fotograf $image->Photographer<br><br>\n";

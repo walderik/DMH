@@ -77,6 +77,9 @@ ul {
     display: block;
 }
 
+.groupImage, .roleImage {
+  border: 2px solid #000000;
+}
 
 
 
