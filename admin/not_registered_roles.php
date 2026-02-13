@@ -12,6 +12,7 @@ if (isset($message_message) && strlen($message_message)>0) {
     echo '<div class="message">'.$message_message.'</div>';
 }
 ?>
+<script src="../javascript/table_sort.js"></script>
 
 
     <div class="content">   
@@ -24,8 +25,12 @@ if (isset($message_message) && strlen($message_message)>0) {
     		if (empty($groups)) {
     		    echo "Inga oanmälda grupper";
     		} else {
-    		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Gruppledare</th><th>Senast spelad</th><th>Lägg till</th></tr>\n";
+    		    $tableId = "groupTable";
+    		    echo "<table id='$tableId' class='data'>";
+    		    echo "<tr><th onclick='sortTable(0, \"$tableId\")'>Namn</th>".
+    		    "<th onclick='sortTable(1, \"$tableId\")'>Gruppledare</th>".
+    		    "<th onclick='sortTable(2, \"$tableId\")'>Senast spelad</th>".
+    		    "<th onclick='sortTable(3, \"$tableId\")'>Lägg till</th></tr>\n";
     		    foreach ($groups as $group)  {
     		        $person = $group->getPerson();
     		        echo "<tr>\n";
@@ -66,8 +71,14 @@ if (isset($message_message) && strlen($message_message)>0) {
     		if (empty($roles)) {
     		    echo "Inga anmälda karaktärer";
     		} else {
-    		    echo "<table class='data'>";
-    		    echo "<tr><th>Namn</th><th>Yrke</th><th>Grupp</th><th>Spelare</th><th>Senast spelad</th><th>Lägg till</th></tr>\n";
+    		    $tableId = "roleTable";
+    		    echo "<table id='$tableId' class='data'>";
+    		    echo "<tr><th onclick='sortTable(0, \"$tableId\")'>Namn</th>".
+        		    "<th onclick='sortTable(1, \"$tableId\")'>Yrke</th>".
+        		    "<th onclick='sortTable(2, \"$tableId\")'>Grupp</th>".
+        		    "<th onclick='sortTable(3, \"$tableId\")'>Spelare</th>".
+        		    "<th onclick='sortTable(4, \"$tableId\")'>Senast spelad</th>".
+        		    "<th onclick='sortTable(5, \"$tableId\")'>Lägg till</th></tr>\n";
     		    foreach ($roles as $role)  {
     		        $person = $role->getPerson();
     		        if (!is_null($person) && !in_array($person, $reserve_persons)) {
