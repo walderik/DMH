@@ -135,12 +135,20 @@ function print_role($role) {
             if (!empty($roles)) {
 
                 echo "<h2>$group->Name</h2>\n";
-                if ($group->DescriptionForOthers !="") {
-                    echo "<p>".nl2br(htmlspecialchars($group->DescriptionForOthers));
-                    if ($isMareld) echo "<br>Färg: $group->Colour";
-                    echo "</p>\n";
+                if ($group->hasImage() || $group->DescriptionForOthers !="") echo "<p>";
+                if ($group->hasImage()) {
+                    $image = $group->getImage();
+                    echo "<img width='300px' src='../includes/display_image.php?id=$image->Id'/><br>\n";
+                    
+                    if (!empty($image->Photographer) && $image->Photographer!="") {
+                        echo "Fotograf $image->Photographer<br><br>\n";
+                    }
                 }
-                
+                if ($group->DescriptionForOthers !="") {
+                    echo nl2br(htmlspecialchars($group->DescriptionForOthers));
+                    if ($isMareld) echo "<br>Färg: $group->Colour";
+                }
+                if ($group->hasImage() || $group->DescriptionForOthers !="") echo "</p>";
                 
                 echo "<div class='container'>\n";
                 
