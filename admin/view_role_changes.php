@@ -113,7 +113,7 @@ del {
 			</tr>
 		<?php } ?>
 		
-		<?php if ($campaign()->hasGroups()) {?>
+		<?php if ($campaign->hasGroups()) {?>
 			<tr>
 				<td valign="top" class="header">Grupp</td>
 				<?php echoNameDiff($oldRoleCopy->getGroup(), $role->getGroup()); ?>
@@ -129,7 +129,7 @@ del {
 				<?php echoDiff($oldRoleCopy->Description, $role->Description); ?>
 			</tr>
 			
-		<?php if ($campaign()->hasGroups()) {?>
+		<?php if ($campaign->hasGroups()) {?>
 			<tr>
 				<td valign="top" class="header">Beskrivning för gruppen</td>
 				<?php echoDiff($oldRoleCopy->DescriptionForGroup, $role->DescriptionForGroup); ?>

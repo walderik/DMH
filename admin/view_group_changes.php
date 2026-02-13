@@ -17,6 +17,11 @@ $group = Group::loadById($GroupId);
 
 $oldGroupCopy = $group->getOldApprovedGroup();
 
+if (empty($oldGroupCopy)) {
+    header('Location: view_group.php?id='.$group->Id.'.php');
+    exit;
+}
+
 function echoDiff($fromtxt, $totxt) {
     $opcodes = FineDiff::getDiffOpcodes($fromtxt, $totxt, FineDiff::$wordGranularity);
     $to_text = FineDiff::renderDiffToHTMLFromOpcodes($fromtxt, $opcodes);
