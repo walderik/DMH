@@ -5,10 +5,10 @@ include_once 'header.php';
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['code'])) {
         $code = $_GET['code'];
-        $ssn = base64_decode($code);
+        $paymentReference = base64_decode($code);
         
-        $person = Person::findPersonBySSN($ssn);
-        if (empty($person) || !$person->isRegistered($current_larp)) {
+        $registration = Registration::findByPaymentReference($paymentReference);
+        if (empty($registration)) {
             header('Location: index.php'); // personen är inte anmäld
             exit;
         }
@@ -32,10 +32,10 @@ if ($now > $midpoint) {
 }
 
 if ($checkout) {
-   header("Location: checkout_person.php?id=$person->Id");
+   header("Location: checkout_person.php?id=$registration->PersonId");
    exit;
 }
 
-header("Location: checkin_person.php?id=$person->Id");
+header("Location: checkin_person.php?id=$registration->PersonId");
 exit;
 

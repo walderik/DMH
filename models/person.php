@@ -1,5 +1,5 @@
 <?php
-use chillerlan\QRCode\{QRCode, QROptions};
+
 
 
 class Person extends BaseModel{
@@ -1074,12 +1074,6 @@ class Person extends BaseModel{
         BerghemMailer::send_user_changed($this, $user);
     }
     
-    public function getQRcode() {
-        $link = "https://$_SERVER[HTTP_HOST]/checkin/person.php?code=".base64_encode($this->SocialSecurityNumber);
 
-        return (new QRCode)->render($link);
-
-
-    }
     
 }
