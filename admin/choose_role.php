@@ -213,7 +213,7 @@ th {
     		        $person = $role->getPerson();
     		        $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
     		        $show = true;
-    		        if (!empty($intrigueTypes)) {
+    		        if (!empty($intrigueTypes) && !empty($larp_role)) {
     		            $role_intrigueTypeIds = $larp_role->getSelectedIntrigueTypeIds();
     		            if (empty(array_intersect($intrigueTypes, $role_intrigueTypeIds))) {
     		                $show = false;
@@ -225,7 +225,8 @@ th {
     		        echo "<td>$role->Name</td>\n";
     		        echo "<td>" . $role->Profession . "</td>\n";
     		        if (IntrigueType::isInUse($current_larp)) {
-    		            echo "<td>".commaStringFromArrayObject($larp_role->getIntrigueTypes())."</td>";
+    		            if (!empty($larp_role)) echo "<td>".commaStringFromArrayObject($larp_role->getIntrigueTypes())."</td>";
+    		            else echo "<td></td>";
     		        }
     		        if ($showAbilityChoice) {
     		            echo "<td>".commaStringFromArrayObject($role->getAbilities())."</td>";

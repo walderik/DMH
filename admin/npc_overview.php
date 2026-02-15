@@ -11,7 +11,7 @@ include 'npc_navigation.php';
 
     <div class="content">   
         <h1>Alla NPC</h1>
-
+			Om NPC'n ska ha ett uppdrag är det bara att klicka den röda symbolen i uppdragskolumnen.<br>
 			<?php 
 			echo "NPC'er filtrerade på levande<br><br>\n";
 			echo '<button id="btn_show" onclick="show_hide();">Visa alla</button>';
@@ -42,18 +42,18 @@ include 'npc_navigation.php';
 			    
 			    echo "<td>\n";
 			    if ($npc->isApproved()) echo showStatusIcon(true);
-			    elseif ($npc->userMayEdit()) echo showStatusIcon(false)."<br>Spelare får ändra på karaktären och därför kan den inte godkännas.";
+			    elseif ($npc->userMayEdit()) echo showStatusIcon(false)."<br>Spelare får ändra på karaktären.";
 			    else echo showPostStatusIcon(false, 'logic/approve.php', null, 'Klicka för att godkänna NPC', NULL, ['RoleId'=>$npc->Id], null);
 
 			    $group = $npc ->getGroup();
 			    if (!empty($group)) {
-			        echo "<td>".$group->getViewLink().' '.$group->getVisibilityText()."</td>\n";
+			        echo "<td>".$group->getViewLink().'<br>'.$group->getVisibilityText()."</td>\n";
 			    } else echo "<td></td>\n";
 			    
 			    echo "<td>\n";
 			    $assignement = NPC_assignment::getAssignment($npc, $current_larp);
 			    if (empty($assignement)) {
-			        echo showPostStatusIcon(false, 'npc_form.php', null, 'Skapa NPC-Uppdrag', 'Har uppdrag', ['roleId'=>$npc->Id, 'operation'=>'insert'], null);
+			        echo showPostStatusIcon(false, 'npc_form.php', null, 'Skapa NPC-Uppdrag', 'Har uppdrag', ['roleId'=>$npc->Id, 'operation'=>'insert'], null, true);
 			    } elseif ($assignement->isAssigned()) {
 			        echo showStatusIcon(true)." ";
 			        $person = $assignement->getPerson();        

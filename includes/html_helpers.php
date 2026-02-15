@@ -201,11 +201,13 @@ function showStatusIcon($value, ?string $fix_url = NULL, ?string $unfix_url = NU
     ['id' => 123, 'param2' => 'unfix' ]
 );
  */
-function showPostStatusIcon($value, ?string $fix_url = null, ?string $unfix_url = null, ?string $fel_text = '', ?string $ok_text = '', ?array $fix_post_data = [], ?array $unfix_post_data = [] ): string {      
+function showPostStatusIcon($value, ?string $fix_url = null, ?string $unfix_url = null, ?string $fel_text = '', ?string $ok_text = '', ?array $fix_post_data = [], ?array $unfix_post_data = [], ?bool $showText = false): string {      
     $value = (bool)$value;
     
     // Intern hjälpfunktion
-    $postIcon = function (string $action, string $img, string $alt, string $title, array $post_data): string {
+    $postIcon = function (string $action, string $img, string $alt, string $title, array $post_data, $showText): string {
+        $text = "";
+        if ($showText) $text = " ".$title;
         $html = "\n<form action='$action' method='post' style='display:inline;'>\n";
         if ($post_data != null) {
             foreach ($post_data as $name => $value) {
@@ -214,7 +216,7 @@ function showPostStatusIcon($value, ?string $fix_url = null, ?string $unfix_url 
         }
         
         $html .= "<button type='submit' style='background:none;border:none;padding:0;cursor:pointer;'>
-            <img src='$img' alt='$alt' title='".htmlspecialchars($title ?? '')."' width='20' height='20'>
+            <img src='$img' alt='$alt' title='".htmlspecialchars($title ?? '')."' width='20' height='20'>$text
         </button>
     </form>\n";
         return $html;
@@ -222,12 +224,13 @@ function showPostStatusIcon($value, ?string $fix_url = null, ?string $unfix_url 
     
     /* ===== OK ===== */
     if ($value) {
-        if (!empty($unfix_url)) return $postIcon($unfix_url, '../images/ok-icon.png', 'OK', $ok_text ?? '', $unfix_post_data );
+        if ($showText) $clearText = $ok_text;
+        if (!empty($unfix_url)) return $postIcon($unfix_url, '../images/ok-icon.png', 'OK', $ok_text ?? '', $unfix_post_data, $showText);
         return "<img src='../images/ok-icon.png' alt='OK' title='" . htmlspecialchars($ok_text ?? '') . "'  width='20' height='20'>\n";
     }
 
     if (empty($fel_text)) $fel_text = 'Klicka för att åtgärda';
-    if (!empty($fix_url)) return $postIcon($fix_url, '../images/alert-icon.png', 'Varning', $fel_text, $fix_post_data );
+    if (!empty($fix_url)) return $postIcon($fix_url, '../images/alert-icon.png', 'Varning', $fel_text, $fix_post_data, $showText );
     return "<img src='../images/alert-icon.png' alt='Varning' title='" . htmlspecialchars($fel_text) . "' width='20'  height='20'>\n";
 }
 
