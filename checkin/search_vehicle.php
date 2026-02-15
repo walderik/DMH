@@ -3,20 +3,13 @@ include_once 'header.php';
 
 $type = "checkin";
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['type'])) $type = $_GET['type'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['licencePlate'])) $licencePlate = $_POST['licencePlate'];
 }
 
-
-if ($type == "checkin") {
-    $action = "checkin_person.php";
-    $actionText = "checka in";
-} elseif ($type == "checkout") {
-    $action = "checkout_person.php";
-    $actionText = "checka ut";
-}  else {
-    header('Location: index.php');
-    exit;
+if (isset($licencePlate)) {
+    $licencePlate = strtoupper($licencePlate);
+    $registrations = Registration::getByLicencePlate($licencePlate, $current_larp);
 }
 
 
@@ -29,7 +22,31 @@ include 'navigation.php';
 	</div>
 	<div class='itemcontainer'>
     	<form autocomplete="off" method="post">
-    		<input type="text" 
-    		<?php autocomplete_person_id('60%', true, $current_larp->Id); ?>
+    		<label for="licencePlate">Registreringsnummer:</label>
+    		<input type="text" id="licencePlate" name="licencePlate">
+  			<input type="submit" value="Sök">
     	</form>
 	</div>
+	
+	<?php 
+	if (isset($licencePlate)) {
+	    echo "<div class='itemcontainer'>";
+	    echo "Sökning gjord för <b>$licencePlate</b><br><br>";
+	    if (empty($registrations)) echo "Ingen ansvarig registrerad.";
+	    else {
+	        foreach ($registrations as $registration) {
+	            $person = $registration->getPerson();
+	            echo "<a href='checkout_person.php?id=$person->Id'><b>$person->Name</b></a><br>";
+	            if ($registration->isCheckedIn()) echo "Incheckad $registration->CheckinTime";
+	            else echo "Inte incheckad";
+	            echo "<br>";
+	            if ($registration->isCheckedOut()) echo "Utcheckad $registration->CheckoutTime";
+	            else echo "Inte utcheckad";
+	            echo "<br<br><br>";
+	        }
+	    }
+	    echo "</div>";
+	    
+	}
+	
+	?>
