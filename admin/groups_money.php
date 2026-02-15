@@ -18,7 +18,10 @@ th {
     <div class="content">   
         <h1>Pengar till grupper vid början av lajvet</h1>
         <p>Du kan sätta <a href="group_money_setup.php">pengarna på många grupper samtidigt</a> utifrån rikedomsnivå och resultat från tidigare lajv.<br>
-        Sedan kan man justera sifforna indivuduellt där det behövs.</p>
+        Sedan kan man justera sifforna indivuduellt där det behövs.<br>
+        Om de inte har någora pengar, sätt '0' så kommer möjligheten att skriva in pengar för gruppen vid utcheckningen upp.
+        </p>
+        
      		<?php 
      		$groups = Group::getAllRegistered($current_larp);
      		$currency = $current_larp->getCampaign()->Currency;

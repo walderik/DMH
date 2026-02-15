@@ -1,10 +1,14 @@
 function autocomplete_person(ev, person, number) {
+	autocomplete_person_larp(ev, person, number, null);
+}
+	
+function autocomplete_person_larp(ev, person, number, larpid) {
 	let query = person.value;
     if (query.length > 2) {
         fetch("../ajax/autocomplate_person.php", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ search: query })
+            body: JSON.stringify({ search: query, larpid: larpid })
         })
         .then(response => {
             if (!response.ok) {

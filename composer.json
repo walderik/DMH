@@ -3,6 +3,7 @@
         "filp/whoops": "^2.18",
         "phpmailer/phpmailer": "^7.0",
         "tecnickcom/tcpdf": "^6.10",
-        "ifsnop/mysqldump-php": "^2.12"
+        "ifsnop/mysqldump-php": "^2.12",
+        "chillerlan/php-qrcode": "^5.0"
     }
 }

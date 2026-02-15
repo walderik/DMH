@@ -1,4 +1,6 @@
 <?php
+use chillerlan\QRCode\{QRCode, QROptions};
+
 
 class Person extends BaseModel{
     
@@ -116,6 +118,11 @@ class Person extends BaseModel{
        
         $stmt = null;
         return true;
+    }
+    
+    public static function findPersonBySSN($ssn) {
+        $sql = "SELECT Id FROM regsys_person WHERE SocialSecurityNumber=?;";
+        return static::getOneObjectQuery($sql, array($ssn));
     }
     
     
@@ -272,9 +279,14 @@ class Person extends BaseModel{
     }
     
     # En function som letar bland alla personer och returnerar en array av personer om något hittas
-    public static function searchPersons($search) {
-        $sql = "SELECT * from regsys_person WHERE `name` LIKE ? OR `SocialSecurityNumber` regexp ? OR `SocialSecurityNumber` regexp ? ORDER BY ".static::$orderListBy.";";
-        $persons = static::getSeveralObjectsqQuery($sql, array("%$search%", "^$search", "^19$search"));
+    public static function searchPersons($search, ?int $larpId=NULL) {
+        if (empty($larpId)) {
+            $sql = "SELECT * from regsys_person WHERE `name` LIKE ? OR `SocialSecurityNumber` regexp ? OR `SocialSecurityNumber` regexp ? ORDER BY ".static::$orderListBy.";";
+            $persons = static::getSeveralObjectsqQuery($sql, array("%$search%", "^$search", "^19$search"));
+        } else {
+            $sql = "SELECT * from regsys_person WHERE (`name` LIKE ? OR `SocialSecurityNumber` regexp ? OR `SocialSecurityNumber` regexp ?) AND Id IN (SELECT PersonId from  regsys_registration WHERE LarpId = ? AND NotComing=0) ORDER BY ".static::$orderListBy.";";
+            $persons = static::getSeveralObjectsqQuery($sql, array("%$search%", "^$search", "^19$search", $larpId));
+        }
         return $persons;
     }
     
@@ -1060,6 +1072,14 @@ class Person extends BaseModel{
         $this->UserId = $user->Id;
         $this->update();
         BerghemMailer::send_user_changed($this, $user);
+    }
+    
+    public function getQRcode() {
+        $link = "https://$_SERVER[HTTP_HOST]/checkin/person.php?code=".base64_encode($this->SocialSecurityNumber);
+
+        return (new QRCode)->render($link);
+
+
     }
     
 }

@@ -11,8 +11,9 @@ include_once 'header.php';
 try {
     $data = json_decode(file_get_contents('php://input'), true);
     $search = $data['search'] ?? '';
+    $larpId = $data['larpid'] ?? null;
     
-    $persons = Person::searchPersons($search);
+    $persons = Person::searchPersons($search, $larpId);
     
     $results = array();
     

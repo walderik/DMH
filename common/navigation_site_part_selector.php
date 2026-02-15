@@ -20,6 +20,7 @@ $campaign_selected = "";
 $board_selected = "";
 $houses_selected = "";
 $site_admin_selected = "";
+$checkin_selected = "";
 
 if (!isset($_SESSION['navigation'])) $_SESSION['navigation'] = Navigation::PARTICIPANT;
 switch ($_SESSION['navigation']) {
@@ -47,6 +48,10 @@ switch ($_SESSION['navigation']) {
         $site_admin_selected = "selected='selected'";
         break;
     }
+    case Navigation::CHECKIN: {
+        $checkin_selected = "selected='selected'";
+        break;
+    }
 }
 
 
@@ -56,7 +61,9 @@ if (isset($current_larp) && isset($current_person) && AccessControl::isMoreThanP
     echo "<select name='part' id='part' onchange='changePart()'>\n";
   	echo "<option value='../participant/' $participant_selected>Deltagare</option>\n";
   	if (AccessControl::hasAccessLarp($current_person, $current_larp) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)))  
-        echo "<option value='../admin/' $admin_selected>Arrangör</option>\n";
+    echo "<option value='../admin/' $admin_selected>Arrangör</option>\n";
+    if (AccessControl::hasAccessCheckin($current_person, $current_larp) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)))
+        echo "<option value='../checkin/' $checkin_selected>In / Utcheckning</option>\n";
         if (AccessControl::hasAccessCampaign($current_person, $current_larp->CampaignId) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN)))
         echo "<option value='../campaign/' $campaign_selected>Kampanj</option>\n";
         if (AccessControl::hasAccessOther($current_person, AccessControl::BOARD) || (AccessControl::hasAccessOther($current_person, AccessControl::ADMIN))) 
