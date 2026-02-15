@@ -199,6 +199,8 @@ function openTab(evt, tabName) {
 	    if ($registration->hasSpotAtLarp() && !$current_larp->isEnded()) echo "id='defaultOpen' ";
 	    if ($registration->hasSpotAtLarp()) echo "onclick='openTab(event, \"BeforeLARP\")'>Inför lajvet</button>";
 	    
+	    if ($registration->hasSpotAtLarp()) echo "<button class='tablinks' onclick='openTab(event, \"Checkinout\")'>In/Utcheckning</button>";
+	    
 	    if ($registration->hasSpotAtLarp() && $current_larp->isEnded()) echo "<button class='tablinks' id='defaultOpen' onclick='openTab(event, \"AfterLARP\")'>Efter lajvet</button>";
 	    echo "</div>";
 	    
@@ -942,6 +944,21 @@ function openTab(evt, tabName) {
 	
 	</div>
 	<?php } ?>
+
+	<?php if (!empty($registration) && $registration->hasSpotAtLarp()) { ?>
+	<div id="Checkinout" class="tabcontent">
+		Vid incheckning och utcheckning ska du visa upp den här QR-koden för att göra processen snabbare och enklare.
+		<br><br>
+		<div align="center">
+		<b><?php echo $person->Name?></b><br>
+		<?php printf('<img width=300px" src="%s" alt="QR Code" />', $person->getQRcode()); ?>
+		</div>
+		<?php  if ($registration->isCheckedIn()) echo "Du är incheckad.<br>"?>
+		<?php  if ($registration->isCheckedOut()) echo "Du är utcheckad.<br>"?>
+		
+	</div>
+	<?php } ?>
+
 
 	<?php if (!empty($registration) && $registration->hasSpotAtLarp() && $current_larp->isEnded()) { ?>
 	<div id="AfterLARP" class="tabcontent">

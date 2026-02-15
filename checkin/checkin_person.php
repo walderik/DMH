@@ -74,6 +74,10 @@ include 'navigation.php';
 			<i class="fa-solid fa-user"></i>
 			Incheckning av <?php echo $person->Name;?>
 		</div>
+   		<div class='itemcontainer'>
+			<a href="checkout_person.php?id=<?php echo $person->Id ?>">Gå till utcheckning</a>
+		</div>
+		
 		<?php 
 		$mainRole = $person->getMainRole($current_larp);
 		if (!empty($mainRole) && $mainRole->hasImage()) {
