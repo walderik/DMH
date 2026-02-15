@@ -18,7 +18,10 @@ th {
     <div class="content">   
         <h1>Pengar till karaktärer vid början av lajvet</h1>
         <p>Du kan sätta <a href="role_money_setup.php">pengarna på många karaktärer samtidigt</a> utifrån rikedomsnivå och resultat från tidigare lajv.<br>
-        Sedan kan man justera sifforna indivuduellt där det behövs.</p>
+        Sedan kan man justera sifforna indivuduellt där det behövs.<br>
+        Om de inte har någora pengar, sätt '0' så kommer möjligheten att skriva in pengar för karaktären vid utcheckningen upp.
+        </p>
+        
         <h2>Huvudkaraktärer</h2>
         
      		<?php 
