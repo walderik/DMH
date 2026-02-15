@@ -75,6 +75,11 @@ include 'navigation.php';
     border:none;
 }
 
+.money {
+    width: 60px;
+    text-align: right;
+}
+
 </style>
 
 		<div class="header">
@@ -192,7 +197,7 @@ include 'navigation.php';
 			        echo "<input type='hidden' name='person_id' value='$person->Id'>";
 			        echo "<input type='hidden' name='roleId' value='$role->Id'>";
 			        echo "<input type='hidden' name='saveMoneyRole' value='saveMoneyRole'>";
-			        echo "<input type='number' name='EndingMoney' value='$larp_role->EndingMoney' size='5' maxlength='20'> $currency ";
+			        echo "<input class='money' type='number' name='EndingMoney' value='$larp_role->EndingMoney' size='5' maxlength='20'> $currency ";
 			        echo "<input type='submit' value='Spara'>";
                     echo "</form>";
 
@@ -242,7 +247,7 @@ include 'navigation.php';
 			        echo "<input type='hidden' name='person_id' value='$person->Id'>";
 			        echo "<input type='hidden' name='groupId' value='$group->Id'>";
 			        echo "<input type='hidden' name='saveMoneyGroup' value='saveMoneyRole'>";
-			        echo "<input type='number' name='EndingMoney' value='$larp_group->EndingMoney' size='5' maxlength='20'> $currency ";
+			        echo "<input class='money' type='number' name='EndingMoney' value='$larp_group->EndingMoney' size='5' maxlength='20'> $currency ";
 			        echo "<input type='submit' value='Spara'>";
 			        echo "</form>";
 			    }
