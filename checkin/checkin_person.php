@@ -22,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['person_id'])) {
         $person = Person::loadById($_POST['person_id']);
-        if (!$person->isRegistered($current_larp)) {
+
+        if (empty($person) || !$person->isRegistered($current_larp)) {
             header('Location: index.php'); // personen är inte anmäld
             exit;
         }
