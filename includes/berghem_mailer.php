@@ -774,6 +774,33 @@ class BerghemMailer {
         }
     }
     
+
+    # Skicka ut boendet till alla deltagare
+    public static function sendCheckinInfo($greeting, $subject, $text, $senderText, LARP $larp, $senderId) {
+        $persons = Person::getAllRegistered($larp, false);
+        foreach($persons as $person) {
+            $registration = $person->getRegistration($larp);
+            if (empty($registration)) continue;
+            if (!$registration->hasSpotAtLarp()) continue;
+          
+            $qrcode = "<br><br>Vid incheckning och utcheckning ska du visa upp den här QR-koden för att göra processen snabbare och enklare. QR-koden finns även inne i Omnes Mundi på fliken In/Utcheckning.";
+            $qrcode .= "<br><br>";
+            $qrcode .= "<div align='center'>";
+            $qrcode .= "<b>$person->Name</b><br>";
+            $qrcode .= "<img width='300px' src='".$registration->getQRcode()."' alt='QR Code' />";
+            $qrcode .= "</div>";
+            
+            
+            $sendtext = $text . $qrcode;
+            
+            BerghemMailer::send($larp, $senderId, $person->Id, $greeting, $sendtext, $subject, $senderText, BerghemMailer::DaysAutomatic);
+            
+        
+         }
+    }
+    
+    
+    
     public static function getAllSheets($roles, LARP $larp) {
         $sheets = Array();
         foreach($roles as $role) {

@@ -76,6 +76,19 @@ $param = date_format(new Datetime(),"suv");
         <input type='submit' value='Skicka ut boendet'>
 		</form>
 		</td></tr>
+		
+        <tr><td style="font-weight: normal;">
+		Incheckningsinformation<br>
+		QR-koden kommer att bifogas, men övrig information får du skriva in.
+        </td>
+        <td>
+		<form action='../common/contact_email.php'  method="post" >
+				<input type=hidden name="isLarp" value='1'>
+				<input type=hidden name="send_checkin" value=<?php echo $param ?>>
+			
+        <input type='submit' value='Skicka ut incheckningsinformation'>
+		</form>
+		</td></tr>
 		</table>
 
 

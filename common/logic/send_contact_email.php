@@ -59,6 +59,9 @@ switch ($type) {
         }
         BerghemMailer::sendHousing($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id);
         break;
+    case "checkin":
+        BerghemMailer::sendCheckinInfo($greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id);
+        break;
     case "one":
         if ($sender==BerghemMailer::LARP) BerghemMailer::sendContactMailToSomeone($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, $current_larp, $current_person->Id);
         else BerghemMailer::sendContactMailToSomeone($_POST['personId'], $greeting, $subject, nl2br($_POST['text']), $senderText, null, $current_person->Id);

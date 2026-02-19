@@ -55,6 +55,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $type="housing";
         $name = '';
         $subject = "Boende på $current_larp->Name";
+    } elseif (isset($_POST['send_checkin'])) {
+        $type="checkin";
+        $name = '';
+        $subject = "Incheckning på $current_larp->Name";
     } elseif (isset($_POST['send_one'])) {
         $type="one";
         if (isset($_POST['subject'])) $subject = $_POST['subject'];
@@ -119,7 +123,13 @@ include $navigation;
 		        break;
 		    case "housing":
 		        echo "<h1>Skicka ut boendet till alla deltagarna.</h1>\n";
-		        echo "Det kommer att skickas ett mail för varje hus/lägerplats.<br>\n";
+		        if ($campaign->is_kir()) {
+		            echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
+		            echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br><br>\n";
+		        }
+		        break;
+		    case "checkin":
+		        echo "<h1>Skicka ut QR-kod och infoarmation om incheckning alla deltagarna.</h1>\n";
 		        if ($campaign->is_kir()) {
 		            echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
 		            echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br><br>\n";
@@ -192,7 +202,17 @@ include $navigation;
 			    echo "Om du vill veta mer om ditt hus kan du titta på http://main.berghemsvanner.se/husen-i-byn/ eller logga in i Omnes Mundi https://anmalan.berghemsvanner.se/.\n";
 			    echo "</p>";
 			    
-			}?>
+			} elseif ($type=="checkin") {
+			    echo "<p>";
+			    echo "Vid incheckning och utcheckning ska du visa upp den här QR-koden för att göra processen snabbare och enklare. QR-koden finns även inne i Omnes Mundi på fliken In/Utcheckning.";
+			    echo "<br><br>";
+			    echo "<div align='center'>";
+			    echo" <b>Namnet på personen</b><br>";
+			    echo "<img width='300px' src='".Registration::getExampleQRcode()."' alt='QR Code' />";
+			    echo "</div>";
+			    echo "</p>";
+			}
+			?>
 			Med vänliga hälsningar<br /><br />
 			<b>
 			
@@ -213,10 +233,11 @@ include $navigation;
 			<br><hr><br>
 			Ladda upp en pdf som bilaga om du vill. Max storlek 5 MB och bara pdf:er.<br><br>
 			<input type="file" name="bilaga" id="bilaga"><br>
-			<?php }?>
+
 			<br>
 			(Tryck inte på "Skicka" innan den valda filen laddats upp ordentligt. Det tar ett litet tag.)
-    		<br>
+			<?php }?>
+			 <br>
     		<br>
     		<hr><br>
     		<input type="submit" value="Skicka">
