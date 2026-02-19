@@ -91,7 +91,7 @@ include 'navigation.php';
         <p>Lägg in alla inkomster och utgifter som kampanjen har som inte är direkt kopplade till ett lajv.  
         Vid årets slut är det bara att plocka ut de två filerna som ska till kassören och maila in så följer allt om kampanjens lajv med.<br><br>
         En varning betyder att det saknas ett kvitto på en utgift.<br><br>
-        Konton läggs upp under <a href="settings.php">inställningar</a></p>
+        Konton läggs upp under <a href="bookkeeping_account_admin.php">bokföringskonton</a></p>
         <p>
         <a href="economy_form.php?operation=add_income"><i class="fa-solid fa-file-circle-plus"></i> Lägg till inkomst</a> &nbsp; 
         <a href="economy_form.php?operation=add_expense"><i class="fa-solid fa-file-circle-plus"></i> Lägg till utgift</a><br>
