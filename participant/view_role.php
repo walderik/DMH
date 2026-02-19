@@ -126,7 +126,10 @@ include 'navigation.php';
 			   <div class='itemcontainer'>
                <div class='itemname'>Grupp</div>
 		
-				<?php echo $group->getViewLink() ?>
+				<?php 
+				if (isset($larp_group) || $role->isApproved()) echo $group->getViewLink(); 
+				else echo $group->Name;
+				?>
 				</div>
 		<?php }?>
 
