@@ -80,6 +80,9 @@ function getErrorText($code) {
         case "userNotFound":
             $output = "Användaren eller lösenord är fel";
             break;
+        case "passwordAlreadyChanged":
+            $output = "Lösenordet har redan ändrats";
+            break;
         case "accountNotActivated":
             $output = "Kontot är inte aktiverat";
             break;

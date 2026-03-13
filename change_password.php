@@ -20,11 +20,11 @@ include_once $root . '/includes/error_handling.php';
 $user = User::loadByEmailChangeCode($code);
 
 if (is_null($user) || ($user->Email != $_GET['email'])) {
-    header("location: index.php?error=userNotFound");
+    header("location: index.php?error=passwordAlreadyChanged");
     exit();
 }
 
-$user->setEmailChangeCode();
+
 
 ?>
 
