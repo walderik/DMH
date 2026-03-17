@@ -787,7 +787,9 @@ class BerghemMailer {
             $qrcode .= "<br><br>";
             $qrcode .= "<div align='center'>";
             $qrcode .= "<b>$person->Name</b><br>";
-            $qrcode .= "<img width='300px' src='".$registration->getQRcode()."' alt='QR Code' />";
+            //$qrcode .= "<img width='300px' src='".$registration->getQRcode()."' alt='QR Code' />";
+            $qrcode .= "<img width='300px' style='max-width: 400px;' src='../includes/display_image.php?checkin=1&RegistrationId=$registration->Id'/ >\n"; 
+
             $qrcode .= "</div>";
             
             

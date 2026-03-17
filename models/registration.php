@@ -1,10 +1,8 @@
 <?php
 
-use chillerlan\QRCode\{QRCode, QROptions};
+
 
 class Registration extends BaseModel{
-
-    
     public $Id;
     public $LARPId;
     public $PersonId;
@@ -611,16 +609,6 @@ class Registration extends BaseModel{
     }
     
 
-    public function getQRcode() {
-        $link = "https://$_SERVER[HTTP_HOST]/checkin/person.php?code=".base64_encode($this->PaymentReference);
-        return (new QRCode)->render($link);
-    }
-    
-    public static function getExampleQRcode() {
-        $link = "https://$_SERVER[HTTP_HOST]/checkin/person.php?code=".base64_encode("ABC");
-        return (new QRCode)->render($link);
-    }
-    
     public static function findByPaymentReference($paymentReference) {
         $sql = "SELECT * FROM regsys_registration WHERE PaymentReference=?";
         return static::getOneObjectQuery($sql, array($paymentReference));

@@ -208,7 +208,7 @@ include $navigation;
 			    echo "<br><br>";
 			    echo "<div align='center'>";
 			    echo" <b>Namnet på personen</b><br>";
-			    echo "<img width='300px' src='".Registration::getExampleQRcode()."' alt='QR Code' />";
+			    echo "<img width='300px' style='max-width: 400px;' alt='QR Code' src='../includes/display_image.php?checkin=1&example=1'/ >\n"; 			    
 			    echo "</div>";
 			    echo "</p>";
 			}
