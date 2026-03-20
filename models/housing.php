@@ -58,4 +58,17 @@ class Housing extends BaseModel{
         return House::loadById($this->HouseId);
     }
     
+    public static function reset(LARP $larp) {
+        if ($larp->isHousingReleased()) return;
+        $stmt = static::connectStatic()->prepare("DELETE FROM regsys_housing WHERE LARPId=?");
+        
+        if (!$stmt->execute(array($larp->Id))) {
+            $stmt = null;
+            header("location: ../index.php?error=stmtfailed");
+            exit();
+        }
+        $stmt = null;
+        
+    }
+    
 }

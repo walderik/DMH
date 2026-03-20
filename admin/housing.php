@@ -297,6 +297,17 @@ div.housing-group {
 	<h2>Tilldelat boende</h2>
 	Om det är ett <?php echo showStatusIcon(false)?> efter namnet på huset/lägerplatsen betyder det att minst en person i huset har blivit avbokad eller att huset inte får användas. Håll musen över ikonen så ser du vilket.<br>
 	Ikonen efter antalet platser i huset anger hur fullt huset är. Om det är <?php echo showStatusIcon(false)?> är det över max-antal i huset.
+	
+	<?php if (!$current_larp->isHousingReleased()) {?>
+	<details><summary>Återställ husfördelningen</summary>
+	Om du klickar på knappen kommer allt boende att nollställas så att du enkelt kan börja om från början. <br>
+	<form action='logic/reset_housing.php' method='post'><input type='submit' value ='Återställ husfördelningen'></form>
+
+	</details>
+	<?php } ?>
+	
+	
+	
 	<div class='housing-group clearfix'>
 	
 	<h3>Hus <?php echo " <span onclick='show_hide_area(\"houses\", this)' name='hide'><i class='fa-solid fa-caret-down'></i></span>";?></h3>
