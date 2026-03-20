@@ -299,7 +299,7 @@ div.housing-group {
 	Ikonen efter antalet platser i huset anger hur fullt huset är. Om det är <?php echo showStatusIcon(false)?> är det över max-antal i huset.
 	
 	<?php if (!$current_larp->isHousingReleased()) {?>
-	<details><summary>Återställ husfördelningen</summary>
+	<details><summary><strong>Återställ husfördelningen</strong></summary>
 	Om du klickar på knappen kommer allt boende att nollställas så att du enkelt kan börja om från början. <br>
 	<form action='logic/reset_housing.php' method='post'><input type='submit' value ='Återställ husfördelningen'></form>
 
