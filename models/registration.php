@@ -614,4 +614,8 @@ class Registration extends BaseModel{
         return static::getOneObjectQuery($sql, array($paymentReference));
     }
     
+    public function getQRCode() {
+        return "../includes/display_image.php?checkin=1&encodedReference=".base64_encode($this->PaymentReference);
+    }
+    
 }
