@@ -951,7 +951,10 @@ function openTab(evt, tabName) {
 		<br><br>
 		<div align="center">
 		<b><?php echo $current_person->Name?></b><br>
-		<?php printf('<img width=300px" src="%s" alt="QR Code" />', $registration->getQRcode()); ?>
+		<?php 
+		echo "<img width='300px' src='".$registration->getQRcode()."' alt='QR Code' />";
+        ?>
+
 		</div>
 		<?php  if ($registration->isCheckedIn()) echo "Du är incheckad.<br>"?>
 		<?php  if ($registration->isCheckedOut()) echo "Du är utcheckad.<br>"?>
