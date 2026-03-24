@@ -615,7 +615,7 @@ class Registration extends BaseModel{
     }
     
     public function getQRCode() {
-        return "../includes/display_image.php?checkin=1&encodedReference=".base64_encode($this->PaymentReference);
+        return "https://$_SERVER[HTTP_HOST]/includes/display_image.php?checkin=1&encodedReference=".base64_encode($this->PaymentReference);
     }
     
 }

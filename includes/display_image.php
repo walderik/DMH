@@ -69,13 +69,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         if (isset($_GET['example'])) {
             $link = "https://$_SERVER[HTTP_HOST]/checkin/example";
         } else {
-            if (isset($_GET['encodedReference'])) $encodedReference = $_GET['encodedReference'];
-            else {
-                $registration = Registration::loadById($_GET['RegistrationId']);
-                $encodedReference = base64_encode($registration->PaymentReference);
-            }
+            $encodedReference = $_GET['encodedReference'];
             $link = "https://$_SERVER[HTTP_HOST]/checkin/person.php?code=".$encodedReference;
-            
         }
 
         $options = new QROptions;
