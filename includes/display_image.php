@@ -18,7 +18,6 @@ use chillerlan\QRCode\Output\QRImagick;
 $root = $_SERVER['DOCUMENT_ROOT'];
 
 
-
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['id'])) {
         require_once $root . '/includes/init.php';
@@ -37,25 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         
     } elseif (isset($_GET['Swish'])) {
         include_once $root . '/includes/all_includes.php';
-        echo "Swish<br>";
 
         $registration = Registration::loadById($_GET['RegistrationId']);
         $campaign = Campaign::loadById($_GET['CampaignId']);
-        $response = Swish::QRCode($registration, $campaign);
 
-        print_r($response);
-        echo "<br>";
-        //header('Content-Length: ' . strlen($response));
         
-        /*
-        $registration = Registration::loadById($_GET['RegistrationId']);
-        $campaign = Campaign::loadById($_GET['CampaignId']);
-        $response = Swish::QRCode($registration, $campaign);   
-        
-        ob_clean(); // rensa buffert
-        header("Content-type: image/png");
-        */
-        echo $response;
+        ob_clean();
+        header('Content-Type: image/png');
+        Swish::QRCode($registration, $campaign);
+        exit;    
         
     } elseif (isset($_GET['checkin'])) {
         
