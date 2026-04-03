@@ -2,22 +2,26 @@
 
 class Larp_House extends BaseModel{
     
+    const NOT_CLEANED = 0;
+    const READY_FOR_INSPECTION = 10;
+    const CLEANING_APPROVED = 100;
+    const STATUS_TYPES = [
+        Larp_House::NOT_CLEANED => "Inte städat",
+        Larp_House:: READY_FOR_INSPECTION => "Klart för kontroll",
+        //20 => "Städning underkänd",
+        Larp_House::CLEANING_APPROVED => "Städning godkänd"
+    ];
+    
     public $Id;
     public $LARPId;
     public $HouseId;
     public $OrganizerNotes;
     public $PublicNotes;
-    public $CleaningStatus = 0;
+    public $CleaningStatus = Larp_House::NOT_CLEANED;
+    public $StatusPerson;
+    public $StatusTime;
     public $CleaningNotes;
     
-    
-    const READY_FOR_INSPECTION = 10;
-    const STATUS_TYPES = [
-        0 => "Inte städat",
-        READY_FOR_INSPECTION => "Klart för kontroll",
-        20 => "Städning underkänd",
-        100 => "Städning godkänd"
-    ];
     
     public static $orderListBy = 'HouseId';
     
@@ -29,6 +33,8 @@ class Larp_House extends BaseModel{
         if (isset($post['OrganizerNotes'])) $object->OrganizerNotes = $post['OrganizerNotes'];
         if (isset($post['PublicNotes'])) $object->PublicNotes = $post['PublicNotes'];
         if (isset($post['CleaningStatus'])) $object->CleaningStatus = $post['CleaningStatus'];
+        if (isset($post['StatusPerson'])) $object->StatusPerson = $post['StatusPerson'];
+        if (isset($post['StatusTime'])) $object->StatusTime = $post['StatusTime'];
         if (isset($post['CleaningNotes'])) $object->CleaningNotes = $post['CleaningNotes'];
         return $object;
     }
@@ -41,9 +47,9 @@ class Larp_House extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_larp_house (LARPId, HouseId, OrganizerNotes, PublicNotes, CleaningStatus, CleaningNotes) VALUES (?,?,?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_larp_house (LARPId, HouseId, OrganizerNotes, PublicNotes, CleaningStatus, StatusPerson, StatusTime, CleaningNotes) VALUES (?,?,?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->LARPId, $this->HouseId, $this->OrganizerNotes, $this->PublicNotes, $this->CleaningStatus, $this->CleaningNotes))) {
+        if (!$stmt->execute(array($this->LARPId, $this->HouseId, $this->OrganizerNotes, $this->PublicNotes, $this->CleaningStatus, $this->StatusPerson, $this->StatusTime, $this->CleaningNotes))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -55,9 +61,9 @@ class Larp_House extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_larp_house SET OrganizerNotes=?, PublicNotes=?, CleaningStatus=?, CleaningNotes=? WHERE Id=?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp_house SET OrganizerNotes=?, PublicNotes=?, CleaningStatus=?, StatusPerson=?, StatusTime=?, CleaningNotes=? WHERE Id=?;");
         
-        if (!$stmt->execute(array($this->OrganizerNotes, $this->PublicNotes, $this->CleaningStatus, $this->CleaningNotes, $this->Id))) {
+        if (!$stmt->execute(array($this->OrganizerNotes, $this->PublicNotes, $this->CleaningStatus, $this->StatusPerson, $this->StatusTime, $this->CleaningNotes, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
