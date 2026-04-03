@@ -72,9 +72,9 @@ class Larp_House extends BaseModel{
     }
     
     
-    public static function loadByIds($house, $larpId) {
+    public static function loadByIds($houseId, $larpId) {
         $sql = "SELECT * FROM regsys_larp_house WHERE HouseId = ? AND LARPId = ?";
-        return static::getOneObjectQuery($sql, array($house, $larpId));
+        return static::getOneObjectQuery($sql, array($houseId, $larpId));
     }
     
     public function getLarp() {
@@ -83,6 +83,10 @@ class Larp_House extends BaseModel{
     
     public function getHouse() {
         return House::loadById($this->HouseId);
+    }
+    
+    public function getStatusText() {
+        return Larp_House::STATUS_TYPES[$this->CleaningStatus];
     }
     
 }
