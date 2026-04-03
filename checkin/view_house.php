@@ -37,6 +37,48 @@ ul.list {
 			<?php echo $house->Name;  ?>
 		</div>
 
+		<?php if ($current_larp->isEnded()) {
+		    $larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
+		    if (empty($larp_house)) {
+		        $larp_house = Larp_House::newWithDefault();
+		        $larp_house->HouseId = $house->Id;
+		        $larp_house->LARPId = $current_larp->Id;
+		        $larp_house->create();
+		    }
+		    ?>
+    	   <div class='itemcontainer'>
+    	     <div class='itemname'>Status städning</div>
+    	   		<?php echo $larp_house->getStatusText(); ?>
+    	   		<?php  
+    	   		if (isset($larp_house->StatusPerson)) {
+    	   		    $person = Person::loadById($larp_house->StatusPerson);
+    	   		    echo "<br>Status satt av <a href='checkout_person.php?id=$person->Id'>$person->Name</a>, $larp_house->StatusTime";
+    	   		    if (isset($larp_house->CleaningNotes)) echo "<br>$larp_house->CleaningNotes";
+    	   		}
+    	   		?>
+    	   		<br><br>
+	     		<form action='logic/house_status.php' method='post'><input type='hidden' id='houseId' name='houseId' value='<?php echo $house->Id ?>'>
+
+
+				<?php selectionDropDownBySimpleArray('CleaningStatus', Larp_House::STATUS_TYPES, $larp_house->CleaningStatus); ?>
+				<br>Noteringar om städningen, visas för deltagarna<br>
+				<textarea id="CleaningNotes" name="CleaningNotes" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($larp_house->CleaningNotes); ?></textarea>
+	     		
+	     		<input type='submit' value='Ändra status/uppdatera anteckningar'>
+	     		
+	     		
+	     		</form>
+	     		
+	     		
+	     		
+	     		
+	     		
+    	   </div>
+    	   
+		<?php } ?>
+
+
+
 		<?php 
         if ($house->hasImage()) {
             echo "<div class='itemcontainer'>";

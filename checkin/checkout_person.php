@@ -142,11 +142,15 @@ include 'navigation.php';
     	   		<div class='itemcontainer'>
                	<div class='itemname'>Boende</div>
 				<?php echo "<a href='view_house.php?id=$house->Id&action=checkout'>$house->Name</a>";  ?>
+
+    			<?php 
+    			$larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
+    			if (isset($larp_house)) $status = $larp_house->CleaningStatus == Larp_House::CLEANING_APPROVED;
+    			else $status = false;
+    			?>
+		     	<?php echo showStatusIcon($status, null, null, "Ej godkänt", "Städning godkänd");?>
     			</div>
-		     
-		    <?php     
-		    }
-		    ?>
+    		<?php } ?>
 		    <?php if (isset($registration->FoodChoice)) { ?>
     	   		<div class='itemcontainer'>
                	<div class='itemname'>Matalternativ</div>

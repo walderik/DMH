@@ -34,7 +34,9 @@
             <a href="../checkin/search_person.php?type=checkout">Sök person</a>
             <a href="../checkin/search_vehicle.php">Sök fordon</a>
             <a href="../checkin/not_checked_out.php">Inte utcheckade</a>
-	    </div>
+            <a href="../checkin/housing_status.php">Status alla boenden</a>
+            <a href="../checkin/housing_controll.php">Boenden klara för kontroll</a>
+         </div>
 	  </div> 
 	  
 	<?php include '../common/navigation_site_part_selector.php';?>  

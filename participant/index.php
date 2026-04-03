@@ -959,6 +959,28 @@ function openTab(evt, tabName) {
 		<?php  if ($registration->isCheckedIn()) echo "Du är incheckad.<br>"?>
 		<?php  if ($registration->isCheckedOut()) echo "Du är utcheckad.<br>"?>
 		
+		<?php if ($current_larp->isEnded() && isset($house) && !empty($house)) {
+		    $larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
+		    if (empty($larp_house)) {
+		        $larp_house = Larp_House::newWithDefault();
+		        $larp_house->HouseId = $house->Id;
+		        $larp_house->LARPId = $current_larp->Id;
+		        $larp_house->create();
+		    }
+		    ?>
+			<div>
+				<strong>Städning av <?php echo $house->Name ?></strong><br>
+				Status: <?php echo $larp_house->getStatusText(); ?><br>
+				<?php if (isset($larp_house->CleaningNotes)) echo "<br>$larp_house->CleaningNotes<br><br>"?>
+				<?php if ($larp_house->CleaningStatus == Larp_House::NOT_CLEANED) { ?>
+					När huset är städat kan ni be att en arrangör kommer och kontrollerar städningen.
+		     		<form action='logic/house_cleaned.php' method='post'><input type='hidden' id='houseId' name='houseId' value='<?php echo $house->Id ?>'>
+		     		<input type='submit' value='Be om kontroll'></form>
+					
+				<?php } ?>
+			
+			</div>
+		<?php } ?>
 	</div>
 	<?php } ?>
 

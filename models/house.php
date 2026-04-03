@@ -121,6 +121,17 @@ class House extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($larp->Id));
     }
     
+    public static function getAllInUse(Larp $larp) {
+        $sql = "SELECT * FROM regsys_house WHERE Id IN (Select HouseId FROM regsys_housing WHERE LARPId=?)  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    public static function getAllToCheck(Larp $larp) {
+        $sql = "SELECT * FROM regsys_house WHERE Id IN (Select HouseId FROM regsys_larp_house WHERE LARPId=? AND CleaningStatus=".Larp_House::READY_FOR_INSPECTION.")  ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id));
+    }
+    
+    
     public static function getAllCamps(bool $includeNotActive) {
         if ($includeNotActive) $sql = "SELECT * FROM regsys_house WHERE IsHouse=0 ORDER BY ".static::$orderListBy.";";
         else $sql = "SELECT * FROM regsys_house WHERE IsHouse=0 AND Active=1 ORDER BY ".static::$orderListBy.";";
