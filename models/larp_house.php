@@ -7,6 +7,17 @@ class Larp_House extends BaseModel{
     public $HouseId;
     public $OrganizerNotes;
     public $PublicNotes;
+    public $CleaningStatus = 0;
+    public $CleaningNotes;
+    
+    
+    const READY_FOR_INSPECTION = 10;
+    const STATUS_TYPES = [
+        0 => "Inte städat",
+        READY_FOR_INSPECTION => "Klart för kontroll",
+        20 => "Städning underkänd",
+        100 => "Städning godkänd"
+    ];
     
     public static $orderListBy = 'HouseId';
     
@@ -17,6 +28,8 @@ class Larp_House extends BaseModel{
         if (isset($post['HouseId'])) $object->HouseId = $post['HouseId'];
         if (isset($post['OrganizerNotes'])) $object->OrganizerNotes = $post['OrganizerNotes'];
         if (isset($post['PublicNotes'])) $object->PublicNotes = $post['PublicNotes'];
+        if (isset($post['CleaningStatus'])) $object->CleaningStatus = $post['CleaningStatus'];
+        if (isset($post['CleaningNotes'])) $object->CleaningNotes = $post['CleaningNotes'];
         return $object;
     }
     
@@ -28,9 +41,9 @@ class Larp_House extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_larp_house (LARPId, HouseId, OrganizerNotes, PublicNotes) VALUES (?,?,?,?);");
+        $stmt = $connection->prepare("INSERT INTO regsys_larp_house (LARPId, HouseId, OrganizerNotes, PublicNotes, CleaningStatus, CleaningNotes) VALUES (?,?,?,?,?,?);");
         
-        if (!$stmt->execute(array($this->LARPId, $this->HouseId, $this->OrganizerNotes, $this->PublicNotes))) {
+        if (!$stmt->execute(array($this->LARPId, $this->HouseId, $this->OrganizerNotes, $this->PublicNotes, $this->CleaningStatus, $this->CleaningNotes))) {
             $this->connect()->rollBack();
             $stmt = null;
             header("location: ../participant/index.php?error=stmtfailed");
@@ -42,9 +55,9 @@ class Larp_House extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_larp_house SET OrganizerNotes=?, PublicNotes=? WHERE Id=?;");
+        $stmt = $this->connect()->prepare("UPDATE regsys_larp_house SET OrganizerNotes=?, PublicNotes=?, CleaningStatus=?, CleaningNotes=? WHERE Id=?;");
         
-        if (!$stmt->execute(array($this->OrganizerNotes, $this->PublicNotes, $this->Id))) {
+        if (!$stmt->execute(array($this->OrganizerNotes, $this->PublicNotes, $this->CleaningStatus, $this->CleaningNotes, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
