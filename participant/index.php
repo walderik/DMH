@@ -970,7 +970,8 @@ function openTab(evt, tabName) {
 		    ?>
 			<div>
 				<strong>Städning av <?php echo $house->Name ?></strong><br>
-				Status: <?php echo Larp_House::STATUS_TYPES[$larp_house->CleaningStatus]?><br>
+				Status: <?php echo $larp_house->getStatusText(); ?><br>
+				<?php if (isset($larp_house->CleaningNotes)) echo "<br>$larp_house->CleaningNotes<br><br>"?>
 				<?php if ($larp_house->CleaningStatus == Larp_House::NOT_CLEANED) { ?>
 					När huset är städat kan ni be att en arrangör kommer och kontrollerar städningen.
 		     		<form action='logic/house_cleaned.php' method='post'><input type='hidden' id='houseId' name='houseId' value='<?php echo $house->Id ?>'>
