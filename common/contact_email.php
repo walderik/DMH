@@ -129,7 +129,7 @@ include $navigation;
 		        }
 		        break;
 		    case "checkin":
-		        echo "<h1>Skicka ut QR-kod och infoarmation om incheckning alla deltagarna.</h1>\n";
+		        echo "<h1>Skicka ut QR-kod och information om incheckning alla deltagarna.</h1>\n";
 		        if ($campaign->is_kir()) {
 		            echo "Det kommer ta några minuter att skicka till alla.<br>Det går iväg som mest ett mail var 15 sekund till max 15 mottagare.<br>\n";
 		            echo "För att mailen ska gå iväg måste du fortsätta att använda systemet, eller låta sidan med skickad epost vara öppen.<br><br>\n";
