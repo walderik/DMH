@@ -602,9 +602,7 @@ include 'navigation.php';
 		                
 		                $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
 		                //Visa alltid rubriken "Vad hände"
-		                printIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, true);
-		                
-		                
+		                echo participantPrintedIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
 		            }
 		        }
 		        echo "<h3>Allmänna kommentarer</h3>";
