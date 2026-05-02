@@ -83,15 +83,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
      
-     if (isset($_POST['SaveAndLockButton'])) {
+     if (isset($_POST['SaveAndCreateNewButton'])) {
+         header('Location: ../role_form.php');
+         exit;
+     } elseif (isset($_POST['SaveAndLockButton'])) {
          $larp_role = LARP_Role::loadByIds($role->Id, $current_larp->Id);
          if ($role->isNPC($current_larp) || !empty($larp_role)) {
              $role->UserMayEdit = 0;
              $role->update();
          }
-         
-         
+     } elseif (isset($_POST['SaveAndRegisterButton'])) {
+         header('Location: ../person_registration_form.php');
+         exit;
      }
-    
+     
+     
+     
     header('Location: ../view_role.php?id='.$role->Id);
 }
