@@ -11,6 +11,14 @@ class AccessControl extends Dbh {
         AccessControl::HOUSES => "Hus & Läger"
     ];
     
+    const OFFICIAL_CHECKIN = 1;
+    const OFFICIAL_EXPENSES = 2;
+    
+    const OFFICIAL_ACCESS_TYPES = [
+        AccessControl::OFFICIAL_CHECKIN => "In och utcheckning",
+        AccessControl::OFFICIAL_EXPENSES => "Registrera utlägg"
+        
+    ];
     
    
     public static function accessControlCampaign() {
@@ -105,6 +113,18 @@ class AccessControl extends Dbh {
         
         return static::existsQuery($sql, array($person->Id, $access));
         
+    }
+    
+    public static function hasAccessOfficial($access) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_officialtype_permission, regsys_officialtype, regsys_registration WHERE ".
+            "regsys_registration.PersonId = ? AND ".
+            "regsys_registration.LarpId = ? AND ".
+            "regsys_registration.IsOfficial = 1 AND ".
+            "regsys_registration.Id = regsys_officialtype_person.RegistrationId AND ".
+            "regsys_officialtype_permission.OfficialTypeId = regsys_officialtype_person.OfficialTypeId  AND ".
+            "regsys_officialtype_permission.Permission = ? ";
+        
+        return static::existsQuery($sql, array($person->Id, $access));
     }
     
     public static function grantCampaign($personId, $campaignId) { 
