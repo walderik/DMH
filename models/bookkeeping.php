@@ -187,5 +187,10 @@ class Bookkeeping extends BaseModel{
         $sql = "SELECT SUM(Amount) as Num FROM regsys_bookkeeping WHERE LarpId = ? AND AccountingDate IS NOT NULL AND BookkeepingAccountId = ? ORDER BY ".static::$orderListBy.";";
         return static::countQuery($sql, array($larp->Id, $account->Id));
     }
+    
+    public static function allForPerson(Larp $larp, Person $person) {
+        $sql = "SELECT * FROM regsys_bookkeeping WHERE LarpId = ? AND PersonId = ? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($larp->Id, $person->Id));
+    }
      
 }

@@ -77,7 +77,7 @@ $param = date_format(new Datetime(),"suv");
 				if (TypeOfFood::isInUse($current_larp)) $in_use[] = $link;
 				else $not_in_use[] = $link;
 				
-				$link = " <a href='selection_data_admin.php?type=officialtypes'>Typ av funktionärer för deltagare</a>";
+				$link = " <a href='officialtype_admin.php'>Typ av funktionärer för deltagare</a>";
 				if (OfficialType::isInUse($current_larp)) $in_use[] = $link;
 				else $not_in_use[] = $link;
 				
