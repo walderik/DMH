@@ -6,9 +6,6 @@
 
  
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    print_r($_POST);
-    
     $operation = $_POST['operation'];
 
 
@@ -18,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $data->create();
         
         //Lägg till behörigheter på funktionärstypen
-        if (isset($_POST['AbilityId'])) {
-            $data->saveAllPermissions($_POST['AbilityId']);
+        if (isset($_POST['Permission'])) {
+            $data->saveAllPermissions($_POST['Permission']);
         }
         
     } elseif ($operation == 'update') {
@@ -29,8 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         //Uppdatera behörigheter
         $data->deleteAllPermissions();
-        if (isset($_POST['AbilityId'])) {
-            $data->saveAllPermissions($_POST['AbilityId']);
+        if (isset($_POST['Permission'])) {
+            $data->saveAllPermissions($_POST['Permission']);
         }
         
     } 
@@ -48,6 +45,17 @@ include 'navigation.php';
 ?>
     <div class="content">   
         <h1>Typ av funktionärer <a href="forms.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+        <p>Funktionärer kan ha ett antal olika behörigheter som ger dem extra möjligheter i systemet. <br>De behörigheter som finns är:<br>
+
+        <?php 
+        
+        $permissions = AccessControl::OFFICIAL_ACCESS_TYPES;
+        foreach ($permissions as $permission) {
+            echo "* $permission<br>";
+        }
+        
+        ?>
+        </p>
             <a href="officialtype_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>          
         <?php
         $data_array = OfficialType::allForLarp($current_larp);
@@ -65,8 +73,8 @@ include 'navigation.php';
                 //Skriv ut behörigheter
                 $permissions = $data->getPermissions();
                 $permissionTexts = array();
-                foreach ($permissions as $item) $permissionTexts[] = AccessControl::ACCESS_TYPES[$item];
-                echo implode(", ", $permissionTexts);
+                foreach ($permissions as $item) $permissionTexts[] = AccessControl::OFFICIAL_ACCESS_TYPES[$item];
+                echo implode("<br>", $permissionTexts);
                 
                 echo "</td>";
                 echo "<td>";

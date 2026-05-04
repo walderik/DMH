@@ -37,11 +37,7 @@ class AccessControl extends Dbh {
         exit;
         
     }
-
-    public function accessaccessControlCheckin() {
-        return static::accessControlLarp();
-    }
-    
+ 
     public static function accessControlLarp() {
         global $current_person, $current_larp;
         if (empty($current_larp) or (empty($current_person))) {
@@ -103,7 +99,14 @@ class AccessControl extends Dbh {
     }
     
     public static function hasAccessCheckin(Person $person, LARP $larp) {
-        return static::hasAccessLarp($person, $larp);
+        if (static::hasAccessLarp($person, $larp)) return true;
+        return static::hasOfficialAccess($person, $larp, static::OFFICIAL_CHECKIN);
+    }
+    
+    public static function hasAccessOfficial(Person $person, LARP $larp) {
+        if (static::hasAccessLarp($person, $larp)) return true;
+        if (static::hasOfficialAccess($person, $larp, static::OFFICIAL_EXPENSES)) return true;
+        return false;
     }
     
     public static function hasAccessOther(Person $person, int $access) {
@@ -115,8 +118,8 @@ class AccessControl extends Dbh {
         
     }
     
-    public static function hasAccessOfficial($access) {
-        $sql = "SELECT COUNT(*) AS Num FROM regsys_officialtype_permission, regsys_officialtype, regsys_registration WHERE ".
+    public static function hasOfficialAccess(Person $person, Larp $larp, $access) {
+        $sql = "SELECT COUNT(*) AS Num FROM regsys_officialtype_permission, regsys_officialtype_person, regsys_registration WHERE ".
             "regsys_registration.PersonId = ? AND ".
             "regsys_registration.LarpId = ? AND ".
             "regsys_registration.IsOfficial = 1 AND ".
@@ -124,7 +127,7 @@ class AccessControl extends Dbh {
             "regsys_officialtype_permission.OfficialTypeId = regsys_officialtype_person.OfficialTypeId  AND ".
             "regsys_officialtype_permission.Permission = ? ";
         
-        return static::existsQuery($sql, array($person->Id, $access));
+        return static::existsQuery($sql, array($person->Id, $larp->Id, $access));
     }
     
     public static function grantCampaign($personId, $campaignId) { 
