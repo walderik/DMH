@@ -189,7 +189,7 @@ include 'navigation.php';
 			    if ($larp_role->IsMainRole==0) echo " (Sidokaraktär)";
 	
 			    $group=$role->getGroup();
-			    if (!empty($group)) echo " - $group->Name";
+			    if (!empty($group)) echo " - ".$group->getViewLink();
 			    echo "<br>";
 			    
 			    //Pengar
@@ -233,8 +233,8 @@ include 'navigation.php';
 			foreach($groups as $group) {
 			    if ($first) $first = false;
 			    else echo "<br>";
-			    echo "$group->Name";
-			    echo "<br>";
+			    echo $group->getViewLink();
+                echo "<br>";
 			    
 			    $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
 			    $checkin_props = $group->getAllCheckinProps($current_larp);

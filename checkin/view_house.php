@@ -8,6 +8,10 @@ $action = "";
 if (isset($_GET['action']))  {
     $action = $_GET['action'];
 }
+if (empty($action)) {
+    if ($current_larp->isCheckoutTime()) $action = "checkout";
+    else $action = "checkin";
+}
 
 if (empty($house)) {
     header('Location: index.php?error=no_house');
@@ -77,6 +81,32 @@ ul.list {
     	   
 		<?php } ?>
 
+	   <div class='itemcontainer'>
+		<?php 
+    	    echo "<div class='itemname'>Boende under $current_larp->Name är</div>";
+    	    $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
+    	    foreach ($personsInHouse as $personInHouse) {
+    	        if ($personInHouse->isNotComing($current_larp)) continue;
+    	        $registration = $personInHouse->getRegistration($current_larp);
+    	        if ($action == "checkin") {
+    	            echo "<a href='checkin_person.php?id=$personInHouse->Id'>";
+    	        } elseif ($action == "checkout") {
+    	            echo "<a href='checkout_person.php?id=$personInHouse->Id'>";
+    	        }
+    	        echo $personInHouse->Name."</a> ";
+    	        if ($action == "checkin") {
+    	            echo showStatusIcon($registration->isCheckedIn(), "checkin_person.php?id=".$personInHouse->Id, null, "Inte incheckad", "Redan incheckad");
+    	        } elseif ($action == "checkout") {
+    	            echo showStatusIcon($registration->isCheckedIn(), "checkout_person.php?id=".$personInHouse->Id, null, "Inte utcheckad", "Redan utcheckad");
+    	        }
+    	            
+    	        echo "<br>";
+    	    }
+	    ?>
+    		    
+	    </div>
+
+
 
 
 		<?php 
@@ -120,21 +150,7 @@ ul.list {
  			    echo "</div>";
 			} ?>
 
-    		
-		<?php 
-    	    echo "<div class='itemcontainer'>";
-    	    echo "<div class='itemname'>Boende under $current_larp->Name är</div>";
-    	    $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
-    	    foreach ($personsInHouse as $personInHouse) {
-    	        if ($personInHouse->isNotComing($current_larp)) continue;
-    	        if ($action == "checkin") echo "<a href='checkin_person.php?id=$personInHouse->Id'>";
-    	        elseif ($action == "checkout") echo "<a href='checkout_person.php?id=$personInHouse->Id'>";
-    	        echo $personInHouse->Name."</a><br>";
-    	    }
-	    ?>
-    		    
-	    </div>
-
+    	
 		<?php if ($house->IsHouse()) {
 		    echo "<div class='itemcontainer'>";
 		    echo "<div class='itemname'>Husförvaltare</div>";

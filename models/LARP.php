@@ -529,4 +529,20 @@ class LARP extends BaseModel{
         $this->update();
     }
     
+    public function isCheckinTime() {
+        return !$this->isCheckoutTime();
+    }
+    
+    public function isCheckoutTime() {
+        $now = time();
+        $start = strtotime($this->StartDate);
+        $end = strtotime($this->EndDate);
+        $midpoint = $start + (($end-$start)/2);
+        
+        if ($now > $midpoint) {
+            return true;
+        }
+        return false;
+        
+    }
 }
