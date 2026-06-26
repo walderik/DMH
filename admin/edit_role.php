@@ -155,7 +155,28 @@ include 'navigation.php';
 			?></td></tr>
 
 			<tr><td valign="top" class="header">Grupp</td>
-			<td><?php selectionDropDownByArray('GroupId', Group::getAllRegistered($current_larp), false, $role->GroupId); ?></td></tr>
+			<td>
+			<?php 
+			$groups = Group::getAllRegistered($current_larp);
+			 if (is_null($person)) { //NPC
+			    $hidden_groups = Group::getAllHiddenGroups($current_larp->CampaignId);
+			    $groups = array_merge($hidden_groups,$groups);
+			    function cmp($a, $b)
+			    {
+			        if ($a->Name == $b->Name) {
+			            return 0;
+			        }
+			        return ($a->Name < $b->Name) ? -1 : 1;
+			    }
+			    
+			    usort($groups, "cmp");
+			 }
+			 
+			 selectionDropDownByArray('GroupId', $groups, false, $role->GroupId);
+			 
+			 ?>
+			 
+			 </td></tr>
 
 			<?php if ($role->isPC($current_larp)) {?>
 			<tr><td valign="top" class="header">Huvudkaraktär</td><td><?php echo ja_nej($larp_role->IsMainRole);?></td></tr>
