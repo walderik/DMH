@@ -21,6 +21,10 @@ th {
         <?php if ($current_larp->chooseParticipationDates()) {         ?>
         <a href='registered_persons_parttime.php'>Lista med deltagare som bara är med del av lajvet.</a>    
         <?php } ?>
+        <?php if ($current_larp->Id == 20) {         ?>
+        <br><a href='thursday_persons.php'>Lista med deltagare som är med på torsdagen och vilka karaktärer de spelar då.</a>    
+        <?php } ?>
+        
         
 
         
