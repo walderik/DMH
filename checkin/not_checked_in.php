@@ -44,7 +44,7 @@ th {
                     foreach ($roles as $role) {
                         echo $role->Name;
                         $group= $role->getGroup();
-                        if (!empty($group)) echo " - ".$group->Name;
+                        if (!empty($group)) echo " - ".$group->getViewLink();
                         echo "<br>";
                     }
 		            echo "</td>\n";

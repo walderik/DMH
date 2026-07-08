@@ -44,6 +44,10 @@
 	      $location =  '../admin/';
 	  } elseif ($_SESSION['navigation'] == Navigation::CAMPAIGN) {
 	      $location =  '../campaign/';
+	  } elseif ($_SESSION['navigation'] == Navigation::CHECKIN) {
+	      $location =  '../checkin/';
+	  } elseif ($_SESSION['navigation'] == Navigation::OFFICIAL) {
+	      $location =  '../official/';
 	  } elseif ($_SESSION['navigation'] == Navigation::BOARD) {
 	      $location =  '../board/';
 	  } elseif ($_SESSION['navigation'] == Navigation::HOUSES) {

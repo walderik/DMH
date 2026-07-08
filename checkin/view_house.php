@@ -8,6 +8,10 @@ $action = "";
 if (isset($_GET['action']))  {
     $action = $_GET['action'];
 }
+if (empty($action)) {
+    if ($current_larp->isCheckoutTime()) $action = "checkout";
+    else $action = "checkin";
+}
 
 if (empty($house)) {
     header('Location: index.php?error=no_house');
@@ -36,6 +40,74 @@ ul.list {
 			<i class="fa-solid fa-house"></i>
 			<?php echo $house->Name;  ?>
 		</div>
+
+		<?php if ($current_larp->isEnded()) {
+		    $larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
+		    if (empty($larp_house)) {
+		        $larp_house = Larp_House::newWithDefault();
+		        $larp_house->HouseId = $house->Id;
+		        $larp_house->LARPId = $current_larp->Id;
+		        $larp_house->create();
+		    }
+		    ?>
+    	   <div class='itemcontainer'>
+    	     <div class='itemname'>Status städning</div>
+    	   		<?php echo $larp_house->getStatusText(); ?>
+    	   		<?php  
+    	   		if (isset($larp_house->StatusPerson)) {
+    	   		    $person = Person::loadById($larp_house->StatusPerson);
+    	   		    echo "<br>Status satt av <a href='checkout_person.php?id=$person->Id'>$person->Name</a>, $larp_house->StatusTime";
+    	   		    if (isset($larp_house->CleaningNotes)) echo "<br>$larp_house->CleaningNotes";
+    	   		}
+    	   		?>
+    	   		<br><br>
+	     		<form action='logic/house_status.php' method='post'><input type='hidden' id='houseId' name='houseId' value='<?php echo $house->Id ?>'>
+
+
+				<?php selectionDropDownBySimpleArray('CleaningStatus', Larp_House::STATUS_TYPES, $larp_house->CleaningStatus); ?>
+				<br>Noteringar om städningen, visas för deltagarna<br>
+				<textarea id="CleaningNotes" name="CleaningNotes" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($larp_house->CleaningNotes); ?></textarea>
+	     		
+	     		<input type='submit' value='Ändra status/uppdatera anteckningar'>
+	     		
+	     		
+	     		</form>
+	     		
+	     		
+	     		
+	     		
+	     		
+    	   </div>
+    	   
+		<?php } ?>
+
+	   <div class='itemcontainer'>
+		<?php 
+    	    echo "<div class='itemname'>Boende under $current_larp->Name är</div>";
+    	    $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
+    	    foreach ($personsInHouse as $personInHouse) {
+    	        if ($personInHouse->isNotComing($current_larp)) continue;
+    	        $registration = $personInHouse->getRegistration($current_larp);
+    	        if ($action == "checkin") {
+    	            echo "<a href='checkin_person.php?id=$personInHouse->Id'>";
+    	        } elseif ($action == "checkout") {
+    	            echo "<a href='checkout_person.php?id=$personInHouse->Id'>";
+    	        }
+    	        echo $personInHouse->Name."</a> ";
+    	        if ($action == "checkin") {
+    	            echo showStatusIcon($registration->isCheckedIn(), "checkin_person.php?id=".$personInHouse->Id, null, "Inte incheckad", "Redan incheckad");
+    	        } elseif ($action == "checkout") {
+    	            echo showStatusIcon($registration->isCheckedIn(), "checkout_person.php?id=".$personInHouse->Id, null, "Inte utcheckad", "Redan utcheckad");
+    	        }
+    	            
+    	        echo "<br>";
+    	    }
+	    ?>
+    		    
+	    </div>
+
+
+
 
 		<?php 
         if ($house->hasImage()) {
@@ -78,21 +150,7 @@ ul.list {
  			    echo "</div>";
 			} ?>
 
-    		
-		<?php 
-    	    echo "<div class='itemcontainer'>";
-    	    echo "<div class='itemname'>Boende under $current_larp->Name är</div>";
-    	    $personsInHouse = Person::personsAssignedToHouse($house, $current_larp);
-    	    foreach ($personsInHouse as $personInHouse) {
-    	        if ($personInHouse->isNotComing($current_larp)) continue;
-    	        if ($action == "checkin") echo "<a href='checkin_person.php?id=$personInHouse->Id'>";
-    	        elseif ($action == "checkout") echo "<a href='checkout_person.php?id=$personInHouse->Id'>";
-    	        echo $personInHouse->Name."</a><br>";
-    	    }
-	    ?>
-    		    
-	    </div>
-
+    	
 		<?php if ($house->IsHouse()) {
 		    echo "<div class='itemcontainer'>";
 		    echo "<div class='itemname'>Husförvaltare</div>";

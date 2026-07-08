@@ -41,7 +41,7 @@ if (isset($_FILES["upload"])) {
             header('Location: ' . $_POST['Referer']);
             exit;
         }
-        header('Location: economy_view_bookkeeping.php?message=image_uploaded&id='.$BookkeepingId);
+        header('Location:view_expense.php?message=image_uploaded&id='.$BookkeepingId);
         exit;
     }
     else {
@@ -70,7 +70,7 @@ include 'navigation.php';
 
 
     <div class="content"> 
-    <h1>Se <?php echo $type?> <a href="economy.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
+    <h1>Se <?php echo $type?> <a href="index.php"><i class="fa-solid fa-arrow-left" title="Tillbaka"></i></a></h1>
 	  <?php if (isset($error_message) && strlen($error_message)>0) {
 	      echo '<div class="error">'.$error_message.'</div>';
 	  }?>
@@ -81,9 +81,6 @@ include 'navigation.php';
    
 		<table>
 			<tr>
-				<td>Verifikation<br>nummer</td>
-				<td><?php  echo $bookkeeping->Number ?></td>
-
           <?php 
           if ($bookkeeping->hasImage()) {
                 $image = Image::loadById($bookkeeping->ImageId);
@@ -93,7 +90,7 @@ include 'navigation.php';
                 } else {
                     echo "<td rowspan='20' valign='top'>";
                     echo "<img  width='400px' src='../includes/display_image.php?id=$bookkeeping->ImageId'/>\n";
-                    echo "<br><a href='logic/delete_image.php?id=$bookkeeping->Id&type=bookkeeping'>Ta bort bild</a></td>\n";
+                    if (empty($bookkeeping->AccountingDate)) echo "<br><a href='logic/delete_image.php?id=$bookkeeping->Id&type=bookkeeping'>Ta bort bild</a></td>\n";
                     echo "</td>";
                 }
           }
@@ -132,12 +129,8 @@ include 'navigation.php';
 
 			</tr>
 			<tr>
-				<td>Datum</td>
-				<td><?php echo $bookkeeping->AccountingDate ?></td>
-			</tr>
-			<tr>
-				<td>Ansvarig</td>
-				<td><?php echo $bookkeeping->getPerson()->Name ?></td>
+				<td>Upplagd datum</td>
+				<td><?php echo $bookkeeping->CreationDate ?></td>
 			</tr>
 			
 			<?php 

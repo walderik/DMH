@@ -37,6 +37,7 @@ if (is_null($user)) {
 $user->Password = password_hash($password, PASSWORD_DEFAULT);
 $user->update();
 
+$user->setEmailChangeCode();
 
 //Going back to front page
 header("location: ../index.php?message=user_updated");  

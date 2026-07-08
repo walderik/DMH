@@ -26,10 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $larp_group->GroupId = $group->Id;
             $larp_group->LARPId = $current_larp->Id;
             $larp_group->create();
+            if (isset($_POST['IntrigueTypeId'])) $larp_group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         }
-        
-        
-        if (isset($_POST['IntrigueTypeId'])) $larp_group->saveAllIntrigueTypes($_POST['IntrigueTypeId']);
         
         if (isset($_POST['Referer']) && $_POST['Referer']!="") {
             header('Location: ' . $_POST['Referer']);

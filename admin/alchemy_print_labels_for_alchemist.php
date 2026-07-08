@@ -87,7 +87,7 @@ function showRecipes() {
 
 			if (this.responseText) {
 				var recipe_html = "";
-    			var resultArr = this.responseText.split(";");
+    			var resultArr = this.responseText.trim().split(";");
     	        for (i=0; i < resultArr.length; i++) {
     		        //alert(i + " " + resultArr[i]);
     		        var options = resultArr[i].split(":");

@@ -25,11 +25,10 @@ class Swish {
             'Content-Type: application/json',
             'Content-Length: ' . strlen($data_json)
         ]);
-        
-        
+
         // Execute the request
         $response = curl_exec($ch);
-        return $response;
+
 
      }
     

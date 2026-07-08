@@ -142,11 +142,15 @@ include 'navigation.php';
     	   		<div class='itemcontainer'>
                	<div class='itemname'>Boende</div>
 				<?php echo "<a href='view_house.php?id=$house->Id&action=checkout'>$house->Name</a>";  ?>
+
+    			<?php 
+    			$larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
+    			if (isset($larp_house)) $status = $larp_house->CleaningStatus == Larp_House::CLEANING_APPROVED;
+    			else $status = false;
+    			?>
+		     	<?php echo showStatusIcon($status, null, null, "Ej godkänt", "Städning godkänd");?>
     			</div>
-		     
-		    <?php     
-		    }
-		    ?>
+    		<?php } ?>
 		    <?php if (isset($registration->FoodChoice)) { ?>
     	   		<div class='itemcontainer'>
                	<div class='itemname'>Matalternativ</div>
@@ -185,7 +189,7 @@ include 'navigation.php';
 			    if ($larp_role->IsMainRole==0) echo " (Sidokaraktär)";
 	
 			    $group=$role->getGroup();
-			    if (!empty($group)) echo " - $group->Name";
+			    if (!empty($group)) echo " - ".$group->getViewLink();
 			    echo "<br>";
 			    
 			    //Pengar
@@ -229,8 +233,8 @@ include 'navigation.php';
 			foreach($groups as $group) {
 			    if ($first) $first = false;
 			    else echo "<br>";
-			    echo "$group->Name";
-			    echo "<br>";
+			    echo $group->getViewLink();
+                echo "<br>";
 			    
 			    $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
 			    $checkin_props = $group->getAllCheckinProps($current_larp);

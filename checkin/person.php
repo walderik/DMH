@@ -8,10 +8,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $paymentReference = base64_decode($code);
         
         $registration = Registration::findByPaymentReference($paymentReference);
-        if (empty($registration)) {
+        if (empty($registration) || ($registration->LARPId != $current_larp->Id)) {
             header('Location: index.php'); // personen är inte anmäld
             exit;
         }
+        if ($current_larp->isCheckoutTime()) {
+            header("Location: checkout_person.php?id=$registration->PersonId");
+            exit;
+        }
+        
+        header("Location: checkin_person.php?id=$registration->PersonId");
+        exit;
+        
     }
     else {
         header('Location: index.php');
@@ -19,23 +27,5 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 }
 
-$now = time();
-$start = strtotime($current_larp->StartDate);
-$end = strtotime($current_larp->EndDate);
-$midpoint = $start + (($end-$start)/2);
 
-$checkout = false;
-
-
-if ($now > $midpoint) {
-    $checkout = true;    
-}
-
-if ($checkout) {
-   header("Location: checkout_person.php?id=$registration->PersonId");
-   exit;
-}
-
-header("Location: checkin_person.php?id=$registration->PersonId");
-exit;
 
