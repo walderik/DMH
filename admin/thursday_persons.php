@@ -24,13 +24,13 @@ th {
     		    $tableId = "thursday";
     		    echo "<table id='$tableId' class='data'>";
     		    echo "<tr><th onclick='sortTable(0, \"$tableId\");'>Namn</th>".
-    		      "<th onclick='sortTable(1, \"$tableId\")'>Exakt en karaktär på torsdagen</th>".
+        		    "<th onclick='sortTable(1, \"$tableId\")'>Exakt en karaktär på torsdagen</th>".
     		      "<th onclick='sortTable(2, \"$tableId\")'>Karaktär(er)</th>".
     		      "<th onclick='sortTable(3, \"$tableId\")' >Plats på lajvet</th></tr>\n";
     		    foreach ($persons as $person)  {
     		        $registration = $person->getRegistration($current_larp);
     		        if ($registration->isNotComing()) continue;
-    		        if (str_contains($registration->LarpPartNotAttending, "2026-09-13")) continue; 
+    		        if (str_contains($registration->LarpPartNotAttending, "2026-08-13")) continue; 
 
     		        echo "<tr>\n";
     		        
@@ -47,6 +47,7 @@ th {
     		            if (str_contains($intrrigueTypes, "Torsdag")) $thursdayRoles[] = $role;
     		            else $notThyrsdayRoles[] = $role;
     		        }
+    		        
     		        echo "<td>";
     		        echo showStatusIcon(count($thursdayRoles) == 1);
     		        echo "</td>\n";
