@@ -132,16 +132,17 @@ include 'navigation.php';
 			<?php  }?>
 			<?php 
                 echo "<tr><td>Boende</td>";
-                if ($current_larp->isHousingReleased()) {
-                    $house = House::getHouseAtLarp($person, $current_larp);
-                    if (empty($house)) {
-                        echo "<td>Inget tilldelat</td>";
-                    } else {
-                        echo "<td><a href='view_house.php?id=$house->Id'>$house->Name</a></td>";
-                    }
+                $house = House::getHouseAtLarp($person, $current_larp);
+                echo "<td>";
+                if (empty($house)) {
+                    echo "Inget tilldelat";
                 } else {
-                    echo "<td>Inte klart än</td>";
+                    echo "<a href='view_house.php?id=$house->Id'>$house->Name</a>";
                 }
+                if (!$current_larp->isHousingReleased()) {
+                    echo " (Inte utskickat än)";
+                }
+                echo "</td>";
                 echo "</tr>";
             ?>
 			
