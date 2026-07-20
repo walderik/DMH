@@ -40,7 +40,7 @@ include 'aktor_navigation.php';
 		<h1><?php echo $role->Name;?>&nbsp;
 		<?php if ($role->IsDead ==1) echo "<i class='fa-solid fa-skull-crossbones' title='Död'></i>"?>
 
-		<?php if ($isRegistered) {
+		<?php if ($isRegistered || $role->isNPC($current_larp)) {
 			echo $role->getEditLinkPen(true);
 		} ?>
 		</h1>

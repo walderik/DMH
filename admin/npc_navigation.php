@@ -15,6 +15,7 @@ function subFunction() {
 
 <div class="topnav" id="subTopnav">
     <div style="float: right;">	  
+   		<a href="aktor.php"><i class="fa-solid fa-house"></i> Aktörer</a>
         <a href="npc.php"><i class="fa-solid fa-house"></i> NPC</a>
         <a href="npc_overview.php">Alla</a>
         <a href="npc_participants.php">Deltagare som vill spela NPC</a>
