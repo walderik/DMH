@@ -85,6 +85,41 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Erfarenhet</td><td><?php echo Experience::loadById($person->ExperienceId)->Name;?></td></tr>
 			<tr><td valign="top" class="header">Intriger du inte vill spela på</td><td><?php echo $person->NotAcceptableIntrigues;?></td></tr>
 
+
+			<?php 
+			if ($current_larp->chooseParticipationDates() || !empty($registration->LarpPartNotAttending)) {
+			    
+    		    echo "<tr><td valign='top' class='header'>Närvarande&nbsp;<font style='color:red'>*</font></td>";
+    		    echo "<td>";
+    		    
+    		    
+    		    $formatter = new IntlDateFormatter(
+    		        'sv-SE',
+    		        IntlDateFormatter::FULL,
+    		        IntlDateFormatter::FULL,
+    		        'Europe/Stockholm',
+    		        IntlDateFormatter::GREGORIAN,
+    		        'EEEE d MMMM'
+    		        );
+    		    
+    		    $begin = new DateTime(substr($current_larp->StartDate,0,10));
+    		    $end   = new DateTime(substr($current_larp->EndDate,0,10));
+    		    $daysNotAttendingArr = explode(", ",$registration->LarpPartNotAttending);
+    		    for($i = $begin; $i <= $end; $i->modify('+1 day')){
+    		        $datestr = $i->format("Y-m-d");
+    		        $checkedStr = "checked='checked'";
+    		        if (in_array($datestr, $daysNotAttendingArr)) $checkedStr = "";
+    		        echo "<input disabled type='checkbox' id='day$datestr' name='ChooseParticipationDates[]' value='$datestr' $checkedStr>";
+    		        echo "<label for='day$datestr'> ".$formatter->format($i)."</label><br>";
+    		    }
+    		    echo "</td>";
+			}
+			?>
+
+
+
+
+
 			<?php if (TypeOfFood::isInUse($current_larp)) { ?>
 			<tr><td valign="top" class="header">Typ av mat</td><td>
 			<?php 
