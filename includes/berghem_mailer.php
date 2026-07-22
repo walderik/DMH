@@ -741,7 +741,6 @@ class BerghemMailer {
             foreach ($personsInHouse as $person) {
                 $registration = $person->getRegistration($larp);
                 if (empty($registration)) continue;
-                if (!$registration->hasSpotAtLarp()) continue;
                 if ($registration->NotComing == 1) continue;
                 $receivers[] = $person;
                 if ($person->hasPermissionShowName()) $names_in_house[] = $person->Name;
