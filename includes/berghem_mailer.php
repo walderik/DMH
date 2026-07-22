@@ -728,7 +728,7 @@ class BerghemMailer {
             $housetext = $text . "<br><br>Du kommer att bo $preposition $type $house->Name tillsammans med $count_others andra personer.<br><br>".
 		      "Beskrivning av $house->Name: $house->Description<br><br>".
 		      "Vägbeskrivning: $house->PositionInVillage<br><br>".
-		      "Om du vill veta mer om ditt hus kan du titta på <a href='http://www.berghemsvanner.se/husen-i-byn/'>http://www.berghemsvanner.se/husen-i-byn/</a> ".
+		      "Om du vill veta mer om ditt boende kan du titta på <a href='http://www.berghemsvanner.se/husen-i-byn/'>http://www.berghemsvanner.se/husen-i-byn/</a> ".
 		      "eller logga in i Omnes Mundi <a href='$host'>$host</a>.";
 
             $larp_house = Larp_House::loadByIds($house->Id, $larp->Id);
