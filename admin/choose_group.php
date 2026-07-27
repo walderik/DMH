@@ -123,7 +123,7 @@ include 'navigation.php';
     		    foreach ($groups as $group)  {
     		        $show = true;
     		        $larp_group=LARP_Group::loadByIds($group->Id, $current_larp->Id);
-    		        if (!empty($intrigueTypes)) {
+    		        if (!empty($intrigueTypes) && !empty($larp_group)) {
     		            $group_intrigueTypeIds = $larp_group->getSelectedIntrigueTypeIds();
     		            if (empty(array_intersect($intrigueTypes, $group_intrigueTypeIds))) {
     		                $show = false;

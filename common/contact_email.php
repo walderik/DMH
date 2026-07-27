@@ -199,7 +199,7 @@ include $navigation;
 			    echo "Du kommer att bo i/på hus/lägerplats &lt;namn&gt; tillsammans med &lt;antal&gt; andra personer.<br><br>\n";
 			    echo "Beskrivning av &lt;namn&gt;: &lt;Huset/lägerplatsens beskrivning&gt;<br><br>\n";
 			    echo "Vägbeskrivning: &lt;Huset/lägerplatsens plats&gt;<br><br>\n";
-			    echo "Om du vill veta mer om ditt hus kan du titta på http://main.berghemsvanner.se/husen-i-byn/ eller logga in i Omnes Mundi https://anmalan.berghemsvanner.se/.\n";
+			    echo "Om du vill veta mer om ditt boende kan du titta på http://www.berghemsvanner.se/husen-i-byn/ eller logga in i Omnes Mundi https://anmalan.berghemsvanner.se/.\n";
 			    echo "</p>";
 			    
 			} elseif ($type=="checkin") {

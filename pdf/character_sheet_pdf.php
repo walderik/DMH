@@ -900,7 +900,10 @@ class CharacterSheet_PDF extends PDF_MemImage {
 	    $this->set_header($left, 'Lajvartyp');
 	    if (empty($this->person)) return true;
 	    $mertext = (empty(trim($this->role->TypeOfLarperComment))) ? '' : " (".trim($this->role->TypeOfLarperComment).")";
-	    $text = $this->role->getLarperType()->Name.$mertext;
+	    $larpertype = $this->role->getLarperType();
+	    $larpertypetext = "";
+	    if (!empty($larpertype)) $larpertypetext = $larpertype->Name;
+	    $text = $larpertypetext.$mertext;
 	    $this->set_text($left, $text );
 	    return true;
 	}

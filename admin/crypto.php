@@ -4,32 +4,77 @@ include_once 'header.php';
 $mode = "encrypt";
 $text = "";
 $result = "";
+$type = 2;
+
+// Hårdkodad substitutionskarta (exempel)
+$substitutionMap = [
+    'a' => 'd',
+    'b' => 'h',
+    'c' => 'k',
+    'd' => 's',
+    'e' => 'o',
+    'f' => 'U',
+    'g' => 'c',
+    'h' => 't',
+    'i' => 'f',
+    'j' => 'ö',
+    'k' => 'm',
+    'l' => 'a',
+    'm' => 'å',
+    'n' => 'p',
+    'o' => 'e',
+    'p' => 'ä',
+    'q' => 'q',
+    'r' => 'l',
+    's' => 'i',
+    't' => 'y',
+    'u' => 'b',
+    'v' => 'n',
+    'w' => 'w',
+    'x' => 'x',
+    'y' => 'v',
+    'z' => 'z',
+    'å' => 'g',
+    'ä' => 'j',
+    'ö' => 'r',
+    ' ' => ' ',
+    // Lägg till fler tecken om det behövs
+];
+
+
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['mode'])) {
         $mode = $_POST['mode'];
     }
+    if (isset($_POST['type']))  $type = $_POST['type'];
     if (isset($_POST['text'])) {
         $text = $_POST['text'];
     }
     if (!empty($text)) {
         if ($mode == 'encrypt') {
-            $result = encodeText(trim($text));
+            if ($type == 1) $result = encodeText1(trim($text));
+            else $result = substituteEncrypt($text, $substitutionMap);
             
         } elseif ($mode == 'decrypt') {
-            $result = decodeText(trim($text));
+            if ($type == 1) $result = decodeText1(trim($text));
+            else $result = substituteDecrypt($text, $substitutionMap);
         }
     }
     
 }
 
 
-function encodeText($text) {
+function encodeText1($text) {
     $result = "";
     
     
-    //C,J,Q W, X & Z saknar kryptering och ersätts S,I,K,V,KS & S.
     $tobeencoded = $text;
+
+    //C,J,Q W, X & Z saknar kryptering och ersätts S,I,K,V,KS & S.
+
     $tobeencoded = str_replace("C", "S", $tobeencoded);
     $tobeencoded = str_replace("c", "s", $tobeencoded);
     $tobeencoded = str_replace("J", "I", $tobeencoded);
@@ -43,15 +88,17 @@ function encodeText($text) {
     $tobeencoded = str_replace("x", "ks", $tobeencoded);
     $tobeencoded = str_replace("Z", "S", $tobeencoded);
     $tobeencoded = str_replace("z", "s", $tobeencoded);
+
     
     foreach (mb_str_split($tobeencoded) as $char) {
-        $result .= encode($char);
+        if ($type == 1) $result .= encode1($char);
+        else  $result .= encode2($char);
     }
     
     return $result;
 }
 
-function encode($char) {
+function encode1($char) {
     switch (strtolower($char)) {
         case "a":
         case "å":
@@ -121,15 +168,16 @@ function encode($char) {
     }
     if (ctype_upper($char)) return strtoupper($res);
     return $res;
-    
+
 }
 
 
-function decodeText($text) {
+function decodeText1($text) {
     $result = "";
     
     //Skriver någon C, J, Q eller W i ett krypto ska dessa bara ignoreras.
     $tobedecoded = $text;
+    
     $tobedecoded = str_replace("C", "", $tobedecoded);
     $tobedecoded = str_replace("c", "", $tobedecoded);
     $tobedecoded = str_replace("J", "", $tobedecoded);
@@ -143,11 +191,11 @@ function decodeText($text) {
     //II = Y, sätter den till C för att hantera att Y = L
     $tobedecoded = str_replace("II", "C", $tobedecoded);
     $tobedecoded = str_replace("ii", "c", $tobedecoded);
-    
+
     
     
     foreach (mb_str_split($text) as $char) {
-        $result .= decode($char);
+        $result .= decode1($char);
     }
     return $result;
 }
@@ -155,7 +203,8 @@ function decodeText($text) {
 
 
 
-function decode($char) {
+function decode1($char) {
+    
     switch (strtolower($char)) {
         case "b":
             $res = "a";
@@ -224,6 +273,28 @@ function decode($char) {
 
 
 
+function substituteEncrypt($input, $substitutionMap) {
+    $encrypted = "";
+    for ($i = 0; $i < strlen($input); $i++) {
+        $char = $input[$i];
+        $encrypted .= $substitutionMap[$char] ?? $char;
+    }
+    return $encrypted;
+}
+
+
+function substituteDecrypt($input, $substitutionMap) {
+    // Skapa en omvänd karta för avkryptering
+    $reverseMap = array_flip($substitutionMap);
+
+    $decrypted = "";
+    
+    foreach (mb_str_split($input) as $char) {
+        $decrypted .= $reverseMap[$char] ?? $char;
+    }
+    return $decrypted;
+}
+
 
 
 include 'navigation.php';
@@ -240,6 +311,11 @@ include 'navigation.php';
     			<select name="mode" id="mode">
                   <option value="encrypt" <?php if ($mode == 'encrypt') echo "selected"; ?>>Kryptera</option>
                   <option value="decrypt" <?php if ($mode == 'decrypt') echo "selected"; ?>>Avkryptera</option>
+                </select>
+				<br><br>
+    			<select name="type" id="type">
+                  <option value="1" <?php if ($type == '1') echo "selected"; ?>>Gamla kryptot</option>
+                  <option value="2" <?php if ($type == '2') echo "selected"; ?>>Nya kryptot</option>
                 </select>
 				<br><br>
 				<input type="submit" value="Kör">
