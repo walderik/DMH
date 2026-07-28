@@ -91,8 +91,7 @@ function encodeText1($text) {
 
     
     foreach (mb_str_split($tobeencoded) as $char) {
-        if ($type == 1) $result .= encode1($char);
-        else  $result .= encode2($char);
+        $result .= encode1($char);
     }
     
     return $result;
