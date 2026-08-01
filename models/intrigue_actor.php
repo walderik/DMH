@@ -52,7 +52,7 @@ class IntrigueActor extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, SubdivisionId, IntrigueText, OffInfo, OrganizerNotes, WhatHappened) VALUES (?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, SubdivisionId, IntrigueText, OffInfo, OrganizerNotes, WhatHappened) VALUES (?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->IntrigueText, $this->OffInfo, $this->OrganizerNotes, $this->WhatHappened))) {
             $stmt = null;

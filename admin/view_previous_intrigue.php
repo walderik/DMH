@@ -31,6 +31,7 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo nl2br(htmlspecialchars($intrgueActor->IntrigueText));
     echo "</td></tr>\n";
     echo "<tr><td>Off-info<br>till deltagaren</td><td>".nl2br(htmlspecialchars($intrgueActor->OffInfo))."</td></tr>\n";
+    echo "<tr><td>Anteckningar om intrigen<br>(Visas bara för arrangörer)</td><td>".nl2br(htmlspecialchars($intrgueActor->OrganizerNotes))."</td></tr>\n";
     echo "<tr><td>Ska ha vid incheck</td>\n";
     echo "<td>";
     $checkinProps = $intrgueActor->getAllPropsForCheckin();

@@ -106,6 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     foreach ($intrigueActors as $intrigueActor) {
         $intrigueActor->IntrigueText = LoremIpsum::getText(strlen($intrigueActor->IntrigueText));
         $intrigueActor->OffInfo = LoremIpsum::getText(strlen($intrigueActor->OffInfo));
+        $intrigueActor->OrganizerNotes = LoremIpsum::getText(strlen($intrigueActor->OrganizerNotes));
         $intrigueActor->WhatHappened = LoremIpsum::getText(strlen($intrigueActor->WhatHappened));
         $intrigueActor->update();
     }

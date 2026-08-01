@@ -68,6 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $intrigue=$intrigueActor->getIntrigue();
         $intrigueActor->IntrigueText = $_POST['IntrigueText'];
         $intrigueActor->OffInfo = $_POST['OffInfo'];
+        $intrigueActor->OrganizerNotes = $_POST['OrganizerNotes'];
         $intrigueActor->update();
     } elseif ($operation == "choose_intrigue_checkin") {
         $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);

@@ -220,7 +220,7 @@ include 'aktor_navigation.php';
 		                }
 		            }
 		            if (!empty($notesArr)) {
-		                $txt .= "<p><strong>Anteckningar:</strong><br><i>".join("<br><br>",$offTextArr)."</i></p>";
+		                $txt .= "<p><strong>Anteckningar:</strong><br><i>".join("<br><br>",$notesArr)."</i></p>";
 		            }
 		            
 		            

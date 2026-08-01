@@ -297,6 +297,9 @@ include 'aktor_navigation.php';
 	               if (!empty($intrigueActor->OffInfo)) {
 	                   echo "<br><br><strong>Off-information:</strong><br>".nl2br($intrigueActor->OffInfo);
 	               }
+	               if (!empty($intrigueActor->OrganizerNotes)) {
+	                   echo "<br><br><strong>Anteckningar:</strong><br>".nl2br($intrigueActor->OrganizerNotes);
+	               }
 	               if (!empty($intrigueActor->WhatHappened)) {
 	                   echo "<br><br><strong>Vad hände:</strong><br>".nl2br(htmlspecialchars($intrigueActor->WhatHappened));
 	               }
