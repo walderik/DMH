@@ -324,5 +324,16 @@ class Subdivision extends BaseModel{
         return false;
     }
     
+    public function mayDelete() {
+        //Har den medlemmar
+        if (!empty($this->getAllManualMembers())) return false;
+        
+        //Är den eller har varit med i något intrigspår
+        if (!empty(Intrigue::getAllIntriguesEverForSubdivision($this->Id))) return false;
+        
+        return true;
+        
+    }
+    
     
 }

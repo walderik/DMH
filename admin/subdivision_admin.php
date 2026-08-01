@@ -64,7 +64,7 @@ include 'aktor_navigation.php';
                 echo "<td>" . ja_nej($subdivision->isVisibleToParticipants()) . "</td>\n";
                 echo "<td>" . ja_nej($subdivision->canSeeOtherParticipants()) . "</td>\n";
                 
-                if ($memberCount == 0) {
+                if ($subdivision->mayDelete()) {
                     echo "<td>" . "<a href='subdivision_admin.php?operation=delete&id=" . $subdivision->Id . "'><i class='fa-solid fa-trash'></i></td>\n";
                 }
                 else {
