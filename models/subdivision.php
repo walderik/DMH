@@ -35,7 +35,7 @@ class Subdivision extends BaseModel{
     public static function newWithDefault() {
         global $current_larp;
         $object = new self();
-        $object->CampaignId = $current_larp->CampaignId;
+        if (!empty($current_larp)) $object->CampaignId = $current_larp->CampaignId;
         return $object;
     }
     
