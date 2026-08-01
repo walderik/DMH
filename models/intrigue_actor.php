@@ -9,6 +9,7 @@ class IntrigueActor extends BaseModel{
     public $SubdivisionId;
     public $IntrigueText;
     public $OffInfo;
+    public $OrganizerNotes;
     public $WhatHappened = "";
     
     public static $orderListBy = 'Id';
@@ -27,6 +28,7 @@ class IntrigueActor extends BaseModel{
         if (isset($arr['SubdivisionId'])) $this->SubdivisionId = $arr['SubdivisionId'];
         if (isset($arr['IntrigueText'])) $this->IntrigueText = $arr['IntrigueText'];
         if (isset($arr['OffInfo'])) $this->OffInfo = $arr['OffInfo'];
+        if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
         if (isset($arr['WhatHappened'])) $this->WhatHappened = $arr['WhatHappened'];
     }
     
@@ -37,8 +39,8 @@ class IntrigueActor extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor SET IntrigueId=?, RoleId=?, GroupId=?, SubdivisionId=?, IntrigueText=?, OffInfo=?, WhatHappened=? WHERE Id = ?");
-        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->IntrigueText, $this->OffInfo, $this->WhatHappened, $this->Id))) {
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor SET IntrigueId=?, RoleId=?, GroupId=?, SubdivisionId=?, IntrigueText=?, OffInfo=?, OrganizerNotes=?, WhatHappened=? WHERE Id = ?");
+        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->IntrigueText, $this->OffInfo, $this->OrganizerNotes, $this->WhatHappened, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -50,9 +52,9 @@ class IntrigueActor extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, SubdivisionId, IntrigueText, OffInfo, WhatHappened) VALUES (?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, SubdivisionId, IntrigueText, OffInfo, OrganizerNotes, WhatHappened) VALUES (?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->IntrigueText, $this->OffInfo, $this->WhatHappened))) {
+        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->IntrigueText, $this->OffInfo, $this->OrganizerNotes, $this->WhatHappened))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
