@@ -430,9 +430,9 @@ include 'navigation.php';
 			            echo "<li style='display:table-cell; width:19%;'>";
 			            echo "<div class='name'>$known_group->Name</div>";
 			            echo "<div>Grupp</div>";
-			            if ($group->DescriptionForOthers !="") {
-			                echo nl2br(htmlspecialchars($group->DescriptionForOthers));
-			                if ($isMareld) echo "<br>Färg: $group->Colour";
+			            if ($known_group->DescriptionForOthers !="") {
+			                echo nl2br(htmlspecialchars($known_group->DescriptionForOthers));
+			                if ($isMareld) echo "<br>Färg: $known_group->Colour";
 			            }
 			            if ($known_group->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_group->ImageId'/>\n";
@@ -456,7 +456,7 @@ include 'navigation.php';
 			            if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";
 			            elseif ($known_role->isNPC($current_larp) && !$known_role->isAssigned($current_larp)) echo "<div>Spelas inte</div>";
 
-			            echo "<div class='description'>$role->DescriptionForOthers</div>\n";
+			            echo "<div class='description'>$known_role->DescriptionForOthers</div>\n";
 			            
 			            if ($known_role->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";

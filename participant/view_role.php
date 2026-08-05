@@ -451,9 +451,9 @@ include 'navigation.php';
 			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
 			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'><a href='view_known_group.php?id=$known_group->Id'>$known_group->Name</a></div>";
-			            if ($group->DescriptionForOthers !="") {
-			                echo nl2br(htmlspecialchars($group->DescriptionForOthers));
-			                if ($isMareld) echo "<br>Färg: $group->Colour";
+			            if ($known_group->DescriptionForOthers !="") {
+			                echo nl2br(htmlspecialchars($known_group->DescriptionForOthers));
+			                if ($isMareld) echo "<br>Färg: $known_group->Colour";
 			            }
 			            echo "<div>Grupp</div>";
 			            if ($known_group->hasImage()) {
