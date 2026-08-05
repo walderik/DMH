@@ -419,6 +419,8 @@ include 'navigation.php';
                 $checkin_telegrams = $group->getAllCheckinTelegrams($current_larp);
                 $checkin_props = $group->getAllCheckinProps($current_larp);
                 
+                $isMareld = $current_larp->getCampaign()->is_me();
+                
                 if (!empty($known_groups) || !empty($known_roles) || !empty($known_props)) {
 			        echo "<h3>Känner till</h3>";
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
@@ -428,6 +430,10 @@ include 'navigation.php';
 			            echo "<li style='display:table-cell; width:19%;'>";
 			            echo "<div class='name'>$known_group->Name</div>";
 			            echo "<div>Grupp</div>";
+			            if ($group->DescriptionForOthers !="") {
+			                echo nl2br(htmlspecialchars($group->DescriptionForOthers));
+			                if ($isMareld) echo "<br>Färg: $group->Colour";
+			            }
 			            if ($known_group->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_group->ImageId'/>\n";
 			            }
@@ -449,7 +455,8 @@ include 'navigation.php';
 			            }
 			            if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";
 			            elseif ($known_role->isNPC($current_larp) && !$known_role->isAssigned($current_larp)) echo "<div>Spelas inte</div>";
-			            
+
+			            echo "<div class='description'>$role->DescriptionForOthers</div>\n";
 			            
 			            if ($known_role->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
