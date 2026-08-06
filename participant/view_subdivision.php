@@ -114,7 +114,8 @@ include 'navigation.php';
 		
 		if (!empty($registered_characters_in_subdivision)) {
 		    echo "<div class='itemcontainer'>";
-		    echo "<div class='itemname'>Medlemmar som kommer på lajvet</div>";
+		    echo "<details open><summary><span class='itemname'>Medlemmar som kommer på lajvet</span></summary>";
+
 		    
 		    echo "<div class='container'>\n";
 		    
@@ -132,13 +133,14 @@ include 'navigation.php';
 		    $temp=0;
 		    
 		    echo "</ul>\n";
-	       echo "</div>\n";
-	       echo "</div>";
+		    echo "</details>";
+		    echo "</div>\n";
+
 		}
 		
 		if (!empty($not_registered_characters)) {
 		    echo "<div class='itemcontainer'>";
-		    echo "<div class='itemname'>Medlemmar som inte är anmälda</div>";
+		    echo "<details><summary><span class='itemname'>Medlemmar som inte är anmälda</span></summary>";
 		    
 		    echo "<div class='container'>\n";
 		    echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>\n";
@@ -155,7 +157,9 @@ include 'navigation.php';
 		    $temp=0;
 		    
 		    echo "</ul>\n";
+		    echo "</details>";
 		    echo "</div>\n";
+
 		}
 		
 		
