@@ -133,6 +133,7 @@ include 'aktor_navigation.php';
 	    $personIdArr = array();
 	    foreach ($registered_automatic_characters_in_subdivision as $role) {
 	        $person = $role->getPerson();
+	        if (empty($person)) continue;
 	        if ($person->isNotComing($current_larp)) continue;
 	        $personIdArr[] = $person->Id;
 	    }
