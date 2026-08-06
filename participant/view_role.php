@@ -443,8 +443,17 @@ include 'navigation.php';
 		        
 		        $isMareld = $current_larp->getCampaign()->is_me();
 		        
-                if (!empty($known_groups) || !empty($known_roles) || !empty($known_props)) {
+		        
+		        
+		        
+		        if (!empty($known_groups) || !empty($known_roles) || !empty($known_props) || !empty($known_pdfs)) {
 			        echo "<h3>Känner till</h3>";
+			        foreach ($known_pdfs as $known_pdf) {
+			            $intrigue_pdf = $known_pdf->getIntriguePDF();
+			            echo "<a href='view_intrigue_pdf.php?id=$intrigue_pdf->Id' target='_blank'>$intrigue_pdf->Filename</a>";
+			            echo "<br>";
+			        }
+			        
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
 			        foreach ($known_groups as $known_group) {
@@ -512,13 +521,6 @@ include 'navigation.php';
 			        }
 			        echo "</ul>";
 		        }
-
-		        foreach ($known_pdfs as $known_pdf) {
-		            $intrigue_pdf = $known_pdf->getIntriguePDF();
-		            echo "<a href='view_intrigue_pdf.php?id=$intrigue_pdf->Id' target='_blank'>$intrigue_pdf->Filename</a>";
-		            echo "<br>";
-		        }
-		        
 		        
 		        if (!empty($checkin_letters) || !empty($checkin_telegrams) || !empty($checkin_props)) {
 		            echo "<h3>Ska ha vid incheckning</h3>";
@@ -554,14 +556,17 @@ include 'navigation.php';
 		        
 		        $rumours = Rumour::allKnownByRole($current_larp, $role);
 		        if (!empty($rumours)) {
-    		        echo "<h2>Rykten</h2>";
-            		echo "<ul style='list-style-type: disc;'>";
-            		foreach($rumours as $rumour) {
-            		    echo "<li style='margin-bottom:7px;margin-left:20px'>$rumour->Text\n";
-    
-            		}
-            		echo "</ul>";
+		            echo "<h2>Rykten</h2>";
+		            echo "<ul style='list-style-type: disc;'>";
+		            foreach($rumours as $rumour) {
+		                echo "<li style='margin-bottom:7px;margin-left:20px'>$rumour->Text\n";
+		                
+		            }
+		            echo "</ul>";
 		        }
+		        
+		        
+		        
 			}
 
 			else {
