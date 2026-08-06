@@ -133,6 +133,28 @@ include 'navigation.php';
 				</div>
 		<?php }?>
 
+		<?php
+            $subdivisions = Subdivision::allVisibleForRole($role, $current_larp);
+            if (!empty($subdivisions)) {
+                $subdivisionLinks = array();
+                foreach ($subdivisions as $subdivision) {
+                    $subdivisionLinks[] = "<a href='view_subdivision.php?id=$subdivision->Id'>$subdivision->Name</a>";
+                }
+                if (!empty($subdivisionLinks)) {
+                    
+        ?>
+			   <div class='itemcontainer'>
+               <div class='itemname'>Grupperingar</div>
+  		<?php          
+                    echo implode("<br>", $subdivisionLinks);
+        ?>
+				</div>
+		<?php 
+                }
+            }
+        ?>
+
+
 	   <?php if (!$campaign->is_hfs()) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Yrke</div>
