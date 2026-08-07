@@ -170,15 +170,10 @@ class Intrigue_Pdf extends BaseModel{
             "regsys_intrigueactor_knownpdf.IntriguePdfId = ?;";
         $subdivisions = Subdivision::getSeveralObjectsqQuery($sql, array($this->Id));
         
-        $roles = $person->getRolesAtLarp($current_larp);
+
         
         foreach($subdivisions as $subdivision) {
-            $registered_automatic_characters_in_subdivision = $subdivision->getAllAutomaticRegisteredMembers($current_larp);
-            foreach ($registered_automatic_characters_in_subdivision as $subdivisionRole) {
-                foreach($roles as $role) {
-                    if ($role->Id == $subdivisionRole->Id) return true;
-                }
-            }
+            if ($person->isAutomaticMemberSubdivision($subdivision, $current_larp)) return true;
         }
         
         return false;

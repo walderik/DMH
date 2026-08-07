@@ -28,7 +28,7 @@ $temp=0;
 
 $subdivision = Subdivision::loadById($subdivisionId); 
 
-if (!$current_person->isMemberSubdivision($subdivision)) {
+if (!$current_person->isMemberSubdivision($subdivision, $current_larp)) {
     header('Location: index.php'); //Inte medlem i grupperingen
     exit;
 }
