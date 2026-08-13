@@ -133,6 +133,7 @@ include 'aktor_navigation.php';
 	    $personIdArr = array();
 	    foreach ($registered_automatic_characters_in_subdivision as $role) {
 	        $person = $role->getPerson();
+	        if (empty($person)) continue;
 	        if ($person->isNotComing($current_larp)) continue;
 	        $personIdArr[] = $person->Id;
 	    }
@@ -217,6 +218,9 @@ include 'aktor_navigation.php';
 		                echo nl2br($intrigueActor->IntrigueText);
 		                if (!empty($intrigueActor->OffInfo)) {
 		                    echo "<br><br><strong>Off-information:</strong><br>".nl2br($intrigueActor->OffInfo);
+		                }
+		                if (!empty($intrigueActor->OrganizerNotes)) {
+		                    echo "<br><br><strong>Anteckningar:</strong><br>".nl2br($intrigueActor->OrganizerNotes);
 		                }
 		                if (!empty($intrigueActor->WhatHappened)) {
 		                    echo "<br><br><strong>Vad hände:</strong><br>".nl2br(htmlspecialchars($intrigueActor->WhatHappened));

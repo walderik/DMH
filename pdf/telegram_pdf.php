@@ -16,7 +16,10 @@ class TELEGRAM_PDF extends FPDF {
         $this->Image($root . '/images/telegram.png',null,null,200);
     }
     
+        
     function SetText(string $sender, string $receiver, string $message, ?string $when) {
+        global $current_larp;
+        
         $this->SetFont('SpecialElite','',14);    # OK är Times, Arial, Helvetica, SassyFrass, SpecialElite
 		# För mer fonter använder du http://www.fpdf.org/makefont/
 		$left = 21;
@@ -33,6 +36,20 @@ class TELEGRAM_PDF extends FPDF {
 		$this->Cell(80,10,encode_utf_to_iso($receiver),0,1);
 		$this->SetXY($left, 112);
 		$this->MultiCell(0,8,encode_utf_to_iso($message),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+		
+
+        $font = 'Arial';
+		
+		$size = 12;
+		$this->SetFont($font,'',$size);
+		$this->SetXY($left-4, 260);
+		$larpname =  $current_larp->Name;
+		$this->MultiCell(100,6,encode_utf_to_iso($larpname),0); # 1- ger ram runt rutan så vi ser hur stor den är
+		
+		$this->SetXY(100, 260);
+		$offinfo = "Off: Telegrammet måste snarast nå mottagaren.";
+		$this->MultiCell(100,5,encode_utf_to_iso($offinfo),0);
+		
     }
     
     function nytt_telegram(Telegram $telegram)

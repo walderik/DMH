@@ -126,6 +126,7 @@ class Intrigue_Pdf extends BaseModel{
     
     
     public function mayView(Person $person) {
+        global $current_larp;
         
         //Kontrollera om personen har en roll som får se 
         $sql = "SELECT Count(regsys_intrigueactor_knownpdf.IntriguePdfId) as Num FROM ".
@@ -160,9 +161,20 @@ class Intrigue_Pdf extends BaseModel{
         
         $count = static::countQuery($sql, array($person->Id, $this->Id));
         if ($count > 0) return true;
+
+        //Kolla dynamiska medlemmar i grupperingar
+        $sql = "SELECT regsys_subdivision.* FROM ".
+            "regsys_subdivision, regsys_intrigueactor, regsys_intrigueactor_knownpdf WHERE ".
+            "regsys_subdivision.Id = regsys_intrigueactor.SubdivisionId AND ".
+            "regsys_intrigueactor.Id = regsys_intrigueactor_knownpdf.IntrigueActorId AND ".
+            "regsys_intrigueactor_knownpdf.IntriguePdfId = ?;";
+        $subdivisions = Subdivision::getSeveralObjectsqQuery($sql, array($this->Id));
         
+
         
-        //TODO kolla dynamiska medlemmar i grupperingar
+        foreach($subdivisions as $subdivision) {
+            if ($person->isAutomaticMemberSubdivision($subdivision, $current_larp)) return true;
+        }
         
         return false;
     }

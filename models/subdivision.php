@@ -35,7 +35,7 @@ class Subdivision extends BaseModel{
     public static function newWithDefault() {
         global $current_larp;
         $object = new self();
-        $object->CampaignId = $current_larp->CampaignId;
+        if (!empty($current_larp)) $object->CampaignId = $current_larp->CampaignId;
         return $object;
     }
     
@@ -322,6 +322,17 @@ class Subdivision extends BaseModel{
         $members = $this->getAllRegisteredMembers($larp);
         if (!empty($members) && $members[0] == $role) return true;
         return false;
+    }
+    
+    public function mayDelete() {
+        //Har den medlemmar
+        if (!empty($this->getAllManualMembers())) return false;
+        
+        //Är den eller har varit med i något intrigspår
+        if (!empty(Intrigue::getAllIntriguesEverForSubdivision($this->Id))) return false;
+        
+        return true;
+        
     }
     
     

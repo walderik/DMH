@@ -26,6 +26,7 @@ th {
          &nbsp; &nbsp; &nbsp;
         <a href='character_sheet.php?' target='_blank'><i class='fa-solid fa-file-pdf' title='Alla karaktärer så som de ser ut för deltagarna(tar tid att generera)'></i> Alla karaktärer så som de ser ut för deltagarna</a>
         <h2>Huvudkaraktärer</h2>
+        	<a href='roles_pictures.php'>Bildgalleri</a>
      		<?php 
      		$roles = $current_larp->getAllMainRoles(true);
     		if (empty($roles)) {

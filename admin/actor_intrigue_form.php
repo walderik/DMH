@@ -43,6 +43,10 @@ include 'intrigue_navigation.php';
 				<td><label for="OffInfo">Off-info<br>till deltagaren</label></td>
 				<td><textarea id="OffInfo" name="OffInfo" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->OffInfo); ?></textarea></td>
 			</tr>
+			<tr>
+				<td><label for="OrganizerNotes">Anteckningar om intrigen<br>(Visas bara för arrangörer)</label></td>
+				<td><textarea id="OrganizerNotes" name="OrganizerNotes" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->OrganizerNotes); ?></textarea></td>
+			</tr>
 		</table>
 
 		<input id="submit_button" type="submit" value="Spara">

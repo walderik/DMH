@@ -687,6 +687,13 @@ class Intrigue extends BaseModel{
         return static::getSeveralObjectsqQuery($sql, array($subdivisionId, $larpId));
     }
     
+    public static function getAllIntriguesEverForSubdivision($subdivisionId) {
+        $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
+            "SELECT IntrigueId FROM regsys_intrigueactor WHERE SubdivisionId = ?) ORDER BY Id";
+        return static::getSeveralObjectsqQuery($sql, array($subdivisionId));
+    }
+    
+    
     public static function getAllIntriguesForProp($propId, $larpId) {
         $sql = "SELECT * FROM regsys_intrigue WHERE Id IN (".
             "SELECT IntrigueId FROM regsys_intrigue_prop WHERE PropId = ? AND LarpId = ?) ORDER BY Id";

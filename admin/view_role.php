@@ -212,6 +212,17 @@ include 'aktor_navigation.php';
 		            if (!empty($offTextArr)) {
 		                $txt .= "<p><strong>Off-information:</strong><br><i>".join("<br><br>",$offTextArr)."</i></p>";
 		            }
+
+		            $notesArr = array();
+		            foreach ($intrigueActors as $intrigueActor) {
+		                if (!empty($intrigueActor->OrganizerNotes)  && !in_array($intrigueActor->OrganizerNotes, $offTextArr)) {
+		                    $notesArr[] =  nl2br(htmlspecialchars($intrigueActor->OrganizerNotes));
+		                }
+		            }
+		            if (!empty($notesArr)) {
+		                $txt .= "<p><strong>Anteckningar:</strong><br><i>".join("<br><br>",$notesArr)."</i></p>";
+		            }
+		            
 		            
 		            if (!empty($txt)) {
 		                echo "<tr><td><a href='view_intrigue.php?Id=$intrigue->Id'>Intrigspår $intrigue->Number<br>$intrigue->Name</a></td><td>".$txt."</td><tr>";

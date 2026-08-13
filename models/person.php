@@ -912,7 +912,12 @@ class Person extends BaseModel{
     }
     
     
-    public function isMemberSubdivision($subdivision) {
+    public function isMemberSubdivision($subdivision, $larp) {
+        if ($this->isManualMemberSubdivision($subdivision)) return true;
+        if ($this->isAutomaticMemberSubdivision($subdivision, $larp)) return true;        
+    }
+    
+    public function isManualMemberSubdivision($subdivision) {
         //Kollar om personen har en karaktär som är med i grupperingen
         if (!isset($subdivision)) return false;
         
@@ -942,6 +947,18 @@ class Person extends BaseModel{
         if ($res[0]['Num'] == 0) return false;
         return true;
     }
+    
+    public function isAutomaticMemberSubdivision($subdivision, $larp) {
+        $roles = $this->getRolesAtLarp($larp);
+        $registered_automatic_characters_in_subdivision = $subdivision->getAllAutomaticRegisteredMembers($larp);
+        foreach ($registered_automatic_characters_in_subdivision as $subdivisionRole) {
+            foreach($roles as $role) {
+                if ($role->Id == $subdivisionRole->Id) return true;
+            }
+        }
+        
+    }
+    
     
     
     public function hasEditRightToHouse(House $house) {

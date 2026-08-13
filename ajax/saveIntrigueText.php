@@ -11,6 +11,10 @@ if (empty($intrigueActorId)) {
 }
 
 $intrigueActor = IntrigueActor::loadById($intrigueActorId);
-$intrigueActor->IntrigueText=$text;
+$type=$_REQUEST["type"];
+if ($type=='intrigue') $intrigueActor->IntrigueText=$text;
+elseif ($type=='off') $intrigueActor->OffInfo=$text;
+elseif ($type=='notes') $intrigueActor->OrganizerNotes=$text;
+else $intrigueActor->OrganizerNotes.=" Type: $type ";
 $intrigueActor->update();
 

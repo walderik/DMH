@@ -602,7 +602,19 @@ function openTab(evt, tabName) {
             echo "<div class='itemcontainer'>";
             echo $role->getViewLink();
             $group = $role->getGroup();
-            if (isset($group)) echo "<br>". $group->getViewLink();
+            if (isset($group)) echo "<br><b>Grupp:</b> ". $group->getViewLink();
+            
+            $subdivisions = Subdivision::allVisibleForRole($role, $current_larp);
+            if (!empty($subdivisions)) {
+                $subdivisionLinks = array();
+                foreach ($subdivisions as $subdivision) {
+                    $subdivisionLinks[] = "<a href='view_subdivision.php?id=$subdivision->Id'>$subdivision->Name</a>";
+                }
+                if (!empty($subdivisionLinks)) {
+                    echo "<br><b>Grupperingar:</b> ";
+                    echo implode(", ", $subdivisionLinks)."<br>";
+                }
+            }
             echo "</div>";
         }
 

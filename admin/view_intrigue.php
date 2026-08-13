@@ -35,7 +35,7 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
         echo $subdivision->getViewLink();
     }
     
-    echo " <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$name&section=$section'><i class='fa-solid fa-pen'></i></a> ";
+    //echo " <a href='actor_intrigue_form.php?IntrigueActorId=$intrigueActor->Id&name=$name&section=$section'><i class='fa-solid fa-pen'></i></a> ";
     echo "<a href='view_intrigue.php?Id=".$intrigueActor->IntrigueId."#actorlist'><i class='fa-solid fa-caret-up' title='Till listan med alla aktörer'></i></a>";
     echo "</h2>\n";
     echo "<table width='100%''>\n";
@@ -46,16 +46,25 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
     if (!empty($previousActor)) {
         echo "<td><textarea id='IntrigueText:$intrigueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
             htmlspecialchars($intrigueActor->IntrigueText)."</textarea></td>";
-            echo "<td><strong>Intrigtext förra lajvet</strong><br>".nl2br(htmlspecialchars($previousActor->IntrigueText));
-            if (!empty($previousActor->WhatHappened)) echo "<br><br><strong>Vad hände?</strong><br>".nl2br(htmlspecialchars($previousActor->WhatHappened));
-            "</td>";
+        echo "<td><strong>Intrigtext förra lajvet</strong><br>".nl2br(htmlspecialchars($previousActor->IntrigueText));
+        if (!empty($previousActor->WhatHappened)) echo "<br><br><strong>Vad hände?</strong><br>".nl2br(htmlspecialchars($previousActor->WhatHappened));
+        "</td>";
             
     } else {
         echo "<td colspan='2'><textarea id='IntrigueText:$intrigueActor->Id' name='IntrigueText' rows='4' cols='100' maxlength='60000' onkeyup='saveIntrigueTextForActor(this)'  onchange='saveIntrigueTextForActor(this)'>".
             htmlspecialchars($intrigueActor->IntrigueText)."</textarea></td>";
     }
     echo "</tr>\n";
-    echo "<tr><td>Off-info<br>till deltagaren</td><td colspan='2'>".nl2br(htmlspecialchars($intrigueActor->OffInfo))."</td></tr>\n";
+    echo "<tr><td>Off-info<br>till deltagaren</td>";
+    echo "<td colspan='2'><textarea id='OffInfo:$intrigueActor->Id' name='OffInfo' rows='4' cols='100' maxlength='60000' onkeyup='saveOffInfoForActor(this)'  onchange='saveOffInfoForActor(this)'>".
+        htmlspecialchars($intrigueActor->OffInfo)."</textarea></td>";
+        echo "</tr>\n";
+    
+    echo "<tr><td>Anteckningar om intrigen<br>(Visas bara för arrangörer)</td>";
+    echo "<td colspan='2'><textarea id='OrganizerNotes:$intrigueActor->Id' name='OrganizerNotes' rows='4' cols='100' maxlength='60000' onkeyup='saveOrganizerNotesForActor(this)'  onchange='saveOrganizerNotesForActor(this)'>".
+        htmlspecialchars($intrigueActor->OrganizerNotes)."</textarea></td>";
+    echo "</tr>";
+        
     echo "<tr><td>Ska ha vid incheck</td>\n";
     echo "<td colspan='2'>";
     echo "<a href='choose_intrigue_checkin.php?IntrigueActorId=$intrigueActor->Id&section=$section'><i class='fa-solid fa-plus' title='Lägg till'></i></a>\n";
@@ -294,7 +303,7 @@ th, td {
 	$responsiblePerson = $intrigue->getResponsiblePerson();
 	if (isset($responsiblePerson)) echo $responsiblePerson->getViewLink();
 ?></td></tr>
-<tr><td>Text till alla aktörer</td><td><?php  echo nl2br($intrigue->CommonText); ?></td></tr>
+
 <tr><td>Anteckningar</td><td><?php  echo nl2br($intrigue->Notes); ?></td></tr>
 <tr><td id='actorlist'>Aktörer<br>(Grupper, grupperingar och karaktärer som är inblandade i intrigen)</td>
 <td>
@@ -771,7 +780,7 @@ foreach ($intrigue_visions as $intrigue_vision) {
 </td></tr>
 <?php }?>
 
-
+<tr><td>Text till alla aktörer</td><td><?php  echo nl2br($intrigue->CommonText); ?></td></tr>
 </table>
 </div>
 

@@ -133,6 +133,28 @@ include 'navigation.php';
 				</div>
 		<?php }?>
 
+		<?php
+            $subdivisions = Subdivision::allVisibleForRole($role, $current_larp);
+            if (!empty($subdivisions)) {
+                $subdivisionLinks = array();
+                foreach ($subdivisions as $subdivision) {
+                    $subdivisionLinks[] = "<a href='view_subdivision.php?id=$subdivision->Id'>$subdivision->Name</a>";
+                }
+                if (!empty($subdivisionLinks)) {
+                    
+        ?>
+			   <div class='itemcontainer'>
+               <div class='itemname'>Grupperingar</div>
+  		<?php          
+                    echo implode("<br>", $subdivisionLinks);
+        ?>
+				</div>
+		<?php 
+                }
+            }
+        ?>
+
+
 	   <?php if (!$campaign->is_hfs()) { ?>
 	   <div class='itemcontainer'>
        <div class='itemname'>Yrke</div>
@@ -441,14 +463,29 @@ include 'navigation.php';
     		        $checkin_props = array_merge($checkin_props,$subdivision->getAllCheckinProps($current_larp));
 		        }
 		        
-                if (!empty($known_groups) || !empty($known_roles) || !empty($known_props)) {
+		        $isMareld = $current_larp->getCampaign()->is_me();
+		        
+		        
+		        
+		        
+		        if (!empty($known_groups) || !empty($known_roles) || !empty($known_props) || !empty($known_pdfs)) {
 			        echo "<h3>Känner till</h3>";
+			        foreach ($known_pdfs as $known_pdf) {
+			            $intrigue_pdf = $known_pdf->getIntriguePDF();
+			            echo "<a href='view_intrigue_pdf.php?id=$intrigue_pdf->Id' target='_blank'>$intrigue_pdf->Filename</a>";
+			            echo "<br>";
+			        }
+			        
 			        echo "<ul class='image-gallery' style='display:table; border-spacing:5px;'>";
 			        $temp=0;
 			        foreach ($known_groups as $known_group) {
 			            if($type=="Computer") echo "<li style='display:table-cell; width:19%;'>\n";
 			            else echo "<li style='display:table-cell; width:49%;'>\n";
 			            echo "<div class='name'><a href='view_known_group.php?id=$known_group->Id'>$known_group->Name</a></div>";
+			            if ($known_group->DescriptionForOthers !="") {
+			                echo nl2br(htmlspecialchars($known_group->DescriptionForOthers));
+			                if ($isMareld) echo "<br>Färg: $known_group->Colour";
+			            }
 			            echo "<div>Grupp</div>";
 			            if ($known_group->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_group->ImageId'/>\n";
@@ -472,6 +509,8 @@ include 'navigation.php';
 			            }
 			            if ($known_role->isPC($current_larp) && !$known_role->isRegistered($current_larp)) echo "<div>Spelas inte</div>";
 			            elseif ($known_role->isNPC($current_larp) && !$known_role->isAssigned($current_larp)) echo "<div>Spelas inte</div>";
+			            
+			            echo "<div class='description'>$known_role->DescriptionForOthers</div>\n";
 			            
 			            if ($known_role->hasImage()) {
 			                echo "<img src='../includes/display_image.php?id=$known_role->ImageId'/>\n";
@@ -504,13 +543,6 @@ include 'navigation.php';
 			        }
 			        echo "</ul>";
 		        }
-
-		        foreach ($known_pdfs as $known_pdf) {
-		            $intrigue_pdf = $known_pdf->getIntriguePDF();
-		            echo "<a href='view_intrigue_pdf.php?id=$intrigue_pdf->Id' target='_blank'>$intrigue_pdf->Filename</a>";
-		            echo "<br>";
-		        }
-		        
 		        
 		        if (!empty($checkin_letters) || !empty($checkin_telegrams) || !empty($checkin_props)) {
 		            echo "<h3>Ska ha vid incheckning</h3>";
@@ -546,14 +578,17 @@ include 'navigation.php';
 		        
 		        $rumours = Rumour::allKnownByRole($current_larp, $role);
 		        if (!empty($rumours)) {
-    		        echo "<h2>Rykten</h2>";
-            		echo "<ul style='list-style-type: disc;'>";
-            		foreach($rumours as $rumour) {
-            		    echo "<li style='margin-bottom:7px;margin-left:20px'>$rumour->Text\n";
-    
-            		}
-            		echo "</ul>";
+		            echo "<h2>Rykten</h2>";
+		            echo "<ul style='list-style-type: disc;'>";
+		            foreach($rumours as $rumour) {
+		                echo "<li style='margin-bottom:7px;margin-left:20px'>$rumour->Text\n";
+		                
+		            }
+		            echo "</ul>";
 		        }
+		        
+		        
+		        
 			}
 
 			else {
