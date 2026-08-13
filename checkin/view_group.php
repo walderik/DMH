@@ -28,10 +28,6 @@ if (empty($action)) {
 
 $group = Group::loadById($GroupId); 
 
-if (!$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($group) && !$current_person->hasNPCInGroup($group, $current_larp)) {
-    header('Location: index.php?error=no_member'); //Inte medlem i gruppen
-    exit;
-}
 
 $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
 

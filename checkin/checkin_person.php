@@ -178,7 +178,7 @@ include 'navigation.php';
 			    $package = "";
 			    
 			    //Pengar
-			    if (isset($larp_role->StartingMoney)) $package .= "Pengar: $larp_role->StartingMoney $currency<br>\n";
+			    if (isset($larp_role->StartingMoney)) $package .= "<b>Pengar:</b> $larp_role->StartingMoney $currency<br>\n";
 			    
 			    
 			    //Verksamheter
@@ -190,7 +190,7 @@ include 'navigation.php';
 			        }
 			    }
 			    
-			    if (!empty($titlededsArr)) $package .= "Verksamheter:\n".implode("\n", $titlededsArr)."\n";
+			    if (!empty($titlededsArr)) $package .= "<b>Verksamheter:</b><br>\n".implode("<br>\n", $titlededsArr)."<br>\n";
 			    
 			    
 			    
@@ -227,7 +227,7 @@ include 'navigation.php';
 			            $intrgueActor = IntrigueActor::getSubdivisionActorForIntrigue($intrigue, $subdivision);
 			            $intrigue_Pdfs = $intrgueActor->getAllPdfsThatAreKnown();
 			            foreach($intrigue_Pdfs as $intrigue_Pdf) {
-			                $docuumentsArr[] = "  $intrigue_Pdf->Filename";
+			                $docuumentsArr[] = "<a href='view_intrigue_pdf.php?id=$intrigue_Pdf->Id' target='_blank'>$intrigue_Pdf->Filename</a>";
 			            }
 			            
 			            $checkin_props_subdivision = $subdivision->getAllCheckinProps($current_larp);
@@ -262,12 +262,12 @@ include 'navigation.php';
 			    
 			    
 			    
-			    if (!empty($docuumentsArr)) $package .= "Dokument:\n".implode("\n", array_unique($docuumentsArr))."\n";
+			    if (!empty($docuumentsArr)) $package .= "<b>Dokument:</b><br>\n".implode("<br>\n", array_unique($docuumentsArr))."<br>\n";
 			    
 			    //Props
 			    $props_txt_Arr = array();
 			    foreach($checkin_props as $checkin_prop) $props_txt_Arr[] = $checkin_prop->getIntrigueProp()->getProp()->Name;
-			    if (!empty($props_txt_Arr)) $package .= "Rekvisita: ". implode(", ", $props_txt_Arr);
+			    if (!empty($props_txt_Arr)) $package .= "<b>Rekvisita:</b><br>\n". implode(", ", array_unique($props_txt_Arr));
 			    
 			    //Magi
 			    if ($current_larp->hasMagic()) {
