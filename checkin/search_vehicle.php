@@ -36,13 +36,16 @@ include 'navigation.php';
 	    else {
 	        foreach ($registrations as $registration) {
 	            $person = $registration->getPerson();
-	            echo "<a href='checkout_person.php?id=$person->Id'><b>$person->Name</b></a><br>";
+	            echo "<p>";
+	            echo "<b>$registration->VehicleLicencePlate</b><br>";
+                echo "<a href='checkout_person.php?id=$person->Id'><b>$person->Name</b></a><br>";
 	            if ($registration->isCheckedIn()) echo "Incheckad $registration->CheckinTime";
 	            else echo "Inte incheckad";
 	            echo "<br>";
 	            if ($registration->isCheckedOut()) echo "Utcheckad $registration->CheckoutTime";
 	            else echo "Inte utcheckad";
-	            echo "<br<br><br>";
+	            echo "</p>";
+	            //echo "<br<br><br>";
 	        }
 	    }
 	    echo "</div>";

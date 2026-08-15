@@ -604,8 +604,8 @@ class Registration extends BaseModel{
     }
     
     public static function getByLicencePlate(String $licesncePlate, Larp $larp) {
-        $sql = "SELECT * FROM regsys_registration WHERE VehicleLicencePlate=? AND LARPId=? ORDER BY ".static::$orderListBy.";";
-        return static::getSeveralObjectsqQuery($sql, array($licesncePlate, $larp->Id));    
+        $sql = "SELECT * FROM regsys_registration WHERE VehicleLicencePlate LIKE ? AND LARPId=? ORDER BY ".static::$orderListBy.";";
+        return static::getSeveralObjectsqQuery($sql, array($licesncePlate.'%', $larp->Id));    
     }
     
 
