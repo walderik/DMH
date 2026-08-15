@@ -201,7 +201,7 @@ include 'navigation.php';
 			        $intrgueActor = IntrigueActor::getRoleActorForIntrigue($intrigue, $role);
 			        $intrigue_Pdfs = $intrgueActor->getAllPdfsThatAreKnown();
 			        foreach($intrigue_Pdfs as $intrigue_Pdf) {
-			            $docuumentsArr[] = "  $intrigue_Pdf->Filename";
+			            $docuumentsArr[] = "<a href='view_intrigue_pdf.php?id=$intrigue_Pdf->Id' target='_blank'>$intrigue_Pdf->Filename</a>";
 			        }
 			    }
 			    
