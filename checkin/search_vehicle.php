@@ -21,6 +21,7 @@ include 'navigation.php';
 		Sök fordon
 	</div>
 	<div class='itemcontainer'>
+		Skriv gärna in bara de tre första bokstäverna eftersom alla inte kommer ihåg hela numret vid inchecknng.<br><br>
     	<form autocomplete="off" method="post">
     		<label for="licencePlate">Registreringsnummer:</label>
     		<input type="text" id="licencePlate" name="licencePlate">
@@ -32,7 +33,7 @@ include 'navigation.php';
 	if (isset($licencePlate)) {
 	    echo "<div class='itemcontainer'>";
 	    echo "Sökning gjord för <b>$licencePlate</b><br><br>";
-	    if (empty($registrations)) echo "Ingen ansvarig registrerad.";
+	    if (empty($registrations)) echo "Ingen hittad.";
 	    else {
 	        foreach ($registrations as $registration) {
 	            $person = $registration->getPerson();

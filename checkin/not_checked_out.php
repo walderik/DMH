@@ -33,7 +33,7 @@ th {
     		        echo "<tr>\n";
     		        
     		        echo "<td>";
-                    echo "<a href='checkin_person.php?id=$person->Id'>$person->Name</a>";
+                    echo "<a href='checkout_person.php?id=$person->Id'>$person->Name</a>";
     		        echo "</td>\n";
     		        
                     echo "<td>" . $person->getAgeAtLarp($current_larp) . " år ";

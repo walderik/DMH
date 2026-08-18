@@ -76,6 +76,7 @@ include 'navigation.php';
 			Incheckning av <?php echo $person->Name;?>
 		</div>
    		<div class='itemcontainer'>
+			<a href= "../checkin/search_person.php?type=checkin">Sök person</a><br>
 			<a href="checkout_person.php?id=<?php echo $person->Id ?>">Gå till utcheckning</a>
 		</div>
 		
