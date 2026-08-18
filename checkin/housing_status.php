@@ -37,6 +37,7 @@ th {
 	            
             echo "<td>";
             $larp_house = Larp_House::loadByIds($house->Id, $current_larp->Id);
+            if ($house->IsHouse() && $house->isCaretekerInHouse($current_larp)) echo "Husförvaltare bor i huset<br>";
             if (isset($larp_house)) echo $larp_house->getStatusText();
             echo "</td>\n";
 	        echo "</tr>\n";

@@ -175,7 +175,29 @@ class House extends BaseModel{
         $sql = "SELECT * FROM regsys_housecaretaker WHERE HouseId=? and PersonId=? ORDER BY ".Housecaretaker::$orderListBy.";";
         return Housecaretaker::getOneObjectQuery($sql, array($this->Id, $person->Id));
     }
+    
+    public function getCaretekersInHouse(Larp $larp) {
+        $sql = "SELECT * FROM regsys_person WHERE Id IN (".
+            "SELECT regsys_housecaretaker.PersonId FROM regsys_housecaretaker, regsys_housing WHERE ".
+            "regsys_housecaretaker.HouseId=? AND ".
+            "regsys_housecaretaker.HouseId = regsys_housing.HouseId AND ".
+            "regsys_housecaretaker.PersonId = regsys_housing.PersonId AND ".
+            "regsys_housing.LarpId = ?) ORDER BY ".Person::$orderListBy.";";
+        
+        return Person::getSeveralObjectsqQuery($sql, array($this->Id, $larp->Id));
+    }
 
+    public function isCaretekerInHouse(Larp $larp) {
+        $sql = "SELECT COUNT(regsys_housecaretaker.PersonId) AS Num FROM regsys_housecaretaker, regsys_housing WHERE ".
+            "regsys_housecaretaker.HouseId=? AND ".
+            "regsys_housecaretaker.HouseId = regsys_housing.HouseId AND ".
+            "regsys_housecaretaker.PersonId = regsys_housing.PersonId AND ".
+            "regsys_housing.LarpId = ?";
+        
+        return Person::existsQuery($sql, array($this->Id, $larp->Id));
+    }
+    
+    
     public function getCaretakerPersons() {
         $sql = "SELECT * FROM regsys_person WHERE Id IN (".
             "SELECT PersonId FROM regsys_housecaretaker WHERE HouseId=?) ORDER BY ".Person::$orderListBy.";";
