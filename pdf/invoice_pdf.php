@@ -33,7 +33,7 @@ class Invoice_PDF extends FPDF {
         $this->SetFont('Helvetica', '', 10);
         
         $this->setXY(11, -25);
-        $this->MultiCell(60,4,encode_utf_to_iso("Berghems Vänner\nc/o Martin Gabrielsson\nTrädgårdsgatan 17\n567 93 Hok"),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
+        $this->MultiCell(60,4,encode_utf_to_iso("Berghems Vänner\nc/o Emelie Björndotter\nStationsvägen 11D\n53372 Lundsbrunn"),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
 
         $this->setXY(80, -25);
         $this->MultiCell(40,4,encode_utf_to_iso("Organisationsnummer\n802488-4846"),0,'L'); # 1- ger ram runt rutan så vi ser hur stor den är
