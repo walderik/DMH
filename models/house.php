@@ -175,6 +175,12 @@ class House extends BaseModel{
         $sql = "SELECT * FROM regsys_housecaretaker WHERE HouseId=? and PersonId=? ORDER BY ".Housecaretaker::$orderListBy.";";
         return Housecaretaker::getOneObjectQuery($sql, array($this->Id, $person->Id));
     }
+
+    public function isCaretaker(Person $person) {
+        $sql = "SELECT Count(*) as Num FROM regsys_housecaretaker WHERE HouseId=? and PersonId=? ORDER BY ".Housecaretaker::$orderListBy.";";
+        return static::existsQuery($sql, array($this->Id, $person->Id));
+    }
+    
     
     public function getCaretekersInHouse(Larp $larp) {
         $sql = "SELECT * FROM regsys_person WHERE Id IN (".

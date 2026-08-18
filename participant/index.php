@@ -984,12 +984,26 @@ function openTab(evt, tabName) {
 				<strong>Städning av <?php echo $house->Name ?></strong><br>
 				Status: <?php echo $larp_house->getStatusText(); ?><br>
 				<?php if (isset($larp_house->CleaningNotes)) echo "<br>$larp_house->CleaningNotes<br><br>"?>
-				<?php if ($larp_house->CleaningStatus == Larp_House::NOT_CLEANED) { ?>
+				<?php if ($larp_house->CleaningStatus == Larp_House::NOT_CLEANED) { 
+				    if ($house->isCaretekerInHouse($current_larp)) {
+				        if ($house->isCaretaker($current_person)) { ?>
+				            Du är husförvaltare i huset. Du ansvarar för att huset är städat innan ni lämnar området.
+        		     		<form action='logic/house_cleaned.php' method='post'>
+        		     		<input type='hidden' id='houseId' name='houseId' value='<?php echo $house->Id ?>'>
+        		     		<input type='hidden' id='isCaretaker' name='isCaretaker' value='1'>
+        		     		<input type='submit' value='Markera som städat'></form>
+			    <?php   } else {
+				            echo "En husförvaltare bor i huset. Du är ansvarig inför hen att städningen är ordentligt gjord";
+				        }
+				    } else {
+				    ?>
+
 					När huset är städat kan ni be att en arrangör kommer och kontrollerar städningen.
 		     		<form action='logic/house_cleaned.php' method='post'><input type='hidden' id='houseId' name='houseId' value='<?php echo $house->Id ?>'>
 		     		<input type='submit' value='Be om kontroll'></form>
 					
 				<?php } ?>
+			<?php } ?>
 			
 			</div>
 		<?php } ?>
