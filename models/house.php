@@ -188,11 +188,14 @@ class House extends BaseModel{
     }
 
     public function isCaretekerInHouse(Larp $larp) {
-        $sql = "SELECT COUNT(regsys_housecaretaker.PersonId) AS Num FROM regsys_housecaretaker, regsys_housing WHERE ".
+        $sql = "SELECT COUNT(regsys_housecaretaker.PersonId) AS Num FROM regsys_housecaretaker, regsys_housing, regsys_registration WHERE ".
             "regsys_housecaretaker.HouseId=? AND ".
             "regsys_housecaretaker.HouseId = regsys_housing.HouseId AND ".
             "regsys_housecaretaker.PersonId = regsys_housing.PersonId AND ".
-            "regsys_housing.LarpId = ?";
+            "regsys_housing.LarpId = ? AND ".
+            "regsys_housing.LarpId = regsys_registration.LarpId AND ".
+            "regsys_housing.PersonId = regsys_registration.PersonId AND ".
+            "regsys_registration.NotComing=0";
         
         return Person::existsQuery($sql, array($this->Id, $larp->Id));
     }
