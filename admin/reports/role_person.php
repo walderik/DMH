@@ -25,16 +25,33 @@ $roles = Role::getAllMainRoles($current_larp, false);
 
 
 $rows = array();
-$header = array("Karaktär", "Deltagare", "");
+$header = array("Grupp","Karaktär", "Deltagare", "");
 
 foreach ($roles as $role) {
     $person = $role->getPerson();
-    if (is_null($person)) $name = "NPC";
+    if (empty($person)) $name = "NPC";
     else $name = $person->Name;
-    $rows[] = array($role->Name, $name,"                                           ");
+    $group = $role->getGroup();
+    if (!empty($group)) $groupName = $group->Name;
+    else $groupName = "";
+    $rows[] = array($groupName, $role->Name, $name,"                                           ");
 }
+
+setlocale(LC_COLLATE, 'sv_SE');
+usort($rows, function ($a, $b) {
+    if($a[0] > $b[0]) return 1;
+    if($a[0] < $b[0]) return -1;
+    
+    if($a[1] > $b[1]) return 1;
+    if($a[1] < $b[1]) return -1;
+
+    if($a[2] > $b[2]) return 1;
+    if($a[2] < $b[2]) return -1;
+    
+    return 0;
+});
 // add a page
-$pdf->AddPage();
+$pdf->AddPage('L');
 // print table
 $pdf->Table($listname, $header, $rows);
 
