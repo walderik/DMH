@@ -636,9 +636,12 @@ include 'navigation.php';
 			<button type='<?php echo $type ?>' name='SaveButton' class='button-18'><?php echo default_value('action') ?></button>
 			<?php 
 			
+           
+			/*
 			echo "<button type='$type' name='SaveAndCreateNewButton' value='1' class='button-18'><i class='fa-solid fa-share'></i>&nbsp;";
 			default_value('action');
 			echo " och gör en till karaktär</button> ";
+			*/
 			
 			if (!$isPc || $role->isRegistered($current_larp)) {
 			    echo "<button type='$type' name='SaveAndLockButton' value='1' class='button-18'><i class='fa-solid fa-share'></i>&nbsp;";
