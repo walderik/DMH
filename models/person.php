@@ -27,6 +27,7 @@ class Person extends BaseModel{
     public $AdvertismentsCheckedAt;
     public $MailCheckedAt;
     public $LastMailSentAt;
+    public $InformationUpdatedAt;
     
 
     public static $orderListBy = 'Name';
@@ -70,6 +71,7 @@ class Person extends BaseModel{
         if (isset($arr['AdvertismentsCheckedAt'])) $this->AdvertismentsCheckedAt = $arr['AdvertismentsCheckedAt'];
         if (isset($arr['MailCheckedAt'])) $this->MailCheckedAt = $arr['MailCheckedAt'];
         if (isset($arr['LastMailSentAt'])) $this->LastMailSentAt = $arr['LastMailSentAt'];
+        if (isset($arr['InformationUpdatedAt'])) $this->InformationUpdatedAt = $arr['InformationUpdatedAt'];
         
         if (isset($this->HouseId) && $this->HouseId=='null') $this->HouseId = null;
     }
@@ -354,7 +356,7 @@ class Person extends BaseModel{
             FoodAllergiesOther=?, OtherInformation=?, ExperienceId=?,
             UserId=?, NotAcceptableIntrigues=?, HouseId=?, HousingComment=?, HealthComment=?, 
             HasPermissionShowName=?, WantIntriguesInPlainText=?, IsSubscribed=?, UnsubscribeCode=?,
-            MembershipCheckedAt=?, IsMember=?, AdvertismentsCheckedAt=?, MailCheckedAt=?, LastMailSentAt=? WHERE Id = ?;");
+            MembershipCheckedAt=?, IsMember=?, AdvertismentsCheckedAt=?, MailCheckedAt=?, LastMailSentAt=?, InformationUpdatedAt=? WHERE Id = ?;");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, 
             $this->EmergencyContact, $this->Email,
@@ -362,7 +364,7 @@ class Person extends BaseModel{
             $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
             $this->HasPermissionShowName, $this->WantIntriguesInPlainText, $this->IsSubscribed, $this->UnsubscribeCode, 
             $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt, 
-            $this->MailCheckedAt, $this->LastMailSentAt, $this->Id))) {
+            $this->MailCheckedAt, $this->LastMailSentAt, $this->InformationUpdatedAt, $this->Id))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();
@@ -373,19 +375,22 @@ class Person extends BaseModel{
     
     # Create a new person in db
     public function create() {
+        $now = new Datetime();
+        $this->InformationUpdatedAt = date_format($now,"Y-m-d H:i:s");
+        
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_person (Name, SocialSecurityNumber, PhoneNumber, EmergencyContact, Email,
                 FoodAllergiesOther, OtherInformation, ExperienceId,
                 UserId, NotAcceptableIntrigues, HouseId, HousingComment, HealthComment, 
                 HasPermissionShowName, WantIntriguesInPlainText, IsSubscribed, UnsubscribeCode,
-                MembershipCheckedAt, IsMember, AdvertismentsCheckedAt, MailCheckedAt, LastMailSentAt) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?,?);");
+                MembershipCheckedAt, IsMember, AdvertismentsCheckedAt, MailCheckedAt, LastMailSentAt,InformationUpdatedAt) 
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?,?,?);");
         
         if (!$stmt->execute(array($this->Name, $this->SocialSecurityNumber, $this->PhoneNumber, $this->EmergencyContact, $this->Email, 
                 $this->FoodAllergiesOther, $this->OtherInformation, $this->ExperienceId, 
                 $this->UserId, $this->NotAcceptableIntrigues, $this->HouseId, $this->HousingComment, $this->HealthComment, 
                 $this->HasPermissionShowName, $this->WantIntriguesInPlainText, $this->IsSubscribed, $this->UnsubscribeCode,
-            $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt, $this->MailCheckedAt, $this->LastMailSentAt
+            $this->MembershipCheckedAt, $this->IsMember, $this->AdvertismentsCheckedAt, $this->MailCheckedAt, $this->LastMailSentAt, $this->InformationUpdatedAt
         ))) {
             $this->connect()->rollBack();
             $stmt = null;

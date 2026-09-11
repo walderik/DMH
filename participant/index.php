@@ -98,6 +98,20 @@ function openTab(evt, tabName) {
 	    $item .=  'checked="checked"';
 	    $item .=  "> ";
 	    $item .=  "<label class='itemname' for='PersonId_$current_person->Id'>" . $current_person->getViewLink(false);
+	    
+	    $updated = new DateTime($current_person->InformationUpdatedAt);
+	    $date = new Datetime();
+	    $difference = date_diff($date,$updated);
+	    $date->modify('-6 month');
+	    if ($updated < $date ) {
+	        $warning = "<font style='color:red'>";
+	        $warning_end = "</font>";
+	    } else {
+	        
+	        $warning = "";
+	        $warning_end = "";
+	    }
+	    $item .=  "&nbsp;<a href='person_form.php?operation=update'>$warning<i class='fa-solid fa-pen' title='Senast uppdaterad för ".$difference->format('%a')." dagar sedan'></i>$warning_end</a>";
 	    if($current_person->isNeverRegistered() && (!isset($roles) or count($roles) == 0) && (!isset($groups) or count($groups) == 0)) {
 	        $item .=  "&nbsp;<a href='logic/delete_person.php?id=" . $current_person->Id . "'><i class='fa-solid fa-trash' title='Ta bort deltagare'></i></a>";
 	    }

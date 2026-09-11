@@ -28,6 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $person->setValuesByArray($_POST);
+        $now = new Datetime();
+        $person->InformationUpdatedAt = date_format($now,"Y-m-d H:i:s");
         
         $person->update();
         $person->deleteAllNormalAllergyTypes();
