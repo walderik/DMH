@@ -1096,6 +1096,15 @@ class Person extends BaseModel{
         BerghemMailer::send_user_changed($this, $user);
     }
     
+    public function recentlyUpdated() {
+        $updated = new DateTime($this->InformationUpdatedAt);
+        $date = new Datetime();
+        $difference = date_diff($date,$updated);
+        $date->modify('-6 month');
+        if ($updated < $date ) return false;
+        return true;
+    }
+    
 
     
 }

@@ -61,7 +61,14 @@
 		<input type="hidden" id="Id" name="Id" value="<?php echo $person->Id; ?>">
 		<input type="hidden" id="UserId" name="UserId" value="<?php echo $person->UserId; ?>">
 
-
+    	  <?php if (isset($error_message) && strlen($error_message)>0) {
+    	      echo '<div class="error">'.$error_message.'</div>';
+    	  }
+    	  if (isset($message_message) && strlen($message_message)>0) {
+    	      echo '<div class="message">'.$message_message.'</div>';
+    	  }
+    	  ?>
+    	  
 			<div class='itemcontainer'>
 			Vi behöver veta en del saker om dig som person som är skilt från de karaktärer du spelar. Och som gäller generellt för alla lajv och alla kampanjer.<br>
 			Du kan sjäv redigera de här uppgifterna när något ändrar sig eller om det är något du inte vill att Berghems Vänner ska veta om dig längre. Det enda du inte kan ändra är ditt personnummer. Om du behöver ändra det får du kontakta Berghems Vänner så löser vi det.<br>

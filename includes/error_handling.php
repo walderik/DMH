@@ -61,6 +61,9 @@ function getMessageText($code) {
         case "registration_done":
             $output = "Anmälan har registrerats.";
             break;
+        case "registration_done_update_person":
+            $output = "Anmälan har registrerats. Passa på att uppdatera uppgifterna om dig som person.";
+            break;
         case "user_changed":
             $output = "Personen har flyttats till ett annat konto.";
             break;

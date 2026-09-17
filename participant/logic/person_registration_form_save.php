@@ -1,6 +1,6 @@
 <?php
 
-global $root, $current_user, $current_larp;
+global $root, $current_user, $current_larp, $current_person;
 $root = $_SERVER['DOCUMENT_ROOT'];
 require $root . '/includes/init.php';
 
@@ -212,8 +212,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } 
 
-    
-    header('Location: ../index.php');
+    if (!$current_person->recentlyUpdated()) {
+        header('Location: ../person_form.php?operation=update&message=registration_done_update_person');
+        exit;
+    }
+    header('Location: ../index.php?message=registration_done');
     exit;
 }
 
