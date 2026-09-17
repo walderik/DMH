@@ -8,7 +8,6 @@ include 'navigation.php';
 function print_group(Group $group,$group_members, $house) {
     global $current_larp;
     $larp_group = LARP_Group::loadByIds($group->Id, $current_larp->Id);
-    $group_housing_requestId = $larp_group->HousingRequestId;
     $comments = array();
     $firstPaymentDate = null;
     $lastPaymentDate = date_create(substr($current_larp->StartDate,0,10));
@@ -47,6 +46,7 @@ function print_group(Group $group,$group_members, $house) {
     }
     echo "</div>\n";
     echo "  <div>";
+    if (!empty($larp_group)) $group_housing_requestId = $larp_group->HousingRequestId;
     if (!empty($group_housing_requestId)) echo HousingRequest::loadById($group_housing_requestId)->Name;
     else echo "Inget boendealternativ valt";
     echo "</div>\n";
