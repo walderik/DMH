@@ -22,6 +22,7 @@ include 'npc_navigation.php';
 		    echo "<table id='$tableId' class='data'>\n";
 		    echo "<tr>\n";
 		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Namn</th>\n";
+		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Yrke</th>\n";
 		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\");'>Godkänd NPC</th>\n";
 		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Grupptillhörighet</th>\n";
 		    echo "<th onclick='sortTable(". $colnum++ .", \"$tableId\")'>Tilldelad i ett uppdrag</th>\n";
@@ -39,6 +40,11 @@ include 'npc_navigation.php';
 			    }
 			    
 			    echo "</td>\n";
+			    
+			    echo "<td>\n";
+			    echo $npc->Profession;
+			    echo "</td>\n";
+			    
 			    
 			    echo "<td>\n";
 			    if ($npc->isApproved()) echo showStatusIcon(true);
