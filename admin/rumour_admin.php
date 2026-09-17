@@ -67,8 +67,21 @@ include 'navigation.php';
 		<br>	
 
         <?php
-    
+
         $rumour_array = Rumour::allBySelectedLARP($current_larp);
+
+        
+        usort($rumour_array, function (Rumour $a, Rumour $b) {
+            $a_val =  $a->isApproved();
+            $b_val =  $b->isApproved();
+            
+
+            if ($a_val && !$b_val) return 1;
+            if (!$a_val && $b_val) return -1;
+
+            return 0;
+        });
+        
         if (!empty($rumour_array)) {
             $tableId = "rumours";
             echo "<table id='$tableId' class='data'>";

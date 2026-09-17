@@ -184,6 +184,7 @@ class Rumour extends BaseModel{
             if (isset($knows->RoleId)) {
                 $role = Role::loadById($knows->RoleId);
                 $person = $role->getPerson();
+                if (empty($person)) continue;
                 $registration=$person->getRegistration($current_larp);
                 if ($registration->isNotComing()) continue;
             }
