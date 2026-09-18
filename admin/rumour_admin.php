@@ -49,7 +49,8 @@ include 'navigation.php';
         <h1>Rykten</h1>
         <p>Rykten skapade av arrangörer blir automatiskt godkända. Rykten skapade av deltagare behöver godkännas av arrangörer innan de kan spridas.<br> 
         <a href="rumour_wizard_pg1.php">Fördela ett eller flera rykten, som ingen redan känner till, slumpmässigt <i class="fa-solid fa-wand-sparkles"></i></a><br>
-        <a href="rumour_roles.php">Se hur många rykten olika karaktärer har.</a>
+        <a href="rumour_roles.php">Se hur många rykten olika karaktärer har.</a><br>
+        För att snabbt godkänna ett rykte kan du klicka på den röda varningssymbolen.
         </p>
 		<form action="rumour_admin.php" method="post">
             <a href="rumour_form.php?operation=new"><i class="fa-solid fa-file-circle-plus"></i>Lägg till</a>  &nbsp; &nbsp;
@@ -124,7 +125,9 @@ include 'navigation.php';
                 }
                 echo "</td>";
                 
-                echo "<td>" . showStatusIcon($rumour->Approved) . "</td>\n";
+                echo "<td>"; 
+                echo showPostStatusIcon($rumour->isApproved(), 'logic/approve.php', null, 'Klicka för att godkänna rykte', NULL, ['RumourId'=>$rumour->Id], null); 
+                echo "</td>\n";
                 echo "<td>";
                 if (!isset($rumour->IntrigueId)) echo "<a href='rumour_admin.php?operation=delete&id=" . $rumour->Id . "'><i class='fa-solid fa-trash' title='Ta bort rykte'></i>";
                 echo "</td>\n";
