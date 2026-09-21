@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['IntrigueId'])) Intrigue::continueIntrigues($_POST['IntrigueId'], $current_larp, $current_person);
         header('Location: ../intrigue_admin.php');
         exit;
-     } else {
+    } else {
         $intrigue=Intrigue::loadById($_POST['Id']);
     }
     
@@ -154,6 +154,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $rumour = Rumour::loadById($_GET['rumourId']);
         $rumour->IntrigueId = null;
         $rumour->update();
+    } elseif ($operation == "toggleHasCommonText") {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        $intrigueActor->toggleHasCommonText();
     } elseif (($operation == "delete")) {
         if (isset($intrigue)) Intrigue::delete($intrigue->Id);
         header('Location: ../intrigue_admin.php');

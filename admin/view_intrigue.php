@@ -40,6 +40,13 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
     echo "</h2>\n";
     echo "<table width='100%''>\n";
     
+    echo "<tr><td>Gemensam text</td>";
+    echo "<td><input type = 'checkbox' id='HasCommonText:$intrigueActor->Id' name='HasCommonText:$intrigueActor->Id' value ='$intrigueActor->Id' onchange='toggleCheckbox(this)' ";
+    if ($intrigueActor->hasCommonText()) echo "checked";
+    echo ">";
+    echo "<label for='HasCommonText:$intrigueActor->Id'> Ska ha gemensam text</label>";
+    echo "</td></tr>";
+    
     
     echo "<tr><td width='10%'>Intrigtext</td>";
     $previousActor = $intrigueActor->getPrevious();
@@ -780,7 +787,7 @@ foreach ($intrigue_visions as $intrigue_vision) {
 </td></tr>
 <?php }?>
 
-<tr><td>Text till alla aktörer</td><td><?php  echo nl2br($intrigue->CommonText); ?></td></tr>
+<tr><td>Gemensam text</td><td><?php  echo nl2br($intrigue->CommonText); ?></td></tr>
 </table>
 </div>
 
@@ -824,6 +831,13 @@ foreach ($roleActors as $roleActor) {
 
 
 <script>
+  function toggleCheckbox(element) {
+  	let id = element.value;
+  	let section = "section_"+id;
+  	location.assign("logic/view_intrigue_logic.php?operation=toggleHasCommonText&id=<?php echo $intrigue->Id;?>&Section="+section+"&IntrigueActorId="+id);
+  }
+
+
     function showQuestion(rumourId) {
         document.getElementById("dialog").style.display = "flex";
         document.getElementById("rumourId").value = rumourId;

@@ -413,5 +413,11 @@ class IntrigueActor extends BaseModel{
 
      }
      
+     public function toggleHasCommonText() {
+         if ($this->hasCommonText()) $this->HasCommonText=0;
+         else $this->HasCommonText = 1;
+         $this->update();
+     }
+     
      
 }
