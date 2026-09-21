@@ -7,6 +7,7 @@ class IntrigueActor extends BaseModel{
     public $RoleId;
     public $GroupId;
     public $SubdivisionId;
+    public $HasCommonText = 1;
     public $IntrigueText;
     public $OffInfo;
     public $OrganizerNotes;
@@ -26,6 +27,7 @@ class IntrigueActor extends BaseModel{
         if (isset($arr['RoleId'])) $this->RoleId = $arr['RoleId'];
         if (isset($arr['GroupId'])) $this->GroupId = $arr['GroupId'];
         if (isset($arr['SubdivisionId'])) $this->SubdivisionId = $arr['SubdivisionId'];
+        if (isset($arr['HasCommonText'])) $this->HasCommonText = $arr['HasCommonText'];
         if (isset($arr['IntrigueText'])) $this->IntrigueText = $arr['IntrigueText'];
         if (isset($arr['OffInfo'])) $this->OffInfo = $arr['OffInfo'];
         if (isset($arr['OrganizerNotes'])) $this->OrganizerNotes = $arr['OrganizerNotes'];
@@ -39,8 +41,8 @@ class IntrigueActor extends BaseModel{
     
     # Update an existing object in db
     public function update() {
-        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor SET IntrigueId=?, RoleId=?, GroupId=?, SubdivisionId=?, IntrigueText=?, OffInfo=?, OrganizerNotes=?, WhatHappened=? WHERE Id = ?");
-        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->IntrigueText, $this->OffInfo, $this->OrganizerNotes, $this->WhatHappened, $this->Id))) {
+        $stmt = $this->connect()->prepare("UPDATE regsys_intrigueactor SET IntrigueId=?, RoleId=?, GroupId=?, SubdivisionId=?, HasCommonText=?, IntrigueText=?, OffInfo=?, OrganizerNotes=?, WhatHappened=? WHERE Id = ?");
+        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->HasCommonText, $this->IntrigueText, $this->OffInfo, $this->OrganizerNotes, $this->WhatHappened, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -52,9 +54,9 @@ class IntrigueActor extends BaseModel{
     # Create a new object in db
     public function create() {
         $connection = $this->connect();
-        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, SubdivisionId, IntrigueText, OffInfo, OrganizerNotes, WhatHappened) VALUES (?,?,?,?,?,?,?,?)");
+        $stmt = $connection->prepare("INSERT INTO regsys_intrigueactor (IntrigueId, RoleId, GroupId, SubdivisionId, HasCommonText, IntrigueText, OffInfo, OrganizerNotes, WhatHappened) VALUES (?,?,?,?,?,?,?,?,?)");
         
-        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->IntrigueText, $this->OffInfo, $this->OrganizerNotes, $this->WhatHappened))) {
+        if (!$stmt->execute(array($this->IntrigueId, $this->RoleId, $this->GroupId, $this->SubdivisionId, $this->HasCommonText, $this->IntrigueText, $this->OffInfo, $this->OrganizerNotes, $this->WhatHappened))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -75,6 +77,11 @@ class IntrigueActor extends BaseModel{
     
     public function isSubdivisionActor() {
         if (isset($this->SubdivisionId)) return true;
+        return false;
+    }
+    
+    public function hasCommonText() {
+        if ($this->HasCommonText == 1) return true;
         return false;
     }
     
