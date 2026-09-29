@@ -397,7 +397,7 @@ include 'navigation.php';
 		            if ($intrigue->isActive()) {
 		                $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $group);
 		                $txt = "";
-		                if (!empty($intrigue->CommonText)) $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                if (!empty($intrigue->CommonText) && $intrigueActor->hasCommonText()) $txt .= "<p>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
 		                if (!empty($intrigueActor->IntrigueText)) $txt .=  "<p>".nl2br($intrigueActor->IntrigueText). "</p>";
 		                if (!empty($intrigueActor->OffInfo)) {
 		                    $txt .=  "<p><strong>Off-information:</strong><br><i>".nl2br($intrigueActor->OffInfo)."</i></p>";

@@ -27,6 +27,13 @@ function printActorIntrigue(IntrigueActor $intrgueActor, $name) {
     echo "<h2>Intrig för $name</h2>\n";
     echo "<table width='100%''>\n";
     
+    echo "<tr><td>Gemensam text</td>";
+    echo "<td><input type = 'checkbox' ";
+    if ($intrigueActor->hasCommonText()) echo "checked";
+    echo " disabled>";
+    echo "<label for='HasCommonText:$intrigueActor->Id'> Ska ha gemensam text</label>";
+    echo "</td></tr>";
+    
     echo "<tr><td width='10%'>Intrigtext</td><td>";
     echo nl2br(htmlspecialchars($intrgueActor->IntrigueText));
     echo "</td></tr>\n";

@@ -33,8 +33,32 @@ include 'intrigue_navigation.php';
 		<input type="hidden" id="Id" name="Id" value="<?php echo $intrigueActor->IntrigueId ?>">
 		<input type="hidden" id="IntrigueActorId" name="IntrigueActorId" value="<?php echo $intrigueActor->Id ?>">
 		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
-		<input type="hidden" id="Section" name="Section" value="<?php echo $section;?>">
+		<!-- <input type="hidden" id="Section" name="Section" value="<?php echo $section;?>">  -->
 		<table>
+		
+		    <tr><td>Gemensam text</td>
+		    	<td>
+           <?php 
+           if (isset($intrigueActor->RoleId)) {
+                echo "<input type='radio' id='HasCommonText:".$intrigueActor->Id."_yes' name='HasCommonText' value='1' ";
+                if ($intrigueActor->hasCommonText()) echo " checked='checked' ";
+                echo "/>";
+                echo "<label for='HasCommonText:".$intrigueActor->Id."_yes'>Ska ha gemensam text</label>";
+                echo "<br>";
+                echo "<input type='radio' id='HasCommonText".$intrigueActor->Id."_no' name='HasCommonText' value='0' ";
+                if (!$intrigueActor->hasCommonText()) echo " checked='checked' ";
+                echo "/>";
+                echo "<label for='HasCommonText".$intrigueActor->Id."_no'>Ska <b>inte</b> ha gemensam text</label>";
+            } else {
+                echo "<input type = 'checkbox' id='HasCommonText' name='HasCommonText' value ='$intrigueActor->Id' ";
+                if ($intrigueActor->hasCommonText()) echo "checked";
+                echo ">";
+                echo "<label for='HasCommonText'> Ska ha gemensam text</label>";
+            }
+            ?>
+
+   				</td>
+   			</tr>
 			<tr>
 				<td><label for="IntrigueText">Intrigtext</label></td>
 				<td><textarea id="IntrigueText" name="IntrigueText" rows="4" cols="100" maxlength="60000" ><?php echo htmlspecialchars($intrigueActor->IntrigueText); ?></textarea></td>

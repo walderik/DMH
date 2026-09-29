@@ -41,10 +41,25 @@ function printActorIntrigue(IntrigueActor $intrigueActor, $name) {
     echo "<table width='100%''>\n";
     
     echo "<tr><td>Gemensam text</td>";
-    echo "<td><input type = 'checkbox' id='HasCommonText:$intrigueActor->Id' name='HasCommonText:$intrigueActor->Id' value ='$intrigueActor->Id' onchange='toggleCheckbox(this)' ";
-    if ($intrigueActor->hasCommonText()) echo "checked";
-    echo ">";
-    echo "<label for='HasCommonText:$intrigueActor->Id'> Ska ha gemensam text</label>";
+    echo "<td>";
+    if (isset($intrigueActor->RoleId)) {
+        echo "<input type='radio' id='HasCommonText:".$intrigueActor->Id."_yes' name='HasCommonText".$intrigueActor->Id."' value='1' onchange='setHasCommonText($intrigueActor->Id,1)' ";
+        if ($intrigueActor->hasCommonText()) echo " checked='checked' ";
+        echo "/>";
+        echo "<label for='HasCommonText:".$intrigueActor->Id."_yes'>Ska ha gemensam text</label>";
+        echo "<br>";
+        echo "<input type='radio' id='HasCommonText".$intrigueActor->Id."_no' name='HasCommonText".$intrigueActor->Id."' value='0' onchange='setHasCommonText($intrigueActor->Id,0)' ";
+        if (!$intrigueActor->hasCommonText()) echo " checked='checked' ";
+        echo "/>";
+        echo "<label for='HasCommonText".$intrigueActor->Id."_no'>Ska <b>inte</b> ha gemensam text</label>";
+        echo "<br><br>Inställningen gäller oavsätt vad som sätts för de grupperingar $role->Name är med i.";
+    } else {
+        echo "<input type = 'checkbox' id='HasCommonText:$intrigueActor->Id' name='HasCommonText:$intrigueActor->Id' value ='$intrigueActor->Id' onchange='toggleHasCommonText(this)' ";
+        if ($intrigueActor->hasCommonText()) echo "checked";
+        echo ">";
+        echo "<label for='HasCommonText:$intrigueActor->Id'> Ska ha gemensam text</label>";
+    }
+    
     echo "</td></tr>";
     
     
@@ -831,7 +846,12 @@ foreach ($roleActors as $roleActor) {
 
 
 <script>
-  function toggleCheckbox(element) {
+  function setHasCommonText(id, val) {
+  	let section = "section_"+id;
+  	location.assign("logic/view_intrigue_logic.php?operation=setHasCommonText&id=<?php echo $intrigue->Id;?>&Section="+section+"&IntrigueActorId="+id+"&HasCommonText="+val);
+  }
+
+  function toggleHasCommonText(element) {
   	let id = element.value;
   	let section = "section_"+id;
   	location.assign("logic/view_intrigue_logic.php?operation=toggleHasCommonText&id=<?php echo $intrigue->Id;?>&Section="+section+"&IntrigueActorId="+id);

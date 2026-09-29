@@ -66,6 +66,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($operation == "update_intrigue_actor") {
         $intrigueActor=IntrigueActor::loadById($_POST['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
+        if (isset($intrigueActor->RoleId)) {
+            if (isset($_POST['HasCommonText'])) $intrigueActor->HasCommonText = $_POST['HasCommonText'];
+        } else {
+            if (isset($_POST['HasCommonText']))
+                $intrigueActor->HasCommonText = 1;
+            else $intrigueActor->HasCommonText = 0;
+        }
         $intrigueActor->IntrigueText = $_POST['IntrigueText'];
         $intrigueActor->OffInfo = $_POST['OffInfo'];
         $intrigueActor->OrganizerNotes = $_POST['OrganizerNotes'];
@@ -158,6 +165,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
         $intrigue=$intrigueActor->getIntrigue();
         $intrigueActor->toggleHasCommonText();
+    } elseif ($operation == "setHasCommonText") {
+        $intrigueActor=IntrigueActor::loadById($_GET['IntrigueActorId']);
+        $intrigue=$intrigueActor->getIntrigue();
+        if (isset($_GET['HasCommonText'])) {
+            $intrigueActor->HasCommonText = $_GET['HasCommonText'];
+            $intrigueActor->update();
+        }
     } elseif (($operation == "delete")) {
         if (isset($intrigue)) Intrigue::delete($intrigue->Id);
         header('Location: ../intrigue_admin.php');

@@ -127,7 +127,7 @@ class Group_PDF extends PDF_MemImage {
         foreach ($intrigues as $intrigue) {
             if (!$intrigue->isActive()) continue;
             $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this->group);
-            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) $tomma_intriger = false;
+            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || (!empty($intrigue->CommonText) && $intrigueActor->hasCommonText())) $tomma_intriger = false;
         }
         if ($tomma_intriger) return true;
         
@@ -153,14 +153,14 @@ class Group_PDF extends PDF_MemImage {
             $intrigueActor = IntrigueActor::getGroupActorForIntrigue($intrigue, $this->group);
             if (empty($intrigueActor)) continue;
             
-            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || !empty($intrigue->CommonText)) {
+            if (!empty($intrigueActor->IntrigueText) || !empty($intrigueActor->OffInfo) || (!empty($intrigue->CommonText) && $intrigueActor->hasCommonText())) {
                 $text = trim(encode_utf_to_iso("Intrig ".$intrigue->Number.":"));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
                 $this->SetXY($left, $y);
             }
             
-            if (!empty($intrigue->CommonText)) {
+            if (!empty($intrigue->CommonText) && $intrigueActor->hasCommonText()) {
                 $text = trim(encode_utf_to_iso($intrigue->CommonText));
                 $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
                 $y = $this->GetY() + $space;
