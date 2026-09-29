@@ -161,22 +161,23 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $first = true;
         foreach ($intrigues as $intrigue) {
             if ($intrigue->isActive()) {
+                $hasCommonText = false;
                 $commonTextHeader = "";
                 $intrigueTextArr = array();
                 $offTextArr = array();
                 $whatHappenedTextArr = array();
                 
-                $intrigue->findAllInfoForRoleInIntrigue($this->role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
+                $intrigue->findAllInfoForRoleInIntrigue($this->role, $subdivisions, $hasCommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
                 
 
-                if (!empty($intrigue->CommonText) || !empty($intrigueTextArr) || !empty($offTextArr)) {
+                if ($hasCommonText || !empty($intrigueTextArr) || !empty($offTextArr)) {
                     if ($first) $first = false;
                     else {
                         $this->shortbar();
                         $y += 2;
                         $this->SetXY($left, $y);
                     }
-                    $this->printIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
+                    $this->printIntrigue($intrigue->Number, $intrigue->CommonText, $hasCommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
                     $y += 2;
                     $this->SetXY($left, $y);
                 }
@@ -244,7 +245,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
     }
     
     
-    protected function printIntrigue($number, $commonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, $alwaysPrintWhatHappened) {
+    protected function printIntrigue($number, $commonText, $hasCommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, $alwaysPrintWhatHappened) {
         global $left, $y;
         $space = 3;
         
@@ -253,20 +254,22 @@ class CharacterSheet_PDF extends PDF_MemImage {
         $y = $this->GetY() + $space;
         $this->SetXY($left, $y);
         
-        if (!empty($commonTextHeader)) {
-            $this->SetXY($left, $y);
-            $this->SetFont('Helvetica','B',static::$text_fontsize);
-            $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($commonTextHeader),0,0,'L');
-            $y = $this->GetY()+$space*2;
-            $this->SetXY($left, $y);
-            $this->SetFont('Helvetica','',static::$text_fontsize);
-        }
-        
-        if (!empty($commonText)) {
-            $text = trim(encode_utf_to_iso($commonText));
-            $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
-            $y = $this->GetY() + $space;
-            $this->SetXY($left, $y);
+        if ($hasCommonText) {
+            if (!empty($commonTextHeader)) {
+                $this->SetXY($left, $y);
+                $this->SetFont('Helvetica','B',static::$text_fontsize);
+                $this->Cell($this->cell_width, static::$cell_y, encode_utf_to_iso($commonTextHeader),0,0,'L');
+                $y = $this->GetY()+$space*2;
+                $this->SetXY($left, $y);
+                $this->SetFont('Helvetica','',static::$text_fontsize);
+            }
+            
+            if (!empty($commonText)) {
+                $text = trim(encode_utf_to_iso($commonText));
+                $this->MultiCell(0, static::$cell_y-1, $text, 0, 'L');
+                $y = $this->GetY() + $space;
+                $this->SetXY($left, $y);
+            }
         }
         
         if (!empty($intrigueTextArr)) {
@@ -497,12 +500,13 @@ class CharacterSheet_PDF extends PDF_MemImage {
 
                 foreach ($intrigues as $intrigue) {
                     if ($intrigue->isActive()) {
+                        $hasCommonText = false;
                         $commonTextHeader = "";
                         $intrigueTextArr = array();
                         $offTextArr = array();
                         $whatHappenedTextArr = array();
                         
-                        $intrigue->findAllInfoForRoleInIntrigue($this->role, $this->subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
+                        $intrigue->findAllInfoForRoleInIntrigue($this->role, $this->subdivisions, $hasCommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
                         
                         
                         if (!empty($intrigue->CommonText) || !empty($intrigueTextArr) || !empty($offTextArr)) {
@@ -512,7 +516,7 @@ class CharacterSheet_PDF extends PDF_MemImage {
                                 $y += 2;
                                 $this->SetXY($left, $y);
                             }
-                            $this->printIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, true);
+                            $this->printIntrigue($intrigue->Number, $intrigue->CommonText, $hasCommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, true);
                             $y += 2;
                             $this->SetXY($left, $y);
                         }

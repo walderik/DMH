@@ -521,9 +521,9 @@ function emailIcon() {
 
 
 
-function participantPrintedIntrigue($number, $commonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, $alwaysPrintWhatHappened) {
+function participantPrintedIntrigue($number, $commonText, $hasCommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, $alwaysPrintWhatHappened) {
     $formattedText = "";
-    if (!empty($commonText)) {
+    if ($hasCommonText) {
         $formattedText .= "<p>";
         if (!empty($commonTextHeader)) {
             $formattedText .= "<strong>".htmlspecialchars($commonTextHeader)."</strong><br>";

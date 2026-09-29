@@ -599,16 +599,16 @@ class BerghemMailer {
         foreach ($intrigues as $intrigue) {
             if ($intrigue->isActive()) {
                 
-                
+                $hasCommonText = false;
                 $commonTextHeader = "";
                 $intrigueTextArr = array();
                 $offTextArr = array();
                 $whatHappenedTextArr = array();
                 
-                $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
+                $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $hasCommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr);
                 
                 
-                $text .= participantPrintedIntrigue($intrigue->Number, $intrigue->CommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
+                $text .= participantPrintedIntrigue($intrigue->Number, $intrigue->CommonText, $hasCommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, false);
             }
         }
         

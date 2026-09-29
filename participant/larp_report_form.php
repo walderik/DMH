@@ -106,9 +106,9 @@ textarea{
  			        $intrigue = $intrigueActor->getIntrigue();
 	                echo "<input type='hidden' id='IngtrigueActorId$intrigueActor->Id' name='IngtrigueActorId[]' value='$intrigueActor->Id'>";
 	                echo "<div class='itemcontainer'>";
-	                echo "<div class='itemname'><label for='IngtrigueActor_$intrigueActor->Id'>Vad hände med det här?</label></div>";
+	                echo "<div class='itemname'><label for='IngtrigueActor_$intrigueActor->Id'>Vad hände med intrig $intrigue->Number?</label></div>";
 
-	                if (!empty($intrigue->CommonText)) echo nl2br(htmlspecialchars($intrigue->CommonText))."<br>";
+	                if (!empty($intrigue->CommonText) && $intrigueActor->hasCommonText()) echo nl2br(htmlspecialchars($intrigue->CommonText))."<br>";
 	                echo nl2br(htmlspecialchars($intrigueActor->IntrigueText));
 	                echo "<br>";
 	                echo "<textarea id='IngtrigueActor_$intrigueActor->Id' name='IngtrigueActor_$intrigueActor->Id' rows='10' cols='100' maxlength='60000'>$intrigueActor->WhatHappened</textarea>";

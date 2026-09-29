@@ -168,14 +168,20 @@ include 'aktor_navigation.php';
 		            $singleVisibleSubdivisionActor = false;
 		            
 		            if (!empty($intrigue->CommonText)) {
-		                if (sizeOf($intrigueActors) == 1 && $intrigueActors[0]->isSubdivisionActor()) {
-		                    $subdivision = $intrigueActors[0]->getSubdivision();
-		                    if ($subdivision->isVisibleToParticipants()) {
-		                        $txt .= "<p><i>Gemensam text:</i><br><strong>$subdivision->Name</strong><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                        $singleVisibleSubdivisionActor = true;
-		                    }
-		                    else $txt .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
-		                } else $txt .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+		                $intrigeuActorsVisibleCommonText = array();
+		                foreach ($intrigueActors as $intrigueActor) {
+		                    if ($intrigueActor->hasCommonText()) $intrigeuActorsVisibleCommonText[] = $intrigueActor;
+		                }
+		                if (sizeof($intrigeuActorsVisibleCommonText) > 0) {
+		                    if (sizeOf($intrigeuActorsVisibleCommonText) == 1 && $intrigeuActorsVisibleCommonText[0]->isSubdivisionActor()) {
+		                        $subdivision = $intrigeuActorsVisibleCommonText[0]->getSubdivision();
+    		                    if ($subdivision->isVisibleToParticipants()) {
+    		                        $txt .= "<p><i>Gemensam text:</i><br><strong>$subdivision->Name</strong><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+    		                        $singleVisibleSubdivisionActor = true;
+    		                    }
+    		                    else $txt .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+    		                } else $txt .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
+    		            }
 		            }
 		            
 		            $intrigueTextArr = array();

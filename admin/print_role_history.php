@@ -27,17 +27,18 @@ if (isset($previous_larps) && count($previous_larps) > 0) {
         
         $intrigues = Intrigue::getAllIntriguesForRole($role->Id, $prevoius_larp->Id);
         foreach($intrigues as $intrigue) {
+            $hasCommonText = false;
             $commonTextHeader = "";
             $intrigueTextArr = array();
             $offTextArr = array();
             $whatHappenedTextArr = array();
             
-            $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, true);
+            $intrigue->findAllInfoForRoleInIntrigue($role, $subdivisions, $hasCommonText, $commonTextHeader, $intrigueTextArr, $offTextArr, $whatHappenedTextArr, true);
             
             $formattedText = "";
 
             
-            if (!empty($intrigue->CommonText)) {
+            if ($hasCommonText) {
                 if (!empty($commonTextHeader)) {
                     $formattedText .= "<p><i>Gemensam text:</i><br><strong>$commonTextHeader</strong><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";
                 } else $formattedText .= "<p><i>Gemensam text:</i><br>".nl2br(htmlspecialchars($intrigue->CommonText))."</p>";

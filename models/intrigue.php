@@ -764,7 +764,7 @@ class Intrigue extends BaseModel{
     }
     
     //Sätter resultatet i vissa inparametrar
-    public function findAllInfoForRoleInIntrigue($role, $subdivisions, &$commonTextHeader, &$intrigueTextArr, &$offTextArr, &$whatHappenedTextArr, ?bool $adminInfo=false) {
+    public function findAllInfoForRoleInIntrigue($role, $subdivisions, &$hasCommonText, &$commonTextHeader, &$intrigueTextArr, &$offTextArr, &$whatHappenedTextArr, ?bool $adminInfo=false) {
         $intrigueActors = array();
         $roleActor = IntrigueActor::getRoleActorForIntrigue($this, $role);
         if (!empty($roleActor)) $intrigueActors[] = $roleActor;
@@ -787,12 +787,20 @@ class Intrigue extends BaseModel{
         
         $commonTextHeader = "";
         
+        $hasCommonText = false;
         if (!empty($this->CommonText)) {
-            if (sizeOf($intrigueActors) == 1 && $intrigueActors[0]->isSubdivisionActor()) {
-                $subdivision = $intrigueActors[0]->getSubdivision();
-                if ($subdivision->isVisibleToParticipants()) {
-                    $commonTextHeader = $subdivision->Name;
-                    $singleVisibleSubdivisionActor = true;
+            $intrigeuActorsVisibleCommonText = array();
+            foreach ($intrigueActors as $intrigueActor) {
+                if ($intrigueActor->hasCommonText()) $intrigeuActorsVisibleCommonText[] = $intrigueActor;
+            }
+            if (sizeof($intrigeuActorsVisibleCommonText) > 0) {
+                $hasCommonText = true;
+                if (sizeOf($intrigeuActorsVisibleCommonText) == 1 && $intrigeuActorsVisibleCommonText[0]->isSubdivisionActor()) {
+                    $subdivision = $intrigeuActorsVisibleCommonText[0]->getSubdivision();
+                    if ($subdivision->isVisibleToParticipants()) {
+                        $commonTextHeader = $subdivision->Name;
+                        $singleVisibleSubdivisionActor = true;
+                    }
                 }
             }
         }
