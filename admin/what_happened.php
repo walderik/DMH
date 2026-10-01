@@ -126,6 +126,7 @@ function whatHappenedRole(Role $role) {
 
 
 <a name="group"></a><h2>Grupper</h2>
+<a href="what_happened_status_groups.php">Status för grupper</a><br>
 <?php 
 $groups = Group::getAllRegistered($current_larp);
 foreach ($groups as $group) {
@@ -133,6 +134,7 @@ foreach ($groups as $group) {
 }
 ?>
 <a name="main"></a><h2>Huvudkaraktärer</h2>
+<a href="what_happened_status_roles.php">Status för karaktärer</a><br>
 <?php 
 $roles = $current_larp->getAllMainRoles(false);
 foreach ($roles as $role) {
