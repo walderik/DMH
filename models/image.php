@@ -76,14 +76,19 @@ class Image extends BaseModel{
 
         // Validate file extension
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        if(!array_key_exists($ext, $allowed)) return "image_format";
+        if(!array_key_exists(strtolower($ext), $allowed)) {
+            return "image_format";
+        }
         
         // Validate type of the file
-        if(!in_array($filetype, $allowed)) return "image_format";
-
-        // Validate type of the file
-        if(!in_array($file_mime, $allowed)) return "image_format";
+        if(!in_array($filetype, $allowed)) {
+            return "image_format";
+        }
         
+        // Validate type of the file
+        if(!in_array($file_mime, $allowed)){
+            return "image_format";
+        }
     }
     
     

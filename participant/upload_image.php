@@ -90,6 +90,7 @@ if (isset($_FILES["upload"])) {
         exit;
     }
     else {
+        
         $error_code = $error;
         $error_message = getErrorText($error_code);
         
