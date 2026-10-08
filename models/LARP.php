@@ -435,7 +435,9 @@ class LARP extends BaseModel{
             "(Id IN (SELECT LarpId FROM regsys_larp_role WHERE RoleId = ?) OR ".
             "Id IN (SELECT LarpId FROM regsys_npc_assignment WHERE RoleId = ?)) AND ".
             "EndDate < ? ORDER BY StartDate DESC";
-        return static::getSeveralObjectsqQuery($sql, array($roleId, $roleId, substr($larp->EndDate,0,10)));
+        $previous_larps = static::getSeveralObjectsqQuery($sql, array($roleId, $roleId, substr($larp->EndDate,0,10)));
+        if ($larp->isEnded()) array_unshift($previous_larps , $larp);
+        return $previous_larps;
     }
     
     public static function getPreviousLarpsGroup($groupId, Larp $larp) {
