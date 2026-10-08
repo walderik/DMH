@@ -78,6 +78,15 @@ include 'navigation.php';
     		?>
 		</div>
 
+	   <div class='itemcontainer'>
+		<?php 
+		if ($current_larp->isIntriguesReleased()) {
+			echo "<a href='view_role_intrigue.php?id=$role->Id'>Intriger</a><br>"; 
+		}
+		echo "<a href='view_role_history.php?id=$role->Id'>Historik</a>";
+		?>
+	   </div>
+
 
 		<?php 
 		if ($role->hasImage()) {

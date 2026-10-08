@@ -16,6 +16,8 @@ if (isset($_GET['id'])) {
     $roleId = $_GET['id'];
     $role = Role::loadById($roleId);
 }
+$bara_intrig = false;
+if (isset($_GET['bara_intrig'])) $bara_intrig = true;
 
 if (empty($role)) {
     header('Location: index.php'); // Karaktären finns inte
@@ -43,6 +45,10 @@ $pdf->AddFont('Helvetica','');
 $subject = $role->Name;
 $pdf->SetSubject(encode_utf_to_iso($subject));
 
-$pdf->new_character_sheet($role, $current_larp);
+if ($bara_intrig) {
+    $pdf->intrigue_info($role, $current_larp);
+} else {
+    $pdf->new_character_sheet($role, $current_larp);
+}
 
 $pdf->Output();
