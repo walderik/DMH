@@ -36,12 +36,6 @@ if (!$current_person->isMemberGroup($group) && !$current_person->isGroupLeader($
 
 include 'navigation.php';
 ?>
-			
-		<?php 
-		$previous_larps = $group->getPreviousLarps($current_larp);
-		if (isset($previous_larps) && count($previous_larps) > 0) {
-		    ?>
-		    
 		    <div class='itemselector'>
 		    <div class="header">
 		    	<i class="fa-solid fa-landmark"></i> Historik för <?php echo $group->getViewLink() ?>
@@ -49,6 +43,7 @@ include 'navigation.php';
 		    <div class='itemcontainer'>
 		    
 		   <?php 
+		   $previous_larps = $group->getPreviousLarps($current_larp);
 		    foreach ($previous_larps as $prevoius_larp) {
 		        $previous_larp_group = LARP_Group::loadByIds($group->Id, $prevoius_larp->Id);
 		        echo "<div class='borderbottom'>";
@@ -89,7 +84,7 @@ include 'navigation.php';
                 echo "</div>";
 		                
 		    }
-		}
+
 			    
 			
 			
