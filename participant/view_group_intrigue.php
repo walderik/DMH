@@ -53,7 +53,7 @@ include 'navigation.php';
 		                }
 		                
 		                if (!empty($txt)) {
-		                    echo "Intrig $intrigue->Number:<br>".$txt."<hr>";
+		                    echo "<h3>Intrig $intrigue->Number:</h3>".$txt;
 
 		                }
 		            }
