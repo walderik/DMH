@@ -611,7 +611,7 @@ function openTab(evt, tabName) {
             echo "<div class='itemcontainer'>";
             echo $role->getViewLink();
             $group = $role->getGroup();
-            if (isset($group)) echo "<br><b>Grupp:</b> ". $group->getViewLink();
+            if (isset($group)) echo "<br><b>Grupp:</b> <a href='view_group_intrigue.php?id=$group->Id'>$group->Name</a>";
             
             $subdivisions = Subdivision::allVisibleForRole($role, $current_larp);
             if (!empty($subdivisions)) {

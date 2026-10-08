@@ -442,7 +442,9 @@ class LARP extends BaseModel{
         if (is_null($groupId)) return Array();
         
         $sql = "SELECT * FROM regsys_larp WHERE Id IN (SELECT LarpId FROM regsys_larp_group WHERE GroupId = ?) AND EndDate < ? ORDER BY StartDate DESC";
-        return static::getSeveralObjectsqQuery($sql, array($groupId, $larp->EndDate));
+        $previous_larps = static::getSeveralObjectsqQuery($sql, array($groupId, $larp->EndDate));
+        if ($larp->isEnded()) array_unshift($previous_larps , $larp);
+        return $previous_larps;
     }
     
     public static function allByCampaign($campaignId) {
