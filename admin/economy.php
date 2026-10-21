@@ -180,7 +180,7 @@ include 'navigation.php';
        echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td><a href = 'participant_payments.php'>Deltagaravgifter</a></td><td></td><td></td><td class='amount'>".number_format((float)$registration_fees, 2, ',', '')."</td></tr>";
        $returned_fees = Registration::totalFeesReturned($current_larp);
        $sum -= $returned_fees;
-       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td>Återbetalade deltagaravgifter</td><td></td><td></td><td class='amount'>".number_format((float)(0-$returned_fees), 2, ',', '')."</td></tr>";
+       echo "<tr><td></td><td>".substr($current_larp->EndDate,0,10)."</td><td><a href = 'participant_payments_returned.php'>Återbetalade deltagaravgifter</a></td><td></td><td></td><td class='amount'>".number_format((float)(0-$returned_fees), 2, ',', '')."</td></tr>";
        echo "<tr></tr>";
        echo "<tr><th colspan='5'>Balans</th><th class='amount' style='text-align: right;'>".number_format((float)$sum, 2, ',', '')."</th></tr>";
   
@@ -211,6 +211,6 @@ include 'navigation.php';
        echo "</table>";
        
        ?>
-       
+       <a href="economy_all_payments.php">Alla transaktioner</a>
 </body>
 </html>
