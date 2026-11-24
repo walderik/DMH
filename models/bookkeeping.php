@@ -16,6 +16,7 @@ class Bookkeeping extends BaseModel{
     public  $Amount;
     public  $CreationDate;
     public  $AccountingDate;
+    public  $BankLabel;
     public  $ImageId;
     
     public static $orderListBy = 'Number';
@@ -41,6 +42,7 @@ class Bookkeeping extends BaseModel{
             if ($arr['AccountingDate']== '0000-00-00' || empty($arr['AccountingDate'])) $this->AccountingDate = NULL;
             else $this->AccountingDate = $arr['AccountingDate'];
         }
+        if (isset($arr['BankLabel'])) $this->BankLabel = $arr['BankLabel'];
         if (isset($arr['ImageId'])) $this->ImageId = $arr['ImageId'];
         
         if (isset($arr['Id'])) $this->Id = $arr['Id'];
@@ -60,10 +62,10 @@ class Bookkeeping extends BaseModel{
     
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_bookkeeping SET Headline=?, BookkeepingAccountId=?, 
-        Text=?, Who=?, Amount=?, CreationDate=?, AccountingDate=?, ImageId=?, PersonId=? WHERE Id = ?");
+        Text=?, Who=?, Amount=?, CreationDate=?, AccountingDate=?, BankLabel=?, ImageId=?, PersonId=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->Headline, $this->BookkeepingAccountId,
-            $this->Text, $this->Who, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->ImageId, $this->PersonId, $this->Id))) {
+            $this->Text, $this->Who, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->BankLabel, $this->ImageId, $this->PersonId, $this->Id))) {
             $stmt = null;
             header("location: ../index.php?error=stmtfailed");
             exit();
@@ -81,10 +83,10 @@ class Bookkeeping extends BaseModel{
         $this->Number = $max_number + 1;
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_bookkeeping (Number, LarpId, CampaignId, Headline, BookkeepingAccountId, 
-        Text, Who, PersonId, Amount, CreationDate, AccountingDate, ImageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        Text, Who, PersonId, Amount, CreationDate, AccountingDate, BankLabel, ImageId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         if (!$stmt->execute(array($this->Number, $this->LarpId, $this->CampaignId, $this->Headline, $this->BookkeepingAccountId,
-            $this->Text, $this->Who, $this->PersonId, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->ImageId))) {
+            $this->Text, $this->Who, $this->PersonId, $this->Amount, $this->CreationDate, $this->AccountingDate, $this->BankLabel, $this->ImageId))) {
                 $stmt = null;
                 header("location: ../index.php?error=stmtfailed");
                 exit();

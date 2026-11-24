@@ -11,12 +11,14 @@ class Registration extends BaseModel{
     public $AmountToPay;
     public $AmountPayed = 0;
     public $Payed; //Datum
+    public $BankLabelPayment;
     public $PaymentComment;
     public $IsMember; 
     public $NotComing = 0;
     public $IsToBeRefunded = 0;
     public $RefundAmount = 0;
     public $RefundDate; 
+    public $BankLabelRefund;
     public $IsOfficial = 0;
     public $OfficialDetails = "";
     public $NPCDesire;
@@ -58,12 +60,14 @@ class Registration extends BaseModel{
         if (isset($arr['AmountToPay'])) $this->AmountToPay = $arr['AmountToPay'];
         if (isset($arr['AmountPayed'])) $this->AmountPayed = $arr['AmountPayed'];
         if (isset($arr['Payed'])) $this->Payed = $arr['Payed'];
-        if (isset($arr['PaymentComment'])) $this->PaymentComment = $arr['PaymentComment'];
+        if (isset($arr['Payed'])) $this->Payed = $arr['Payed'];
+        if (isset($arr['BankLabelPayment'])) $this->BankLabelPayment = $arr['BankLabelPayment'];
         if (isset($arr['IsMember'])) $this->IsMember = $arr['IsMember'];
         if (isset($arr['NotComing'])) $this->NotComing = $arr['NotComing'];
         if (isset($arr['IsToBeRefunded'])) $this->IsToBeRefunded = $arr['IsToBeRefunded'];
         if (isset($arr['RefundAmount'])) $this->RefundAmount = $arr['RefundAmount'];
         if (isset($arr['RefundDate'])) $this->RefundDate = $arr['RefundDate'];
+        if (isset($arr['BankLabelRefund'])) $this->BankLabelRefund = $arr['BankLabelRefund'];
         if (isset($arr['IsOfficial'])) $this->IsOfficial = $arr['IsOfficial'];
         if (isset($arr['OfficialDetails'])) $this->OfficialDetails = $arr['OfficialDetails'];
         if (isset($arr['NPCDesire'])) $this->NPCDesire = $arr['NPCDesire'];
@@ -129,16 +133,16 @@ class Registration extends BaseModel{
     public function update() {
         $stmt = $this->connect()->prepare("UPDATE regsys_registration SET LARPId=?, PersonId=?,  
                 RegisteredAt=?, PaymentReference=?, AmountToPay=?, AmountPayed=?,
-                Payed=?, PaymentComment=?, IsMember=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
-                RefundDate=?, IsOfficial=?, OfficialDetails=?, NPCDesire=?, HousingRequestId=?, LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?, 
+                Payed=?, BankLabelPayment=?, PaymentComment=?, IsMember=?, NotComing=?, IsToBeRefunded=?, RefundAmount=?,
+                RefundDate=?, BankLabelRefund=?, IsOfficial=?, OfficialDetails=?, NPCDesire=?, HousingRequestId=?, LarpHousingComment=?, TentType=?, TentSize=?, TentHousing=?, TentPlace=?, 
                 GuardianId=?, NotComingReason=?,
                 SpotAtLARP=?, TypeOfFoodId=?, FoodChoice=?, LarpPartNotAttending=?, LarpPartAcknowledged=?, EvaluationDone=?, 
                 PhotographyApproval=?, ArrivalDate=?, VehicleLicencePlate=?, CheckinTime=?, CheckoutTime=? WHERE Id = ?");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId,  
             $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay, $this->AmountPayed, 
-            $this->Payed, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
-            $this->RefundDate, $this->IsOfficial, $this->OfficialDetails, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment, 
+            $this->Payed, $this->BankLabelPayment, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount, 
+            $this->RefundDate, $this->BankLabelRefund, $this->IsOfficial, $this->OfficialDetails, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment, 
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason, $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, 
             $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, 
@@ -157,15 +161,15 @@ class Registration extends BaseModel{
     public function create() {
         $connection = $this->connect();
         $stmt = $connection->prepare("INSERT INTO regsys_registration (LARPId, PersonId, RegisteredAt, 
-            PaymentReference, AmountToPay, AmountPayed, Payed, PaymentComment, IsMember,
-            NotComing, IsToBeRefunded, RefundAmount, RefundDate, IsOfficial, OfficialDetails, 
+            PaymentReference, AmountToPay, AmountPayed, Payed, BankLabelPayment, PaymentComment, IsMember,
+            NotComing, IsToBeRefunded, RefundAmount, RefundDate, BankLabelRefund, IsOfficial, OfficialDetails, 
             NPCDesire, HousingRequestId, LarpHousingComment, TentType, TentSize, TentHousing, TentPlace, GuardianId, NotComingReason, 
             SpotAtLARP, TypeOfFoodId, FoodChoice, LarpPartNotAttending, LarpPartAcknowledged, EvaluationDone, PhotographyApproval, ArrivalDate, VehicleLicencePlate, CheckinTime, CheckoutTime) 
-            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?)");
+            VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?,?)");
         
         if (!$stmt->execute(array($this->LARPId, $this->PersonId, $this->RegisteredAt, $this->PaymentReference, $this->AmountToPay,
-            $this->AmountPayed, $this->Payed, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
-            $this->RefundDate, $this->IsOfficial, $this->OfficialDetails, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment,
+            $this->AmountPayed, $this->Payed, $this->BankLabelPayment, $this->PaymentComment, $this->IsMember, $this->NotComing, $this->IsToBeRefunded, $this->RefundAmount,
+            $this->RefundDate, $this->BankLabelRefund, $this->IsOfficial, $this->OfficialDetails, $this->NPCDesire, $this->HousingRequestId, $this->LarpHousingComment,
             $this->TentType, $this->TentSize, $this->TentHousing, $this->TentPlace, 
             $this->GuardianId, $this->NotComingReason,
             $this->SpotAtLARP, $this->TypeOfFoodId, $this->FoodChoice, $this->LarpPartNotAttending, $this->LarpPartAcknowledged, $this->EvaluationDone, $this->PhotographyApproval, 

@@ -48,7 +48,13 @@ function default_value($field) {
     }
     return $output;
 }
-        
+      
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = $_SERVER['HTTP_REFERER'];
+}
+else {
+    $referer = "";
+}
     
 include 'navigation.php';
 
@@ -71,6 +77,7 @@ if (empty($booking_accounts)) $error_message = "Bokföringskonton saknas. Be nå
 
 	<form action="economy.php" method="post" enctype="multipart/form-data">
 		<input type="hidden" id="operation" name="operation" value="<?php echo $operation?>"> 
+    		<input type="hidden" id="Referer" name="Referer" value="<?php echo $referer;?>">
 		<input type="hidden" id="Photographer" name="Photographer" value="Kvitto"> 
 		<input type="hidden" id="id" name="id" value="<?php echo default_value('id');?>"> 
 		
@@ -105,7 +112,7 @@ if (empty($booking_accounts)) $error_message = "Bokföringskonton saknas. Be nå
 				<?php $value = abs($bookkeeping->Amount);
 				if ($value == 0) $value = "";
 				?>
-				<td><input style="width: 100px;" type="number" id="Amount" name="Amount" step='0.01' value='<?php echo $value;?>' min="0" size="100" maxlength="250" style="text-align:right" required> kr</td>
+				<td><input style="width: 100px;" type="number" id="Amount" name="Amount" step='0.01' value='<?php echo number_format($value,2, '.', '') ;?>' min="0" size="100" maxlength="250" style="text-align:right" required> kr</td>
 
 			</tr>
 			<tr>
@@ -114,9 +121,13 @@ if (empty($booking_accounts)) $error_message = "Bokföringskonton saknas. Be nå
     					name="CreationDate" value="<?php echo $bookkeeping->CreationDate ?>" size="50" required></td>
 			</tr>
 			<tr>
-				<td><label for="AccountingDate">Bokföringsdatum</label></td>
+				<td><label for="AccountingDate">Bokföringsdatum<br><span style='font-size: smaller;'>Bankens bokföringsdatum</span></label></td>
 				<td><input type="date" id="AccountingDate"
     					name="AccountingDate" value="<?php echo $bookkeeping->AccountingDate ?>" size="50"></td>
+			</tr>
+			<tr>
+				<td><label for="BankLabel">Bankens märkning<br><span style='font-size: smaller;'>Om bankens märkning är annan än rubriken</span></label></td>
+				<td><input type="text" id="BankLabel" name="BankLabel" value="<?php echo $bookkeeping->BankLabel ?>" size="100" maxlength="250"></td>
 			</tr>
 			<?php if ((default_value('sort')=="utgift") && !$bookkeeping->hasImage()) {?>
 			<tr>

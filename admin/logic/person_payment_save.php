@@ -19,6 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset ($payed) && $payed != "") {
             $registration->Payed = $payed;
         }
+        $registration->BankLabelPayment = $_POST['BankLabelPayment'];
         $registration->PaymentComment = $_POST['PaymentComment'];
         
         $registration->NotComing = $_POST['NotComing'];
@@ -34,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $registration->RefundDate = null;
         }
+        $registration->BankLabelRefund = $_POST['BankLabelRefund'];
         
         $registration->update();
         

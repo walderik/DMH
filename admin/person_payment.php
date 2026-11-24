@@ -77,8 +77,12 @@ include 'navigation.php';
 			<tr><td valign="top" class="header">Betalningsreferens</td><td><?php echo $registration->PaymentReference;?></td></tr>
 			<tr><td valign="top" class="header">Belopp att betala</td><td><input type="number" id="AmountToPay" name="AmountToPay" value="<?php echo $registration->AmountToPay; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
 			<tr><td valign="top" class="header">Belopp betalat</td><td><input type="number" id="AmountPayed" name="AmountPayed" value="<?php echo $registration->AmountPayed; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
-			<tr><td valign="top" class="header">Betalat datum</td><td><input type="date" id="Payed" name="Payed" value="<?php echo $registration->Payed; ?>"  size="15" maxlength="250"> 
+			<tr><td valign="top" class="header">Bokföringsdag<br><span style='font-size: smaller;'>Bankens bokföringsdatum</span></td><td><input type="date" id="Payed" name="Payed" value="<?php echo $registration->Payed; ?>"  size="15" maxlength="250"> 
 			<a href='economy_receipt_pdf.php?registrationId=<?php echo $registration->Id?>' target='_blank'><i class='fa-solid fa-file-pdf' title='Skapa kvitto'></i></a>
+			<tr>
+				<td><label for="BankLabelPayment">Bankens märkning<br><span style='font-size: smaller;'>Om bankens märkning är annan än betalningsreferensen</span></label></td>
+				<td><input type="text" id="BankLabelPayment" name="BankLabelPayment" value="<?php echo $registration->BankLabelPayment ?>" size="100" maxlength="250"></td>
+			</tr>
 			<tr><td valign="top" class="header">Kommentar till betalning</td><td><input type="text" id="PaymentComment" name="PaymentComment" value="<?php echo $registration->PaymentComment; ?>"  size="100" maxlength="250">
 			</td></tr>
 			
@@ -99,7 +103,11 @@ include 'navigation.php';
     			<label for="IsToBeRefunded_no">Nej</label>
 			</td></tr>
 			<tr><td valign="top" class="header">Belopp återbetalat</td><td><input type="number" id="RefundAmount" name="RefundAmount" value="<?php echo $registration->RefundAmount; ?>"  min="0" size="10" maxlength="250"> SEK</td></tr>
-			<tr><td valign="top" class="header">Återbetalningsdatum</td><td><input type="date" id="RefundDate" name="RefundDate" value="<?php echo $registration->RefundDate; ?>"  size="15" maxlength="250"></td></tr>
+			<tr><td valign="top" class="header">Återbetalningsdatum<br><span style='font-size: smaller;'>Bankens bokföringsdatum</span></td><td><input type="date" id="RefundDate" name="RefundDate" value="<?php echo $registration->RefundDate; ?>"  size="15" maxlength="250"></td></tr>
+			<tr>
+				<td><label for="BankLabelRefund">Bankens märkning<br><span style='font-size: smaller;'>Texten i banken på återbetalningen</span></label></td>
+				<td><input type="text" id="BankLabelRefund" name="BankLabelRefund" value="<?php echo $registration->BankLabelRefund ?>" size="100" maxlength="250"></td>
+			</tr>
 
 		</table>		
 			<input type="submit" value="Spara">

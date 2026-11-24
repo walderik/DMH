@@ -142,7 +142,7 @@ th {
     		            } elseif ($file_format=="transaction") {
     		                $refence = $paymentrow[8];
     		                $amount = $paymentrow[10];
-    		                $date = $paymentrow[6];
+    		                $date = $paymentrow[5];
     		                
     		            }
     		            echo "<td>$refence</td><td>$amount</td><td>$date</td>";
@@ -198,7 +198,7 @@ th {
                 } else {
                     echo "<tr>";
                     foreach ($row as $key => $item) {
-                        if (in_array($key, [1,2,3,4,5,7,11])) continue;
+                        if (in_array($key, [1,2,3,4,6,7,11])) continue;
                         echo "<td>".trim($item)."</td>";
                     }
                     echo "</tr>";

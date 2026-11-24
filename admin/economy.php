@@ -19,6 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $bookkeeping = Bookkeeping::loadById($_POST['id']);
             $bookkeeping->setValuesByArray($_POST);
             $bookkeeping->update();
+            if (isset($_POST['Referer']) && $_POST['Referer']!="") {
+                header('Location: ' . $_POST['Referer']);
+                exit;
+            }
         } elseif ($operation == 'update_expense') {
             $bookkeeping = Bookkeeping::loadById($_POST['id']);
             $bookkeeping->setValuesByArray($_POST);
@@ -26,6 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             $bookkeeping->update();
             saveReceipt($bookkeeping);
+            if (isset($_POST['Referer']) && $_POST['Referer']!="") {
+                header('Location: ' . $_POST['Referer']);
+                exit;
+            }
         }
         header("Location: economy.php");
         exit;
